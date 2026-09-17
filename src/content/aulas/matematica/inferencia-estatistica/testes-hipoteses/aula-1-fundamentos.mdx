@@ -1,0 +1,305 @@
+# Fundamentos de Testes de Hipóteses
+
+## O que é um Teste de Hipóteses?
+
+Um teste de hipóteses é um procedimento estatístico que nos ajuda a tomar decisões sobre uma população com base em dados de uma amostra. Ele nos permite responder perguntas como:
+
+- Este novo medicamento é mais eficaz que o placebo?
+- A média de altura dos brasileiros mudou na última década?
+- Há associação entre gênero e preferência por um produto?
+- A variância do processo de produção está dentro dos limites?
+
+Em vez de apenas estimar um parâmetro (como vimos no módulo de Estimação), agora queremos **testar uma afirmação** sobre esse parâmetro.
+
+**Analogia:** Um teste de hipóteses é como um julgamento. O parâmetro populacional é o "réu", e a amostra é a "evidência". O juiz (o estatístico) decide se há evidência suficiente para condenar (rejeitar a hipótese nula) ou absolver (não rejeitar).
+
+## Hipótese Nula ($H_0$) e Hipótese Alternativa ($H_1$)
+
+**Hipótese Nula ($H_0$):** É a hipótese que queremos testar. Geralmente representa a afirmação de que "não há efeito", "não há diferença" ou "não há associação". É a hipótese que assumimos ser verdadeira até que a evidência mostre o contrário.
+
+**Hipótese Alternativa ($H_1$):** É a hipótese que queremos provar. Geralmente representa a afirmação de que "há efeito", "há diferença" ou "há associação". É a hipótese que aceitamos se rejeitarmos $H_0$.
+
+**Tipos de hipóteses alternativas:**
+
+| Tipo | Forma | Exemplo |
+| --- | --- | --- |
+| Bicaudal | $H_1: \theta \ne \theta_0$ | A média é diferente de 100 |
+| Unilateral superior | $H_1: \theta > \theta_0$ | A média é maior que 100 |
+| Unilateral inferior | $H_1: \theta < \theta_0$ | A média é menor que 100 |
+
+**Exemplo 1:** Um fabricante afirma que suas lâmpadas duram em média 1000 horas.
+
+- $H_0: \mu = 1000$ (a afirmação é verdadeira)
+- $H_1: \mu \ne 1000$ (a afirmação é falsa — teste bicaudal)
+
+**Exemplo 2:** Um novo medicamento é mais eficaz que o placebo (eficácia atual = 50%).
+
+- $H_0: p = 0,5$ (não há diferença)
+- $H_1: p > 0,5$ (o novo medicamento é melhor — unilateral superior)
+
+**Exemplo 3:** Uma máquina deve produzir peças com diâmetro médio de 5mm. Suspeita-se que está produzindo menor.
+
+- $H_0: \mu = 5$ (a máquina está calibrada)
+- $H_1: \mu < 5$ (a máquina está produzindo menor — unilateral inferior)
+
+## Erros Tipo I e Tipo II
+
+Em um teste de hipóteses, podemos cometer dois tipos de erro:
+
+| Decisão | $H_0$ é verdadeira | $H_0$ é falsa |
+| --- | --- | --- |
+| Rejeitar $H_0$ | **Erro Tipo I** ($\alpha$) | Decisão correta ($1-\beta$) |
+| Não rejeitar $H_0$ | Decisão correta ($1-\alpha$) | **Erro Tipo II** ($\beta$) |
+
+**Erro Tipo I ($\alpha$):** Rejeitar $H_0$ quando ela é verdadeira. É o "falso positivo". O nível de significância $\alpha$ é a probabilidade máxima de cometer este erro.
+
+**Erro Tipo II ($\beta$):** Não rejeitar $H_0$ quando ela é falsa. É o "falso negativo". O poder do teste é $1-\beta$.
+
+**Analogia:** No sistema judicial:
+- Erro Tipo I: Condenar um inocente.
+- Erro Tipo II: Absolver um culpado.
+
+**Exemplo numérico:**
+
+Um teste de hipóteses com $\alpha = 0,05$ significa que há 5% de chance de rejeitar $H_0$ quando ela é verdadeira. Se o poder do teste é 0,80, há 80% de chance de rejeitar $H_0$ quando ela é falsa (e 20% de chance de erro Tipo II).
+
+## Nível de Significância ($\alpha$)
+
+O nível de significância $\alpha$ é a probabilidade máxima de cometer um Erro Tipo I que estamos dispostos a tolerar. Valores comuns:
+
+- $\alpha = 0,10$ (10% — menos rigoroso)
+- $\alpha = 0,05$ (5% — padrão)
+- $\alpha = 0,01$ (1% — mais rigoroso)
+
+**Escolha do $\alpha$:** Depende das consequências de cada tipo de erro. Em áreas médicas (onde um falso positivo pode ser perigoso), usamos $\alpha$ pequeno (0,01). Em pesquisas exploratórias, $\alpha = 0,05$ ou $0,10$ pode ser aceitável.
+
+## P-valor (Valor-p)
+
+O p-valor é a probabilidade de obter um resultado tão extremo ou mais extremo que o observado, assumindo que $H_0$ é verdadeira. É a "evidência contra $H_0$".
+
+**Interpretação:**
+
+- **p-valor pequeno ($p < \alpha$):** Evidência forte contra $H_0$. Rejeitamos $H_0$.
+- **p-valor grande ($p \ge \alpha$):** Evidência fraca contra $H_0$. Não rejeitamos $H_0$.
+
+**Exemplo:** Se p-valor = 0,03 e $\alpha = 0,05$, rejeitamos $H_0$. Há apenas 3% de chance de obter um resultado tão extremo se $H_0$ for verdadeira.
+
+## Região Crítica e Estatística de Teste
+
+**Estatística de teste:** É o valor calculado a partir da amostra que usamos para tomar a decisão. Exemplos: $Z$, $t$, $\chi^2$, $F$.
+
+**Região crítica:** É o conjunto de valores da estatística de teste que levam à rejeição de $H_0$. Se a estatística de teste cair na região crítica, rejeitamos $H_0$.
+
+**Passos de um teste de hipóteses:**
+
+1. **Definir $H_0$ e $H_1$.**
+2. **Escolher $\alpha$** (nível de significância).
+3. **Calcular a estatística de teste** a partir da amostra.
+4. **Encontrar o valor crítico** ou o **p-valor**.
+5. **Tomar a decisão:** Rejeitar ou não rejeitar $H_0$.
+6. **Concluir** no contexto do problema.
+
+## Poder do Teste ($1-\beta$)
+
+O poder do teste é a probabilidade de rejeitar $H_0$ quando $H_0$ é falsa. Ou seja, a probabilidade de detectar um efeito quando ele realmente existe.
+
+**Fatores que aumentam o poder:**
+
+1. **Aumentar $n$** (tamanho da amostra)
+2. **Aumentar $\alpha$** (nível de significância)
+3. **Aumentar o tamanho do efeito** (diferença entre $H_0$ e a realidade)
+4. **Reduzir a variabilidade** ($\sigma$)
+
+**Exemplo:** Um teste com poder = 0,80 tem 80% de chance de detectar um efeito real. Há 20% de chance de erro Tipo II.
+
+## Analogias
+
+### Analogia 1: O julgamento
+
+- $H_0$: O réu é inocente.
+- $H_1$: O réu é culpado.
+- $\alpha$: Probabilidade de condenar um inocente.
+- $\beta$: Probabilidade de absolver um culpado.
+- Poder ($1-\beta$): Probabilidade de condenar um culpado.
+- p-valor: A força da evidência contra a inocência.
+
+### Analogia 2: O teste médico
+
+- $H_0$: O paciente está saudável.
+- $H_1$: O paciente está doente.
+- Erro Tipo I: Dizer que está doente quando está saudável (falso positivo).
+- Erro Tipo II: Dizer que está saudável quando está doente (falso negativo).
+
+### Analogia 3: O detector de fumaça
+
+- $H_0$: Não há fogo.
+- $H_1$: Há fogo.
+- Erro Tipo I: Alarme falso (detector apita sem fogo).
+- Erro Tipo II: O detector não apita quando há fogo.
+
+### Analogia 4: O controle de qualidade
+
+- $H_0$: O lote é bom.
+- $H_1$: O lote é defeituoso.
+- Erro Tipo I: Reprovar um lote bom.
+- Erro Tipo II: Aprovar um lote defeituoso.
+
+### Analogia 5: O teste de drogas no esporte
+
+- $H_0$: O atleta não usou drogas.
+- $H_1$: O atleta usou drogas.
+- Erro Tipo I: Acusar um atleta inocente.
+- Erro Tipo II: Não detectar um atleta que usou drogas.
+
+## Exemplos Práticos com Cálculos Passo a Passo
+
+### Exemplo 1: Identificando $H_0$ e $H_1$
+
+Um professor afirma que a média da turma é 7,0. Um aluno suspeita que a média é menor.
+
+- $H_0: \mu = 7,0$
+- $H_1: \mu < 7,0$ (unilateral inferior)
+
+### Exemplo 2: Identificando erros
+
+Um teste tem $\alpha = 0,05$ e $\beta = 0,10$. Qual a probabilidade de Erro Tipo I e Tipo II?
+
+- Erro Tipo I: $\alpha = 0,05$ (5%)
+- Erro Tipo II: $\beta = 0,10$ (10%)
+- Poder: $1 - 0,10 = 0,90$ (90%)
+
+### Exemplo 3: Interpretando p-valor
+
+Um teste de hipóteses resulta em p-valor = 0,02 com $\alpha = 0,05$. O que concluir?
+
+- p-valor $< \alpha \to$ Rejeitar $H_0$.
+- Há evidência significativa contra $H_0$.
+
+### Exemplo 4: Interpretando p-valor (outro caso)
+
+p-valor = 0,07 com $\alpha = 0,05$.
+
+- p-valor $> \alpha \to$ Não rejeitar $H_0$.
+- Não há evidência suficiente para rejeitar $H_0$.
+
+### Exemplo 5: Poder do teste
+
+Um teste tem $\alpha = 0,05$, $n = 30$, $\sigma = 5$. O poder para detectar $\mu = 102$ (testando $\mu = 100$) é 0,75. Interprete.
+
+- Há 75% de chance de detectar que a média é 102 quando ela realmente é 102.
+- Há 25% de chance de erro Tipo II (não detectar a diferença).
+
+## Exercícios Resolvidos
+
+### Exercício 1 (Fácil)
+
+Identifique $H_0$ e $H_1$: Uma empresa afirma que o tempo médio de entrega é 3 dias. Um cliente acha que é maior.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$H_0: \mu = 3$ (a afirmação da empresa)
+$H_1: \mu > 3$ (o cliente acha que é maior)
+
+**Resposta:** $H_0: \mu = 3$; $H_1: \mu > 3$.
+
+</details>
+
+### Exercício 2 (Fácil/Médio)
+
+Em um teste, $\alpha = 0,01$ e p-valor = 0,005. O que concluir?
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+p-valor = 0,005 $< \alpha = 0,01 \to$ Rejeitar $H_0$.
+
+**Resposta:** Rejeitar $H_0$, há evidência forte.
+
+</details>
+
+### Exercício 3 (Médio)
+
+O que é pior: Erro Tipo I ou Tipo II em um teste de segurança de um avião?
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$H_0$: O avião é seguro.
+Erro Tipo I: Dizer que é inseguro quando é seguro (cancelar voos desnecessariamente).
+Erro Tipo II: Dizer que é seguro quando é inseguro (permitir voo com avião com problema).
+
+O Erro Tipo II é pior, pois coloca vidas em risco.
+
+**Resposta:** Erro Tipo II é pior.
+
+</details>
+
+### Exercício 4 (Médio)
+
+Um teste tem $\alpha = 0,05$ e $\beta = 0,20$. Qual o poder do teste?
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+Poder = $1 - \beta = 1 - 0,20 = 0,80$.
+
+**Resposta:** 0,80 (80%).
+
+</details>
+
+### Exercício 5 (Difícil)
+
+Em um teste bicaudal com $\alpha = 0,05$, qual a região crítica para $Z$?
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+Para $\alpha = 0,05$ bicaudal, $\alpha/2 = 0,025$.
+$Z_{0,025} = 1,96$.
+Região crítica: $Z < -1,96$ ou $Z > 1,96$.
+
+**Resposta:** $|Z| > 1,96$.
+
+</details>
+
+## Desafio Final com Resolução Completa
+
+Uma empresa de alimentos afirma que seu pacote de biscoitos tem peso médio de 200g. Um fiscal suspeita que o peso médio é menor que o declarado. Ele coleta uma amostra de 36 pacotes e encontra peso médio de 198g com desvio padrão de 6g.
+
+a) Defina $H_0$ e $H_1$.
+b) Calcule a estatística de teste.
+c) Encontre o p-valor (use $\alpha = 0,05$).
+d) Qual a decisão?
+e) Interprete no contexto.
+f) O que seria um Erro Tipo I neste contexto? E um Erro Tipo II?
+
+<details>
+<summary>💡 Ver resolução completa</summary>
+
+a) $H_0: \mu = 200$ (a afirmação da empresa é verdadeira)
+   $H_1: \mu < 200$ (o fiscal suspeita que é menor — unilateral inferior)
+
+b) $t = \frac{\bar{X} - \mu_0}{S/\sqrt{n}} = \frac{198 - 200}{6/\sqrt{36}} = \frac{-2}{1} = -2,0$
+
+c) $\nu = 35$. Para $t = -2,0$ com $\nu = 35$, o p-valor $\approx 0,027$ (unilateral inferior).
+   Como $0,027 < 0,05$, rejeitamos $H_0$.
+
+d) Rejeitar $H_0$ (há evidência de que o peso médio é menor que 200g).
+
+e) Com 95% de confiança, há evidência estatística de que o peso médio dos pacotes é menor que 200g. A empresa pode estar enganando os consumidores.
+
+f) Erro Tipo I: Concluir que o peso é menor que 200g quando na verdade é 200g (acusar a empresa injustamente).
+   Erro Tipo II: Concluir que o peso é 200g quando na verdade é menor que 200g (deixar a empresa enganar os consumidores).
+
+**Respostas:**
+a) $H_0: \mu = 200$; $H_1: \mu < 200$
+b) $t = -2,0$
+c) p-valor $\approx 0,027$
+d) Rejeitar $H_0$
+e) Há evidência de que o peso é menor que 200g
+f) Erro Tipo I: acusar injustamente; Erro Tipo II: deixar passar a irregularidade
+
+</details>
+
+> *O teste de hipóteses é a arte de julgar o desconhecido com a evidência disponível — entre o erro de condenar a verdade e o de absolver a mentira, a estatística nos dá uma bússola de probabilidades.*

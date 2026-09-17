@@ -1,0 +1,337 @@
+# DECOMPOSIÇÃO ESPECTRAL
+
+## 1. Definição Formal
+
+### 1.1 O que é a Decomposição Espectral?
+
+A **decomposição espectral** (ou **diagonalização**) de uma matriz $A \in \mathbb{R}^{n \times n}$ é a fatoração:
+
+$$
+A = Q \Lambda Q^{-1}
+$$
+
+Onde:
+- $Q$ é a matriz cujas **colunas** são os **autovetores** de $A$.
+- $\Lambda$ é uma matriz **diagonal** com os **autovalores** de $A$.
+
+**Caso especial (matrizes simétricas):**
+$$
+A = Q \Lambda Q^T
+$$
+onde $Q$ é **ortogonal** ($Q^T = Q^{-1}$).
+
+### 1.2 Condição para Diagonalização
+
+Uma matriz $A$ é diagonalizável se, e somente se, existem **$n$ autovetores linearmente independentes**.
+
+**Caso mais comum:** Se todos os autovalores são **distintos**, a matriz é **sempre diagonalizável**.
+
+### 1.3 O que é o Espectro de uma Matriz?
+
+O **espectro** de uma matriz $A$ é o conjunto de todos os seus autovalores:
+$$
+\sigma(A) = \{\lambda_1, \lambda_2, \ldots, \lambda_n\}
+$$
+
+**Interpretação:** O espectro "caracteriza" a matriz, revelando suas propriedades mais importantes.
+
+## 2. Propriedades da Decomposição Espectral
+
+| Propriedade | Fórmula | Exemplo |
+|-------------|---------|---------|
+| **Autovalores** | $\Lambda_{ii} = \lambda_i$ | $\Lambda = \text{diag}(3, 1)$ |
+| **Autovetores** | Colunas de $Q$ | $Q = [\vec{v}_1, \vec{v}_2]$ |
+| **Potências** | $A^k = Q \Lambda^k Q^{-1}$ | $A^{10} = Q \Lambda^{10} Q^{-1}$ |
+| **Inversa** | $A^{-1} = Q \Lambda^{-1} Q^{-1}$ | Se $\lambda_i \neq 0$ |
+| **Determinante** | $\det(A) = \prod \lambda_i$ | $\det(A) = 3 \cdot 1 = 3$ |
+| **Traço** | $\text{tr}(A) = \sum \lambda_i$ | $\text{tr}(A) = 3 + 1 = 4$ |
+| **Raio espectral** | $\rho(A) = \max |\lambda_i|$ | $\rho(A) = 3$ |
+
+## 3. Exemplo Acadêmico Passo a Passo
+
+### 3.1 Matriz $2 \times 2$
+
+Seja:
+$$
+A = \begin{bmatrix} 2 & 1 \\ 1 & 2 \end{bmatrix}
+$$
+
+**Passo 1:** Calcular autovalores:
+$$
+\lambda_1 = 3, \quad \lambda_2 = 1
+$$
+
+**Passo 2:** Calcular autovetores:
+$$
+\vec{v}_1 = \begin{bmatrix} 1 \\ 1 \end{bmatrix}, \quad \vec{v}_2 = \begin{bmatrix} 1 \\ -1 \end{bmatrix}
+$$
+
+**Passo 3:** Montar $Q$ e $\Lambda$:
+$$
+Q = \begin{bmatrix} 1 & 1 \\ 1 & -1 \end{bmatrix}, \quad \Lambda = \begin{bmatrix} 3 & 0 \\ 0 & 1 \end{bmatrix}
+$$
+
+**Passo 4:** Calcular $Q^{-1}$:
+$$
+Q^{-1} = \begin{bmatrix} 0.5 & 0.5 \\ 0.5 & -0.5 \end{bmatrix}
+$$
+
+**Passo 5:** Verificar:
+$$
+Q \Lambda Q^{-1} = \begin{bmatrix} 1 & 1 \\ 1 & -1 \end{bmatrix} \begin{bmatrix} 3 & 0 \\ 0 & 1 \end{bmatrix} \begin{bmatrix} 0.5 & 0.5 \\ 0.5 & -0.5 \end{bmatrix} = \begin{bmatrix} 2 & 1 \\ 1 & 2 \end{bmatrix} = A ✓
+$$
+
+### 3.2 Matriz $3 \times 3$ Simétrica
+
+Seja:
+$$
+A = \begin{bmatrix}
+4 & 1 & 0 \\
+1 & 4 & 1 \\
+0 & 1 & 4
+\end{bmatrix}
+$$
+
+**Passo 1:** Calcular autovalores:
+$$
+\lambda_1 = 5, \quad \lambda_2 = 4, \quad \lambda_3 = 3
+$$
+
+**Passo 2:** Calcular autovetores (normalizados):
+$$
+\vec{v}_1 = \frac{1}{2} \begin{bmatrix} 1 \\ \sqrt{2} \\ 1 \end{bmatrix}, \quad
+\vec{v}_2 = \frac{1}{\sqrt{2}} \begin{bmatrix} 1 \\ 0 \\ -1 \end{bmatrix}, \quad
+\vec{v}_3 = \frac{1}{2} \begin{bmatrix} 1 \\ -\sqrt{2} \\ 1 \end{bmatrix}
+$$
+
+**Passo 3:** Montar $Q$ e $\Lambda$:
+$$
+Q = \begin{bmatrix}
+\frac{1}{2} & \frac{1}{\sqrt{2}} & \frac{1}{2} \\
+\frac{\sqrt{2}}{2} & 0 & -\frac{\sqrt{2}}{2} \\
+\frac{1}{2} & -\frac{1}{\sqrt{2}} & \frac{1}{2}
+\end{bmatrix}, \quad
+\Lambda = \begin{bmatrix}
+5 & 0 & 0 \\
+0 & 4 & 0 \\
+0 & 0 & 3
+\end{bmatrix}
+$$
+
+**Passo 4:** Verificar $Q^T Q = I$ (matriz simétrica → $Q^{-1} = Q^T$).
+
+**Passo 5:** $A = Q \Lambda Q^T$ ✓
+
+## 4. Exemplos Lúdicos Aprimorados
+
+### 🍔 EXEMPLO 1 – A LANCHONETE (DECOMPOSIÇÃO DE INGREDIENTES)
+
+A lanchonete tem a matriz:
+$$
+A = \begin{bmatrix} 2 & 1 \\ 1 & 2 \end{bmatrix}
+$$
+
+**Decomposição espectral:** $A = Q \Lambda Q^{-1}$
+
+**Interpretação:**
+- $Q$: direções fundamentais dos ingredientes (autovetores).
+- $\Lambda$: "força" de cada direção (autovalores).
+- $Q^{-1}$: como voltar das direções fundamentais para os ingredientes.
+
+**Aplicação:** Se a lanchonete quiser aumentar a produção em 10 passos:
+$$
+A^{10} = Q \Lambda^{10} Q^{-1}
+$$
+
+### 🧃 EXEMPLO 2 – A CANTINA (ESPECTRO DE NUTRIENTES)
+
+A cantina tem a matriz de covariância:
+$$
+\Sigma = \begin{bmatrix} 4 & 1 & 0 \\ 1 & 4 & 1 \\ 0 & 1 & 4 \end{bmatrix}
+$$
+
+**Decomposição espectral:** $\Sigma = Q \Lambda Q^T$
+
+**Interpretação:**
+- $\Lambda$: variância em cada direção principal (5, 4, 3).
+- $Q$: direções dos componentes principais.
+
+**Aplicação:** PCA → reter apenas os primeiros componentes (autovetores com maiores autovalores).
+
+## 5. Aplicação na Tese: Autovalores e FedAvg
+
+### 5.1 Análise de Convergência
+
+No FedAvg, a matriz de transição é:
+$$
+T = I - \eta H
+$$
+
+A decomposição espectral de $H$ permite analisar a convergência:
+$$
+H = Q \Lambda Q^T \Rightarrow T = Q (I - \eta \Lambda) Q^T
+$$
+
+**Interpretação:** A convergência é controlada pelos autovalores $1 - \eta \lambda_i$.
+
+### 5.2 Detecção de Heterogeneidade
+
+A decomposição espectral das covariâncias locais revela:
+- **Autovalores grandes:** direções de alta variância (importantes para o cliente).
+- **Autovalores pequenos:** direções de baixa variância (ruído).
+
+**Aplicação:** Clientes com espectros muito diferentes podem ter dados heterogêneos.
+
+## 6. Exercícios Propostos (Manuais)
+
+<details>
+<summary>📗 Exercício 1 (Decomposição Espectral $2 \times 2$)</summary>
+
+**Enunciado:** Calcule a decomposição espectral de:
+$$
+A = \begin{bmatrix} 3 & 2 \\ 2 & 3 \end{bmatrix}
+$$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+$\lambda_1 = 5, \lambda_2 = 1$
+
+$\vec{v}_1 = \begin{bmatrix} 1 \\ 1 \end{bmatrix}, \vec{v}_2 = \begin{bmatrix} 1 \\ -1 \end{bmatrix}$
+
+$Q = \begin{bmatrix} 1 & 1 \\ 1 & -1 \end{bmatrix}, \Lambda = \begin{bmatrix} 5 & 0 \\ 0 & 1 \end{bmatrix}$
+
+$A = Q \Lambda Q^{-1}$ ✓
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 (Decomposição Espectral $3 \times 3$)</summary>
+
+**Enunciado:** Calcule a decomposição espectral de:
+$$
+A = \begin{bmatrix}
+2 & 0 & 0 \\
+0 & 3 & 0 \\
+0 & 0 & 4
+\end{bmatrix}
+$$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+A matriz já é diagonal! $Q = I, \Lambda = A$.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 (Potência via Espectral)</summary>
+
+**Enunciado:** Usando a decomposição espectral do Exercício 1, calcule $A^3$.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+$A^3 = Q \Lambda^3 Q^{-1} = \begin{bmatrix} 1 & 1 \\ 1 & -1 \end{bmatrix} \begin{bmatrix} 125 & 0 \\ 0 & 1 \end{bmatrix} \begin{bmatrix} 0.5 & 0.5 \\ 0.5 & -0.5 \end{bmatrix}$
+
+$A^3 = \begin{bmatrix} 63 & 62 \\ 62 & 63 \end{bmatrix}$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 (Verificação de Diagonalização)</summary>
+
+**Enunciado:** A matriz:
+$$
+A = \begin{bmatrix} 2 & 1 \\ 0 & 2 \end{bmatrix}
+$$
+é diagonalizável? Justifique.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+Não! Apenas um autovetor independente para o autovalor $\lambda = 2$ (multiplicidade 2). $A$ não é diagonalizável.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 (Aplicação – PCA)</summary>
+
+**Enunciado:** Uma matriz de covariância tem autovalores $\lambda_1 = 5, \lambda_2 = 2, \lambda_3 = 0.5$.
+
+a) Qual é a porcentagem de variância explicada pelo primeiro componente?  
+b) E pelos dois primeiros?  
+c) Quantos componentes você manteria para explicar 90% da variância?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\frac{5}{5+2+0.5} = \frac{5}{7.5} \approx 66.7\%$
+
+b) $\frac{5+2}{7.5} = \frac{7}{7.5} \approx 93.3\%$
+
+c) Manter os 2 primeiros componentes (explicam 93.3% > 90%).
+
+</details>
+</details>
+
+## 7. EXERCÍCIO COMPUTACIONAL
+
+<details>
+<summary>🐍 Ver código (Python/NumPy)</summary>
+
+```python
+import numpy as np
+
+# Decomposição espectral
+A = np.array([[4, 1, 0], [1, 4, 1], [0, 1, 4]])
+
+autovalores, autovetores = np.linalg.eig(A)
+print("Autovalores:", autovalores)
+print("Autovetores:\n", autovetores)
+
+# Reconstrução: A = Q @ Lambda @ Q^T
+Lambda = np.diag(autovalores)
+A_reconstruida = autovetores @ Lambda @ autovetores.T
+print("A reconstruída:\n", A_reconstruida)
+
+# Potência via espectral
+A3 = autovetores @ np.diag(autovalores ** 3) @ autovetores.T
+print("A^3:\n", A3)
+```
+
+</details>
+
+<details>
+<summary>📝 Ver código (R)</summary>
+
+```r
+# Decomposição espectral
+A <- matrix(c(4, 1, 0, 1, 4, 1, 0, 1, 4), nrow=3)
+eig <- eigen(A)
+
+print(eig$values)
+print(eig$vectors)
+
+# Reconstrução
+A_reconstruida <- eig$vectors %*% diag(eig$values) %*% t(eig$vectors)
+print(A_reconstruida)
+```
+
+</details>
+
+> *A decomposição espectral é a ferramenta mais importante para entender a "estrutura interna" de uma matriz. Ela revela autovalores (intensidades) e autovetores (direções), permitindo calcular potências, inversas e analisar convergência. Em ML, ela é a base do PCA e da análise de estabilidade de algoritmos como o FedAvg.*

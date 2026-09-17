@@ -1,0 +1,412 @@
+# DECOMPOSIÇÃO LU
+
+## 1. Definição
+
+### 1.1 O que é a Decomposição LU?
+
+A **decomposição LU** (Lower-Upper) fatora uma matriz quadrada $A \in \mathbb{R}^{n \times n}$ no produto de duas matrizes triangulares:
+
+$$
+A = L \cdot U
+$$
+
+Onde:
+- $L$ é uma matriz **triangular inferior** (Lower) com **diagonal igual a 1** (matriz unitária).
+- $U$ é uma matriz **triangular superior** (Upper).
+
+**Exemplo ilustrativo:**
+$$
+A = \begin{bmatrix} 2 & 1 \\ 1 & 2 \end{bmatrix} = \begin{bmatrix} 1 & 0 \\ 0.5 & 1 \end{bmatrix} \cdot \begin{bmatrix} 2 & 1 \\ 0 & 1.5 \end{bmatrix}
+$$
+
+### 1.2 Por que a Decomposição LU é Útil?
+
+| Vantagem | Descrição |
+|----------|-----------|
+| **Resolver sistemas lineares** | $A\vec{x} = \vec{b}$ → $LU\vec{x} = \vec{b}$ → resolver $L\vec{y} = \vec{b}$ (substituição progressiva) e $U\vec{x} = \vec{y}$ (substituição regressiva) |
+| **Reutilização** | Uma vez fatorada, a LU pode ser usada para múltiplos $\vec{b}$ |
+| **Cálculo de determinante** | $\det(A) = \det(L) \cdot \det(U) = \prod_{i=1}^n u_{ii}$ (já que $\det(L) = 1$) |
+| **Cálculo da inversa** | Resolver $AX = I$ usando a fatoração LU |
+
+### 1.3 Condição de Existência
+
+A decomposição LU existe se:
+1. $A$ é **quadrada**.
+2. Todos os **pivôs** durante a eliminação de Gauss são **diferentes de zero**.
+
+Se um pivô for zero, podemos usar **pivotação** (troca de linhas), resultando em:
+$$
+PA = LU
+$$
+Onde $P$ é uma matriz de permutação.
+
+## 2. Cálculo da Decomposição LU via Eliminação de Gauss
+
+### 2.1 Algoritmo
+
+A decomposição LU é **exatamente** a eliminação de Gauss, onde os multiplicadores usados para eliminar os elementos abaixo dos pivôs são armazenados em $L$.
+
+**Passo a passo:**
+
+**Passo 1:** Inicializar $L = I$ (matriz identidade) e $U = A$.
+
+**Passo 2:** Para cada coluna $k$ (de 1 a $n-1$):
+- Para cada linha $i > k$:
+  - Calcular o **multiplicador**:
+$$
+m_{ik} = \frac{u_{ik}}{u_{kk}}
+$$
+  - Armazenar $m_{ik}$ em $L_{ik}$.
+  - Atualizar a linha $i$ de $U$: $U_i \leftarrow U_i - m_{ik} \cdot U_k$.
+
+**Passo 3:** O resultado final é $A = LU$.
+
+### 2.2 Exemplo Acadêmico Passo a Passo
+
+Seja:
+$$
+A = \begin{bmatrix} 2 & 1 \\ 1 & 2 \end{bmatrix}
+$$
+
+**Passo 1:** $L = I = \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix}$, $U = A$
+
+**Passo 2:** Coluna $k = 1$:
+- Para $i = 2$:
+  - $m_{21} = \frac{u_{21}}{u_{11}} = \frac{1}{2} = 0.5$
+  - Armazenar $L_{21} = 0.5$.
+  - Atualizar $U_2 \leftarrow U_2 - 0.5 \cdot U_1$:
+$$
+[1 \quad 2] - 0.5 \cdot [2 \quad 1] = [1 - 1 \quad 2 - 0.5] = [0 \quad 1.5]
+$$
+
+**Passo 3:** Resultado:
+$$
+L = \begin{bmatrix} 1 & 0 \\ 0.5 & 1 \end{bmatrix}, \quad U = \begin{bmatrix} 2 & 1 \\ 0 & 1.5 \end{bmatrix}
+$$
+
+**Verificação:**
+$$
+L \cdot U = \begin{bmatrix} 1 & 0 \\ 0.5 & 1 \end{bmatrix} \cdot \begin{bmatrix} 2 & 1 \\ 0 & 1.5 \end{bmatrix} = \begin{bmatrix} 2 & 1 \\ 1 & 2 \end{bmatrix} = A ✓
+$$
+
+### 2.3 Exemplo 2: Matriz $3 \times 3$
+
+Seja:
+$$
+A = \begin{bmatrix}
+1 & 2 & 3 \\
+2 & 3 & 1 \\
+3 & 1 & 2
+\end{bmatrix}
+$$
+
+**Passo 1:** $L = I$, $U = A$
+
+**Passo 2:** Coluna $k = 1$:
+- $m_{21} = \frac{2}{1} = 2$ → $L_{21} = 2$, $U_2 \leftarrow U_2 - 2U_1$:
+$$
+[2 \quad 3 \quad 1] - 2[1 \quad 2 \quad 3] = [0 \quad -1 \quad -5]
+$$
+- $m_{31} = \frac{3}{1} = 3$ → $L_{31} = 3$, $U_3 \leftarrow U_3 - 3U_1$:
+$$
+[3 \quad 1 \quad 2] - 3[1 \quad 2 \quad 3] = [0 \quad -5 \quad -7]
+$$
+
+**Matriz após coluna 1:**
+$$
+U = \begin{bmatrix}
+1 & 2 & 3 \\
+0 & -1 & -5 \\
+0 & -5 & -7
+\end{bmatrix}, \quad L = \begin{bmatrix}
+1 & 0 & 0 \\
+2 & 1 & 0 \\
+3 & 0 & 1
+\end{bmatrix}
+$$
+
+**Passo 3:** Coluna $k = 2$:
+- $m_{32} = \frac{-5}{-1} = 5$ → $L_{32} = 5$, $U_3 \leftarrow U_3 - 5U_2$:
+$$
+[0 \quad -5 \quad -7] - 5[0 \quad -1 \quad -5] = [0 \quad 0 \quad 18]
+$$
+
+**Resultado final:**
+$$
+L = \begin{bmatrix}
+1 & 0 & 0 \\
+2 & 1 & 0 \\
+3 & 5 & 1
+\end{bmatrix}, \quad U = \begin{bmatrix}
+1 & 2 & 3 \\
+0 & -1 & -5 \\
+0 & 0 & 18
+\end{bmatrix}
+$$
+
+**Verificação:** $L \cdot U = A$ ✓
+
+## 3. Resolução de Sistemas com LU
+
+### 3.1 Método
+
+Para resolver $A\vec{x} = \vec{b}$:
+
+**Passo 1:** Fatorar $A = LU$.
+
+**Passo 2:** Resolver $L\vec{y} = \vec{b}$ por **substituição progressiva** (de cima para baixo).
+
+**Passo 3:** Resolver $U\vec{x} = \vec{y}$ por **substituição regressiva** (de baixo para cima).
+
+### 3.2 Exemplo
+
+Usando a fatoração $A = LU$ do exemplo anterior, resolva $A\vec{x} = \vec{b}$, onde:
+$$
+\vec{b} = \begin{bmatrix} 10 \\ 13 \\ 11 \end{bmatrix}
+$$
+
+**Passo 1:** Resolver $L\vec{y} = \vec{b}$:
+$$
+\begin{bmatrix}
+1 & 0 & 0 \\
+2 & 1 & 0 \\
+3 & 5 & 1
+\end{bmatrix} \begin{bmatrix} y_1 \\ y_2 \\ y_3 \end{bmatrix} = \begin{bmatrix} 10 \\ 13 \\ 11 \end{bmatrix}
+$$
+
+- $y_1 = 10$
+- $2y_1 + y_2 = 13 \Rightarrow 20 + y_2 = 13 \Rightarrow y_2 = -7$
+- $3y_1 + 5y_2 + y_3 = 11 \Rightarrow 30 - 35 + y_3 = 11 \Rightarrow y_3 = 16$
+
+**Passo 2:** Resolver $U\vec{x} = \vec{y}$:
+$$
+\begin{bmatrix}
+1 & 2 & 3 \\
+0 & -1 & -5 \\
+0 & 0 & 18
+\end{bmatrix} \begin{bmatrix} x_1 \\ x_2 \\ x_3 \end{bmatrix} = \begin{bmatrix} 10 \\ -7 \\ 16 \end{bmatrix}
+$$
+
+- $18x_3 = 16 \Rightarrow x_3 = \frac{8}{9}$
+- $-x_2 - 5x_3 = -7 \Rightarrow -x_2 - \frac{40}{9} = -7 \Rightarrow -x_2 = -7 + \frac{40}{9} = -\frac{23}{9} \Rightarrow x_2 = \frac{23}{9}$
+- $x_1 + 2x_2 + 3x_3 = 10 \Rightarrow x_1 + \frac{46}{9} + \frac{24}{9} = 10 \Rightarrow x_1 + \frac{70}{9} = 10 \Rightarrow x_1 = \frac{20}{9}$
+
+**Solução:** $x_1 = \frac{20}{9}, x_2 = \frac{23}{9}, x_3 = \frac{8}{9}$ ✓
+
+## 4. Exemplos Lúdicos Aprimorados
+
+### 🍔 EXEMPLO 1 – A LANCHONETE (DECOMPOSIÇÃO DE RECEITAS)
+
+A lanchonete tem a matriz de receitas:
+$$
+A = \begin{bmatrix}
+1 & 1 & 0 \\
+0 & 0 & 1 \\
+1 & 1 & 1
+\end{bmatrix}
+$$
+
+**Decomposição LU:**
+
+Após a eliminação (com pivotação, pois há pivô zero), obtemos $PA = LU$.
+
+**Interpretação:** A decomposição separa as receitas em:
+- $L$: os ingredientes "base" necessários.
+- $U$: como os ingredientes se combinam para formar os sanduíches.
+
+### 🧃 EXEMPLO 2 – A CANTINA (SISTEMAS DE DIETA)
+
+A cantina tem a matriz nutricional $N$ e quer resolver sistemas para diferentes dietas.
+
+**Vantagem da LU:** Uma vez fatorada $N = LU$, podemos resolver rapidamente para diferentes $\vec{b}$ (diferentes dietas).
+
+**Exemplo:** Se a cantina tiver 100 dietas diferentes, a LU resolve todas com **um único** custo de fatoração $O(n^3)$ e várias substituições $O(n^2)$.
+
+## 5. Aplicação na Tese: Regressão Linear e FL
+
+### 5.1 Regressão Linear (Equações Normais)
+
+Em regressão linear, precisamos resolver:
+$$
+X^T X \vec{w} = X^T \vec{y}
+$$
+
+A LU é usada para resolver este sistema quando $X^T X$ é **bem condicionado**.
+
+### 5.2 FL e Sistemas Locais
+
+Em FL, cada cliente pode precisar resolver sistemas lineares locais (ex: regressão local). Usar LU é eficiente porque:
+- Cada cliente fatora sua matriz uma vez.
+- Pode resolver para múltiplos $\vec{b}$ (diferentes conjuntos de dados).
+
+## 6. Exercícios Propostos (Manuais)
+
+<details>
+<summary>📗 Exercício 1 (LU $2 \times 2$)</summary>
+
+**Enunciado:** Calcule a decomposição LU de:
+$$
+A = \begin{bmatrix} 3 & 1 \\ 2 & 4 \end{bmatrix}
+$$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+$L = \begin{bmatrix} 1 & 0 \\ \frac{2}{3} & 1 \end{bmatrix}, U = \begin{bmatrix} 3 & 1 \\ 0 & \frac{10}{3} \end{bmatrix}$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 (LU $3 \times 3$)</summary>
+
+**Enunciado:** Calcule a decomposição LU de:
+$$
+A = \begin{bmatrix}
+2 & 1 & 1 \\
+4 & 3 & 2 \\
+-2 & 0 & 1
+\end{bmatrix}
+$$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+**Passo 1:** $L = I, U = A$
+
+**Coluna 1:**
+- $m_{21} = \frac{4}{2} = 2$ → $L_{21} = 2$, $U_2 \leftarrow U_2 - 2U_1$: $[0 \quad 1 \quad 0]$
+- $m_{31} = \frac{-2}{2} = -1$ → $L_{31} = -1$, $U_3 \leftarrow U_3 - (-1)U_1 = U_3 + U_1$: $[0 \quad 1 \quad 2]$
+
+**Coluna 2:**
+- $m_{32} = \frac{1}{1} = 1$ → $L_{32} = 1$, $U_3 \leftarrow U_3 - 1U_2$: $[0 \quad 0 \quad 2]$
+
+**Resultado:**
+$$
+L = \begin{bmatrix} 1 & 0 & 0 \\ 2 & 1 & 0 \\ -1 & 1 & 1 \end{bmatrix}, \quad U = \begin{bmatrix} 2 & 1 & 1 \\ 0 & 1 & 0 \\ 0 & 0 & 2 \end{bmatrix}
+$$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 (Resolução com LU)</summary>
+
+**Enunciado:** Usando a decomposição LU do Exercício 2, resolva $A\vec{x} = \vec{b}$ para:
+$$
+\vec{b} = \begin{bmatrix} 4 \\ 9 \\ 1 \end{bmatrix}
+$$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+$L\vec{y} = \vec{b}$:
+- $y_1 = 4$
+- $2y_1 + y_2 = 9 \Rightarrow 8 + y_2 = 9 \Rightarrow y_2 = 1$
+- $-y_1 + y_2 + y_3 = 1 \Rightarrow -4 + 1 + y_3 = 1 \Rightarrow y_3 = 4$
+
+$U\vec{x} = \vec{y}$:
+- $2x_3 = 4 \Rightarrow x_3 = 2$
+- $x_2 + 0x_3 = 1 \Rightarrow x_2 = 1$
+- $2x_1 + x_2 + x_3 = 4 \Rightarrow 2x_1 + 1 + 2 = 4 \Rightarrow 2x_1 = 1 \Rightarrow x_1 = 0.5$
+
+**Solução:** $x_1 = 0.5, x_2 = 1, x_3 = 2$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 (Determinante via LU)</summary>
+
+**Enunciado:** Calcule $\det(A)$ para a matriz do Exercício 2 usando a decomposição LU.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+$\det(A) = \det(L) \cdot \det(U) = 1 \cdot (2 \cdot 1 \cdot 2) = 4$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 (Aplicação – Múltiplos $\vec{b}$)</summary>
+
+**Enunciado:** Suponha que você tenha a matriz $A$ do Exercício 2 e precise resolver para:
+$$
+\vec{b}_1 = \begin{bmatrix} 4 \\ 9 \\ 1 \end{bmatrix}, \quad \vec{b}_2 = \begin{bmatrix} 1 \\ 2 \\ 3 \end{bmatrix}
+$$
+
+Explique como a decomposição LU torna isso mais eficiente.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+Com a fatoração $A = LU$, resolvemos $L\vec{y}_i = \vec{b}_i$ e $U\vec{x}_i = \vec{y}_i$ para cada $\vec{b}_i$. A fatoração custa $O(n^3)$, mas cada substituição custa $O(n^2)$. Para muitos $\vec{b}$, isso é muito mais eficiente do que resolver cada sistema do zero ($O(n^3)$ cada).
+
+</details>
+</details>
+
+## 7. EXERCÍCIO COMPUTACIONAL
+
+<details>
+<summary>🐍 Ver código (Python/NumPy)</summary>
+
+```python
+import numpy as np
+from scipy.linalg import lu
+
+# Decomposição LU
+A = np.array([[1, 2, 3], [2, 3, 1], [3, 1, 2]])
+P, L, U = lu(A)
+
+print("P (permutação):\n", P)
+print("L (triangular inferior):\n", L)
+print("U (triangular superior):\n", U)
+
+# Verificação: P @ A = L @ U
+print("P @ A:\n", P @ A)
+print("L @ U:\n", L @ U)
+
+# Resolver sistema com LU
+b = np.array([10, 13, 11])
+
+# Resolver usando a fatoração LU
+y = np.linalg.solve(L, P @ b)  # ou np.linalg.solve(L, b) se P=I
+x = np.linalg.solve(U, y)
+print("Solução:", x)
+```
+
+</details>
+
+<details>
+<summary>📝 Ver código (R)</summary>
+
+```r
+# Decomposição LU com pivotação
+library(Matrix)
+A <- matrix(c(1, 2, 3, 2, 3, 1, 3, 1, 2), nrow=3)
+lu_A <- expand(lu(A))
+
+print(lu_A$P)  # Permutação
+print(lu_A$L)  # Triangular inferior
+print(lu_A$U)  # Triangular superior
+
+# Resolver sistema
+b <- c(10, 13, 11)
+x <- solve(A, b)
+print(x)
+```
+
+</details>
+
+> *A decomposição LU é uma das ferramentas mais importantes da Álgebra Linear. Ela transforma uma matriz em um produto de matrizes triangulares, simplificando a resolução de sistemas lineares, o cálculo de determinantes e a inversão de matrizes. Em ML e FL, a LU é usada para resolver sistemas de equações normais e otimizações locais.*

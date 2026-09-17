@@ -1,0 +1,590 @@
+# ELIMINAÇÃO DE GAUSS-JORDAN
+
+## 1. Definição
+
+### 1.1 O que é a Eliminação de Gauss-Jordan?
+
+A **eliminação de Gauss-Jordan** é uma extensão do método de Gauss. Enquanto Gauss para na **forma escalonada** (triangular superior), Gauss-Jordan continua o processo até obter a **forma escalonada reduzida** (também chamada de **forma canônica**), onde:
+
+1. Os pivôs são **1**.
+2. Todos os elementos **acima e abaixo** de cada pivô são **zero**.
+
+**Resultado final:** A matriz dos coeficientes se torna a **matriz identidade** $I$, e o lado direito se torna a **solução** do sistema.
+
+### 1.2 Forma Escalonada Reduzida
+
+Uma matriz está na **forma escalonada reduzida** quando:
+
+1. Está na forma escalonada (pivôs à direita dos anteriores).
+2. Cada pivô é **1**.
+3. Cada pivô é o **único elemento não nulo** em sua coluna.
+
+**Exemplo:**
+$$
+\left[\begin{array}{ccc|c}
+1 & 0 & 0 & 2 \\
+0 & 1 & 0 & 3 \\
+0 & 0 & 1 & 1
+\end{array}\right]
+$$
+
+**Interpretação:** A solução é imediata: $x = 2, y = 3, z = 1$.
+
+### 1.3 Algoritmo da Eliminação de Gauss-Jordan
+
+**Passo 1:** Escrever a matriz aumentada $[A \mid \vec{b}]$.
+
+**Passo 2:** Para cada coluna $k$ (da esquerda para a direita):
+- Encontrar o **pivô** (elemento não nulo na coluna $k$, a partir da linha $k$).
+- Se necessário, **trocar linhas** para colocar o pivô na posição $(k, k)$.
+- **Normalizar** a linha do pivô: $L_k \leftarrow \frac{1}{a_{kk}} L_k$ (para que o pivô seja 1).
+- **Eliminar** os elementos **acima e abaixo** do pivô:
+$$
+L_i \leftarrow L_i - a_{ik} \cdot L_k \quad \text{para } i \neq k
+$$
+
+**Passo 3:** A solução está no lado direito da matriz aumentada.
+
+## 2. Exemplo Acadêmico Passo a Passo
+
+### 2.1 O Sistema
+
+$$
+\begin{cases}
+x + 2y + 3z = 10 \\
+2x + 3y + z = 13 \\
+3x + y + 2z = 11
+\end{cases}
+$$
+
+### 2.2 Matriz Aumentada
+
+$$
+\left[\begin{array}{ccc|c}
+1 & 2 & 3 & 10 \\
+2 & 3 & 1 & 13 \\
+3 & 1 & 2 & 11
+\end{array}\right]
+$$
+
+### 2.3 Passo 1: Pivô na Coluna 1 (Linha 1)
+
+**Pivô:** $a_{11} = 1$ (já é 1).
+
+**Eliminar abaixo do pivô:**
+
+**Linha 2:** $L_2 \leftarrow L_2 - 2L_1$
+$$
+[0 \quad -1 \quad -5 \quad | \quad -7]
+$$
+
+**Linha 3:** $L_3 \leftarrow L_3 - 3L_1$
+$$
+[0 \quad -5 \quad -7 \quad | \quad -19]
+$$
+
+**Matriz após passo 1:**
+$$
+\left[\begin{array}{ccc|c}
+1 & 2 & 3 & 10 \\
+0 & -1 & -5 & -7 \\
+0 & -5 & -7 & -19
+\end{array}\right]
+$$
+
+### 2.4 Passo 2: Pivô na Coluna 2 (Linha 2)
+
+**Pivô:** $a_{22} = -1$
+
+**Normalizar:** $L_2 \leftarrow -1 \cdot L_2$
+$$
+[0 \quad 1 \quad 5 \quad | \quad 7]
+$$
+
+**Eliminar acima e abaixo do pivô:**
+
+**Linha 1:** $L_1 \leftarrow L_1 - 2L_2$
+$$
+[1 \quad 2-2 \quad 3-10 \quad | \quad 10-14] = [1 \quad 0 \quad -7 \quad | \quad -4]
+$$
+
+**Linha 3:** $L_3 \leftarrow L_3 + 5L_2$
+$$
+[0 \quad -5+5 \quad -7+25 \quad | \quad -19+35] = [0 \quad 0 \quad 18 \quad | \quad 16]
+$$
+
+**Matriz após passo 2:**
+$$
+\left[\begin{array}{ccc|c}
+1 & 0 & -7 & -4 \\
+0 & 1 & 5 & 7 \\
+0 & 0 & 18 & 16
+\end{array}\right]
+$$
+
+### 2.5 Passo 3: Pivô na Coluna 3 (Linha 3)
+
+**Pivô:** $a_{33} = 18$
+
+**Normalizar:** $L_3 \leftarrow \frac{1}{18} L_3$
+$$
+[0 \quad 0 \quad 1 \quad | \quad \frac{16}{18}] = [0 \quad 0 \quad 1 \quad | \quad \frac{8}{9}]
+$$
+
+**Eliminar acima do pivô:**
+
+**Linha 1:** $L_1 \leftarrow L_1 + 7L_3$
+$$
+[1 \quad 0 \quad -7+7 \quad | \quad -4 + 7\cdot\frac{8}{9}] = [1 \quad 0 \quad 0 \quad | \quad -4 + \frac{56}{9}]
+$$
+
+$$
+-4 + \frac{56}{9} = \frac{-36 + 56}{9} = \frac{20}{9}
+$$
+
+**Linha 2:** $L_2 \leftarrow L_2 - 5L_3$
+$$
+[0 \quad 1 \quad 5-5 \quad | \quad 7 - 5\cdot\frac{8}{9}] = [0 \quad 1 \quad 0 \quad | \quad 7 - \frac{40}{9}]
+$$
+
+$$
+7 - \frac{40}{9} = \frac{63 - 40}{9} = \frac{23}{9}
+$$
+
+### 2.6 Matriz Final (Forma Escalonada Reduzida)
+
+$$
+\left[\begin{array}{ccc|c}
+1 & 0 & 0 & \frac{20}{9} \\
+0 & 1 & 0 & \frac{23}{9} \\
+0 & 0 & 1 & \frac{8}{9}
+\end{array}\right]
+$$
+
+**Solução:**
+$$
+x = \frac{20}{9}, \quad y = \frac{23}{9}, \quad z = \frac{8}{9}
+$$
+
+## 3. Cálculo da Inversa com Gauss-Jordan
+
+### 3.1 Método
+
+Para calcular $A^{-1}$, usamos a matriz aumentada $[A \mid I]$ e aplicamos Gauss-Jordan. Quando $A$ se transforma em $I$, o lado direito será $A^{-1}$.
+
+### 3.2 Exemplo
+
+Calcular a inversa de:
+$$
+A = \begin{bmatrix}
+1 & 2 & 3 \\
+2 & 3 & 1 \\
+3 & 1 & 2
+\end{bmatrix}
+$$
+
+**Matriz aumentada:**
+$$
+\left[\begin{array}{ccc|ccc}
+1 & 2 & 3 & 1 & 0 & 0 \\
+2 & 3 & 1 & 0 & 1 & 0 \\
+3 & 1 & 2 & 0 & 0 & 1
+\end{array}\right]
+$$
+
+**Aplicando Gauss-Jordan (mesmos passos do exemplo anterior):**
+
+**Após eliminação (já calculamos):**
+$$
+\left[\begin{array}{ccc|ccc}
+1 & 0 & 0 & -\frac{5}{18} & \frac{1}{18} & \frac{7}{18} \\
+0 & 1 & 0 & \frac{1}{18} & \frac{7}{18} & -\frac{5}{18} \\
+0 & 0 & 1 & \frac{7}{18} & -\frac{5}{18} & \frac{1}{18}
+\end{array}\right]
+$$
+
+**Conclusão:**
+$$
+A^{-1} = \begin{bmatrix}
+-\frac{5}{18} & \frac{1}{18} & \frac{7}{18} \\
+\frac{1}{18} & \frac{7}{18} & -\frac{5}{18} \\
+\frac{7}{18} & -\frac{5}{18} & \frac{1}{18}
+\end{bmatrix}
+$$
+
+## 4. Exemplos Lúdicos Aprimorados
+
+### 🍔 EXEMPLO 1 – A LANCHONETE (GAUSS-JORDAN PARA SISTEMA DETERMINADO)
+
+**Sistema:**
+$$
+\begin{cases}
+h + q + c = 10 \\
+h + q + c = 8 \\
+q + c = 6
+\end{cases}
+$$
+
+**Matriz aumentada:**
+$$
+\left[\begin{array}{ccc|c}
+1 & 1 & 1 & 10 \\
+1 & 1 & 1 & 8 \\
+0 & 1 & 1 & 6
+\end{array}\right]
+$$
+
+**Passo 1:** $L_2 \leftarrow L_2 - L_1$:
+$$
+[0 \quad 0 \quad 0 \quad | \quad -2]
+$$
+
+**Matriz após passo 1:**
+$$
+\left[\begin{array}{ccc|c}
+1 & 1 & 1 & 10 \\
+0 & 0 & 0 & -2 \\
+0 & 1 & 1 & 6
+\end{array}\right]
+$$
+
+**Conclusão:** A linha $[0 \quad 0 \quad 0 \quad | \quad -2]$ indica $0 = -2$.
+
+**Classificação:** **SI** (sistema impossível)
+
+### 🧃 EXEMPLO 2 – A CANTINA (GAUSS-JORDAN PARA DIETA)
+
+**Sistema:**
+$$
+\begin{cases}
+10s + 5l + 30b = 40 \\
+20l = 20 \\
+50s = 100
+\end{cases}
+$$
+
+**Matriz aumentada:**
+$$
+\left[\begin{array}{ccc|c}
+10 & 5 & 30 & 40 \\
+0 & 20 & 0 & 20 \\
+50 & 0 & 0 & 100
+\end{array}\right]
+$$
+
+**Passo 1:** $L_3 \leftarrow L_3 - 5L_1$:
+$$
+[0 \quad -25 \quad -150 \quad | \quad -100]
+$$
+
+**Matriz após passo 1:**
+$$
+\left[\begin{array}{ccc|c}
+10 & 5 & 30 & 40 \\
+0 & 20 & 0 & 20 \\
+0 & -25 & -150 & -100
+\end{array}\right]
+$$
+
+**Passo 2:** $L_3 \leftarrow L_3 + \frac{5}{4}L_2$:
+$$
+[0 \quad -25 + \frac{5}{4}\cdot20 \quad -150 + \frac{5}{4}\cdot0 \quad | \quad -100 + \frac{5}{4}\cdot20]
+$$
+$$
+[0 \quad -25 + 25 \quad -150 \quad | \quad -100 + 25] = [0 \quad 0 \quad -150 \quad | \quad -75]
+$$
+
+**Matriz escalonada:**
+$$
+\left[\begin{array}{ccc|c}
+10 & 5 & 30 & 40 \\
+0 & 20 & 0 & 20 \\
+0 & 0 & -150 & -75
+\end{array}\right]
+$$
+
+**Gauss-Jordan (eliminação acima):**
+
+**Passo 3:** Normalizar:
+- $L_1 \leftarrow \frac{1}{10}L_1$: $[1 \quad 0.5 \quad 3 \quad | \quad 4]$
+- $L_2 \leftarrow \frac{1}{20}L_2$: $[0 \quad 1 \quad 0 \quad | \quad 1]$
+- $L_3 \leftarrow -\frac{1}{150}L_3$: $[0 \quad 0 \quad 1 \quad | \quad 0.5]$
+
+**Eliminar acima:**
+
+- $L_1 \leftarrow L_1 - 0.5L_2 - 3L_3$:
+$$
+[1 \quad 0 \quad 0 \quad | \quad 4 - 0.5(1) - 3(0.5)] = [1 \quad 0 \quad 0 \quad | \quad 4 - 0.5 - 1.5] = [1 \quad 0 \quad 0 \quad | \quad 2]
+$$
+
+**Matriz final:**
+$$
+\left[\begin{array}{ccc|c}
+1 & 0 & 0 & 2 \\
+0 & 1 & 0 & 1 \\
+0 & 0 & 1 & 0.5
+\end{array}\right]
+$$
+
+**Solução:** $s = 2, l = 1, b = 0.5$ → **SPD**
+
+## 5. Aplicação na Tese: Cálculo da Inversa
+
+Em Machine Learning, a inversa da matriz $X^T X$ é necessária para a **regressão linear**:
+
+$$
+\vec{w} = (X^T X)^{-1} X^T \vec{y}
+$$
+
+O método de Gauss-Jordan é uma forma estável de calcular essa inversa, especialmente para matrizes pequenas.
+
+**Interpretação:** Em vez de usar fórmulas complexas, usamos eliminação para encontrar a inversa de forma sistemática.
+
+## 6. Quando Fazer um Exercício Computacional?
+
+**Aqui faz MUITO sentido!** Porque:
+- Gauss-Jordan é trabalhoso manualmente para $3 \times 3$ ou maiores.
+- Computacionalmente, é trivial e muito mais rápido.
+- Ajuda a verificar contas manuais.
+- É a base de bibliotecas como NumPy.
+
+## 7. Exercícios Propostos (Manuais)
+
+<details>
+<summary>📗 Exercício 1 (Gauss-Jordan $2 \times 2$)</summary>
+
+**Enunciado:** Resolva o sistema usando Gauss-Jordan:
+
+$$
+\begin{cases}
+2x + 3y = 8 \\
+x - y = 1
+\end{cases}
+$$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+Matriz aumentada:
+$$
+\left[\begin{array}{cc|c}
+2 & 3 & 8 \\
+1 & -1 & 1
+\end{array}\right]
+$$
+
+**Passo 1:** Trocar $L_1 \leftrightarrow L_2$:
+$$
+\left[\begin{array}{cc|c}
+1 & -1 & 1 \\
+2 & 3 & 8
+\end{array}\right]
+$$
+
+**Passo 2:** $L_2 \leftarrow L_2 - 2L_1$:
+$$
+[0 \quad 5 \quad | \quad 6]
+$$
+
+**Passo 3:** $L_2 \leftarrow \frac{1}{5}L_2$:
+$$
+[0 \quad 1 \quad | \quad 1.2]
+$$
+
+**Passo 4:** $L_1 \leftarrow L_1 + L_2$:
+$$
+[1 \quad 0 \quad | \quad 2.2]
+$$
+
+**Solução:** $x = 2.2, y = 1.2$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 (Gauss-Jordan $3 \times 3$)</summary>
+
+**Enunciado:** Resolva o sistema usando Gauss-Jordan:
+
+$$
+\begin{cases}
+x + y + z = 6 \\
+2x - y + z = 3 \\
+x + 2y - z = 0
+\end{cases}
+$$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+(Resolvido no Exemplo Acadêmico 2.6)
+
+**Solução:** $x = \frac{20}{9}, y = \frac{23}{9}, z = \frac{8}{9}$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 (Cálculo da Inversa via Gauss-Jordan)</summary>
+
+**Enunciado:** Calcule a inversa da matriz:
+$$
+A = \begin{bmatrix}
+1 & 0 & 2 \\
+0 & 1 & 1 \\
+1 & 1 & 1
+\end{bmatrix}
+$$
+usando Gauss-Jordan.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+Matriz aumentada:
+$$
+\left[\begin{array}{ccc|ccc}
+1 & 0 & 2 & 1 & 0 & 0 \\
+0 & 1 & 1 & 0 & 1 & 0 \\
+1 & 1 & 1 & 0 & 0 & 1
+\end{array}\right]
+$$
+
+**Passo 1:** $L_3 \leftarrow L_3 - L_1$:
+$$
+[0 \quad 1 \quad -1 \quad | \quad -1 \quad 0 \quad 1]
+$$
+
+**Passo 2:** $L_3 \leftarrow L_3 - L_2$:
+$$
+[0 \quad 0 \quad -2 \quad | \quad -1 \quad -1 \quad 1]
+$$
+
+**Passo 3:** $L_3 \leftarrow -\frac{1}{2}L_3$:
+$$
+[0 \quad 0 \quad 1 \quad | \quad 0.5 \quad 0.5 \quad -0.5]
+$$
+
+**Passo 4:** $L_2 \leftarrow L_2 - L_3$:
+$$
+[0 \quad 1 \quad 0 \quad | \quad -0.5 \quad 0.5 \quad 0.5]
+$$
+
+**Passo 5:** $L_1 \leftarrow L_1 - 2L_3$:
+$$
+[1 \quad 0 \quad 0 \quad | \quad 0 \quad -1 \quad 1]
+$$
+
+**Inversa:**
+$$
+A^{-1} = \begin{bmatrix}
+0 & -1 & 1 \\
+-0.5 & 0.5 & 0.5 \\
+0.5 & 0.5 & -0.5
+\end{bmatrix}
+$$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 (Sistema com Infinitas Soluções)</summary>
+
+**Enunciado:** Resolva o sistema usando Gauss-Jordan e classifique:
+
+$$
+\begin{cases}
+x + y + z = 3 \\
+2x + 2y + 2z = 6 \\
+x - y + z = 1
+\end{cases}
+$$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+**Solução:** $x \in \mathbb{R}, y = 1, z = 2 - x$ → **SPI** (infinitas soluções)
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 (Aplicação – Lanchonete)</summary>
+
+**Enunciado:** Uma lanchonete vende três sanduíches:
+- Hambúrguer: (1, 1, 0)
+- Queijo: (0, 0, 1)
+- Combo: (1, 1, 1)
+
+Ingredientes disponíveis: 10 pães, 8 carnes, 6 queijos.
+
+a) Monte o sistema.  
+b) Resolva por Gauss-Jordan.  
+c) Classifique o sistema.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\begin{cases} h + c = 10 \\ h + c = 8 \\ q + c = 6 \end{cases}$
+
+b) Gauss-Jordan mostra $0 = -2$ → **SI**
+
+c) **SI** (sistema impossível)
+
+</details>
+</details>
+
+## 8. EXERCÍCIO COMPUTACIONAL
+
+<details>
+<summary>🐍 Ver código (Python/NumPy)</summary>
+
+```python
+import numpy as np
+
+# Gauss-Jordan não tem função direta em NumPy
+# Mas podemos usar np.linalg.solve (que usa eliminação internamente)
+A = np.array([[1, 2, 3], [2, 3, 1], [3, 1, 2]])
+b = np.array([10, 13, 11])
+
+# Solução direta
+x = np.linalg.solve(A, b)
+print("Solução:", x)
+
+# Inversa via Gauss-Jordan (NumPy já faz)
+A_inv = np.linalg.inv(A)
+print("Inversa:\n", A_inv)
+print("A @ A_inv:\n", A @ A_inv)
+```
+
+</details>
+
+<details>
+<summary>📝 Ver código (R)</summary>
+
+```r
+# Solução de sistema
+A <- matrix(c(1, 2, 3, 2, 3, 1, 3, 1, 2), nrow=3)
+b <- c(10, 13, 11)
+
+x <- solve(A, b)
+print(x)
+
+# Inversa
+A_inv <- solve(A)
+print(A_inv)
+print(A %*% A_inv)
+```
+
+</details>
+
+> *A eliminação de Gauss-Jordan é o método mais completo para resolver sistemas lineares, pois leva a matriz à forma escalonada reduzida, onde a solução é imediata. Além disso, é a base para o cálculo da inversa de matrizes, essencial para regressão linear e outros métodos de Machine Learning.*

@@ -1,0 +1,315 @@
+# Conceitos Básicos e **Escalas**
+
+## Introdução
+
+&emsp;&emsp;&emsp;Na aula anterior, compreendemos que a **Estatística** se divide em dois grandes ramos: a ***Estatística Descritiva***, que descreve e sumariza os dados de uma amostra, e a ***Estatística Inferencial***, que procura generalizar conclusões para além dessa amostra. Vimos também que a Inferência parte sempre de uma parte para tentar dizer algo sobre o todo — e é precisamente aqui que surgem duas noções fundamentais que atravessam toda a prática estatística: população e amostra. Mas o que é exatamente uma população? O que distingue uma amostra de um censo? Como se classificam as variáveis que observamos? E que escalas de medição existem para as medir?<br><br>
+
+&emsp;&emsp;&emsp;No final desta jornada, o leitor será capaz de distinguir população de amostra, identificar parâmetros e estatísticas, classificar variáveis (qualitativas e quantitativas) e reconhecer as quatro escalas de medição (nominal, ordinal, intervalar e razão). São conceitos aparentemente simples, mas cuja compreensão rigorosa separa o uso ingénuo do uso informado da Estatística.
+
+
+
+## 📊 População vs Amostra 
+
+&emsp;&emsp;&emsp;Inicialmente, o método estatístico ocupa-se da coleta de dados, etapa para a qual há procedimentos específicos — cujo detalhamento, contudo, não constitui o objeto desta aula. A coleta pode ser classificada como **população (ou censo)** quando abrange todos os elementos do conjunto de interesse, ou como **amostra** quando se restringe a uma parte representativa desse todo.
+
+### 1) 📌 População (N)
+
+> "Conjunto da totalidade de indivíduos que apresentam uma característica em comum, cujo comportamento se quer analisar"
+ — Tiboni (2010, p. 3)<br>
+ "Coleção de todos os resultados, respostas, medições ou contagens que são de interesse"
+ — Larson & Farber (2010, p. 4)<br>
+ "Conjunto de todos os elementos ou resultados sob investigação"
+ — Bussab & Morettin (2017, p. 274)
+
+**Ideia central:** A população é o **TODO** — o universo completo que se deseja estudar.
+
+**Exemplo:** Todos pacotes de Leite duma fabrica em Luanda.<br><br>
+
+
+&emsp;&emsp;&emsp;Tal como a temperatura se mede em graus e a altura em metros, também as características de uma população se exprimem através de medidas numéricas a que chamamos ***parâmetros***. **Um parâmetro** é, pois, um valor — habitualmente desconhecido — que descreve um atributo específico da população, como a sua média (μ), a sua variância (σ²) ou a sua proporção (p).
+
+### 2) 📌 Amostra (n)
+
+> "Subconjunto da população, ou seja, é um conjunto de elementos extraídos da população"
+— Tiboni (2010, p. 4)<br>
+ "Subgrupo de uma população"
+ — Larson & Farber (2010, p. 4)<br>
+ "Uma parte da população que é selecionada para o estudo, pois a população inteira é muito grande para ser analisada"
+ — Webster (2006, p. 8)
+
+**Ideia central:** A amostra é a **PARTE** — um subconjunto representativo da população.
+
+**Exemplo:** 5.000 pacotes de Leite na fabrica em Luanda.<br><br>
+
+&emsp;&emsp;&emsp;Se as características de uma população se descrevem por **parâmetros** — valores numéricos fixos, como a média populacional (μ) —, as características de uma amostra descrevem-se por ***estatísticas ou estimadores***. **Uma estatística** é, pois, um valor calculado a partir dos dados observados numa amostra — como a média amostral (x̄), a variância amostral (s²) ou a proporção amostral (p̂) — e funciona como uma aproximação do parâmetro correspondente. Enquanto o parâmetro é único e geralmente desconhecido, a estatística é variável de amostra para amostra e constitui a única informação disponível para estimar o todo
+
+## Desvantagens da População como Coleta dos Dados
+
+> "Se o conhecimento completo da população é o ideal, por que a prática estatística opta por examinar apenas uma fração dela?🤔"
+
+&emsp;&emsp;&emsp; A pergunta conduz-nos ao centro do método estatístico: o confronto entre o ideal teórico e o possível prático. Examinar toda a população — o que se designa por censo — asseguraria, em tese, um conhecimento exato do fenómeno. Mas a prática raramente o permite.
+
+- Um censo exige equipas treinadas e mobiliza recursos financeiros e logísticos que nem sempre existem.
+- Um censo consome tempo, pode acontecer que quando os dados são processados, a realidade anterior já tenha mudado — automaticamente a informação perca utilidade. 
+- E há casos em que o censo é pura e simplesmente impossível: populações teoricamente infinitas, como os peixes de um oceano, ou processos produtivos contínuos, como a fabricação de parafusos, não podem ser integralmente mensurados.
+
+&emsp;&emsp;&emsp;É aqui que a amostragem entra. Em vez de examinar **todos os elementos**, seleciona-se **uma parte representativa** — a amostra — e, com o apoio de técnicas estatísticas adequadas, estimam-se as características da população com uma margem de erro controlada. A amostragem não substitui o censo: é uma alternativa prática que, quando bem conduzida, equilibra precisão, custo e tempo.
+
+
+<details>
+<summary>Vejamos o quadro comparativo entre População e Amostra</summary>
+
+| Critério | Censo (População) | Amostragem |
+|------|-------|-------|
+| **Precisão** | Teoricamente exata. | Sujeita a erro amostral, mas quantificável. |
+| **Custo** | Elevado (recursos humanos, financeiros e logísticos). | Reduzido (apenas uma fração da população é examinada). |
+| **Tempo** | Demorado; dados podem ficar defasados. | Rápido; resultados disponíveis em prazo útil. |
+| **Viabilidade** | Possível apenas para populações pequenas e acessíveis. | Aplicável a populações grandes, infinitas ou inacessíveis. |
+| **Destrutividade** | Inviável quando a medição destrói o elemento (ex.: teste de qualidade). | Viável, pois apenas parte da população é destruída. |
+| **Complexidade** | Simples do ponto de vista de abrangência, mas complexo na execução. | Exige planejamento amostral rigoroso para garantir representatividade. |
+</details>
+
+
+## ✅ Vantagens da Amostragem como Coleta dos Dados
+
+Segundo **Tiboni (2010, p. 14)** , estudar uma amostra em vez da população inteira oferece quatro vantagens fundamentais:
+
+- 💰 **Economia:** O levantamento de dados sobre uma parte da população é mais barato
+- ⏱️ **Tempo:** Os resultados são obtidos muito mais rapidamente
+- ✅ **Confiabilidade:** Menor número de elementos significa menor chance de erros na coleta
+- ⚙️ **Operacionalidade:** É mais fácil trabalhar com os dados em menor escala
+
+**⚠️ Observação crítica:** A amostra precisa ser **representativa**. Uma amostra enviesada gera conclusões erradas (ex: pesquisar opinião política apenas em um bairro de elite).
+
+> **"Pensemos em como nossas mães usam a estatística amostral diariamente. Ao cozinhar feijão, elas não precisam provar a panela inteira para saber se o sal está suficiente: uma única colher (a amostra) é o bastante saber se o sal foi suficiente ou não. A amostra, quando bem escolhida, representa o todo."**
+
+---
+
+## 📋 Classificação de Variáveis
+
+&emsp;&emsp;&emsp;Uma vez definidos a população e o método de coleta — seja por censo ou amostragem —, a próxima questão é: **o que exatamente vamos medir🤔?** As características que desejamos observar em cada elemento da população ou da amostra são denominadas **variáveis**.
+
+### 1. Variáveis Qualitativas (Categóricas)
+
+&emsp;&emsp;&emsp;As variáveis qualitativas expressam atributos ou qualidades — características que não podem ser medidas numericamente, mas apenas categorizadas ou ordenadas. Por sua vez Variáveis Qualitativas se dividem em 2 partes, que são:
+
+#### **🏷️ 1.1  Nominal** — Sem ordenação, Sem hierárquica ou nível possível
+
+- 👁️ Cor dos olhos
+- 💍 Estado civil
+- 🏙️ Cidade natal
+- 🚗 Marca do carro
+
+#### **📊 1.2 Ordinal** — Com ordenação, Com hierárquica ou nível
+
+- 🎓 Nível de escolaridade (Fundamental < Médio < Superior)
+- 🏠 Classe social (Baixa < Média < Alta)
+- ⭐ Grau de satisfação (Ruim < Regular < Bom < Ótimo)
+
+### 2. Variáveis Quantitativas (Numéricas)
+
+&emsp;&emsp;&emsp;As variáveis quantitativas expressam números, resultantes de contagem (discretas) ou de mensuração (contínuas).
+
+#### **🔢 2.1 Discreta** — Assume apenas valores inteiros (resultado de contagem)
+
+- 👶 Número de filhos
+- 🚗 Número de carros
+- 💥 Número de acidentes
+
+#### **📏 2.2 Contínua** — Assume valores decimais em um intervalo (resultado de mensuração)
+
+- 📏 Altura
+- ⚖️ Peso
+- 🌡️ Temperatura
+- ⏱️ Tempo
+- 💰 Salário
+
+
+| Dado de Exemplo | Discreta | Contínua | Nominal | Ordinal |
+|---------|--------|--------|---------|---------|
+| Número de filhos de uma família | ✅ | - | -| - |
+| Temperatura corporal (em °C) | - | ✅ | - | - |
+| Classificação de um produto em "bom", "regular" ou "ruim" | - |- | -| ✅ |
+| Estado civil (solteiro, casado, divorciado) | - | - | ✅ | - |
+| Quantidade de livros lidos por mês | ✅ | - | - | - |
+| Altura de um grupo de pessoas (em metros) | - | ✅ | - | - |
+| Cor dos olhos (azul, verde, castanho) | - | - | ✅ | - |
+| Nível de escolaridade (fundamental, médio, superior) | - | - | - | ✅ |
+
+
+<center><details>
+<summary>💡 Ver a classificação da estatística</summary>
+
+<style>
+.r{font:14px system-ui;text-align:center}
+.r b{display:inline-block;padding:4px 10px;background:#333;color:#fff;border-radius:6px}
+.r i{display:block;width:2px;height:18px;background:#333;margin:0 auto}
+.r em{display:flex;gap:8px;justify-content:center;position:relative;padding-top:18px}
+.r em::before{content:'';position:absolute;top:0;left:25%;right:25%;height:2px;background:#333}
+.r em span{flex:1;padding:8px;border:2px solid #333;border-radius:8px;max-width:140px;position:relative}
+.r em span::before{content:'';position:absolute;top:-18px;left:50%;width:2px;height:18px;background:#333}
+.r em span em{gap:6px;padding-top:14px}
+.r em span em::before{left:20%;right:20%}
+.r em span em span{font-size:12px;padding:6px;max-width:100px}
+</style>
+<div class="r">
+  <b>VARIÁVEIS</b>
+  <i></i>
+  <em>
+    <span>Qualitativa
+      <i></i>
+      <em>
+        <span>Nominal</span>
+        <span>Ordinal</span>
+      </em>
+    </span>
+    <span>Quantitativa
+      <i></i>
+      <em>
+        <span>Discreta</span>
+        <span>Contínua</span>
+      </em>
+    </span>
+  </em>
+</div>
+</details></center>
+
+
+## 📝 Exercícios
+
+<details>
+<summary>📗 Exercício 1</summary>
+
+**Enunciado:** Classifique as variáveis abaixo como Qualitativa (Nominal ou Ordinal) ou Quantitativa (Discreta ou Contínua):
+
+a) Número de alunos em uma sala
+
+b) Cor do cabelo
+
+c) Temperatura do corpo em °C
+
+d) Grau de instrução (Fundamental, Médio, Superior)
+
+e) Peso de uma pessoa
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) Quantitativa Discreta
+
+b) Qualitativa Nominal
+
+c) Quantitativa Contínua
+
+d) Qualitativa Ordinal
+
+e) Quantitativa Contínua
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2</summary>
+
+**Enunciado:** Identifique se cada exemplo se refere a uma **população** ou **amostra**:
+
+a) Todos os eleitores brasileiros
+
+b) 500 alunos entrevistados em uma universidade com 10.000 alunos
+
+c) Todos os funcionários de uma empresa com 200 colaboradores
+
+d) 50 pacientes testados em um estudo clínico
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) População
+
+b) Amostra
+
+c) População
+
+d) Amostra
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3</summary>
+
+**Enunciado:** Determine a escala de medição (Nominal, Ordinal, Intervalar ou Razão) para cada variável:
+
+a) Nível de satisfação (Muito Insatisfeito, Insatisfeito, Neutro, Satisfeito, Muito Satisfeito)
+
+b) Altura em metros
+
+c) Código postal
+
+d) Temperatura em Kelvin
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) Ordinal
+
+b) Razão
+
+c) Nominal
+
+d) Intervalar (0K significa ausência de temperatura, mas não é usada no dia a dia)
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4</summary>
+
+**Enunciado:** Uma pesquisa eleitoral entrevista 2.000 eleitores para prever o resultado da eleição em um país com 100 milhões de eleitores. Identifique:
+
+a) A população
+
+b) A amostra
+
+c) O parâmetro
+
+d) A estatística (estimador)
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) População: 100 milhões de eleitores
+
+b) Amostra: 2.000 eleitores entrevistados
+
+c) Parâmetro: Percentual real de votos (desconhecido)
+
+d) Estatística: Percentual encontrado na pesquisa (conhecido)
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5</summary>
+
+**Enunciado:** Por que a amostra precisa ser representativa? O que acontece se ela não for?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+A amostra precisa ser representativa para que as conclusões tiradas a partir dela possam ser generalizadas para a população. Se a amostra for **enviesada** (não representativa), as conclusões serão **distorcidas** e podem levar a decisões erradas. Exemplo: pesquisar intenção de voto apenas em bairros ricos pode não refletir a opinião da população inteira.
+
+</details>
+</details>
+
+> *Entender os conceitos básicos da Estatística é como aprender as regras da gramática: só assim você consegue escrever frases com sentido e interpretar corretamente o que os dados estão dizendo.*

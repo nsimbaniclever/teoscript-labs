@@ -1,0 +1,334 @@
+# Axiomas de Probabilidade
+
+## 1. 🎯 O que é Probabilidade? — As 3 Definições
+
+Probabilidade é um conceito que pode ser interpretado de **três maneiras diferentes**, dependendo do contexto. Você precisa conhecer todas para saber qual aplicar em cada situação.
+
+### 1.1 Definição Clássica (ou de Laplace)
+
+> **Definição:** Se um experimento tem $n$ resultados possíveis, **igualmente prováveis**, e $m$ deles são favoráveis a um evento $A$, então:
+>
+> $$P(A) = \frac{m}{n}$$
+
+**Explicação:** É a definição que usamos em jogos de azar (dados, moedas, cartas). Ela funciona quando todos os resultados têm a **mesma chance** de acontecer. Você conta quantos casos favoráveis existem e divide pelo total.
+
+**Exemplo 1.1 — Dado:**
+- Lançamos um dado de 6 faces.
+- $n = 6$ resultados possíveis (1,2,3,4,5,6)
+- $m = 3$ resultados pares (2,4,6)
+- $$P(\text{par}) = \frac{3}{6} = \frac{1}{2} = 50\%$$
+
+**Exemplo 1.2 — Moeda:**
+- Lançamos uma moeda.
+- $n = 2$ resultados possíveis (cara, coroa)
+- $m = 1$ resultado cara
+- $$P(\text{cara}) = \frac{1}{2} = 50\%$$
+
+**Exemplo 1.3 — Baralho:**
+- Retiramos uma carta de um baralho de 52.
+- $n = 52$ resultados possíveis
+- $m = 4$ reis
+- $$P(\text{rei}) = \frac{4}{52} = \frac{1}{13} \approx 7,69\%$$
+
+> **⚠️ Limitação:** Só funciona quando os resultados são **equiprováveis** (têm a mesma chance). Não serve para fenômenos onde as chances são diferentes (ex: chance de chover amanhã, chance de um time ganhar um jogo).
+
+### 1.2 Definição Frequentista (ou Empírica)
+
+> **Definição:** A probabilidade de um evento $A$ é o **limite** da frequência relativa de ocorrência de $A$ quando o número de repetições do experimento $n$ tende ao infinito:
+>
+> $$P(A) = \lim_{n \to \infty} \frac{n_A}{n}$$
+
+**Explicação:** Você repete o experimento muitas vezes e calcula a proporção de sucessos. Quanto mais repetições, mais estável fica o valor. Essa definição é usada quando não podemos assumir que os resultados são equiprováveis.
+
+**Exemplo 2.1 — Moeda (frequência):**
+- Jogamos uma moeda 10.000 vezes.
+- Se der 5.023 caras, a frequência relativa é 0,5023.
+- O valor converge para 0,5 (a probabilidade real).
+
+**Exemplo 2.2 — Controle de qualidade:**
+- Em uma linha de produção, inspecionamos 1000 peças.
+- 47 peças são defeituosas.
+- $$P(\text{defeito}) \approx \frac{47}{1000} = 0,047 = 4,7\%$$
+
+**Exemplo 2.3 — Pesquisa de intenção de voto:**
+- Entrevistamos 2000 eleitores.
+- 600 disseram que votarão no candidato X.
+- $$P(\text{voto em X}) \approx \frac{600}{2000} = 0,3 = 30\%$$
+
+> **⚠️ Limitação:** Não pode ser aplicado a eventos únicos (ex: "qual a chance de o Vasco ser campeão este ano?" — você não pode repetir o campeonato infinitas vezes).
+
+### 1.3 Definição Axiomática (Kolmogorov)
+
+> **Definição:** A probabilidade é uma **função** $P$ que associa a cada evento $A$ um número real $P(A)$, obedecendo a **três axiomas**:
+
+| Axioma | Nome | O que diz |
+|--------|------|-----------|
+| **1** | Não-negatividade | $P(A) \geq 0$ para todo evento $A$. |
+| **2** | Certeza | $P(\Omega) = 1$. |
+| **3** | Aditividade (para eventos mutuamente exclusivos) | Se $A_1, A_2, \dots$ são eventos mutuamente exclusivos, então $P(A_1 \cup A_2 \cup \dots) = P(A_1) + P(A_2) + \dots$ |
+
+**Explicação:** Esta é a definição **moderna** e mais geral. Ela não depende de equiprobabilidade nem de repetições. Toda probabilidade que você calcular deve obedecer a esses três axiomas.
+
+**Exemplo 3.1 — Verificando os axiomas:**
+- Lançamos um dado. Seja $A = \{2,4,6\}$.
+- Axioma 1: $P(A) = \frac{3}{6} = \frac{1}{2} \geq 0$ ✅
+- Axioma 2: $P(\Omega) = \frac{6}{6} = 1$ ✅
+- Axioma 3: $A = \{2\} \cup \{4\} \cup \{6\}$, eventos mutuamente exclusivos → $P(A) = \frac{1}{6} + \frac{1}{6} + \frac{1}{6} = \frac{3}{6} = \frac{1}{2}$ ✅
+
+## 2. 📐 Consequências dos Axiomas (Propriedades Derivadas)
+
+A partir dos 3 axiomas, podemos deduzir várias propriedades importantes que usamos o tempo todo na prática.
+
+### Propriedade 1 — Probabilidade do Complementar
+
+> $$P(A^c) = 1 - P(A)$$
+
+**Explicação:** A chance de algo **não** acontecer é 1 menos a chance de acontecer.
+
+**Exemplo 4.1 — Dado:**
+- $A$ = sair número 6 → $P(A) = \frac{1}{6}$
+- $A^c$ = NÃO sair 6 → $P(A^c) = 1 - \frac{1}{6} = \frac{5}{6}$
+
+**Exemplo 4.2 — Moeda:**
+- $A$ = sair cara → $P(A) = \frac{1}{2}$
+- $A^c$ = sair coroa → $P(A^c) = 1 - \frac{1}{2} = \frac{1}{2}$
+
+**Exemplo 4.3 — Urna:**
+- Uma urna tem 4 bolas vermelhas e 6 azuis.
+- $A$ = sortear vermelha → $P(A) = \frac{4}{10} = \frac{2}{5}$
+- $A^c$ = sortear azul → $P(A^c) = 1 - \frac{2}{5} = \frac{3}{5}$
+
+### Propriedade 2 — Probabilidade do Evento Impossível
+
+> $$P(\varnothing) = 0$$
+
+**Explicação:** O conjunto vazio (evento que nunca acontece) tem probabilidade zero.
+
+**Exemplo 5.1 — Dado:**
+- $\varnothing$ = sair o número 7 → $P = 0$
+
+**Exemplo 5.2 — Moeda:**
+- $\varnothing$ = sair cara e coroa ao mesmo tempo → $P = 0$
+
+### Propriedade 3 — Probabilidade da União (Geral)
+
+> $$P(A \cup B) = P(A) + P(B) - P(A \cap B)$$
+
+**Explicação:** A probabilidade de A **OU** B acontecerem é a soma das probabilidades individuais, menos a interseção (para não contar duas vezes).
+
+**Exemplo 6.1 — Dado:**
+- $A$ = sair par = {2,4,6} → $P(A) = \frac{3}{6} = \frac{1}{2}$
+- $B$ = sair >4 = {5,6} → $P(B) = \frac{2}{6} = \frac{1}{3}$
+- $A \cap B$ = {6} → $P(A \cap B) = \frac{1}{6}$
+- $$P(A \cup B) = \frac{1}{2} + \frac{1}{3} - \frac{1}{6} = \frac{3}{6} + \frac{2}{6} - \frac{1}{6} = \frac{4}{6} = \frac{2}{3}$$
+
+**Exemplo 6.2 — Baralho:**
+- $A$ = tirar rei → $\frac{4}{52}$
+- $B$ = tirar copas → $\frac{13}{52}$
+- $A \cap B$ = rei de copas → $\frac{1}{52}$
+- $$P(A \cup B) = \frac{4}{52} + \frac{13}{52} - \frac{1}{52} = \frac{16}{52} = \frac{4}{13}$$
+
+### Propriedade 4 — Aditividade para Mutuamente Exclusivos
+
+> **Se $A \cap B = \varnothing$, então $P(A \cup B) = P(A) + P(B)$**
+
+**Explicação:** Se os eventos não podem ocorrer juntos, a probabilidade da união é a soma das probabilidades.
+
+**Exemplo 7.1 — Moeda:**
+- $A$ = cara → $\frac{1}{2}$
+- $B$ = coroa → $\frac{1}{2}$
+- $A \cap B = \varnothing$ → $P(A \cup B) = \frac{1}{2} + \frac{1}{2} = 1$
+
+**Exemplo 7.2 — Dado:**
+- $A$ = par = {2,4,6} → $\frac{1}{2}$
+- $B$ = ímpar = {1,3,5} → $\frac{1}{2}$
+- $A \cap B = \varnothing$ → $P(A \cup B) = \frac{1}{2} + \frac{1}{2} = 1$
+
+### Propriedade 5 — Monotonicidade
+
+> **Se $A \subseteq B$, então $P(A) \leq P(B)$**
+
+**Explicação:** Se A está contido em B (todos os casos de A também estão em B), então A não pode ser mais provável que B.
+
+**Exemplo 8.1 — Dado:**
+- $A$ = sair 2 → $\frac{1}{6}$
+- $B$ = sair par = {2,4,6} → $\frac{3}{6} = \frac{1}{2}$
+- Como $A \subseteq B$, temos $\frac{1}{6} \leq \frac{1}{2}$ ✅
+
+## 3. 📋 Quadro Resumo — Definições e Axiomas
+
+| Definição | Fórmula / Base | Quando usar | Exemplo |
+|-----------|----------------|-------------|---------|
+| **Clássica** | $\frac{m}{n}$ | Resultados equiprováveis | Dados, moedas, cartas |
+| **Frequentista** | $\frac{n_A}{n}$ | Repetição do experimento | Controle de qualidade, pesquisas |
+| **Axiomática** | 3 Axiomas de Kolmogorov | Base formal para tudo | Qualquer situação |
+
+## 4. 🗺️ Mapa Mental da Aula
+
+```text
+DEFINIÇÕES E AXIOMAS DE PROBABILIDADE
+│
+├── 1. DEFINIÇÕES
+│   ├── Clássica (Laplace): m/n → equiprováveis
+│   │   Ex: Dado: P(par) = 3/6 = 1/2
+│   ├── Frequentista: nA/n → repetições
+│   │   Ex: 47 defeituosos em 1000 → 4,7%
+│   └── Axiomática (Kolmogorov): 3 axiomas
+│       Ex: Toda probabilidade obedece a essas regras
+│
+├── 2. AXIOMAS DE KOLMOGOROV
+│   ├── 1. P(A) ≥ 0
+│   ├── 2. P(Ω) = 1
+│   └── 3. Aditividade: P(A∪B) = P(A)+P(B) se A∩B=∅
+│
+├── 3. PROPRIEDADES DERIVADAS
+│   ├── P(Aᶜ) = 1 − P(A)
+│   ├── P(∅) = 0
+│   ├── P(A∪B) = P(A)+P(B)−P(A∩B)
+│   └── Monotonicidade: A⊆B → P(A) ≤ P(B)
+│
+└── 4. EXEMPLOS PRÁTICOS
+    ├── Dados, moedas (clássica)
+    ├── Controle de qualidade (frequentista)
+    └── Cálculos com axiomas (geral)
+```
+
+## 📝 Exercícios Resolvidos Passo a Passo
+
+<details>
+<summary>📗 Exercício 1 — Definição Clássica</summary>
+
+**Enunciado:** Lança-se um dado de 6 faces. Qual a probabilidade de sair:
+
+- a) **Número 3**
+- b) **Número par**
+- c) **Número maior que 2**
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**a) Número 3:**
+- $n = 6$ resultados possíveis
+- $m = 1$ resultado favorável (o 3)
+- $$P = \frac{1}{6} \approx 16,7\%$$
+
+**b) Número par:**
+- Pares = {2,4,6} → $m = 3$
+- $$P = \frac{3}{6} = \frac{1}{2} = 50\%$$
+
+**c) Número maior que 2:**
+- Maiores que 2 = {3,4,5,6} → $m = 4$
+- $$P = \frac{4}{6} = \frac{2}{3} \approx 66,7\%$$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Definição Frequentista</summary>
+
+**Enunciado:** Uma máquina produz 5000 peças. Em uma inspeção, 85 peças são encontradas com defeito. Qual a probabilidade (estimada) de uma peça ser defeituosa?
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+- $n = 5000$ peças inspecionadas
+- $n_A = 85$ peças defeituosas
+- $$P(\text{defeito}) = \frac{85}{5000} = 0,017 = 1,7\%$$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Aplicando os Axiomas</summary>
+
+**Enunciado:** Se $P(A) = 0,5$, $P(B) = 0,4$ e $P(A \cap B) = 0,2$, calcule:
+
+- a) $P(A^c)$
+- b) $P(A \cup B)$
+- c) $P(A \cup B)$ **se** $A$ e $B$ fossem mutuamente exclusivos
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**a) Complementar:**
+- $$P(A^c) = 1 - 0,5 = 0,5$$
+
+**b) União geral:**
+- $$P(A \cup B) = P(A) + P(B) - P(A \cap B)$$
+- $$= 0,5 + 0,4 - 0,2 = 0,7$$
+
+**c) Se mutuamente exclusivos:**
+- Se $A \cap B = \varnothing$, então $P(A \cap B) = 0$
+- $$P(A \cup B) = 0,5 + 0,4 = 0,9$$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Verificando os Axiomas</summary>
+
+**Enunciado:** Em uma urna com 10 bolas (3 vermelhas, 5 azuis, 2 verdes), sorteia-se uma bola. Verifique se os axiomas de Kolmogorov são satisfeitos para:
+- $A$ = sair vermelha
+- $B$ = sair azul
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+- $P(A) = \frac{3}{10} = 0,3$
+- $P(B) = \frac{5}{10} = 0,5$
+- $\Omega = \{V, A, Z\}$ → $P(\Omega) = 1$
+
+**Axioma 1:** $P(A) = 0,3 \geq 0$ ✅ / $P(B) = 0,5 \geq 0$ ✅
+
+**Axioma 2:** $P(\Omega) = 1$ ✅
+
+**Axioma 3:** A e B são mutuamente exclusivos (uma bola não pode ser vermelha e azul ao mesmo tempo).
+- $$P(A \cup B) = 0,3 + 0,5 = 0,8$$ ✅
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Probabilidade do Complementar</summary>
+
+**Enunciado:** Lançam-se dois dados. Qual a probabilidade de **NÃO** sair soma igual a 7?
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+- Total de resultados = $6 \times 6 = 36$
+- Resultados com soma 7: (1,6), (2,5), (3,4), (4,3), (5,2), (6,1) → 6 resultados
+- $$P(\text{soma 7}) = \frac{6}{36} = \frac{1}{6}$$
+- $$P(\text{NÃO soma 7}) = 1 - \frac{1}{6} = \frac{5}{6} \approx 83,3\%$$
+
+</details>
+</details>
+
+## 🎯 Desafio Final
+
+**Enunciado:** Em uma sala com 30 alunos, 18 gostam de Matemática, 12 gostam de Português e 5 gostam de ambas.
+
+- a) Qual a probabilidade de um aluno gostar de **Matemática ou Português**?
+- b) Qual a probabilidade de um aluno **NÃO** gostar de nenhuma das duas?
+- c) Verifique se os axiomas de Kolmogorov são satisfeitos para $M$ e $P$.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**a) União:**
+- $P(M) = \frac{18}{30} = 0,6$
+- $P(P) = \frac{12}{30} = 0,4$
+- $P(M \cap P) = \frac{5}{30} = \frac{1}{6} \approx 0,167$
+- $$P(M \cup P) = 0,6 + 0,4 - 0,167 = 0,833 = 83,3\%$$
+
+**b) Complementar da união:**
+- $$P(\text{nenhuma}) = 1 - P(M \cup P) = 1 - 0,833 = 0,167 = 16,7\%$$
+
+**c) Verificação dos axiomas:**
+- Axioma 1: $P(M) = 0,6 \geq 0$ ✅ / $P(P) = 0,4 \geq 0$ ✅
+- Axioma 2: $\Omega = M \cup P \cup (\text{nenhuma})$ → $P(\Omega) = 0,833 + 0,167 = 1$ ✅
+- Axioma 3: M e P **não** são mutuamente exclusivos (há interseção de 5 alunos), então a aditividade simples não se aplica — usamos a fórmula geral da união.
+
+</details>
+
+> *Os axiomas de Kolmogorov são a "constituição" da probabilidade — toda regra que você aprender daqui para frente deve respeitá-los.*

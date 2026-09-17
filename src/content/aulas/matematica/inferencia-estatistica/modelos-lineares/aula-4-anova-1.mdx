@@ -1,0 +1,356 @@
+# ANOVA I `(One-Way ANOVA)`
+
+## O que é ANOVA?
+
+ANOVA significa **ANÁLISE DE VARIÂNCIA** (do inglês Analysis of Variance). É uma técnica estatística usada para **comparar as médias de três ou mais grupos** para verificar se há diferença significativa entre elas.
+
+Pense na seguinte situação: você quer testar a eficácia de quatro dietas diferentes para perda de peso. Você não pode simplesmente fazer vários testes $t$ (um para cada par de dietas) porque isso aumentaria a probabilidade de Erro Tipo I. A ANOVA resolve esse problema testando simultaneamente se todas as médias são iguais.
+
+**Quando usar ANOVA:**
+- Uma variável dependente contínua ($Y$)
+- Uma variável independente categórica (fator) com 3 ou mais níveis (grupos)
+- Os grupos são independentes
+
+**Hipóteses:**
+- $H_0: \mu_1 = \mu_2 = \mu_3 = \dots = \mu_k$ (todas as médias são iguais)
+- $H_1:$ Pelo menos uma média é diferente das outras
+
+## Pressupostos da ANOVA
+
+Para que a ANOVA seja válida, precisamos verificar:
+
+1. **Independência:** As observações são independentes entre si.
+2. **Normalidade:** Os dados em cada grupo seguem aproximadamente uma distribuição Normal.
+3. **Homocedasticidade:** As variâncias são aproximadamente iguais entre os grupos.
+
+**Verificação dos pressupostos:**
+- **Normalidade:** Q-Q plot de cada grupo ou teste de Shapiro-Wilk.
+- **Homocedasticidade:** Teste de Levene, teste de Bartlett ou gráfico de resíduos.
+- **Independência:** Definida pelo desenho experimental.
+
+## A Lógica da ANOVA
+
+A ANOVA compara a variabilidade **entre os grupos** com a variabilidade **dentro dos grupos**.
+
+- **Variabilidade entre grupos:** Quão diferentes são as médias dos grupos?
+- **Variabilidade dentro dos grupos:** Quão variáveis são os dados dentro de cada grupo?
+
+**Se a variabilidade entre grupos é grande em relação à variabilidade dentro dos grupos, então há evidência de que as médias são diferentes.**
+
+**Analogia:** Imagine que você tem três turmas de alunos e quer saber se elas têm notas diferentes. Se as notas dentro de cada turma variam pouco (baixa variabilidade dentro) e as médias das turmas são muito diferentes (alta variabilidade entre), então há evidência de que as turmas têm desempenhos diferentes.
+
+## Decomposição da Variância
+
+A variância total é decomposta em duas partes:
+
+**Soma de Quadrados Total ($SQT$):** Variabilidade total dos dados.
+
+$$SQT = \sum_{i=1}^k \sum_{j=1}^{n_i} (Y_{ij} - \bar{Y}_{..})^2$$
+
+**Soma de Quadrados Entre Grupos ($SQE$):** Variabilidade entre as médias dos grupos.
+
+$$SQE = \sum_{i=1}^k n_i (\bar{Y}_{i.} - \bar{Y}_{..})^2$$
+
+**Soma de Quadrados Dentro ($SQD$):** Variabilidade dentro de cada grupo.
+
+$$SQD = \sum_{i=1}^k \sum_{j=1}^{n_i} (Y_{ij} - \bar{Y}_{i.})^2$$
+
+**Relação:** $SQT = SQE + SQD$
+
+**Graus de liberdade:**
+- Total: $n - 1$ (onde $n =$ número total de observações)
+- Entre grupos: $k - 1$ (onde $k =$ número de grupos)
+- Dentro: $n - k$
+
+**Quadrados Médios:**
+
+$$QME = \frac{SQE}{k-1}$$
+
+$$QMD = \frac{SQD}{n-k}$$
+
+**Estatística $F$:**
+
+$$F = \frac{QME}{QMD}$$
+
+Se $F$ é grande (maior que o valor crítico), rejeitamos $H_0$ e concluímos que há diferença entre as médias.
+
+## Tabela ANOVA
+
+| Fonte | $SQ$ | $GL$ | $QM$ | $F$ |
+| --- | --- | --- | --- | --- |
+| Entre grupos | $SQE$ | $k-1$ | $QME = SQE/(k-1)$ | $QME/QMD$ |
+| Dentro | $SQD$ | $n-k$ | $QMD = SQD/(n-k)$ | — |
+| Total | $SQT$ | $n-1$ | — | — |
+
+## Exemplo 1: ANOVA com 3 grupos
+
+Três grupos de alunos (A, B, C) que usaram diferentes métodos de estudo. Notas:
+
+| Grupo A | Grupo B | Grupo C |
+| --- | --- | --- |
+| 70 | 80 | 60 |
+| 75 | 85 | 65 |
+| 80 | 90 | 70 |
+| 85 | 95 | 75 |
+
+Teste se há diferença nas notas médias ($\alpha = 0,05$).
+
+**Resolução:**
+
+1. Cálculo das médias:
+   - Grupo A: $(70+75+80+85)/4 = 310/4 = 77,5$
+   - Grupo B: $(80+85+90+95)/4 = 350/4 = 87,5$
+   - Grupo C: $(60+65+70+75)/4 = 270/4 = 67,5$
+   - Média geral: $(310+350+270)/12 = 930/12 = 77,5$
+
+2. $SQE$ (Entre grupos):
+   $SQE = 4 \cdot (77,5-77,5)^2 + 4 \cdot (87,5-77,5)^2 + 4 \cdot (67,5-77,5)^2$
+   $= 0 + 4 \cdot 100 + 4 \cdot 100 = 400 + 400 = 800$
+
+3. $SQD$ (Dentro):
+   Grupo A: $(70-77,5)^2+(75-77,5)^2+(80-77,5)^2+(85-77,5)^2 = 56,25+6,25+6,25+56,25 = 125$
+   Grupo B: $(80-87,5)^2+(85-87,5)^2+(90-87,5)^2+(95-87,5)^2 = 56,25+6,25+6,25+56,25 = 125$
+   Grupo C: $(60-67,5)^2+(65-67,5)^2+(70-67,5)^2+(75-67,5)^2 = 56,25+6,25+6,25+56,25 = 125$
+   $SQD = 125+125+125 = 375$
+
+4. $SQT = 800 + 375 = 1175$
+
+5. $GL$: Entre = $3-1 = 2$; Dentro = $12-3 = 9$; Total = 11
+
+6. $QME = 800/2 = 400$; $QMD = 375/9 = 41,67$
+
+7. $F = 400/41,67 = 9,60$
+
+8. $F_{0,05, 2, 9} = 4,26$ (tabela $F$)
+   $F = 9,60 > 4,26 \to$ Rejeitar $H_0$
+
+**Conclusão:** Há evidência de diferença significativa entre as notas médias dos três grupos.
+
+## Exemplo 2: ANOVA com dados maiores
+
+Quatro marcas de pneus foram testadas. A distância percorrida (em milhares de km) até o desgaste:
+
+| Marca 1 | Marca 2 | Marca 3 | Marca 4 |
+| --- | --- | --- | --- |
+| 32 | 35 | 30 | 28 |
+| 33 | 36 | 31 | 29 |
+| 34 | 37 | 32 | 30 |
+| 35 | 38 | 33 | 31 |
+| 36 | 39 | 34 | 32 |
+
+Teste se há diferença entre as marcas ($\alpha = 0,05$).
+
+**Resolução:**
+
+1. Cálculo das somas:
+   $\sum Y_1 = 32+33+34+35+36 = 170$; $n_1 = 5$; $\bar{X}_1 = 34$
+   $\sum Y_2 = 35+36+37+38+39 = 185$; $n_2 = 5$; $\bar{X}_2 = 37$
+   $\sum Y_3 = 30+31+32+33+34 = 160$; $n_3 = 5$; $\bar{X}_3 = 32$
+   $\sum Y_4 = 28+29+30+31+32 = 150$; $n_4 = 5$; $\bar{X}_4 = 30$
+   $\sum Y = 665$; $n = 20$; $\bar{X} = 33,25$
+
+2. $SQE = 5 \cdot (34-33,25)^2 + 5 \cdot (37-33,25)^2 + 5 \cdot (32-33,25)^2 + 5 \cdot (30-33,25)^2$
+   $= 5 \cdot 0,5625 + 5 \cdot 14,0625 + 5 \cdot 1,5625 + 5 \cdot 10,5625$
+   $= 2,8125 + 70,3125 + 7,8125 + 52,8125 = 133,75$
+
+3. $SQD$:
+   Grupo 1: $(32-34)^2+(33-34)^2+(34-34)^2+(35-34)^2+(36-34)^2 = 4+1+0+1+4 = 10$
+   Grupo 2: $(35-37)^2+(36-37)^2+(37-37)^2+(38-37)^2+(39-37)^2 = 4+1+0+1+4 = 10$
+   Grupo 3: $(30-32)^2+(31-32)^2+(32-32)^2+(33-32)^2+(34-32)^2 = 4+1+0+1+4 = 10$
+   Grupo 4: $(28-30)^2+(29-30)^2+(30-30)^2+(31-30)^2+(32-30)^2 = 4+1+0+1+4 = 10$
+   $SQD = 10+10+10+10 = 40$
+
+4. $SQT = 133,75 + 40 = 173,75$
+
+5. $GL$: Entre = 3; Dentro = 16
+
+6. $QME = 133,75/3 = 44,58$; $QMD = 40/16 = 2,5$
+
+7. $F = 44,58/2,5 = 17,83$
+
+8. $F_{0,05, 3, 16} = 3,24$
+   $F = 17,83 > 3,24 \to$ Rejeitar $H_0$
+
+**Conclusão:** Há evidência de diferença significativa entre as marcas de pneus.
+
+## Testes Post Hoc (Comparações Múltiplas)
+
+Quando rejeitamos $H_0$, precisamos descobrir **quais grupos são diferentes**. Usamos testes post hoc:
+
+1. **Teste de Tukey (HSD):** Compara todos os pares de médias.
+2. **Bonferroni:** Ajusta o nível de significância para comparações múltiplas.
+3. **Scheffé:** Mais conservador, usado para comparações complexas.
+
+**Teste de Tukey:**
+
+$$HSD = q \cdot \sqrt{\frac{QMD}{n}}$$
+
+onde $q$ é o valor da tabela de Tukey.
+
+**Exemplo (Tukey):** Para os dados do exemplo 2, com $QMD = 2,5$, $n = 5$, $k = 4$, $\alpha = 0,05$:
+$q_{0,05, 4, 16} \approx 4,05$
+$HSD = 4,05 \cdot \sqrt{2,5/5} = 4,05 \cdot \sqrt{0,5} = 4,05 \cdot 0,707 = 2,86$
+
+**Comparação:**
+- Marca 1 (34) vs Marca 2 (37): $|34-37| = 3 > 2,86 \to$ diferente
+- Marca 1 (34) vs Marca 3 (32): $|34-32| = 2 < 2,86 \to$ não diferente
+- Marca 1 (34) vs Marca 4 (30): $|34-30| = 4 > 2,86 \to$ diferente
+- Marca 2 (37) vs Marca 3 (32): $|37-32| = 5 > 2,86 \to$ diferente
+- Marca 2 (37) vs Marca 4 (30): $|37-30| = 7 > 2,86 \to$ diferente
+- Marca 3 (32) vs Marca 4 (30): $|32-30| = 2 < 2,86 \to$ não diferente
+
+**Conclusão:** Marca 2 é significativamente melhor que todas as outras; Marca 4 é pior que Marca 1 e 2; Marca 1 e 3 não diferem.
+
+## Analogias
+
+### Analogia 1: O teste de diferentes marcas
+
+ANOVA é como testar diferentes marcas de um produto (ex: refrigerante) para ver se as pessoas percebem diferença no sabor. Se as notas médias de cada marca são muito diferentes em relação à variação dentro de cada marca, concluímos que há diferença real.
+
+### Analogia 2: O concurso de culinária
+
+Você tem três chefs e quer saber quem faz o melhor bolo. Se as notas de cada chef têm pouca variação dentro do chef, mas a média de um chef é muito diferente dos outros, então há evidência de que um chef é melhor.
+
+### Analogia 3: O test-drive
+
+Você quer comparar o consumo de combustível de três carros. Se a variação de consumo dentro de cada carro é pequena (testes repetidos) e a diferença entre os carros é grande, então há diferença real.
+
+## Exercícios Resolvidos
+
+### Exercício 1 (Fácil)
+
+Em uma ANOVA com $k = 4$, $n = 30$, $SQE = 120$, $SQD = 150$, calcule $F$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$GL$(entre) = 3; $GL$(dentro) = 26
+$QME = 120/3 = 40$; $QMD = 150/26 = 5,77$
+$F = 40/5,77 = 6,93$
+
+**Resposta:** $F = 6,93$.
+
+</details>
+
+### Exercício 2 (Fácil/Médio)
+
+Para o exercício 1, teste a significância com $\alpha = 0,05$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$F_{0,05, 3, 26} \approx 2,98$
+$F = 6,93 > 2,98 \to$ Rejeitar $H_0$
+
+**Resposta:** Rejeitar $H_0$. Há diferença entre as médias.
+
+</details>
+
+### Exercício 3 (Médio)
+
+Três grupos com $n_1 = 6$, $n_2 = 5$, $n_3 = 4$. A média geral é 50. As médias dos grupos são 45, 52, 56. Calcule $SQE$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$SQE = 6 \cdot (45-50)^2 + 5 \cdot (52-50)^2 + 4 \cdot (56-50)^2$
+$= 6 \cdot 25 + 5 \cdot 4 + 4 \cdot 36 = 150 + 20 + 144 = 314$
+
+**Resposta:** $SQE = 314$.
+
+</details>
+
+### Exercício 4 (Médio)
+
+Em uma ANOVA com $k = 5$, $n = 40$, $QME = 15$, $QMD = 4$. Calcule o $R^2$ (coeficiente de determinação).
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$R^2 = SQE/SQT = (QME \cdot GL_{entre})/(QME \cdot GL_{entre} + QMD \cdot GL_{dentro})$
+$= (15 \cdot 4)/(15 \cdot 4 + 4 \cdot 35) = 60/(60 + 140) = 60/200 = 0,30$
+
+**Resposta:** $R^2 = 0,30$ (30% da variabilidade é explicada pelo modelo).
+
+</details>
+
+### Exercício 5 (Difícil)
+
+Interprete o que significa rejeitar $H_0$ em uma ANOVA.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+Rejeitar $H_0$ significa que há evidência estatística de que pelo menos uma das médias dos grupos é diferente das outras. No entanto, não sabemos quais grupos são diferentes — para isso, precisamos de testes post hoc.
+
+**Resposta:** Pelo menos uma média é diferente, mas não sabemos qual.
+
+</details>
+
+## Desafio Final com Resolução Completa
+
+Um experimento testou a eficácia de 3 fertilizantes (A, B, C) na produção de tomates (em kg por planta). Os dados:
+
+| Fertilizante A | Fertilizante B | Fertilizante C |
+| --- | --- | --- |
+| 2,5 | 3,0 | 2,0 |
+| 2,8 | 3,2 | 2,2 |
+| 3,0 | 3,5 | 2,4 |
+| 3,2 | 3,8 | 2,6 |
+| 3,5 | 4,0 | 2,8 |
+
+a) Realize a ANOVA ($\alpha = 0,05$).
+
+b) Se significativo, use o teste de Tukey para identificar quais fertilizantes diferem.
+
+c) Interprete os resultados.
+
+d) Verifique os pressupostos da ANOVA.
+
+<details>
+<summary>💡 Ver resolução completa</summary>
+
+a) Cálculos:
+   Grupo A: $\sum=2,5+2,8+3,0+3,2+3,5=15,0$; $n=5$; $\bar{X}=3,0$
+   Grupo B: $\sum=3,0+3,2+3,5+3,8+4,0=17,5$; $n=5$; $\bar{X}=3,5$
+   Grupo C: $\sum=2,0+2,2+2,4+2,6+2,8=12,0$; $n=5$; $\bar{X}=2,4$
+   $\sum Y = 44,5$; $n=15$; $\bar{X} = 2,9667$
+
+   $SQE = 5 \cdot (3,0-2,9667)^2 + 5 \cdot (3,5-2,9667)^2 + 5 \cdot (2,4-2,9667)^2$
+   $= 5 \cdot 0,0011 + 5 \cdot 0,2844 + 5 \cdot 0,3211 = 0,0056 + 1,4222 + 1,6056 = 3,0334$
+
+   $SQD$:
+   Grupo A: $(2,5-3)^2+(2,8-3)^2+(3,0-3)^2+(3,2-3)^2+(3,5-3)^2 = 0,25+0,04+0+0,04+0,25 = 0,58$
+   Grupo B: $(3,0-3,5)^2+(3,2-3,5)^2+(3,5-3,5)^2+(3,8-3,5)^2+(4,0-3,5)^2 = 0,25+0,09+0+0,09+0,25 = 0,68$
+   Grupo C: $(2,0-2,4)^2+(2,2-2,4)^2+(2,4-2,4)^2+(2,6-2,4)^2+(2,8-2,4)^2 = 0,16+0,04+0+0,04+0,16 = 0,40$
+   $SQD = 0,58+0,68+0,40 = 1,66$
+
+   $GL$: Entre=2; Dentro=12; $F = (3,0334/2)/(1,66/12) = 1,5167/0,1383 = 10,97$
+
+   $F_{0,05, 2, 12} = 3,89$
+   $F = 10,97 > 3,89 \to$ Rejeitar $H_0$
+
+b) $QMD = 1,66/12 = 0,1383$; $n = 5$; $k = 3$; $q_{0,05, 3, 12} = 3,77$
+   $HSD = 3,77 \cdot \sqrt{0,1383/5} = 3,77 \cdot \sqrt{0,02766} = 3,77 \cdot 0,1663 = 0,627$
+
+   Comparações:
+   $|A - B| = |3,0 - 3,5| = 0,5 < 0,627 \to$ não diferente
+   $|A - C| = |3,0 - 2,4| = 0,6 < 0,627 \to$ não diferente
+   $|B - C| = |3,5 - 2,4| = 1,1 > 0,627 \to$ diferente
+
+c) Há evidência de que o fertilizante B (média 3,5) é significativamente melhor que o fertilizante C (média 2,4). Não há diferença significativa entre A e B, nem entre A e C.
+
+d) Pressupostos:
+   - Independência: Sim, cada planta é uma unidade experimental independente.
+   - Normalidade: Dado o pequeno tamanho amostral, assumimos aproximadamente.
+   - Homocedasticidade: As variâncias são próximas (0,58; 0,68; 0,40), sugerindo que a suposição é razoável.
+
+**Respostas:**
+a) $F = 10,97 \to$ rejeitar $H_0$
+b) A e C não diferem; A e B não diferem; B $>$ C
+c) Fertilizante B é significativamente melhor que C
+d) Pressupostos razoavelmente satisfeitos
+
+</details>
+
+> *ANOVA transforma a pergunta "as médias são diferentes?" em uma comparação de variâncias — se o que está entre os grupos supera o que está dentro deles, a diferença se revela.*

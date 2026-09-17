@@ -1,0 +1,569 @@
+# Distribuição Beta
+
+## O que é a Distribuição Beta?
+
+A Distribuição Beta é uma distribuição contínua muito versátil definida no intervalo $[0, 1]$. Ela é extremamente útil para modelar proporções, porcentagens, probabilidades e taxas. Pense em situações como: a proporção de clientes que compram um produto, a taxa de conversão de um site, a porcentagem de tempo que uma máquina está operacional, ou a probabilidade de sucesso em um experimento.
+
+A distribuição Beta tem dois parâmetros:
+- **$\alpha$** (alfa): parâmetro de forma ($\alpha > 0$)
+- **$\beta$** (beta): parâmetro de forma ($\beta > 0$)
+
+A distribuição Beta é denotada por $X \sim \text{Beta}(\alpha, \beta)$.
+
+O que torna a Beta especial é sua flexibilidade. Dependendo dos valores de $\alpha$ e $\beta$, ela pode assumir formas muito diferentes:
+- $\alpha = \beta = 1$: distribuição Uniforme(0, 1)
+- $\alpha < 1$ e $\beta < 1$: formato de U (valores próximos de 0 e 1 são mais prováveis)
+- $\alpha < 1$ e $\beta \ge 1$: formato decrescente (valores próximos de 0 são mais prováveis)
+- $\alpha \ge 1$ e $\beta < 1$: formato crescente (valores próximos de 1 são mais prováveis)
+- $\alpha > 1$ e $\beta > 1$: formato de sino (unimodal)
+
+A distribuição Beta é fundamental na estatística Bayesiana, onde é usada como distribuição a priori para a probabilidade de sucesso em uma distribuição Binomial.
+
+## A Função Beta
+
+Antes de entendermos a densidade da Beta, precisamos conhecer a **função Beta**, denotada por $B(\alpha, \beta)$. Ela é definida como:
+
+>> $$B(\alpha, \beta) = \int_0^1 t^{\alpha-1} (1-t)^{\beta-1} dt$$
+
+A função Beta tem uma relação importante com a função Gama:
+
+>> $$B(\alpha, \beta) = \frac{\Gamma(\alpha) \cdot \Gamma(\beta)}{\Gamma(\alpha + \beta)}$$
+
+**Exemplos:**
+- $B(1, 1) = \Gamma(1) \cdot \Gamma(1) / \Gamma(2) = 1 \cdot 1 / 1 = 1$
+- $B(2, 1) = \Gamma(2) \cdot \Gamma(1) / \Gamma(3) = 1 \cdot 1 / 2 = 0,5$
+- $B(2, 2) = \Gamma(2) \cdot \Gamma(2) / \Gamma(4) = 1 \cdot 1 / 6 = 1/6 \approx 0,1667$
+- $B(3, 2) = \Gamma(3) \cdot \Gamma(2) / \Gamma(5) = 2 \cdot 1 / 24 = 2/24 = 1/12 \approx 0,0833$
+
+## Função Densidade de Probabilidade
+
+A função densidade da Beta é:
+
+>> $$f(x) = \frac{1}{B(\alpha, \beta)} x^{\alpha-1} (1-x)^{\beta-1} \quad \text{para } 0 \le x \le 1$$\
+>> $$f(x) = 0 \quad \text{para outros valores}$$
+
+Vamos entender cada parte:
+- $\frac{1}{B(\alpha, \beta)}$ é a constante que garante que a área total seja 1.
+- $x^{\alpha-1}$ é o termo que dá peso aos valores próximos de 0.
+- $(1-x)^{\beta-1}$ é o termo que dá peso aos valores próximos de 1.
+
+**Exemplo 1:** Seja $X \sim \text{Beta}(\alpha = 1, \beta = 1)$. Calcule $f(x)$ e identifique a distribuição.
+
+**Resolução:**
+
+$B(1, 1) = 1$. $f(x) = \frac{1}{1} \cdot x^{0} \cdot (1-x)^{0} = 1$ para $0 \le x \le 1$.
+
+Esta é exatamente a densidade da Uniforme(0, 1). Confirmando: $\text{Beta}(1, 1) = \text{Uniforme}(0, 1)$.
+
+**Exemplo 2:** Seja $X \sim \text{Beta}(\alpha = 2, \beta = 1)$. Calcule $f(0,2)$, $f(0,5)$ e $f(0,8)$.
+
+**Resolução:**
+
+$B(2, 1) = \Gamma(2) \cdot \Gamma(1) / \Gamma(3) = 1 \cdot 1 / 2 = 0,5$. Portanto, $1/B(2, 1) = 2$.
+
+$f(x) = 2 \cdot x^{2-1} \cdot (1-x)^{1-1} = 2x \cdot (1-x)^0 = 2x$.
+
+- $f(0,2) = 2 \cdot 0,2 = 0,4$
+- $f(0,5) = 2 \cdot 0,5 = 1,0$
+- $f(0,8) = 2 \cdot 0,8 = 1,6$
+
+**Interpretação:** A densidade é crescente. Valores mais altos de $x$ (próximos de 1) são mais prováveis.
+
+**Exemplo 3:** Seja $X \sim \text{Beta}(\alpha = 1, \beta = 2)$. Calcule $f(0,2)$, $f(0,5)$ e $f(0,8)$.
+
+**Resolução:**
+
+$B(1, 2) = \Gamma(1) \cdot \Gamma(2) / \Gamma(3) = 1 \cdot 1 / 2 = 0,5$. Portanto, $1/B(1, 2) = 2$.
+
+$f(x) = 2 \cdot x^{0} \cdot (1-x)^{1} = 2(1-x)$.
+
+- $f(0,2) = 2 \cdot 0,8 = 1,6$
+- $f(0,5) = 2 \cdot 0,5 = 1,0$
+- $f(0,8) = 2 \cdot 0,2 = 0,4$
+
+**Interpretação:** A densidade é decrescente. Valores mais baixos de $x$ (próximos de 0) são mais prováveis.
+
+**Exemplo 4:** Seja $X \sim \text{Beta}(\alpha = 2, \beta = 2)$. Calcule $f(0,2)$, $f(0,5)$ e $f(0,8)$.
+
+**Resolução:**
+
+$B(2, 2) = \Gamma(2) \cdot \Gamma(2) / \Gamma(4) = 1 \cdot 1 / 6 = 1/6$. Portanto, $1/B(2, 2) = 6$.
+
+$f(x) = 6 \cdot x^{1} \cdot (1-x)^{1} = 6x(1-x)$.
+
+- $f(0,2) = 6 \cdot 0,2 \cdot 0,8 = 0,96$
+- $f(0,5) = 6 \cdot 0,5 \cdot 0,5 = 1,5$
+- $f(0,8) = 6 \cdot 0,8 \cdot 0,2 = 0,96$
+
+**Interpretação:** A densidade tem formato de sino, simétrica em torno de 0,5. Valores próximos de 0,5 são mais prováveis.
+
+**Exemplo 5:** Seja $X \sim \text{Beta}(\alpha = 0,5, \beta = 0,5)$. Calcule $f(0,1)$, $f(0,3)$ e $f(0,5)$.
+
+**Resolução:**
+
+$B(0,5, 0,5) = \Gamma(0,5) \cdot \Gamma(0,5) / \Gamma(1) = (\sqrt{\pi}) \cdot (\sqrt{\pi}) / 1 = \pi \approx 3,1416$. $1/B(0,5, 0,5) = 1/\pi \approx 0,3183$.
+
+$f(x) = \frac{1}{\pi} \cdot x^{-0,5} \cdot (1-x)^{-0,5}$.
+
+- $f(0,1) = 0,3183 \cdot (0,1)^{-0,5} \cdot (0,9)^{-0,5} = 0,3183 \cdot 3,1623 \cdot 1,0541 = 1,0616$
+- $f(0,3) = 0,3183 \cdot (0,3)^{-0,5} \cdot (0,7)^{-0,5} = 0,3183 \cdot 1,8257 \cdot 1,1952 = 0,6946$
+- $f(0,5) = 0,3183 \cdot (0,5)^{-0,5} \cdot (0,5)^{-0,5} = 0,3183 \cdot 1,4142 \cdot 1,4142 = 0,6366$
+
+**Interpretação:** A densidade tem formato de U. Valores próximos de 0 e 1 são mais prováveis que valores próximos de 0,5.
+
+## Função de Distribuição Acumulada (FDA)
+
+A FDA da Beta não tem uma forma fechada simples. Ela é definida como:
+
+>> $$F(x) = P(X \le x) = \frac{1}{B(\alpha, \beta)} \int_0^x t^{\alpha-1} (1-t)^{\beta-1} dt$$
+
+Esta integral é chamada de **função Beta incompleta regularizada**. Para calcular probabilidades, geralmente usamos softwares ou tabelas.
+
+No entanto, para certos valores inteiros de $\alpha$ e $\beta$, a FDA pode ser expressa como um polinômio.
+
+**Exemplo 1:** Seja $X \sim \text{Beta}(\alpha = 2, \beta = 1)$. Calcule $P(X \le 0,7)$.
+
+**Resolução:**
+
+Para $\alpha = 2$, $\beta = 1$: $f(x) = 2x$. A FDA é $F(x) = \int 2t dt$ de $0$ até $x = [t^2]$ de $0$ até $x = x^2$.
+
+$F(0,7) = (0,7)^2 = 0,49$.
+
+**Interpretação:** 49% dos valores são menores ou iguais a 0,7.
+
+**Exemplo 2:** Seja $X \sim \text{Beta}(\alpha = 1, \beta = 2)$. Calcule $P(X \le 0,4)$.
+
+**Resolução:**
+
+Para $\alpha = 1$, $\beta = 2$: $f(x) = 2(1-x)$. A FDA é $F(x) = \int 2(1-t) dt$ de $0$ até $x = 2[t - t^2/2]$ de $0$ até $x = 2x - x^2$.
+
+$F(0,4) = 2 \cdot 0,4 - 0,16 = 0,8 - 0,16 = 0,64$.
+
+**Interpretação:** 64% dos valores são menores ou iguais a 0,4.
+
+**Exemplo 3:** Seja $X \sim \text{Beta}(\alpha = 2, \beta = 2)$. Calcule $P(X \le 0,6)$.
+
+**Resolução:**
+
+Para $\alpha = 2$, $\beta = 2$: $f(x) = 6x(1-x)$. A FDA é $F(x) = 6\int t(1-t) dt$ de $0$ até $x = 6[x^2/2 - x^3/3] = 3x^2 - 2x^3$.
+
+$F(0,6) = 3 \cdot (0,36) - 2 \cdot (0,216) = 1,08 - 0,432 = 0,648$.
+
+**Interpretação:** 64,8% dos valores são menores ou iguais a 0,6.
+
+**Exemplo 4:** Seja $X \sim \text{Beta}(\alpha = 3, \beta = 2)$. Calcule $P(0,2 \le X \le 0,7)$.
+
+**Resolução:**
+
+$B(3, 2) = \Gamma(3) \cdot \Gamma(2) / \Gamma(5) = 2 \cdot 1 / 24 = 2/24 = 1/12$. $1/B(3, 2) = 12$.
+
+$f(x) = 12 \cdot x^2 \cdot (1-x)$.
+
+FDA: $F(x) = 12\int t^2(1-t) dt$ de $0$ até $x = 12[x^3/3 - x^4/4] = 4x^3 - 3x^4$.
+
+$F(0,7) = 4 \cdot (0,343) - 3 \cdot (0,2401) = 1,372 - 0,7203 = 0,6517$.
+$F(0,2) = 4 \cdot (0,008) - 3 \cdot (0,0016) = 0,032 - 0,0048 = 0,0272$.
+
+$P(0,2 \le X \le 0,7) = 0,6517 - 0,0272 = 0,6245$.
+
+**Interpretação:** 62,45% dos valores estão entre 0,2 e 0,7.
+
+**Exemplo 5:** Seja $X \sim \text{Beta}(\alpha = 2, \beta = 3)$. Encontre o valor $k$ tal que $P(X \le k) = 0,5$ (mediana).
+
+**Resolução:**
+
+$B(2, 3) = \Gamma(2) \cdot \Gamma(3) / \Gamma(5) = 1 \cdot 2 / 24 = 2/24 = 1/12$. $1/B(2, 3) = 12$.
+
+$f(x) = 12 \cdot x \cdot (1-x)^2$.
+
+FDA: $F(x) = 12\int t(1-t)^2 dt$ de $0$ até $x = 12[x^2/2 - 2x^3/3 + x^4/4] = 6x^2 - 8x^3 + 3x^4$.
+
+Queremos $F(k) = 0,5$: $6k^2 - 8k^3 + 3k^4 = 0,5$.
+
+Por tentativa:
+$k = 0,5$: $1,5 - 1 + 0,1875 = 0,6875$ (muito alto)
+$k = 0,4$: $0,96 - 0,512 + 0,0768 = 0,5248$ (um pouco alto)
+$k = 0,38$: $0,8664 - 0,4390 + 0,0626 = 0,4900$ (um pouco baixo)
+$k = 0,386$: $0,8940 - 0,4607 + 0,0666 = 0,4999$ (próximo)
+
+$k \approx 0,386$.
+
+**Interpretação:** A mediana é aproximadamente 0,386.
+
+## Esperança (média) e Variância
+
+Para a distribuição Beta:
+
+>> $$E[X] = \frac{\alpha}{\alpha + \beta}$$\
+>> $$Var(X) = \frac{\alpha\beta}{(\alpha + \beta)^2(\alpha + \beta + 1)}$$
+
+Estas fórmulas são muito simples e úteis.
+
+**Exemplo 1:** Seja $X \sim \text{Beta}(\alpha = 2, \beta = 3)$. Calcule $E[X]$ e $Var(X)$.
+
+**Resolução:**
+
+- $E[X] = 2/(2 + 3) = 2/5 = 0,4$
+- $Var(X) = 2 \cdot 3/((2+3)^2 \cdot (2+3+1)) = 6/(25 \cdot 6) = 6/150 = 0,04$
+- Desvio padrão = $\sqrt{0,04} = 0,2$
+
+**Interpretação:** A média é 0,4, com variância 0,04.
+
+**Exemplo 2:** Seja $X \sim \text{Beta}(\alpha = 5, \beta = 5)$. Calcule $E[X]$ e $Var(X)$.
+
+**Resolução:**
+
+- $E[X] = 5/(5 + 5) = 0,5$
+- $Var(X) = 5 \cdot 5/((10)^2 \cdot (11)) = 25/(100 \cdot 11) = 25/1100 = 0,0227$
+
+**Interpretação:** Simétrica em torno de 0,5, com variância pequena (concentrada em torno da média).
+
+**Exemplo 3:** Seja $X \sim \text{Beta}(\alpha = 1, \beta = 1)$. Calcule $E[X]$ e $Var(X)$.
+
+**Resolução:**
+
+- $E[X] = 1/(1 + 1) = 0,5$
+- $Var(X) = 1 \cdot 1/((2)^2 \cdot (3)) = 1/12 = 0,0833$
+
+**Interpretação:** Uniforme(0, 1) tem média 0,5 e variância 1/12.
+
+**Exemplo 4:** Seja $X \sim \text{Beta}(\alpha = 0,5, \beta = 0,5)$. Calcule $E[X]$ e $Var(X)$.
+
+**Resolução:**
+
+- $E[X] = 0,5/(0,5 + 0,5) = 0,5$
+- $Var(X) = 0,5 \cdot 0,5/((1)^2 \cdot (2)) = 0,25/2 = 0,125$
+
+**Interpretação:** Ainda simétrica em torno de 0,5, mas com variância maior que a Uniforme.
+
+**Exemplo 5:** Suponha que a proporção de clientes que compram um produto segue uma Beta com média 0,3 e variância 0,03. Encontre $\alpha$ e $\beta$.
+
+**Resolução:**
+
+$E[X] = \alpha/(\alpha+\beta) = 0,3 \to \alpha = 0,3(\alpha+\beta) \to 0,7\alpha = 0,3\beta \to \alpha = (3/7)\beta$.
+
+$Var(X) = \alpha\beta/((\alpha+\beta)^2(\alpha+\beta+1)) = 0,03$.
+
+Por tentativa:
+$\alpha = 1,5$ e $\beta = 3,5$: $\alpha+\beta = 5$. $Var = 5,25/(25 \cdot 6) = 5,25/150 = 0,035$ (um pouco alto)
+$\alpha = 1,8$ e $\beta = 4,2$: $\alpha+\beta = 6$. $Var = 7,56/(36 \cdot 7) = 7,56/252 = 0,03$ ✅
+
+**Resposta:** $\alpha \approx 1,8$ e $\beta \approx 4,2$.
+
+## A Distribuição Beta e a Estatística Bayesiana
+
+A Beta é a distribuição conjugada da distribuição Binomial. Isso significa que se você tem uma distribuição a priori $\text{Beta}(\alpha, \beta)$ para a probabilidade de sucesso $p$, e observa $k$ sucessos em $n$ tentativas, a distribuição a posteriori é $\text{Beta}(\alpha + k, \beta + n - k)$.
+
+Esta propriedade torna a Beta muito útil em inferência Bayesiana.
+
+**Exemplo:** Suponha que você acredita que a probabilidade de um site converter visitantes em clientes é em torno de 10%, com alguma incerteza. Você modela essa crença como $\text{Beta}(1, 9)$ (média = 1/10 = 0,1). Depois de observar 50 visitantes e 8 conversões, sua crença atualizada é $\text{Beta}(1+8, 9+50-8) = \text{Beta}(9, 51)$.
+
+**Interpretação:** A média a posteriori é $9/(9+51) = 9/60 = 0,15$ (15%). A evidência dos dados aumentou sua crença de 10% para 15%.
+
+## Quando usar a Distribuição Beta?
+
+A Beta é apropriada quando:
+
+1. Você está modelando proporções, porcentagens ou taxas.
+2. A variável está restrita ao intervalo $[0, 1]$.
+3. Você precisa de flexibilidade para modelar diferentes formas (U, sino, crescente, decrescente).
+4. Você está fazendo inferência Bayesiana para uma proporção Binomial.
+
+**Exemplos de aplicações:**
+
+- Probabilidade de sucesso em experimentos.
+- Taxa de conversão em marketing.
+- Proporção de votos em uma eleição.
+- Porcentagem de tempo que um sistema está operacional.
+- Probabilidade de chuva em um dia.
+
+## Limitações e quando NÃO usar
+
+A Beta **NÃO deve ser usada** quando:
+
+1. A variável pode assumir valores fora do intervalo $[0, 1]$.
+2. Você precisa modelar múltiplas proporções que somam 1 (use Dirichlet nesse caso).
+3. A variável é discreta.
+4. Você não tem razões para restringir a variável a $[0, 1]$.
+
+### Analogia 1: A taxa de conversão de um site
+
+O dono de um site de e-commerce acredita que a taxa de conversão de visitantes em compradores segue uma distribuição $\text{Beta}(2, 8)$. Isso significa que a média esperada é $2/(2+8) = 0,2$ (20%).
+
+**Pergunta:** Qual a probabilidade de a taxa de conversão ser menor que 15%?
+
+**Resolução passo a passo:**
+
+1. $X \sim \text{Beta}(2, 8)$
+2. $f(x) = \frac{1}{B(2,8)} \cdot x^{1} \cdot (1-x)^{7}$
+3. $B(2, 8) = \Gamma(2) \cdot \Gamma(8) / \Gamma(10) = 1 \cdot 5040 / 362880 = 5040/362880 = 0,01389$
+4. $1/B(2, 8) = 72$
+5. $f(x) = 72x(1-x)^7$
+6. FDA: $F(x) = 72\int t(1-t)^7 dt$ de $0$ até $x$
+
+Usando integração: $\int t(1-t)^7 dt = - \frac{(1-t)^8}{8} + \frac{(1-t)^9}{9}$.
+
+$F(0,15) = 72 \cdot \left[ -\frac{(0,85)^8}{8} + \frac{(0,85)^9}{9} + \frac{1}{8} - \frac{1}{9} \right]$
+
+$(0,85)^8 \approx 0,2725$; $(0,85)^9 \approx 0,2316$
+
+$F(0,15) = 72 \cdot \left[ -\frac{0,2725}{8} + \frac{0,2316}{9} + \frac{1}{8} - \frac{1}{9} \right] = 72 \cdot [-0,03406 + 0,02573 + 0,125 - 0,11111] = 72 \cdot 0,00556 = 0,4003$
+
+**Resposta:** 40,03% de chance de a taxa de conversão ser menor que 15%.
+
+### Analogia 2: A proporção de peças defeituosas
+
+Uma fábrica estima que a proporção de peças defeituosas em sua produção segue uma distribuição $\text{Beta}(1, 4)$. A média é $1/5 = 0,2$ (20%).
+
+**Pergunta:** Qual a probabilidade de a proporção de defeituosos ser maior que 30%?
+
+**Resolução passo a passo:**
+
+1. $X \sim \text{Beta}(1, 4)$
+2. $f(x) = \frac{1}{B(1,4)} \cdot x^{0} \cdot (1-x)^{3}$
+3. $B(1, 4) = \Gamma(1) \cdot \Gamma(4) / \Gamma(5) = 1 \cdot 6 / 24 = 0,25$
+4. $1/B(1, 4) = 4$
+5. $f(x) = 4(1-x)^3$
+6. FDA: $F(x) = 4\int (1-t)^3 dt$ de $0$ até $x = 1 - (1-x)^4$
+7. $P(X > 0,3) = 1 - F(0,3) = 1 - [1 - (0,7)^4] = (0,7)^4 = 0,2401$
+
+**Resposta:** 24,01% de chance de a proporção de defeituosos ser maior que 30%.
+
+### Analogia 3: A probabilidade de chuva
+
+Um meteorologista modela a probabilidade de chuva em um dia usando uma distribuição $\text{Beta}(3, 2)$. A média é $3/5 = 0,6$ (60%).
+
+**Pergunta:** Qual a probabilidade de a probabilidade de chuva estar entre 0,4 e 0,7?
+
+**Resolução passo a passo:**
+
+1. $X \sim \text{Beta}(3, 2)$
+2. $f(x) = \frac{1}{B(3,2)} \cdot x^2 \cdot (1-x)$
+3. $B(3, 2) = \Gamma(3) \cdot \Gamma(2) / \Gamma(5) = 2 \cdot 1 / 24 = 2/24 = 1/12$
+4. $1/B(3, 2) = 12$
+5. $f(x) = 12x^2(1-x)$
+6. FDA: $F(x) = 12\int t^2(1-t) dt$ de $0$ até $x = 4x^3 - 3x^4$
+7. $F(0,7) = 4 \cdot 0,343 - 3 \cdot 0,2401 = 1,372 - 0,7203 = 0,6517$
+8. $F(0,4) = 4 \cdot 0,064 - 3 \cdot 0,0256 = 0,256 - 0,0768 = 0,1792$
+9. $P(0,4 \le X \le 0,7) = 0,6517 - 0,1792 = 0,4725$
+
+**Resposta:** 47,25% de chance de a probabilidade de chuva estar entre 40% e 70%.
+
+### Analogia 4: O desempenho do candidato
+
+Um candidato político acredita que sua intenção de votos segue uma distribuição $\text{Beta}(50, 50)$. A média é 0,5 (50%), e a variância é pequena ($\alpha$ e $\beta$ grandes indicam pouca incerteza).
+
+**Pergunta:** Qual o intervalo que contém 95% da distribuição?
+
+**Resolução passo a passo:**
+
+1. $X \sim \text{Beta}(50, 50)$
+2. A distribuição é aproximadamente Normal com média 0,5 e desvio padrão:
+   $\sigma = \sqrt{\frac{\alpha\beta}{(\alpha+\beta)^2(\alpha+\beta+1)}} = \sqrt{\frac{2500}{10000 \cdot 101}} = \sqrt{\frac{2500}{1.010.000}} = \sqrt{0,002475} = 0,0497$
+3. Intervalo de 95%: $\mu \pm 1,96\sigma = 0,5 \pm 1,96 \cdot 0,0497 = 0,5 \pm 0,0974$
+4. Intervalo: $(0,4026, 0,5974)$
+
+**Resposta:** 95% de chance de a intenção de votos estar entre 40,26% e 59,74%.
+
+## Exemplos práticos com cálculos passo a passo
+
+### Exemplo 1: Densidade básica
+
+Seja $X \sim \text{Beta}(\alpha = 3, \beta = 4)$. Calcule $f(0,5)$.
+
+**Resolução:**
+
+$B(3, 4) = \Gamma(3) \cdot \Gamma(4) / \Gamma(7) = 2 \cdot 6 / 720 = 12/720 = 1/60$. $1/B(3, 4) = 60$.
+
+$f(0,5) = 60 \cdot (0,5)^2 \cdot (0,5)^3 = 60 \cdot 0,25 \cdot 0,125 = 60 \cdot 0,03125 = 1,875$.
+
+**Resposta:** $f(0,5) = 1,875$.
+
+### Exemplo 2: Probabilidade com FDA
+
+Seja $X \sim \text{Beta}(\alpha = 2, \beta = 4)$. Calcule $P(X \le 0,5)$.
+
+**Resolução:**
+
+$B(2, 4) = \Gamma(2) \cdot \Gamma(4) / \Gamma(6) = 1 \cdot 6 / 120 = 6/120 = 1/20$. $1/B(2, 4) = 20$.
+
+$f(x) = 20 \cdot x \cdot (1-x)^3$. FDA: $F(x) = 20\int t(1-t)^3 dt$ de $0$ até $x$.
+
+$F(0,5) = 20 \cdot [0,5^2/2 - 0,5^3 + 3 \cdot 0,5^4/4 - 0,5^5/5] = 20 \cdot [0,125 - 0,125 + 0,046875 - 0,00625] = 20 \cdot 0,040625 = 0,8125$.
+
+**Resposta:** 81,25%.
+
+### Exemplo 3: Cálculo da média
+
+Seja $X \sim \text{Beta}(\alpha = 4, \beta = 6)$. Calcule $E[X]$ e $Var(X)$.
+
+**Resolução:**
+
+$E[X] = 4/(4+6) = 0,4$.
+$Var(X) = 4 \cdot 6/((10)^2 \cdot (11)) = 24/1100 = 0,02182$.
+
+**Resposta:** $E[X] = 0,4$ e $Var(X) = 0,0218$.
+
+### Exemplo 4: Encontrando parâmetros
+
+Suponha que $X \sim \text{Beta}(\alpha, \beta)$ com $E[X] = 0,7$ e $Var(X) = 0,02$. Encontre $\alpha$ e $\beta$.
+
+**Resolução:**
+
+$E[X] = \alpha/(\alpha+\beta) = 0,7 \to \alpha = 0,7(\alpha+\beta) \to 0,3\alpha = 0,7\beta \to \alpha = (7/3)\beta$.
+
+$Var(X) = \alpha\beta/((\alpha+\beta)^2(\alpha+\beta+1)) = 0,02$.
+
+Por tentativa:
+$\alpha = 7$ e $\beta = 3$: $\alpha+\beta = 10$. $Var = 21/(100 \cdot 11) = 21/1100 = 0,0191$.
+$\alpha = 7,5$ e $\beta = 3,214$: $\alpha+\beta \approx 10,714$. $Var = 24,107/(114,8 \cdot 11,714) = 24,107/1344,5 = 0,0179$.
+$\alpha = 7,2$ e $\beta = 3,086$: $\alpha+\beta = 10,286$. $Var \approx 0,02$.
+
+**Resposta:** $\alpha \approx 7,2$ e $\beta \approx 3,09$.
+
+### Exemplo 5: Probabilidade de um intervalo
+
+Seja $X \sim \text{Beta}(\alpha = 5, \beta = 2)$. Calcule $P(0,3 \le X \le 0,7)$.
+
+**Resolução:**
+
+$B(5, 2) = \Gamma(5) \cdot \Gamma(2) / \Gamma(7) = 24 \cdot 1 / 720 = 24/720 = 1/30$. $1/B(5, 2) = 30$.
+
+$f(x) = 30 \cdot x^4 \cdot (1-x)$. FDA: $F(x) = 30[x^5/5 - x^6/6] = 6x^5 - 5x^6$.
+
+$F(0,7) = 6 \cdot 0,16807 - 5 \cdot 0,117649 = 1,00842 - 0,588245 = 0,420175$.
+$F(0,3) = 6 \cdot 0,00243 - 5 \cdot 0,000729 = 0,01458 - 0,003645 = 0,010935$.
+
+$P(0,3 \le X \le 0,7) = 0,420175 - 0,010935 = 0,40924$.
+
+**Resposta:** 40,92%.
+
+## Exercícios resolvidos (níveis crescentes de dificuldade)
+
+### Exercício 1 (Fácil)
+
+Seja $X \sim \text{Beta}(\alpha = 1, \beta = 3)$. Calcule $P(X \le 0,6)$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+Para $\alpha = 1$, $\beta = 3$: $f(x) = 3(1-x)^2$.
+FDA: $F(x) = 1 - (1-x)^3$.
+$F(0,6) = 1 - (0,4)^3 = 1 - 0,064 = 0,936$.
+
+**Resposta:** 93,6%.
+
+</details>
+
+### Exercício 2 (Fácil/Médio)
+
+Seja $X \sim \text{Beta}(\alpha = 3, \beta = 1)$. Calcule $E[X]$ e $Var(X)$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$E[X] = 3/(3+1) = 0,75$.
+$Var(X) = 3 \cdot 1/((4)^2 \cdot (5)) = 3/80 = 0,0375$.
+
+**Resposta:** $E[X] = 0,75$ e $Var(X) = 0,0375$.
+
+</details>
+
+### Exercício 3 (Médio)
+
+Seja $X \sim \text{Beta}(\alpha = 2, \beta = 3)$. Calcule $P(0,4 \le X \le 0,8)$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$f(x) = 12x(1-x)^2$. FDA: $F(x) = 6x^2 - 8x^3 + 3x^4$.
+$F(0,8) = 6 \cdot 0,64 - 8 \cdot 0,512 + 3 \cdot 0,4096 = 3,84 - 4,096 + 1,2288 = 0,9728$.
+$F(0,4) = 6 \cdot 0,16 - 8 \cdot 0,064 + 3 \cdot 0,0256 = 0,96 - 0,512 + 0,0768 = 0,5248$.
+$P(0,4 \le X \le 0,8) = 0,9728 - 0,5248 = 0,448$.
+
+**Resposta:** 44,8%.
+
+</details>
+
+### Exercício 4 (Médio)
+
+Seja $X \sim \text{Beta}(\alpha, \beta)$. Sabendo que $E[X] = 0,6$ e $Var(X) = 0,024$, encontre $\alpha$ e $\beta$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$E[X] = \alpha/(\alpha+\beta) = 0,6 \to \alpha = 0,6(\alpha+\beta) \to 0,4\alpha = 0,6\beta \to \alpha = 1,5\beta$.
+
+$Var(X) = \alpha\beta/((\alpha+\beta)^2(\alpha+\beta+1)) = 0,024$.
+
+Por tentativa:
+$\alpha = 6$ e $\beta = 4$: $\alpha+\beta = 10$. $Var = 24/(100 \cdot 11) = 24/1100 = 0,0218$.
+$\alpha = 5,4$ e $\beta = 3,6$: $\alpha+\beta = 9$. $Var = 19,44/(81 \cdot 10) = 19,44/810 = 0,024$ ✅
+
+**Resposta:** $\alpha \approx 5,4$ e $\beta \approx 3,6$.
+
+</details>
+
+### Exercício 5 (Difícil)
+
+Seja $X \sim \text{Beta}(\alpha, \beta)$ com $\alpha = 4\beta$. Encontre $\beta$ tal que $P(X \le 0,5) = 0,2$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$\alpha = 4\beta$. $f(x) = \frac{1}{B(4\beta, \beta)} \cdot x^{4\beta-1} \cdot (1-x)^{\beta-1}$.
+
+$F(0,5) = 0,2$. Para $\beta = 1$ ($\alpha = 4$): $f(x) = 20x^3(1-x)$. $F(x) = 5x^4 - 4x^5$. $F(0,5) = 5 \cdot 0,0625 - 4 \cdot 0,03125 = 0,3125 - 0,125 = 0,1875$ (um pouco baixo).
+
+$\beta = 1,1$ ($\alpha = 4,4$): $F(0,5) \approx 0,205$ (um pouco alto).
+
+$\beta \approx 1,08$ ($\alpha \approx 4,32$): $F(0,5) \approx 0,2$.
+
+**Resposta:** $\beta \approx 1,08$ e $\alpha \approx 4,32$.
+
+</details>
+
+## Desafio final com resolução completa
+
+Uma empresa de pesquisas está estudando a proporção de pessoas que preferem um novo produto. Com base em estudos anteriores, eles modelam essa proporção como uma distribuição $\text{Beta}(\alpha, \beta)$.
+
+a) Se $\alpha = 2$ e $\beta = 3$, qual a probabilidade de a proporção ser maior que 50%?
+b) Se a média é 0,4 e a variância é 0,025, encontre $\alpha$ e $\beta$.
+c) Usando os parâmetros encontrados em (b), qual o valor $k$ tal que $P(X \le k) = 0,9$?
+d) Se a empresa quiser ter 95% de certeza de que a proporção está dentro de 0,05 da média, quantos parâmetros $\alpha$ e $\beta$ ela deve ter?
+
+<details>
+<summary>💡 Ver resolução completa</summary>
+
+a) $X \sim \text{Beta}(2, 3)$
+   $f(x) = 12x(1-x)^2$
+   $P(X > 0,5) = 1 - F(0,5) = 1 - [6 \cdot 0,25 - 8 \cdot 0,125 + 3 \cdot 0,0625] = 1 - [1,5 - 1 + 0,1875] = 1 - 0,6875 = 0,3125$
+
+b) $E[X] = \alpha/(\alpha+\beta) = 0,4 \to \alpha = 0,4(\alpha+\beta) \to 0,6\alpha = 0,4\beta \to \alpha = (2/3)\beta$.
+
+   $Var(X) = \alpha\beta/((\alpha+\beta)^2(\alpha+\beta+1)) = 0,025$.
+
+   Por tentativa:
+   $\alpha = 3$ e $\beta = 4,5$: $\alpha+\beta = 7,5$. $Var = 13,5/(56,25 \cdot 8,5) = 13,5/478,125 = 0,0282$ (alto)
+   $\alpha = 3,5$ e $\beta = 5,25$: $\alpha+\beta = 8,75$. $Var = 18,375/(76,5625 \cdot 9,75) = 18,375/746,484 = 0,0246$ (próximo)
+   $\alpha = 3,6$ e $\beta = 5,4$: $\alpha+\beta = 9$. $Var = 19,44/(81 \cdot 10) = 19,44/810 = 0,024$ (um pouco baixo)
+
+   $\alpha \approx 3,5$ e $\beta \approx 5,25$.
+
+c) Com $\alpha = 3,5$ e $\beta = 5,25$, a FDA não tem forma fechada simples. Usando aproximação numérica, $F(k) = 0,9 \to k \approx 0,58$.
+
+d) Para que $\sigma$ seja pequeno, $\alpha$ e $\beta$ precisam ser grandes. Queremos $\sigma = 0,05/1,96 \approx 0,0255$.
+
+   $\sigma = \sqrt{\frac{\alpha\beta}{(\alpha+\beta)^2(\alpha+\beta+1)}} = 0,0255$.
+
+   Para média 0,4: $\alpha/(\alpha+\beta) = 0,4 \to \alpha = 0,4(\alpha+\beta)$.
+
+   Por tentativa: $\alpha = 100$, $\beta = 150$: $\alpha+\beta = 250$. $\sigma = \sqrt{15000/(62500 \cdot 251)} = \sqrt{15000/15.687.500} = \sqrt{0,000956} = 0,0309$.
+   
+   $\alpha = 150$, $\beta = 225$: $\alpha+\beta = 375$. $\sigma = \sqrt{33750/(140625 \cdot 376)} = \sqrt{33750/52.875.000} = \sqrt{0,000638} = 0,0253$.
+
+   **Resposta:** $\alpha \approx 150$ e $\beta \approx 225$.
+
+</details>
+
+> *A Distribuição Beta nos ensina que as proporções não são fixas — são crenças que se moldam com os dados. Como uma argila probabilística, ela se adapta à forma da nossa incerteza, do ceticismo à convicção.*

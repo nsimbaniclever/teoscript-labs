@@ -1,0 +1,389 @@
+# Intervalos de Confiança I
+
+## O que é um Intervalo de Confiança?
+
+Na aula anterior, vimos como fazer **estimativas pontuais** — um único valor que representa nossa melhor estimativa para um parâmetro populacional. Mas uma estimativa pontual, por si só, não nos diz nada sobre o quão precisa ela é. Um intervalo de confiança resolve esse problema: ele fornece um **intervalo de valores** que, com uma certa probabilidade, contém o parâmetro populacional.
+
+Pense em uma pesquisa eleitoral. Em vez de dizer "o candidato tem 52% dos votos", um intervalo de confiança diria "o candidato tem entre 49% e 55% dos votos, com 95% de confiança". Isso é muito mais informativo!
+
+**Definição formal:**
+
+Um intervalo de confiança de nível $(1-\alpha) \times 100\%$ para um parâmetro $\theta$ é um intervalo $[L, U]$ tal que:
+
+$$P(L \le \theta \le U) = 1 - \alpha$$
+
+onde:
+- $1-\alpha$ é o **nível de confiança** (ex: 0,95 para 95%)
+- $\alpha$ é o **nível de significância** (ex: 0,05 para 95%)
+- $L$ é o **limite inferior** do intervalo
+- $U$ é o **limite superior** do intervalo
+
+**Interpretação correta:**
+
+Um intervalo de confiança de 95% significa que, se repetíssemos o processo de amostragem muitas vezes, cerca de 95% dos intervalos construídos conteriam o verdadeiro parâmetro. **Não** significa que há 95% de chance de o parâmetro estar no intervalo — o parâmetro é fixo, o intervalo é que é aleatório.
+
+## Intervalo de Confiança para a Média ($\sigma$ conhecido)
+
+Quando a variância populacional $\sigma^2$ é conhecida, o intervalo de confiança para a média $\mu$ é baseado na distribuição Normal.
+
+**Fórmula:**
+
+>> $$IC_{1-\alpha}(\mu) = \bar{X} \pm Z_{\alpha/2} \cdot \frac{\sigma}{\sqrt{n}}$$
+
+onde $Z_{\alpha/2}$ é o quantil da Normal padrão tal que $P(Z > Z_{\alpha/2}) = \alpha/2$.
+
+**Valores comuns de $Z$:**
+
+| Nível de confiança | $\alpha$ | $Z_{\alpha/2}$ |
+| --- | --- | --- |
+| 90% | 0,10 | 1,645 |
+| 95% | 0,05 | 1,960 |
+| 99% | 0,01 | 2,576 |
+
+**Exemplo 1: IC para média com $\sigma$ conhecido**
+
+Uma população tem $\sigma = 5$. Uma amostra de 36 elementos tem média 42. Construa um intervalo de confiança de 95% para $\mu$.
+
+**Resolução:**
+
+$\bar{X} = 42$, $\sigma = 5$, $n = 36$, $Z_{0,025} = 1,96$
+$EP = 5/\sqrt{36} = 0,8333$
+Margem de erro = $1,96 \cdot 0,8333 = 1,633$
+$IC = 42 \pm 1,633 = (40,367, 43,633)$
+
+**Interpretação:** Com 95% de confiança, a média populacional está entre 40,37 e 43,63.
+
+**Exemplo 2: IC para média com $\sigma$ conhecido (90%)**
+
+Uma população tem $\sigma = 8$. Uma amostra de 64 elementos tem média 100. Construa um intervalo de confiança de 90% para $\mu$.
+
+**Resolução:**
+
+$\bar{X} = 100$, $\sigma = 8$, $n = 64$, $Z_{0,05} = 1,645$
+$EP = 8/\sqrt{64} = 1$
+Margem de erro = $1,645 \cdot 1 = 1,645$
+$IC = 100 \pm 1,645 = (98,355, 101,645)$
+
+**Interpretação:** Com 90% de confiança, a média populacional está entre 98,36 e 101,65.
+
+**Exemplo 3: IC para média com $\sigma$ conhecido (99%)**
+
+Uma população tem $\sigma = 10$. Uma amostra de 100 elementos tem média 50. Construa um intervalo de confiança de 99% para $\mu$.
+
+**Resolução:**
+
+$\bar{X} = 50$, $\sigma = 10$, $n = 100$, $Z_{0,005} = 2,576$
+$EP = 10/\sqrt{100} = 1$
+Margem de erro = $2,576 \cdot 1 = 2,576$
+$IC = 50 \pm 2,576 = (47,424, 52,576)$
+
+**Interpretação:** Com 99% de confiança, a média populacional está entre 47,42 e 52,58.
+
+## Intervalo de Confiança para a Média ($\sigma$ desconhecido)
+
+Na prática, raramente conhecemos $\sigma^2$. Quando $\sigma$ é desconhecido, usamos a estimativa $S$ (desvio padrão amostral) e a distribuição $t$-Student.
+
+**Fórmula:**
+
+>> $$IC_{1-\alpha}(\mu) = \bar{X} \pm t_{\alpha/2, n-1} \cdot \frac{S}{\sqrt{n}}$$
+
+onde $t_{\alpha/2, n-1}$ é o quantil da distribuição $t$ com $n-1$ graus de liberdade.
+
+**Exemplo 1: IC para média com $\sigma$ desconhecido**
+
+Uma amostra de 25 elementos tem média 35 e desvio padrão 4. Construa um intervalo de confiança de 95% para $\mu$.
+
+**Resolução:**
+
+$\bar{X} = 35$, $S = 4$, $n = 25$, $\nu = 24$, $t_{0,025, 24} = 2,064$
+$EP = 4/\sqrt{25} = 0,8$
+Margem de erro = $2,064 \cdot 0,8 = 1,651$
+$IC = 35 \pm 1,651 = (33,349, 36,651)$
+
+**Interpretação:** Com 95% de confiança, a média populacional está entre 33,35 e 36,65.
+
+**Exemplo 2: IC para média com $\sigma$ desconhecido (90%)**
+
+Uma amostra de 16 elementos tem média 50 e desvio padrão 6. Construa um intervalo de confiança de 90% para $\mu$.
+
+**Resolução:**
+
+$\bar{X} = 50$, $S = 6$, $n = 16$, $\nu = 15$, $t_{0,05, 15} = 1,753$
+$EP = 6/\sqrt{16} = 1,5$
+Margem de erro = $1,753 \cdot 1,5 = 2,630$
+$IC = 50 \pm 2,630 = (47,370, 52,630)$
+
+**Interpretação:** Com 90% de confiança, a média populacional está entre 47,37 e 52,63.
+
+**Exemplo 3: IC para média com $\sigma$ desconhecido (99%)**
+
+Uma amostra de 30 elementos tem média 120 e desvio padrão 15. Construa um intervalo de confiança de 99% para $\mu$.
+
+**Resolução:**
+
+$\bar{X} = 120$, $S = 15$, $n = 30$, $\nu = 29$, $t_{0,005, 29} = 2,756$
+$EP = 15/\sqrt{30} = 2,739$
+Margem de erro = $2,756 \cdot 2,739 = 7,549$
+$IC = 120 \pm 7,549 = (112,451, 127,549)$
+
+**Interpretação:** Com 99% de confiança, a média populacional está entre 112,45 e 127,55.
+
+## Intervalo de Confiança para Proporção
+
+Para estimar uma proporção populacional $p$, usamos a proporção amostral $\hat{p}$.
+
+**Fórmula:**
+
+>> $$IC_{1-\alpha}(p) = \hat{p} \pm Z_{\alpha/2} \cdot \sqrt{\frac{\hat{p}(1-\hat{p})}{n}}$$
+
+**Exemplo 1: IC para proporção**
+
+Em uma pesquisa com 400 pessoas, 60% disseram preferir o produto A. Construa um intervalo de confiança de 95% para a proporção populacional.
+
+**Resolução:**
+
+$\hat{p} = 0,6$, $n = 400$, $Z_{0,025} = 1,96$
+$EP = \sqrt{0,6 \cdot 0,4 / 400} = \sqrt{0,24/400} = \sqrt{0,0006} = 0,0245$
+Margem de erro = $1,96 \cdot 0,0245 = 0,0480$
+$IC = 0,6 \pm 0,0480 = (0,552, 0,648)$
+
+**Interpretação:** Com 95% de confiança, a proporção populacional está entre 55,2% e 64,8%.
+
+**Exemplo 2: IC para proporção (90%)**
+
+Em uma pesquisa com 200 pessoas, 45% disseram preferir o produto B. Construa um intervalo de confiança de 90% para a proporção populacional.
+
+**Resolução:**
+
+$\hat{p} = 0,45$, $n = 200$, $Z_{0,05} = 1,645$
+$EP = \sqrt{0,45 \cdot 0,55 / 200} = \sqrt{0,2475/200} = \sqrt{0,0012375} = 0,0352$
+Margem de erro = $1,645 \cdot 0,0352 = 0,0579$
+$IC = 0,45 \pm 0,0579 = (0,3921, 0,5079)$
+
+**Interpretação:** Com 90% de confiança, a proporção populacional está entre 39,21% e 50,79%.
+
+**Exemplo 3: IC para proporção (99%)**
+
+Em uma pesquisa com 500 pessoas, 30% disseram preferir o produto C. Construa um intervalo de confiança de 99% para a proporção populacional.
+
+**Resolução:**
+
+$\hat{p} = 0,3$, $n = 500$, $Z_{0,005} = 2,576$
+$EP = \sqrt{0,3 \cdot 0,7 / 500} = \sqrt{0,21/500} = \sqrt{0,00042} = 0,0205$
+Margem de erro = $2,576 \cdot 0,0205 = 0,0528$
+$IC = 0,3 \pm 0,0528 = (0,2472, 0,3528)$
+
+**Interpretação:** Com 99% de confiança, a proporção populacional está entre 24,72% e 35,28%.
+
+## Fatores que Afetam a Amplitude do Intervalo
+
+A amplitude de um intervalo de confiança é 2 vezes a margem de erro. Ela depende de três fatores:
+
+1. **Nível de confiança:** Quanto maior o nível de confiança, maior a amplitude (mais $Z$ ou $t$).
+2. **Variabilidade dos dados:** Quanto maior $\sigma$ ou $S$, maior a amplitude.
+3. **Tamanho da amostra:** Quanto maior $n$, menor a amplitude.
+
+**Exemplo comparativo:**
+
+Para $\mu$ com $\sigma = 10$:
+
+| $n$ | Nível de confiança | Margem de erro | Amplitude |
+| --- | --- | --- | --- |
+| 25 | 90% | $1,645 \cdot 10/5 = 3,29$ | 6,58 |
+| 25 | 95% | $1,96 \cdot 10/5 = 3,92$ | 7,84 |
+| 25 | 99% | $2,576 \cdot 10/5 = 5,15$ | 10,30 |
+| 100 | 95% | $1,96 \cdot 10/10 = 1,96$ | 3,92 |
+| 400 | 95% | $1,96 \cdot 10/20 = 0,98$ | 1,96 |
+
+## Analogias
+
+### Analogia 1: A rede de pesca
+
+Um intervalo de confiança é como uma rede de pesca. Você joga a rede (o intervalo) e espera capturar o peixe (o parâmetro). Quanto maior a rede (maior o nível de confiança), mais chances de capturar o peixe, mas também mais "pescaria" desnecessária.
+
+### Analogia 2: A mira do atirador
+
+A estimativa pontual é o centro da mira. O intervalo de confiança é o tamanho do alvo. Quanto mais confiante você quer estar, maior o alvo.
+
+### Analogia 3: O termômetro
+
+A margem de erro é a precisão do termômetro. Quanto mais preciso, menor a margem de erro.
+
+### Analogia 4: O mapa do tesouro
+
+O intervalo de confiança é como um mapa que diz "o tesouro está dentro deste círculo". Quanto mais confiante você quer estar, maior o círculo.
+
+## Exemplos Práticos com Cálculos Passo a Passo
+
+### Exemplo 1: IC para média ($\sigma$ conhecido)
+
+Uma população tem $\sigma = 4$. Uma amostra de 49 elementos tem média 28. Construa um IC de 95%.
+
+**Resolução:**
+
+$\bar{X} = 28$, $\sigma = 4$, $n = 49$, $Z_{0,025} = 1,96$
+$EP = 4/\sqrt{49} = 4/7 = 0,5714$
+Margem = $1,96 \cdot 0,5714 = 1,12$
+$IC = 28 \pm 1,12 = (26,88, 29,12)$
+
+### Exemplo 2: IC para média ($\sigma$ desconhecido)
+
+Uma amostra de 20 elementos tem média 65 e desvio padrão 8. Construa um IC de 95%.
+
+**Resolução:**
+
+$\bar{X} = 65$, $S = 8$, $n = 20$, $\nu = 19$, $t_{0,025, 19} = 2,093$
+$EP = 8/\sqrt{20} = 1,789$
+Margem = $2,093 \cdot 1,789 = 3,745$
+$IC = 65 \pm 3,745 = (61,255, 68,745)$
+
+### Exemplo 3: IC para proporção
+
+Em uma pesquisa com 1000 pessoas, 52% disseram sim. Construa um IC de 95%.
+
+**Resolução:**
+
+$\hat{p} = 0,52$, $n = 1000$, $Z_{0,025} = 1,96$
+$EP = \sqrt{0,52 \cdot 0,48 / 1000} = \sqrt{0,2496/1000} = \sqrt{0,0002496} = 0,0158$
+Margem = $1,96 \cdot 0,0158 = 0,0310$
+$IC = 0,52 \pm 0,0310 = (0,489, 0,551)$
+
+### Exemplo 4: Comparando níveis de confiança
+
+Uma amostra de 36 elementos tem média 50 e $\sigma = 6$. Construa IC de 90%, 95% e 99%.
+
+**Resolução:**
+
+$EP = 6/\sqrt{36} = 1$
+
+90%: $Z = 1,645 \to 50 \pm 1,645 = (48,355, 51,645)$
+95%: $Z = 1,96 \to 50 \pm 1,96 = (48,04, 51,96)$
+99%: $Z = 2,576 \to 50 \pm 2,576 = (47,424, 52,576)$
+
+### Exemplo 5: Encontrando $n$ necessário
+
+Qual o tamanho da amostra necessário para estimar $\mu$ com erro máximo de 0,5 e 95% de confiança, sabendo que $\sigma = 5$?
+
+**Resolução:**
+
+$E = Z \cdot \sigma/\sqrt{n} \to 0,5 = 1,96 \cdot 5/\sqrt{n} \to \sqrt{n} = 1,96 \cdot 5/0,5 = 19,6 \to n = 384,16$
+
+**Resposta:** $n \ge 385$.
+
+## Exercícios Resolvidos
+
+### Exercício 1 (Fácil)
+
+Uma população tem $\sigma = 3$. Uma amostra de 36 elementos tem média 45. Construa um IC de 95%.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$EP = 3/\sqrt{36} = 0,5$
+Margem = $1,96 \cdot 0,5 = 0,98$
+$IC = 45 \pm 0,98 = (44,02, 45,98)$
+
+**Resposta:** (44,02, 45,98).
+
+</details>
+
+### Exercício 2 (Fácil/Médio)
+
+Uma amostra de 16 elementos tem média 30 e desvio padrão 4. Construa um IC de 95%.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$\nu = 15$, $t_{0,025, 15} = 2,131$
+$EP = 4/\sqrt{16} = 1$
+Margem = $2,131 \cdot 1 = 2,131$
+$IC = 30 \pm 2,131 = (27,869, 32,131)$
+
+**Resposta:** (27,87, 32,13).
+
+</details>
+
+### Exercício 3 (Médio)
+
+Em uma pesquisa com 300 pessoas, 55% preferem o produto A. Construa um IC de 90%.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$\hat{p} = 0,55$, $n = 300$, $Z_{0,05} = 1,645$
+$EP = \sqrt{0,55 \cdot 0,45 / 300} = \sqrt{0,2475/300} = \sqrt{0,000825} = 0,0287$
+Margem = $1,645 \cdot 0,0287 = 0,0472$
+$IC = 0,55 \pm 0,0472 = (0,5028, 0,5972)$
+
+**Resposta:** (50,28%, 59,72%).
+
+</details>
+
+### Exercício 4 (Médio)
+
+Qual o tamanho da amostra necessário para estimar uma proporção com erro máximo de 3% e 95% de confiança (usando $p = 0,5$)?
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$n = Z^2 \cdot p \cdot (1-p)/E^2 = 1,96^2 \cdot 0,5 \cdot 0,5 / 0,03^2 = 3,8416 \cdot 0,25 / 0,0009 = 0,9604/0,0009 = 1067,1$
+
+**Resposta:** $n \ge 1068$.
+
+</details>
+
+### Exercício 5 (Difícil)
+
+Compare ICs para $\mu$ com $\sigma$ conhecido e desconhecido para $n = 25$, $\bar{X} = 50$, $\sigma = 10$, $S = 12$ ($\alpha = 0,05$).
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$\sigma$ conhecido: $EP = 10/\sqrt{25} = 2$; margem = $1,96 \cdot 2 = 3,92$; $IC = (46,08, 53,92)$
+
+$\sigma$ desconhecido: $t_{0,025, 24} = 2,064$; $EP = 12/\sqrt{25} = 2,4$; margem = $2,064 \cdot 2,4 = 4,954$; $IC = (45,046, 54,954)$
+
+**Resposta:** O IC com $\sigma$ desconhecido é mais amplo (reflete a incerteza adicional).
+
+</details>
+
+## Desafio Final com Resolução Completa
+
+Um fabricante de baterias afirma que suas baterias duram em média 100 horas. Uma amostra de 20 baterias teve vida média de 95 horas com desvio padrão de 8 horas.
+
+a) Construa um intervalo de confiança de 95% para a verdadeira vida média.
+
+b) Qual a margem de erro?
+
+c) A afirmação do fabricante é plausível?
+
+d) Se o fabricante quisesse uma margem de erro de 2 horas com 95% de confiança, quantas baterias ele deveria testar?
+
+e) Compare o resultado com o que seria obtido se $\sigma$ fosse conhecido ($\sigma = 8$).
+
+<details>
+<summary>💡 Ver resolução completa</summary>
+
+a) $\bar{X} = 95$, $S = 8$, $n = 20$, $\nu = 19$, $t_{0,025, 19} = 2,093$
+   $EP = 8/\sqrt{20} = 1,789$
+   Margem = $2,093 \cdot 1,789 = 3,745$
+   $IC = 95 \pm 3,745 = (91,255, 98,745)$
+
+b) Margem de erro = 3,745 horas
+
+c) O IC não contém 100 horas. Portanto, a afirmação do fabricante é improvável (com 95% de confiança, a verdadeira média está abaixo de 100).
+
+d) $n = (t \cdot S/E)^2 = (2,093 \cdot 8/2)^2 = (8,372)^2 = 70,09 \to n \ge 71$
+
+e) Com $\sigma$ conhecido: $EP = 8/\sqrt{20} = 1,789$; margem = $1,96 \cdot 1,789 = 3,506$; $IC = (91,494, 98,506)$. O IC com $\sigma$ desconhecido é um pouco mais amplo.
+
+**Respostas:**
+a) (91,26, 98,75) horas
+b) 3,75 horas
+c) Não, a afirmação não é plausível
+d) 71 baterias
+e) IC com $\sigma$ conhecido: (91,49, 98,51)
+
+</details>
+
+> *O intervalo de confiança transforma uma estimativa pontual em uma região de incerteza — quanto maior a confiança desejada, mais amplo o intervalo, e cada dado adicionado é um passo em direção à precisão.*

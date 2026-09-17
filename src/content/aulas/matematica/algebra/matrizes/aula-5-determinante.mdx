@@ -1,0 +1,458 @@
+
+# DETERMINANTE (I) – DEFINIÇÃO E CÁLCULO
+
+## 1. Definição Formal
+
+### 1.1 O que é o Determinante?
+
+O **determinante** é uma função que associa a cada **matriz quadrada** $A \in \mathbb{R}^{n \times n}$ um **número real** (escalar).
+
+$$
+\det(A) \in \mathbb{R}
+$$
+
+**Interpretação geométrica (para $n = 2$ e $n = 3$):**
+
+- $n = 2$: O determinante é a **área** do paralelogramo formado pelos vetores coluna (ou linha).
+- $n = 3$: O determinante é o **volume** do paralelepípedo formado pelos vetores coluna (ou linha).
+
+**Interpretação algébrica:**
+
+- Se $\det(A) \neq 0$, a matriz é **invertível**.
+- Se $\det(A) = 0$, a matriz é **singular** (não invertível).
+
+### 1.2 Determinante de Matriz $1 \times 1$
+
+Para uma matriz $A = \begin{bmatrix} a \end{bmatrix}$:
+
+$$
+\det(A) = a
+$$
+
+### 1.3 Determinante de Matriz $2 \times 2$ (Regra da Cruz)
+
+Para uma matriz:
+$$
+A = \begin{bmatrix} a & b \\ c & d \end{bmatrix}
+$$
+
+O determinante é:
+$$
+\det(A) = ad - bc
+$$
+
+**Exemplo:**
+$$
+A = \begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix}
+$$
+$$
+\det(A) = 1 \cdot 4 - 2 \cdot 3 = 4 - 6 = -2
+$$
+
+**Interpretação:** O paralelogramo formado pelos vetores $(1,3)$ e $(2,4)$ tem área $|-2| = 2$.
+
+### 1.4 Determinante de Matriz $3 \times 3$ (Regra de Sarrus)
+
+Para uma matriz:
+$$
+A = \begin{bmatrix}
+a & b & c \\
+d & e & f \\
+g & h & i
+\end{bmatrix}
+$$
+
+**Passo 1:** Repita as duas primeiras colunas à direita da matriz:
+$$
+\begin{array}{ccc|cc}
+a & b & c & a & b \\
+d & e & f & d & e \\
+g & h & i & g & h
+\end{array}
+$$
+
+**Passo 2:** Soma dos produtos das diagonais principais (para a direita):
+$$
+aei + bfg + cdh
+$$
+
+**Passo 3:** Soma dos produtos das diagonais secundárias (para a esquerda):
+$$
+ceg + bdi + afh
+$$
+
+**Passo 4:** O determinante é a diferença:
+$$
+\det(A) = (aei + bfg + cdh) - (ceg + bdi + afh)
+$$
+
+### 1.5 Exemplo $3 \times 3$ Passo a Passo
+
+Seja:
+$$
+A = \begin{bmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6 \\
+7 & 8 & 9
+\end{bmatrix}
+$$
+
+**Passo 1:** Repetir colunas:
+$$
+\begin{array}{ccc|cc}
+1 & 2 & 3 & 1 & 2 \\
+4 & 5 & 6 & 4 & 5 \\
+7 & 8 & 9 & 7 & 8
+\end{array}
+$$
+
+**Passo 2:** Diagonais principais:
+- $1 \cdot 5 \cdot 9 = 45$
+- $2 \cdot 6 \cdot 7 = 84$
+- $3 \cdot 4 \cdot 8 = 96$
+
+Soma: $45 + 84 + 96 = 225$
+
+**Passo 3:** Diagonais secundárias:
+- $3 \cdot 5 \cdot 7 = 105$
+- $2 \cdot 4 \cdot 9 = 72$
+- $1 \cdot 6 \cdot 8 = 48$
+
+Soma: $105 + 72 + 48 = 225$
+
+**Passo 4:**
+$$
+\det(A) = 225 - 225 = 0
+$$
+
+**Interpretação:** A matriz é singular (não invertível). Os vetores coluna são linearmente dependentes.
+
+## 2. Exemplos Lúdicos Aprimorados
+
+### 🍔 EXEMPLO 1 – A LANCHONETE (DETERMINANTE DE INGREDIENTES)
+
+A lanchonete tem a matriz de ingredientes:
+$$
+A = \begin{bmatrix}
+1 & 1 & 0 \\
+0 & 0 & 1 \\
+1 & 1 & 1
+\end{bmatrix}
+$$
+
+**Cálculo do determinante pela Regra de Sarrus:**
+
+**Passo 1:** Repetir colunas:
+$$
+\begin{array}{ccc|cc}
+1 & 1 & 0 & 1 & 1 \\
+0 & 0 & 1 & 0 & 0 \\
+1 & 1 & 1 & 1 & 1
+\end{array}
+$$
+
+**Passo 2:** Diagonais principais:
+- $1 \cdot 0 \cdot 1 = 0$
+- $1 \cdot 1 \cdot 1 = 1$
+- $0 \cdot 0 \cdot 1 = 0$
+
+Soma: $0 + 1 + 0 = 1$
+
+**Passo 3:** Diagonais secundárias:
+- $0 \cdot 0 \cdot 1 = 0$
+- $1 \cdot 1 \cdot 1 = 1$
+- $1 \cdot 0 \cdot 0 = 0$
+
+Soma: $0 + 1 + 0 = 1$
+
+**Passo 4:**
+$$
+\det(A) = 1 - 1 = 0
+$$
+
+**Interpretação:** O determinante é zero → a matriz é singular. Os sanduíches são linearmente dependentes (um pode ser feito com os outros).
+
+### 🧃 EXEMPLO 2 – A CANTINA (DETERMINANTE NUTRICIONAL)
+
+A cantina tem a matriz nutricional:
+$$
+A = \begin{bmatrix}
+10 & 0 & 50 \\
+5 & 20 & 0 \\
+30 & 0 & 0
+\end{bmatrix}
+$$
+
+**Cálculo do determinante:**
+
+**Passo 1:** Repetir colunas:
+$$
+\begin{array}{ccc|cc}
+10 & 0 & 50 & 10 & 0 \\
+5 & 20 & 0 & 5 & 20 \\
+30 & 0 & 0 & 30 & 0
+\end{array}
+$$
+
+**Passo 2:** Diagonais principais:
+- $10 \cdot 20 \cdot 0 = 0$
+- $0 \cdot 0 \cdot 30 = 0$
+- $50 \cdot 5 \cdot 0 = 0$
+
+Soma: $0$
+
+**Passo 3:** Diagonais secundárias:
+- $50 \cdot 20 \cdot 30 = 30.000$
+- $0 \cdot 5 \cdot 0 = 0$
+- $10 \cdot 0 \cdot 0 = 0$
+
+Soma: $30.000$
+
+**Passo 4:**
+$$
+\det(A) = 0 - 30.000 = -30.000 \neq 0
+$$
+
+**Interpretação:** O determinante é não-zero → a matriz é invertível. Os alimentos são linearmente independentes.
+
+### 📚 EXEMPLO 3 – A BIBLIOTECA (DETERMINANTE DE CONTEÚDO)
+
+A biblioteca tem a matriz de conteúdo:
+$$
+A = \begin{bmatrix}
+10 & 5 & 0 \\
+8 & 0 & 12 \\
+6 & 8 & 4
+\end{bmatrix}
+$$
+
+**Cálculo do determinante (já feito na Aula 6 de Vetores):**
+$$
+\det(A) = -760 \neq 0
+$$
+
+**Interpretação:** A matriz é invertível. Os livros são linearmente independentes.
+
+## 3. Interpretação Geométrica do Determinante
+
+| $n$ | Determinante | Interpretação |
+|---------|--------------|---------------|
+| 1 | $\det(A) = a$ | Comprimento (escala) |
+| 2 | $\det(A) = ad - bc$ | Área do paralelogramo |
+| 3 | $\det(A)$ | Volume do paralelepípedo |
+| $n$ | $\det(A)$ | "Volume" generalizado em $n$ dimensões |
+
+**Sinal do determinante:**
+- **Positivo:** A orientação é preservada (rotação, escala).
+- **Negativo:** A orientação é invertida (reflexão).
+
+## 4. Quando Fazer um Exercício Computacional?
+
+**Aqui faz sentido!** Porque:
+- Calcular determinantes manualmente para matrizes $3 \times 3$ é trabalhoso.
+- Computacionalmente, é trivial.
+- Ajuda a verificar contas manuais.
+
+## 5. Exercícios Propostos (Manuais)
+
+<details>
+<summary>📗 Exercício 1 (Determinante $2 \times 2$)</summary>
+
+**Enunciado:** Calcule o determinante das seguintes matrizes:
+
+a) $A = \begin{bmatrix} 2 & 3 \\ 4 & 5 \end{bmatrix}$
+
+b) $B = \begin{bmatrix} 1 & 2 \\ 2 & 4 \end{bmatrix}$
+
+c) $C = \begin{bmatrix} 3 & -1 \\ 2 & 4 \end{bmatrix}$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $2 \cdot 5 - 3 \cdot 4 = 10 - 12 = -2$
+
+b) $1 \cdot 4 - 2 \cdot 2 = 4 - 4 = 0$
+
+c) $3 \cdot 4 - (-1) \cdot 2 = 12 + 2 = 14$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 (Determinante $3 \times 3$ – Regra de Sarrus)</summary>
+
+**Enunciado:** Calcule o determinante:
+
+a) $A = \begin{bmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \\ 7 & 8 & 9 \end{bmatrix}$
+
+b) $B = \begin{bmatrix} 2 & 0 & 1 \\ 3 & 1 & 2 \\ 1 & 0 & 3 \end{bmatrix}$
+
+c) $C = \begin{bmatrix} 1 & 0 & 0 \\ 0 & 2 & 0 \\ 0 & 0 & 3 \end{bmatrix}$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\det(A) = 0$ (já calculado)
+
+b) $B = \begin{bmatrix} 2 & 0 & 1 \\ 3 & 1 & 2 \\ 1 & 0 & 3 \end{bmatrix}$
+
+Repetir colunas:
+$$
+\begin{array}{ccc|cc}
+2 & 0 & 1 & 2 & 0 \\
+3 & 1 & 2 & 3 & 1 \\
+1 & 0 & 3 & 1 & 0
+\end{array}
+$$
+
+Diagonais principais:
+- $2 \cdot 1 \cdot 3 = 6$
+- $0 \cdot 2 \cdot 1 = 0$
+- $1 \cdot 3 \cdot 0 = 0$
+Soma: $6$
+
+Diagonais secundárias:
+- $1 \cdot 1 \cdot 1 = 1$
+- $0 \cdot 2 \cdot 3 = 0$
+- $2 \cdot 3 \cdot 0 = 0$
+Soma: $1$
+
+$\det(B) = 6 - 1 = 5$
+
+c) **Matriz diagonal:** o determinante é o **produto dos elementos da diagonal**.
+$\det(C) = 1 \cdot 2 \cdot 3 = 6$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 (Interpretação Geométrica)</summary>
+
+**Enunciado:** A matriz:
+$$
+A = \begin{bmatrix} 2 & 0 \\ 0 & 3 \end{bmatrix}
+$$
+
+a) Calcule $\det(A)$.  
+b) Qual é a área do paralelogramo formado pelos vetores coluna?  
+c) O que isso representa em termos de escala?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\det(A) = 2 \cdot 3 - 0 \cdot 0 = 6$
+
+b) Área = $|\det(A)| = 6$
+
+c) A matriz escala o vetor $(1,0)$ por 2 e $(0,1)$ por 3. A área aumenta por fator 6.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 (Singularidade)</summary>
+
+**Enunciado:** A matriz:
+$$
+A = \begin{bmatrix} 1 & 2 & 3 \\ 2 & 4 & 6 \\ 3 & 6 & 9 \end{bmatrix}
+$$
+
+a) Calcule $\det(A)$.  
+b) A matriz é invertível?  
+c) O que isso diz sobre os vetores coluna?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\det(A) = 0$ (colunas são múltiplas)
+
+b) Não! Determinante zero → singular.
+
+c) Os vetores coluna são linearmente dependentes.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 (Aplicação – Lanchonete)</summary>
+
+**Enunciado:** A lanchonete tem a matriz:
+$$
+A = \begin{bmatrix}
+1 & 1 & 0 \\
+0 & 0 & 1 \\
+1 & 1 & 1
+\end{bmatrix}
+$$
+
+a) Calcule $\det(A)$.  
+b) O que o resultado diz sobre a independência linear dos sanduíches?  
+c) Quantos sanduíches são necessários para gerar o espaço de receitas?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\det(A) = 0$ (já calculado)
+
+b) Os sanduíches são linearmente dependentes.
+
+c) Apenas 2 sanduíches são necessários para gerar o espaço de receitas (dimensão 2).
+
+</details>
+</details>
+
+## EXERCÍCIO COMPUTACIONAL
+
+<details>
+<summary>🐍 Ver código (Python/NumPy)</summary>
+
+```python
+import numpy as np
+
+A = np.array([[1, 2], [3, 4]])
+print("det(A):", np.linalg.det(A))
+
+B = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+print("det(B):", np.linalg.det(B))
+
+C = np.array([[2, 0, 1], [3, 1, 2], [1, 0, 3]])
+print("det(C):", np.linalg.det(C))
+```
+
+</details>
+
+<details>
+<summary>📝 Ver código (R)</summary>
+
+```r
+A <- matrix(c(1, 2, 3, 4), nrow=2)
+print(det(A))
+
+B <- matrix(c(1, 2, 3, 4, 5, 6, 7, 8, 9), nrow=3)
+print(det(B))
+
+C <- matrix(c(2, 3, 1, 0, 1, 0, 1, 2, 3), nrow=3)
+print(det(C))
+```
+
+</details>
+
+<details>
+<summary>📊 Ver instruções (Excel)</summary>
+
+- Use a função `MATRIZ.DETERM` (MDETERM).
+- Exemplo: `=MATRIZ.DETERM(A1:C3)`
+
+</details>
+
+> *O determinante é uma ferramenta fundamental para: verificar se uma matriz é invertível ($\det \neq 0$), verificar se vetores são linearmente independentes, calcular áreas e volumes (interpretação geométrica) e entender autovalores (próximas aulas).*

@@ -1,0 +1,230 @@
+# SÉRIES DE POTÊNCIAS E RAIO DE CONVERGÊNCIA
+
+## 1. Definição
+
+Uma **série de potências** é uma série infinita da forma:
+
+$$
+\sum_{n=0}^{\infty} c_n (x - a)^n = c_0 + c_1(x - a) + c_2(x - a)^2 + c_3(x - a)^3 + \cdots
+$$
+
+Onde:
+- $c_n$ são os **coeficientes** da série (números que podem depender de $n$).
+- $a$ é o **centro** da série (ponto em torno do qual a série é construída).
+- $x$ é a **variável**.
+
+**Exemplos:**
+- $\sum_{n=0}^{\infty} x^n = 1 + x + x^2 + x^3 + \cdots$ → centro $a = 0$, coeficientes $c_n = 1$.
+- $\sum_{n=0}^{\infty} \frac{(x - 2)^n}{n!} = 1 + (x-2) + \frac{(x-2)^2}{2!} + \cdots$ → centro $a = 2$, coeficientes $c_n = \frac{1}{n!}$.
+
+## 2. Raio de Convergência
+
+### 2.1 O que é o Raio de Convergência?
+
+O **raio de convergência** $R$ é um número que define o intervalo onde a série de potências **converge**:
+
+- **Converge** para $|x - a| < R$.
+- **Diverge** para $|x - a| > R$.
+- **Inconclusivo** para $|x - a| = R$ (depende da série).
+
+**Intervalo de convergência:** $(a - R, a + R)$.
+
+### 2.2 Cálculo do Raio de Convergência (Critério da Razão)
+
+$$
+R = \lim_{n \to \infty} \left| \frac{c_n}{c_{n+1}} \right|
+$$
+
+**Observação:** Este critério só funciona se o limite existir.
+
+### 2.3 Cálculo do Raio de Convergência (Critério da Raiz)
+
+$$
+R = \lim_{n \to \infty} \frac{1}{\sqrt[n]{|c_n|}}
+$$
+
+## 3. Exemplos Acadêmicos Passo a Passo
+
+### 3.1 Exemplo 1: Série Geométrica
+
+$$
+\sum_{n=0}^{\infty} x^n
+$$
+
+- Coeficientes: $c_n = 1$.
+- Raio de convergência (Critério da Razão):
+$$
+R = \lim_{n \to \infty} \left| \frac{1}{1} \right| = 1
+$$
+
+- Intervalo de convergência: $(-1, 1)$.
+- **Em $x = 1$:** $\sum 1$ diverge.
+- **Em $x = -1$:** $\sum (-1)^n$ diverge (oscila).
+
+**Conclusão:** A série converge apenas para $|x| < 1$.
+
+### 3.2 Exemplo 2: Série da Exponencial
+
+$$
+\sum_{n=0}^{\infty} \frac{x^n}{n!}
+$$
+
+- Coeficientes: $c_n = \frac{1}{n!}$.
+- Raio de convergência (Critério da Razão):
+$$
+R = \lim_{n \to \infty} \left| \frac{1/n!}{1/(n+1)!} \right| = \lim_{n \to \infty} (n+1) = \infty
+$$
+
+**Conclusão:** A série converge para **todo** $x \in \mathbb{R}$.
+
+### 3.3 Exemplo 3: Série com Centro $a = 2$
+
+$$
+\sum_{n=1}^{\infty} \frac{(x - 2)^n}{n}
+$$
+
+- Coeficientes: $c_n = \frac{1}{n}$.
+- Raio de convergência (Critério da Razão):
+$$
+R = \lim_{n \to \infty} \left| \frac{1/n}{1/(n+1)} \right| = \lim_{n \to \infty} \frac{n+1}{n} = 1
+$$
+
+- Intervalo de convergência: $(1, 3)$.
+- **Em $x = 1$:** $\sum \frac{(-1)^n}{n}$ converge (Leibniz).
+- **Em $x = 3$:** $\sum \frac{1}{n}$ diverge (harmônica).
+
+**Conclusão:** Intervalo de convergência: $[1, 3)$.
+
+### 3.4 Exemplo 4: Raio Zero
+
+$$
+\sum_{n=0}^{\infty} n! x^n
+$$
+
+- Coeficientes: $c_n = n!$.
+- Raio de convergência:
+$$
+R = \lim_{n \to \infty} \left| \frac{n!}{(n+1)!} \right| = \lim_{n \to \infty} \frac{1}{n+1} = 0
+$$
+
+**Conclusão:** A série converge **apenas** em $x = 0$.
+
+## 4. Resumo dos Casos
+
+| $R$ | Significado |
+|---------|-------------|
+| $R = \infty$ | Converge para **todo** $x$ |
+| $0 < R < \infty$ | Converge para $|x - a| < R$ |
+| $R = 0$ | Converge **apenas** em $x = a$ |
+
+## 5. Por que isso é importante para projetos/ML?
+
+### 5.1 Séries de Taylor (Prévia)
+
+As séries de potências são a base para as **séries de Taylor**, usadas para:
+- **Aproximar funções** complexas (ex: $e^x$, $\sin(x)$, $\ln(1+x)$).
+- **Linearizar modelos** não lineares.
+- **Analisar convergência** de algoritmos.
+
+### 5.2 Raio de Convergência em Modelos
+
+O raio de convergência indica **até onde** uma aproximação polinomial é válida. Se o raio é pequeno, a aproximação só funciona perto do centro — o que pode limitar a aplicação do modelo.
+
+### 5.3 Exemplo Prático
+
+Em redes neurais, funções de ativação como $\tanh(x)$ podem ser aproximadas por séries de Taylor. O raio de convergência da série de $\tanh(x)$ é $\frac{\pi}{2}$, o que significa que a aproximação só é boa para $|x| < \frac{\pi}{2}$.
+
+## 6. Exemplo Lúdico – A Lanchonete
+
+A lanchonete tem vendas modeladas por:
+
+$$
+f(x) = \sum_{n=0}^{\infty} x^n = \frac{1}{1 - x}
+$$
+
+**Interpretação:** Se $|x| < 1$, o total de vendas é finito e igual a $\frac{1}{1 - x}$. Se $x$ se aproxima de 1, as vendas explodem (diverge).
+
+## 7. Exercícios Propostos
+
+<details>
+<summary>📗 Exercício 1</summary>
+
+**Enunciado:** Encontre o raio de convergência:
+
+a) $\sum_{n=0}^{\infty} (3x)^n$
+
+b) $\sum_{n=0}^{\infty} \frac{x^n}{n^2}$
+
+c) $\sum_{n=0}^{\infty} n! x^n$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $R = \frac{1}{3}$
+
+b) $R = 1$
+
+c) $R = 0$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2</summary>
+
+**Enunciado:** Determine o intervalo de convergência:
+
+a) $\sum_{n=1}^{\infty} \frac{(x - 1)^n}{n}$
+
+b) $\sum_{n=0}^{\infty} \frac{(x + 2)^n}{n!}$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $R = 1$, intervalo: $[0, 2)$
+
+b) $R = \infty$, intervalo: $(-\infty, \infty)$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 (Aplicação)</summary>
+
+**Enunciado:** A função $f(x) = \frac{1}{1 + x}$ tem série de potências $\sum_{n=0}^{\infty} (-1)^n x^n$.
+
+a) Qual é o raio de convergência?
+
+b) Para quais valores de $x$ a série é válida?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $R = 1$
+
+b) $|x| < 1$ (em $x = 1$ diverge; em $x = -1$ converge condicionalmente)
+
+</details>
+</details>
+
+> *O raio de convergência de uma série de potências é como o alcance de um farol: dentro dele, tudo é claro; fora, tudo é incerteza.*
+
+---
+
+## 🎉 Fim das 4 Aulas sobre Séries (conforme a imagem)!
+
+Agora você tem uma base sólida para aplicar séries em Machine Learning e Federated Learning:
+
+| Aula | Tópico | Aplicação Principal |
+|------|--------|---------------------|
+| 1 | Definição e Série Geométrica | Soma de erros acumulados |
+| 2 | Convergência e Série Harmônica | Análise de estabilidade |
+| 3 | Critérios de Convergência | Classificação de séries |
+| 4 | Séries de Potências | Base para Taylor |
+

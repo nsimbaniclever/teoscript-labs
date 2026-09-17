@@ -1,0 +1,456 @@
+# MÚLTIPLAS INSTRUÇÕES, MÚLTIPLOS DADOS
+
+## 1. INTRODUÇÃO
+
+Na aula anterior, estudamos o SIMD — uma técnica onde uma única instrução opera em múltiplos dados ao mesmo tempo. Vimos que o SIMD é excelente para operações vetoriais, como processamento de áudio, vídeo e machine learning.<br><br>
+
+Mas há um outro tipo de paralelismo, ainda mais poderoso: o **MIMD (Multiple Instruction, Multiple Data)**. No MIMD, múltiplos processadores executam **instruções diferentes** em **dados diferentes** ao mesmo tempo. É o paradigma dos computadores modernos: cada núcleo de um processador multicore executa seu próprio programa, independentemente dos outros.<br><br>
+
+Imagine uma equipe de cozinheiros em um restaurante. Cada cozinheiro tem sua própria receita (instrução) e seus próprios ingredientes (dados). Eles trabalham em paralelo, cada um em seu próprio prato, sem interferir uns nos outros. No final, todos os pratos são servidos juntos. O MIMD funciona exatamente assim.<br><br>
+
+O MIMD é a base de tudo: servidores web que atendem milhões de requisições simultâneas, supercomputadores que simulam o clima, clusters que processam dados científicos, e até mesmo o seu computador com múltiplos núcleos executando diferentes programas ao mesmo tempo.<br><br>
+
+Nesta aula, vamos estudar o MIMD: o que é, como funciona, quais são suas arquiteturas, e como ele se compara ao SIMD e a outros paradigmas de computação.
+
+## 2. O QUE É MIMD?
+
+### 2.1 Definição
+
+> "MIMD (Multiple Instruction, Multiple Data) é um paradigma de computação onde múltiplos processadores executam diferentes instruções em diferentes dados simultaneamente, permitindo paralelismo em nível de tarefas e de dados."
+
+### 2.2 Características principais
+
+| Característica | Descrição |
+|---------|----------|
+| **O que faz** | Múltiplos processadores executam programas diferentes em paralelo |
+| **Unidade de processamento** | Núcleos independentes (CPU, GPU, cluster) |
+| **Comunicação** | Memória compartilhada, troca de mensagens, ou ambas |
+| **Vantagem** | Escalabilidade, execução de múltiplas tarefas simultaneamente |
+| **Uso** | Servidores, supercomputadores, computadores pessoais, clusters |
+
+### 2.3 Analogia
+
+O MIMD é como uma **fábrica com várias linhas de produção independentes**:
+
+- Cada linha tem seu próprio operário (processador).
+- Cada operário tem sua própria tarefa (instrução).
+- Cada tarefa tem seus próprios materiais (dados).
+- As linhas trabalham em paralelo, sem interferência.
+
+## 3. TAXONOMIA DE FLYNN — OS 4 PARADIGMAS
+
+### 3.1 A classificação de Flynn
+
+Em 1966, Michael Flynn propôs uma classificação para sistemas computacionais baseada em duas dimensões:
+
+| | **Único Dado** | **Múltiplos Dados** |
+|---------|---------|---------|
+| **Única Instrução** | SISD (CPU tradicional) | SIMD (SSE, AVX, NEON, GPUs) |
+| **Múltiplas Instruções** | MISD (raro — pipelines, sistemas tolerantes a falhas) | MIMD (Multicore, clusters, supercomputadores) |
+
+### 3.2 Os quatro paradigmas
+
+| Paradigma | Descrição | Exemplo |
+|---------|---------|---------|
+| **SISD** | Uma instrução, um dado | CPU tradicional (sem pipeline, sem SIMD) |
+| **SIMD** | Uma instrução, múltiplos dados | SSE, AVX, NEON, GPUs |
+| **MISD** | Múltiplas instruções, um dado | Pouco usado; pipelines de instruções, sistemas tolerantes a falhas |
+| **MIMD** | Múltiplas instruções, múltiplos dados | Multicore, clusters, supercomputadores |
+
+### 3.3 Diagrama: Os 4 paradigmas
+
+<details>
+<summary> **Os 4 paradigmas da taxonomia de Flynn**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+┌─────────────────────────────────────────────────────────────┐
+│                                                             │
+│   SISD:  CPU tradicional                                   │
+│   ┌─────────────────────────────────────────────────┐     │
+│   │  Instrução 1 → Dado 1                          │     │
+│   │  Instrução 2 → Dado 2                          │     │
+│   │  Instrução 3 → Dado 3                          │     │
+│   └─────────────────────────────────────────────────┘     │
+│                                                             │
+│   SIMD:  SSE, AVX, NEON, GPUs                              │
+│   ┌─────────────────────────────────────────────────┐     │
+│   │  Instrução → Dado 1, Dado 2, Dado 3, Dado 4   │     │
+│   └─────────────────────────────────────────────────┘     │
+│                                                             │
+│   MIMD:  Multicore, Clusters, Supercomputadores           │
+│   ┌─────────────────────────────────────────────────┐     │
+│   │  Instrução 1 → Dado 1                          │     │
+│   │  Instrução 2 → Dado 2                          │     │
+│   │  Instrução 3 → Dado 3                          │     │
+│   │  (Tudo em paralelo)                            │     │
+│   └─────────────────────────────────────────────────┘     │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+    </pre>
+</details>
+
+## 4. ARQUITETURAS MIMD
+
+### 4.1 SMP (Symmetric Multiprocessing)
+
+**SMP (Symmetric Multiprocessing)** é uma arquitetura onde múltiplos processadores compartilham uma **única memória principal** e um **único barramento**.
+
+**Características:**
+- Todos os processadores têm acesso igual à memória (simétrico).
+- Qualquer processador pode executar qualquer tarefa.
+- Comunicação via memória compartilhada.
+
+**Diagrama: SMP**
+
+<details>
+<summary> **Arquitetura SMP**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+┌─────────────────────────────────────────────────────────────┐
+│                                                             │
+│   ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐    │
+│   │  CPU 1  │  │  CPU 2  │  │  CPU 3  │  │  CPU 4  │    │
+│   └─────────┘  └─────────┘  └─────────┘  └─────────┘    │
+│        │             │             │             │         │
+│        └─────────────┴─────────────┴─────────────┘         │
+│                          │                                  │
+│                   ┌──────┴──────┐                         │
+│                   │   Memória   │                         │
+│                   │  Compartilhada│                        │
+│                   └─────────────┘                         │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+    </pre>
+</details>
+
+**Vantagens:**
+- Simples de programar (memória compartilhada).
+- Balanceamento de carga.
+
+**Desvantagens:**
+- Barramento pode ser um gargalo.
+- Escalabilidade limitada (8-16 CPUs típicas).
+
+### 4.2 NUMA (Non-Uniform Memory Access)
+
+**NUMA (Non-Uniform Memory Access)** é uma arquitetura onde cada processador tem sua própria **memória local** (rápida) e pode acessar a memória de outros processadores (mais lenta).
+
+**Características:**
+- Cada CPU tem sua própria memória local.
+- Acesso à memória local é rápido.
+- Acesso à memória remota é mais lento (não uniforme).
+- Escalabilidade maior que SMP.
+
+**Diagrama: NUMA**
+
+<details>
+<summary> **Arquitetura NUMA**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+┌─────────────────────────────────────────────────────────────┐
+│                                                             │
+│   ┌─────────────┐       ┌─────────────┐                   │
+│   │   CPU 1     │       │   CPU 2     │                   │
+│   │  Memória 1  │───────│  Memória 2  │                   │
+│   └─────────────┘       └─────────────┘                   │
+│         │                       │                          │
+│         │                       │                          │
+│   ┌─────────────┐       ┌─────────────┐                   │
+│   │   CPU 3     │       │   CPU 4     │                   │
+│   │  Memória 3  │───────│  Memória 4  │                   │
+│   └─────────────┘       └─────────────┘                   │
+│                                                             │
+│   Cada CPU acessa sua própria memória (rápido)             │
+│   Acesso à memória de outra CPU (mais lento)              │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+    </pre>
+</details>
+
+**Vantagens:**
+- Maior escalabilidade (centenas de CPUs).
+- Menor contenção de barramento.
+
+**Desvantagens:**
+- Mais complexo de programar.
+- Custos de localidade.
+
+### 4.3 Cluster (Agrupamento)
+
+**Cluster** é uma arquitetura onde múltiplos computadores (nós) são conectados por uma rede de alta velocidade.
+
+**Características:**
+- Cada nó é um computador completo (CPU, memória, disco).
+- Comunicação via troca de mensagens (MPI, etc.).
+- Escalabilidade muito alta (milhares de nós).
+
+**Diagrama: Cluster**
+
+<details>
+<summary> **Arquitetura Cluster**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+┌─────────────────────────────────────────────────────────────┐
+│                                                             │
+│   ┌───────────┐  ┌───────────┐  ┌───────────┐            │
+│   │   Nó 1    │  │   Nó 2    │  │   Nó 3    │            │
+│   │ CPU/Mem   │  │ CPU/Mem   │  │ CPU/Mem   │            │
+│   └───────────┘  └───────────┘  └───────────┘            │
+│         │              │              │                     │
+│         └──────────────┼──────────────┘                     │
+│                        │                                    │
+│                 ┌──────┴──────┐                            │
+│                 │   Rede      │                            │
+│                 │  (Ethernet/ │                            │
+│                 │   InfiniBand)│                           │
+│                 └─────────────┘                            │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+    </pre>
+</details>
+
+**Vantagens:**
+- Máxima escalabilidade (milhares de nós).
+- Tolerante a falhas (se um nó falha, outros continuam).
+
+**Desvantagens:**
+- Comunicação mais lenta (rede vs memória).
+- Programação complexa (troca de mensagens).
+
+## 5. SIMD VS MIMD
+
+| Característica | SIMD | MIMD |
+|---------|---------|---------|
+| **Instruções** | Uma única instrução | Múltiplas instruções |
+| **Dados** | Múltiplos dados | Múltiplos dados |
+| **Unidade de controle** | Uma única | Múltiplas |
+| **Exemplo** | SSE, AVX, NEON, GPUs | Multicore, clusters, supercomputadores |
+| **Paralelismo** | Nível de dados | Nível de tarefas |
+| **Escalabilidade** | Limitada (número de dados) | Alta (número de processadores) |
+| **Aplicações** | Processamento de áudio, vídeo, ML | Servidores, simulações, CI/CD |
+
+### 5.1 Exemplo comparativo
+
+**SIMD (soma de 8 números):**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+Uma instrução soma 8 pares em paralelo.
+Executa em 1 ciclo (se os dados estiverem prontos).
+
+[1,2,3,4,5,6,7,8] + [9,10,11,12,13,14,15,16] = [10,12,14,16,18,20,22,24]
+</pre>
+
+**MIMD (soma de 8 números com 2 núcleos):**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+Núcleo 1 soma [1,2,3,4] + [9,10,11,12] = [10,12,14,16]
+Núcleo 2 soma [5,6,7,8] + [13,14,15,16] = [18,20,22,24]
+
+Executa em ~1 ciclo (se ambos os núcleos estiverem livres).
+</pre>
+
+**Comparação:** Ambos produzem o mesmo resultado, mas de formas diferentes.
+
+## 6. APLICAÇÕES DO MIMD
+
+### 6.1 Servidores web
+
+**Exemplo:** Um servidor web com 16 núcleos:
+- Núcleo 1-4: Processam requisições HTTP.
+- Núcleo 5-8: Executam consultas ao banco de dados.
+- Núcleo 9-12: Geram páginas dinâmicas.
+- Núcleo 13-16: Gerenciam cache e sessões.
+
+**Características:** Múltiplas tarefas diferentes em dados diferentes.
+
+### 6.2 Supercomputadores
+
+**Exemplo:** Frontier (exascale):
+- 9.400 nós
+- Cada nó com CPU + GPU
+- Executa diferentes partes de uma simulação climática
+
+### 6.3 Machine Learning (Treinamento)
+
+**Exemplo:** Treinamento de redes neurais:
+- Cada núcleo processa um batch diferente.
+- Gradientes são somados no final.
+- Paralelismo de dados.
+
+### 6.4 Banco de dados
+
+**Exemplo:** Banco de dados com múltiplas consultas simultâneas:
+- Cada consulta é executada em um núcleo diferente.
+- Dados são compartilhados (memória ou disco).
+
+## 7. DESAFIOS DO MIMD
+
+### 7.1 Comunicação
+
+| Desafio | Explicação |
+|---------|----------|
+| **Coerência de cache** | Garantir que múltiplos núcleos vejam a mesma versão dos dados |
+| **Sincronização** | Garantir que acessos concorrentes sejam ordenados |
+| **Latência** | Acesso à memória remota em NUMA é mais lento |
+
+### 7.2 Programação
+
+| Desafio | Explicação |
+|---------|----------|
+| **Deadlocks** | Múltiplos núcleos esperando uns pelos outros |
+| **Race conditions** | Acesso concorrente a dados compartilhados |
+| **Escalabilidade** | Nem todo algoritmo escala bem com mais núcleos |
+
+### 7.3 Lei de Amdahl
+
+A Lei de Amdahl define o ganho máximo de um sistema paralelo:
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+Speedup = 1 / (s + (1-s)/n)
+
+Onde:
+- s = fração sequencial do programa
+- n = número de processadores
+</pre>
+
+**Exemplo:**
+- Se 10% do programa é sequencial (s=0.1), mesmo com 1000 núcleos, o speedup máximo é 10x.
+- Se 5% é sequencial (s=0.05), com 1000 núcleos, o speedup máximo é 20x.
+
+**Conclusão:** A parte sequencial do programa limita o ganho do paralelismo.
+
+## 8. EXERCÍCIOS
+
+<details>
+<summary>📗 Exercício 1 — O que é MIMD? (Fácil)</summary>
+
+**Enunciado:** Defina o que é MIMD.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** MIMD (Multiple Instruction, Multiple Data) é um paradigma onde múltiplos processadores executam diferentes instruções em diferentes dados simultaneamente.
+
+**Explicação:** É o paradigma dos processadores multicore, clusters e supercomputadores.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Taxonomia de Flynn (Fácil)</summary>
+
+**Enunciado:** Cite os 4 paradigmas da taxonomia de Flynn e dê um exemplo de cada.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+1. **SISD:** CPU tradicional (uma instrução, um dado)
+2. **SIMD:** SSE, AVX, NEON (uma instrução, múltiplos dados)
+3. **MISD:** Raro, pipelines de instruções (múltiplas instruções, um dado)
+4. **MIMD:** Multicore, clusters (múltiplas instruções, múltiplos dados)
+
+**Explicação:** Flynn classificou sistemas computacionais em 4 categorias baseadas no fluxo de instruções e dados.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — SMP vs NUMA (Médio)</summary>
+
+**Enunciado:** Qual a diferença entre SMP e NUMA?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+- **SMP:** Todos os processadores compartilham uma única memória. Acesso uniforme.
+- **NUMA:** Cada processador tem memória local. Acesso à memória local é mais rápido que à remota.
+
+**Explicação:** NUMA escala melhor que SMP, mas é mais complexo de programar.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — SIMD vs MIMD (Médio)</summary>
+
+**Enunciado:** Qual a principal diferença entre SIMD e MIMD?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+- **SIMD:** Uma única instrução opera em múltiplos dados. Uma unidade de controle.
+- **MIMD:** Múltiplas instruções operam em múltiplos dados. Múltiplas unidades de controle.
+
+**Explicação:** SIMD é paralelismo de dados; MIMD é paralelismo de tarefas (e dados).
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Lei de Amdahl (Difícil)</summary>
+
+**Enunciado:** O que é a Lei de Amdahl e qual sua importância para sistemas MIMD?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** A Lei de Amdahl define o speedup máximo de um sistema paralelo:
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+Speedup = 1 / (s + (1-s)/n)
+</pre>
+onde s é a fração sequencial do programa e n é o número de processadores.
+
+**Importância:** Mostra que a parte sequencial do programa limita o ganho do paralelismo. Mesmo com muitos processadores, o speedup é limitado pela fração sequencial.
+
+**Exemplo:** Se 10% do programa é sequencial (s=0.1), o speedup máximo é 10x, independente do número de processadores.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Cluster (Médio)</summary>
+
+**Enunciado:** O que é um cluster e quais suas vantagens?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Cluster é uma arquitetura onde múltiplos computadores (nós) são conectados por uma rede de alta velocidade.
+
+**Vantagens:**
+1. **Escalabilidade:** Milhares de nós podem ser adicionados.
+2. **Tolerância a falhas:** Se um nó falha, outros continuam.
+
+**Explicação:** Clusters são usados em supercomputadores, servidores web e data centers.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — Coerência de cache (Difícil)</summary>
+
+**Enunciado:** O que é coerência de cache e por que é um desafio em sistemas MIMD?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Coerência de cache é o problema de garantir que múltiplos núcleos vejam a mesma versão dos dados, mesmo quando cada um tem sua própria cache.
+
+**Desafio:** Se o núcleo 1 escreve na posição X, o núcleo 2 precisa ver o valor atualizado, não o antigo em sua cache.
+
+**Solução:** Protocolos de coerência (ex: MESI) mantêm as caches sincronizadas.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — Escalabilidade (Desafio)</summary>
+
+**Enunciado:** Por que nem todo algoritmo escala bem com o número de núcleos em um sistema MIMD?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Escalabilidade é limitada por:
+1. **Comunicação:** Quanto mais núcleos, mais comunicação é necessária.
+2. **Lei de Amdahl:** A parte sequencial do programa limita o ganho.
+3. **Contenção:** Acessos concorrentes a recursos compartilhados (memória, barramento) causam gargalos.
+4. **Overhead:** Gerenciar múltiplos núcleos tem custo.
+
+**Exemplo:** Um algoritmo que requer sincronização frequente pode piorar com mais núcleos.
+</details>
+</details>
+
+> O MIMD é o paradigma da computação moderna. Múltiplos processadores executando diferentes instruções em diferentes dados — é assim que servidores atendem milhões de requisições, supercomputadores simulam o clima, e seu computador executa vários programas ao mesmo tempo. O MIMD é a base de tudo que é paralelo hoje em dia. De computadores pessoais com 8 núcleos a supercomputadores com milhões de núcleos, o MIMD permite que sistemas executem múltiplas tarefas simultaneamente. Embora apresente desafios — comunicação, sincronização, coerência de cache — é o paradigma mais importante para a computação de alto desempenho.

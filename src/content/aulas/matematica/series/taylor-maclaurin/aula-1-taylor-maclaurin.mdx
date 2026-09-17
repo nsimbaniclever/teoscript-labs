@@ -1,0 +1,232 @@
+# SÉRIES DE TAYLOR 
+
+## SÉRIES DE TAYLOR E MACLAURIN
+
+## 1. Definição
+
+### 1.1 Série de Taylor
+
+A **Série de Taylor** de uma função $f(x)$ em torno do ponto $x = a$ é:
+
+$$
+f(x) = \sum_{n=0}^{\infty} \frac{f^{(n)}(a)}{n!} (x - a)^n
+$$
+
+Onde $f^{(n)}(a)$ é a **n-ésima derivada** de $f$ avaliada em $a$.
+
+### 1.2 Série de Maclaurin
+
+A **Série de Maclaurin** é o caso especial da Série de Taylor com $a = 0$:
+
+$$
+f(x) = \sum_{n=0}^{\infty} \frac{f^{(n)}(0)}{n!} x^n
+$$
+
+## 2. Séries de Taylor Clássicas (Maclaurin)
+
+| Função | Série de Taylor (Maclaurin) | Raio de Convergência |
+|--------|-----------------------------|----------------------|
+| $e^x$ | $\sum_{n=0}^{\infty} \frac{x^n}{n!} = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \cdots$ | $\infty$ |
+| $\sin(x)$ | $\sum_{n=0}^{\infty} \frac{(-1)^n x^{2n+1}}{(2n+1)!} = x - \frac{x^3}{3!} + \frac{x^5}{5!} - \cdots$ | $\infty$ |
+| $\cos(x)$ | $\sum_{n=0}^{\infty} \frac{(-1)^n x^{2n}}{(2n)!} = 1 - \frac{x^2}{2!} + \frac{x^4}{4!} - \cdots$ | $\infty$ |
+| $\frac{1}{1-x}$ | $\sum_{n=0}^{\infty} x^n = 1 + x + x^2 + x^3 + \cdots$ | $1$ |
+| $\ln(1+x)$ | $\sum_{n=1}^{\infty} \frac{(-1)^{n+1} x^n}{n} = x - \frac{x^2}{2} + \frac{x^3}{3} - \cdots$ | $1$ |
+| $\arctan(x)$ | $\sum_{n=0}^{\infty} \frac{(-1)^n x^{2n+1}}{2n+1} = x - \frac{x^3}{3} + \frac{x^5}{5} - \cdots$ | $1$ |
+
+## 3. Exemplos Passo a Passo
+
+### 3.1 Exemplo 1: Série de Taylor de $e^x$ em $a = 0$
+
+**Passo 1:** Calcular as derivadas:
+- $f(0) = e^0 = 1$
+- $f'(0) = e^0 = 1$
+- $f''(0) = e^0 = 1$
+- $f'''(0) = e^0 = 1$
+- ... todas as derivadas são 1.
+
+**Passo 2:** Aplicar a fórmula:
+$$
+e^x = \sum_{n=0}^{\infty} \frac{1}{n!} x^n = 1 + x + \frac{x^2}{2!} + \frac{x^3}{3!} + \cdots
+$$
+
+**Raio de convergência:** $\infty$ (converge para todo $x$).
+
+### 3.2 Exemplo 2: Série de Taylor de $\sin(x)$ em $a = 0$
+
+**Passo 1:** Calcular as derivadas em $0$:
+- $f(0) = \sin(0) = 0$
+- $f'(0) = \cos(0) = 1$
+- $f''(0) = -\sin(0) = 0$
+- $f'''(0) = -\cos(0) = -1$
+- $f^{(4)}(0) = \sin(0) = 0$
+
+**Passo 2:** Aplicar a fórmula:
+$$
+\sin(x) = x - \frac{x^3}{3!} + \frac{x^5}{5!} - \frac{x^7}{7!} + \cdots
+$$
+
+**Raio de convergência:** $\infty$.
+
+### 3.3 Exemplo 3: Série de Taylor de $\ln(1+x)$ em $a = 0$
+
+**Passo 1:** Calcular as derivadas em $0$:
+- $f(0) = \ln(1) = 0$
+- $f'(0) = \frac{1}{1+0} = 1$
+- $f''(0) = -\frac{1}{(1+0)^2} = -1$
+- $f'''(0) = \frac{2}{(1+0)^3} = 2$
+- $f^{(4)}(0) = -\frac{6}{(1+0)^4} = -6$
+
+**Passo 2:** Aplicar a fórmula:
+$$
+\ln(1+x) = x - \frac{x^2}{2} + \frac{x^3}{3} - \frac{x^4}{4} + \cdots
+$$
+
+**Raio de convergência:** $1$.
+
+## 4. Aproximações por Taylor
+
+Na prática, usamos **aproximações finitas** (polinômios de Taylor).
+
+### 4.1 Aproximação Linear (1ª ordem)
+
+$$
+f(x) \approx f(a) + f'(a)(x - a)
+$$
+
+### 4.2 Aproximação Quadrática (2ª ordem)
+
+$$
+f(x) \approx f(a) + f'(a)(x - a) + \frac{f''(a)}{2}(x - a)^2
+$$
+
+### 4.3 Exemplo: Aproximação de $e^x$ em $a = 0$
+
+- Linear: $e^x \approx 1 + x$
+- Quadrática: $e^x \approx 1 + x + \frac{x^2}{2}$
+- Cúbica: $e^x \approx 1 + x + \frac{x^2}{2} + \frac{x^3}{6}$
+
+**Teste numérico:** Para $x = 0.1$:
+- Linear: $1.1$
+- Quadrática: $1.105$
+- Cúbica: $1.105166$
+- Valor real: $1.105170$
+
+## 5. Por que isso é importante para projetos/ML?
+
+### 5.1 Aproximação de Funções de Ativação
+
+Em redes neurais, funções como $\tanh(x)$ e $\sigma(x)$ podem ser aproximadas por séries de Taylor para:
+- **Reduzir custo computacional**.
+- **Simplificar o cálculo** em dispositivos com pouca capacidade.
+
+### 5.2 Análise de Convergência do Gradiente Descendente
+
+A expansão de Taylor da função de perda $L(w)$ em torno do mínimo $w^*$ é usada para:
+- Determinar a **taxa de convergência**.
+- Analisar a **estabilidade** do algoritmo.
+
+$$
+L(w) \approx L(w^*) + \frac{1}{2}(w - w^*)^T H (w - w^*)
+$$
+
+### 5.3 Otimização (Método de Newton)
+
+O Método de Newton usa a expansão de Taylor até **2ª ordem** para encontrar o mínimo de uma função.
+
+## 6. Exemplo Lúdico – A Lanchonete
+
+A lanchonete tem um custo modelado por:
+
+$$
+C(x) = e^{0.1x}
+$$
+
+**Aproximação linear em $a = 0$:**
+
+$$
+C(x) \approx 1 + 0.1x
+$$
+
+**Interpretação:** Para pequenas quantidades, o custo cresce linearmente.
+
+**Aproximação quadrática:**
+
+$$
+C(x) \approx 1 + 0.1x + \frac{0.01x^2}{2}
+$$
+
+**Interpretação:** Para quantidades maiores, a curvatura começa a aparecer.
+
+## 7. Exercícios Propostos
+
+<details>
+<summary>📗 Exercício 1</summary>
+
+**Enunciado:** Calcule a série de Maclaurin até a 3ª ordem:
+
+a) $f(x) = \cos(x)$
+
+b) $f(x) = \frac{1}{1-x}$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\cos(x) \approx 1 - \frac{x^2}{2!} + \frac{x^4}{4!}$
+
+b) $\frac{1}{1-x} \approx 1 + x + x^2 + x^3$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2</summary>
+
+**Enunciado:** Aproxime $\sqrt{1.1}$ usando a série de Taylor de $\sqrt{1+x}$ em $a = 0$ (até 2ª ordem).
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+$\sqrt{1+x} \approx 1 + \frac{x}{2} - \frac{x^2}{8}$
+
+Para $x = 0.1$: $\approx 1 + 0.05 - 0.00125 = 1.04875$ (real ≈ 1.04881)
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 (Aplicação)</summary>
+
+**Enunciado:** A função de perda é $L(w) = e^{w}$. Use a expansão de Taylor em $w = 0$ para aproximar $L(0.1)$.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+$L(w) \approx 1 + w + \frac{w^2}{2}$
+
+$L(0.1) \approx 1 + 0.1 + 0.005 = 1.105$ (real ≈ 1.10517)
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4</summary>
+
+**Enunciado:** Encontre o raio de convergência da série de Taylor de $\ln(1+x)$.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+$R = 1$
+
+</details>
+</details>
+
+> *A Série de Taylor transforma funções complexas em polinômios simples, permitindo que máquinas entendam o que a natureza esconde.*

@@ -1,0 +1,472 @@
+# Teorema Central do Limite `(Lindeberg-Feller)`
+
+## O que é a Versão Generalizada do TCL?
+
+Na aula anterior, estudamos o Teorema Central do Limite na sua versão clássica (Lindeberg-Lévy), que exige que as variáveis sejam **independentes e identicamente distribuídas** (i.i.d.). Mas na prática, nem sempre as variáveis têm a mesma distribuição.
+
+Pense em situações como:
+
+- O retorno de diferentes ações em um portfólio (cada ação tem sua própria volatilidade).
+- Medições feitas por diferentes instrumentos (cada um com sua própria precisão).
+- Dados coletados em diferentes períodos (a variância pode mudar ao longo do tempo).
+- Modelos de regressão com heterocedasticidade (a variância do erro não é constante).
+
+A versão generalizada do TCL, desenvolvida por Lindeberg e Feller, relaxa a condição de que as variáveis sejam identicamente distribuídas. Ela diz que, mesmo com distribuições diferentes, a soma padronizada ainda converge para uma Normal, desde que **nenhuma variável domine a variância total**.
+
+**Em palavras simples:**
+
+Se você tem muitas variáveis independentes (mas não necessariamente com a mesma distribuição), e cada uma contribui com uma parcela pequena da variância total, então a soma padronizada ainda será aproximadamente Normal.
+
+## Condições de Lindeberg
+
+A condição de Lindeberg é a condição fundamental para o TCL generalizado. Ela garante que nenhuma variável individual tenha um peso excessivo na variância total.
+
+**Enunciado da condição de Lindeberg:**
+
+Seja $X_1, X_2, \dots, X_n$ uma sequência de variáveis aleatórias independentes (não necessariamente i.i.d.) com:
+
+$$E[X_i] = \mu_i$$
+$$Var(X_i) = \sigma_i^2 < \infty$$
+
+Defina:
+
+$$S_n = \sum_{i=1}^n X_i$$\
+$$s_n^2 = \sum_{i=1}^n \sigma_i^2 = Var(S_n)$$
+
+A condição de Lindeberg é: para todo $\varepsilon > 0$:
+
+>> $$\frac{1}{s_n^2} \sum_{i=1}^n E\left[(X_i - \mu_i)^2 \cdot \mathbf{1}_{\{|X_i - \mu_i| > \varepsilon s_n\}}\right] \to 0$$
+
+**O que isso significa na prática?**
+
+A condição diz que, para qualquer $\varepsilon > 0$, a contribuição das variáveis que estão a mais de $\varepsilon s_n$ da sua média é desprezível em comparação com a variância total. Em outras palavras, **nenhuma variável pode ter um efeito desproporcional na soma**.
+
+**Interpretação intuitiva:**
+
+Imagine que você está somando muitas contribuições pequenas. Se uma delas for enorme comparada às outras, ela pode dominar a soma e a distribuição não será Normal. A condição de Lindeberg garante que todas as contribuições são "pequenas" em relação ao total.
+
+## Condição de Feller
+
+A condição de Feller é uma condição relacionada, frequentemente usada em conjunto com a condição de Lindeberg.
+
+**Enunciado da condição de Feller:**
+
+>> $$\max_{1 \le i \le n} \frac{\sigma_i^2}{s_n^2} \to 0$$
+
+**O que isso significa na prática?**
+
+A condição de Feller diz que a maior variância individual é desprezível em comparação com a variância total. Ou seja, **nenhuma variável domina a variância total**.
+
+**Relação entre as condições:**
+
+- A condição de Lindeberg implica a condição de Feller (mas a recíproca não é verdadeira).
+- A condição de Feller é mais fraca e mais fácil de verificar.
+- Para que o TCL generalize, precisamos essencialmente que **nenhuma variável domine** a soma.
+
+## Enunciado Formal do TCL de Lindeberg-Feller
+
+Se $X_1, X_2, \dots, X_n$ são variáveis aleatórias independentes (não necessariamente i.i.d.) com:
+
+$$E[X_i] = \mu_i$$
+$$Var(X_i) = \sigma_i^2 < \infty$$
+
+Defina:
+
+$$S_n = \sum_{i=1}^n X_i$$
+$$s_n^2 = \sum_{i=1}^n \sigma_i^2$$
+
+Se a condição de Lindeberg é satisfeita, então:
+
+>> $$Z_n = \frac{S_n - E[S_n]}{s_n} = \frac{\sum_{i=1}^n (X_i - \mu_i)}{s_n} \xrightarrow{d} N(0, 1)$$
+
+Ou seja, a soma padronizada converge em distribuição para uma Normal padrão.
+
+**Observação:** Se a condição de Lindeberg é satisfeita, a condição de Feller também é satisfeita. No entanto, existem casos onde a condição de Feller é satisfeita mas a de Lindeberg não, e o TCL ainda pode valer sob condições mais gerais.
+
+## Comparação entre as Versões Clássica e Generalizada
+
+| Aspecto | Versão Clássica (Lindeberg-Lévy) | Versão Generalizada (Lindeberg-Feller) |
+| --- | --- | --- |
+| Distribuição | Identicamente distribuídas | Podem ser diferentes |
+| Independência | Sim | Sim |
+| Condição | Variância finita | Condição de Lindeberg |
+| Aplicação | Amostras i.i.d. | Modelos com variâncias heterogêneas |
+| Facilidade | Mais simples | Mais complexa |
+
+**Quando usar cada versão:**
+
+- **Versão Clássica:** Quando os dados vêm da mesma população (amostragem aleatória simples).
+- **Versão Generalizada:** Quando os dados vêm de populações diferentes (ex: diferentes grupos, diferentes períodos, diferentes instrumentos).
+
+## Exemplos de Aplicação
+
+### Exemplo 1: Médias de diferentes grupos
+
+Suponha que você tem 5 grupos com médias e variâncias diferentes. Cada grupo tem tamanho diferente.
+
+**Situação:** Você quer testar se a média geral é igual a um valor específico.
+
+**Aplicação do TCL generalizado:** Cada observação tem sua própria distribuição (dependendo do grupo). A condição de Lindeberg garante que, se nenhum grupo dominar, a média geral segue uma Normal.
+
+**Exemplo numérico:**
+
+- Grupo 1: $n_1 = 30$, $\mu_1 = 10$, $\sigma_1 = 2$
+- Grupo 2: $n_2 = 20$, $\mu_2 = 12$, $\sigma_2 = 3$
+- Grupo 3: $n_3 = 50$, $\mu_3 = 11$, $\sigma_3 = 2,5$
+
+A média geral é uma combinação ponderada. O TCL generalizado se aplica se nenhum grupo dominar a variância total.
+
+### Exemplo 2: Séries temporais com volatilidade variável
+
+Em finanças, a volatilidade dos retornos de ativos pode mudar ao longo do tempo. Em períodos de crise, a variância aumenta.
+
+**Situação:** Você quer modelar o retorno total de um portfólio ao longo de vários períodos.
+
+**Aplicação do TCL generalizado:** Cada período tem sua própria variância (volatilidade). A condição de Lindeberg garante que o retorno total seja aproximadamente Normal, desde que nenhum período domine.
+
+**Exemplo numérico:**
+
+- Período 1: $\sigma_1 = 0,01$ (baixa volatilidade)
+- Período 2: $\sigma_2 = 0,05$ (alta volatilidade)
+- Período 3: $\sigma_3 = 0,02$ (volatilidade média)
+
+O TCL generalizado se aplica se a variância total for dominada por muitos períodos, não por um único.
+
+### Exemplo 3: Regressão com heterocedasticidade
+
+Em um modelo de regressão, a variância do erro pode não ser constante (heterocedasticidade).
+
+**Situação:** Você está estimando os coeficientes de uma regressão e quer fazer inferência.
+
+**Aplicação do TCL generalizado:** Cada observação tem sua própria variância do erro. A condição de Lindeberg garante que os estimadores sejam assintoticamente Normais.
+
+**Exemplo numérico:**
+
+- Observação 1: $Var(\varepsilon_1) = 1$
+- Observação 2: $Var(\varepsilon_2) = 4$
+- Observação 3: $Var(\varepsilon_3) = 9$
+
+O TCL generalizado se aplica se nenhuma observação tiver variância excessivamente grande comparada às outras.
+
+### Exemplo 4: Dados de diferentes instrumentos
+
+Você está medindo uma quantidade usando diferentes instrumentos, cada um com sua própria precisão.
+
+**Situação:** Você quer estimar a média da quantidade.
+
+**Aplicação do TCL generalizado:** Cada instrumento tem sua própria variância. A condição de Lindeberg garante que a média ponderada seja aproximadamente Normal.
+
+**Exemplo numérico:**
+
+- Instrumento 1: $\sigma_1 = 0,1$
+- Instrumento 2: $\sigma_2 = 0,2$
+- Instrumento 3: $\sigma_3 = 0,5$
+
+O TCL generalizado se aplica se o instrumento 3 não dominar a variância total.
+
+### Exemplo 5: Ensaios clínicos com diferentes centros
+
+Em um ensaio clínico multicêntrico, diferentes centros podem ter diferentes variabilidades.
+
+**Situação:** Você quer testar a eficácia de um tratamento.
+
+**Aplicação do TCL generalizado:** Cada centro tem sua própria variância. A condição de Lindeberg garante que a estatística de teste seja aproximadamente Normal.
+
+**Exemplo numérico:**
+
+- Centro 1: $\sigma_1 = 1,2$
+- Centro 2: $\sigma_2 = 1,5$
+- Centro 3: $\sigma_3 = 2,0$
+
+O TCL generalizado se aplica se nenhum centro dominar a variância total.
+
+## Quando a Condição de Lindeberg Falha
+
+A condição de Lindeberg falha quando **uma variável domina a variância total**. Isso acontece quando:
+
+1. **Uma variável tem variância muito maior que as outras.** Por exemplo, se $\sigma_1^2 = 1000$ e as outras são 1, 1, 1, ..., a variável 1 domina.
+
+2. **O número de variáveis é pequeno.** Se $n = 2$, a condição de Lindeberg não pode ser satisfeita porque uma das variáveis sempre terá peso significativo.
+
+3. **Distribuições com caudas extremamente pesadas.** Se uma distribuição tem caudas tão pesadas que a variância não é finita, o TCL não se aplica.
+
+**Exemplo onde a condição de Lindeberg falha:**
+
+Suponha que $X_1 \sim N(0, 1000)$ e $X_2, X_3, \dots, X_n \sim N(0, 1)$. A variável $X_1$ domina completamente a variância total. A soma padronizada será dominada por $X_1$, e a distribuição não será Normal (será aproximadamente Normal com variância grande, mas isso não é o que o TCL diz).
+
+### Analogia 1: A orquestra
+
+Imagine uma orquestra com muitos músicos. Cada músico toca seu instrumento com uma certa intensidade (variância). Se todos os músicos tocam com intensidades semelhantes, o som total se aproxima de um "som Normal" (bem equilibrado). Se um músico (por exemplo, o trompete) toca muito mais alto que todos os outros, o som total é dominado pelo trompete - não é mais um som equilibrado. A condição de Lindeberg garante que nenhum músico domine.
+
+### Analogia 2: A cesta de frutas
+
+Você tem uma cesta com muitas frutas. Cada fruta tem um peso diferente (variância). Se todas as frutas têm pesos parecidos, o peso total segue aproximadamente uma Normal. Se uma fruta (por exemplo, uma melancia) pesa muito mais que todas as outras, o peso total é dominado pela melancia. A condição de Lindeberg garante que nenhuma fruta domine.
+
+### Analogia 3: Os alunos da turma
+
+Em uma turma, cada aluno tem uma nota com uma certa variabilidade. Se todos os alunos têm variabilidades parecidas, a média da turma segue uma Normal. Se um aluno tem notas extremamente variáveis (tira 0 ou 10 alternadamente), ele pode dominar a variância da turma. A condição de Lindeberg garante que nenhum aluno domine.
+
+### Analogia 4: Os investimentos
+
+Em um portfólio de investimentos, cada ativo tem sua própria volatilidade. Se todos os ativos têm volatilidades parecidas, o retorno do portfólio segue uma Normal. Se um ativo é extremamente volátil, ele pode dominar o risco do portfólio. A condição de Lindeberg garante que nenhum ativo domine.
+
+### Analogia 5: As medições
+
+Em um experimento, você faz várias medições com diferentes instrumentos. Cada instrumento tem sua própria precisão. Se todos os instrumentos têm precisões parecidas, a média das medições segue uma Normal. Se um instrumento é muito impreciso, ele pode dominar o erro total. A condição de Lindeberg garante que nenhum instrumento domine.
+
+## Exemplos Práticos com Cálculos Passo a Passo
+
+### Exemplo 1: Verificando a Condição de Lindeberg
+
+Suponha que $X_1 \sim N(0, 1)$, $X_2 \sim N(0, 4)$ e $X_3 \sim N(0, 9)$. Verifique se a condição de Lindeberg é satisfeita para $n = 3$.
+
+**Resolução:**
+
+$s_n^2 = 1 + 4 + 9 = 14$.
+
+Para $\varepsilon = 0,1$: precisamos verificar se $\frac{E[(X_i - \mu_i)^2 \cdot \mathbf{1}_{|X_i - \mu_i| > \varepsilon s_n}]}{14} \to 0$.
+
+$\varepsilon s_n = 0,1 \cdot \sqrt{14} \approx 0,374$.
+
+$P(|X_1| > 0,374) \approx 0,709$. A contribuição de $X_1$ não é desprezível.
+
+Como $n = 3$ é pequeno, a condição de Lindeberg não é satisfeita.
+
+**Interpretação:** Com apenas 3 variáveis, não podemos garantir a convergência para a Normal. Uma das variáveis (especialmente $X_3$) tem peso significativo.
+
+### Exemplo 2: Tamanho de amostra necessário
+
+Suponha que $X_1 \sim N(0, 1)$ e $X_2, \dots, X_n \sim N(0, 0,01)$. Qual $n$ é necessário para que a condição de Lindeberg seja satisfeita?
+
+**Resolução:**
+
+$s_n^2 = 1 + 0,01(n-1) = 0,01n + 0,99$.
+
+Para $\varepsilon = 0,1$: $\varepsilon s_n = 0,1 \cdot \sqrt{0,01n + 0,99}$.
+
+Queremos que $P(|X_1| > \varepsilon s_n)$ seja pequeno.
+
+Para $n = 100$: $s_n^2 = 1 + 0,99 = 1,99$, $s_n \approx 1,411$. $\varepsilon s_n \approx 0,141$.
+$P(|X_1| > 0,141) \approx 0,888$ (muito grande).
+
+Para $n = 10000$: $s_n^2 = 1 + 99,99 = 100,99$, $s_n \approx 10,05$. $\varepsilon s_n \approx 1,005$.
+$P(|X_1| > 1,005) \approx 0,315$ (ainda significativo).
+
+Para $n = 1.000.000$: $s_n^2 \approx 10000$, $s_n \approx 100$. $\varepsilon s_n \approx 10$.
+$P(|X_1| > 10) \approx 0$ (praticamente zero).
+
+**Interpretação:** Para que $X_1$ seja "desprezível", precisamos de um número muito grande de variáveis com variância pequena. Isso mostra que a condição de Lindeberg pode exigir $n$ muito grande quando as variâncias são muito diferentes.
+
+### Exemplo 3: Aplicação em regressão
+
+Em um modelo de regressão, os erros têm variâncias $\sigma_i^2$. Suponha que $\sigma_i^2 = i$ para $i = 1, \dots, n$. Verifique a condição de Feller.
+
+**Resolução:**
+
+$s_n^2 = \sum_{i=1}^n i = \frac{n(n+1)}{2} \approx \frac{n^2}{2}$.
+$\max \sigma_i^2 = n$.
+
+$\frac{\max \sigma_i^2}{s_n^2} = \frac{n}{n(n+1)/2} = \frac{2}{n+1} \to 0$.
+
+**Interpretação:** A condição de Feller é satisfeita. Nenhuma observação domina a variância total, pois a variância máxima cresce como $n$, enquanto a variância total cresce como $n^2$.
+
+### Exemplo 4: Aplicação em séries temporais
+
+Em uma série temporal, a volatilidade é $\sigma_t^2 = 1$ para $t = 1, \dots, n/2$ e $\sigma_t^2 = 100$ para $t = n/2+1, \dots, n$. Verifique a condição de Feller.
+
+**Resolução:**
+
+$s_n^2 = \frac{n}{2} \cdot 1 + \frac{n}{2} \cdot 100 = 50,5n$.
+$\max \sigma_t^2 = 100$.
+
+$\frac{\max \sigma_t^2}{s_n^2} = \frac{100}{50,5n} \to 0$.
+
+**Interpretação:** A condição de Feller é satisfeita. Nenhum período domina a variância total, pois a variância máxima é constante, enquanto a variância total cresce com $n$.
+
+### Exemplo 5: Comparação com a versão clássica
+
+Suponha que $X_1, \dots, X_n$ são i.i.d. com variância $\sigma^2$. Mostre que a condição de Lindeberg é satisfeita.
+
+**Resolução:**
+
+$s_n^2 = n\sigma^2$.
+
+Para qualquer $\varepsilon > 0$, $\varepsilon s_n = \varepsilon\sigma\sqrt{n}$.
+
+$E[(X_i - \mu)^2 \cdot \mathbf{1}_{|X_i - \mu| > \varepsilon s_n}] = E[(X_i - \mu)^2 \cdot \mathbf{1}_{|X_i - \mu| > \varepsilon\sigma\sqrt{n}}]$.
+
+Como a variância é finita, $E[(X_i - \mu)^2 \cdot \mathbf{1}_{|X_i - \mu| > M}] \to 0$ quando $M \to \infty$.
+
+Então: $\frac{n \cdot E[(X_i - \mu)^2 \cdot \mathbf{1}_{|X_i - \mu| > \varepsilon\sigma\sqrt{n}}]}{n\sigma^2} \to 0$.
+
+**Interpretação:** A condição de Lindeberg é satisfeita para variáveis i.i.d. com variância finita. Isso confirma que a versão clássica é um caso particular da versão generalizada.
+
+## Quando Usar a Versão Generalizada
+
+A versão generalizada do TCL é usada quando:
+
+1. **As variâncias não são constantes.** Por exemplo, em modelos de regressão com heterocedasticidade.
+
+2. **As distribuições são diferentes.** Por exemplo, dados de diferentes grupos ou diferentes períodos.
+
+3. **Você está modelando séries temporais** com volatilidade variável.
+
+4. **Você está trabalhando com dados de diferentes fontes** (diferentes instrumentos, diferentes centros de pesquisa).
+
+5. **Você está fazendo inferência em modelos com variâncias heterogêneas.**
+
+**Exemplos de aplicações:**
+
+- Modelos de regressão com heterocedasticidade.
+- Séries temporais financeiras.
+- Ensaios clínicos multicêntricos.
+- Meta-análise (combinação de estudos com variâncias diferentes).
+- Modelos de efeitos mistos.
+
+## Limitações da Versão Generalizada
+
+A versão generalizada tem limitações:
+
+1. **Condição de Lindeberg é difícil de verificar.** Na prática, muitas vezes assumimos que ela é satisfeita.
+
+2. **A convergência pode ser lenta.** Se as variâncias são muito diferentes, pode ser necessário um $n$ muito grande.
+
+3. **Não se aplica a dependências.** As variáveis ainda precisam ser independentes.
+
+4. **Não se aplica a variâncias infinitas.** Se alguma variância é infinita, o TCL não se aplica.
+
+## Exercícios Resolvidos (Níveis Crescentes de Dificuldade)
+
+### Exercício 1 (Fácil)
+
+Suponha que $X_1 \sim N(0, 1)$, $X_2 \sim N(0, 2)$, $X_3 \sim N(0, 3)$. Calcule $s_n^2$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$s_n^2 = 1 + 2 + 3 = 6$.
+
+**Resposta:** 6.
+
+</details>
+
+### Exercício 2 (Fácil/Médio)
+
+Suponha que $X_1 \sim N(0, 1)$ e $X_2, \dots, X_n \sim N(0, 1/n)$. Verifique a condição de Feller.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$s_n^2 = 1 + (n-1)/n = 1 + 1 - 1/n = 2 - 1/n$.
+$\max \sigma_i^2 = 1$ (pois $\sigma_1^2 = 1$).
+
+$\frac{\max \sigma_i^2}{s_n^2} = \frac{1}{2 - 1/n} \to \frac{1}{2} \ne 0$.
+
+**Interpretação:** A condição de Feller não é satisfeita. A variável $X_1$ tem peso 1/2 na variância total.
+
+**Resposta:** Não é satisfeita.
+
+</details>
+
+### Exercício 3 (Médio)
+
+Suponha que $\sigma_i^2 = i^2$ para $i = 1, \dots, n$. Verifique a condição de Feller.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$s_n^2 = \sum_{i=1}^n i^2 = \frac{n(n+1)(2n+1)}{6} \approx \frac{n^3}{3}$.
+$\max \sigma_i^2 = n^2$.
+
+$\frac{\max \sigma_i^2}{s_n^2} = \frac{n^2}{n^3/3} = \frac{3}{n} \to 0$.
+
+**Interpretação:** A condição de Feller é satisfeita.
+
+**Resposta:** Satisfeita.
+
+</details>
+
+### Exercício 4 (Médio)
+
+Suponha que $X_i \sim N(0, \sigma_i^2)$ onde $\sigma_i^2 = 1$ para $n/2$ variáveis e $\sigma_i^2 = M$ para $n/2$ variáveis. Para que valores de $M$ a condição de Feller é satisfeita?
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$s_n^2 = \frac{n}{2} \cdot 1 + \frac{n}{2} \cdot M = \frac{n}{2}(1+M)$.
+$\max \sigma_i^2 = \max(1, M)$.
+
+Se $M \le 1$, $\max \sigma_i^2 = 1$, e $\max \sigma_i^2/s_n^2 = \frac{1}{(n/2)(1+M)} \to 0$.
+
+Se $M > 1$, $\max \sigma_i^2 = M$, e $\max \sigma_i^2/s_n^2 = \frac{M}{(n/2)(1+M)} = \frac{2M}{n(1+M)} \to 0$.
+
+Em ambos os casos, a condição é satisfeita.
+
+**Resposta:** Para qualquer $M$ finito.
+
+</details>
+
+### Exercício 5 (Difícil)
+
+Suponha que $X_i \sim N(0, \sigma_i^2)$ onde $\sigma_i^2 = i$. Para $n = 100$, calcule o limite superior para $\max \sigma_i^2 / s_n^2$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$s_n^2 = \sum_{i=1}^{100} i = \frac{100 \cdot 101}{2} = 5050$.
+$\max \sigma_i^2 = 100$.
+
+$\frac{\max \sigma_i^2}{s_n^2} = \frac{100}{5050} = 0,0198$.
+
+**Interpretação:** A maior variância é apenas 1,98% da variância total.
+
+**Resposta:** 0,0198 (1,98%).
+
+</details>
+
+## Desafio Final com Resolução Completa
+
+Uma empresa tem 5 fábricas que produzem o mesmo produto. A fábrica 1 produz 1000 peças por dia com variância do peso de 4. A fábrica 2 produz 2000 peças com variância de 9. A fábrica 3 produz 1500 peças com variância de 6. A fábrica 4 produz 2500 peças com variância de 8. A fábrica 5 produz 3000 peças com variância de 12.
+
+a) Calcule a variância total combinada das 5 fábricas.
+
+b) Verifique a condição de Feller para a produção total.
+
+c) Verifique a condição de Lindeberg (conceitualmente) para a produção total.
+
+d) Se a empresa quisesse que a maior fábrica não tivesse mais que 10% da variância total, quantas peças a fábrica 5 deveria produzir?
+
+<details>
+<summary>💡 Ver resolução completa</summary>
+
+a) Variância total: $s_n^2 = 1000 \cdot 4 + 2000 \cdot 9 + 1500 \cdot 6 + 2500 \cdot 8 + 3000 \cdot 12$.
+   $= 4000 + 18000 + 9000 + 20000 + 36000 = 87000$.
+
+b) $\max \sigma_i^2 = 3000 \cdot 12 = 36000$ (fábrica 5).
+   $\frac{\max \sigma_i^2}{s_n^2} = \frac{36000}{87000} = 0,4138$ (41,38%).
+
+   **Interpretação:** A fábrica 5 tem 41,38% da variância total. A condição de Feller não é satisfeita (deveria tender a 0, mas aqui é 0,4138).
+
+c) A condição de Lindeberg exige que, para qualquer $\varepsilon > 0$, as contribuições das caudas sejam desprezíveis. Como a fábrica 5 tem 41,38% da variância total, é provável que a condição não seja satisfeita. A distribuição da produção total não será aproximadamente Normal; será dominada pela fábrica 5.
+
+d) Queremos que: $\frac{3000 \cdot 12}{s_n^2} \le 0,10$.
+   $s_n^2 = 4000 + 18000 + 9000 + 20000 + 3000 \cdot 12 = 51000 + 36000 = 87000$ (com a produção atual da fábrica 5 = 3000).
+
+   Seja $x$ a nova produção da fábrica 5.
+   $s_n^2 = 4000 + 18000 + 9000 + 20000 + 12x = 51000 + 12x$.
+
+   Queremos: $\frac{12x}{51000 + 12x} \le 0,10$.
+   $12x \le 0,10(51000 + 12x) = 5100 + 1,2x$.
+   $10,8x \le 5100$.
+   $x \le 472,22$.
+
+**Respostas:**
+a) $s_n^2 = 87000$
+b) 41,38% - condição de Feller NÃO satisfeita
+c) A condição de Lindeberg provavelmente NÃO é satisfeita
+d) $x \le 472$ peças (a fábrica 5 deveria produzir no máximo 472 peças)
+
+</details>
+
+
+> *O Teorema Central do Limite generalizado nos ensina que, mesmo quando cada parte tem sua própria natureza, a soma de muitas contribuições equilibradas converge para a ordem da Normal — desde que nenhuma voz individual abafe o coro.*

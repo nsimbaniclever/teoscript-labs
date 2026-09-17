@@ -1,0 +1,462 @@
+# CONFLITOS DE CONTROLE (CONTROL HAZARDS)
+
+## 1. INTRODUÇÃO
+
+Nas últimas três aulas, estudamos o pipeline e seus dois primeiros tipos de conflitos: os de dados (quando uma instrução depende do resultado de outra) e os estruturais (quando dois estágios precisam do mesmo recurso). Vimos que ambos podem ser resolvidos com técnicas como forwarding, stalls e duplicação de recursos.<br><br>
+
+Mas há um terceiro tipo de conflito, talvez o mais desafiador de todos: os **conflitos de controle (control hazards)**. Eles ocorrem quando a CPU encontra uma instrução de **desvio condicional** — como `BEQ` (Branch if Equal) ou `BNE` (Branch if Not Equal). O problema é que, enquanto a condição está sendo avaliada, a CPU **não sabe qual instrução buscar em seguida**.<br><br>
+
+Imagine que você está dirigindo e chega a uma bifurcação na estrada. Você só saberá qual caminho seguir depois de ler a placa. Mas enquanto você está lendo a placa, precisa desacelerar ou parar — não pode simplesmente continuar em alta velocidade. O pipeline enfrenta exatamente o mesmo problema quando encontra um salto condicional.<br><br>
+
+Esses conflitos de controle são a razão pela qual os processadores modernos investem tanto em **predição de saltos (branch prediction)**. Prever corretamente qual caminho será tomado é uma das técnicas mais importantes para manter o pipeline ocupado e o desempenho alto.<br><br>
+
+Nesta aula, vamos estudar os conflitos de controle: o que são, por que ocorrem, e como os processadores lidam com eles usando **stalls**, **previsão estática** e **predição dinâmica** de saltos.
+
+## 2. O QUE SÃO CONFLITOS DE CONTROLE?
+
+### 2.1 Definição
+
+> "Conflito de controle (Control Hazard) é uma situação no pipeline onde a CPU não sabe qual instrução buscar em seguida porque encontrou uma instrução de desvio condicional cuja condição ainda não foi avaliada."
+
+### 2.2 Características principais
+
+| Característica | Descrição |
+|---------|----------|
+| **O que causa** | Instruções de desvio condicional (branches) |
+| **Quando ocorre** | Quando a CPU precisa buscar a próxima instrução, mas não sabe se vai seguir ou não o desvio |
+| **Consequência** | Pipeline stall (pausa) até a condição ser avaliada |
+| **Solução** | Branch Prediction (estática ou dinâmica), delayed branch |
+
+### 2.3 Analogia
+
+Os conflitos de controle são como **bifurcações em uma estrada**. Você está dirigindo e vê uma placa: "Se estiver chovendo, vire à esquerda; senão, siga em frente". Você precisa parar ou desacelerar até ler a placa e decidir. A CPU precisa fazer a mesma coisa com um salto condicional.
+
+## 3. O PROBLEMA DOS SALTOS CONDICIONAIS
+
+### 3.1 Como funciona um salto condicional
+
+Uma instrução de salto condicional (ex: `BEQ R1, R2, label`) faz o seguinte:
+
+1. Compara R1 e R2.
+2. Se R1 == R2, salta para 'label'.
+3. Se R1 != R2, continua na próxima instrução.
+
+**O problema no pipeline:**
+
+<details>
+<summary> **Problema do branch no pipeline**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+Ciclo:  1    2    3    4    5    6
+BEQ:   [IF] [ID] [EX] [MEM] [WB]
+I2:         [IF] [ID] [EX] [MEM] [WB]
+                     ↑
+          No ciclo 3 (EX), a CPU decide se salta ou não
+          Mas no ciclo 2, a CPU já buscou I2!
+          Se o salto for tomado, I2 é a instrução ERRADA!
+    </pre>
+</details>
+
+**O dilema:**
+- A CPU busca a próxima instrução (I2) antes de saber se o salto será tomado.
+- Se o salto for tomado, a instrução I2 é inválida — precisa ser descartada.
+- Se o salto não for tomado, I2 é a instrução correta.
+
+### 3.2 O custo do conflito de controle
+
+| Situação | Custo |
+|---------|---------|
+| **Sem previsão (stall)** | 2-3 ciclos de espera (até a condição ser avaliada) |
+| **Previsão incorreta** | 2-3 ciclos de descarte (flush do pipeline) |
+| **Previsão correta** | 0 ciclos de perda |
+
+**Exemplo:** Em um pipeline de 5 estágios, o custo de um salto mal previsto pode ser de 3 ciclos — o tempo entre a busca da instrução e a decisão no estágio EX.
+
+## 4. TÉCNICAS PARA LIDAR COM CONFLITOS DE CONTROLE
+
+### 4.1 Método 1: Stalling (Pausa) — A Solução Simples
+
+A forma mais simples de lidar com conflitos de controle é **parar o pipeline até que a condição seja avaliada**.
+
+**Como funciona:**
+1. A CPU detecta que há uma instrução de salto condicional.
+2. A CPU pára de buscar novas instruções (stall).
+3. A CPU espera até que a condição seja avaliada no estágio EX.
+4. A CPU então busca a instrução correta (o alvo do salto ou a próxima instrução).
+
+**Exemplo:**
+
+<details>
+<summary> **Stalling para branch**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+Ciclo:  1    2    3    4    5    6    7
+BEQ:   [IF] [ID] [EX] [MEM] [WB]
+         ↓    ↓
+I2:         [STALL] [STALL] [IF] [ID] [EX]
+                           ↑
+               Depois de avaliar a condição,
+               busca a instrução correta
+    </pre>
+</details>
+
+**Vantagem:** Simples de implementar.
+**Desvantagem:** Perda de 2-3 ciclos por salto.
+
+### 4.2 Método 2: Previsão Estática (Static Prediction)
+
+A previsão estática é uma técnica onde a CPU **sempre assume** que o salto será tomado (ou não será tomado).
+
+**Duas estratégias comuns:**
+
+**Estratégia A: Prever que o salto NÃO será tomado (mais comum)**
+- Assume que o fluxo continua sequencialmente.
+- Se o salto for tomado, as instruções já buscadas são descartadas (flush).
+
+**Estratégia B: Prever que o salto SERÁ tomado**
+- Assume que o salto será tomado e busca a instrução no endereço alvo.
+- Se o salto não for tomado, as instruções buscadas são descartadas.
+
+**Exemplo:**
+
+<details>
+<summary> **Previsão estática — NÃO TOMADO**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+BEQ R1, R2, label   ; Prever NÃO TOMADO
+
+Ciclo:  1    2    3    4    5    6
+BEQ:   [IF] [ID] [EX] [MEM] [WB]
+I2:         [IF] [ID] [EX] [MEM] [WB]
+                     ↑
+          Se R1 != R2 (previsão correta) → OK!
+          Se R1 == R2 (previsão incorreta) → Flush! (perda de 2 ciclos)
+    </pre>
+</details>
+
+### 4.3 Método 3: Previsão Dinâmica (Dynamic Prediction)
+
+A previsão dinâmica é mais sofisticada: a CPU **aprende com o comportamento passado** para prever o comportamento futuro.
+
+**Exemplo: Branch Prediction Buffer (BPB) / Branch History Table (BHT)**
+- A CPU mantém uma tabela com o histórico de saltos.
+- Para cada salto, a tabela guarda se ele foi tomado recentemente.
+- A CPU usa essa informação para prever.
+
+**Estado da previsão (2-bit predictor):**
+
+<details>
+<summary> **Preditor de 2 bits**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+       ┌────────────────────┐
+       │                    │
+       ▼                    │
+┌─────────────┐   ┌─────────────┐
+│  Fortemente │   │  Fortemente │
+│  Não Tomado │   │   Tomado    │
+│  (00)       │   │   (11)      │
+└─────────────┘   └─────────────┘
+       ▲                    ▲
+       │                    │
+┌─────────────┐   ┌─────────────┐
+│  Fracamente │   │  Fracamente │
+│  Não Tomado │   │   Tomado    │
+│  (01)       │   │   (10)      │
+└─────────────┘   └─────────────┘
+       │                    │
+       └────────┬───────────┘
+                │
+                ▼
+       Previsão do próximo salto
+    </pre>
+</details>
+
+**Como funciona:**
+1. Cada salto tem um estado de 2 bits.
+2. A previsão é baseada no estado atual.
+3. Se a previsão estiver correta, o estado se fortalece.
+4. Se a previsão estiver errada, o estado se enfraquece.
+
+### 4.4 Método 4: Delayed Branch (Salto Atrasado)
+
+O delayed branch é uma técnica onde a instrução **após** o salto é sempre executada, independentemente do resultado.
+
+**Como funciona:**
+1. O compilador coloca uma instrução independente após o salto.
+2. Essa instrução é executada em ambos os casos (salto tomado ou não).
+3. O pipeline não precisa stall.
+
+**Exemplo:**
+
+<details>
+<summary> **Delayed Branch**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+; Código original
+BEQ R1, R2, label  ; Se R1 == R2, salta
+ADD R3, R4, R5     ; I2 (pode ser executada em ambos os casos)
+...
+label:
+MUL R6, R7, R8
+
+; Com delayed branch (compilador reordena)
+BEQ R1, R2, label  ; Se R1 == R2, salta
+ADD R3, R4, R5     ; I2 é executada SEMPRE (delay slot)
+...
+label:
+MUL R6, R7, R8
+    </pre>
+</details>
+
+**Vantagem:** A instrução no delay slot mantém o pipeline ocupado.
+**Desvantagem:** Nem sempre há uma instrução independente para colocar no delay slot.
+
+## 5. EXEMPLOS PRÁTICOS
+
+### 5.1 Exemplo 1: Salto condicional com stall
+
+**Código:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+BEQ R1, R2, label    ; I1: se R1 == R2, salta
+ADD R3, R4, R5       ; I2
+SUB R6, R7, R8       ; I3
+label:
+MUL R9, R10, R11     ; I4
+</pre>
+
+**Com stall:**
+
+<details>
+<summary> **Stall para branch**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+Ciclo:  1    2    3    4    5    6    7    8
+I1:    [IF] [ID] [EX] [MEM] [WB]
+I2:         [IF] [STALL] [STALL] [IF] [ID] [EX]
+I3:              [STALL] [STALL] [STALL] [IF] [ID]
+    </pre>
+</details>
+
+**Sem stall (com previsão):**
+
+<details>
+<summary> **Sem stall — com previsão correta**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+Ciclo:  1    2    3    4    5    6    7
+I1:    [IF] [ID] [EX] [MEM] [WB]
+I2:         [IF] [ID] [EX] [MEM] [WB]  ← se previsão correta
+I3:              [IF] [ID] [EX] [MEM] [WB]
+    </pre>
+</details>
+
+### 5.2 Exemplo 2: Branch predictor de 2 bits
+
+**Sequência de saltos:** Tomado (T), Não Tomado (NT), T, T, NT, T
+
+<details>
+<summary> **Funcionamento do preditor de 2 bits**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+Estado inicial: 00 (Fortemente Não Tomado)
+
+T:     00 → 01 (Fracamente Não Tomado) [previsão errada]
+NT:    01 → 00 (Fortemente Não Tomado) [previsão certa]
+T:     00 → 01 (Fracamente Não Tomado) [previsão errada]
+T:     01 → 10 (Fracamente Tomado)     [previsão errada]
+NT:    10 → 01 (Fracamente Não Tomado) [previsão errada]
+T:     01 → 10 (Fracamente Tomado)     [previsão errada]
+
+Acurácia: 2/6 = 33% (no início)
+    </pre>
+</details>
+
+Após muitos ciclos, o predictor se ajusta ao padrão.
+
+### 5.3 Exemplo 3: Branch prediction em código real
+
+**Código em C:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+for (int i = 0; i < 1000; i++) {
+    if (arr[i] > 0) {
+        sum += arr[i];
+    }
+}
+</pre>
+
+**O branch predictor aprende:**
+- O salto `i < 1000` é tomado 999 vezes e não tomado 1 vez (fortemente tomado).
+- O salto `arr[i] > 0` depende dos dados (pode ser imprevisível).
+
+**Resultado:** Acurácia alta para o loop; acurácia variável para o if.
+
+## 6. BRANCH PREDICTION EM PROCESSADORES MODERNOS
+
+### 6.1 Tamanho do BPB (Branch Prediction Buffer)
+
+| Processador | Tamanho do BPB | Acurácia típica |
+|---------|---------|---------|
+| **Intel Core i7** | ~4K entradas | ~95% |
+| **AMD Ryzen** | ~4K-8K entradas | ~95% |
+| **ARM Cortex-A** | ~2K-4K entradas | ~90% |
+| **Processadores simples** | ~512 entradas | ~80% |
+
+### 6.2 Técnicas avançadas de predição
+
+| Técnica | Descrição |
+|---------|----------|
+| **Branch Target Buffer (BTB)** | Armazena o endereço alvo do salto |
+| **Return Address Stack (RAS)** | Preve o retorno de funções |
+| **Tournament Predictor** | Combina múltiplos preditores |
+| **Neural Branch Predictor** | Usa redes neurais para prever |
+
+### 6.3 O custo de uma previsão errada
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+Ciclos perdidos = Estágios entre IF e EX
+</pre>
+
+Em um pipeline de 5 estágios: **3 ciclos perdidos**.
+Em um pipeline de 19 estágios (Intel Core): **~15 ciclos perdidos**!
+
+**Consequência:** Previsão de saltos é mais importante em processadores com pipelines longos.
+
+## 7. APLICAÇÕES REAIS
+
+| Aplicação | Como lida com conflitos de controle |
+|---------|----------|
+| **Processadores Intel Core** | Branch predictor + BTB + RAS (acurácia >95%) |
+| **Processadores ARM** | Branch predictor + BTB (acurácia >90%) |
+| **Processadores RISC-V simples** | Previsão estática (não tomado) |
+| **Microcontroladores** | Stalling (sem previsão) |
+| **GPUs** | Previsão para warps/threads |
+
+**Exemplo prático:** Em um processador Intel Core i9, a unidade de branch prediction ocupa uma área significativa do chip — é um investimento que vale a pena porque cada previsão errada custa ~15 ciclos.
+
+## 8. EXERCÍCIOS
+
+<details>
+<summary>📗 Exercício 1 — O que é conflito de controle? (Fácil)</summary>
+
+**Enunciado:** Defina o que é um conflito de controle (control hazard) em um pipeline.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Conflito de controle é uma situação no pipeline onde a CPU não sabe qual instrução buscar em seguida porque encontrou uma instrução de desvio condicional cuja condição ainda não foi avaliada.
+
+**Explicação:** A CPU precisa decidir se vai buscar a próxima instrução sequencial ou a instrução no endereço alvo do salto, mas só descobre isso após a condição ser avaliada.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Por que branches causam conflitos? (Fácil)</summary>
+
+**Enunciado:** Por que uma instrução de desvio condicional (branch) causa um conflito no pipeline?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Porque a CPU busca a próxima instrução antes de saber se o salto será tomado. A condição só é avaliada no estágio EX, mas a busca da próxima instrução ocorre no estágio IF, vários ciclos antes.
+
+**Explicação:** Se a CPU esperar para buscar a próxima instrução, o pipeline vai stall (parar) por 2-3 ciclos.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Stalling para branches (Fácil)</summary>
+
+**Enunciado:** Em um pipeline de 5 estágios, quantos ciclos são perdidos se a CPU stallar para cada branch?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** 2-3 ciclos.
+
+**Explicação:** A condição é avaliada no estágio EX (ciclo 3). Se a CPU stallar desde o início, perde os ciclos 2 e 3 (2 ciclos). Se considerar o flush, pode perder até 3 ciclos.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Previsão estática (Médio)</summary>
+
+**Enunciado:** O que é previsão estática de saltos? Cite duas estratégias comuns.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Previsão estática é uma técnica onde a CPU sempre assume o mesmo comportamento para todos os saltos, sem aprender com o histórico.
+
+**Estratégias comuns:**
+1. **Prever NÃO TOMADO:** Assume que o salto não será tomado (continua na próxima instrução).
+2. **Prever TOMADO:** Assume que o salto será tomado (busca no endereço alvo).
+
+**Explicação:** A previsão estática é simples de implementar, mas tem acurácia limitada (~50-70%).
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Previsão dinâmica (Médio)</summary>
+
+**Enunciado:** Explique o que é um branch predictor de 2 bits e como ele funciona.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** O branch predictor de 2 bits é uma tabela que mantém o histórico de saltos, onde cada entrada tem 2 bits de estado.
+
+**Estados:**
+- 00: Fortemente Não Tomado
+- 01: Fracamente Não Tomado
+- 10: Fracamente Tomado
+- 11: Fortemente Tomado
+
+**Funcionamento:** A previsão é baseada no estado atual. Se a previsão estiver correta, o estado se fortalece; se errada, se enfraquece.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Delayed Branch (Médio)</summary>
+
+**Enunciado:** O que é delayed branch e qual sua vantagem?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Delayed branch é uma técnica onde a instrução após o salto (delay slot) é executada independentemente do resultado do salto.
+
+**Vantagem:** A instrução no delay slot mantém o pipeline ocupado, evitando stalls.
+
+**Explicação:** O compilador coloca uma instrução independente no delay slot, que é executada em ambos os casos (salto tomado ou não).
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — Custo de previsão errada (Difícil)</summary>
+
+**Enunciado:** Em um pipeline de 15 estágios, quantos ciclos são perdidos em uma previsão errada de branch? Por que isso é um problema?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Cerca de 10-12 ciclos (os estágios entre IF e EX).
+
+**Problema:** Quanto maior o pipeline, maior o custo de uma previsão errada. Processadores modernos têm pipelines longos (15-20 estágios), e cada previsão errada custa muitos ciclos.
+
+**Explicação:** Por isso, processadores modernos investem pesadamente em branch predictors com acurácia >95%.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — Acurácia do branch predictor (Desafio)</summary>
+
+**Enunciado:** Um processador executa 1 bilhão de instruções, com 20% de branches. Se o branch predictor tem acurácia de 90% e cada erro custa 10 ciclos, quantos ciclos são perdidos com branches mal previstos?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+- Número de branches: 1 bilhão × 20% = 200 milhões
+- Branches mal previstos: 200 milhões × 10% = 20 milhões
+- Ciclos perdidos: 20 milhões × 10 = **200 milhões de ciclos**
+
+**Explicação:** Isso mostra que mesmo uma acurácia de 90% ainda custa muitos ciclos. Por isso, processadores modernos buscam acurácia >95%.
+</details>
+</details>
+
+> Conflitos de controle são o desafio mais difícil do pipeline. Quando a CPU encontra um salto condicional, ela não sabe qual instrução buscar em seguida. Sem previsão, cada salto custa 2-3 ciclos de stall. Com previsão de saltos — especialmente preditores dinâmicos de 2 bits — a CPU pode acertar mais de 90% das vezes, mantendo o pipeline ocupado e o desempenho alto. Os conflitos de controle são a razão pela qual os processadores modernos investem tanto em branch prediction. Cada previsão errada custa ciclos preciosos, e em pipelines longos esse custo é ainda maior. A evolução dos branch predictors — de estáticos para dinâmicos de 2 bits, depois para tournament predictors e hoje até redes neurais — é uma das histórias mais fascinantes da arquitetura de computadores modernos.

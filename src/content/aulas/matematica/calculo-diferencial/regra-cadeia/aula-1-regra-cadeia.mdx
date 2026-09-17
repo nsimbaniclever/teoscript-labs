@@ -1,0 +1,340 @@
+# REGRA DA CADEIA
+
+## 1. Definição Formal
+
+### 1.1 O que é a Regra da Cadeia?
+
+A **Regra da Cadeia** é a regra mais importante do Cálculo Diferencial para Machine Learning. Ela permite derivar **funções compostas** (funções dentro de funções).
+
+Se $f(x) = h(g(x))$, onde $g$ e $h$ são funções diferenciáveis, então:
+
+$$
+f'(x) = h'(g(x)) \cdot g'(x)
+$$
+
+**Em notação de Leibniz:**
+$$
+\frac{df}{dx} = \frac{dh}{dg} \cdot \frac{dg}{dx}
+$$
+
+**Interpretação:** A derivada da função composta é o produto da derivada da função externa (avaliada na interna) pela derivada da função interna.
+
+### 1.2 Versão para Múltiplas Composições
+
+Se $f(x) = h(g(k(x)))$:
+
+$$
+f'(x) = h'(g(k(x))) \cdot g'(k(x)) \cdot k'(x)
+$$
+
+## 2. Exemplos Acadêmicos Passo a Passo
+
+### 2.1 Exemplo 1: Função Simples
+
+$$
+f(x) = (x^2 + 1)^3
+$$
+
+**Passo 1:** Identificar a função externa e a interna:
+- $g(x) = x^2 + 1$ (interna)
+- $h(u) = u^3$ (externa)
+
+**Passo 2:** Calcular as derivadas:
+$$
+g'(x) = 2x, \quad h'(u) = 3u^2
+$$
+
+**Passo 3:** Aplicar a regra da cadeia:
+$$
+f'(x) = h'(g(x)) \cdot g'(x) = 3(x^2 + 1)^2 \cdot 2x
+$$
+
+**Resultado:** $f'(x) = 6x(x^2 + 1)^2$
+
+### 2.2 Exemplo 2: Exponencial
+
+$$
+f(x) = e^{\sin(x)}
+$$
+
+**Passo 1:** Identificar as funções:
+- $g(x) = \sin(x)$ (interna)
+- $h(u) = e^u$ (externa)
+
+**Passo 2:** Calcular as derivadas:
+$$
+g'(x) = \cos(x), \quad h'(u) = e^u
+$$
+
+**Passo 3:** Aplicar a regra:
+$$
+f'(x) = e^{\sin(x)} \cdot \cos(x)
+$$
+
+**Resultado:** $f'(x) = \cos(x) e^{\sin(x)}$
+
+### 2.3 Exemplo 3: Logaritmo
+
+$$
+f(x) = \ln(x^2 + 1)
+$$
+
+**Passo 1:** Identificar as funções:
+- $g(x) = x^2 + 1$ (interna)
+- $h(u) = \ln(u)$ (externa)
+
+**Passo 2:** Calcular as derivadas:
+$$
+g'(x) = 2x, \quad h'(u) = \frac{1}{u}
+$$
+
+**Passo 3:** Aplicar a regra:
+$$
+f'(x) = \frac{1}{x^2 + 1} \cdot 2x
+$$
+
+**Resultado:** $f'(x) = \frac{2x}{x^2 + 1}$
+
+### 2.4 Exemplo 4: Composição Tripla
+
+$$
+f(x) = \sin(e^{x^2})
+$$
+
+**Passo 1:** Identificar as funções:
+- $k(x) = x^2$ (mais interna)
+- $g(u) = e^u$ (média)
+- $h(v) = \sin(v)$ (externa)
+
+**Passo 2:** Calcular as derivadas:
+$$
+k'(x) = 2x, \quad g'(u) = e^u, \quad h'(v) = \cos(v)
+$$
+
+**Passo 3:** Aplicar a regra da cadeia tripla:
+$$
+f'(x) = \cos(e^{x^2}) \cdot e^{x^2} \cdot 2x
+$$
+
+**Resultado:** $f'(x) = 2x e^{x^2} \cos(e^{x^2})$
+
+## 3. Exemplos Lúdicos Aprimorados
+
+### 🍔 EXEMPLO 1 – A LANCHONETE (CUSTO COMPOSTO)
+
+A lanchonete tem um custo que depende da quantidade de ingredientes $x$, que por sua vez depende do número de sanduíches $t$:
+
+$$
+x(t) = t^2 + 1 \quad \text{(ingredientes por sanduíche)}
+$$
+$$
+C(x) = 2x^2 + 50 \quad \text{(custo total)}
+$$
+
+**Custo total em função de $t$:**
+$$
+C(t) = 2(t^2 + 1)^2 + 50
+$$
+
+**Derivada (regra da cadeia):**
+$$
+C'(t) = 4(t^2 + 1) \cdot 2t = 8t(t^2 + 1)
+$$
+
+**Interpretação:** A taxa de variação do custo em relação ao número de sanduíches.
+
+### 🧃 EXEMPLO 2 – A CANTINA (DECAIMENTO COMPOSTO)
+
+A cantina tem um decaimento de estoque que depende da temperatura $T$, que depende do tempo $t$:
+
+$$
+T(t) = 20 + 10e^{-0.1t} \quad \text{(temperatura)}
+$$
+$$
+E(T) = 100e^{-0.05T} \quad \text{(estoque)}
+$$
+
+**Derivada (regra da cadeia):**
+$$
+E'(t) = E'(T) \cdot T'(t)
+$$
+$$
+E'(T) = -5e^{-0.05T}, \quad T'(t) = -e^{-0.1t}
+$$
+$$
+E'(t) = 5e^{-0.05(20 + 10e^{-0.1t})} \cdot e^{-0.1t}
+$$
+
+## 4. Aplicação na Tese: Backpropagation
+
+### 4.1 O que é Backpropagation?
+
+**Backpropagation** é o algoritmo que treina redes neurais. Ele usa a **regra da cadeia** repetidamente para calcular o gradiente da função de perda em relação a cada peso da rede.
+
+### 4.2 Exemplo: Rede Neural Simples
+
+Suponha uma rede com uma camada oculta:
+
+$$
+z_1 = w_1 x + b_1 \quad \text{(combinação linear)}
+$$
+$$
+a_1 = \sigma(z_1) \quad \text{(ativação)}
+$$
+$$
+z_2 = w_2 a_1 + b_2 \quad \text{(combinação linear)}
+$$
+$$
+\hat{y} = \sigma(z_2) \quad \text{(saída)}
+$$
+$$
+L = \frac{1}{2}(\hat{y} - y)^2 \quad \text{(perda)}
+$$
+
+**Derivada da perda em relação a $w_1$ (regra da cadeia):**
+$$
+\frac{\partial L}{\partial w_1} = \frac{\partial L}{\partial \hat{y}} \cdot \frac{\partial \hat{y}}{\partial z_2} \cdot \frac{\partial z_2}{\partial a_1} \cdot \frac{\partial a_1}{\partial z_1} \cdot \frac{\partial z_1}{\partial w_1}
+$$
+
+**Interpretação:** A derivada é o produto de 5 derivadas parciais!
+
+### 4.3 Por que a Regra da Cadeia é Crucial?
+
+Sem a regra da cadeia, o backpropagation seria impossível. Ela permite "propagar" o erro da saída para as camadas mais profundas da rede.
+
+## 5. Exercícios Propostos (Manuais)
+
+<details>
+<summary>📗 Exercício 1 (Regra da Cadeia Simples)</summary>
+
+**Enunciado:** Calcule a derivada:
+
+a) $f(x) = (3x + 2)^5$
+
+b) $f(x) = e^{x^2}$
+
+c) $f(x) = \ln(\sin(x))$
+
+d) $f(x) = \sqrt{x^2 + 1}$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $f'(x) = 5(3x + 2)^4 \cdot 3 = 15(3x + 2)^4$
+
+b) $f'(x) = e^{x^2} \cdot 2x = 2x e^{x^2}$
+
+c) $f'(x) = \frac{1}{\sin(x)} \cdot \cos(x) = \cot(x)$
+
+d) $f'(x) = \frac{1}{2\sqrt{x^2+1}} \cdot 2x = \frac{x}{\sqrt{x^2+1}}$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 (Composição Tripla)</summary>
+
+**Enunciado:** Calcule a derivada:
+
+a) $f(x) = e^{\cos(x^2)}$
+
+b) $f(x) = \ln(\sin(e^x))$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $f'(x) = -\sin(x^2) \cdot e^{\cos(x^2)} \cdot 2x = -2x \sin(x^2) e^{\cos(x^2)}$
+
+b) $f'(x) = \frac{1}{\sin(e^x)} \cdot \cos(e^x) \cdot e^x = \frac{e^x \cos(e^x)}{\sin(e^x)}$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 (Aplicação – Backpropagation)</summary>
+
+**Enunciado:** Suponha uma função de perda:
+$$
+L(w) = \frac{1}{2}(\sigma(wx) - y)^2
+$$
+onde $\sigma(z) = \frac{1}{1 + e^{-z}}$ é a sigmoide.
+
+a) Calcule $\frac{dL}{dw}$ usando a regra da cadeia.
+
+b) Lembrete: $\sigma'(z) = \sigma(z)(1 - \sigma(z))$.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $L = \frac{1}{2}(\sigma(wx) - y)^2$
+
+$\frac{dL}{dw} = (\sigma(wx) - y) \cdot \sigma'(wx) \cdot x$
+
+$\frac{dL}{dw} = (\sigma(wx) - y) \cdot \sigma(wx)(1 - \sigma(wx)) \cdot x$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 (Aplicação – Taxa de Variação)</summary>
+
+**Enunciado:** A área de um círculo é $A(r) = \pi r^2$, e o raio cresce com o tempo $r(t) = 2t + 1$.
+
+a) Calcule $\frac{dA}{dt}$ usando a regra da cadeia.
+
+b) Qual é a taxa de variação da área em $t = 2$?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\frac{dA}{dt} = \frac{dA}{dr} \cdot \frac{dr}{dt} = 2\pi r \cdot 2 = 4\pi r$
+
+Como $r(t) = 2t + 1$, $\frac{dA}{dt} = 4\pi(2t + 1)$
+
+b) Em $t = 2$, $\frac{dA}{dt} = 4\pi(5) = 20\pi$
+
+</details>
+</details>
+
+## 6. 💻 EXERCÍCIO COMPUTACIONAL
+
+<details>
+<summary>🐍 Ver código (Python/SymPy)</summary>
+
+```python
+import sympy as sp
+
+x = sp.Symbol('x')
+
+# Regra da cadeia simples
+f1 = (3*x + 2)**5
+print(f"f'(x) = {sp.diff(f1, x)}")
+
+f2 = sp.exp(x**2)
+print(f"f'(x) = {sp.diff(f2, x)}")
+
+f3 = sp.log(sp.sin(x))
+print(f"f'(x) = {sp.diff(f3, x)}")
+
+f4 = sp.sqrt(x**2 + 1)
+print(f"f'(x) = {sp.diff(f4, x)}")
+
+# Backpropagation simplificado
+w, x_sym, y_sym = sp.symbols('w x y')
+sigma = 1 / (1 + sp.exp(-w * x_sym))
+L = 0.5 * (sigma - y_sym)**2
+dL_dw = sp.diff(L, w)
+print(f"dL/dw = {dL_dw}")
+```
+
+</details>
+
+> *A regra da cadeia é a ferramenta mais importante para Machine Learning. Ela é a base do **backpropagation**, que permite treinar redes neurais. Entender a regra da cadeia é essencial para compreender como os gradientes fluem através de uma rede neural.*

@@ -1,0 +1,467 @@
+# Armazenamento Terciário
+
+## 1. Introdução
+
+Ao longo das últimas quatro aulas, percorremos a hierarquia de memória de cima para baixo: dos **Registradores** (1 ciclo) à **Cache** (2-40 ciclos), à **RAM** (50-100 ns) e ao **Armazenamento Secundário** (SSD/HD, µs-ms). Cada nível é mais lento, mas também mais barato e com maior capacidade que o anterior. <br><br>
+
+Mas ainda há um nível abaixo do armazenamento secundário — o **Armazenamento Terciário**. Este é o nível onde os dados são guardados por **décadas**, não por dias ou meses. É o "arquivo morto" da computação.<br><br>
+
+O armazenamento terciário é onde:
+
+- Backups de longo prazo são mantidos.
+- Dados que precisam ser preservados por anos são armazenados.
+- Grandes volumes de dados são guardados a baixo custo.
+
+Duas tecnologias dominam o armazenamento terciário:
+
+- **Fitas Magnéticas:** A tecnologia mais antiga ainda em uso — lenta, mas extremamente confiável e barata.
+- **Nuvem (Cloud Storage):** Armazenamento online, acessível de qualquer lugar, com custo baseado em uso.
+
+Nesta aula, vamos explorar o Armazenamento Terciário — o fundo da pirâmide, onde a velocidade é sacrificada pela capacidade e durabilidade.
+
+
+## 2. O Que é Armazenamento Terciário?
+
+### 2.1 Definição
+
+O **Armazenamento Terciário** é o nível mais baixo da hierarquia de memória, onde dados são armazenados para **longo prazo** (anos ou décadas), com acesso **muito lento** mas **alta capacidade** e **baixo custo**.
+
+### 2.2 Características
+
+| Característica | Fitas Magnéticas | Nuvem (Cloud) |
+|----------------|------------------|---------------|
+| **Tecnologia** | Fitas de poliéster com revestimento magnético | Discos/SSDs em datacenters |
+| **Velocidade** | Muito lenta (segundos a minutos) | Lenta (~ms a s) |
+| **Capacidade** | Extremamente alta (TB a EB) | Praticamente ilimitada |
+| **Custo** | Extremamente barato | Pago por uso |
+| **Acesso** | Sequencial (não aleatório) | Aleatório (via internet) |
+| **Durabilidade** | Décadas | Décadas (mantido pelo provedor) |
+| **Uso** | Backup, arquivo morto | Backup, sincronização, compartilhamento |
+
+### 2.3 Analogia
+
+Pense no armazenamento terciário como o **arquivo morto de um grande escritório**:
+
+<details>
+<summary>🔧 Ver Analogia do Armazenamento Terciário</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 450px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">ARMAZENAMENTO TERCIÁRIO — O ARQUIVO MORTO</div>
+
+  <pre style="color: #93c5fd; font-size: 0.6rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    ┌─────────────────────────────────────────────────────┐
+    │                                                     │
+    │   MESA (REGISTRADORES)                             │
+    │   Documentos usados AGORA                          │
+    │                                                     │
+    │   GAVETA (CACHE)                                   │
+    │   Documentos usados com FREQUÊNCIA                 │
+    │                                                     │
+    │   ESTANTE (RAM)                                    │
+    │   Documentos em uso no MOMENTO                     │
+    │                                                     │
+    │   DEPÓSITO (SSD/HD)                                │
+    │   Documentos do ESCRITÓRIO                         │
+    │                                                     │
+    │   ARQUIVO MORTO (Fitas/Nuvem)                      │
+    │   Documentos do ÚLTIMO SÉCULO                      │
+    │   (lento, mas guarda TUDO)                         │
+    │                                                     │
+    └─────────────────────────────────────────────────────┘
+  </pre>
+
+</div>
+</details>
+
+### 2.4 Diagrama da Hierarquia Completa
+
+<details>
+<summary>🔧 Ver Diagrama da Hierarquia Completa</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 450px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">HIERARQUIA COMPLETA DE MEMÓRIA</div>
+
+  <pre style="color: #93c5fd; font-size: 0.5rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    ┌─────────────────────────────────────────────────────────────┐
+    │  REGISTRADORES     │ ~1 ciclo    │ ~1 KB    │ Muito caro │
+    └─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+    ┌─────────────────────────────────────────────────────────────┐
+    │  CACHE L1          │ ~2-4 ciclos │ ~64 KB   │ Muito caro │
+    └─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+    ┌─────────────────────────────────────────────────────────────┐
+    │  CACHE L2          │ ~10 ciclos  │ ~256 KB  │ Caro       │
+    └─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+    ┌─────────────────────────────────────────────────────────────┐
+    │  CACHE L3          │ ~30-40 ciclos│ ~8 MB   │ Moderado   │
+    └─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+    ┌─────────────────────────────────────────────────────────────┐
+    │  RAM (DRAM)        │ ~50-100 ns  │ ~16 GB  │ Barato      │
+    └─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+    ┌─────────────────────────────────────────────────────────────┐
+    │  SSD (NAND Flash)  │ ~µs         │ ~1 TB   │ Muito barato│
+    └─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+    ┌─────────────────────────────────────────────────────────────┐
+    │  HD (Magnético)    │ ~ms         │ ~4 TB   │ Muito barato│
+    └─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+    ┌─────────────────────────────────────────────────────────────┐
+    │  Fitas Magnéticas  │ ~s-min      │ ~TB-EB  │ Mais barato │
+    └─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+    ┌─────────────────────────────────────────────────────────────┐
+    │  Nuvem (Cloud)     │ ~ms-s       │ Ilimitado│ Pago por uso│
+    └─────────────────────────────────────────────────────────────┘
+  </pre>
+
+</div>
+</details>
+
+
+## 3. Fitas Magnéticas
+
+### 3.1 O que são fitas magnéticas?
+
+**Fitas Magnéticas** são o meio de armazenamento mais antigo ainda em uso ativo. Elas consistem em uma fita de poliéster revestida com material magnético, similar à fita cassete, mas em escala muito maior.
+
+### 3.2 Como funciona?
+
+<details>
+<summary>🔧 Ver Funcionamento das Fitas Magnéticas</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 450px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">FITAS MAGNÉTICAS</div>
+
+  <pre style="color: #93c5fd; font-size: 0.55rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    ┌─────────────────────────────────────────────────────────────┐
+    │                                                             │
+    │   ┌─────────────────────────────────────────────────────┐   │
+    │   │  FITA MAGNÉTICA (poliéster + revestimento magnético) │   │
+    │   │                                                     │   │
+    │   │  ┌─────────────────────────────────────────────┐   │   │
+    │   │  │  TRILHAS MAGNÉTICAS                        │   │   │
+    │   │  │  O dado é gravado em trilhas ao longo      │   │   │
+    │   │  │  da fita, similar a uma fita cassete.      │   │   │
+    │   │  └─────────────────────────────────────────────┘   │   │
+    │   │                                                     │   │
+    │   │  ┌─────────────────────────────────────────────┐   │   │
+    │   │  │  LEITURA/ESCRITA SEQUENCIAL                │   │   │
+    │   │  │  Para acessar um dado, a fita precisa ser  │   │   │
+    │   │  │  rebobinada até a posição correta.         │   │   │
+    │   │  └─────────────────────────────────────────────┘   │   │
+    │   └─────────────────────────────────────────────────────┘   │
+    │                                                             │
+    └─────────────────────────────────────────────────────────────┘
+  </pre>
+
+</div>
+</details>
+
+### 3.3 Características
+
+| Característica | Valor |
+|----------------|-------|
+| **Capacidade** | Até 18 TB por cartucho (LTO-9) |
+| **Velocidade** | 300-750 MB/s (sequencial) |
+| **Tempo de acesso** | Segundos a minutos (rebobinagem) |
+| **Durabilidade** | 30+ anos |
+| **Custo por TB** | Extremamente baixo |
+| **Tipo de acesso** | Sequencial (não aleatório) |
+
+### 3.4 Vantagens das Fitas
+
+| Vantagem | Explicação |
+|----------|------------|
+| **Baixo custo** | O meio de armazenamento mais barato por TB |
+| **Alta capacidade** | Cartuchos de até 18 TB |
+| **Durabilidade** | Pode durar décadas se armazenado corretamente |
+| **Confiabilidade** | Muito confiável para backups |
+| **Eficiência energética** | Não consome energia quando não está sendo usada |
+
+### 3.5 Desvantagens das Fitas
+
+| Desvantagem | Explicação |
+|-------------|------------|
+| **Acesso sequencial** | Não pode acessar dados aleatoriamente — precisa rebobinar |
+| **Lenta** | O tempo de acesso é em segundos ou minutos |
+| **Fragilidade** | Pode ser danificada por calor, umidade ou campos magnéticos |
+| **Leitor especializado** | Precisa de um drive de fita para ler/escrever |
+
+### 3.6 Onde são usadas?
+
+- **Backup de servidores:** Grandes empresas fazem backup em fitas.
+- **Arquivo morto:** Dados que precisam ser mantidos por décadas.
+- **Indústria de entretenimento:** Arquivos de filmes e séries.
+- **Científico:** Dados de pesquisas que precisam ser preservados.
+
+
+## 4. Nuvem (Cloud Storage)
+
+### 4.1 O que é armazenamento em nuvem?
+
+O **armazenamento em nuvem** (Cloud Storage) é um serviço onde os dados são armazenados em servidores remotos e acessados pela internet.
+
+### 4.2 Como funciona?
+
+<details>
+<summary>🔧 Ver Funcionamento da Nuvem</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 450px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">ARMAZENAMENTO EM NUVEM</div>
+
+  <pre style="color: #93c5fd; font-size: 0.55rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    ┌─────────────────────────────────────────────────────────────┐
+    │                                                             │
+    │   USUÁRIO                                                  │
+    │   ┌─────────────────────────────────────────────────────┐   │
+    │   │  Computador, smartphone, tablet                    │   │
+    │   └─────────────────────────────────────────────────────┘   │
+    │                         │                                   │
+    │                         ▼                                   │
+    │   INTERNET                                                │
+    │   ┌─────────────────────────────────────────────────────┐   │
+    │   │  Conexão via HTTP/HTTPS                            │   │
+    │   └─────────────────────────────────────────────────────┘   │
+    │                         │                                   │
+    │                         ▼                                   │
+    │   DATACENTER (Provedor)                                    │
+    │   ┌─────────────────────────────────────────────────────┐   │
+    │   │  Servidores com discos/SSDs                        │   │
+    │   │  (Amazon S3, Google Drive, OneDrive, etc.)         │   │
+    │   └─────────────────────────────────────────────────────┘   │
+    │                                                             │
+    └─────────────────────────────────────────────────────────────┘
+  </pre>
+
+</div>
+</details>
+
+### 4.3 Principais serviços de nuvem
+
+| Serviço | Empresa | Armazenamento gratuito | Preço (pagamento) |
+|---------|---------|------------------------|-------------------|
+| **Google Drive** | 15 GB | ~R$ 7/mês (100 GB) |
+| **OneDrive** | Microsoft | 5 GB | ~R$ 7/mês (100 GB) |
+| **iCloud** | Apple | 5 GB | ~R$ 6/mês (50 GB) |
+| **Amazon S3** | Amazon | - | ~R$ 0.50/GB/mês |
+| **Dropbox** | Dropbox | 2 GB | ~R$ 50/mês (2 TB) |
+
+### 4.4 Vantagens da Nuvem
+
+| Vantagem | Explicação |
+|----------|------------|
+| **Acesso de qualquer lugar** | Dados disponíveis em qualquer dispositivo com internet |
+| **Compartilhamento fácil** | Compartilhe arquivos com outras pessoas facilmente |
+| **Backup automático** | Muitos serviços fazem backup automático |
+| **Escalabilidade** | Capacidade praticamente ilimitada |
+| **Manutenção zero** | O provedor cuida do hardware e da segurança |
+
+### 4.5 Desvantagens da Nuvem
+
+| Desvantagem | Explicação |
+|-------------|------------|
+| **Dependência da internet** | Precisa de conexão para acessar os dados |
+| **Privacidade** | Os dados estão em servidores de terceiros |
+| **Custo contínuo** | Você paga mensalmente ou anualmente |
+| **Velocidade** | Limitada pela sua conexão com a internet |
+| **Segurança** | Risco de ataques ou vazamento de dados |
+
+
+## 5. A Hierarquia Completa
+
+### 5.1 Resumo de todos os níveis
+
+| Nível | Localização | Tecnologia | Velocidade | Capacidade | Custo | Volatilidade |
+|-------|-------------|------------|------------|------------|-------|--------------|
+| **Registradores** | CPU | Flip-flops | ~1 ciclo | ~1 KB | Máximo | Volátil |
+| **Cache L1** | CPU | SRAM | ~2-4 ciclos | ~64 KB | Muito alto | Volátil |
+| **Cache L2** | CPU | SRAM | ~10 ciclos | ~256 KB | Alto | Volátil |
+| **Cache L3** | CPU | SRAM | ~30-40 ciclos | ~8 MB | Moderado | Volátil |
+| **RAM** | Placa-mãe | DRAM | ~50-100 ns | ~16 GB | Baixo | Volátil |
+| **SSD** | Placa-mãe/PCIe | NAND Flash | ~µs | ~1 TB | Muito baixo | Não volátil |
+| **HD** | Placa-mãe (SATA) | Magnético | ~ms | ~4 TB | Mais baixo | Não volátil |
+| **Fitas** | Leitor externo | Magnético | ~s-min | ~TB-EB | Mais baixo | Não volátil |
+| **Nuvem** | Internet | Vários | ~ms-s | Ilimitado | Pago por uso | Não volátil |
+
+### 5.2 A pirâmide da memória
+
+<details>
+<summary>🔧 Ver Pirâmide da Memória</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 400px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">PIRÂMIDE DA MEMÓRIA</div>
+
+  <pre style="color: #93c5fd; font-size: 0.55rem; line-height: 1.6; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+                              ▲
+                             /│\
+                            / │ \
+                           /  │  \
+                          /   │   \
+                         /    │    \
+                        /     │     \
+                       /      │      \
+                      /       │       \
+                     /  REGISTRADORES   \
+                    /  (1 ciclo, ~1 KB)  \
+                   /─────────────────────\
+                  /       CACHE L1        \
+                 /    (2-4 ciclos, 64 KB)  \
+                /─────────────────────────\
+               /        CACHE L2           \
+              /     (10 ciclos, 256 KB)     \
+             /─────────────────────────────\
+            /          CACHE L3             \
+           /       (30-40 ciclos, 8 MB)      \
+          /─────────────────────────────────\
+         /            RAM (DRAM)             \
+        /        (50-100 ns, ~16 GB)          \
+       /─────────────────────────────────────\
+      /              SSD                      \
+     /          (µs, ~1 TB)                   \
+    /─────────────────────────────────────────\
+   /                HD                         \
+  /            (ms, ~4 TB)                      \
+ /─────────────────────────────────────────────\
+/                  Fitas / Nuvem                \
+/           (s-min, ~TB-EB / Ilimitado)          \
+─────────────────────────────────────────────────
+  </pre>
+
+</div>
+</details>
+
+
+## 6. Exercícios
+
+<details>
+<summary>📗 Exercício 1 — Definição (fácil)</summary>
+
+**Enunciado:** O que é armazenamento terciário?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** O armazenamento terciário é o nível mais baixo da hierarquia de memória, onde dados são armazenados para longo prazo (anos ou décadas), com acesso muito lento mas alta capacidade e baixo custo. Exemplos: fitas magnéticas e nuvem.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Fitas magnéticas (fácil)</summary>
+
+**Enunciado:** Qual a principal característica das fitas magnéticas?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** As fitas magnéticas têm acesso sequencial (não aleatório), ou seja, para acessar um dado é preciso rebobinar a fita até a posição correta. São muito lentas, mas extremamente baratas e duráveis.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Nuvem (fácil)</summary>
+
+**Enunciado:** O que é armazenamento em nuvem?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Armazenamento em nuvem é um serviço onde os dados são armazenados em servidores remotos e acessados pela internet. Exemplos: Google Drive, OneDrive, Amazon S3.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Acesso sequencial (médio)</summary>
+
+**Enunciado:** Por que as fitas magnéticas têm acesso sequencial?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** As fitas magnéticas são uma longa fita que passa por uma cabeça de leitura/escrita. Para acessar um dado em uma posição específica, é necessário rebobinar a fita até aquela posição. Isso torna o acesso não aleatório.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Onde as fitas são usadas? (médio)</summary>
+
+**Enunciado:** Cite três usos de fitas magnéticas hoje em dia.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+1. **Backup de servidores:** Grandes empresas usam fitas para backup.
+2. **Arquivo morto:** Dados que precisam ser mantidos por décadas.
+3. **Indústria de entretenimento:** Arquivos de filmes e séries.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Vantagens da nuvem (conceitual)</summary>
+
+**Enunciado:** Quais são as principais vantagens do armazenamento em nuvem?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Acesso de qualquer lugar, compartilhamento fácil, backup automático, escalabilidade ilimitada e manutenção zero (o provedor cuida do hardware).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — Desvantagens da nuvem (conceitual)</summary>
+
+**Enunciado:** Quais são as principais desvantagens do armazenamento em nuvem?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Dependência da internet, preocupações com privacidade (dados em servidores de terceiros), custo contínuo (pagamento mensal), velocidade limitada pela conexão e riscos de segurança.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — Comparação de custo (desafio)</summary>
+
+**Enunciado:** Por que grandes empresas usam fitas em vez de nuvem para backup de longo prazo?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** 
+- **Fitas:** Custo único por cartucho, durabilidade de décadas, não consomem energia quando não usadas.
+- **Nuvem:** Custo contínuo (pagamento mensal), dependência da internet, dados em servidores de terceiros.
+
+Para grandes volumes de dados que precisam ser mantidos por anos, as fitas são mais baratas e confiáveis a longo prazo.
+
+</details>
+</details>
+
+
+
+> **"O armazenamento terciário é o fundo da hierarquia de memória — onde os dados são guardados por décadas, com acesso muito lento mas capacidade enorme e custo extremamente baixo. As fitas magnéticas são a tecnologia mais antiga ainda em uso: acesso sequencial, durabilidade de 30+ anos, e o menor custo por TB. A nuvem é a tecnologia moderna: acesso de qualquer lugar, escalabilidade ilimitada, mas com custo contínuo e dependência da internet. Juntas, essas tecnologias formam a base do 'arquivo morto' digital — preservando a história, os dados científicos e os backups das empresas por gerações."**

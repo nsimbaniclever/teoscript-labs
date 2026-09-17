@@ -1,0 +1,336 @@
+# Estimação Pontual
+
+## O que é Estimação Pontual?
+
+A estimação pontual é o ramo da estatística que se preocupa em **estimar um parâmetro populacional desconhecido** a partir de uma amostra. Quando queremos saber algo sobre uma população inteira (como a altura média dos brasileiros, a proporção de eleitores que preferem um candidato, ou a variância do tempo de vida de uma lâmpada), geralmente não podemos medir toda a população. Em vez disso, coletamos uma amostra e usamos essa amostra para fazer uma **estimativa** do parâmetro.
+
+Pense em uma pesquisa eleitoral: você não pode perguntar a todos os eleitores do país, então pergunta a uma amostra de 2.000 pessoas. A proporção de votos que você encontra na amostra é uma **estimativa pontual** da verdadeira proporção na população.
+
+A estimativa é um **valor único** (um "ponto") que usamos como nossa melhor suposição para o parâmetro populacional.
+
+**Distinção importante:**
+
+- **Parâmetro:** é o valor verdadeiro na população (ex: $\mu$, $\sigma^2$, $p$). Geralmente é desconhecido e fixo.
+- **Estimador:** é a regra ou fórmula que usamos para calcular a estimativa a partir dos dados (ex: $\bar{X}$, $S^2$, $\hat{p}$). É uma variável aleatória.
+- **Estimativa:** é o valor numérico que obtemos quando aplicamos o estimador a uma amostra específica (ex: $\bar{X} = 5,2$).
+
+**Exemplos de estimadores comuns:**
+
+| Parâmetro | Estimador | Fórmula |
+| --- | --- | --- |
+| Média ($\mu$) | Média amostral ($\bar{X}$) | $\frac{1}{n}\sum X_i$ |
+| Variância ($\sigma^2$) | Variância amostral ($S^2$) | $\frac{1}{n-1}\sum (X_i - \bar{X})^2$ |
+| Proporção ($p$) | Proporção amostral ($\hat{p}$) | $k/n$ (onde $k$ é o número de sucessos) |
+| Desvio padrão ($\sigma$) | Desvio padrão amostral ($S$) | $\sqrt{S^2}$ |
+
+## Propriedades Desejáveis de um Estimador
+
+Um bom estimador deve ter certas propriedades. As principais são:
+
+### 1. Não-Viesamento (Unbiasedness)
+
+Um estimador é **não viesado** se seu valor esperado é igual ao parâmetro que ele estima. Em outras palavras, se você repetir o processo de amostragem muitas vezes, a média dos estimadores será o valor verdadeiro.
+
+>> $$E[\hat{\theta}] = \theta$$
+
+**Exemplo:** A média amostral é um estimador não viesado da média populacional.
+
+>> $$E[\bar{X}] = \mu$$
+
+Isso significa que, se você coletar muitas amostras e calcular a média de cada uma, a média dessas médias será exatamente $\mu$.
+
+**Contra-exemplo:** A variância amostral com divisor $n$ (em vez de $n-1$) é viesada.
+
+Se definirmos $S^2_n = \frac{1}{n}\sum (X_i - \bar{X})^2$, então $E[S^2_n] = \frac{n-1}{n}\sigma^2 < \sigma^2$. Por isso usamos o divisor $n-1$ para obter um estimador não viesado.
+
+**Exemplo numérico:**
+
+Suponha que uma população tenha $\mu = 10$. Coletamos 100 amostras de tamanho $n = 5$ e calculamos a média de cada uma. A média dessas 100 médias será aproximadamente 10. Isso mostra que $\bar{X}$ é não viesado.
+
+### 2. Consistência (Consistency)
+
+Um estimador é **consistente** se, à medida que o tamanho da amostra aumenta, ele converge para o parâmetro populacional. Em outras palavras, com amostras muito grandes, o estimador fica arbitrariamente próximo do valor verdadeiro.
+
+>> $$\hat{\theta}_n \xrightarrow{P} \theta$$
+
+**Exemplo:** A média amostral é consistente pela Lei dos Grandes Números. Quanto maior a amostra, mais próxima a média amostral estará da média populacional.
+
+**Exemplo numérico:**
+
+Para uma população com $\mu = 50$:
+- $n = 10$: a média amostral pode variar bastante (ex: 45 a 55)
+- $n = 100$: a média amostral provavelmente estará entre 48 e 52
+- $n = 1000$: a média amostral estará muito próxima de 50
+
+### 3. Eficiência (Efficiency)
+
+Entre dois estimadores não viesados, o mais **eficiente** é aquele com menor variância. Um estimador eficiente tem menos variabilidade, ou seja, suas estimativas são mais precisas.
+
+**Exemplo:** Para estimar a média de uma população Normal, tanto a média amostral ($\bar{X}$) quanto a mediana amostral são não viesadas. Mas a média tem menor variância, portanto é mais eficiente.
+
+**Exemplo numérico:**
+
+Suponha que $X \sim \text{Normal}(\mu, \sigma^2)$. Temos dois estimadores para $\mu$:
+- $\bar{X}$ (média): $Var(\bar{X}) = \sigma^2/n$
+- Mediana: $Var(\text{Mediana}) \approx \frac{\pi}{2} \cdot \frac{\sigma^2}{n} \approx 1,57 \cdot \frac{\sigma^2}{n}$
+
+A média é mais eficiente porque tem menor variância.
+
+### 4. Suficiência (Sufficiency)
+
+Um estimador é **suficiente** se ele resume toda a informação relevante da amostra sobre o parâmetro. Nenhuma outra estatística calculada a partir da mesma amostra pode fornecer informação adicional.
+
+**Exemplo:** Para uma distribuição Normal, a média amostral ($\bar{X}$) é uma estatística suficiente para $\mu$. Uma vez que você conhece $\bar{X}$, a amostra individual não fornece mais informação sobre $\mu$.
+
+**Exemplo numérico:**
+
+Suponha que você tem uma amostra de 10 observações. Se você calcular a média, isso resume toda a informação sobre a média populacional. Saber os valores individuais não melhora sua estimativa de $\mu$.
+
+## Comparação entre as Propriedades
+
+| Propriedade | Definição | Importância |
+| --- | --- | --- |
+| **Não-viesamento** | $E[\text{estimador}] = \text{parâmetro}$ | Garante que, em média, acertamos |
+| **Consistência** | Estimador $\to$ parâmetro com $n\to\infty$ | Garante que com amostras grandes acertamos |
+| **Eficiência** | Menor variância entre estimadores não viesados | Garante precisão |
+| **Suficiência** | Resume toda a informação | Garante que não desperdiçamos dados |
+
+## Estimadores Comuns e suas Propriedades
+
+### Estimador da Média ($\bar{X}$)
+
+>> $$\bar{X} = \frac{1}{n}\sum_{i=1}^n X_i$$
+
+**Propriedades:**
+- **Não viesado:** $E[\bar{X}] = \mu$ (desde que $E[X_i] = \mu$)
+- **Consistente:** $\bar{X} \to \mu$ pela Lei dos Grandes Números
+- **Eficiente:** entre os estimadores não viesados, é o mais eficiente para distribuições Normais
+
+### Estimador da Variância ($S^2$)
+
+>> $$S^2 = \frac{1}{n-1}\sum_{i=1}^n (X_i - \bar{X})^2$$
+
+**Propriedades:**
+- **Não viesado:** $E[S^2] = \sigma^2$ (por isso usamos $n-1$)
+- **Consistente:** $S^2 \to \sigma^2$ (desde que a variância exista)
+
+### Estimador da Proporção ($\hat{p}$)
+
+>> $$\hat{p} = \frac{k}{n}$$
+
+onde $k$ é o número de sucessos em $n$ tentativas.
+
+**Propriedades:**
+- **Não viesado:** $E[\hat{p}] = p$
+- **Consistente:** $\hat{p} \to p$ pela Lei dos Grandes Números
+
+## Analogias
+
+### Analogia 1: O alvo e os arremessos
+
+Imagine que você está atirando flechas em um alvo. O centro do alvo é o parâmetro verdadeiro.
+
+- **Não viesado:** Seus arremessos estão centrados no alvo (em média, acertam o centro).
+- **Viesado:** Seus arremessos estão consistentemente desviados para um lado.
+- **Eficiente:** Seus arremessos estão agrupados (baixa variância).
+- **Ineficiente:** Seus arremessos estão espalhados (alta variância).
+- **Consistente:** Quanto mais flechas você atira, mais perto do centro elas ficam.
+
+### Analogia 2: O alvo, o atirador e o número de flechas
+
+**Pergunta:** O que é melhor: um atirador viesado mas eficiente, ou um atirador não viesado mas ineficiente?
+
+**Resolução:**
+
+Não há resposta única. Um atirador viesado mas eficiente (todos os arremessos agrupados, mas desviados do centro) pode ser corrigido (ajustar a mira). Um atirador não viesado mas ineficiente (arremessos espalhados ao redor do centro) é mais difícil de corrigir.
+
+**Interpretação:** Na prática, preferimos estimadores não viesados e eficientes.
+
+### Analogia 3: A balança
+
+Uma balança que sempre mostra 1kg a mais é viesada (erro sistemático). Uma balança que mostra valores aleatórios em torno do peso verdadeiro é não viesada, mas ineficiente (erro aleatório). A melhor balança é não viesada e eficiente.
+
+### Analogia 4: As flechas e o arqueiro
+
+**Pergunta:** Como você avalia um arqueiro?
+
+**Resolução:**
+
+Um bom arqueiro tem:
+- Arremessos centrados no alvo (não viesado)
+- Arremessos agrupados (eficiente)
+- Melhora com a prática (consistente)
+
+**Interpretação:** Um bom estimador tem as mesmas propriedades.
+
+## Exemplos Práticos com Cálculos Passo a Passo
+
+### Exemplo 1: Calculando estimadores
+
+Uma amostra de 5 elementos: 2, 4, 6, 8, 10. Calcule a média e a variância amostrais.
+
+**Resolução:**
+
+$\bar{X} = \frac{2+4+6+8+10}{5} = \frac{30}{5} = 6$
+
+$S^2 = \frac{(2-6)^2 + (4-6)^2 + (6-6)^2 + (8-6)^2 + (10-6)^2}{5-1} = \frac{16 + 4 + 0 + 4 + 16}{4} = \frac{40}{4} = 10$
+
+**Resposta:** $\bar{X} = 6$, $S^2 = 10$.
+
+### Exemplo 2: Verificando não viesamento
+
+Suponha que $X \sim \text{Bernoulli}(p)$. Mostre que $\hat{p} = \bar{X}$ é não viesado.
+
+**Resolução:**
+
+$E[\hat{p}] = E[\bar{X}] = E\left[\frac{1}{n}\sum X_i\right] = \frac{1}{n}\sum E[X_i] = \frac{1}{n} \cdot np = p$
+
+**Interpretação:** $\hat{p}$ é não viesado para $p$.
+
+### Exemplo 3: Comparando eficiência
+
+Para $X \sim N(\mu, \sigma^2)$, compare a variância de $\bar{X}$ e da mediana para $n = 30$.
+
+**Resolução:**
+
+$Var(\bar{X}) = \frac{\sigma^2}{n} = \frac{\sigma^2}{30}$
+
+$Var(\text{Mediana}) \approx \frac{\pi}{2} \cdot \frac{\sigma^2}{n} = 1,57 \cdot \frac{\sigma^2}{30}$
+
+**Interpretação:** A mediana é menos eficiente (tem variância 57% maior).
+
+### Exemplo 4: Consistência
+
+Suponha que $X \sim \text{Bernoulli}(p)$. Mostre que $\hat{p}$ é consistente.
+
+**Resolução:**
+
+Pela Lei dos Grandes Números, $\bar{X} \to p$ em probabilidade. Portanto, $\hat{p}$ é consistente.
+
+### Exemplo 5: Suficiência
+
+Para $X \sim \text{Poisson}(\lambda)$, a média amostral $\bar{X}$ é uma estatística suficiente para $\lambda$.
+
+**Interpretação:** A informação sobre $\lambda$ está completamente contida na média amostral.
+
+## Exercícios Resolvidos
+
+### Exercício 1 (Fácil)
+
+Uma amostra de 8 elementos: 3, 5, 7, 9, 11, 13, 15, 17. Calcule $\bar{X}$ e $S^2$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$\bar{X} = \frac{3+5+7+9+11+13+15+17}{8} = \frac{80}{8} = 10$
+
+$S^2 = \frac{(3-10)^2 + (5-10)^2 + (7-10)^2 + (9-10)^2 + (11-10)^2 + (13-10)^2 + (15-10)^2 + (17-10)^2}{8-1}$
+
+$S^2 = \frac{49 + 25 + 9 + 1 + 1 + 9 + 25 + 49}{7} = \frac{168}{7} = 24$
+
+**Resposta:** $\bar{X} = 10$, $S^2 = 24$.
+
+</details>
+
+### Exercício 2 (Fácil/Médio)
+
+Mostre que $S^2 = \frac{1}{n-1}\sum (X_i - \bar{X})^2$ é não viesado para $\sigma^2$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$\sum (X_i - \bar{X})^2 = \sum X_i^2 - n\bar{X}^2$
+
+$E[\sum (X_i - \bar{X})^2] = \sum E[X_i^2] - nE[\bar{X}^2] = n(\sigma^2 + \mu^2) - n\left(\frac{\sigma^2}{n} + \mu^2\right) = n\sigma^2 + n\mu^2 - \sigma^2 - n\mu^2 = (n-1)\sigma^2$
+
+$E[S^2] = \frac{E[\sum (X_i - \bar{X})^2]}{n-1} = \frac{(n-1)\sigma^2}{n-1} = \sigma^2$
+
+**Resposta:** $S^2$ é não viesado.
+
+</details>
+
+### Exercício 3 (Médio)
+
+Compare a eficiência de dois estimadores para $\mu$: $\bar{X}$ e a média aparada (que descarta 20% dos extremos), supondo que os dados vêm de uma distribuição Normal.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+Para dados Normais, a média amostral é o estimador mais eficiente. A média aparada tem variância maior, mas é mais robusta a outliers.
+
+**Resposta:** $\bar{X}$ é mais eficiente para dados Normais.
+
+</details>
+
+### Exercício 4 (Médio)
+
+Seja $X \sim \text{Uniforme}(0, \theta)$. O estimador $\hat{\theta} = 2\bar{X}$ é não viesado?
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+Para $\text{Uniforme}(0, \theta)$, $E[X] = \theta/2$.
+
+$E[\hat{\theta}] = E[2\bar{X}] = 2E[\bar{X}] = 2 \cdot \frac{\theta}{2} = \theta$
+
+**Resposta:** Sim, $\hat{\theta}$ é não viesado.
+
+</details>
+
+### Exercício 5 (Difícil)
+
+Compare a consistência de $\bar{X}$ e da mediana para uma distribuição com caudas pesadas.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+Ambos são consistentes (convergem para os parâmetros populacionais). No entanto, para distribuições com caudas pesadas, a mediana pode ser mais robusta e convergir mais rapidamente em alguns casos.
+
+**Resposta:** Ambos são consistentes, mas a mediana é mais robusta.
+
+</details>
+
+## Desafio Final com Resolução Completa
+
+Uma amostra de 10 observações de uma população Normal: 12, 15, 18, 20, 22, 25, 27, 30, 32, 35.
+
+a) Calcule a média amostral ($\bar{X}$) e a variância amostral ($S^2$).
+
+b) Qual é a estimativa pontual para a média populacional ($\mu$)?
+
+c) Qual é a estimativa pontual para a variância populacional ($\sigma^2$)?
+
+d) Se a verdadeira média populacional for 24, o estimador $\bar{X}$ é não viesado? Justifique.
+
+e) Compare a eficiência de $\bar{X}$ e da mediana para estimar $\mu$, assumindo que os dados são Normais.
+
+<details>
+<summary>💡 Ver resolução completa</summary>
+
+a) $\sum X = 12+15+18+20+22+25+27+30+32+35 = 236$
+   $\bar{X} = \frac{236}{10} = 23,6$
+
+   $\sum X^2 = 144+225+324+400+484+625+729+900+1024+1225 = 6080$
+   $S^2 = \frac{6080 - 236^2/10}{9} = \frac{6080 - 5569,6}{9} = \frac{510,4}{9} = 56,711$
+
+b) $\hat{\mu} = \bar{X} = 23,6$
+
+c) $\hat{\sigma}^2 = S^2 = 56,711$
+
+d) $E[\bar{X}] = \mu = 24$ para qualquer amostra. Portanto, $\bar{X}$ é não viesado, independentemente da amostra específica.
+
+e) Para dados Normais:
+   $Var(\bar{X}) = \frac{\sigma^2}{n}$
+   $Var(\text{Mediana}) \approx 1,57 \cdot \frac{\sigma^2}{n}$
+   A média é 57% mais eficiente que a mediana.
+
+**Respostas:**
+a) $\bar{X} = 23,6$; $S^2 = 56,711$
+b) $\hat{\mu} = 23,6$
+c) $\hat{\sigma}^2 = 56,711$
+d) Sim, $E[\bar{X}] = \mu = 24$
+e) $\bar{X}$ é mais eficiente (menor variância)
+
+</details>
+
+> *A estimação pontual transforma o desconhecido da população em um número — a melhor aposta que a amostra pode oferecer.*

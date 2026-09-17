@@ -1,0 +1,439 @@
+# CÁLCULO DE AUTOVALORES
+
+## 1. Definição Formal: Equação Característica
+
+### 1.1 Como Encontrar os Autovalores?
+
+Para encontrar os autovalores de uma matriz $A \in \mathbb{R}^{n \times n}$, precisamos resolver:
+
+$$
+\det(A - \lambda I) = 0
+$$
+
+Onde:
+- $\lambda$ é o autovalor (incógnita)
+- $I$ é a matriz identidade $n \times n$
+
+**Interpretação:** Estamos procurando os valores de $\lambda$ para os quais a matriz $A - \lambda I$ é **singular** (determinante zero).
+
+### 1.2 Polinômio Característico
+
+A equação $\det(A - \lambda I) = 0$ resulta em um **polinômio** de grau $n$ em $\lambda$, chamado de **polinômio característico**:
+
+$$
+p(\lambda) = \det(A - \lambda I) = 0
+$$
+
+As raízes desse polinômio são os **autovalores** de $A$.
+
+## 2. Cálculo de Autovalores para $2 \times 2$
+
+### 2.1 Fórmula Geral
+
+Para:
+$$
+A = \begin{bmatrix} a & b \\ c & d \end{bmatrix}
+$$
+
+O polinômio característico é:
+$$
+p(\lambda) = \lambda^2 - \text{tr}(A) \cdot \lambda + \det(A)
+$$
+
+Onde:
+- $\text{tr}(A) = a + d$ (traço: soma dos elementos da diagonal)
+- $\det(A) = ad - bc$
+
+**Fórmula final:**
+$$
+\lambda^2 - (a+d)\lambda + (ad - bc) = 0
+$$
+
+As raízes são:
+$$
+\lambda = \frac{(a+d) \pm \sqrt{(a+d)^2 - 4(ad - bc)}}{2}
+$$
+
+### 2.2 Exemplo Acadêmico Passo a Passo
+
+Seja:
+$$
+A = \begin{bmatrix} 2 & 1 \\ 1 & 2 \end{bmatrix}
+$$
+
+**Passo 1:** Calcular $\text{tr}(A)$ e $\det(A)$:
+$$
+\text{tr}(A) = 2 + 2 = 4
+$$
+$$
+\det(A) = 2 \cdot 2 - 1 \cdot 1 = 4 - 1 = 3
+$$
+
+**Passo 2:** Montar o polinômio característico:
+$$
+\lambda^2 - 4\lambda + 3 = 0
+$$
+
+**Passo 3:** Resolver:
+$$
+\lambda = \frac{4 \pm \sqrt{16 - 12}}{2} = \frac{4 \pm \sqrt{4}}{2} = \frac{4 \pm 2}{2}
+$$
+
+$$
+\lambda_1 = \frac{4 + 2}{2} = 3, \quad \lambda_2 = \frac{4 - 2}{2} = 1
+$$
+
+**Autovalores:** $\lambda_1 = 3, \lambda_2 = 1$ (já vistos no exemplo anterior)
+
+### 2.3 Exemplo 2: Autovalores Complexos
+
+Seja:
+$$
+A = \begin{bmatrix} 0 & -1 \\ 1 & 0 \end{bmatrix}
+$$
+
+**Passo 1:** Calcular $\text{tr}(A)$ e $\det(A)$:
+$$
+\text{tr}(A) = 0 + 0 = 0
+$$
+$$
+\det(A) = 0 \cdot 0 - (-1) \cdot 1 = 1
+$$
+
+**Passo 2:** Montar o polinômio característico:
+$$
+\lambda^2 - 0\lambda + 1 = 0 \Rightarrow \lambda^2 + 1 = 0
+$$
+
+**Passo 3:** Resolver:
+$$
+\lambda^2 = -1 \Rightarrow \lambda = \pm i
+$$
+
+**Autovalores:** $\lambda_1 = i, \lambda_2 = -i$ (complexos)
+
+**Interpretação:** A matriz é uma rotação de 90° — não tem autovetores reais.
+
+## 3. Cálculo de Autovalores para $3 \times 3$
+
+### 3.1 Método Geral
+
+Para $A \in \mathbb{R}^{3 \times 3}$, o polinômio característico é:
+$$
+p(\lambda) = \det(A - \lambda I) = -\lambda^3 + \text{tr}(A)\lambda^2 - \left(\sum \text{menores principais}\right)\lambda + \det(A)
+$$
+
+**Observação:** Para matrizes $3 \times 3$, o cálculo é mais trabalhoso. Usamos a **Regra de Sarrus** ou **expansão por cofatores** para calcular $\det(A - \lambda I)$.
+
+### 3.2 Exemplo Acadêmico Passo a Passo
+
+Seja:
+$$
+A = \begin{bmatrix}
+1 & 2 & 3 \\
+2 & 3 & 1 \\
+3 & 1 & 2
+\end{bmatrix}
+$$
+
+**Passo 1:** Montar $A - \lambda I$:
+$$
+A - \lambda I = \begin{bmatrix}
+1-\lambda & 2 & 3 \\
+2 & 3-\lambda & 1 \\
+3 & 1 & 2-\lambda
+\end{bmatrix}
+$$
+
+**Passo 2:** Calcular $\det(A - \lambda I)$:
+
+Usando a Regra de Sarrus:
+
+$$
+\det(A - \lambda I) = (1-\lambda)(3-\lambda)(2-\lambda) + 2 \cdot 1 \cdot 3 + 3 \cdot 2 \cdot 1
+$$
+$$
+- [3(3-\lambda)3 + 1 \cdot 1 \cdot (1-\lambda) + (2-\lambda) \cdot 2 \cdot 2]
+$$
+
+**Passo 3:** Simplificar:
+
+**Termo 1:** $(1-\lambda)(3-\lambda)(2-\lambda)$
+
+Primeiro: $(1-\lambda)(3-\lambda) = 3 - \lambda - 3\lambda + \lambda^2 = 3 - 4\lambda + \lambda^2$
+
+Depois: $(3 - 4\lambda + \lambda^2)(2-\lambda) = 6 - 3\lambda - 8\lambda + 4\lambda^2 + 2\lambda^2 - \lambda^3 = 6 - 11\lambda + 6\lambda^2 - \lambda^3$
+
+**Termo 2:** $2 \cdot 1 \cdot 3 = 6$
+
+**Termo 3:** $3 \cdot 2 \cdot 1 = 6$
+
+**Termo 4:** $3(3-\lambda)3 = 9(3-\lambda) = 27 - 9\lambda$
+
+**Termo 5:** $1 \cdot 1 \cdot (1-\lambda) = 1 - \lambda$
+
+**Termo 6:** $(2-\lambda) \cdot 2 \cdot 2 = 4(2-\lambda) = 8 - 4\lambda$
+
+**Soma total:**
+$$
+(6 - 11\lambda + 6\lambda^2 - \lambda^3) + 6 + 6 - (27 - 9\lambda) - (1 - \lambda) - (8 - 4\lambda)
+$$
+
+$$
+= (6 - 11\lambda + 6\lambda^2 - \lambda^3) + 12 - 27 + 9\lambda - 1 + \lambda - 8 + 4\lambda
+$$
+
+$$
+= (6 + 12 - 27 - 1 - 8) + (-11\lambda + 9\lambda + \lambda + 4\lambda) + 6\lambda^2 - \lambda^3
+$$
+
+$$
+= (-18) + (3\lambda) + 6\lambda^2 - \lambda^3
+$$
+
+**Passo 4:** Polinômio característico:
+$$
+-\lambda^3 + 6\lambda^2 + 3\lambda - 18 = 0
+$$
+
+Multiplicando por -1:
+$$
+\lambda^3 - 6\lambda^2 - 3\lambda + 18 = 0
+$$
+
+**Passo 5:** Encontrar raízes (testar divisores de 18: ±1, ±2, ±3, ±6, ±9, ±18):
+
+Testando $\lambda = 3$:
+$$
+27 - 54 - 9 + 18 = -18 \neq 0
+$$
+
+Testando $\lambda = 2$:
+$$
+8 - 24 - 6 + 18 = -4 \neq 0
+$$
+
+Testando $\lambda = -2$:
+$$
+-8 - 24 + 6 + 18 = -8 \neq 0
+$$
+
+Testando $\lambda = 1$:
+$$
+1 - 6 - 3 + 18 = 10 \neq 0
+$$
+
+Testando $\lambda = 6$:
+$$
+216 - 216 - 18 + 18 = 0
+$$
+
+**$\lambda = 6$ é raiz!**
+
+**Passo 6:** Fatorar:
+$$
+\lambda^3 - 6\lambda^2 - 3\lambda + 18 = (\lambda - 6)(\lambda^2 + 0\lambda - 3)
+$$
+
+**Passo 7:** Resolver $\lambda^2 - 3 = 0$:
+$$
+\lambda^2 = 3 \Rightarrow \lambda = \pm \sqrt{3}
+$$
+
+**Autovalores:** $\lambda_1 = 6, \lambda_2 = \sqrt{3}, \lambda_3 = -\sqrt{3}$
+
+## 4. Exemplos Lúdicos Aprimorados
+
+### 🍔 EXEMPLO 1 – A LANCHONETE (CRESCIMENTO DE INGREDIENTES)
+
+A lanchonete tem a matriz:
+$$
+A = \begin{bmatrix} 2 & 1 \\ 1 & 2 \end{bmatrix}
+$$
+
+**Autovalores:** $\lambda_1 = 3, \lambda_2 = 1$ (calculados anteriormente)
+
+**Interpretação:**
+- $\lambda_1 = 3$: Na direção $(1,1)$, o sistema cresce 3 vezes a cada passo.
+- $\lambda_2 = 1$: Na direção $(1,-1)$, o sistema se mantém estável.
+
+### 🧃 EXEMPLO 2 – A CANTINA (DECAIMENTO DE NUTRIENTES)
+
+A cantina tem a matriz:
+$$
+A = \begin{bmatrix} 0.8 & 0 \\ 0 & 1.1 \end{bmatrix}
+$$
+
+**Autovalores:** $\lambda_1 = 0.8, \lambda_2 = 1.1$
+
+**Interpretação:**
+- $\lambda_1 = 0.8$: O cálcio diminui 20% a cada aplicação.
+- $\lambda_2 = 1.1$: O açúcar cresce 10% a cada aplicação.
+
+## 5. Propriedades Importantes dos Autovalores
+
+| Propriedade | Descrição |
+|-------------|-----------|
+| **Soma** | $\sum_{i=1}^{n} \lambda_i = \text{tr}(A)$ |
+| **Produto** | $\prod_{i=1}^{n} \lambda_i = \det(A)$ |
+| **Matriz Transposta** | $\lambda(A) = \lambda(A^T)$ |
+| **Matriz Inversa** | Se $\lambda$ é autovalor de $A$, então $1/\lambda$ é autovalor de $A^{-1}$ |
+| **Potência** | Se $\lambda$ é autovalor de $A$, então $\lambda^k$ é autovalor de $A^k$ |
+| **Matriz Simétrica** | Todos os autovalores são reais |
+
+## 6. Aplicação na Tese: Análise de Convergência
+
+Em FL, a taxa de convergência do FedAvg é determinada pelo **número de condição** da Hessiana:
+
+$$
+\kappa = \frac{\lambda_{max}}{\lambda_{min}}
+$$
+
+**Interpretação:** Quanto menor $\kappa$, mais rápida é a convergência.
+
+## 7. Exercícios Propostos (Manuais)
+
+<details>
+<summary>📗 Exercício 1 (Autovalores $2 \times 2$)</summary>
+
+**Enunciado:** Calcule os autovalores de:
+
+a) $A = \begin{bmatrix} 3 & 2 \\ 2 & 3 \end{bmatrix}$
+
+b) $B = \begin{bmatrix} 1 & 4 \\ 2 & 3 \end{bmatrix}$
+
+c) $C = \begin{bmatrix} 0 & -1 \\ 1 & 0 \end{bmatrix}$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\text{tr}(A) = 6, \det(A) = 9 - 4 = 5$  
+$\lambda^2 - 6\lambda + 5 = 0 \Rightarrow \lambda = \frac{6 \pm \sqrt{36 - 20}}{2} = \frac{6 \pm 4}{2}$  
+$\lambda_1 = 5, \lambda_2 = 1$
+
+b) $\text{tr}(B) = 4, \det(B) = 3 - 8 = -5$  
+$\lambda^2 - 4\lambda - 5 = 0 \Rightarrow \lambda = \frac{4 \pm \sqrt{16 + 20}}{2} = \frac{4 \pm 6}{2}$  
+$\lambda_1 = 5, \lambda_2 = -1$
+
+c) $\text{tr}(C) = 0, \det(C) = 0 - (-1)(1) = 1$  
+$\lambda^2 + 1 = 0 \Rightarrow \lambda = \pm i$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 (Autovalores $3 \times 3$)</summary>
+
+**Enunciado:** Calcule os autovalores de:
+
+a) $A = \begin{bmatrix} 1 & 0 & 0 \\ 0 & 2 & 0 \\ 0 & 0 & 3 \end{bmatrix}$
+
+b) $B = \begin{bmatrix} 2 & 1 & 1 \\ 1 & 2 & 1 \\ 1 & 1 & 2 \end{bmatrix}$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) Matriz diagonal → autovalores são os elementos da diagonal: $\lambda_1 = 1, \lambda_2 = 2, \lambda_3 = 3$
+
+b) Matriz com todos os elementos iguais a 1 na diagonal e 2 fora → autovalores:  
+$\lambda_1 = 4$ (para $\vec{v} = (1,1,1)$) e $\lambda_2 = \lambda_3 = 1$ (multiplicidade 2)
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 (Propriedades)</summary>
+
+**Enunciado:** Dada:
+$$
+A = \begin{bmatrix} 2 & 1 \\ 1 & 2 \end{bmatrix}
+$$
+
+a) Calcule os autovalores.  
+b) Calcule o traço e o determinante.  
+c) Verifique que $\text{tr}(A) = \lambda_1 + \lambda_2$ e $\det(A) = \lambda_1 \cdot \lambda_2$.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\lambda_1 = 3, \lambda_2 = 1$  
+b) $\text{tr}(A) = 4, \det(A) = 3$  
+c) $\lambda_1 + \lambda_2 = 3 + 1 = 4 = \text{tr}(A)$ ✓  
+$\lambda_1 \cdot \lambda_2 = 3 \cdot 1 = 3 = \det(A)$ ✓
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 (Aplicação – Crescimento)</summary>
+
+**Enunciado:** Uma população evolui segundo:
+$$
+A = \begin{bmatrix} 1.5 & 0.5 \\ 0.5 & 1.5 \end{bmatrix}
+$$
+
+a) Calcule os autovalores.  
+b) Qual é a taxa de crescimento em cada direção?  
+c) A longo prazo, a população cresce ou decresce?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\text{tr}(A) = 3, \det(A) = 2.25 - 0.25 = 2$  
+$\lambda^2 - 3\lambda + 2 = 0 \Rightarrow \lambda = \frac{3 \pm \sqrt{9 - 8}}{2} = \frac{3 \pm 1}{2}$  
+$\lambda_1 = 2, \lambda_2 = 1$
+
+b) $\lambda_1 = 2$ → cresce 100% na direção $(1,1)$; $\lambda_2 = 1$ → estável na direção $(1,-1)$.
+
+c) A longo prazo, a população cresce exponencialmente (fator 2 a cada passo) na direção $(1,1)$.
+
+</details>
+</details>
+
+## 8. EXERCÍCIO COMPUTACIONAL
+
+<details>
+<summary>🐍 Ver código (Python/NumPy)</summary>
+
+```python
+import numpy as np
+
+# Exemplo 2x2
+A = np.array([[2, 1], [1, 2]])
+autovalores, autovetores = np.linalg.eig(A)
+print("Autovalores de A:", autovalores)
+
+# Exemplo 3x3
+B = np.array([[1, 2, 3], [2, 3, 1], [3, 1, 2]])
+autovalores_B, _ = np.linalg.eig(B)
+print("Autovalores de B:", autovalores_B)
+```
+
+</details>
+
+<details>
+<summary>📝 Ver código (R)</summary>
+
+```r
+# Exemplo 2x2
+A <- matrix(c(2, 1, 1, 2), nrow=2)
+eig <- eigen(A)
+print(eig$values)
+
+# Exemplo 3x3
+B <- matrix(c(1, 2, 3, 2, 3, 1, 3, 1, 2), nrow=3)
+eig_B <- eigen(B)
+print(eig_B$values)
+```
+
+</details>
+
+> *O cálculo de autovalores é feito através do polinômio característico $\det(A - \lambda I) = 0$. Para matrizes $2 \times 2$, a fórmula é simples e direta. Para matrizes maiores, o cálculo é mais trabalhoso, mas pode ser feito por métodos numéricos. Os autovalores revelam propriedades importantes como a soma (traço) e o produto (determinante) da matriz.*

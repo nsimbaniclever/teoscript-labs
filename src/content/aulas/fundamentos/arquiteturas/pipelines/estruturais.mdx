@@ -1,0 +1,410 @@
+# CONFLITOS ESTRUTURAIS
+
+## 1. INTRODUÇÃO
+
+Nas duas últimas aulas, estudamos o pipeline e seus conflitos de dados — situações onde uma instrução depende do resultado de outra. Vimos que esses conflitos podem ser resolvidos com stalls e forwarding.<br><br>
+
+Mas há outro tipo de conflito que pode parar o pipeline: os **conflitos estruturais**. Eles ocorrem quando dois estágios diferentes do pipeline precisam usar o **mesmo recurso físico** ao mesmo tempo. É como dois operários em uma linha de montagem que precisam usar a mesma ferramenta ao mesmo tempo — um deles precisa esperar.<br><br>
+
+Imagine uma cozinha com apenas um forno. O chef está assando um bolo (estágio EX), e o ajudante precisa assar um pão (estágio MEM). Os dois não podem usar o forno ao mesmo tempo. Alguém precisa esperar. Isso é um conflito estrutural.<br><br>
+
+Os conflitos estruturais são mais fáceis de resolver que os conflitos de dados: basta **duplicar o recurso** ou **escalonar o acesso**. Mas eles são um lembrete importante de que o pipeline não é apenas sobre organização — é também sobre recursos físicos limitados.<br><br>
+
+Nesta aula, vamos estudar os conflitos estruturais: o que são, como identificá-los, como resolvê-los, e por que eles são menos comuns em processadores modernos.
+
+## 2. O QUE SÃO CONFLITOS ESTRUTURAIS?
+
+### 2.1 Definição
+
+> "Conflito estrutural (Structural Hazard) é uma situação no pipeline onde dois estágios diferentes precisam usar o mesmo recurso físico (memória, barramento, unidade funcional) ao mesmo tempo, forçando um dos estágios a esperar."
+
+### 2.2 Características principais
+
+| Característica | Descrição |
+|---------|----------|
+| **O que causa** | Recursos físicos compartilhados entre estágios |
+| **Quando ocorre** | Quando dois estágios tentam acessar o mesmo recurso no mesmo ciclo |
+| **Consequência** | Pipeline stall (um estágio espera) |
+| **Solução** | Duplicar recursos, escalonar acesso, ou stalls |
+
+### 2.3 Analogia
+
+Os conflitos estruturais são como **uma sala de espera com apenas uma cadeira**. Duas pessoas chegam ao mesmo tempo e querem sentar. Alguém precisa esperar.
+
+## 3. TIPOS DE CONFLITOS ESTRUTURAIS
+
+### 3.1 Conflito na memória (mais comum)
+
+O conflito mais comum ocorre quando **IF** (busca de instrução) e **MEM** (acesso a dados) precisam acessar a memória no mesmo ciclo.
+
+**Cenário:**
+
+<details>
+<summary> **Conflito IF × MEM**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+Ciclo:  1    2    3    4    5    6
+I1:    [IF] [ID] [EX] [MEM] [WB]
+I2:         [IF] [ID] [EX] [MEM] [WB]
+                     ↑
+            IF precisa buscar I3 no ciclo 4
+            MEM precisa acessar dados para I1 no ciclo 4
+            AMBOS PRECISAM DA MEMÓRIA!
+    </pre>
+</details>
+
+**Sem pipeline (com uma memória):**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+Ciclo: 4
+IF (busca I3) e MEM (acessa dados de I1) → CONFLITO!
+</pre>
+
+**Solução 1: Pipeline stall**
+
+<details>
+<summary> **Stall para resolver conflito**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+Ciclo: 1    2    3    4    5    6    7
+I1:   [IF] [ID] [EX] [MEM] [WB]
+I2:        [IF] [ID] [EX] [MEM] [WB]
+I3:             [IF] [ID] [STALL] [EX] [MEM] [WB]
+                              ↑
+                     IF espera MEM terminar
+    </pre>
+</details>
+
+**Solução 2: Duplicar memória (instrução e dados separados)**
+- **Harvard architecture:** Memória de instrução e memória de dados separadas.
+- IF acessa memória de instrução; MEM acessa memória de dados.
+
+### 3.2 Conflito no barramento
+
+O barramento de dados é compartilhado entre vários componentes. Conflitos ocorrem quando múltiplos acessos são solicitados.
+
+**Exemplo:**
+- IF quer buscar instrução.
+- MEM quer ler/escrever dados.
+- DMA (Direct Memory Access) quer transferir dados.
+
+**Solução:** Priorização e arbitragem.
+
+### 3.3 Conflito em unidades funcionais
+
+Conflitos ocorrem quando duas instruções precisam da mesma unidade funcional ao mesmo tempo.
+
+**Exemplo:**
+- Duas instruções de multiplicação consecutivas precisam usar a mesma unidade de multiplicação.
+
+**Solução:** Múltiplas unidades funcionais ou pipeline de unidades funcionais.
+
+### 3.4 Conflito em registradores
+
+Conflitos ocorrem quando múltiplos estágios precisam acessar o banco de registradores ao mesmo tempo.
+
+**Exemplo:**
+- ID lendo registradores.
+- WB escrevendo em registradores.
+
+**Solução:**
+- Leitura e escrita simultâneas (se o banco de registradores suportar).
+- Escalonamento de acesso.
+
+## 4. SOLUÇÕES PARA CONFLITOS ESTRUTURAIS
+
+### 4.1 Duplicação de recursos
+
+A solução mais simples: **duplicar o recurso problemático**.
+
+| Recurso problemático | Solução |
+|---------|----------|
+| **Memória única** | Memória de instrução (I-cache) e memória de dados (D-cache) |
+| **Barramento único** | Barramentos separados para instrução e dados |
+| **Unidade funcional** | Múltiplas unidades (ex: 2 multiplicadores) |
+| **Banco de registradores** | Leitura e escrita simultâneas |
+
+**Exemplo: Harvard Architecture:**
+
+<details>
+<summary> **Harvard Architecture**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+┌─────────────────────────────────────────────────────────────┐
+│                                                             │
+│   ┌─────────────────────┐  ┌─────────────────────────────┐ │
+│   │  Memória de         │  │  Memória de                 │ │
+│   │  Instrução          │  │  Dados                      │ │
+│   │  (I-cache)          │  │  (D-cache)                  │ │
+│   └─────────────────────┘  └─────────────────────────────┘ │
+│            │                           │                    │
+│            ▼                           ▼                    │
+│   ┌─────────────────────────────────────────────────────┐ │
+│   │                 CPU                                   │ │
+│   └─────────────────────────────────────────────────────┘ │
+│                                                             │
+│   Vantagem: IF e MEM podem acessar ao mesmo tempo          │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+    </pre>
+</details>
+
+### 4.2 Pipeline stalls (pausas)
+
+Quando duplicar recursos não é viável, o pipeline pode pausar (stall) um dos estágios.
+
+**Como funciona:**
+1. Detecta-se que o recurso está ocupado.
+2. O estágio que precisa do recurso é pausado (stall).
+3. Os estágios anteriores também são pausados (para não perderem dados).
+4. Quando o recurso fica disponível, o pipeline prossegue.
+
+### 4.3 Escalonamento de acesso
+
+O acesso ao recurso é organizado em diferentes ciclos.
+
+**Exemplo:** Memória de ciclo único com acesso alternado:
+- Ciclo par: IF (busca instrução)
+- Ciclo ímpar: MEM (acessa dados)
+
+### 4.4 Projeto sem conflitos estruturais
+
+A melhor solução é **projetar o pipeline para que não haja conflitos estruturais**.
+
+**Regras de projeto:**
+1. Cada estágio usa recursos diferentes.
+2. Recursos compartilhados são duplicados ou escalonados.
+3. O pipeline é projetado para que, em cada ciclo, nenhum estágio precise do mesmo recurso que outro.
+
+## 5. EXEMPLOS PRÁTICOS
+
+### 5.1 Exemplo 1: Memória única
+
+**Cenário:** Sistema com uma única memória para instrução e dados.
+
+**Código:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+LDR R1, [R2]      ; I1: acesso à memória (dados)
+ADD R3, R4, R5    ; I2: não acessa memória
+SUB R6, R7, R8    ; I3: não acessa memória
+</pre>
+
+**Conflito:**
+
+<details>
+<summary> **Conflito na memória única**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+Ciclo:  1    2    3    4    5    6
+I1:    [IF] [ID] [EX] [MEM] [WB]
+I2:         [IF] [ID] [EX] [MEM] [WB]
+                     ↑
+            IF (busca I3) e MEM (I1) querem acessar memória
+    </pre>
+</details>
+
+**Solução com Harvard (memórias separadas):**
+- I-cache para IF
+- D-cache para MEM
+- Sem conflito!
+
+### 5.2 Exemplo 2: Unidade de multiplicação única
+
+**Cenário:** Sistema com uma única unidade de multiplicação.
+
+**Código:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+MUL R1, R2, R3    ; I1: multiplicação
+MUL R4, R5, R6    ; I2: multiplicação
+</pre>
+
+**Conflito:**
+
+<details>
+<summary> **Conflito na unidade de multiplicação**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+Ciclo:  1    2    3    4    5
+I1:    [IF] [ID] [EX] [MEM] [WB]
+I2:         [IF] [ID] [EX] [MEM] [WB]
+                     ↑
+            EX de I1 e EX de I2 precisam da mesma unidade
+    </pre>
+</details>
+
+**Solução:**
+1. **Pipeline stall:** I2 espera I1 terminar.
+2. **Multiplicadores duplicados:** I1 usa MUL1, I2 usa MUL2.
+
+### 5.3 Exemplo 3: Banco de registradores
+
+**Cenário:** Banco de registradores que não suporta leitura e escrita simultâneas.
+
+**Código:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+ADD R1, R2, R3    ; I1: escreve em R1
+SUB R4, R1, R5    ; I2: lê R1
+</pre>
+
+**Conflito:**
+
+<details>
+<summary> **Conflito no banco de registradores**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+Ciclo:  1    2    3    4    5
+I1:    [IF] [ID] [EX] [MEM] [WB]
+I2:         [IF] [ID] [EX] [MEM] [WB]
+                           ↑
+                I1 escreve em WB, I2 precisa ler em ID
+    </pre>
+</details>
+
+**Solução:**
+1. **Leitura/escrita simultânea:** Banco de registradores com 2 portas de leitura e 1 porta de escrita.
+2. **Forwarding:** (resolve o problema de dados, não estrutural)
+
+## 6. CONFLITOS ESTRUTURAIS VS DATA HAZARDS
+
+| Característica | Conflito Estrutural | Data Hazard |
+|---------|---------|---------|
+| **Causa** | Recursos compartilhados | Dependência de dados |
+| **Quem sofre** | Dois estágios precisam do mesmo recurso | Instrução precisa de dado não disponível |
+| **Solução** | Duplicação de recursos | Forwarding, stalls |
+| **Frequência** | Menos comum hoje | Muito comum |
+| **Custo de mitigação** | Mudança de hardware (mais caro) | Técnicas de pipeline (menos caro) |
+
+## 7. APLICAÇÕES REAIS
+
+| Aplicação | Como lida com conflitos estruturais |
+|---------|----------|
+| **Processadores modernos** | Harvard cache (I-cache e D-cache separadas) |
+| **Processadores simples** | Uma única memória, stalls para resolver |
+| **Microcontroladores** | Memória única, stalls |
+| **Processadores embarcados** | Pode usar memória única com stalls |
+| **GPUs** | Múltiplas unidades funcionais, alta paralelização |
+
+**Exemplo prático:** Processadores Intel Core têm caches L1 separadas para instrução (I-cache) e dados (D-cache). Isso elimina o conflito estrutural mais comum.
+
+## 8. EXERCÍCIOS
+
+<details>
+<summary>📗 Exercício 1 — O que é conflito estrutural? (Fácil)</summary>
+
+**Enunciado:** Defina o que é um conflito estrutural em um pipeline.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Conflito estrutural é uma situação no pipeline onde dois estágios diferentes precisam usar o mesmo recurso físico (memória, barramento, unidade funcional) ao mesmo tempo, forçando um dos estágios a esperar.
+
+**Explicação:** É um problema de recursos físicos, não de dependência de dados.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Conflito de memória (Fácil)</summary>
+
+**Enunciado:** Quais estágios do pipeline podem causar conflito de memória?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** IF (Instruction Fetch) e MEM (Memory Access).
+
+**Explicação:** IF precisa buscar a instrução da memória, MEM precisa acessar dados na memória (load/store). Ambos competem pelo mesmo recurso.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Resolvendo conflito de memória (Fácil)</summary>
+
+**Enunciado:** Cite duas maneiras de resolver o conflito entre IF e MEM.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+1. **Harvard Architecture:** Memórias separadas (I-cache e D-cache).
+2. **Stalling:** Um estágio espera o outro terminar.
+
+**Explicação:** Harvard é mais eficiente (sem stalls), mas mais cara.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Identificar conflito estrutural (Médio)</summary>
+
+**Enunciado:** Identifique se há conflito estrutural no seguinte cenário: uma única unidade de divisão, e duas instruções consecutivas de divisão.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Sim, há conflito estrutural.
+
+**Explicação:** Ambas as instruções de divisão precisam usar a mesma unidade de divisão. A segunda instrução precisa esperar a primeira terminar (stall) ou o processador precisa ter múltiplas unidades de divisão.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Harvard Architecture (Médio)</summary>
+
+**Enunciado:** Explique o que é Harvard Architecture e como ela resolve conflitos estruturais.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Harvard Architecture é um design onde a memória de instrução e a memória de dados são separadas.
+
+**Como resolve:** IF acessa a memória de instrução (I-cache) e MEM acessa a memória de dados (D-cache) — eles podem trabalhar simultaneamente, eliminando o conflito.
+
+**Explicação:** A maioria dos processadores modernos usa Harvard Architecture para as caches L1 (I-cache e D-cache separadas).
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Duplicação de recursos (Médio)</summary>
+
+**Enunciado:** Por que duplicar recursos é uma solução cara para conflitos estruturais?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Duplicar recursos aumenta o custo de fabricação, o consumo de energia e a área do chip.
+
+**Explicação:** Cada unidade adicional (ex: multiplicador extra) ocupa espaço no chip, consome energia e custa para ser fabricada. Por isso, os projetistas equilibram o número de unidades com as necessidades do pipeline.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — Conflito estrutural vs Data Hazard (Difícil)</summary>
+
+**Enunciado:** Qual a principal diferença entre um conflito estrutural e um data hazard?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+- **Conflito estrutural:** Dois estágios precisam do mesmo **recurso físico** (memória, barramento, unidade funcional).
+- **Data hazard:** Uma instrução precisa do **dado** que outra instrução ainda não produziu.
+
+**Explicação:** Um é problema de hardware/recursos; o outro é problema de dependência de dados.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — Projetando sem conflitos (Desafio)</summary>
+
+**Enunciado:** Como um projetista de processador pode garantir que não haja conflitos estruturais em um pipeline?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+1. **Duplicar recursos:** I-cache e D-cache separadas, múltiplas unidades funcionais.
+2. **Escalonar acesso:** Organizar o uso do recurso em diferentes ciclos.
+3. **Projetar estágios independentes:** Cada estágio usa recursos diferentes.
+4. **Analisar o pipeline:** Identificar todos os potenciais conflitos e resolvê-los no design.
+
+**Explicação:** Um bom projeto de pipeline prevê e elimina conflitos estruturais antes que eles ocorram, usando as técnicas acima.
+</details>
+</details>
+
+> Conflitos estruturais são um lembrete de que o pipeline não é apenas sobre organização — é também sobre recursos físicos. Quando dois estágios precisam do mesmo recurso ao mesmo tempo, o pipeline precisa parar. A solução mais elegante é duplicar o recurso (como as caches I e D separadas), mas quando isso não é viável, stalls resolvem o problema. Os conflitos estruturais são menos comuns em processadores modernos porque os projetistas investem em duplicação de recursos — especialmente memória separada para instrução e dados. Entretanto, eles continuam sendo uma consideração importante no design de processadores, especialmente em sistemas embarcados onde área e custo são limitados.

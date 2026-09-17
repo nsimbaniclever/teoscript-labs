@@ -1,0 +1,479 @@
+# Tabelas Verdade
+
+## 1. Introdução
+
+Na aula anterior, aprendemos os seis operadores lógicos fundamentais: AND, OR, NOT, XOR, NAND e NOR. Vimos como cada um funciona individualmente, com suas tabelas verdade simples de duas entradas.
+
+Mas na computação real, raramente usamos apenas um operador isolado. Na prática, combinamos vários operadores para criar **funções lógicas** mais complexas. Por exemplo:
+
+- `F = (A AND B) OR (NOT C)`
+- `F = (A XOR B) AND (C OR D)`
+- `F = NOT (A AND B) OR (C AND NOT D)`
+
+Como analisar essas funções? Como saber qual será a saída para cada combinação de entradas? A resposta está nas **tabelas verdade**.
+
+Uma **tabela verdade** é como um "mapa" de uma função lógica. Ela mostra **todas as combinações possíveis** de entradas e a saída correspondente para cada uma. É a ferramenta fundamental para projetar, analisar e verificar circuitos digitais e expressões lógicas.
+
+Nesta aula, vamos aprender a construir tabelas verdade para funções de 2, 3 e 4 entradas, como interpretá-las e como usá-las para projetar circuitos lógicos.
+
+
+## 2. O Que é uma Tabela Verdade?
+
+### 2.1 Definição
+
+Uma **tabela verdade** é uma representação tabular que mostra:
+
+1. **Todas as combinações possíveis** de valores de entrada (0 e 1).
+2. A **saída correspondente** para cada combinação, dada uma função lógica específica.
+
+### 2.2 Número de combinações
+
+Com **n** entradas, temos **2^n** combinações possíveis:
+
+| Número de entradas (n) | Combinações (2^n) |
+|------------------------|-------------------|
+| 1 | 2 |
+| 2 | 4 |
+| 3 | 8 |
+| 4 | 16 |
+| 5 | 32 |
+| 6 | 64 |
+
+**Exemplo:** Com 3 entradas (A, B, C), temos 2³ = 8 combinações.
+
+### 2.3 Ordem das combinações
+
+As combinações são listadas em **ordem binária crescente** (como uma contagem binária):
+
+**Com 2 entradas (A, B):**
+`
+00
+01
+10
+11
+`
+
+**Com 3 entradas (A, B, C):**
+`
+000
+001
+010
+011
+100
+101
+110
+111
+`
+
+**Com 4 entradas (A, B, C, D):**
+`
+0000
+0001
+0010
+0011
+0100
+0101
+0110
+0111
+1000
+1001
+1010
+1011
+1100
+1101
+1110
+1111
+`
+
+
+## 3. Como Construir uma Tabela Verdade
+
+### 3.1 Passo a passo
+
+**Passo 1:** Identifique o número de entradas da função.
+
+**Passo 2:** Liste todas as combinações possíveis (2^n linhas).
+
+**Passo 3:** Para cada combinação, calcule a saída da função.
+
+**Passo 4:** Organize em uma tabela.
+
+### 3.2 Exemplo 1: Função com 2 entradas
+
+**Função:** `F = A AND B`
+
+**Passo 1:** 2 entradas (A, B) → 4 combinações.
+
+**Passo 2:** Liste as combinações:
+
+| A | B |
+|---|---|
+| 0 | 0 |
+| 0 | 1 |
+| 1 | 0 |
+| 1 | 1 |
+
+**Passo 3:** Calcule F = A AND B:
+
+| A | B | F = A AND B |
+|---|---|-------------|
+| 0 | 0 | 0 |
+| 0 | 1 | 0 |
+| 1 | 0 | 0 |
+| 1 | 1 | **1** |
+
+**Passo 4:** Tabela verdade completa:
+
+| A | B | F |
+|---|---|---|
+| 0 | 0 | 0 |
+| 0 | 1 | 0 |
+| 1 | 0 | 0 |
+| 1 | 1 | 1 |
+
+### 3.3 Exemplo 2: Função com 3 entradas
+
+**Função:** `F = (A AND B) OR (NOT C)`
+
+**Passo 1:** 3 entradas (A, B, C) → 8 combinações.
+
+**Passo 2 e 3:** Calcule cada combinação:
+
+| A | B | C | NOT C | A AND B | F = (A AND B) OR (NOT C) |
+|---|---|---|-------|---------|--------------------------|
+| 0 | 0 | 0 | 1 | 0 | **1** |
+| 0 | 0 | 1 | 0 | 0 | **0** |
+| 0 | 1 | 0 | 1 | 0 | **1** |
+| 0 | 1 | 1 | 0 | 0 | **0** |
+| 1 | 0 | 0 | 1 | 0 | **1** |
+| 1 | 0 | 1 | 0 | 0 | **0** |
+| 1 | 1 | 0 | 1 | 1 | **1** |
+| 1 | 1 | 1 | 0 | 1 | **1** |
+
+**Passo 4:** Tabela verdade completa:
+
+| A | B | C | F |
+|---|---|---|---|
+| 0 | 0 | 0 | 1 |
+| 0 | 0 | 1 | 0 |
+| 0 | 1 | 0 | 1 |
+| 0 | 1 | 1 | 0 |
+| 1 | 0 | 0 | 1 |
+| 1 | 0 | 1 | 0 |
+| 1 | 1 | 0 | 1 |
+| 1 | 1 | 1 | 1 |
+
+
+## 4. Tabelas Verdade para Operadores Básicos
+
+### 4.1 NOT (1 entrada)
+
+| A | ¬A |
+|---|----|
+| 0 | 1 |
+| 1 | 0 |
+
+### 4.2 AND (2 entradas)
+
+| A | B | A AND B |
+|---|---|---------|
+| 0 | 0 | 0 |
+| 0 | 1 | 0 |
+| 1 | 0 | 0 |
+| 1 | 1 | 1 |
+
+### 4.3 OR (2 entradas)
+
+| A | B | A OR B |
+|---|---|--------|
+| 0 | 0 | 0 |
+| 0 | 1 | 1 |
+| 1 | 0 | 1 |
+| 1 | 1 | 1 |
+
+### 4.4 XOR (2 entradas)
+
+| A | B | A XOR B |
+|---|---|---------|
+| 0 | 0 | 0 |
+| 0 | 1 | 1 |
+| 1 | 0 | 1 |
+| 1 | 1 | 0 |
+
+### 4.5 NAND (2 entradas)
+
+| A | B | A NAND B |
+|---|---|----------|
+| 0 | 0 | 1 |
+| 0 | 1 | 1 |
+| 1 | 0 | 1 |
+| 1 | 1 | 0 |
+
+### 4.6 NOR (2 entradas)
+
+| A | B | A NOR B |
+|---|---|---------|
+| 0 | 0 | 1 |
+| 0 | 1 | 0 |
+| 1 | 0 | 0 |
+| 1 | 1 | 0 |
+
+
+## 5. Como Usar Tabelas Verdade
+
+### 5.1 Para projetar circuitos
+
+Se você sabe qual saída deseja para cada combinação de entradas, pode usar a tabela verdade para projetar o circuito.
+
+**Exemplo:** Projete um circuito que acenda uma luz (F = 1) quando:
+
+- A = 0, B = 0 → F = 1 (escuro e sem movimento)
+- A = 0, B = 1 → F = 1 (escuro e com movimento)
+- A = 1, B = 0 → F = 0 (claro e sem movimento)
+- A = 1, B = 1 → F = 1 (claro e com movimento)
+
+**Tabela verdade:**
+
+| A | B | F |
+|---|---|---|
+| 0 | 0 | 1 |
+| 0 | 1 | 1 |
+| 1 | 0 | 0 |
+| 1 | 1 | 1 |
+
+**Expressão lógica:** `F = (NOT A) OR B`
+
+**Circuito:** OR(NOT(A), B)
+
+### 5.2 Para analisar expressões
+
+Você pode usar a tabela verdade para verificar se duas expressões são equivalentes.
+
+**Exemplo:** Verifique se `F = A OR B` é equivalente a `G = NOT(NOT A AND NOT B)`.
+
+| A | B | A OR B | NOT A | NOT B | NOT A AND NOT B | NOT(NOT A AND NOT B) | Equivalente? |
+|---|---|--------|-------|-------|-----------------|----------------------|--------------|
+| 0 | 0 | 0 | 1 | 1 | 1 | 0 | ✅ Sim |
+| 0 | 1 | 1 | 1 | 0 | 0 | 1 | ✅ Sim |
+| 1 | 0 | 1 | 0 | 1 | 0 | 1 | ✅ Sim |
+| 1 | 1 | 1 | 0 | 0 | 0 | 1 | ✅ Sim |
+
+**Conclusão:** `A OR B = NOT(NOT A AND NOT B)` (Lei de De Morgan)
+
+### 5.3 Para verificar circuitos
+
+Se você tem um circuito desenhado, pode construir sua tabela verdade para verificar se ele funciona como esperado.
+
+
+## 6. Exemplos Práticos
+
+### 6.1 Exemplo 1: Sistema de alarme
+
+**Problema:** Um alarme dispara se:
+- A porta está aberta **E** o sistema está armado.
+- **OU** um sensor de movimento é ativado **E** é noite.
+
+**Entradas:**
+- P = 1 se a porta está aberta
+- S = 1 se o sistema está armado
+- M = 1 se o sensor de movimento é ativado
+- N = 1 se é noite
+
+**Função:** `F = (P AND S) OR (M AND N)`
+
+| P | S | M | N | P AND S | M AND N | F |
+|---|---|---|---|---|---|---|
+| 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| 0 | 0 | 0 | 1 | 0 | 0 | 0 |
+| 0 | 0 | 1 | 0 | 0 | 0 | 0 |
+| 0 | 0 | 1 | 1 | 0 | 1 | 1 |
+| 0 | 1 | 0 | 0 | 0 | 0 | 0 |
+| 0 | 1 | 0 | 1 | 0 | 0 | 0 |
+| 0 | 1 | 1 | 0 | 0 | 0 | 0 |
+| 0 | 1 | 1 | 1 | 0 | 1 | 1 |
+| 1 | 0 | 0 | 0 | 0 | 0 | 0 |
+| 1 | 0 | 0 | 1 | 0 | 0 | 0 |
+| 1 | 0 | 1 | 0 | 0 | 0 | 0 |
+| 1 | 0 | 1 | 1 | 0 | 1 | 1 |
+| 1 | 1 | 0 | 0 | 1 | 0 | 1 |
+| 1 | 1 | 0 | 1 | 1 | 0 | 1 |
+| 1 | 1 | 1 | 0 | 1 | 0 | 1 |
+| 1 | 1 | 1 | 1 | 1 | 1 | 1 |
+
+### 6.2 Exemplo 2: Comparador de dois bits
+
+**Problema:** Crie uma função que seja 1 quando A e B forem iguais.
+
+| A | B | F (A = B) |
+|---|---|-----------|
+| 0 | 0 | 1 |
+| 0 | 1 | 0 |
+| 1 | 0 | 0 |
+| 1 | 1 | 1 |
+
+**Expressão lógica:** `F = (NOT A AND NOT B) OR (A AND B)` → **XNOR**
+
+**Resposta:** F = A XNOR B (ou `NOT (A XOR B)`)
+
+
+## 7. Exercícios
+
+<details>
+<summary>📗 Exercício 1 — Tabela com 2 entradas (fácil)</summary>
+
+**Enunciado:** Construa a tabela verdade para `F = A XOR B`.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+| A | B | F = A XOR B |
+|---|---|-------------|
+| 0 | 0 | 0 |
+| 0 | 1 | 1 |
+| 1 | 0 | 1 |
+| 1 | 1 | 0 |
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Tabela com 3 entradas (médio)</summary>
+
+**Enunciado:** Construa a tabela verdade para `F = (A AND B) OR C`.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+| A | B | C | A AND B | F = (A AND B) OR C |
+|---|---|---|---------|-------------------|
+| 0 | 0 | 0 | 0 | 0 |
+| 0 | 0 | 1 | 0 | 1 |
+| 0 | 1 | 0 | 0 | 0 |
+| 0 | 1 | 1 | 0 | 1 |
+| 1 | 0 | 0 | 0 | 0 |
+| 1 | 0 | 1 | 0 | 1 |
+| 1 | 1 | 0 | 1 | 1 |
+| 1 | 1 | 1 | 1 | 1 |
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Tabela com 3 entradas (médio)</summary>
+
+**Enunciado:** Construa a tabela verdade para `F = NOT(A AND B AND C)`.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+| A | B | C | A AND B AND C | F = NOT(A AND B AND C) |
+|---|---|---|---------------|------------------------|
+| 0 | 0 | 0 | 0 | 1 |
+| 0 | 0 | 1 | 0 | 1 |
+| 0 | 1 | 0 | 0 | 1 |
+| 0 | 1 | 1 | 0 | 1 |
+| 1 | 0 | 0 | 0 | 1 |
+| 1 | 0 | 1 | 0 | 1 |
+| 1 | 1 | 0 | 0 | 1 |
+| 1 | 1 | 1 | 1 | 0 |
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Qual a função? (médio)</summary>
+
+**Enunciado:** Qual é a expressão lógica da seguinte tabela verdade?
+
+| A | B | F |
+|---|---|---|
+| 0 | 0 | 1 |
+| 0 | 1 | 0 |
+| 1 | 0 | 0 |
+| 1 | 1 | 1 |
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** `F = NOT(A XOR B)` ou `F = A XNOR B`
+
+**Explicação:** F = 1 quando A e B são iguais (00 e 11), e 0 quando são diferentes (01 e 10). Isso é a definição do XNOR.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Circuito de segurança (desafio)</summary>
+
+**Enunciado:** Um cofre só abre se:
+- A senha está correta (S = 1) **E**
+- A biometria é validada (B = 1) **OU** a chave física é inserida (C = 1).
+
+Escreva a função lógica e construa a tabela verdade.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Função:** `F = S AND (B OR C)`
+
+**Tabela verdade:**
+
+| S | B | C | B OR C | F = S AND (B OR C) |
+|---|---|---|--------|-------------------|
+| 0 | 0 | 0 | 0 | 0 |
+| 0 | 0 | 1 | 1 | 0 |
+| 0 | 1 | 0 | 1 | 0 |
+| 0 | 1 | 1 | 1 | 0 |
+| 1 | 0 | 0 | 0 | 0 |
+| 1 | 0 | 1 | 1 | 1 |
+| 1 | 1 | 0 | 1 | 1 |
+| 1 | 1 | 1 | 1 | 1 |
+
+**Resposta:** O cofre abre apenas quando S = 1 E (B = 1 OU C = 1).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Número de combinações (conceitual)</summary>
+
+**Enunciado:** Quantas combinações tem uma tabela verdade com 4 entradas?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Passo 1:** n = 4 entradas
+
+**Passo 2:** 2^n = 2^4 = 16 combinações
+
+**Resposta:** 16 combinações
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — Projetar circuito (desafio)</summary>
+
+**Enunciado:** Projete um circuito para a função: F = 1 quando A = 1 e B = 0, ou quando A = 0 e B = 1. Que operador é esse?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Tabela verdade:**
+
+| A | B | F |
+|---|---|---|
+| 0 | 0 | 0 |
+| 0 | 1 | 1 |
+| 1 | 0 | 1 |
+| 1 | 1 | 0 |
+
+**Resposta:** F = A XOR B
+
+**Circuito:** Porta XOR com entradas A e B.
+
+</details>
+</details>
+
+
+> **"Uma tabela verdade é o mapa completo de uma função lógica. Ela lista todas as combinações possíveis de entradas (2^n) e a saída correspondente para cada uma. É a ferramenta fundamental para projetar circuitos digitais, analisar expressões lógicas e verificar o comportamento de sistemas. Com uma tabela verdade, você pode definir exatamente como um circuito deve se comportar, encontrar a expressão lógica mais simples, e garantir que o circuito funciona como esperado. Dominar tabelas verdade é dominar a arte de projetar lógica digital."**

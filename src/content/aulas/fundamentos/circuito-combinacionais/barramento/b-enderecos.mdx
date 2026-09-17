@@ -1,0 +1,360 @@
+# Barramento de Endereços
+## 1. Introdução
+
+Na aula anterior, conhecemos o **Barramento de Dados** — a estrada principal por onde a informação trafega dentro do computador. Vimos que, quanto mais larga essa estrada, mais dados podem viajar simultaneamente, e mais rápido o sistema se torna.<br><br>
+
+Mas existe um problema: de nada adianta ter uma rodovia larga e veloz se os veículos não souberem para onde ir. Imagine uma cidade onde todos os caminhões saem do depósito carregados de mercadorias, mas não há placas indicando qual rua seguir. Os caminhões andariam sem destino, e a cidade entraria em colapso.<br><br>
+
+No computador, a situação é análoga. O barramento de dados transporta os bits, mas **precisa de um guia** que diga: *"este dado deve ir para a posição 0x1000 da memória"* ou *"leia o dado que está na posição 0x2000"*.<br><br>
+
+Esse guia é o **Barramento de Endereços**.<br><br>
+
+O barramento de endereços é o sistema de sinalização do computador — ele diz **onde** os dados devem ser lidos ou escritos. Sua largura determina **quantas posições de memória** podem ser endereçadas, e portanto, o limite máximo de memória que o sistema pode suportar.<br><br>
+
+Nesta aula, vamos explorar como o barramento de endereços funciona, como sua largura define a capacidade máxima de memória, e por que ele é essencial para que a CPU encontre as instruções e os dados de que precisa.<br><br>
+
+
+## 2. O Que é o Barramento de Endereços?
+
+### 2.1 Definição
+
+O **Barramento de Endereços** é o conjunto de fios que transporta os **endereços** gerados pela CPU para a memória e para os dispositivos de entrada/saída.
+
+### 2.2 Características principais
+
+| Característica | Descrição |
+|----------------|-----------|
+| **Largura** | Número de bits do endereço (16, 20, 32, 64 bits) |
+| **Direção** | **Unidirecional** (da CPU para a memória/periféricos) |
+| **Função** | Indicar qual posição de memória ou dispositivo será acessado |
+| **Capacidade** | 2ⁿ posições endereçáveis (onde n = largura do barramento) |
+
+### 2.3 A analogia do carteiro
+
+Pense no barramento de endereços como um **carteiro** que entrega cartas:
+
+- O carteiro precisa saber o **endereço** de cada casa (barramento de endereços).
+- A carta em si é o **dado** (barramento de dados).
+- O carteiro só entrega a carta se o destinatário estiver em casa (barramento de controle).
+
+Sem o endereço, a carta não chega a lugar nenhum.
+
+### 2.4 Diagrama
+
+<details>
+<summary>🔧 Ver Diagrama do Barramento de Endereços</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 450px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">BARRAMENTO DE ENDEREÇOS</div>
+
+  <pre style="color: #93c5fd; font-size: 0.65rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    ┌─────────┐
+    │   CPU   │
+    │         │
+    │  ┌─────┐│
+    │  │  PC  ││─── Endereço (A₀...Aₙ) ──► Barramento de Endereços
+    │  └─────┘│
+    └─────────┘
+         │
+         ▼
+    ┌─────────┐
+    │ MEMÓRIA │
+    │         │
+    │  ┌─────┐│
+    │  │ Cél. ││  ← O endereço seleciona uma célula
+    │  │  n   ││
+    │  └─────┘│
+    └─────────┘
+  </pre>
+
+</div>
+</details>
+
+
+## 3. Largura do Barramento de Endereços
+
+### 3.1 Capacidade de endereçamento
+
+A largura do barramento de endereços determina **quantas posições de memória podem ser endereçadas**:
+
+> **Capacidade = 2ⁿ posições (onde n = número de bits do barramento de endereços)**
+
+| Largura (bits) | Posições endereçáveis | Capacidade máxima (bytes) |
+|----------------|----------------------|---------------------------|
+| 8 | 2⁸ = 256 | 256 bytes |
+| 16 | 2¹⁶ = 65.536 | 64 KB |
+| 20 | 2²⁰ = 1.048.576 | 1 MB |
+| 24 | 2²⁴ = 16.777.216 | 16 MB |
+| 32 | 2³² = 4.294.967.296 | 4 GB |
+| 36 | 2³⁶ = 68.719.476.736 | 64 GB |
+| 64 | 2⁶⁴ = 18.446.744.073.709.551.616 | 16 EB (exabytes) |
+
+### 3.2 Exemplo prático
+
+**Problema:** Um processador tem barramento de endereços de **24 bits**. Qual a quantidade máxima de memória que ele pode endereçar?
+
+**Cálculo:** 2²⁴ = 16.777.216 posições = **16 MB**
+
+**Resposta:** O processador pode endereçar até **16 MB** de memória.
+
+### 3.3 Analogia
+
+Pense no barramento de endereços como um **número de CEP**:
+
+- **8 bits (256 CEPs):** Uma pequena vila.
+- **16 bits (65.536 CEPs):** Uma cidade média.
+- **32 bits (4,29 bilhões de CEPs):** O mundo inteiro.
+- **64 bits (18,4 quintilhões de CEPs):** Milhares de galáxias.
+
+Quanto mais bits, mais endereços distintos podem ser representados.
+
+
+## 4. Relação Entre Barramento de Dados e Endereços
+
+### 4.1 Dois barramentos, duas funções
+
+| Barramento | Função | Direção | Largura típica |
+|------------|--------|---------|----------------|
+| **Dados** | Transportar dados | Bidirecional | 8, 16, 32, 64 bits |
+| **Endereços** | Indicar onde | Unidirecional | 16, 20, 32, 64 bits |
+
+### 4.2 Por que são separados?
+
+1. **Performance:** A CPU pode enviar um endereço enquanto recebe dados simultaneamente.
+2. **Simplicidade:** Cada barramento tem sua função específica.
+3. **Escalabilidade:** A largura de cada um pode ser ajustada independentemente.
+
+### 4.3 Exemplo de ciclo de leitura
+
+<details>
+<summary>🔧 Ver Ciclo de Leitura da Memória</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 450px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">CICLO DE LEITURA DA MEMÓRIA</div>
+
+  <pre style="color: #93c5fd; font-size: 0.65rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    1. CPU coloca endereço no barramento de endereços.
+       ┌─────────┐
+       │ End: 0x1000 │───────► Barramento de Endereços
+       └─────────┘
+
+    2. CPU sinaliza "leitura" no barramento de controle.
+
+    3. Memória coloca o dado no barramento de dados.
+       ┌─────────┐
+       │ Dado: 0x5A │◄─────── Barramento de Dados
+       └─────────┘
+
+    4. CPU lê o dado do barramento de dados.
+  </pre>
+
+</div>
+</details>
+
+
+## 5. Processadores e Seus Barramentos de Endereços
+
+| Processador | Barramento de Endereços | Memória máxima |
+|-------------|-------------------------|----------------|
+| Intel 8086 (1978) | 20 bits | 1 MB |
+| Intel 80286 (1982) | 24 bits | 16 MB |
+| Intel 80386 (1985) | 32 bits | 4 GB |
+| Intel Pentium (1993) | 32 bits | 4 GB |
+| Intel Core (2006) | 36 bits | 64 GB |
+| AMD Ryzen (2017) | 48 bits | 256 TB |
+| ARM (moderno) | 40-48 bits | 1-256 TB |
+
+
+## 6. Memória Endereçável
+
+### 6.1 O que é memória endereçável?
+
+**Memória endereçável** é a quantidade total de posições de memória que um processador pode acessar, determinada pela largura do barramento de endereços.
+
+### 6.2 Limitações práticas
+
+Na prática, a memória máxima endereçável pode ser limitada por:
+
+1. **Barramento de endereços:** O limite teórico (2ⁿ).
+2. **Controlador de memória:** Pode suportar menos do que o barramento permite.
+3. **Sistema operacional:** Pode limitar o uso da memória (ex: 32 bits vs 64 bits).
+
+### 6.3 Exemplo: Windows e memória
+
+| Versão do Windows | Arquitetura | Memória máxima suportada |
+|-------------------|-------------|--------------------------|
+| Windows 7 32-bit | 32 bits | 4 GB |
+| Windows 7 64-bit | 64 bits | 192 GB |
+| Windows 10 64-bit | 64 bits | 2 TB |
+| Windows Server 2019 | 64 bits | 24 TB |
+
+
+## 7. Endereçamento de Periféricos
+
+### 7.1 Mapeamento de memória vs I/O
+
+Os dispositivos de entrada/saída também precisam de endereços.
+
+| Método | Como funciona | Exemplo |
+|--------|---------------|---------|
+| **Memory-mapped I/O** | Periféricos ocupam endereços de memória | ARM, PowerPC |
+| **Port-mapped I/O** | Periféricos têm endereços separados | x86 (IN/OUT) |
+
+### 7.2 Exemplo: Memory-mapped I/O
+
+<details>
+<summary>🔧 Ver Mapeamento de Memória</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 350px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">MEMORY-MAPPED I/O</div>
+
+  <pre style="color: #93c5fd; font-size: 0.7rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    Endereços de memória:
+    0x00000000 ─────────────► RAM (4 GB)
+    0xFFFFFFFF
+    0x00000000 ─────────────► Periféricos (mapeados)
+    0x0000FFFF
+  </pre>
+
+</div>
+</details>
+
+
+## 8. Exercícios
+
+<details>
+<summary>📗 Exercício 1 — Definição (fácil)</summary>
+
+**Enunciado:** O que é o barramento de endereços?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** O barramento de endereços é o conjunto de fios que transporta os endereços gerados pela CPU para a memória e dispositivos, indicando onde os dados devem ser lidos ou escritos.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Direção (fácil)</summary>
+
+**Enunciado:** O barramento de endereços é unidirecional ou bidirecional?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** **Unidirecional** — os endereços trafegam apenas da CPU para a memória/periféricos.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Capacidade com 20 bits (fácil)</summary>
+
+**Enunciado:** Quantas posições de memória podem ser endereçadas com um barramento de endereços de 20 bits?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Cálculo:** 2²⁰ = 1.048.576 posições = **1 MB**
+
+**Resposta:** 1.048.576 posições (1 MB)
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Capacidade com 32 bits (médio)</summary>
+
+**Enunciado:** Quantas posições de memória podem ser endereçadas com um barramento de endereços de 32 bits?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Cálculo:** 2³² = 4.294.967.296 posições = **4 GB**
+
+**Resposta:** 4.294.967.296 posições (4 GB)
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Comparação de processadores (médio)</summary>
+
+**Enunciado:** Qual processador pode endereçar mais memória: um com 24 bits de endereço ou um com 32 bits?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Processador de 24 bits:** 2²⁴ = 16 MB
+**Processador de 32 bits:** 2³² = 4 GB
+
+**Resposta:** O processador de 32 bits pode endereçar **256x mais memória** (4 GB vs 16 MB).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Cálculo de memória (médio)</summary>
+
+**Enunciado:** Um processador tem 22 bits de endereço e 8 bits de dado. Qual a quantidade máxima de memória que ele pode endereçar?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Passo 1:** 2²² = 4.194.304 posições
+**Passo 2:** Cada posição armazena 8 bits (1 byte)
+**Passo 3:** 4.194.304 × 1 byte = 4.194.304 bytes = **4 MB**
+
+**Resposta:** 4 MB
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — Barramento de endereços x dados (conceitual)</summary>
+
+**Enunciado:** Por que um processador precisa de barramentos separados para dados e endereços?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Porque cada barramento tem uma função diferente:
+- **Dados:** Transporta os dados em si (bidirecional).
+- **Endereços:** Transporta o destino dos dados (unidirecional).
+
+Separar os barramentos permite que a CPU envie um endereço enquanto recebe dados simultaneamente, melhorando o desempenho.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — Memória máxima com 64 bits (desafio)</summary>
+
+**Enunciado:** Um processador com barramento de endereços de 64 bits pode endereçar teoricamente quantos bytes de memória?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Cálculo:** 2⁶⁴ = 18.446.744.073.709.551.616 posições
+
+**Em unidades maiores:**
+- 18.446.744.073.709.551.616 B
+- 18.014.398.509.481.984 KiB
+- 17.592.186.044.416 MiB
+- 17.179.869.184 GiB
+- 16.777.216 TiB
+- 16.384 PiB
+- **16 EiB**
+
+**Resposta:** 16 exabytes (teórico)
+
+</details>
+</details>
+
+
+
+> **"O barramento de endereços é o sistema de sinalização do computador — ele diz onde os dados devem ser lidos ou escritos. Sua largura determina quantas posições de memória podem ser endereçadas: 16 bits → 64 KB, 20 bits → 1 MB, 24 bits → 16 MB, 32 bits → 4 GB, 64 bits → 16 EB. O barramento de endereços é unidirecional (da CPU para a memória/periféricos) e funciona em conjunto com o barramento de dados: enquanto um diz 'onde', o outro transporta 'o quê'. Sem o barramento de endereços, a CPU estaria perdida, incapaz de encontrar as instruções e os dados de que precisa."**

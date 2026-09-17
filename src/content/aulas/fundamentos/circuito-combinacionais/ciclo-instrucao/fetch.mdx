@@ -1,0 +1,350 @@
+# Busca (Fetch)
+
+## 1. Introdução
+
+Nas aulas anteriores, exploramos os componentes individuais da CPU: a **ULA**, que executa as operações; a **Unidade de Controle (UC)** , que orquestra tudo; e os registradores especializados — **PC**, **IR**, **MAR**, **MBR** — que armazenam endereços, instruções e dados. Vimos também os **Registradores de Uso Geral**, que servem como área de trabalho do processador.<br><br>
+
+Mas como todos esses componentes trabalham juntos? Como uma instrução, desde o momento em que está na memória até o momento em que é executada, percorre cada um desses componentes?<br><br>
+
+A resposta está no **Ciclo de Instrução** — o processo fundamental que a CPU repete bilhões de vezes por segundo. Cada instrução passa por quatro etapas principais:
+
+1. **Busca (Fetch)** — A CPU lê a instrução da memória.
+2. **Decodificação (Decode)** — A CPU interpreta o que a instrução faz.
+3. **Execução (Execute)** — A CPU realiza a operação.
+4. **Escrita (Write-back)** — A CPU armazena o resultado.
+
+Nesta primeira aula do módulo, vamos explorar a **Busca (Fetch)** — a etapa inicial do ciclo, onde a CPU encontra e lê a próxima instrução a ser executada. É o primeiro passo de cada ciclo, e sem ele, nada mais acontece.
+
+
+## 2. O Que é a Busca (Fetch)?
+
+### 2.1 Definição
+
+A **Busca** (em inglês, *Fetch*) é a primeira etapa do ciclo de instrução, onde:
+
+> **A CPU lê a próxima instrução da memória e a armazena no Registrador de Instrução (IR).**
+
+### 2.2 O que acontece durante a busca?
+
+| Passo | O que acontece | Componente envolvido |
+|-------|----------------|---------------------|
+| 1 | O PC fornece o endereço da próxima instrução | PC → MAR |
+| 2 | O MAR coloca o endereço no barramento de endereços | MAR → Memória |
+| 3 | A memória lê o dado no endereço especificado | Memória lê |
+| 4 | O dado é colocado no barramento de dados | Memória → MBR |
+| 5 | O MBR armazena o dado lido | MBR recebe |
+| 6 | O dado é transferido para o IR | MBR → IR |
+| 7 | O PC é incrementado (PC = PC + tamanho da instrução) | PC atualizado |
+
+### 2.3 Analogia
+
+Pense na busca como o **ato de virar a página de um livro**:
+
+<details>
+<summary>🔧 Ver Analogia da Busca</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 450px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">BUSCA — VIRAR A PÁGINA</div>
+
+  <pre style="color: #93c5fd; font-size: 0.65rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    ┌─────────────────────────────────────────────────────┐
+    │                                                     │
+    │   LIVRO (MEMÓRIA)                                  │
+    │                                                     │
+    │   ┌─────────────────────────────────────────────┐   │
+    │   │  Página 100  │  Instrução 1               │   │
+    │   │  Página 101  │  Instrução 2  ◄───── PC    │   │
+    │   │  Página 102  │  Instrução 3               │   │
+    │   │  Página 103  │  Instrução 4               │   │
+    │   └─────────────────────────────────────────────┘   │
+    │                                                     │
+    │   O leitor (CPU):                                   │
+    │   1. Olha para o marcador (PC)                      │
+    │   2. Vira a página (busca)                         │
+    │   3. Lê a página (IR)                              │
+    │   4. Avança o marcador (PC++ )                     │
+    │                                                     │
+    └─────────────────────────────────────────────────────┘
+  </pre>
+
+</div>
+</details>
+
+### 2.4 Diagrama do Fetch
+
+<details>
+<summary>🔧 Ver Diagrama do Fetch</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 500px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">ETAPA DE BUSCA (FETCH)</div>
+
+  <pre style="color: #93c5fd; font-size: 0.55rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    ┌─────────────────────────────────────────────────────────────────┐
+    │                                                                 │
+    │  1. PC → MAR                                                   │
+    │     ┌─────────┐     ┌─────────┐                               │
+    │     │   PC    │────►│   MAR   │                               │
+    │     │ 0x1000  │     │ 0x1000  │                               │
+    │     └─────────┘     └─────────┘                               │
+    │                                                                 │
+    │  2. Memória lê no endereço 0x1000                              │
+    │     ┌─────────┐     ┌─────────┐     ┌─────────┐              │
+    │     │   MAR   │────►│ MEMÓRIA │────►│   MBR   │              │
+    │     │ 0x1000  │     │ 0x1000  │     │ 0x8A3B  │              │
+    │     └─────────┘     │ = 0x8A3B│     └─────────┘              │
+    │                     └─────────┘                               │
+    │                                                                 │
+    │  3. MBR → IR                                                   │
+    │     ┌─────────┐     ┌─────────┐                               │
+    │     │   MBR   │────►│    IR   │                               │
+    │     │ 0x8A3B  │     │ 0x8A3B  │                               │
+    │     └─────────┘     └─────────┘                               │
+    │                                                                 │
+    │  4. PC = PC + 1 (ou + tamanho da instrução)                    │
+    │     ┌─────────┐     ┌─────────┐                               │
+    │     │   PC    │────►│   PC    │                               │
+    │     │ 0x1000  │     │ 0x1001  │                               │
+    │     └─────────┘     └─────────┘                               │
+    │                                                                 │
+    └─────────────────────────────────────────────────────────────────┘
+  </pre>
+
+</div>
+</details>
+
+
+## 3. O Fluxo Detalhado da Busca
+
+### 3.1 Passo a passo com valores reais
+
+**Cenário:** O PC está em 0x1000. A memória em 0x1000 contém a instrução 0x8A3B.
+
+<pre>
+ESTADO INICIAL:
+PC = 0x1000
+MAR = 0x0000
+MBR = 0x0000
+IR = 0x0000
+
+PASSO 1: PC → MAR
+MAR = PC = 0x1000
+
+PASSO 2: Leitura da memória
+Memória[0x1000] = 0x8A3B
+MBR = 0x8A3B
+
+PASSO 3: MBR → IR
+IR = MBR = 0x8A3B
+
+PASSO 4: Incremento do PC
+PC = PC + 1 = 0x1001
+
+ESTADO FINAL:
+PC = 0x1001
+MAR = 0x1000
+MBR = 0x8A3B
+IR = 0x8A3B
+</pre>
+
+### 3.2 O incremento do PC
+
+O valor do incremento depende do **tamanho da instrução**:
+
+| Arquitetura | Tamanho da instrução | Incremento do PC |
+|-------------|----------------------|------------------|
+| 8 bits | 1 byte | PC = PC + 1 |
+| 16 bits (fixo) | 2 bytes | PC = PC + 2 |
+| 32 bits (fixo) | 4 bytes | PC = PC + 4 |
+| x86 (variável) | 1-15 bytes | PC = PC + tamanho da instrução |
+
+**Exemplo (x86):**
+<pre>
+Instrução: ADD AL, BL  (2 bytes) → PC = PC + 2
+Instrução: ADD AX, BX  (3 bytes) → PC = PC + 3
+Instrução: MOV EAX, [EBX] (4 bytes) → PC = PC + 4
+</pre>
+
+
+## 4. Componentes Envolvidos no Fetch
+
+### 4.1 Os atores da busca
+
+| Componente | Função no Fetch |
+|------------|-----------------|
+| **PC** | Fornece o endereço da próxima instrução |
+| **MAR** | Armazena o endereço a ser lido da memória |
+| **Memória** | Fornece a instrução armazenada no endereço |
+| **MBR** | Armazena temporariamente a instrução lida |
+| **IR** | Armazena a instrução para decodificação |
+| **UC** | Coordena todas as etapas do fetch |
+| **Barramento de Endereços** | Transporta o endereço do MAR para a memória |
+| **Barramento de Dados** | Transporta a instrução da memória para o MBR |
+
+### 4.2 O papel da UC no Fetch
+
+A Unidade de Controle é responsável por:
+
+1. Ativar o sinal de **leitura (RD)** .
+2. Controlar o **timing** (quando cada passo acontece).
+3. Coordenar a **transferência** de dados entre registradores.
+4. Atualizar o **PC** após a busca.
+
+
+## 5. O Fetch em Diferentes Arquiteturas
+
+### 5.1 RISC vs CISC
+
+| Característica | RISC (ex: ARM) | CISC (ex: x86) |
+|----------------|----------------|----------------|
+| **Tamanho da instrução** | Fixo (4 bytes) | Variável (1-15 bytes) |
+| **Incremento do PC** | Sempre +4 | Depende da instrução |
+| **Complexidade** | Baixa | Alta |
+| **Pipeline** | Mais fácil | Mais difícil |
+
+### 5.2 Pipeline e Fetch
+
+Em processadores modernos, o fetch é **pipelined**:
+
+<pre>
+Ciclo 1: Fetch da Instrução 1
+Ciclo 2: Fetch da Instrução 2  (enquanto a 1 é decodificada)
+Ciclo 3: Fetch da Instrução 3  (enquanto a 1 é executada, a 2 decodificada)
+...
+</pre>
+
+**Isso permite que a CPU execute várias instruções simultaneamente.**
+
+
+## 6. Exercícios
+
+<details>
+<summary>📗 Exercício 1 — Definição (fácil)</summary>
+
+**Enunciado:** O que é a etapa de Busca (Fetch) no ciclo de instrução?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** A Busca é a primeira etapa do ciclo de instrução, onde a CPU lê a próxima instrução da memória e a armazena no Registrador de Instrução (IR).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Componentes (fácil)</summary>
+
+**Enunciado:** Quais são os principais componentes envolvidos na etapa de Busca?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** PC (Contador de Programa), MAR (Registrador de Endereço de Memória), MBR (Registrador de Buffer de Memória), IR (Registrador de Instrução), Memória e Unidade de Controle (UC).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Fluxo do Fetch (médio)</summary>
+
+**Enunciado:** Descreva a sequência de passos da etapa de Busca.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+1. PC → MAR (copia o endereço da próxima instrução)
+2. Memória lê no endereço do MAR
+3. Dado lido → MBR
+4. MBR → IR
+5. PC = PC + tamanho da instrução
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Incremento do PC (médio)</summary>
+
+**Enunciado:** Se o PC = 0x2000 e a instrução tem 4 bytes, qual será o PC após a busca?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** PC = 0x2004
+
+**Explicação:** PC = PC + 4 = 0x2000 + 0x0004 = 0x2004.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Rastreamento (médio)</summary>
+
+**Enunciado:** Dado PC = 0x1000 e Memória[0x1000] = 0x5A, qual é o valor do IR após a busca?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** IR = 0x5A
+
+**Explicação:** A memória em 0x1000 contém 0x5A. Esta instrução é lida e armazenada no IR.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Pipeline (conceitual)</summary>
+
+**Enunciado:** O que é pipeline e como ele afeta a etapa de Busca?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Pipeline é uma técnica onde a CPU começa a buscar a próxima instrução enquanto a anterior ainda está sendo executada. Isso permite que a etapa de Busca ocorra em paralelo com outras etapas, aumentando o desempenho.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — RISC vs CISC (conceitual)</summary>
+
+**Enunciado:** Qual a diferença no Fetch entre arquiteturas RISC e CISC?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Em RISC, as instruções têm tamanho fixo (ex: 4 bytes), então o PC sempre incrementa pelo mesmo valor. Em CISC, as instruções têm tamanho variável (1-15 bytes), então o PC incrementa pelo tamanho específico da instrução lida.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — Simulação de Fetch (desafio)</summary>
+
+**Enunciado:** Simule a etapa de Busca para as seguintes condições: PC = 0x0500, Memória[0x0500] = 0x3A, Memória[0x0501] = 0x2F. Mostre o estado de PC, MAR, MBR e IR após a busca de uma instrução de 2 bytes.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Passo 1:** PC = 0x0500 → MAR = 0x0500
+**Passo 2:** Memória[0x0500] = 0x3A → MBR = 0x3A
+**Passo 3:** MBR → IR = 0x3A (primeiro byte)
+**Passo 4:** PC = 0x0501 (primeiro incremento)
+**Passo 5:** MAR = 0x0501
+**Passo 6:** Memória[0x0501] = 0x2F → MBR = 0x2F
+**Passo 7:** MBR → IR = 0x3A2F (instrução completa)
+**Passo 8:** PC = 0x0502 (segundo incremento)
+
+**Estado final:**
+- PC = 0x0502
+- MAR = 0x0501
+- MBR = 0x2F
+- IR = 0x3A2F
+
+</details>
+</details>
+
+
+
+> **"A Busca (Fetch) é o primeiro passo do ciclo de instrução — a CPU encontra e lê a próxima instrução da memória. O PC fornece o endereço, que é copiado para o MAR e colocado no barramento de endereços. A memória lê a instrução e a coloca no barramento de dados, de onde é armazenada no MBR e depois transferida para o IR. O PC é então incrementado para apontar para a próxima instrução. Este processo é repetido bilhões de vezes por segundo, formando a base de toda a execução de programas. Sem a Busca, a CPU não saberia qual instrução executar em seguida."**

@@ -1,0 +1,346 @@
+# Registradores
+
+## 1. Introdução
+
+Ao longo de toda a nossa jornada, exploramos os componentes que fazem um computador funcionar: a CPU, a ULA, a Unidade de Controle, os barramentos e os registradores. Vimos como cada instrução é buscada, decodificada, executada e armazenada. Vimos como os dados viajam entre a CPU, a memória e os periféricos. Mas há um aspecto fundamental que ainda não exploramos em profundidade: a organização da memória. Como os dados são armazenados em diferentes lugares, com diferentes velocidades e capacidades? <br><br>
+
+A resposta está na **Hierarquia de Memória** — uma pirâmide onde cada nível é mais rápido, menor e mais caro que o nível abaixo. No topo dessa pirâmide estão os **Registradores**. Os registradores são o armazenamento mais rápido de todo o computador. Eles ficam dentro da CPU, ao lado da ULA, e são acessados em apenas 1 ciclo de clock. Mas essa velocidade tem um custo: a capacidade é minúscula — apenas alguns bytes a KB. <br><br>
+
+Pense nos registradores como a **mesa de trabalho de um artesão**:
+
+- O artesão (CPU) trabalha sobre a mesa (registradores).
+- A mesa é pequena, mas tudo que está sobre ela está ao alcance das mãos.
+- O artesão não precisa se levantar para pegar ferramentas — está tudo ali.
+
+Nesta primeira aula do módulo sobre Hierarquia de Memória, vamos explorar os **Registradores** — o nível mais alto da pirâmide, onde a velocidade é máxima e a capacidade é mínima.
+
+
+## 2. O Que São Registradores na Hierarquia?
+
+### 2.1 Definição
+
+Os **Registradores** são o nível mais alto da hierarquia de memória:
+
+> **Armazenamento de dados dentro da CPU, com acesso em ~1 ciclo de clock e capacidade de poucos bytes a KB.**
+
+### 2.2 Características
+
+| Característica | Valor |
+|----------------|-------|
+| **Localização** | Dentro da CPU |
+| **Velocidade** | ~1 ciclo de clock (nanossegundos) |
+| **Capacidade** | Poucos bytes a KB (ex: 16-32 registradores de 32/64 bits) |
+| **Custo** | Muito caro (por bit) |
+| **Tecnologia** | Flip-flops (SRAM) |
+| **Volatilidade** | Volátil (perde dados sem energia) |
+| **Função** | Armazenar operandos, resultados, endereços |
+
+### 2.3 Analogia
+
+Pense nos registradores como a **mesa de trabalho do artesão**:
+
+<details>
+<summary>🔧 Ver Analogia dos Registradores</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 450px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">HIERARQUIA — A MESA DO ARTESÃO</div>
+
+  <pre style="color: #93c5fd; font-size: 0.6rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    ┌─────────────────────────────────────────────────────┐
+    │                                                     │
+    │   ARMAZÉM (HD/SSD)                                 │
+    │   ┌─────────────────────────────────────────────┐   │
+    │   │  Milhares de ferramentas guardadas         │   │
+    │   │  (dados permanentes)                        │   │
+    │   └─────────────────────────────────────────────┘   │
+    │                         │                           │
+    │                         ▼                           │
+    │   ESTANTE (RAM)                                    │
+    │   ┌─────────────────────────────────────────────┐   │
+    │   │  Ferramentas que estão sendo usadas agora   │   │
+    │   │  (programas em execução)                    │   │
+    │   └─────────────────────────────────────────────┘   │
+    │                         │                           │
+    │                         ▼                           │
+    │   CAIXA DE FERRAMENTAS (CACHE)                     │
+    │   ┌─────────────────────────────────────────────┐   │
+    │   │  Ferramentas mais usadas, ao alcance        │   │
+    │   │  (dados frequentemente acessados)           │   │
+    │   └─────────────────────────────────────────────┘   │
+    │                         │                           │
+    │                         ▼                           │
+    │   MESA DE TRABALHO (REGISTRADORES)                 │
+    │   ┌─────────────────────────────────────────────┐   │
+    │   │  Ferramentas que o artesão usa AGORA       │   │
+    │   │  (operandos e resultados imediatos)        │   │
+    │   └─────────────────────────────────────────────┘   │
+    │                                                     │
+    └─────────────────────────────────────────────────────┘
+  </pre>
+
+</div>
+</details>
+
+### 2.4 Diagrama da Hierarquia
+
+<details>
+<summary>🔧 Ver Diagrama da Hierarquia de Memória</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 500px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">HIERARQUIA DE MEMÓRIA</div>
+
+  <pre style="color: #93c5fd; font-size: 0.55rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    ┌─────────────────────────────────────────────────────────────┐
+    │  REGISTRADORES (dentro da CPU)                            │
+    │  ~1 ciclo, ~1 KB, muito caro                               │
+    └─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+    ┌─────────────────────────────────────────────────────────────┐
+    │  CACHE L1 (dentro da CPU)                                 │
+    │  ~2-4 ciclos, ~32 KB, muito caro                          │
+    └─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+    ┌─────────────────────────────────────────────────────────────┐
+    │  CACHE L2 (dentro da CPU)                                 │
+    │  ~10 ciclos, ~256 KB, caro                                │
+    └─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+    ┌─────────────────────────────────────────────────────────────┐
+    │  CACHE L3 (dentro da CPU)                                 │
+    │  ~30-40 ciclos, ~8 MB, moderado                           │
+    └─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+    ┌─────────────────────────────────────────────────────────────┐
+    │  MEMÓRIA RAM (fora da CPU, na placa-mãe)                  │
+    │  ~50-100 ns, ~16 GB, barato                               │
+    └─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+    ┌─────────────────────────────────────────────────────────────┐
+    │  ARMAZENAMENTO SECUNDÁRIO (SSD/HD)                        │
+    │  ~µs (SSD) / ~ms (HD), ~1 TB, muito barato               │
+    └─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+    ┌─────────────────────────────────────────────────────────────┐
+    │  ARMAZENAMENTO TERCIÁRIO (Fitas, Nuvem)                   │
+    │  ~s (fitas) / ~ms (nuvem), ~EB, extremamente barato       │
+    └─────────────────────────────────────────────────────────────┘
+  </pre>
+
+</div>
+</details>
+
+
+## 3. Tipos de Registradores
+
+### 3.1 Registradores de Uso Geral
+
+| Característica | Descrição |
+|----------------|-----------|
+| **Função** | Armazenar operandos e resultados temporários |
+| **Quantidade** | 8-32 registradores (dependendo da arquitetura) |
+| **Tamanho** | Igual à palavra do processador (32 ou 64 bits) |
+| **Exemplos** | R0-R15 (ARM), EAX-EBX-ECX-EDX (x86) |
+
+### 3.2 Registradores Especializados
+
+| Registrador | Função | Tamanho |
+|-------------|--------|---------|
+| **PC** | Contador de Programa (próxima instrução) | 32/64 bits |
+| **IR** | Registrador de Instrução (instrução atual) | 32/64 bits |
+| **MAR** | Registrador de Endereço de Memória | 32/64 bits |
+| **MBR** | Registrador de Buffer de Memória | 32/64 bits |
+| **SP** | Ponteiro de Pilha (Stack Pointer) | 32/64 bits |
+| **LR** | Endereço de Retorno (Link Register) | 32/64 bits |
+| **Flags** | Bits de status (Zero, Negativo, Carry, Overflow) | 1 bit cada |
+
+### 3.3 Exemplo: Registradores ARM (32 bits)
+
+<details>
+<summary>🔧 Ver Estrutura dos Registradores ARM</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 400px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">REGISTRADORES ARM (32 bits)</div>
+
+  <pre style="color: #93c5fd; font-size: 0.6rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    ┌─────────────────────────────────────────────────────────────┐
+    │  ARM Cortex-A (32 registradores de 32 bits)                │
+    │                                                             │
+    │  ┌─────────────────────────────────────────────────────┐    │
+    │  │  USO GERAL                                         │    │
+    │  │  R0  - R3   → Parâmetros de função                │    │
+    │  │  R4  - R11  → Variáveis locais                    │    │
+    │  │  R12        → Scratch (temporário)                │    │
+    │  │  R13 (SP)   → Ponteiro de Pilha                   │    │
+    │  │  R14 (LR)   → Endereço de Retorno                 │    │
+    │  │  R15 (PC)   → Contador de Programa                │    │
+    │  └─────────────────────────────────────────────────────┘    │
+    │                                                             │
+    │  ┌─────────────────────────────────────────────────────┐    │
+    │  │  ESPECIALIZADOS (fora dos 32)                       │    │
+    │  │  CPSR        → Registrador de Status               │    │
+    │  │  (flags: Z, N, C, V, etc.)                         │    │
+    │  └─────────────────────────────────────────────────────┘    │
+    └─────────────────────────────────────────────────────────────┘
+  </pre>
+
+</div>
+</details>
+
+
+## 4. Velocidade dos Registradores
+
+### 4.1 Por que os registradores são tão rápidos?
+
+| Razão | Explicação |
+|-------|-----------|
+| **Proximidade** | Estão dentro da CPU, ao lado da ULA |
+| **Tecnologia** | Feitos com flip-flops (SRAM), a tecnologia mais rápida |
+| **Tamanho pequeno** | Pequena capacidade → sinais viajam distâncias curtas |
+| **Sem barramentos** | Não precisam passar por barramentos externos |
+
+### 4.2 Comparação de velocidades
+
+| Nível | Tempo de acesso | Velocidade relativa |
+|-------|-----------------|---------------------|
+| **Registradores** | ~1 ciclo | 1x (base) |
+| **Cache L1** | ~2-4 ciclos | 2-4x mais lento |
+| **Cache L2** | ~10 ciclos | 10x mais lento |
+| **Cache L3** | ~30-40 ciclos | 30-40x mais lento |
+| **RAM** | ~50-100 ns | ~100-200x mais lento |
+| **SSD** | ~µs | ~1.000-10.000x mais lento |
+| **HD** | ~ms | ~1.000.000x mais lento |
+
+### 4.3 Exemplo prático
+
+- Acesso a um registrador: ~1 ciclo = ~0,3 ns (a 3 GHz)
+- Acesso à RAM: ~100 ns
+- **Diferença:** A RAM é ~300x mais lenta que os registradores!
+
+
+## 5. Exercícios
+
+<details>
+<summary>📗 Exercício 1 — Definição (fácil)</summary>
+
+**Enunciado:** O que são registradores na hierarquia de memória?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Registradores são o nível mais alto da hierarquia de memória — armazenamento dentro da CPU com acesso em ~1 ciclo de clock e capacidade de poucos bytes a KB.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Características (fácil)</summary>
+
+**Enunciado:** Quais são as principais características dos registradores?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Localização (dentro da CPU), velocidade (~1 ciclo), capacidade (poucos bytes a KB), custo (muito caro), tecnologia (flip-flops), volatilidade (volátil).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Velocidade (fácil)</summary>
+
+**Enunciado:** Qual é o tempo de acesso típico de um registrador?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** ~1 ciclo de clock (nanossegundos).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Capacidade (médio)</summary>
+
+**Enunciado:** Qual é a capacidade típica dos registradores em um processador moderno?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Poucos bytes a KB. Por exemplo, 32 registradores de 32 bits = 128 bytes (ARM), ou 16 registradores de 64 bits = 128 bytes (x86-64).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Comparação de velocidades (médio)</summary>
+
+**Enunciado:** Quantas vezes a RAM é mais lenta que os registradores?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** A RAM é ~100-300x mais lenta que os registradores (50-100 ns vs ~0,3 ns).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Tecnologia (conceitual)</summary>
+
+**Enunciado:** Qual tecnologia é usada para construir registradores?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Flip-flops (um tipo de SRAM — Static RAM). Cada bit é armazenado em um flip-flop.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — Tipos de registradores (conceitual)</summary>
+
+**Enunciado:** Cite três registradores especializados e suas funções.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+- **PC:** Contador de Programa — aponta para a próxima instrução.
+- **IR:** Registrador de Instrução — armazena a instrução atual.
+- **MAR:** Registrador de Endereço de Memória — armazena o endereço a ser acessado.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — Hierarquia de memória (desafio)</summary>
+
+**Enunciado:** Ordene da mais rápida para a mais lenta: RAM, Registradores, SSD, Cache L1.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta (da mais rápida para a mais lenta):**
+
+1. **Registradores** (~1 ciclo)
+2. **Cache L1** (~2-4 ciclos)
+3. **RAM** (~50-100 ns)
+4. **SSD** (~µs)
+
+**Explicação:** A hierarquia de memória é organizada da mais rápida (mas menor e mais cara) para a mais lenta (mas maior e mais barata).
+
+</details>
+</details>
+
+
+> **"Os registradores são o nível mais alto da hierarquia de memória — o armazenamento mais rápido de todo o computador. Eles ficam dentro da CPU, ao lado da ULA, e são acessados em apenas 1 ciclo de clock. Sua capacidade é minúscula (poucos bytes a KB), mas sua velocidade é incomparável. Registradores de uso geral armazenam operandos e resultados temporários, enquanto registradores especializados (PC, IR, MAR, MBR) controlam a execução do programa. Por serem feitos com flip-flops (SRAM), são muito caros, mas essenciais para o desempenho da CPU. Na pirâmide da memória, eles ocupam o topo — a base do sucesso de qualquer computador."**

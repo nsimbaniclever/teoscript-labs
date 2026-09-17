@@ -1,0 +1,510 @@
+# Introdução à Correlação
+
+## 1. INTRODUÇÃO
+
+&emsp;&emsp;&emsp;Nas aulas anteriores estudámos as **medidas de tendência central**, as **separatrizes**, as **medidas de dispersão** e as **medidas de forma** (assimetria e curtose). Todas elas descrevem **uma única variável** — respondem a perguntas como:
+
+- "Qual é o salário médio?"
+- "Quão espalhadas são as notas?"
+- "A distribuição é simétrica?"
+
+&emsp;&emsp;&emsp;Mas há uma pergunta igualmente fundamental que nenhuma destas medidas responde: **"Existe relação entre duas variáveis?"**<br>
+
+&emsp;&emsp;&emsp;Considera o seguinte problema prático:
+
+> **Um professor quer saber se as horas de estudo estão relacionadas com as notas dos alunos. Recolheu dados de 10 alunos:**
+
+| Aluno | Horas de estudo (X) | Nota (Y) |
+|---------|---------|---------|
+| 1 | 1 | 4 |
+| 2 | 2 | 5 |
+| 3 | 3 | 7 |
+| 4 | 4 | 8 |
+| 5 | 5 | 10 |
+| 6 | 6 | 11 |
+| 7 | 7 | 13 |
+| 8 | 8 | 14 |
+| 9 | 9 | 16 |
+| 10 | 10 | 17 |
+
+**Pergunta:** Existe relação entre as horas de estudo e as notas?
+
+&emsp;&emsp;&emsp;As medidas que estudámos até agora **não respondem** a esta pergunta. Podemos calcular a média das horas de estudo (5,5) e a média das notas (10,5), mas isso não nos diz **nada** sobre a relação entre elas.<br>
+
+&emsp;&emsp;&emsp;Olhando para os dados, vemos que **quando as horas de estudo aumentam, as notas também aumentam**. Isto sugere uma **relação positiva** entre as duas variáveis. Mas como quantificar esta relação? Como medir a **força** e a **direção** desta associação?<br>
+
+&emsp;&emsp;&emsp;É precisamente aqui que entra a **correlação** — a medida que quantifica a **relação linear** entre duas variáveis.
+
+<details>
+<summary>📊 Ver a família das medidas de associação</summary>
+<style>
+.r{font:14px system-ui;text-align:center}
+.r b{display:inline-block;padding:4px 10px;background:#333;color:#fff;border-radius:6px}
+.r i{display:block;width:2px;height:18px;background:#333;margin:0 auto}
+.r em{display:flex;gap:8px;justify-content:center;position:relative;padding-top:18px}
+.r em::before{content:'';position:absolute;top:0;left:25%;right:25%;height:2px;background:#333}
+.r em span{flex:1;padding:8px;border:2px solid #333;border-radius:8px;max-width:140px}
+.r em span::before{content:'';position:absolute;top:-18px;left:50%;width:2px;height:18px;background:#333}
+.r em span{position:relative}
+</style>
+<div class="r">
+  <b>Medidas de Associação</b>
+  <i></i>
+  <em>
+    <span>Pearson<br>(linear)</span>
+    <span>Spearman<br>(ordinal)</span>
+    <span>Kendall<br>(ordinal)</span>
+  </em>
+</div>
+</details>
+
+> **💡 Dica de Ouro:** A correlação **não implica causalidade**. Duas variáveis podem estar correlacionadas sem que uma cause a outra. Pode haver uma terceira variável (variável de confusão) que explique ambas.
+
+
+## 2. O QUE É A CORRELAÇÃO?
+
+&emsp;&emsp;&emsp;A **correlação** é uma medida que quantifica a **força** e a **direção** da **relação linear** entre duas variáveis. O coeficiente de correlação varia entre **−1 e +1**.
+
+**📌 Interpretação do coeficiente:**
+
+| Valor de r | Interpretação |
+|---------|---------|
+| r = +1 | Correlação **positiva perfeita** |
+| 0,7 ≤ r < 1 | Correlação **positiva forte** |
+| 0,3 ≤ r < 0,7 | Correlação **positiva moderada** |
+| 0 < r < 0,3 | Correlação **positiva fraca** |
+| r = 0 | **Ausência de correlação linear** |
+| −0,3 < r < 0 | Correlação **negativa fraca** |
+| −0,7 < r ≤ −0,3 | Correlação **negativa moderada** |
+| −1 < r ≤ −0,7 | Correlação **negativa forte** |
+| r = −1 | Correlação **negativa perfeita** |
+
+**📌 Visualização em HTML+CSS:**
+
+<style>
+.c{font:14px system-ui;background:#f8f9fa;padding:2vw;border-radius:8px;display:flex;gap:2vw;justify-content:center;flex-wrap:wrap;max-width:100%}
+.c .g{text-align:center;flex:1;min-width:250px}
+.c .g div{margin-bottom:2vh;color:#333;font-weight:500;white-space:nowrap}
+.c .p{width:100%;max-width:150px;height:120px;position:relative;margin:0 auto}
+.c .p span{position:absolute;width:6px;height:6px;background:#333;border-radius:50%;transform:translate(-50%,-50%)}
+@media(max-width:768px){.c{flex-direction:column;gap:3vh}.c .p{max-width:200px;height:150px}}
+</style>
+<div class="c">
+  <div class="g">
+    <div>r = +1 (perfeita positiva)</div>
+    <div class="p">
+      <span style="left:10%;top:10%"></span>
+      <span style="left:30%;top:30%"></span>
+      <span style="left:50%;top:50%"></span>
+      <span style="left:70%;top:70%"></span>
+      <span style="left:90%;top:90%"></span>
+    </div>
+  </div>
+  <div class="g">
+    <div>r = 0 (sem correlação)</div>
+    <div class="p">
+      <span style="left:50px;top:5px"></span>
+      <span style="left:70px;top:5px"></span>
+      <span style="left:35px;top:25px"></span>
+      <span style="left:85px;top:25px"></span>
+      <span style="left:22px;top:45px"></span>
+      <span style="left:98px;top:45px"></span>
+      <span style="left:10px;top:65px"></span>
+      <span style="left:110px;top:65px"></span>
+      <span style="left:0px;top:85px"></span>
+      <span style="left:120px;top:85px"></span>
+    </div>
+  </div>
+  <div class="g">
+    <div>r = -1 (perfeita negativa)</div>
+    <div class="p">
+      <span style="left:10%;top:10%"></span>
+      <span style="left:30%;top:30%"></span>
+      <span style="left:50%;top:50%"></span>
+      <span style="left:70%;top:70%"></span>
+      <span style="left:90%;top:90%"></span>
+    </div>
+  </div>
+</div>
+
+**📌 Conceitos-chave:**
+
+| Conceito | Definição |
+|---------|----------|
+| **Variável independente (X)** | A variável que se acredita influenciar a outra |
+| **Variável dependente (Y)** | A variável que se acredita ser influenciada |
+| **Correlação positiva** | Quando X aumenta, Y tende a aumentar |
+| **Correlação negativa** | Quando X aumenta, Y tende a diminuir |
+| **Correlação nula** | Não há relação linear entre X e Y |
+| **Correlação espúria** | Correlação causada por uma terceira variável |
+
+## 3. TIPOS DE CORRELAÇÃO
+
+### 3.1 Correlação Positiva
+
+&emsp;&emsp;&emsp;Quando **X aumenta, Y também aumenta**. Os pontos tendem a alinhar-se numa reta ascendente.
+
+**📌 Exemplo:**
+
+| X | Y |
+|---------|---------|
+| 1 | 2 |
+| 2 | 4 |
+| 3 | 5 |
+| 4 | 8 |
+| 5 | 9 |
+
+> **🔍 Interpretação:** Existe uma relação **positiva** entre X e Y. Quando X aumenta, Y tende a aumentar.
+
+### 3.2 Correlação Negativa
+
+&emsp;&emsp;&emsp;Quando **X aumenta, Y diminui**. Os pontos tendem a alinhar-se numa reta descendente.
+
+**📌 Exemplo:**
+
+| X | Y |
+|---------|---------|
+| 1 | 10 |
+| 2 | 8 |
+| 3 | 7 |
+| 4 | 4 |
+| 5 | 2 |
+
+> **🔍 Interpretação:** Existe uma relação **negativa** entre X e Y. Quando X aumenta, Y tende a diminuir.
+
+### 3.3 Correlação Nula
+
+&emsp;&emsp;&emsp;Quando **não há relação linear** entre X e Y. Os pontos estão dispersos sem padrão.
+
+**📌 Exemplo:**
+
+| X | Y |
+|---------|---------|
+| 1 | 5 |
+| 2 | 2 |
+| 3 | 8 |
+| 4 | 3 |
+| 5 | 7 |
+
+> **🔍 Interpretação:** Não existe relação linear entre X e Y. Os valores de Y não variam de forma consistente com X.
+
+### 3.4 Correlação Não Linear
+
+&emsp;&emsp;&emsp;Quando a relação entre X e Y **não é linear** (ex: curva em U). O coeficiente de Pearson pode ser **próximo de zero**, mesmo havendo uma relação forte.
+
+**📌 Exemplo:**
+
+| X | Y |
+|---------|---------|
+| 1 | 10 |
+| 2 | 5 |
+| 3 | 2 |
+| 4 | 5 |
+| 5 | 10 |
+
+> **🔍 Interpretação:** Existe uma relação **não linear** (curva em U) entre X e Y. O coeficiente de Pearson pode ser enganador aqui — é preciso usar outras medidas ou visualizar.
+
+## 4. COEFICIENTE DE CORRELAÇÃO DE PEARSON
+
+&emsp;&emsp;&emsp;O **coeficiente de correlação de Pearson** (r) é a medida mais comum de correlação. Mede a **força** e a **direção** da relação **linear** entre duas variáveis quantitativas.
+
+**📐 Fórmula:**
+
+$$
+\color{blue} r = \frac{\sum (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum (x_i - \bar{x})^2} \cdot \sqrt{\sum (y_i - \bar{y})^2}}
+$$
+
+Onde:
+- **xi, yi** = pares de valores
+- **x̄, ȳ** = médias de cada variável
+
+**📐 Fórmula alternativa (mais prática):**
+
+$$
+\color{blue} r = \frac{n \sum x_i y_i - \sum x_i \sum y_i}{\sqrt{\left[ n \sum x_i^2 - (\sum x_i)^2 \right] \cdot \left[ n \sum y_i^2 - (\sum y_i)^2 \right]}}
+$$
+
+**📌 Propriedades do r:**
+
+| Propriedade | Descrição |
+|---------|----------|
+| **Intervalo** | −1 ≤ r ≤ +1 |
+| **Adimensional** | Não tem unidade |
+| **Simétrico** | r(X, Y) = r(Y, X) |
+| **Sensível a outliers** | Um valor extremo pode distorcer o r |
+| **Só mede relação linear** | Relações não lineares podem ter r ≈ 0 |
+
+## 5. COEFICIENTE DE CORRELAÇÃO DE SPEARMAN
+
+&emsp;&emsp;&emsp;O **coeficiente de correlação de Spearman** (ρ) é uma alternativa **não paramétrica** ao Pearson. Usa os **postos (rankings)** em vez dos valores originais. É útil quando:
+- Os dados são **ordinais**.
+- Há **outliers**.
+- A relação **não é linear** (mas é monótona).
+
+**📐 Fórmula:**
+
+$$
+\color{blue} \rho = 1 - \frac{6 \sum d_i^2}{n(n^2 - 1)}
+$$
+
+Onde:
+- **di** = diferença entre os postos de X e Y para cada par
+- **n** = número de pares
+
+**📌 Propriedades do ρ:**
+
+| Propriedade | Descrição |
+|---------|----------|
+| **Intervalo** | −1 ≤ ρ ≤ +1 |
+| **Robusto a outliers** | Usa postos, não valores |
+| **Detecta relações monótonas** | Não precisa ser linear |
+| **Apropriado para dados ordinais** | Não exige normalidade |
+
+## 6. CORRELAÇÃO DE KENDALL (MENÇÃO)
+
+&emsp;&emsp;&emsp;O **coeficiente de Kendall** (τ) é outra alternativa não paramétrica. Mede a **concordância** entre pares de observações. É menos usado que Pearson e Spearman, mas tem **interpretação probabilística** interessante.
+
+**📐 Fórmula:**
+
+$$
+\color{blue} \tau = \frac{C - D}{\binom{n}{2}}
+$$
+
+Onde:
+- **C** = número de pares concordantes
+- **D** = número de pares discordantes
+- **C(n,2)** = número total de pares
+
+## 7. CORRELAÇÃO VS CAUSALIDADE
+
+&emsp;&emsp;&emsp;Este é o **erro mais comum** em estatística: assumir que **correlação implica causalidade**.
+
+**📌 Os três cenários possíveis:**
+
+| Cenário | Descrição | Exemplo |
+|---------|---------|---------|
+| **X causa Y** | X influencia diretamente Y | Fumar causa cancro |
+| **Y causa X** | Y influencia diretamente X | Cancro causa fumar? (não) |
+| **Z causa ambos** | Uma terceira variável causa X e Y | Temperatura causa sorvete e afogamentos |
+| **Coincidência** | Correlação espúria | Número de filmes do Nicolas Cage vs. Afogamentos |
+
+**📌 Exemplo clássico de correlação espúria:**
+
+> **Correlação entre o consumo de sorvete e o número de afogamentos.**
+>
+> r = 0,95 — correlação positiva forte.
+>
+> **Podemos concluir que comer sorvete causa afogamentos?**
+>
+> **Não!** A variável de confusão é a **temperatura**:
+> - Quando está mais calor, as pessoas comem mais sorvete.
+> - Quando está mais calor, as pessoas vão mais à praia e nadam mais, aumentando o risco de afogamento.
+>
+> A temperatura causa **ambas** as variáveis.
+
+**📌 Regras para evitar o erro:**
+
+1. **Nunca assumir causalidade** apenas com base na correlação.
+2. **Procurar variáveis de confusão** — pode haver uma terceira variável.
+3. **Usar desenho experimental** (RCT) para estabelecer causalidade.
+4. **Considerar o contexto** — a plausibilidade biológica/física importa.
+
+## 8. VISUALIZAÇÃO DA CORRELAÇÃO
+
+&emsp;&emsp;&emsp;A forma mais comum de visualizar a correlação é o **diagrama de dispersão (scatterplot)**. Cada ponto representa um par (xi, yi).
+
+**📌 Exemplos visuais:**
+
+<style>
+.c{font:14px system-ui;background:#f8f9fa;padding:2vw;border-radius:8px;display:grid;grid-template-columns:repeat(3,1fr);gap:2vw;max-width:100%}
+.c .g{text-align:center}
+.c .g div{margin-bottom:1vh;color:#333;font-weight:500;white-space:nowrap;font-size:clamp(11px,1.4vw,14px)}
+.c .p{width:100%;aspect-ratio:1.3;position:relative;margin:0 auto}
+.c .p span{position:absolute;width:6px;height:6px;background:#333;border-radius:50%;transform:translate(-50%,-50%)}
+@media(max-width:700px){.c{grid-template-columns:1fr 1fr;gap:3vh}}
+@media(max-width:450px){.c{grid-template-columns:1fr}}
+</style>
+<div class="c">
+  <div class="g">
+    <div>r = +0,9 (forte positiva)</div>
+    <div class="p">
+      <span style="left:20%;top:15%"></span>
+      <span style="left:30%;top:30%"></span>
+      <span style="left:42%;top:45%"></span>
+      <span style="left:55%;top:62%"></span>
+      <span style="left:70%;top:80%"></span>
+    </div>
+  </div>
+  <div class="g">
+    <div>r = +0,5 (moderada positiva)</div>
+    <div class="p">
+      <span style="left:50%;top:10%"></span>
+      <span style="left:35%;top:25%"></span>
+      <span style="left:60%;top:25%"></span>
+      <span style="left:25%;top:42%"></span>
+      <span style="left:65%;top:42%"></span>
+      <span style="left:15%;top:60%"></span>
+      <span style="left:75%;top:60%"></span>
+      <span style="left:5%;top:80%"></span>
+      <span style="left:85%;top:80%"></span>
+    </div>
+  </div>
+  <div class="g">
+    <div>r = 0 (nula)</div>
+    <div class="p">
+      <span style="left:40%;top:15%"></span>
+      <span style="left:60%;top:15%"></span>
+      <span style="left:25%;top:30%"></span>
+      <span style="left:75%;top:30%"></span>
+      <span style="left:40%;top:45%"></span>
+      <span style="left:60%;top:45%"></span>
+      <span style="left:20%;top:60%"></span>
+      <span style="left:70%;top:60%"></span>
+      <span style="left:40%;top:78%"></span>
+      <span style="left:60%;top:78%"></span>
+    </div>
+  </div>
+  <div class="g">
+    <div>r = -0,9 (forte negativa)</div>
+    <div class="p">
+      <span style="left:10%;top:15%"></span>
+      <span style="left:22%;top:30%"></span>
+      <span style="left:35%;top:45%"></span>
+      <span style="left:50%;top:62%"></span>
+      <span style="left:65%;top:80%"></span>
+    </div>
+  </div>
+  <div class="g">
+    <div>r = -0,5 (moderada negativa)</div>
+    <div class="p">
+      <span style="left:25%;top:12%"></span>
+      <span style="left:40%;top:12%"></span>
+      <span style="left:20%;top:30%"></span>
+      <span style="left:45%;top:45%"></span>
+      <span style="left:55%;top:45%"></span>
+      <span style="left:35%;top:62%"></span>
+      <span style="left:50%;top:80%"></span>
+      <span style="left:65%;top:80%"></span>
+    </div>
+  </div>
+  <div class="g">
+    <div>r = +0,3 (fraca positiva)</div>
+    <div class="p">
+      <span style="left:40%;top:12%"></span>
+      <span style="left:50%;top:12%"></span>
+      <span style="left:35%;top:28%"></span>
+      <span style="left:60%;top:28%"></span>
+      <span style="left:25%;top:45%"></span>
+      <span style="left:70%;top:45%"></span>
+      <span style="left:40%;top:62%"></span>
+      <span style="left:60%;top:62%"></span>
+      <span style="left:35%;top:80%"></span>
+      <span style="left:45%;top:80%"></span>
+    </div>
+  </div>
+</div>
+
+> **🔍 Nota:** O scatterplot é tão importante que terá uma **aula inteira** dedicada (Aula 2).
+
+## 9. VANTAGENS E DESVANTAGENS
+
+| Medida | Vantagens | Desvantagens |
+|---------|----------|----------|
+| **Pearson** | ✅ Usa todos os dados; medida padrão | ❌ Sensível a outliers; só detecta relações lineares |
+| **Spearman** | ✅ Robusto a outliers; detecta relações monótonas | ❌ Perde informação (usa postos em vez de valores) |
+| **Kendall** | ✅ Robusto; interpretação probabilística | ❌ Mais complexo de calcular |
+
+## 10. QUANDO USAR CADA MEDIDA
+
+| Critério | Pearson | Spearman | Kendall |
+|---------|---------|---------|---------|
+| **Dados quantitativos** | ✅ | ✅ | ✅ |
+| **Dados ordinais** | ❌ | ✅ | ✅ |
+| **Relação linear** | ✅ | ✅ | ✅ |
+| **Relação monótona não linear** | ❌ | ✅ | ✅ |
+| **Outliers** | ❌ Sensível | ✅ Robusto | ✅ Robusto |
+| **Amostras pequenas** | ✅ | ✅ | ✅ |
+| **Interpretação probabilística** | ❌ | ❌ | ✅ |
+
+**Fluxo de Decisão:**
+
+1. Os dados são **quantitativos** e a relação é **linear**? → **Pearson**
+2. Os dados são **ordinais** ou há **outliers**? → **Spearman**
+3. Queres **interpretação probabilística**? → **Kendall**
+4. Em dúvida? → Calcula **Pearson e Spearman** e compara!
+
+## 11. EXERCÍCIOS
+
+<details>
+<summary>📗 Exercício 1 — Identificar o tipo de correlação</summary>
+
+**Enunciado:** Para cada par de variáveis, indica se esperas uma correlação positiva, negativa ou nula:
+
+a) Altura e peso de pessoas
+
+b) Temperatura e consumo de aquecimento
+
+c) Cor do cabelo e inteligência
+
+d) Horas de estudo e notas
+
+e) Preço de um produto e quantidade vendida
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) **Positiva** — pessoas mais altas tendem a pesar mais
+
+b) **Negativa** — quando a temperatura aumenta, o consumo de aquecimento diminui
+
+c) **Nula** — não há relação entre cor do cabelo e inteligência
+
+d) **Positiva** — mais horas de estudo tendem a resultar em melhores notas
+
+e) **Negativa** — quando o preço aumenta, a quantidade vendida tende a diminuir
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Interpretação do coeficiente</summary>
+
+**Enunciado:** Um estudo encontrou uma correlação de r = −0,82 entre o preço de um produto e a quantidade vendida. O que podes concluir?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+r = −0,82 indica uma **correlação negativa forte**. Isto significa que:
+- Quando o preço aumenta, a quantidade vendida tende a **diminuir**.
+- Quando o preço diminui, a quantidade vendida tende a **aumentar**.
+- A relação é **forte** (|r| > 0,7).
+
+**Interpretação prática:** Há uma relação inversa consistente entre preço e quantidade vendida — típico da lei da procura.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Correlação não implica causalidade</summary>
+
+**Enunciado:** Um estudo encontrou uma correlação de r = 0,95 entre o consumo de sorvete e o número de afogamentos. Podemos concluir que comer sorvete causa afogamentos? Justifique.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+**Não!** Correlação **não implica causalidade**. Neste caso, a variável de confusão é a **temperatura**:
+- Quando está mais calor, as pessoas comem mais sorvete.
+- Quando está mais calor, as pessoas vão mais à praia e nadam mais, aumentando o risco de afogamento.
+
+A temperatura causa **ambas** as variáveis. O sorvete e os afogamentos estão correlacionados, mas não há relação causal direta entre eles.
+
+</details>
+</details
+
+> A correlação diz-te que duas variáveis caminham juntas — mas não te diz quem lidera o caminho. Para isso, precisas de causalidade, que a correlação sozinha não pode oferecer.

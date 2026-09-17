@@ -1,0 +1,410 @@
+# ENDEREÇAMENTO INDIRETO
+
+## 1. INTRODUÇÃO
+
+Nas duas últimas aulas, estudamos dois modos de endereçamento: o imediato (valor na instrução) e o direto (endereço fixo na instrução). Vimos que ambos são úteis, mas têm uma limitação importante: o valor ou endereço é **fixo, definido em tempo de compilação**.<br><br>
+
+E quando precisamos acessar dados em endereços que **variam em tempo de execução**? Como a CPU acessa o próximo elemento de um array, ou segue um ponteiro, ou acessa uma estrutura de dados dinâmica? A resposta é o **endereçamento indireto**.<br><br>
+
+No endereçamento indireto, o endereço não está na instrução. Em vez disso, a instrução diz: "o endereço está em tal registrador". A CPU lê o valor do registrador, que é interpretado como um endereço de memória, e então acessa a memória naquele endereço.<br><br>
+
+É como se você tivesse uma lista de endereços em um papel (o registrador). Você não vai diretamente a uma casa específica — você vai ao endereço que está anotado no papel. E se você mudar o que está anotado no papel, pode ir a casas diferentes.<br><br>
+
+Nesta aula, vamos estudar o endereçamento indireto: o que é, como funciona, como implementa o conceito de ponteiros em Assembly, e quais são suas vantagens e aplicações.
+
+## 2. O QUE É ENDEREÇAMENTO INDIRETO?
+
+### 2.1 Definição
+
+> "Endereçamento indireto é um modo onde o operando é um registrador que contém o endereço de memória onde o dado está armazenado. A CPU primeiro lê o valor do registrador (o endereço) e depois acessa a memória nesse endereço."
+
+### 2.2 Características principais
+
+| Característica | Descrição |
+|---------|----------|
+| **Onde está o dado** | Na memória, em um endereço que está em um registrador |
+| **Como é especificado** | O registrador contém o endereço |
+| **Velocidade** | Duas etapas (registrador → memória) |
+| **Flexibilidade** | Alta (o endereço pode mudar em tempo de execução) |
+| **Uso** | Ponteiros, arrays, listas encadeadas, estruturas dinâmicas |
+
+### 2.3 Analogia
+
+O endereçamento indireto é como um **mensageiro com um endereço escrito em um pedaço de papel**. O mensageiro (CPU) olha o papel (registrador), lê o endereço, e vai até a casa (memória) correspondente. Se você mudar o que está escrito no papel, o mensageiro vai para uma casa diferente.
+
+## 3. COMO FUNCIONA O ENDEREÇAMENTO INDIRETO?
+
+### 3.1 Estrutura da instrução
+
+Uma instrução com endereçamento indireto contém:
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+[CÓDIGO DA OPERAÇÃO] [REGISTRADOR DESTINO] [REGISTRADOR COM ENDEREÇO]
+</pre>
+
+**Exemplo (ARM):** `LDR R1, [R2]`
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+LDR    R1,    [R2]
+Opcode Destino Registrador que contém o endereço
+</pre>
+
+### 3.2 Como a CPU executa
+
+1. A CPU busca a instrução da memória.
+2. A CPU decodifica a instrução.
+3. A CPU lê o valor do registrador R2 (que é um endereço).
+4. A CPU acessa a memória naquele endereço.
+5. A CPU carrega o valor lido para o registrador R1.
+
+### 3.3 Diagrama: Endereçamento Indireto
+
+<details>
+<summary> **Fluxo do endereçamento indireto**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+┌─────────────────────────────────────────────────────────────┐
+│                                                             │
+│   Instrução na memória:                                     │
+│   ┌─────────────────────────────────────────────────────┐  │
+│   │  LDR  │  R1  │  [R2]  │                           │  │
+│   └─────────────────────────────────────────────────────┘  │
+│                          │                                  │
+│                          ▼                                  │
+│   ┌─────────────────────────────────────────────────────┐  │
+│   │  Passo 1: CPU lê R2                                │  │
+│   │  R2 = 0x1000                                       │  │
+│   │                                                      │  │
+│   │  Passo 2: CPU acessa a memória em 0x1000          │  │
+│   │                                                      │  │
+│   │  Memória:                                           │  │
+│   │  0x1000: 42  ←─── Valor lido                       │  │
+│   │  0x1001: 30                                        │  │
+│   │  0x1002: 15                                        │  │
+│   │                                                      │  │
+│   │  R1 = 42                                            │  │
+│   └─────────────────────────────────────────────────────┘  │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+    </pre>
+</details>
+
+### 3.4 Exemplo prático
+
+**Instrução:** `LDR R1, [R2]`
+
+**Antes:** R2 = 0x2000, e a posição 0x2000 contém o valor 99.
+**Depois:** R1 = 99
+
+A CPU usou o valor de R2 (0x2000) como endereço para buscar o dado.
+
+## 4. EXEMPLOS DE ENDEREÇAMENTO INDIRETO
+
+### 4.1 Carregar da memória (LDR)
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+LDR R1, [R2]    ; R1 = valor em (endereço contido em R2)
+LDR R3, [R4]    ; R3 = valor em (endereço contido em R4)
+</pre>
+
+### 4.2 Armazenar na memória (STR)
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+STR R1, [R2]    ; Valor de R1 → endereço contido em R2
+STR R3, [R4]    ; Valor de R3 → endereço contido em R4
+</pre>
+
+### 4.3 Ponteiros
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+; R2 contém o endereço de uma variável
+LDR R1, [R2]    ; R1 = *R2 (valor apontado)
+ADD R1, R1, #1  ; R1 = *R2 + 1
+STR R1, [R2]    ; *R2 = R1 (atualiza o valor apontado)
+</pre>
+
+### 4.4 Acesso a array (percorrendo elementos)
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+; R2 = endereço base do array
+LDR R1, [R2]       ; R1 = array[0]
+LDR R3, [R2, #4]   ; R3 = array[1] (base + deslocamento)
+</pre>
+
+### 4.5 Lista encadeada
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+; R2 = endereço do nó atual
+LDR R1, [R2]       ; R1 = valor do nó
+LDR R3, [R2, #4]   ; R3 = ponteiro para o próximo nó
+</pre>
+
+## 5. ENDEREÇAMENTO INDIRETO EM DIFERENTES ARQUITETURAS
+
+### 5.1 ARM (32 bits)
+
+Em ARM, o endereçamento indireto é feito com colchetes e um registrador:
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+LDR R1, [R2]    ; Carrega do endereço em R2
+STR R1, [R2]    ; Armazena no endereço em R2
+</pre>
+
+### 5.2 x86 (Intel)
+
+Em x86, o endereçamento indireto usa colchetes com um registrador:
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+MOV EAX, [EBX]   ; Carrega do endereço em EBX
+MOV [EBX], EAX   ; Armazena no endereço em EBX
+</pre>
+
+### 5.3 MIPS
+
+Em MIPS, o endereçamento indireto usa o registrador como base:
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+lw $t0, 0($t1)   ; Carrega de ($t1 + 0)
+sw $t0, 0($t1)   ; Armazena em ($t1 + 0)
+</pre>
+
+## 6. O CONCEITO DE PONTEIROS EM ASSEMBLY
+
+### 6.1 O que é um ponteiro?
+
+Um **ponteiro** é uma variável que armazena um **endereço de memória** — o endereço de outra variável ou estrutura.
+
+<details>
+<summary> **Representação de um ponteiro**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+┌─────────────────────────────────────────────────────────────┐
+│                                                             │
+│   Variável:   R2 = 0x1000  (contém um endereço)           │
+│                     │                                       │
+│                     ▼                                       │
+│   Memória:    0x1000: 42    (o dado apontado)             │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+    </pre>
+</details>
+
+### 6.2 Como implementar ponteiros em Assembly
+
+1. **Armazenar o endereço:** Um registrador (ou memória) contém o endereço.
+2. **Dereferenciar (acessar o valor apontado):** Usar LDR/STR com endereçamento indireto.
+
+**Código em C:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+int x = 42;
+int *p = &x;  // p contém o endereço de x
+int y = *p;   // y = valor apontado por p
+</pre>
+
+**Código Assembly equivalente:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+; x está em 0x1000, p está em 0x1004
+LDR R1, [0x1004]   ; R1 = p (endereço de x)
+LDR R2, [R1]       ; R2 = *p (valor apontado)
+</pre>
+
+### 6.3 Ponteiro para ponteiro
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+; R2 contém o endereço de um ponteiro
+LDR R1, [R2]       ; R1 = *R2 (endereço apontado pelo ponteiro)
+LDR R3, [R1]       ; R3 = **R2 (valor final)
+</pre>
+
+## 7. VANTAGENS DO ENDEREÇAMENTO INDIRETO
+
+### 7.1 Flexibilidade
+
+O endereço pode ser calculado ou modificado em tempo de execução.
+
+### 7.2 Suporte a estruturas de dados dinâmicas
+
+Arrays, listas encadeadas, árvores e grafos são implementados com ponteiros.
+
+### 7.3 Eficiência em loops
+
+Em um loop, apenas o registrador com o endereço é incrementado, sem modificar a instrução.
+
+### 7.4 Isolamento de código
+
+O código não precisa saber endereços específicos — apenas segue ponteiros.
+
+### 7.5 Passagem de parâmetros por referência
+
+Em vez de copiar dados grandes, passa-se apenas o endereço.
+
+## 8. LIMITAÇÕES DO ENDEREÇAMENTO INDIRETO
+
+### 8.1 Duas etapas
+
+A CPU precisa primeiro ler o registrador e depois acessar a memória — duas operações.
+
+### 8.2 Risco de erros
+
+Se o registrador contiver um endereço inválido, o programa pode travar.
+
+### 8.3 Dependência de registradores
+
+O endereço precisa estar em um registrador. Se o registrador for sobrescrito, o endereço se perde.
+
+## 9. APLICAÇÕES REAIS
+
+| Aplicação | Como usa endereçamento indireto |
+|---------|----------|
+| **Ponteiros em C** | Toda desreferência de ponteiro usa endereçamento indireto |
+| **Arrays** | Percorrer arrays incrementando o registrador de endereço |
+| **Listas encadeadas** | Seguir ponteiros para o próximo nó |
+| **Árvores binárias** | Navegar pela árvore usando ponteiros para filhos |
+| **Passagem por referência** | Passar endereços de variáveis para funções |
+| **Estruturas de dados** | Acessar campos de struct via ponteiro |
+| **Alocação dinâmica** | Acessar blocos de memória alocados em tempo de execução |
+
+**Exemplo prático:** Em um sistema de arquivos, cada diretório contém um ponteiro para o próximo diretório. O sistema navega pela árvore de diretórios usando endereçamento indireto.
+
+## 10. EXERCÍCIOS
+
+<details>
+<summary>📗 Exercício 1 — O que é endereçamento indireto? (Fácil)</summary>
+
+**Enunciado:** Defina o que é endereçamento indireto em Assembly.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Endereçamento indireto é um modo onde o operando é um registrador que contém o endereço de memória onde o dado está armazenado. A CPU primeiro lê o valor do registrador (o endereço) e depois acessa a memória nesse endereço.
+
+**Explicação:** O registrador atua como um "ponteiro" para o dado na memória.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Identificar endereçamento indireto (Fácil)</summary>
+
+**Enunciado:** Quais das seguintes instruções usam endereçamento indireto?
+1. `LDR R1, [R2]`
+2. `LDR R1, [0x1000]`
+3. `MOV R1, #5`
+4. `LDR R1, [R2, #4]`
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** As instruções 1 e 4 usam endereçamento indireto (ou variantes).
+
+**Explicação:**
+1. `LDR R1, [R2]` → Endereçamento indireto (endereço em R2)
+2. `LDR R1, [0x1000]` → Endereçamento direto (endereço fixo)
+3. `MOV R1, #5` → Endereçamento imediato
+4. `LDR R1, [R2, #4]` → Endereçamento base + deslocamento (indireto com offset)
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Valor de R1 (Fácil)</summary>
+
+**Enunciado:** Se R2 = 0x3000 e a posição 0x3000 contém o valor 55, qual será o valor de R1 após `LDR R1, [R2]`?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** R1 = 55
+
+**Explicação:** A CPU usa o valor de R2 (0x3000) como endereço e carrega o valor dessa posição para R1.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — STR indireto (Fácil)</summary>
+
+**Enunciado:** Se R1 = 88 e R2 = 0x4000, o que acontece após `STR R1, [R2]`?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** A posição 0x4000 passa a conter o valor 88.
+
+**Explicação:** A CPU usa o valor de R2 (0x4000) como endereço e armazena o valor de R1 nessa posição.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Ponteiro simples (Médio)</summary>
+
+**Enunciado:** R2 contém o endereço de uma variável. Escreva instruções Assembly para ler a variável, incrementá-la e armazenar de volta.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+LDR R1, [R2]    ; R1 = *R2 (lê o valor apontado)
+ADD R1, R1, #1  ; R1 = R1 + 1 (incrementa)
+STR R1, [R2]    ; *R2 = R1 (armazena de volta)
+</pre>
+**Explicação:** R2 é um ponteiro. As instruções dereferenciam o ponteiro, incrementam o valor e armazenam de volta.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Percorrer array (Médio)</summary>
+
+**Enunciado:** R2 contém o endereço base de um array de 4 bytes por elemento. Escreva instruções Assembly para carregar o primeiro e o segundo elemento do array.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+LDR R1, [R2]       ; R1 = array[0]
+LDR R3, [R2, #4]   ; R3 = array[1] (4 bytes depois)
+</pre>
+**Explicação:** O primeiro elemento está em R2. O segundo está em R2 + 4 (tamanho de cada elemento).
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — Lista encadeada (Difícil)</summary>
+
+**Enunciado:** Uma lista encadeada tem nós com dois campos: valor (4 bytes) e ponteiro para o próximo nó (4 bytes). R2 aponta para um nó. Escreva instruções para: ler o valor do nó, ler o ponteiro para o próximo nó, e carregar o valor do próximo nó.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+LDR R1, [R2]       ; R1 = valor do nó atual
+LDR R3, [R2, #4]   ; R3 = ponteiro para o próximo nó
+LDR R4, [R3]       ; R4 = valor do próximo nó
+</pre>
+**Explicação:** 
+1. `LDR R1, [R2]` lê o valor do nó atual.
+2. `LDR R3, [R2, #4]` lê o ponteiro (campo de 4 bytes depois do valor).
+3. `LDR R4, [R3]` usa o ponteiro para carregar o valor do próximo nó.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — Ponteiro duplo (Desafio)</summary>
+
+**Enunciado:** R2 contém o endereço de um ponteiro. Esse ponteiro aponta para uma variável. Escreva instruções Assembly para ler o valor da variável.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+LDR R1, [R2]       ; R1 = *R2 (carrega o ponteiro)
+LDR R3, [R1]       ; R3 = **R2 (carrega o valor apontado pelo ponteiro)
+</pre>
+**Explicação:** 
+1. `LDR R1, [R2]` lê o valor de R2 (que é o endereço da variável).
+2. `LDR R3, [R1]` usa esse endereço para carregar o valor da variável.
+</details>
+</details>
+
+> O endereçamento indireto é o coração dos ponteiros em Assembly. Ao permitir que um registrador aponte para um endereço na memória, ele torna possível acessar dados em posições variáveis, percorrer arrays, navegar por listas encadeadas e implementar estruturas de dados dinâmicas — tudo sem que o código precise conhecer endereços fixos. O endereçamento indireto é um dos modos mais poderosos e flexíveis. Ele é a base para a programação com ponteiros, uma das características mais importantes da linguagem C. Entender como ele funciona em Assembly é essencial para compreender como linguagens de alto nível implementam alocação dinâmica, listas, árvores e outras estruturas de dados avançadas.

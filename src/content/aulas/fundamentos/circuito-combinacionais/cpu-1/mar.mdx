@@ -1,0 +1,390 @@
+# Registrador de Endereço de Memória (MAR)
+
+## 1. Introdução
+
+Nas últimas aulas, exploramos os registradores que guiam a execução de um programa: o **Contador de Programa (PC)** , que aponta para a próxima instrução, e o **Registrador de Instrução (IR)** , que guarda a instrução atual. Vimos como esses dois registradores trabalham juntos para manter o fluxo do programa.<br><br>
+
+Mas há um problema: a CPU e a memória precisam se comunicar constantemente. A CPU precisa ler instruções da memória e escrever dados nela. Como essa comunicação acontece? Quem controla o endereço que é colocado no barramento?<br><br>
+
+A resposta está em dois registradores especializados: o **MAR** (Registrador de Endereço de Memória) e o **MBR** (Registrador de Buffer de Memória). Nesta aula, vamos focar no MAR — a ponte que conecta a CPU à memória.<br><br>
+
+Pense no MAR como o **carteiro** da CPU:
+
+- O PC diz: "preciso da instrução que está no endereço 0x1000".
+- O MAR anota esse endereço e o coloca no barramento de endereços.
+- A memória recebe o endereço e envia o dado de volta.
+
+O MAR é um registrador pequeno, mas essencial. Sem ele, a CPU não conseguiria acessar a memória — e sem acesso à memória, não há computação.
+
+Nesta aula, vamos explorar o Registrador de Endereço de Memória: como ele funciona, qual sua relação com o PC e o MBR, e por que ele é fundamental para o ciclo de instrução.
+
+
+## 2. O Que é o Registrador de Endereço de Memória?
+
+### 2.1 Definição
+
+O **Registrador de Endereço de Memória** (MAR, do inglês *Memory Address Register*) é um registrador da CPU que:
+
+> **Armazena o endereço da posição de memória que será lida ou escrita.**
+
+### 2.2 Características principais
+
+| Característica | Descrição |
+|----------------|-----------|
+| **Tamanho** | Igual ao barramento de endereços (16, 32, 64 bits) |
+| **Função** | Armazenar o endereço a ser acessado na memória |
+| **Localização** | Entre a CPU e a memória |
+| **Direção** | Apenas a CPU escreve no MAR (unidirecional) |
+
+### 2.3 Analogia
+
+Pense no MAR como o **carteiro que anota o endereço de entrega**:
+
+<details>
+<summary>🔧 Ver Analogia do MAR</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 450px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">MAR — O CARTEIRO</div>
+
+  <pre style="color: #93c5fd; font-size: 0.65rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    ┌─────────────────────────────────────────────────────┐
+    │                                                     │
+    │   CORREIO (CPU)                                    │
+    │                                                     │
+    │   ┌─────────────────────────────────────────────┐   │
+    │   │  CARTEIRO (MAR)                            │   │
+    │   │                                            │   │
+    │   │  Endereço: Rua das Flores, 123             │   │
+    │   │  (0x1000)                                  │   │
+    │   │                                            │   │
+    │   │  O carteiro leva o endereço para a rua    │   │
+    │   │  (Barramento de Endereços)                 │   │
+    │   └─────────────────────────────────────────────┘   │
+    │                                                     │
+    │   ┌─────────────────────────────────────────────┐   │
+    │   │  CASA (MEMÓRIA)                            │   │
+    │   │                                            │   │
+    │   │  Rua das Flores, 123                       │   │
+    │   │  Conteúdo: Carta (instrução/dado)         │   │
+    │   └─────────────────────────────────────────────┘   │
+    │                                                     │
+    └─────────────────────────────────────────────────────┘
+  </pre>
+
+</div>
+</details>
+
+### 2.4 Diagrama
+
+<details>
+<summary>🔧 Ver Diagrama do MAR</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 550px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">REGISTRADOR DE ENDEREÇO DE MEMÓRIA (MAR)</div>
+
+  <pre style="color: #93c5fd; font-size: 0.55rem; line-height: 1.6; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    ┌─────────────────────────────────────────────────────────────────┐
+    │                         CPU                                     │
+    │                                                                 │
+    │  ┌─────────────┐    ┌─────────────┐    ┌─────────────────┐    │
+    │  │   UNIDADE   │    │   PC        │    │                 │    │
+    │  │  DE CONTROLE│    │   (0x1000)  │    │      MAR        │    │
+    │  │             │    └─────────────┘    │   (0x1000)      │    │
+    │  │             │         │             │                 │    │
+    │  │             │         └─────────────│─────────────────│    │
+    │  │             │                       │                 │    │
+    │  │             │    ┌─────────────┐    │                 │    │
+    │  │             │    │   IR        │    │      MBR        │    │
+    │  │             │    │   (0x8A3B)  │    │   (0x8A3B)      │    │
+    │  └─────────────┘    └─────────────┘    └─────────────────┘    │
+    │                                                                 │
+    └─────────────────────────────────────────────────────────────────┘
+                              │                       │
+                              │  Endereço (MAR)       │  Dados (MBR)
+                              ▼                       ▼
+                    ┌─────────────────────────────────────────┐
+                    │               MEMÓRIA                   │
+                    │                                         │
+                    │  Endereço 0x1000 → Instrução 0x8A3B    │
+                    │                                         │
+                    └─────────────────────────────────────────┘
+  </pre>
+
+</div>
+</details>
+
+
+## 3. O MAR no Ciclo de Instrução
+
+### 3.1 Ciclo de leitura
+
+<details>
+<summary>🔧 Ver Ciclo de Leitura</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 450px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">CICLO DE LEITURA</div>
+
+  <pre style="color: #93c5fd; font-size: 0.65rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    ┌─────────────────────────────────────────────────────────────┐
+    │                                                             │
+    │  1. A UC coloca o endereço no MAR.                         │
+    │     (ex: PC = 0x1000 → MAR = 0x1000)                      │
+    │                                                             │
+    │  2. A UC ativa o sinal de leitura (RD).                    │
+    │                                                             │
+    │  3. O MAR coloca o endereço no barramento de endereços.    │
+    │                                                             │
+    │  4. A memória lê o dado no endereço.                       │
+    │                                                             │
+    │  5. O dado é colocado no MBR (e depois no IR).             │
+    │                                                             │
+    └─────────────────────────────────────────────────────────────┘
+  </pre>
+
+</div>
+</details>
+
+### 3.2 Ciclo de escrita
+
+<details>
+<summary>🔧 Ver Ciclo de Escrita</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 450px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">CICLO DE ESCRITA</div>
+
+  <pre style="color: #93c5fd; font-size: 0.65rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    ┌─────────────────────────────────────────────────────────────┐
+    │                                                             │
+    │  1. A UC coloca o endereço no MAR.                         │
+    │     (ex: 0x2000 → MAR = 0x2000)                           │
+    │                                                             │
+    │  2. A UC coloca o dado no MBR.                             │
+    │     (ex: 0x5A → MBR = 0x5A)                               │
+    │                                                             │
+    │  3. A UC ativa o sinal de escrita (WR).                    │
+    │                                                             │
+    │  4. O MAR coloca o endereço no barramento de endereços.    │
+    │                                                             │
+    │  5. O MBR coloca o dado no barramento de dados.            │
+    │                                                             │
+    │  6. A memória armazena o dado no endereço especificado.    │
+    │                                                             │
+    └─────────────────────────────────────────────────────────────┘
+  </pre>
+
+</div>
+</details>
+
+### 3.3 MAR e PC: a conexão
+
+<details>
+<summary>🔧 Ver Fluxo MAR e PC</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 400px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">FLUXO MAR E PC</div>
+
+  <pre style="color: #93c5fd; font-size: 0.65rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    ┌─────────────────────────────────────────────────────────────┐
+    │                                                             │
+    │   PC = 0x1000  (próxima instrução)                         │
+    │       │                                                     │
+    │       ▼                                                     │
+    │   MAR = 0x1000  (endereço a ser lido)                      │
+    │       │                                                     │
+    │       ▼                                                     │
+    │   Barramento de Endereços = 0x1000                         │
+    │       │                                                     │
+    │       ▼                                                     │
+    │   Memória[0x1000] = 0x8A3B                                │
+    │       │                                                     │
+    │       ▼                                                     │
+    │   MBR = 0x8A3B                                             │
+    │       │                                                     │
+    │       ▼                                                     │
+    │   IR = 0x8A3B                                              │
+    │                                                             │
+    └─────────────────────────────────────────────────────────────┘
+  </pre>
+
+</div>
+</details>
+
+
+## 4. MAR e o Barramento de Endereços
+
+### 4.1 A relação direta
+
+O MAR está diretamente conectado ao **barramento de endereços**:
+
+<pre>
+MAR (dentro da CPU) ←→ Barramento de Endereços ←→ Memória
+</pre>
+
+**O que isso significa:**
+- O valor no MAR é exatamente o que aparece no barramento de endereços.
+- Se o MAR = 0x1000, o barramento de endereços transporta 0x1000.
+- A memória recebe esse endereço e responde com o dado correspondente.
+
+### 4.2 Exemplo prático
+
+<pre>
+Situação: A CPU quer ler a instrução no endereço 0x1000.
+
+Passo 1: PC = 0x1000
+Passo 2: UC: "Copie PC para MAR"
+Passo 3: MAR = 0x1000
+Passo 4: Barramento de Endereços = 0x1000
+Passo 5: Memória lê o dado em 0x1000
+Passo 6: Dado = 0x8A3B
+Passo 7: Dado vai para o MBR
+Passo 8: MBR → IR
+</pre>
+
+
+## 5. MAR na Arquitetura de Computadores
+
+### 5.1 O MAR em diferentes arquiteturas
+
+| Arquitetura | Tamanho do MAR | Memória máxima |
+|-------------|----------------|----------------|
+| 8 bits | 8 bits | 256 bytes |
+| 16 bits | 16 bits | 64 KB |
+| 20 bits (8086) | 20 bits | 1 MB |
+| 32 bits | 32 bits | 4 GB |
+| 64 bits | 64 bits | 16 EB |
+
+### 5.2 MAR e o PC: nomes diferentes
+
+Em algumas arquiteturas, o MAR é chamado de **Address Register** ou simplesmente é parte do controlador de memória. Mas a função é sempre a mesma: armazenar o endereço a ser acessado.
+
+
+## 6. Exercícios
+
+<details>
+<summary>📗 Exercício 1 — Definição (fácil)</summary>
+
+**Enunciado:** O que é o Registrador de Endereço de Memória (MAR)?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** O MAR é um registrador que armazena o endereço da posição de memória que será lida ou escrita pela CPU.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Função (fácil)</summary>
+
+**Enunciado:** Qual é a função do MAR durante um ciclo de leitura?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** O MAR recebe o endereço a ser lido (geralmente do PC) e o coloca no barramento de endereços para que a memória saiba qual posição acessar.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — MAR e barramento (médio)</summary>
+
+**Enunciado:** O MAR está conectado a qual barramento?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** O MAR está conectado ao **barramento de endereços**.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — MAR e PC (médio)</summary>
+
+**Enunciado:** Qual é a relação entre o PC e o MAR durante a busca de uma instrução?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Durante a busca, o valor do PC (endereço da próxima instrução) é copiado para o MAR. O MAR então coloca esse endereço no barramento de endereços para acessar a memória.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Ciclo de leitura (médio)</summary>
+
+**Enunciado:** Descreva o fluxo de um ciclo de leitura envolvendo o MAR.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** 
+1. UC coloca endereço no MAR.
+2. UC ativa RD (leitura).
+3. MAR coloca endereço no barramento de endereços.
+4. Memória coloca dado no barramento de dados.
+5. Dado é armazenado no MBR.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Ciclo de escrita (médio)</summary>
+
+**Enunciado:** Descreva o fluxo de um ciclo de escrita envolvendo o MAR.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** 
+1. UC coloca endereço no MAR.
+2. UC coloca dado no MBR.
+3. UC ativa WR (escrita).
+4. MAR coloca endereço no barramento de endereços.
+5. MBR coloca dado no barramento de dados.
+6. Memória armazena o dado no endereço especificado.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — Tamanho do MAR (conceitual)</summary>
+
+**Enunciado:** Qual é a relação entre o tamanho do MAR e a capacidade máxima de memória?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** O tamanho do MAR determina quantos endereços podem ser representados. Um MAR de n bits pode endereçar 2ⁿ posições de memória. Por exemplo, um MAR de 32 bits pode endereçar 4 GB de memória.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — MAR, MBR e IR (desafio)</summary>
+
+**Enunciado:** Explique a sequência: PC → MAR → Memória → MBR → IR.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** 
+1. **PC → MAR:** O endereço da próxima instrução é copiado do PC para o MAR.
+2. **MAR → Memória:** O MAR coloca o endereço no barramento de endereços.
+3. **Memória → MBR:** A memória lê o dado e o coloca no barramento de dados, que é armazenado no MBR.
+4. **MBR → IR:** O dado (instrução) é transferido do MBR para o IR, onde será decodificado e executado.
+
+</details>
+</details>
+
+
+## 7. Resumo
+
+> **"O Registrador de Endereço de Memória (MAR) é a ponte entre a CPU e a memória — ele armazena o endereço que será acessado. Durante a busca de uma instrução, o PC copia seu valor para o MAR, que então o coloca no barramento de endereços. Durante a leitura ou escrita de dados, a UC coloca o endereço desejado no MAR. O MAR trabalha em conjunto com o MBR: enquanto o MAR segura o 'onde', o MBR segura o 'o quê'. Sem o MAR, a CPU não conseguiria acessar a memória — e sem acesso à memória, não haveria computação."**

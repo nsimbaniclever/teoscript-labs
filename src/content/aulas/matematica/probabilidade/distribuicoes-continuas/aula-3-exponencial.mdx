@@ -1,0 +1,513 @@
+# Distribuição Exponencial
+
+## O que é a Distribuição Exponencial?
+
+A Distribuição Exponencial é uma das distribuições contínuas mais importantes na prática. Ela é usada para modelar o **tempo até a ocorrência de um evento** em processos que ocorrem de forma aleatória e independente ao longo do tempo.
+
+Pense em situações como: o tempo entre a chegada de dois clientes em uma loja, o tempo até a próxima falha de uma máquina, o tempo de espera em uma fila, ou o tempo até o próximo terremoto em uma região. Todos esses fenômenos podem ser modelados pela distribuição Exponencial.
+
+A distribuição Exponencial tem uma propriedade muito especial chamada **falta de memória**, que veremos em detalhes mais adiante. Essa propriedade diz que o tempo que você já esperou não afeta o tempo que você ainda vai esperar. É como se o processo "reiniciasse" a cada instante.
+
+A distribuição Exponencial é denotada por $X \sim \text{Exp}(\lambda)$, onde $\lambda$ (lambda) é chamado de **taxa de ocorrência** ou **parâmetro de taxa**. Quanto maior o $\lambda$, mais rápido os eventos ocorrem (menor o tempo médio entre eles).
+
+## Função Densidade de Probabilidade
+
+A função densidade da Exponencial é:
+
+>> **$$f(x) = \lambda e^{-\lambda x} \quad \text{para } x \ge 0$$**\
+>> **$$f(x) = 0 \quad \text{para } x < 0$$**
+
+Observe que a densidade é definida apenas para valores não negativos, o que faz sentido para tempos. A curva começa em $f(0) = \lambda$ e decai exponencialmente à medida que $x$ aumenta. Isso significa que valores pequenos são mais prováveis que valores grandes.
+
+**Exemplo 1:** Seja $X \sim \text{Exp}(\lambda = 0,5)$. Calcule $f(0)$, $f(1)$, $f(2)$ e $f(3)$.
+
+**Resolução:**
+
+- $f(0) = 0,5 \cdot e^{-0,5 \cdot 0} = 0,5 \cdot 1 = 0,5$
+- $f(1) = 0,5 \cdot e^{-0,5 \cdot 1} = 0,5 \cdot e^{-0,5} = 0,5 \cdot 0,6065 = 0,3033$
+- $f(2) = 0,5 \cdot e^{-0,5 \cdot 2} = 0,5 \cdot e^{-1} = 0,5 \cdot 0,3679 = 0,1839$
+- $f(3) = 0,5 \cdot e^{-0,5 \cdot 3} = 0,5 \cdot e^{-1,5} = 0,5 \cdot 0,2231 = 0,1116$
+
+Observe como os valores vão diminuindo: $0,5 \to 0,3033 \to 0,1839 \to 0,1116$. Isso mostra que valores pequenos são mais prováveis que valores grandes.
+
+**Exemplo 2:** Compare as densidades para dois valores diferentes de $\lambda$: $\lambda = 1$ e $\lambda = 2$, calculando $f(1)$ para cada uma.
+
+**Resolução:**
+
+- Para $\lambda = 1$: $f(1) = 1 \cdot e^{-1 \cdot 1} = e^{-1} = 0,3679$
+- Para $\lambda = 2$: $f(1) = 2 \cdot e^{-2 \cdot 1} = 2 \cdot e^{-2} = 2 \cdot 0,1353 = 0,2707$
+
+Com $\lambda = 2$, a densidade em $x = 1$ é menor, porque a distribuição está mais concentrada em valores próximos de zero (já que a média é $1/2 = 0,5$).
+
+**Exemplo 3:** Verifique que a área total sob a curva da Exponencial é 1. Seja $X \sim \text{Exp}(\lambda)$.
+
+**Resolução:**
+
+Para verificar que é uma densidade válida, precisamos mostrar que a integral de $f(x)$ de $0$ até $\infty$ é igual a 1:
+
+$$\int_0^\infty \lambda e^{-\lambda x} dx = [ -e^{-\lambda x} ]_0^\infty = 0 - (-1) = 1$$
+
+Isso confirma que a área total é 1, como esperado para qualquer densidade.
+
+## Função de Distribuição Acumulada (FDA)
+
+A FDA da Exponencial é bastante simples:
+
+>> **$$F(x) = P(X \le x) = 1 - e^{-\lambda x} \quad \text{para } x \ge 0$$**\
+>> **$$F(x) = 0 \quad \text{para } x < 0$$**
+
+Isso nos permite calcular rapidamente a probabilidade de o tempo ser menor ou igual a um valor específico.
+
+A probabilidade complementar (tempo maior que $x$) é:
+
+$$P(X > x) = 1 - F(x) = e^{-\lambda x}$$
+
+**Exemplo 1:** Seja $X \sim \text{Exp}(\lambda = 0,2)$. Calcule $F(3)$, $F(5)$ e $F(10)$.
+
+**Resolução:**
+
+- $F(3) = 1 - e^{-0,2 \cdot 3} = 1 - e^{-0,6} = 1 - 0,5488 = 0,4512$
+- $F(5) = 1 - e^{-0,2 \cdot 5} = 1 - e^{-1} = 1 - 0,3679 = 0,6321$
+- $F(10) = 1 - e^{-0,2 \cdot 10} = 1 - e^{-2} = 1 - 0,1353 = 0,8647$
+
+**Interpretação:** Com $\lambda = 0,2$ (média de 5 minutos):
+- A probabilidade de o evento ocorrer em até 3 minutos é 45,12%
+- A probabilidade de o evento ocorrer em até 5 minutos é 63,21%
+- A probabilidade de o evento ocorrer em até 10 minutos é 86,47%
+
+**Exemplo 2:** Seja $X \sim \text{Exp}(\lambda = 0,5)$. Calcule $P(X \le 2)$ e $P(X \le 4)$.
+
+**Resolução:**
+
+- $P(X \le 2) = F(2) = 1 - e^{-0,5 \cdot 2} = 1 - e^{-1} = 1 - 0,3679 = 0,6321$
+- $P(X \le 4) = F(4) = 1 - e^{-0,5 \cdot 4} = 1 - e^{-2} = 1 - 0,1353 = 0,8647$
+
+**Exemplo 3:** Seja $X \sim \text{Exp}(\lambda = 3)$. Calcule $P(X > 1)$ e $P(X > 0,5)$.
+
+**Resolução:**
+
+- $P(X > 1) = e^{-3 \cdot 1} = e^{-3} = 0,0498$
+- $P(X > 0,5) = e^{-3 \cdot 0,5} = e^{-1,5} = 0,2231$
+
+**Interpretação:** Com $\lambda = 3$ (média de $1/3 \approx 0,333$ horas $\approx 20$ minutos):
+- A probabilidade de o tempo ser maior que 1 hora é apenas 4,98%
+- A probabilidade de o tempo ser maior que 0,5 hora (30 minutos) é 22,31%
+
+**Exemplo 4:** Usando a FDA para encontrar probabilidades em intervalos. Seja $X \sim \text{Exp}(\lambda = 0,4)$. Calcule $P(1 \le X \le 3)$.
+
+**Resolução:**
+
+$P(1 \le X \le 3) = F(3) - F(1) = (1 - e^{-0,4 \cdot 3}) - (1 - e^{-0,4 \cdot 1}) = e^{-0,4} - e^{-1,2}$
+
+$e^{-0,4} \approx 0,6703$; $e^{-1,2} \approx 0,3012$
+
+$0,6703 - 0,3012 = 0,3691$
+
+**Interpretação:** A probabilidade de o tempo estar entre 1 e 3 unidades é 36,91%.
+
+## Esperança (média) e Variância
+
+A esperança da Exponencial é:
+
+>> **$$E[X] = \frac{1}{\lambda}$$**
+
+Isso significa que, se a taxa de ocorrência é $\lambda$, o tempo médio entre eventos é $1/\lambda$. Por exemplo, se chegam em média 2 clientes por minuto ($\lambda = 2$), o tempo médio entre clientes é $1/2 = 0,5$ minuto (30 segundos).
+
+A variância é:
+
+>> $$Var(X) = \frac{1}{\lambda^2}$$
+
+O desvio padrão é $\sigma = 1/\lambda$, que é igual à média. Isso é uma característica única da Exponencial: **média e desvio padrão são iguais**.
+
+**Exemplo 1:** Seja $X \sim \text{Exp}(\lambda = 0,5)$. Calcule $E[X]$ e $Var(X)$.
+
+**Resolução:**
+
+- $E[X] = 1/0,5 = 2$
+- $Var(X) = 1/(0,5)^2 = 1/0,25 = 4$
+- Desvio padrão: $\sigma = \sqrt{4} = 2$ (igual à média!)
+
+**Interpretação:** O tempo médio é 2 unidades, com variância 4.
+
+**Exemplo 2:** Seja $X \sim \text{Exp}(\lambda = 2)$. Calcule $E[X]$ e $Var(X)$.
+
+**Resolução:**
+
+- $E[X] = 1/2 = 0,5$
+- $Var(X) = 1/(2)^2 = 1/4 = 0,25$
+- Desvio padrão: $\sigma = \sqrt{0,25} = 0,5$ (igual à média!)
+
+**Exemplo 3:** O tempo médio entre chegadas de clientes em uma loja é de 3 minutos. Qual é $\lambda$, e qual é a variância?
+
+**Resolução:**
+
+- $E[X] = 1/\lambda = 3 \to \lambda = 1/3 \approx 0,3333$
+- $Var(X) = 1/\lambda^2 = 1/(1/3)^2 = 1/(1/9) = 9$
+- Desvio padrão: $\sigma = \sqrt{9} = 3$ (igual à média!)
+
+**Interpretação:** O tempo médio entre clientes é 3 minutos, com variância de 9 minutos².
+
+**Exemplo 4:** Suponha que o tempo de vida de um componente segue uma Exponencial com variância de 100 horas². Qual é o tempo médio de vida?
+
+**Resolução:**
+
+- $Var(X) = 1/\lambda^2 = 100 \to \lambda^2 = 1/100 \to \lambda = 0,1$
+- $E[X] = 1/\lambda = 1/0,1 = 10$ horas
+
+**Interpretação:** O tempo médio de vida é 10 horas.
+
+**Exemplo 5:** Verifique que $E[X] = 1/\lambda$ usando integração por partes.
+
+**Resolução:**
+
+$E[X] = \int_0^\infty x \cdot \lambda e^{-\lambda x} dx$.
+
+Use integração por partes: $u = x$, $dv = \lambda e^{-\lambda x} dx$.
+$du = dx$, $v = -e^{-\lambda x}$.
+
+$E[X] = [-x \cdot e^{-\lambda x}]_0^\infty + \int_0^\infty e^{-\lambda x} dx$
+$= 0 + [-e^{-\lambda x}/\lambda]_0^\infty = 0 - (-1/\lambda) = 1/\lambda$.
+
+**Exemplo 6:** Verifique que $Var(X) = 1/\lambda^2$.
+
+**Resolução:**
+
+Primeiro calculamos $E[X^2]$:
+
+$E[X^2] = \int_0^\infty x^2 \cdot \lambda e^{-\lambda x} dx = 2/\lambda^2$ (usando integração por partes duas vezes).
+
+Então: $Var(X) = E[X^2] - (E[X])^2 = 2/\lambda^2 - (1/\lambda)^2 = 2/\lambda^2 - 1/\lambda^2 = 1/\lambda^2$.
+
+## Propriedade da Falta de Memória
+
+Esta é a propriedade mais importante e fascinante da distribuição Exponencial. Ela diz que:
+
+>> **$$P(X > s + t \mid X > s) = P(X > t) \quad \text{para quaisquer } s, t \ge 0$$**
+
+Em palavras: a probabilidade de esperar mais $t$ unidades de tempo, dado que você já esperou $s$ unidades, é a mesma que a probabilidade de esperar mais $t$ unidades de tempo do início. O tempo que você já esperou **não faz diferença**. O processo não tem memória.
+
+**Vamos verificar a propriedade matematicamente:**
+
+**$P(X > s + t | X > s) = \frac{P(X > s + t \text{ e } X > s)}{P(X > s)} = \frac{P(X > s + t)}{P(X > s)} = \frac{e^{-\lambda(s+t)}}{e^{-\lambda s}} = e^{-\lambda t} = P(X > t)$**
+
+**Exemplo 1:** O tempo entre chamadas em uma central telefônica segue uma Exponencial com média de 5 minutos ($\lambda = 0,2$). Você acabou de chegar e está esperando a próxima chamada.
+
+a) Qual a probabilidade de esperar mais de 3 minutos?
+
+b) Se você já esperou 10 minutos, qual a probabilidade de esperar mais 3 minutos?
+
+**Resolução:**
+
+a) $P(X > 3) = e^{-0,2 \cdot 3} = e^{-0,6} \approx 0,5488$ (54,88%)
+
+b) $P(X > 10+3 | X > 10) = P(X > 3) = 0,5488$ (54,88%)
+
+**Interpretação:** Surpreendentemente, a probabilidade é a mesma! O fato de você já ter esperado 10 minutos não muda a probabilidade de esperar mais 3 minutos. É como se o processo "reiniciasse" a cada instante.
+
+**Exemplo 2:** Um componente eletrônico tem vida média de 800 horas ($\lambda = 1/800 = 0,00125$).
+
+a) Qual a probabilidade de durar mais de 1000 horas?
+
+b) Qual a probabilidade de durar mais de 1000 horas, dado que já durou 500 horas?
+
+**Resolução:**
+
+a) $P(X > 1000) = e^{-0,00125 \cdot 1000} = e^{-1,25} \approx 0,2865$ (28,65%)
+
+b) $P(X > 500+1000 | X > 500) = P(X > 1000) = 0,2865$ (28,65%)
+
+**Exemplo 3:** O tempo entre terremotos em uma região segue uma Exponencial com média de 100 dias ($\lambda = 0,01$).
+
+a) Qual a probabilidade de o próximo terremoto demorar mais de 50 dias?
+
+b) Sabendo que já se passaram 80 dias desde o último terremoto, qual a probabilidade de demorar mais de 50 dias?
+
+**Resolução:**
+
+a) $P(X > 50) = e^{-0,01 \cdot 50} = e^{-0,5} \approx 0,6065$ (60,65%)
+
+b) $P(X > 80+50 | X > 80) = P(X > 50) = 0,6065$ (60,65%)
+
+**Exemplo 4:** Por que a falta de memória é contra-intuitiva?
+
+Imagine que você está esperando um ônibus que passa a cada 10 minutos em média, seguindo uma distribuição Exponencial. Você já esperou 15 minutos. Intuitivamente, você pensa: "Já esperei 15 minutos, o ônibus deve estar quase chegando!" Mas a falta de memória diz que não: a probabilidade de esperar mais 5 minutos é exatamente a mesma que a probabilidade de esperar 5 minutos desde o início. O ônibus não fica "mais próximo" só porque você esperou mais tempo.
+
+**Exemplo 5:** Verificando se uma distribuição tem falta de memória.
+
+Suponha que $X$ tenha distribuição com $P(X > x) = e^{-x^2}$ para $x \ge 0$. Esta distribuição tem falta de memória?
+
+**Resolução:**
+
+Para ter falta de memória, precisaríamos que $P(X > s+t | X > s) = P(X > t)$.
+
+$P(X > s+t | X > s) = e^{-(s+t)^2}/e^{-s^2} = e^{-(2st + t^2)}$, que não é igual a $e^{-t^2}$.
+
+Portanto, esta distribuição NÃO tem falta de memória. A Exponencial é a única distribuição contínua que tem essa propriedade.
+
+## Quando usar a Distribuição Exponencial?
+
+A Exponencial é apropriada quando:
+
+1. Você está modelando o tempo entre eventos em um processo de Poisson (eventos que ocorrem de forma aleatória e independente a uma taxa constante).
+2. A taxa de ocorrência é constante ao longo do tempo.
+3. A propriedade de falta de memória é razoável para o fenômeno.
+4. A variável é sempre não negativa (tempo, distância, etc.).
+
+**Exemplos de aplicações:**
+
+- Tempo entre chegadas de clientes em uma fila.
+- Tempo entre falhas de um equipamento (se a taxa de falha é constante).
+- Tempo de vida de componentes eletrônicos (na fase de vida útil, onde a taxa de falha é constante).
+- Tempo entre terremotos em uma região.
+- Tempo de espera em sistemas de filas.
+- Tempo entre chamadas em uma central telefônica.
+
+## Limitações e quando NÃO usar
+
+A Exponencial **NÃO deve ser usada** quando:
+
+1. A taxa de ocorrência não é constante ao longo do tempo. Por exemplo, se um equipamento tem maior probabilidade de falhar com o tempo (desgaste), a Exponencial não é adequada. Nesse caso, usamos distribuições como Weibull ou Gama.
+2. O fenômeno tem um período de "infância" onde a taxa de falha é baixa, seguido por um período de desgaste.
+3. O processo tem memória, ou seja, o tempo já decorrido influencia a probabilidade de eventos futuros.
+4. Os eventos não são independentes.
+
+Em geral, a Exponencial é um bom modelo quando você está na "fase de vida útil" de um equipamento, onde a taxa de falha é constante, ou em filas onde as chegadas são completamente aleatórias.
+
+## Analogias do dia a dia
+
+### Analogia 1: O tempo entre clientes em uma loja
+
+Uma loja de conveniência recebe clientes a uma taxa média de 3 clientes por hora. O tempo entre chegadas de clientes (em horas) segue uma distribuição Exponencial com $\lambda = 3$.
+
+**Pergunta:** Qual a probabilidade de que o próximo cliente chegue em menos de 15 minutos (0,25 horas)?
+
+**Resolução passo a passo:**
+
+1. Temos $X \sim \text{Exp}(3)$, com $\lambda = 3$.
+2. Queremos $P(X < 0,25)$.
+3. Usando a FDA: $P(X < 0,25) = F(0,25) = 1 - e^{-3 \cdot 0,25} = 1 - e^{-0,75}$.
+4. Calculando $e^{-0,75} \approx 0,4724$.
+5. $P(X < 0,25) \approx 1 - 0,4724 = 0,5276$.
+
+**Resposta:** A probabilidade de o próximo cliente chegar em menos de 15 minutos é de aproximadamente **52,76%**.
+
+### Analogia 2: O tempo entre falhas de uma lâmpada
+
+Uma lâmpada tem vida média de 1000 horas. O tempo até a falha segue uma distribuição Exponencial.
+
+**Pergunta:** Qual a probabilidade de a lâmpada durar mais de 800 horas?
+
+**Resolução passo a passo:**
+
+1. A vida média é $1/\lambda = 1000$, então $\lambda = 1/1000 = 0,001$.
+2. Queremos $P(X > 800)$.
+3. $P(X > 800) = e^{-\lambda \cdot 800} = e^{-0,001 \cdot 800} = e^{-0,8}$.
+4. $e^{-0,8} \approx 0,4493$.
+
+**Resposta:** A probabilidade de a lâmpada durar mais de 800 horas é de aproximadamente **44,93%**.
+
+### Analogia 3: O tempo de espera no telefone
+
+Uma central de atendimento recebe chamadas a uma taxa média de 10 chamadas por hora. Você acabou de ligar e está na fila de espera.
+
+**Pergunta:** Qual a probabilidade de você esperar mais de 12 minutos (0,2 horas) para ser atendido?
+
+**Resolução passo a passo:**
+
+1. Temos $\lambda = 10$ chamadas por hora.
+2. Queremos $P(X > 0,2)$.
+3. $P(X > 0,2) = e^{-10 \cdot 0,2} = e^{-2}$.
+4. $e^{-2} \approx 0,1353$.
+
+**Resposta:** A probabilidade de você esperar mais de 12 minutos é de aproximadamente **13,53%**.
+
+### Analogia 4: A propriedade da falta de memória na prática
+
+Você está em um ponto de ônibus. O tempo entre ônibus segue uma Exponencial com média de 10 minutos ($\lambda = 0,1$). Você já esperou 15 minutos.
+
+**Pergunta:** Qual a probabilidade de você esperar mais 5 minutos? Compare com a probabilidade de esperar mais 5 minutos desde o início.
+
+**Resolução passo a passo:**
+
+1. Probabilidade de esperar mais 5 minutos desde o início: $P(X > 5) = e^{-0,1 \cdot 5} = e^{-0,5} \approx 0,6065$.
+2. Probabilidade de esperar mais 5 minutos, dado que já esperou 15 minutos: $P(X > 15+5 | X > 15) = P(X > 20)/P(X > 15)$.
+3. $P(X > 20) = e^{-0,1 \cdot 20} = e^{-2} \approx 0,1353$.
+4. $P(X > 15) = e^{-0,1 \cdot 15} = e^{-1,5} \approx 0,2231$.
+5. $0,1353/0,2231 \approx 0,6065$.
+
+**Resposta:** A probabilidade é a mesma: **60,65%**. Isso é a falta de memória em ação! O fato de você já ter esperado 15 minutos não muda a probabilidade de esperar mais 5 minutos.
+
+## Exemplos práticos com cálculos passo a passo
+
+### Exemplo 1: Probabilidade básica
+
+Seja $X \sim \text{Exp}(\lambda = 0,5)$. Calcule $P(X \le 2)$.
+
+**Resolução:**
+
+1. $P(X \le 2) = F(2) = 1 - e^{-0,5 \cdot 2} = 1 - e^{-1} = 1 - 0,3679 = 0,6321$.
+
+**Resposta:** 63,21%.
+
+### Exemplo 2: Probabilidade complementar
+
+Seja $X \sim \text{Exp}(\lambda = 2)$. Calcule $P(X > 1,5)$.
+
+**Resolução:**
+
+1. $P(X > 1,5) = e^{-2 \cdot 1,5} = e^{-3} \approx 0,0498$.
+
+**Resposta:** 4,98%.
+
+### Exemplo 3: Probabilidade em um intervalo
+
+Seja $X \sim \text{Exp}(\lambda = 0,3)$. Calcule $P(1 \le X \le 3)$.
+
+**Resolução:**
+
+1. $P(1 \le X \le 3) = F(3) - F(1) = (1 - e^{-0,3 \cdot 3}) - (1 - e^{-0,3 \cdot 1}) = e^{-0,3} - e^{-0,9}$.
+2. $e^{-0,3} \approx 0,7408$; $e^{-0,9} \approx 0,4066$.
+3. $0,7408 - 0,4066 = 0,3342$.
+
+**Resposta:** 33,42%.
+
+### Exemplo 4: Encontrando um quantil
+
+Seja $X \sim \text{Exp}(\lambda = 1)$. Encontre o valor $k$ tal que $P(X \le k) = 0,8$.
+
+**Resolução:**
+
+1. $F(k) = 1 - e^{-k} = 0,8$.
+2. $e^{-k} = 0,2$.
+3. $-k = \ln(0,2) \to k = -\ln(0,2) = 1,6094$.
+
+**Resposta:** $k \approx 1,61$.
+
+### Exemplo 5: Cálculo da média e variância
+
+Seja $X \sim \text{Exp}(\lambda = 2)$. Calcule $E[X]$ e $Var(X)$.
+
+**Resolução:**
+
+1. $E[X] = 1/\lambda = 1/2 = 0,5$.
+2. $Var(X) = 1/\lambda^2 = 1/4 = 0,25$.
+
+**Resposta:** $E[X] = 0,5$ e $Var(X) = 0,25$.
+
+## Exercícios resolvidos (níveis crescentes de dificuldade)
+
+### Exercício 1 (Fácil)
+
+Seja $X \sim \text{Exp}(\lambda = 0,4)$. Calcule $P(X \le 3)$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+1. $P(X \le 3) = F(3) = 1 - e^{-0,4 \cdot 3} = 1 - e^{-1,2}$.
+2. $e^{-1,2} \approx 0,3012$.
+3. $P(X \le 3) \approx 1 - 0,3012 = 0,6988$.
+
+**Resposta:** 69,88%.
+
+</details>
+
+### Exercício 2 (Fácil/Médio)
+
+Seja $X \sim \text{Exp}(\lambda)$. Sabendo que $P(X > 2) = 0,1$, encontre o valor de $\lambda$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+1. $P(X > 2) = e^{-2\lambda} = 0,1$.
+2. $-2\lambda = \ln(0,1) \to \lambda = -\ln(0,1)/2 \approx 1,1513$.
+
+**Resposta:** $\lambda \approx 1,1513$.
+
+</details>
+
+### Exercício 3 (Médio)
+
+O tempo de vida de um componente eletrônico segue uma distribuição Exponencial com média de 500 horas. Calcule a probabilidade de o componente durar entre 400 e 600 horas.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+1. Média = 500, então $\lambda = 1/500 = 0,002$.
+2. $P(400 \le X \le 600) = F(600) - F(400) = (1 - e^{-0,002 \cdot 600}) - (1 - e^{-0,002 \cdot 400})$.
+3. $= e^{-0,8} - e^{-1,2}$.
+4. $e^{-0,8} \approx 0,4493$; $e^{-1,2} \approx 0,3012$.
+5. $0,4493 - 0,3012 = 0,1481$.
+
+**Resposta:** 14,81%.
+
+</details>
+
+### Exercício 4 (Médio)
+
+Seja $X \sim \text{Exp}(\lambda)$. Mostre que $E[X] = 1/\lambda$ usando integração.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$E[X] = \int_0^\infty x \cdot \lambda e^{-\lambda x} dx$.
+
+Use integração por partes: $u = x$, $dv = \lambda e^{-\lambda x} dx$.
+$du = dx$, $v = -e^{-\lambda x}$.
+
+$E[X] = [-x \cdot e^{-\lambda x}]_0^\infty + \int_0^\infty e^{-\lambda x} dx$
+$= 0 + [-e^{-\lambda x}/\lambda]_0^\infty = 0 - (-1/\lambda) = 1/\lambda$.
+
+**Resposta:** $E[X] = 1/\lambda$.
+
+</details>
+
+### Exercício 5 (Difícil)
+
+O tempo entre chamadas em uma central telefônica segue uma Exponencial com média de 2 minutos. Se você acabou de atender uma chamada, qual a probabilidade de que a próxima chamada demore mais de 3 minutos? E se você já esperou 5 minutos e ainda não chegou chamada, qual a probabilidade de esperar mais 3 minutos?
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+1. Média = 2, então $\lambda = 1/2 = 0,5$.
+2. Probabilidade da próxima chamada demorar mais de 3 minutos desde o início: $P(X > 3) = e^{-0,5 \cdot 3} = e^{-1,5} \approx 0,2231$.
+3. Usando a falta de memória: $P(X > 5+3 | X > 5) = P(X > 3) = e^{-1,5} \approx 0,2231$.
+
+**Resposta:** A probabilidade é a mesma em ambos os casos: aproximadamente **22,31%**.
+
+</details>
+
+## Desafio final com resolução completa
+
+O tempo de vida de uma lâmpada LED segue uma distribuição Exponencial com média de 8000 horas.
+
+a) Qual a probabilidade de a lâmpada durar mais de 10000 horas?
+b) Qual a probabilidade de a lâmpada durar entre 6000 e 9000 horas?
+c) Se a lâmpada já durou 5000 horas, qual a probabilidade de durar mais 5000 horas?
+d) Encontre o tempo $k$ tal que 90% das lâmpadas duram mais que $k$ horas.
+
+<details>
+<summary>💡 Ver resolução completa</summary>
+
+a) Média = 8000, então $\lambda = 1/8000 = 0,000125$.
+   $P(X > 10000) = e^{-0,000125 \cdot 10000} = e^{-1,25} \approx 0,2865$.
+
+b) $P(6000 \le X \le 9000) = F(9000) - F(6000) = (1 - e^{-0,000125 \cdot 9000}) - (1 - e^{-0,000125 \cdot 6000})$.
+   $= e^{-0,75} - e^{-1,125}$.
+   $e^{-0,75} \approx 0,4724$; $e^{-1,125} \approx 0,3247$.
+   $0,4724 - 0,3247 = 0,1477$.
+
+c) Usando a falta de memória: $P(X > 5000+5000 | X > 5000) = P(X > 5000) = e^{-0,000125 \cdot 5000} = e^{-0,625} \approx 0,5353$.
+
+d) Queremos $P(X > k) = 0,9$.
+   $e^{-0,000125 \cdot k} = 0,9$.
+   $-0,000125 \cdot k = \ln(0,9) \to k = -\ln(0,9)/0,000125 \approx 842,7$ horas.
+
+**Respostas:**
+a) 28,65%
+b) 14,77%
+c) 53,53%
+d) $k \approx 842,7$ horas
+
+</details>
+
+> *A Distribuição Exponencial nos ensina que, em processos puramente aleatórios, o tempo já esperado não altera a espera futura — o acaso não tem memória, e cada instante é um novo começo.*

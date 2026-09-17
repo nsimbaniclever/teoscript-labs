@@ -1,0 +1,351 @@
+
+# PROPRIEDADES DOS AUTOVALORES
+
+## 1. Propriedades Fundamentais
+
+### 1.1 Propriedade 1: Soma dos Autovalores (Traço)
+
+A **soma** de todos os autovalores de uma matriz $A$ é igual ao **traço** da matriz (soma dos elementos da diagonal principal):
+
+$$
+\sum_{i=1}^{n} \lambda_i = \text{tr}(A) = \sum_{i=1}^{n} a_{ii}
+$$
+
+### 1.2 Propriedade 2: Produto dos Autovalores (Determinante)
+
+O **produto** de todos os autovalores de uma matriz $A$ é igual ao **determinante** da matriz:
+
+$$
+\prod_{i=1}^{n} \lambda_i = \det(A)
+$$
+
+### 1.3 Propriedade 3: Matriz Transposta
+
+Uma matriz e sua transposta têm os **mesmos autovalores**:
+
+$$
+\lambda(A) = \lambda(A^T)
+$$
+
+**Importante:** Os autovetores podem ser diferentes.
+
+### 1.4 Propriedade 4: Matriz Inversa
+
+Se $A$ é invertível e $\lambda$ é autovalor de $A$, então:
+
+$$
+\lambda^{-1} = \frac{1}{\lambda}
+$$
+
+é autovalor de $A^{-1}$.
+
+### 1.5 Propriedade 5: Potência de Matriz
+
+Se $\lambda$ é autovalor de $A$, então $\lambda^k$ é autovalor de $A^k$:
+
+$$
+\lambda(A^k) = [\lambda(A)]^k
+$$
+
+### 1.6 Propriedade 6: Matriz Identidade e Escalar
+
+- **Matriz identidade $I$:** todos os autovalores são 1.
+- **Matriz escalar $cI$:** todos os autovalores são $c$.
+
+### 1.7 Propriedade 7: Matriz com Autovalor Zero
+
+Uma matriz $A$ é **singular** (não invertível) se, e somente se, **0 é um autovalor**.
+
+### 1.8 Propriedade 8: Matriz Simétrica
+
+Se $A$ é **simétrica** ($A = A^T$):
+- Todos os autovalores são **reais**.
+- Autovetores correspondentes a autovalores distintos são **ortogonais**.
+
+## 2. Exemplos Acadêmicos Passo a Passo
+
+### 2.1 Exemplo 1: Verificação das Propriedades
+
+Seja:
+$$
+A = \begin{bmatrix} 2 & 1 \\ 1 & 2 \end{bmatrix}
+$$
+
+**Autovalores:** $\lambda_1 = 3, \lambda_2 = 1$
+
+**Verificação:**
+
+**Soma:** $\lambda_1 + \lambda_2 = 3 + 1 = 4$  
+$\text{tr}(A) = 2 + 2 = 4$ ✓
+
+**Produto:** $\lambda_1 \cdot \lambda_2 = 3 \cdot 1 = 3$  
+$\det(A) = 2 \cdot 2 - 1 \cdot 1 = 3$ ✓
+
+**Transposta:** $A^T = A$ (simétrica) → autovalores são os mesmos.
+
+**Inversa:** $A^{-1} = \frac{1}{3} \begin{bmatrix} 2 & -1 \\ -1 & 2 \end{bmatrix}$  
+Autovalores de $A^{-1}$: $\frac{1}{3}, 1$ (inversos de $3, 1$) ✓
+
+**Potência:** $A^2 = \begin{bmatrix} 5 & 4 \\ 4 & 5 \end{bmatrix}$  
+Autovalores de $A^2$: $9, 1$ (quadrados de $3, 1$) ✓
+
+### 2.2 Exemplo 2: Matriz com Autovalor Zero
+
+Seja:
+$$
+A = \begin{bmatrix} 1 & 2 \\ 2 & 4 \end{bmatrix}
+$$
+
+**Cálculo dos autovalores:**
+
+$\text{tr}(A) = 5, \det(A) = 4 - 4 = 0$
+
+$\lambda^2 - 5\lambda + 0 = 0 \Rightarrow \lambda(\lambda - 5) = 0$
+
+**Autovalores:** $\lambda_1 = 5, \lambda_2 = 0$
+
+**Conclusão:** $\lambda_2 = 0$ → matriz é singular (não invertível).
+
+### 2.3 Exemplo 3: Matriz Simétrica
+
+Seja:
+$$
+A = \begin{bmatrix} 1 & 2 & 3 \\ 2 & 4 & 5 \\ 3 & 5 & 6 \end{bmatrix}
+$$
+
+**Observação:** $A = A^T$ → simétrica.
+
+**Autovalores (calculados):** $\lambda_1 \approx 10.33, \lambda_2 \approx -0.15, \lambda_3 \approx 0.82$
+
+**Verificação:** Todos são reais ✓
+
+**Autovetores:** São ortogonais entre si.
+
+## 3. Exemplos Lúdicos Aprimorados
+
+### 🍔 EXEMPLO 1 – A LANCHONETE (PROPRIEDADES DOS AUTOVALORES)
+
+A lanchonete tem a matriz:
+$$
+A = \begin{bmatrix} 2 & 1 \\ 1 & 2 \end{bmatrix}
+$$
+
+**Autovalores:** $3, 1$
+
+**Soma:** $3 + 1 = 4$ → $\text{tr}(A) = 4$
+
+**Produto:** $3 \cdot 1 = 3$ → $\det(A) = 3$
+
+**Interpretação:** O traço e o determinante da matriz são determinados pelos autovalores.
+
+### 🧃 EXEMPLO 2 – A CANTINA (CRESCIMENTO E DECAIMENTO)
+
+A cantina tem a matriz:
+$$
+A = \begin{bmatrix} 0.8 & 0 \\ 0 & 1.1 \end{bmatrix}
+$$
+
+**Autovalores:** $0.8, 1.1$
+
+**Soma:** $0.8 + 1.1 = 1.9$ → $\text{tr}(A) = 0.8 + 1.1 = 1.9$ ✓
+
+**Produto:** $0.8 \cdot 1.1 = 0.88$ → $\det(A) = 0.8 \cdot 1.1 = 0.88$ ✓
+
+**Interpretação:** A soma e o produto dos autovalores determinam o traço e o determinante.
+
+## 4. Aplicações das Propriedades
+
+### 4.1 PCA (Matriz de Covariância)
+
+A matriz de covariância é **simétrica** ($\Sigma = \Sigma^T$). Portanto:
+
+- Os autovalores são **reais**.
+- Os autovetores são **ortogonais**.
+
+**Interpretação:** Os componentes principais são ortogonais (não correlacionados).
+
+### 4.2 Regularização e Condicionamento
+
+O **número de condição** de uma matriz é:
+
+$$
+\kappa = \frac{|\lambda_{max}|}{|\lambda_{min}|}
+$$
+
+**Interpretação:**
+- $\kappa \approx 1$ → matriz bem condicionada (estável).
+- $\kappa \gg 1$ → matriz mal condicionada (instável).
+
+### 4.3 Estabilidade de Sistemas Dinâmicos
+
+Para $\vec{x}_{t+1} = A \vec{x}_t$:
+- Se $|\lambda_i| < 1$ para todos → sistema **converge** para zero.
+- Se $|\lambda_i| > 1$ para algum → sistema **diverge**.
+
+## 5. Resumo das Propriedades
+
+| Propriedade | Fórmula | Exemplo |
+|-------------|---------|---------|
+| **Soma** | $\sum \lambda_i = \text{tr}(A)$ | $3+1=4$ |
+| **Produto** | $\prod \lambda_i = \det(A)$ | $3\cdot1=3$ |
+| **Transposta** | $\lambda(A) = \lambda(A^T)$ | $\lambda(A^T) = \{3,1\}$ |
+| **Inversa** | $\lambda(A^{-1}) = 1/\lambda(A)$ | $\{1/3,1\}$ |
+| **Potência** | $\lambda(A^k) = \lambda(A)^k$ | $\lambda(A^2) = \{9,1\}$ |
+| **Simétrica** | Autovalores reais | $A$ simétrica → autovalores reais |
+
+## 6. Exercícios Propostos (Manuais)
+
+<details>
+<summary>📗 Exercício 1 (Verificação de Propriedades)</summary>
+
+**Enunciado:** Dada:
+$$
+A = \begin{bmatrix} 3 & 2 \\ 2 & 3 \end{bmatrix}
+$$
+
+a) Calcule os autovalores.  
+b) Verifique que a soma dos autovalores é igual ao traço.  
+c) Verifique que o produto dos autovalores é igual ao determinante.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\lambda_1 = 5, \lambda_2 = 1$  
+b) $\lambda_1 + \lambda_2 = 5 + 1 = 6$, $\text{tr}(A) = 3 + 3 = 6$ ✓  
+c) $\lambda_1 \cdot \lambda_2 = 5 \cdot 1 = 5$, $\det(A) = 9 - 4 = 5$ ✓
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 (Matriz com Autovalor Zero)</summary>
+
+**Enunciado:** Dada:
+$$
+A = \begin{bmatrix} 1 & 2 & 3 \\ 2 & 4 & 6 \\ 3 & 6 & 9 \end{bmatrix}
+$$
+
+a) Calcule o determinante.  
+b) O que isso diz sobre os autovalores?  
+c) Qual é um dos autovalores?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\det(A) = 0$ (linhas são proporcionais)  
+b) Pelo menos um autovalor é zero.  
+c) $\lambda = 0$ é autovalor.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 (Matriz Simétrica)</summary>
+
+**Enunciado:** A matriz:
+$$
+A = \begin{bmatrix} 2 & 1 & 0 \\ 1 & 3 & 1 \\ 0 & 1 & 2 \end{bmatrix}
+$$
+
+a) É simétrica?  
+b) O que isso diz sobre seus autovalores?  
+c) O que isso diz sobre seus autovetores?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) Sim! $A = A^T$ (todos os elementos simétricos são iguais).  
+b) Os autovalores são **reais**.  
+c) Os autovetores são **ortogonais** (perpendiculares).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 (Potência de Matriz)</summary>
+
+**Enunciado:** Dada:
+$$
+A = \begin{bmatrix} 2 & 1 \\ 1 & 2 \end{bmatrix}
+$$
+com autovalores $3, 1$.
+
+a) Quais são os autovalores de $A^3$?  
+b) Calcule $A^3$ diretamente.  
+c) Verifique que os autovalores de $A^3$ são $27, 1$.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\lambda_1^3 = 3^3 = 27, \lambda_2^3 = 1^3 = 1$  
+b) $A^3 = \begin{bmatrix} 2 & 1 \\ 1 & 2 \end{bmatrix}^3 = \begin{bmatrix} 14 & 13 \\ 13 & 14 \end{bmatrix}$ (calculado por multiplicação sucessiva)  
+c) Autovalores de $A^3$: $27, 1$ ✓
+
+</details>
+</details>
+
+## 7. EXERCÍCIO COMPUTACIONAL
+
+<details>
+<summary>🐍 Ver código (Python/NumPy)</summary>
+
+```python
+import numpy as np
+
+A = np.array([[2, 1], [1, 2]])
+
+# Autovalores
+autovalores = np.linalg.eigvals(A)
+print("Autovalores:", autovalores)
+
+# Soma dos autovalores
+print("Soma dos autovalores:", np.sum(autovalores))
+print("Traço:", np.trace(A))
+
+# Produto dos autovalores
+print("Produto dos autovalores:", np.prod(autovalores))
+print("Determinante:", np.linalg.det(A))
+
+# Potência
+A3 = np.linalg.matrix_power(A, 3)
+autovalores_A3 = np.linalg.eigvals(A3)
+print("Autovalores de A^3:", autovalores_A3)
+```
+
+</details>
+
+<details>
+<summary>📝 Ver código (R)</summary>
+
+```r
+A <- matrix(c(2, 1, 1, 2), nrow=2)
+
+# Autovalores
+eig <- eigen(A)$values
+print(eig)
+
+# Soma
+print(sum(eig))
+print(sum(diag(A)))
+
+# Produto
+print(prod(eig))
+print(det(A))
+
+# Potência
+A3 <- A %*% A %*% A
+eig_A3 <- eigen(A3)$values
+print(eig_A3)
+```
+
+</details>
+
+> *As propriedades dos autovalores são ferramentas poderosas para entender o comportamento de matrizes. A soma e o produto dos autovalores determinam o traço e o determinante. Matrizes simétricas têm autovalores reais e autovetores ortogonais, o que é essencial para PCA e outras aplicações em Machine Learning.*

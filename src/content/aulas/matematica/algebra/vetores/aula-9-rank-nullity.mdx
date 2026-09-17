@@ -1,0 +1,713 @@
+# SUBESPAÇOS FUNDAMENTAIS (II) — RANK-NULLITY
+
+## 1. Revisão dos Quatro Subespaços Fundamentais
+
+Para uma matriz $A \in \mathbb{R}^{m \times n}$ (m linhas, n colunas), os quatro subespaços fundamentais são:
+
+| Subespaço | Definição | Notação | Dimensão |
+|-----------|-----------|---------|----------|
+| **Espaço Coluna** | Gerado pelas colunas de $A$ | $\text{Col}(A) \subset \mathbb{R}^m$ | $\text{posto}(A)$ |
+| **Espaço Linha** | Gerado pelas linhas de $A$ | $\text{Lin}(A) \subset \mathbb{R}^n$ | $\text{posto}(A)$ |
+| **Espaço Nulo** | Soluções de $A\vec{x} = \vec{0}$ | $\text{Nul}(A) \subset \mathbb{R}^n$ | $n - \text{posto}(A)$ |
+| **Espaço Nulo Esquerdo** | Soluções de $A^T\vec{y} = \vec{0}$ | $\text{Nul}(A^T) \subset \mathbb{R}^m$ | $m - \text{posto}(A)$ |
+
+## 2. O Teorema do Posto-Nulidade (Rank-Nullity Theorem)
+
+### 2.1 Enunciado Formal
+
+Para uma matriz $A \in \mathbb{R}^{m \times n}$:
+
+$$
+\dim(\text{Col}(A)) + \dim(\text{Nul}(A)) = n
+$$
+
+Ou, equivalentemente:
+
+$$
+\text{posto}(A) + \text{nulidade}(A) = n
+$$
+
+Onde:
+- **Posto** = $\dim(\text{Col}(A))$ = número de colunas linearmente independentes
+- **Nulidade** = $\dim(\text{Nul}(A))$ = dimensão do espaço de soluções de $A\vec{x} = \vec{0}$
+
+### 2.2 Interpretação Geométrica
+
+| Posto | Nulidade | Interpretação |
+|-------|----------|---------------|
+| $n$ | 0 | Matriz **injetora** (núcleo só com o zero). Nenhuma perda de informação. |
+| $n-1$ | 1 | Matriz **aniquila** uma direção. Perda de 1 grau de liberdade. |
+| $n-2$ | 2 | Matriz aniquila duas direções. Perda de 2 graus de liberdade. |
+| ... | ... | ... |
+| 0 | $n$ | Matriz nula. Aniquila todas as direções. |
+
+### 2.3 Teorema para a Transposta
+
+Para $A^T \in \mathbb{R}^{n \times m}$:
+
+$$
+\dim(\text{Lin}(A)) + \dim(\text{Nul}(A^T)) = m
+$$
+
+Ou seja:
+
+$$
+\text{posto}(A) + \dim(\text{Nul}(A^T)) = m
+$$
+
+## 3. Exemplos Acadêmicos Passo a Passo
+
+### 3.1 Exemplo 1: Matriz $2 \times 2$ com Posto Máximo
+
+Seja:
+$$
+A = \begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix}
+$$
+
+**Passo 1: Calcular o posto**
+
+Colunas: $(1,3)$ e $(2,4)$
+
+Determinante:
+$$
+\det(A) = 1\cdot4 - 2\cdot3 = 4 - 6 = -2 \neq 0
+$$
+
+**Posto = 2** (colunas LI).
+
+**Passo 2: Calcular a nulidade**
+
+Pelo Teorema do Posto-Nulidade:
+$$
+\text{nulidade} = n - \text{posto} = 2 - 2 = 0
+$$
+
+**Interpretação:** O espaço nulo tem dimensão 0 → apenas o vetor nulo é solução de $A\vec{x} = \vec{0}$.
+
+**Passo 3: Verificação direta**
+
+Sistema $A\vec{x} = \vec{0}$:
+$$
+\begin{cases}
+x_1 + 2x_2 = 0 \\
+3x_1 + 4x_2 = 0
+\end{cases}
+$$
+
+Da primeira: $x_1 = -2x_2$  
+Substituindo: $3(-2x_2) + 4x_2 = 0 \Rightarrow -6x_2 + 4x_2 = 0 \Rightarrow -2x_2 = 0 \Rightarrow x_2 = 0$  
+$x_1 = 0$
+
+**Única solução:** $(0,0)$ → nulidade = 0 ✓
+
+### 3.2 Exemplo 2: Matriz $2 \times 2$ com Posto 1
+
+Seja:
+$$
+A = \begin{bmatrix} 1 & 2 \\ 2 & 4 \end{bmatrix}
+$$
+
+**Passo 1: Calcular o posto**
+
+Colunas: $(1,2)$ e $(2,4) = 2(1,2)$ → LD.
+
+**Posto = 1** (apenas uma coluna independente).
+
+**Passo 2: Calcular a nulidade**
+
+Pelo Teorema do Posto-Nulidade:
+$$
+\text{nulidade} = n - \text{posto} = 2 - 1 = 1
+$$
+
+**Interpretação:** O espaço nulo tem dimensão 1 → existe uma direção (uma reta) de soluções de $A\vec{x} = \vec{0}$.
+
+**Passo 3: Verificação direta**
+
+Sistema $A\vec{x} = \vec{0}$:
+$$
+\begin{cases}
+x_1 + 2x_2 = 0 \\
+2x_1 + 4x_2 = 0
+\end{cases}
+$$
+
+Ambas são a mesma equação: $x_1 + 2x_2 = 0 \Rightarrow x_1 = -2x_2$
+
+**Solução:** $(x_1, x_2) = (-2t, t)$ para $t \in \mathbb{R}$.
+
+**Dimensão = 1** → nulidade = 1 ✓
+
+### 3.3 Exemplo 3: Matriz $3 \times 3$ com Posto 2
+
+Seja:
+$$
+A = \begin{bmatrix}
+1 & 0 & 1 \\
+0 & 1 & 1 \\
+1 & 1 & 2
+\end{bmatrix}
+$$
+
+**Passo 1: Calcular o posto**
+
+Colunas:
+$$
+\vec{c}_1 = (1,0,1), \quad \vec{c}_2 = (0,1,1), \quad \vec{c}_3 = (1,1,2)
+$$
+
+Observe que $\vec{c}_3 = \vec{c}_1 + \vec{c}_2$:
+$$
+(1,0,1) + (0,1,1) = (1,1,2)
+$$
+
+**Posto = 2** (apenas duas colunas independentes).
+
+**Passo 2: Calcular a nulidade**
+
+Pelo Teorema do Posto-Nulidade:
+$$
+\text{nulidade} = n - \text{posto} = 3 - 2 = 1
+$$
+
+**Interpretação:** O espaço nulo tem dimensão 1 → existe uma direção (uma reta) de soluções de $A\vec{x} = \vec{0}$.
+
+**Passo 3: Verificação direta**
+
+Sistema $A\vec{x} = \vec{0}$:
+$$
+\begin{cases}
+x_1 + x_3 = 0 \\
+x_2 + x_3 = 0 \\
+x_1 + x_2 + 2x_3 = 0
+\end{cases}
+$$
+
+Da primeira: $x_1 = -x_3$  
+Da segunda: $x_2 = -x_3$  
+Da terceira: $(-x_3) + (-x_3) + 2x_3 = 0 \Rightarrow -2x_3 + 2x_3 = 0$ (OK)
+
+**Solução:** $(x_1, x_2, x_3) = (-t, -t, t)$ para $t \in \mathbb{R}$.
+
+**Dimensão = 1** → nulidade = 1 ✓
+
+### 3.4 Exemplo 4: Matriz $3 \times 2$ (Retangular)
+
+Seja:
+$$
+A = \begin{bmatrix}
+1 & 2 \\
+3 & 4 \\
+5 & 6
+\end{bmatrix}
+$$
+
+**Passo 1: Calcular o posto**
+
+Colunas: $(1,3,5)$ e $(2,4,6)$ → não são múltiplas → **LI**.
+
+**Posto = 2** (máximo possível para $n=2$).
+
+**Passo 2: Calcular a nulidade**
+
+Pelo Teorema do Posto-Nulidade:
+$$
+\text{nulidade} = n - \text{posto} = 2 - 2 = 0
+$$
+
+**Interpretação:** O espaço nulo tem dimensão 0 → apenas o vetor nulo é solução de $A\vec{x} = \vec{0}$.
+
+**Passo 3: Verificação direta**
+
+Sistema $A\vec{x} = \vec{0}$:
+$$
+\begin{cases}
+x_1 + 2x_2 = 0 \\
+3x_1 + 4x_2 = 0 \\
+5x_1 + 6x_2 = 0
+\end{cases}
+$$
+
+Da primeira: $x_1 = -2x_2$  
+Substituindo na segunda: $3(-2x_2) + 4x_2 = 0 \Rightarrow -6x_2 + 4x_2 = 0 \Rightarrow -2x_2 = 0 \Rightarrow x_2 = 0$  
+Então $x_1 = 0$
+
+**Única solução:** $(0,0)$ → nulidade = 0 ✓
+
+### 3.5 Exemplo 5: Matriz $2 \times 3$ (Retangular)
+
+Seja:
+$$
+A = \begin{bmatrix}
+1 & 2 & 3 \\
+2 & 4 & 6
+\end{bmatrix}
+$$
+
+**Passo 1: Calcular o posto**
+
+Colunas: $(1,2)$, $(2,4) = 2(1,2)$, $(3,6) = 3(1,2)$ → todas são múltiplas.
+
+**Posto = 1** (apenas uma coluna independente).
+
+**Passo 2: Calcular a nulidade**
+
+Pelo Teorema do Posto-Nulidade:
+$$
+\text{nulidade} = n - \text{posto} = 3 - 1 = 2
+$$
+
+**Interpretação:** O espaço nulo tem dimensão 2 → existe um plano de soluções de $A\vec{x} = \vec{0}$.
+
+**Passo 3: Verificação direta**
+
+Sistema $A\vec{x} = \vec{0}$:
+$$
+\begin{cases}
+x_1 + 2x_2 + 3x_3 = 0 \\
+2x_1 + 4x_2 + 6x_3 = 0
+\end{cases}
+$$
+
+Ambas são a mesma equação: $x_1 + 2x_2 + 3x_3 = 0$
+
+**Solução:** $x_1 = -2x_2 - 3x_3$  
+Variáveis livres: $x_2, x_3$
+
+**Dimensão = 2** → nulidade = 2 ✓
+
+## 4. Exemplos Lúdicos Aprimorados
+
+### 🍔 EXEMPLO 1 – A LANCHONETE (RANK-NULLITY)
+
+#### 1.1 Matriz da Lanchonete
+
+A lanchonete tem três sanduíches:
+- Hambúrguer: $(1,1,0)$ → (pão, carne, queijo)
+- Queijo: $(0,0,1)$
+- Combo: $(1,1,1)$
+
+Matriz (sanduíches como colunas):
+$$
+A = \begin{bmatrix}
+1 & 0 & 1 \\
+1 & 0 & 1 \\
+0 & 1 & 1
+\end{bmatrix}
+$$
+
+#### 1.2 Análise pelo Posto-Nulidade
+
+**Passo 1: Posto**
+
+Colunas: $(1,1,0)$, $(0,0,1)$, $(1,1,1)$.
+
+Observe que $(1,1,1) = (1,1,0) + (0,0,1)$.
+
+**Posto = 2** (duas colunas independentes).
+
+**Passo 2: Nulidade**
+
+Pelo Teorema do Posto-Nulidade:
+$$
+\text{nulidade} = n - \text{posto} = 3 - 2 = 1
+$$
+
+**Interpretação:** O espaço nulo tem dimensão 1 → existe uma combinação de sanduíches que "se cancela" e não altera o pedido.
+
+**Passo 3: Encontrando a combinação que se cancela**
+
+Queremos $A\vec{x} = \vec{0}$:
+$$
+x_1(1,1,0) + x_2(0,0,1) + x_3(1,1,1) = (0,0,0)
+$$
+
+**Solução:** $x_1 = -t, x_2 = -t, x_3 = t$ (ou seja, $x_1 = -1, x_2 = -1, x_3 = 1$)
+
+**Interpretação:** Pedir -1 hambúrguer, -1 queijo, +1 combo é equivalente a pedir nada (o pedido se cancela).
+
+**Na prática:** Se você pedir 1 hambúrguer + 1 queijo - 1 combo, dá zero ingredientes.
+
+**Resumo:**
+
+| Subespaço | Dimensão | Interpretação |
+|-----------|----------|---------------|
+| Espaço Coluna | 2 | A lanchonete só pode fazer receitas em um plano (não no espaço todo) |
+| Espaço Nulo | 1 | Existe redundância no cardápio (combo é desnecessário) |
+| Posto + Nulidade | $2 + 1 = 3 = n$ | ✓ Teorema verificado |
+
+### 🧃 EXEMPLO 2 – A CANTINA (RANK-NULLITY)
+
+#### 2.1 Matriz Nutricional
+
+A cantina vende:
+- Suco: $(10, 0, 50)$ → (açúcar, cálcio, vitamina C)
+- Leite: $(5, 20, 0)$
+- Bolo: $(30, 0, 0)$
+
+Matriz (alimentos como colunas):
+$$
+A = \begin{bmatrix}
+10 & 5 & 30 \\
+0 & 20 & 0 \\
+50 & 0 & 0
+\end{bmatrix}
+$$
+
+#### 2.2 Análise pelo Posto-Nulidade
+
+**Passo 1: Posto**
+
+Determinante:
+$$
+\det(A) = 10(20\cdot0 - 0\cdot0) - 5(0\cdot0 - 0\cdot50) + 30(0\cdot0 - 20\cdot50)
+$$
+$$
+= 0 - 0 + 30(-1000) = -30000 \neq 0
+$$
+
+**Posto = 3** (máximo).
+
+**Passo 2: Nulidade**
+
+Pelo Teorema do Posto-Nulidade:
+$$
+\text{nulidade} = n - \text{posto} = 3 - 3 = 0
+$$
+
+**Interpretação:** O espaço nulo tem dimensão 0 → não há combinação de alimentos que "se cancele" e não altere a dieta.
+
+**Resumo:**
+
+| Subespaço | Dimensão | Interpretação |
+|-----------|----------|---------------|
+| Espaço Coluna | 3 | A cantina pode atingir qualquer combinação nutricional |
+| Espaço Nulo | 0 | Não há redundância — cada alimento é essencial |
+| Posto + Nulidade | $3 + 0 = 3 = n$ | ✓ Teorema verificado |
+
+### 📚 EXEMPLO 3 – A BIBLIOTECA (RANK-NULLITY)
+
+#### 3.1 Matriz de Conteúdo
+
+A biblioteca tem:
+- Matemática: $(10, 5, 0)$ → (teoria, exercícios, figuras)
+- História: $(8, 0, 12)$
+- Ciências: $(6, 8, 4)$
+
+Matriz:
+$$
+A = \begin{bmatrix}
+10 & 8 & 6 \\
+5 & 0 & 8 \\
+0 & 12 & 4
+\end{bmatrix}
+$$
+
+#### 3.2 Análise pelo Posto-Nulidade
+
+**Passo 1: Posto**
+
+Determinante:
+$$
+\det(A) = -760 \neq 0
+$$
+
+**Posto = 3** (máximo).
+
+**Passo 2: Nulidade**
+
+Pelo Teorema do Posto-Nulidade:
+$$
+\text{nulidade} = n - \text{posto} = 3 - 3 = 0
+$$
+
+**Interpretação:** O espaço nulo tem dimensão 0 → não há combinação de livros que "se cancele" e não altere o conteúdo estudado.
+
+**Resumo:**
+
+| Subespaço | Dimensão | Interpretação |
+|-----------|----------|---------------|
+| Espaço Coluna | 3 | O aluno pode montar qualquer plano de estudo |
+| Espaço Nulo | 0 | Não há redundância — cada livro é essencial |
+| Posto + Nulidade | $3 + 0 = 3 = n$ | ✓ Teorema verificado |
+
+### 🎨 EXEMPLO 4 – AS CORES (RANK-NULLITY)
+
+#### 4.1 Matriz RGB (Base Canônica)
+
+$$
+A = \begin{bmatrix}
+1 & 0 & 0 \\
+0 & 1 & 0 \\
+0 & 0 & 1
+\end{bmatrix}
+$$
+
+**Posto = 3**, **Nulidade = 0**.
+
+**Interpretação:** Não há combinação de vermelho, verde e azul que dê preto (zero) sem que todos os coeficientes sejam zero.
+
+#### 4.2 Matriz com Redundância (Apenas Vermelho e Verde)
+
+$$
+A = \begin{bmatrix}
+1 & 0 \\
+0 & 1 \\
+0 & 0
+\end{bmatrix}
+$$
+
+**Posto = 2**, **Nulidade = 0** (pois $n = 2$, $2 - 2 = 0$).
+
+**Interpretação:** Com vermelho e verde, não há combinação que se cancele (são LI).
+
+#### 4.3 Matriz com Dependência (Vermelho, Verde, Amarelo)
+
+$$
+A = \begin{bmatrix}
+1 & 0 & 1 \\
+0 & 1 & 1 \\
+0 & 0 & 0
+\end{bmatrix}
+$$
+
+**Posto = 2**, **Nulidade = 1**.
+
+**Interpretação:** Existe uma combinação que se cancela: vermelho + verde - amarelo = 0.
+
+## 5. Propriedades Fundamentais do Posto-Nulidade
+
+| Propriedade | Descrição |
+|-------------|-----------|
+| **Posto ≤ min(m, n)** | O posto não pode exceder o número de linhas ou colunas |
+| **Posto(A) = Posto(A^T)** | O posto da matriz é igual ao posto da transposta |
+| **Nulidade(A) = n - Posto(A)** | Para uma matriz $m \times n$ |
+| **Nulidade(A^T) = m - Posto(A)** | Para a transposta |
+| **Posto(A) + Nulidade(A) = n** | Teorema do Posto-Nulidade |
+| **Posto(A) + Nulidade(A^T) = m** | Teorema para a transposta |
+
+## 6. Aplicação Direta na Tese
+
+### 6.1 Compressão de Dados
+
+Se uma matriz de dados tem **posto baixo**, ela pode ser **comprimida**.
+
+**Exemplo:** Um dataset $1000 \times 1000$ com posto 10 pode ser representado por apenas 10 direções independentes.
+
+**Interpretação:** A nulidade $(1000 - 10 = 990)$ mede a redundância — quanto maior a nulidade, mais compressível são os dados.
+
+### 6.2 Detecção de Redundância em Características
+
+Em Machine Learning, o posto da matriz de dados indica quantas características são **realmente independentes**.
+
+**Exemplo:** Dataset com 100 características, posto = 45 → 55 características são redundantes.
+
+**Interpretação:** A nulidade $(100 - 45 = 55)$ mede a redundância do dataset.
+
+### 6.3 Sistemas Lineares (Existência e Unicidade)
+
+Para $A\vec{x} = \vec{b}$:
+
+| Caso | Condição | Resultado |
+|------|----------|-----------|
+| **Solução única** | $\vec{b} \in \text{Col}(A)$ e $\text{Nul}(A) = \{\vec{0}\}$ | Existe uma única solução |
+| **Infinitas soluções** | $\vec{b} \in \text{Col}(A)$ e $\dim(\text{Nul}(A)) > 0$ | Existem infinitas soluções |
+| **Nenhuma solução** | $\vec{b} \notin \text{Col}(A)$ | Sistema impossível |
+
+### 6.4 PCA (Análise de Componentes Principais)
+
+No PCA, o número de componentes principais é igual ao **posto** da matriz de dados.
+
+**Interpretação:** O posto mede a "riqueza" dos dados — componentes além do posto não acrescentam informação.
+
+### 6.5 Federação de Aprendizado (Diversidade de Dados)
+
+Em FL, a diversidade dos dados dos clientes pode ser medida pelo **posto** da matriz de dados agregada.
+
+**Interpretação:** Posto alto → dados diversos, muitas direções independentes. Posto baixo → dados redundantes, pouca diversidade.
+
+### 6.6 Regularização e Posto
+
+A regularização L2 (Ridge) adiciona um termo que "infla" a nulidade, tornando o sistema **bem condicionado**.
+
+**Interpretação:** A regularização reduz o posto efetivo do sistema, controlando a complexidade do modelo.
+
+### 6.7 Sistemas de Recomendação (Matrix Factorization)
+
+Em sistemas de recomendação, a matriz de avaliações usuário-item é fatorada em duas matrizes de **posto reduzido**.
+
+**Interpretação:** O posto da matriz de avaliações mede o número de "fatores latentes" que explicam as preferências dos usuários.
+
+## 7. Resumo Estruturado
+
+| Conceito | Definição | Fórmula |
+|----------|-----------|---------|
+| **Posto** | Dimensão do espaço coluna | $\text{posto}(A) = \dim(\text{Col}(A))$ |
+| **Nulidade** | Dimensão do espaço nulo | $\text{nulidade}(A) = \dim(\text{Nul}(A))$ |
+| **Teorema do Posto-Nulidade** | Soma do posto e da nulidade = número de colunas | $\text{posto}(A) + \text{nulidade}(A) = n$ |
+| **Posto da Transposta** | Posto(A) = Posto(A^T) | $\text{posto}(A) = \text{posto}(A^T)$ |
+| **Nulidade da Transposta** | Nulidade(A^T) = m - Posto(A) | $\dim(\text{Nul}(A^T)) = m - \text{posto}(A)$ |
+
+## 8. Exercícios Propostos
+
+<details>
+<summary>📗 Exercício 1 (Cálculo do Posto e Nulidade)</summary>
+
+**Enunciado:** Para cada matriz, calcule o posto, a nulidade e verifique o Teorema do Posto-Nulidade:
+
+a) $A = \begin{bmatrix} 1 & 2 \\ 2 & 4 \end{bmatrix}$
+
+b) $B = \begin{bmatrix} 1 & 0 & 1 \\ 0 & 1 & 1 \\ 1 & 1 & 2 \end{bmatrix}$
+
+c) $C = \begin{bmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \\ 7 & 8 & 9 \end{bmatrix}$
+
+d) $D = \begin{bmatrix} 1 & 2 & 3 & 4 \\ 2 & 4 & 6 & 8 \end{bmatrix}$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $A = \begin{bmatrix} 1 & 2 \\ 2 & 4 \end{bmatrix}$  
+Colunas são múltiplas → **Posto = 1**.  
+Nulidade = $2 - 1 = 1$.  
+$1 + 1 = 2 = n$ ✓
+
+b) $B = \begin{bmatrix} 1 & 0 & 1 \\ 0 & 1 & 1 \\ 1 & 1 & 2 \end{bmatrix}$  
+$\vec{c}_3 = \vec{c}_1 + \vec{c}_2$ → **Posto = 2**.  
+Nulidade = $3 - 2 = 1$.  
+$2 + 1 = 3 = n$ ✓
+
+c) $C = \begin{bmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \\ 7 & 8 & 9 \end{bmatrix}$  
+Determinante = 0 (linhas são combinações) → **Posto = 2**.  
+Nulidade = $3 - 2 = 1$.  
+$2 + 1 = 3 = n$ ✓
+
+d) $D = \begin{bmatrix} 1 & 2 & 3 & 4 \\ 2 & 4 & 6 & 8 \end{bmatrix}$  
+Todas as colunas são múltiplas de $(1,2)$ → **Posto = 1**.  
+Nulidade = $4 - 1 = 3$.  
+$1 + 3 = 4 = n$ ✓
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 (Sistemas Lineares)</summary>
+
+**Enunciado:** Para a matriz:
+$$
+A = \begin{bmatrix} 1 & 2 & 3 \\ 2 & 4 & 6 \\ 3 & 6 & 9 \end{bmatrix}
+$$
+
+a) Calcule o posto e a nulidade.  
+b) O sistema $A\vec{x} = \vec{0}$ tem solução não trivial? Quantas?  
+c) O sistema $A\vec{x} = (1, 2, 3)$ tem solução? E $A\vec{x} = (1, 3, 5)$?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $A = \begin{bmatrix} 1 & 2 & 3 \\ 2 & 4 & 6 \\ 3 & 6 & 9 \end{bmatrix}$  
+Todas as colunas são múltiplas de $(1,2,3)$ → **Posto = 1**.  
+Nulidade = $3 - 1 = 2$.
+
+b) Sim! O sistema $A\vec{x} = \vec{0}$ tem **infinitas soluções** (dimensão 2 → um plano de soluções).
+
+c) $\vec{b} = (1,2,3)$ está no espaço coluna? $(1,2,3) = 1(1,2,3)$ → **SIM!** (tem solução).  
+$\vec{b} = (1,3,5)$ está no espaço coluna? Precisamos ver se $(1,3,5) = t(1,2,3)$ → precisamos $t = 1$ da primeira, $t = 1.5$ da segunda, $t \approx 1.67$ da terceira → **NÃO!** (não tem solução).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 (Aplicação – Dados)</summary>
+
+**Enunciado:** Você tem um dataset com 500 amostras e 20 características. O posto da matriz de dados é 12.
+
+a) Qual é a dimensão do espaço coluna?  
+b) Qual é a dimensão do espaço nulo?  
+c) Quantas características são redundantes?  
+d) Quantos componentes principais você deve manter no PCA para capturar toda a informação?  
+e) Qual é a nulidade da transposta?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) Dimensão do espaço coluna = posto = **12**.
+
+b) Dimensão do espaço nulo = $20 - 12 = 8$.
+
+c) Características redundantes = $20 - 12 = 8$.
+
+d) Manter **12** componentes principais (todo o posto).
+
+e) Nulidade da transposta = $m - \text{posto} = 500 - 12 = 488$.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 (Aplicação – Lanchonete)</summary>
+
+**Enunciado:** Uma lanchonete tem 4 sanduíches:
+- $(1,1,0)$, $(1,0,1)$, $(0,1,1)$, $(1,1,1)$
+
+a) Monte a matriz com os sanduíches como colunas.  
+b) Calcule o posto e a nulidade.  
+c) O que isso significa para o cardápio?  
+d) Quantos sanduíches são redundantes?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) Matriz:
+$$
+A = \begin{bmatrix}
+1 & 1 & 0 & 1 \\
+1 & 0 & 1 & 1 \\
+0 & 1 & 1 & 1
+\end{bmatrix}
+$$
+
+b) Posto = 3 (máximo, pois são 3 linhas).  
+Nulidade = $4 - 3 = 1$.
+
+c) O cardápio tem redundância: um dos sanduíches pode ser escrito como combinação dos outros três.
+
+d) $4 - 3 = 1$ sanduíche é redundante.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 (Aplicação – Sistemas de Recomendação)</summary>
+
+**Enunciado:** Uma matriz de avaliações $A \in \mathbb{R}^{1000 \times 500}$ (1000 usuários, 500 filmes) tem posto 20.
+
+a) Qual é a nulidade de $A$?  
+b) Quantos fatores latentes explicam as preferências dos usuários?  
+c) O que a nulidade mede nesse contexto?  
+d) Qual é a nulidade de $A^T$?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) Nulidade de $A$ = $500 - 20 = 480$.
+
+b) **20** fatores latentes (posto da matriz).
+
+c) A nulidade (480) mede a redundância — quantos filmes podem ser explicados por combinações dos outros.
+
+d) Nulidade de $A^T$ = $1000 - 20 = 980$.
+
+</details>
+</details>
+
+> *O Teorema do Posto-Nulidade é uma das ferramentas mais poderosas da Álgebra Linear. Ele conecta a dimensão do espaço coluna (posto) com a dimensão do espaço nulo (nulidade), revelando quantas direções são preservadas e quantas são "aniquiladas" por uma matriz. Em Machine Learning, ele é essencial para compressão, detecção de redundância, PCA, sistemas de recomendação e análise de diversidade de dados.*

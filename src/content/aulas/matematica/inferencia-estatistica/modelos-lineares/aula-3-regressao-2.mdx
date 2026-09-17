@@ -1,0 +1,403 @@
+# Regressão Linear Simples II
+
+## O que vamos aprender nesta aula?
+
+Agora que já sabemos como estimar os coeficientes de regressão, vamos aprender a fazer **inferência estatística** sobre eles. Isso inclui:
+
+1. **Intervalos de confiança** para $\beta_0$ e $\beta_1$
+2. **Testes de hipóteses** sobre $\beta_1$ (se a relação é significativa)
+3. **Intervalos de previsão** para novos valores
+4. **Análise de resíduos** para verificar os pressupostos do modelo
+
+## Pressupostos do Modelo de Regressão Linear
+
+Para fazermos inferência estatística, precisamos que os seguintes pressupostos sejam satisfeitos:
+
+1. **Linearidade:** A relação entre $X$ e $Y$ é linear.
+2. **Independência:** Os erros $\varepsilon_i$ são independentes.
+3. **Homocedasticidade:** A variância dos erros é constante ($\sigma^2$).
+4. **Normalidade:** Os erros seguem uma distribuição Normal com média 0 e variância $\sigma^2$.
+
+**Verificação dos pressupostos:**
+- **Linearidade:** Gráfico de resíduos vs valores ajustados (não deve mostrar padrão).
+- **Homocedasticidade:** Gráfico de resíduos vs valores ajustados (variância constante).
+- **Normalidade:** Q-Q plot dos resíduos (deve seguir uma linha reta).
+- **Independência:** Gráfico de resíduos vs ordem (não deve mostrar padrão).
+
+## Inferência sobre $\beta_1$ (Coeficiente Angular)
+
+O coeficiente angular $\beta_1$ é o parâmetro mais importante na regressão, pois indica se $X$ tem efeito sobre $Y$.
+
+**Estimador:** $\hat{\beta}_1$
+
+**Erro padrão:** 
+$$SE(\hat{\beta}_1) = \sqrt{\frac{SQE}{n-2} \cdot \frac{1}{\sum (X_i - \bar{X})^2}} = \frac{\hat{\sigma}}{\sqrt{\sum (X_i - \bar{X})^2}}$$
+
+onde $\hat{\sigma} = \sqrt{\frac{SQE}{n-2}}$ é o erro padrão da regressão (estimativa de $\sigma$).
+
+**Intervalo de Confiança para $\beta_1$ (95%):**
+
+$$\hat{\beta}_1 \pm t_{\alpha/2, n-2} \cdot SE(\hat{\beta}_1)$$
+
+**Teste de Hipóteses para $\beta_1$:**
+
+- $H_0: \beta_1 = 0$ (não há relação linear)
+- $H_1: \beta_1 \ne 0$ (há relação linear)
+
+**Estatística de teste:**
+
+$$t = \frac{\hat{\beta}_1}{SE(\hat{\beta}_1)} \sim t_{n-2}$$
+
+**Exemplo 1: Teste de significância e IC para $\beta_1$**
+
+Usando os dados da aula anterior (publicidade e vendas):
+
+- $n = 8$, $\hat{\beta}_1 = 2,143$, $\sum (X - \bar{X})^2 = SXX = 1116$, $SQE = 11,15$
+
+Calcule o erro padrão, o IC de 95% e teste se $\beta_1$ é significativo.
+
+**Resolução:**
+
+$\hat{\sigma} = \sqrt{11,15/(8-2)} = \sqrt{11,15/6} = \sqrt{1,858} = 1,363$
+$SE(\hat{\beta}_1) = 1,363/\sqrt{1116} = 1,363/33,407 = 0,0408$
+
+$\nu = 6$, $t_{0,025, 6} = 2,447$
+$IC(\beta_1): 2,143 \pm 2,447 \cdot 0,0408 = 2,143 \pm 0,0998 = (2,043, 2,243)$
+
+$t = 2,143/0,0408 = 52,52$
+p-valor $\approx 0,000$ (praticamente zero)
+
+**Conclusão:** Rejeitamos $H_0$ (p-valor $< 0,001$). Há evidência muito forte de que $\beta_1 \ne 0$. O IC de 95% não contém zero. O investimento em publicidade tem efeito significativo sobre as vendas.
+
+## Inferência sobre $\beta_0$ (Intercepto)
+
+O intercepto $\beta_0$ também pode ser testado, embora muitas vezes não seja de interesse prático.
+
+**Estimador:** $\hat{\beta}_0$
+
+**Erro padrão:**
+
+$$SE(\hat{\beta}_0) = \hat{\sigma} \sqrt{\frac{1}{n} + \frac{\bar{X}^2}{\sum (X_i - \bar{X})^2}}$$
+
+**Intervalo de Confiança para $\beta_0$ (95%):**
+
+$$\hat{\beta}_0 \pm t_{\alpha/2, n-2} \cdot SE(\hat{\beta}_0)$$
+
+**Exemplo 2: IC para $\beta_0$**
+
+Usando os dados do exemplo 1 (publicidade e vendas):
+
+- $\hat{\beta}_0 = 11,892$, $\hat{\sigma} = 1,363$, $\bar{X} = 7,75$, $SXX = 1116$, $n = 8$
+
+**Resolução:**
+
+$SE(\hat{\beta}_0) = 1,363 \cdot \sqrt{1/8 + 7,75^2/1116} = 1,363 \cdot \sqrt{0,125 + 60,06/1116} = 1,363 \cdot \sqrt{0,125 + 0,0538} = 1,363 \cdot \sqrt{0,1788} = 1,363 \cdot 0,423 = 0,576$
+
+$\nu = 6$, $t_{0,025, 6} = 2,447$
+$IC(\beta_0): 11,892 \pm 2,447 \cdot 0,576 = 11,892 \pm 1,409 = (10,483, 13,301)$
+
+**Interpretação:** Com 95% de confiança, o intercepto está entre 10,48 e 13,30. Isso significa que, com zero investimento em publicidade, as vendas estariam entre R$ 10.483 e R$ 13.301.
+
+## Intervalos de Previsão e Intervalos de Confiança para a Média
+
+**Intervalo de Confiança para a média de $Y$ dado $X = x_0$:**
+
+$$IC(\mu_{Y|x_0}) = \hat{Y}_0 \pm t_{\alpha/2, n-2} \cdot \hat{\sigma} \sqrt{\frac{1}{n} + \frac{(x_0 - \bar{X})^2}{SXX}}$$
+
+**Intervalo de Previsão para um novo valor de $Y$ dado $X = x_0$:**
+
+$$IP(Y_0) = \hat{Y}_0 \pm t_{\alpha/2, n-2} \cdot \hat{\sigma} \sqrt{1 + \frac{1}{n} + \frac{(x_0 - \bar{X})^2}{SXX}}$$
+
+**Diferença:** O IC para a média é mais estreito (estima o valor médio). O IP para um novo valor é mais amplo (inclui a variabilidade individual).
+
+**Exemplo 3: IC para média e IP para previsão**
+
+Usando os dados de publicidade e vendas ($\hat{\beta}_0 = 11,892$, $\hat{\beta}_1 = 2,143$, $SXX = 1116$, $\bar{X} = 7,75$, $\hat{\sigma} = 1,363$, $n = 8$, $t_{0,025, 6} = 2,447$).
+
+Preveja para $X_0 = 9$ (investimento de R$ 9.000).
+
+**Resolução:**
+
+$\hat{Y}_0 = 11,892 + 2,143 \cdot 9 = 11,892 + 19,287 = 31,179$
+
+IC: $31,179 \pm 2,447 \cdot 1,363 \cdot \sqrt{1/8 + (9-7,75)^2/1116}$
+$= 31,179 \pm 3,335 \cdot \sqrt{0,125 + 1,5625/1116}$
+$= 31,179 \pm 3,335 \cdot \sqrt{0,125 + 0,0014}$
+$= 31,179 \pm 3,335 \cdot \sqrt{0,1264}$
+$= 31,179 \pm 3,335 \cdot 0,3555$
+$= 31,179 \pm 1,186 = (29,993, 32,365)$
+
+IP: $31,179 \pm 3,335 \cdot \sqrt{1 + 0,125 + 0,0014}$
+$= 31,179 \pm 3,335 \cdot \sqrt{1,1264}$
+$= 31,179 \pm 3,335 \cdot 1,0613$
+$= 31,179 \pm 3,539 = (27,640, 34,718)$
+
+**Interpretação:**
+- IC: Com 95% de confiança, a venda média para $X = 9$ está entre R$ 29.993 e R$ 32.365.
+- IP: Com 95% de confiança, a venda de um novo ponto com $X = 9$ estará entre R$ 27.640 e R$ 34.718.
+
+## Análise de Resíduos
+
+A análise de resíduos é fundamental para verificar os pressupostos do modelo.
+
+**Tipos de gráficos de resíduos:**
+
+1. **Resíduos vs Valores Ajustados ($\hat{Y}$):** Verifica linearidade e homocedasticidade.
+   - **Bom:** Pontos aleatórios em torno de zero, sem padrão.
+   - **Ruim:** Padrão em forma de U (não-linearidade) ou funil (heterocedasticidade).
+
+2. **Q-Q Plot dos Resíduos:** Verifica normalidade.
+   - **Bom:** Pontos próximos da linha reta.
+   - **Ruim:** Desvios fortes da linha reta (assimetria, caudas pesadas).
+
+3. **Resíduos vs Ordem:** Verifica independência.
+   - **Bom:** Pontos aleatórios.
+   - **Ruim:** Padrão temporal (autocorrelação).
+
+**Exemplo 4: Análise de resíduos**
+
+Para os dados de publicidade e vendas, já calculamos os resíduos:
+
+| $Y$ | $\hat{Y}$ | $e = Y - \hat{Y}$ |
+| --- | --- | --- |
+| 15 | 16,18 | -1,18 |
+| 18 | 18,32 | -0,32 |
+| 22 | 22,61 | -0,61 |
+| 28 | 26,89 | 1,11 |
+| 30 | 29,04 | 0,96 |
+| 35 | 33,32 | 1,68 |
+| 38 | 37,60 | 0,40 |
+| 42 | 44,04 | -2,04 |
+
+**Interpretação:** Os resíduos são pequenos (variam de -2,04 a 1,68), não mostram padrão óbvio e estão centrados em torno de zero. Isso sugere que o modelo é adequado.
+
+## Tabela ANOVA para Regressão
+
+A tabela ANOVA resume a análise de variância da regressão:
+
+| Fonte | $SQ$ | $GL$ | $QM$ | $F$ |
+| --- | --- | --- | --- | --- |
+| Regressão | $SQR$ | 1 | $SQR/1$ | $QMR/QME$ |
+| Erro | $SQE$ | $n-2$ | $SQE/(n-2)$ | — |
+| Total | $SQT$ | $n-1$ | — | — |
+
+onde:
+- $SQR = SQT - SQE$
+- $QM = SQ/GL$
+- $F = \frac{SQR/1}{SQE/(n-2)}$
+
+**Teste $F$:** Testa se o modelo é significativo (equivalente ao teste $t$ para $\beta_1$ no caso de regressão simples).
+
+**Exemplo 5: Tabela ANOVA**
+
+Para os dados de publicidade e vendas:
+
+$SQT = 652$, $SQE = 11,15$, $n = 8$
+
+$SQR = 652 - 11,15 = 640,85$
+$QMR = 640,85/1 = 640,85$
+$QME = 11,15/6 = 1,858$
+$F = 640,85/1,858 = 344,9$
+
+| Fonte | $SQ$ | $GL$ | $QM$ | $F$ |
+| --- | --- | --- | --- | --- |
+| Regressão | 640,85 | 1 | 640,85 | 344,9 |
+| Erro | 11,15 | 6 | 1,858 | — |
+| Total | 652,00 | 7 | — | — |
+
+**Conclusão:** $F = 344,9$, p-valor $< 0,001 \to$ Modelo significativo.
+
+## Analogias
+
+### Analogia 1: O nível de confiança
+
+Um intervalo de confiança é como um radar que nos dá uma região onde o verdadeiro valor está. Quanto mais confiante queremos estar, maior a região.
+
+### Analogia 2: A previsão do tempo
+
+O intervalo de previsão é como a previsão do tempo com uma faixa de temperatura. Um intervalo mais amplo significa mais incerteza.
+
+### Analogia 3: O alvo e o arqueiro
+
+O erro padrão é como a precisão do arqueiro. Quanto menor o erro padrão, mais preciso é o arqueiro (modelo).
+
+## Exercícios Resolvidos
+
+### Exercício 1 (Fácil)
+
+Em uma regressão com $n = 20$, $SXX = 50$, $SQE = 40$, $\hat{\beta}_1 = 2$. Calcule $SE(\hat{\beta}_1)$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$\hat{\sigma} = \sqrt{40/(20-2)} = \sqrt{40/18} = \sqrt{2,222} = 1,491$
+$SE(\hat{\beta}_1) = 1,491/\sqrt{50} = 1,491/7,071 = 0,211$
+
+**Resposta:** 0,211.
+
+</details>
+
+### Exercício 2 (Fácil/Médio)
+
+Para o exercício 1, construa um IC de 95% para $\beta_1$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$\nu = 18$, $t_{0,025, 18} = 2,101$
+IC: $2 \pm 2,101 \cdot 0,211 = 2 \pm 0,443 = (1,557, 2,443)$
+
+**Resposta:** (1,557, 2,443).
+
+</details>
+
+### Exercício 3 (Médio)
+
+Em uma regressão com $n = 15$, $\hat{\beta}_1 = 1,5$, $SE(\hat{\beta}_1) = 0,5$. Teste se $\beta_1 \ne 0$ ($\alpha = 0,05$).
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$t = 1,5/0,5 = 3,0$
+$\nu = 13$; $t_{0,025, 13} = 2,160$
+$|t| = 3,0 > 2,160 \to$ Rejeitar $H_0$
+
+**Resposta:** Rejeitar $H_0$. Há evidência de que $\beta_1 \ne 0$.
+
+</details>
+
+### Exercício 4 (Médio)
+
+Para o modelo do exemplo 3, qual é o IC para a média quando $X_0 = 5$?
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$\hat{Y}_0 = 11,892 + 2,143 \cdot 5 = 11,892 + 10,715 = 22,607$
+IC: $22,607 \pm 2,447 \cdot 1,363 \cdot \sqrt{1/8 + (5-7,75)^2/1116}$
+$= 22,607 \pm 3,335 \cdot \sqrt{0,125 + 7,5625/1116}$
+$= 22,607 \pm 3,335 \cdot \sqrt{0,125 + 0,0068}$
+$= 22,607 \pm 3,335 \cdot 0,363$
+$= 22,607 \pm 1,211 = (21,396, 23,818)$
+
+**Resposta:** (21,396, 23,818).
+
+</details>
+
+### Exercício 5 (Difícil)
+
+Interprete o teste $F$ em regressão linear simples. Por que ele é equivalente ao teste $t$ para $\beta_1$?
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+O teste $F$ testa se o modelo como um todo é significativo: $H_0: \beta_1 = 0$.
+
+Na regressão simples, o teste $F$ é equivalente ao teste $t$ para $\beta_1$ porque $F = t^2$. Ambos testam a mesma hipótese e produzem o mesmo p-valor.
+
+**Resposta:** $F = t^2$. Ambos testam $\beta_1 = 0$.
+
+</details>
+
+## Desafio Final com Resolução Completa
+
+Uma imobiliária coletou dados de 10 imóveis: área ($X$, em m²) e preço ($Y$, em R$ 10.000):
+
+| Imóvel | Área ($X$) | Preço ($Y$) |
+| --- | --- | --- |
+| 1 | 50 | 150 |
+| 2 | 60 | 180 |
+| 3 | 70 | 200 |
+| 4 | 80 | 220 |
+| 5 | 90 | 250 |
+| 6 | 100 | 280 |
+| 7 | 110 | 300 |
+| 8 | 120 | 320 |
+| 9 | 130 | 350 |
+| 10 | 140 | 380 |
+
+a) Calcule a equação de regressão.
+
+b) Teste se $\beta_1$ é significativo ($\alpha = 0,05$).
+
+c) Construa um IC de 95% para $\beta_1$.
+
+d) Construa um IC de 95% para a média do preço quando a área é 100 m².
+
+e) Construa um IP de 95% para o preço de um imóvel com 100 m².
+
+f) Interprete os resultados.
+
+<details>
+<summary>💡 Ver resolução completa</summary>
+
+a) $\sum X = 50+60+70+80+90+100+110+120+130+140 = 950$
+   $\sum Y = 150+180+200+220+250+280+300+320+350+380 = 2630$
+   $\sum X^2 = 2500+3600+4900+6400+8100+10000+12100+14400+16900+19600 = 98500$
+   $\sum Y^2 = 22500+32400+40000+48400+62500+78400+90000+102400+122500+144400 = 743500$
+   $\sum XY = 50 \cdot 150+60 \cdot 180+70 \cdot 200+80 \cdot 220+90 \cdot 250+100 \cdot 280+110 \cdot 300+120 \cdot 320+130 \cdot 350+140 \cdot 380$
+   $= 7500+10800+14000+17600+22500+28000+33000+38400+45500+53200 = 270500$
+   $n = 10$
+
+   $\hat{\beta}_1 = \frac{10 \cdot 270500 - 950 \cdot 2630}{10 \cdot 98500 - 950^2} = \frac{2705000 - 2498500}{985000 - 902500} = \frac{206500}{82500} = 2,503$
+
+   $\bar{X} = 95$; $\bar{Y} = 263$
+   $\hat{\beta}_0 = 263 - 2,503 \cdot 95 = 263 - 237,785 = 25,215$
+
+   Equação: $\hat{Y} = 25,215 + 2,503X$
+
+b) Para testar $\hat{\beta}_1$:
+   $\hat{Y}$ para cada $X$ e cálculo dos resíduos:
+   $X=50$: $\hat{Y}=25,215+125,15=150,365$; $e=-0,365$; $e^2=0,133$
+   $X=60$: $\hat{Y}=25,215+150,18=175,395$; $e=4,605$; $e^2=21,206$
+   $X=70$: $\hat{Y}=25,215+175,21=200,425$; $e=-0,425$; $e^2=0,181$
+   $X=80$: $\hat{Y}=25,215+200,24=225,455$; $e=-5,455$; $e^2=29,757$
+   $X=90$: $\hat{Y}=25,215+225,27=250,485$; $e=-0,485$; $e^2=0,235$
+   $X=100$: $\hat{Y}=25,215+250,30=275,515$; $e=4,485$; $e^2=20,115$
+   $X=110$: $\hat{Y}=25,215+275,33=300,545$; $e=-0,545$; $e^2=0,297$
+   $X=120$: $\hat{Y}=25,215+300,36=325,575$; $e=-5,575$; $e^2=31,081$
+   $X=130$: $\hat{Y}=25,215+325,39=350,605$; $e=-0,605$; $e^2=0,366$
+   $X=140$: $\hat{Y}=25,215+350,42=375,635$; $e=4,365$; $e^2=19,053$
+
+   $SQE = 0,133+21,206+0,181+29,757+0,235+20,115+0,297+31,081+0,366+19,053 = 122,424$
+
+   $\hat{\sigma} = \sqrt{122,424/8} = \sqrt{15,303} = 3,912$
+
+   $SXX = 82500$ (calculado acima)
+   $SE(\hat{\beta}_1) = 3,912/\sqrt{82500} = 3,912/287,23 = 0,0136$
+
+   $t = 2,503/0,0136 = 184,04$
+   $\nu = 8$, $t_{0,025, 8} = 2,306$
+   $|t| = 184,04 > 2,306 \to$ Rejeitar $H_0$
+
+c) $IC(\beta_1): 2,503 \pm 2,306 \cdot 0,0136 = 2,503 \pm 0,0314 = (2,472, 2,534)$
+
+d) $X_0 = 100$: $\hat{Y}_0 = 25,215 + 2,503 \cdot 100 = 25,215 + 250,30 = 275,515$
+   IC: $275,515 \pm 2,306 \cdot 3,912 \cdot \sqrt{1/10 + (100-95)^2/82500}$
+   $= 275,515 \pm 9,022 \cdot \sqrt{0,1 + 25/82500}$
+   $= 275,515 \pm 9,022 \cdot \sqrt{0,1 + 0,000303}$
+   $= 275,515 \pm 9,022 \cdot 0,3167$
+   $= 275,515 \pm 2,857 = (272,658, 278,372)$
+
+e) IP: $275,515 \pm 2,306 \cdot 3,912 \cdot \sqrt{1 + 0,1 + 0,000303}$
+   $= 275,515 \pm 9,022 \cdot \sqrt{1,1003}$
+   $= 275,515 \pm 9,022 \cdot 1,049$
+   $= 275,515 \pm 9,464 = (266,051, 284,979)$
+
+f) Interpretação:
+   - A relação entre área e preço é muito forte e significativa (p-valor $< 0,001$).
+   - Para cada m² adicional, o preço aumenta em R$ 2.503 (em média).
+   - O IC para a média do preço para $X=100$ é (R$ 272.658, R$ 278.372).
+   - O IP para um imóvel individual com 100 m² é (R$ 266.051, R$ 284.979), mais amplo que o IC.
+
+**Respostas:**
+a) $\hat{Y} = 25,215 + 2,503X$
+b) Rejeitar $H_0$ (p-valor $< 0,001$)
+c) (2,472, 2,534) $\to$ (R$ 24.720, R$ 25.340 por m²)
+d) (272,658, 278,372) $\to$ (R$ 272.658, R$ 278.372)
+e) (266,051, 284,979) $\to$ (R$ 266.051, R$ 284.979)
+f) Modelo muito bom; área explica quase toda a variação do preço
+
+</details>
+
+> *A inferência na regressão transforma a reta ajustada em uma declaração de confiança — cada coeficiente ganha um intervalo, cada previsão uma margem, e cada relação um teste de significância.*

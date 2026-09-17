@@ -1,0 +1,227 @@
+# SÉRIES DE FOURIER
+
+## INTRODUÇÃO ÀS SÉRIES DE FOURIER
+
+## 1. Definição
+
+Uma **Série de Fourier** representa uma função **periódica** $f(x)$ como uma soma infinita de **senos** e **cossenos**:
+
+$$
+f(x) = \frac{a_0}{2} + \sum_{n=1}^{\infty} \left( a_n \cos\left(\frac{n\pi x}{L}\right) + b_n \sin\left(\frac{n\pi x}{L}\right) \right)
+$$
+
+**Para funções com período $2L$:**
+
+Os **coeficientes de Fourier** são dados por:
+
+$$
+a_0 = \frac{1}{L} \int_{-L}^{L} f(x) \, dx
+$$
+
+$$
+a_n = \frac{1}{L} \int_{-L}^{L} f(x) \cos\left(\frac{n\pi x}{L}\right) \, dx
+$$
+
+$$
+b_n = \frac{1}{L} \int_{-L}^{L} f(x) \sin\left(\frac{n\pi x}{L}\right) \, dx
+$$
+
+### 1.1 Caso Especial: Período $2\pi$
+
+Se $L = \pi$, a série se simplifica para:
+
+$$
+f(x) = \frac{a_0}{2} + \sum_{n=1}^{\infty} \left( a_n \cos(nx) + b_n \sin(nx) \right)
+$$
+
+Com coeficientes:
+
+$$
+a_0 = \frac{1}{\pi} \int_{-\pi}^{\pi} f(x) \, dx
+$$
+
+$$
+a_n = \frac{1}{\pi} \int_{-\pi}^{\pi} f(x) \cos(nx) \, dx
+$$
+
+$$
+b_n = \frac{1}{\pi} \int_{-\pi}^{\pi} f(x) \sin(nx) \, dx
+$$
+
+## 2. Interpretação Geométrica
+
+A Série de Fourier decompõe uma função periódica em **frequências fundamentais**:
+
+- $a_0$: **componente contínua** (média da função).
+- $a_n$: **amplitude** da componente cosseno (frequência $n$).
+- $b_n$: **amplitude** da componente seno (frequência $n$).
+
+**Analogia:** É como decompor um acorde musical em suas notas individuais.
+
+## 3. Exemplo Passo a Passo
+
+### 3.1 Série de Fourier da função $f(x) = x$ no intervalo $[-\pi, \pi]$
+
+**Função:** $f(x) = x$ (período $2\pi$)
+
+**Cálculo de $a_0$:**
+
+$$
+a_0 = \frac{1}{\pi} \int_{-\pi}^{\pi} x \, dx = \frac{1}{\pi} \left[ \frac{x^2}{2} \right]_{-\pi}^{\pi} = 0
+$$
+
+**Cálculo de $a_n$:**
+
+$$
+a_n = \frac{1}{\pi} \int_{-\pi}^{\pi} x \cos(nx) \, dx
+$$
+
+A função $x$ é ímpar e $\cos(nx)$ é par → produto é ímpar → integral em intervalo simétrico é **zero**.
+
+$$
+a_n = 0 \quad \text{para todo } n
+$$
+
+**Cálculo de $b_n$:**
+
+$$
+b_n = \frac{1}{\pi} \int_{-\pi}^{\pi} x \sin(nx) \, dx
+$$
+
+Usando integração por partes ou tabela:
+
+$$
+b_n = \frac{2(-1)^{n+1}}{n}
+$$
+
+**Série de Fourier:**
+
+$$
+f(x) \sim 2 \sum_{n=1}^{\infty} \frac{(-1)^{n+1} \sin(nx)}{n}
+$$
+
+**Ou seja:**
+
+$$
+x \approx 2\left( \sin(x) - \frac{\sin(2x)}{2} + \frac{\sin(3x)}{3} - \frac{\sin(4x)}{4} + \cdots \right)
+$$
+
+## 4. Exemplo Lúdico – A Lanchonete (Sinal Periódico)
+
+A lanchonete tem vendas que oscilam semanalmente:
+
+$$
+f(t) = \text{padrão semanal de vendas}
+$$
+
+**Interpretação:** A Série de Fourier decompõe esse padrão em:
+- **Componente contínua** (venda média).
+- **Frequências diárias** (picos de segunda, terça, etc.).
+- **Harmônicos** (variações mais finas).
+
+## 5. Por que isso é importante para projetos/ML?
+
+### 5.1 Processamento de Sinais e Séries Temporais
+
+Em FL e ML, dados como **sensores**, **áudio**, **imagens** e **séries temporais** são frequentemente analisados no domínio da frequência usando Fourier.
+
+### 5.2 Compressão de Dados
+
+A Série de Fourier é a base da **compressão JPEG** (transformada discreta de cosseno) e de áudio (MP3).
+
+### 5.3 Análise de Periodicidade
+
+Em dados de séries temporais (ex: vendas, temperatura, tráfego), a Série de Fourier ajuda a identificar **padrões periódicos** (sazonalidade).
+
+### 5.4 Kernels Periódicos em ML
+
+Em Gaussian Processes e SVMs, kernels periódicos são construídos usando funções de base de Fourier.
+
+## 6. Propriedades Importantes
+
+| Propriedade | Descrição |
+|-------------|-----------|
+| **Linearidade** | $\text{Fourier}(af + bg) = a\text{Fourier}(f) + b\text{Fourier}(g)$ |
+| **Convergência** | Se $f$ é contínua e suave por partes, a série converge para $f(x)$ nos pontos de continuidade |
+| **Fenômeno de Gibbs** | Nos pontos de descontinuidade, a série overshoota cerca de 9% do valor |
+
+## 7. Exercícios Propostos
+
+<details>
+<summary>📗 Exercício 1</summary>
+
+**Enunciado:** Calcule os coeficientes de Fourier da função:
+
+$$
+f(x) = 
+\begin{cases}
+-1, & -\pi < x < 0 \\
+1, & 0 < x < \pi
+\end{cases}
+$$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+- $a_0 = 0$
+- $a_n = 0$ (função ímpar)
+- $b_n = \frac{2(1 - (-1)^n)}{n\pi}$
+
+Ou seja:
+$$
+f(x) = \frac{4}{\pi} \left( \sin(x) + \frac{\sin(3x)}{3} + \frac{\sin(5x)}{5} + \cdots \right)
+$$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2</summary>
+
+**Enunciado:** Determine a Série de Fourier de $f(x) = |x|$ no intervalo $[-\pi, \pi]$.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+$f(x) = |x|$ é par → $b_n = 0$
+
+- $a_0 = \pi$
+- $a_n = \frac{2((-1)^n - 1)}{n^2\pi}$
+
+Série:
+$$
+|x| = \frac{\pi}{2} - \frac{4}{\pi} \sum_{n=0}^{\infty} \frac{\cos((2n+1)x)}{(2n+1)^2}
+$$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 (Aplicação)</summary>
+
+**Enunciado:** Um sinal de áudio tem frequência fundamental de 440 Hz. Quais frequências aparecem na Série de Fourier?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+A Série de Fourier de um sinal periódico de frequência fundamental $f_0$ contém as frequências:
+$$
+f_0, 2f_0, 3f_0, 4f_0, \ldots
+$$
+
+Para 440 Hz: 440, 880, 1320, 1760, 2200, ... Hz
+
+</details>
+</details>
+
+> *A Série de Fourier é a arte de ouvir as frequências ocultas em qualquer sinal — transformando o tempo em melodia.*
+
+---
+
+## 🎉 Fim das Aulas sobre Séries de Fourier!

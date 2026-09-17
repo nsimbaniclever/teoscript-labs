@@ -1,0 +1,509 @@
+# 📘 DISTRIBUIÇÃO DE POISSON
+
+Definição, Analogias com Resolução Detalhada, Dedução como Limite da Binomial, Função de Probabilidade, Função de Distribuição, Valor Esperado, Variância, FGM, Propriedades Especiais, Tabela de Recorrência, Aplicações Práticas, Exercícios Resolvidos Passo a Passo e Desafio Final
+
+### 1. O QUE É A DISTRIBUIÇÃO DE POISSON?
+
+A distribuição de Poisson descreve o **número de eventos raros** que ocorrem em um **intervalo fixo** de tempo, espaço, área ou volume, quando esses eventos acontecem de forma **independente** e a uma **taxa média constante** $\lambda$.
+
+> **Definição:** Uma variável aleatória $X$ tem distribuição de Poisson com parâmetro $\lambda$ (taxa média de ocorrência, $\lambda > 0$) se:
+>> $$ P(X = k) = \frac{e^{-\lambda} \lambda^k}{k!}, \quad k = 0, 1, 2, 3, ... $$
+
+**Notação:** $X \sim \text{Poisson}(\lambda)$
+
+### 2. ANALOGIAS DO DIA A DIA COM RESOLUÇÃO DETALHADA
+
+---
+
+**Analogia 1 — "O Call Center"**
+
+Imagine um call center que recebe chamadas a uma **taxa média de 4 chamadas por minuto** ($\lambda = 4$).
+
+<details>
+<summary>Situação A - Probabilidade de receber exatamente 3 chamadas</summary>
+
+**Pergunta:** Qual a probabilidade de receber exatamente 3 chamadas em um minuto?
+
+**Resolução Passo a Passo:**
+
+- **Identificar o que queremos:** $P(X = 3)$
+- **Identificar os parâmetros:** $\lambda = 4$
+- **Escrever a fórmula geral:**
+  $$ P(X = k) = \frac{e^{-\lambda} \lambda^k}{k!} $$
+- **Substituir $k = 3$ e $\lambda = 4$:**
+  $$ P(X = 3) = \frac{e^{-4} \cdot 4^3}{3!} $$
+- **Calcular cada termo separadamente:**
+  - $e^{-4} \approx 0,018315$
+  - $4^3 = 4 \cdot 4 \cdot 4 = 64$
+  - $3! = 3 \cdot 2 \cdot 1 = 6$
+- **Substituir os valores:**
+  $$ P(X = 3) = \frac{0,018315 \cdot 64}{6} = \frac{1,17216}{6} = 0,19536 $$
+- **Converter para porcentagem:** $0,19536 \times 100 = 19,54\%$
+
+**Resposta:** A probabilidade de receber exatamente 3 chamadas em um minuto é de aproximadamente **19,54%**.
+</details>
+
+<details>
+<summary>Situação B — Probabilidade de receber no máximo 2 chamadas</summary>
+
+**Pergunta:** Qual a probabilidade de receber **no máximo 2** chamadas em um minuto?
+
+**Resolução Passo a Passo:**
+
+- **Identificar o que queremos:** $P(X \leq 2)$
+- **Traduzir para soma de probabilidades:**
+  $$ P(X \leq 2) = P(X = 0) + P(X = 1) + P(X = 2) $$
+- **Calcular $P(X = 0)$:**
+  - Substituir $k = 0$:
+    $$ P(X = 0) = \frac{e^{-4} \cdot 4^0}{0!} $$
+  - $4^0 = 1$, $0! = 1$
+  - $$ P(X = 0) = \frac{0,018315 \cdot 1}{1} = 0,018315 \approx 1,83\% $$
+- **Calcular $P(X = 1)$:**
+  - Substituir $k = 1$:
+    $$ P(X = 1) = \frac{e^{-4} \cdot 4^1}{1!} = \frac{0,018315 \cdot 4}{1} = 0,07326 \approx 7,33\% $$
+- **Calcular $P(X = 2)$:**
+  - Substituir $k = 2$:
+    $$ P(X = 2) = \frac{e^{-4} \cdot 4^2}{2!} = \frac{0,018315 \cdot 16}{2} = 0,14652 \approx 14,65\% $$
+- **Somar as probabilidades:**
+  $$ P(X \leq 2) = 0,018315 + 0,07326 + 0,14652 = 0,238095 \approx 23,81\% $$
+
+**Resposta:** A probabilidade de receber **no máximo 2** chamadas em um minuto é de aproximadamente **23,81%**.
+</details>
+
+<details>
+<summary>Situação C - Probabilidade de receber pelo menos 5 chamadas</summary>
+
+**Pergunta:** Qual a probabilidade de receber **pelo menos 5** chamadas em um minuto?
+
+**Resolução Passo a Passo:**
+
+- **Identificar o que queremos:** $P(X \geq 5)$
+- **Usar o complemento:** $P(X \geq 5) = 1 - P(X \leq 4)$
+- **Calcular $P(X \leq 4)$:**
+  $$ P(X \leq 4) = P(X=0) + P(X=1) + P(X=2) + P(X=3) + P(X=4) $$
+- **Já temos os três primeiros:** 0,018315 + 0,07326 + 0,14652 = 0,238095
+- **Calcular $P(X = 3)$:** 0,19536 (calculado em A)
+- **Calcular $P(X = 4)$:**
+  - Substituir $k = 4$:
+    $$ P(X = 4) = \frac{e^{-4} \cdot 4^4}{4!} = \frac{0,018315 \cdot 256}{24} = 0,19536 $$
+- **Somar as probabilidades:**
+  $$ P(X \leq 4) = 0,018315 + 0,07326 + 0,14652 + 0,19536 + 0,19536 = 0,628815 $$
+- **Calcular $P(X \geq 5)$:**
+  $$ P(X \geq 5) = 1 - 0,628815 = 0,371185 \approx 37,12\% $$
+
+**Resposta:** A probabilidade de receber **pelo menos 5** chamadas em um minuto é de aproximadamente **37,12%**.
+</details>
+
+---
+
+**Analogia 2 — "O Estacionamento"**
+
+Em um estacionamento, entram em média **3 carros por hora** ($\lambda = 3$).
+
+<details>
+<summary>Situação A - Probabilidade de entrar exatamente 2 carros</summary>
+
+**Pergunta:** Qual a probabilidade de entrarem exatamente 2 carros em uma hora?
+
+**Resolução:**
+$$ P(X = 2) = \frac{e^{-3} \cdot 3^2}{2!} = \frac{0,049787 \cdot 9}{2} = 0,224041 \approx 22,40\% $$
+
+**Resposta:** **22,40%**.
+</details>
+
+<details>
+<summary>Situação B - Probabilidade de entrar no máximo 1 carro</summary>
+
+**Pergunta:** Qual a probabilidade de entrar **no máximo 1 carro** em uma hora?
+
+**Resolução:**
+- $P(X=0) = 0,049787$
+- $P(X=1) = 0,149361$
+- $P(X \leq 1) = 0,049787 + 0,149361 = 0,199148 \approx 19,91\%$
+
+**Resposta:** **19,91%**.
+</details>
+
+<details>
+<summary>Situação C - Probabilidade de entrar pelo menos 4 carros</summary>
+
+**Pergunta:** Qual a probabilidade de entrar **pelo menos 4 carros** em uma hora?
+
+**Resolução:**
+- $P(X=0) = 0,049787$
+- $P(X=1) = 0,149361$
+- $P(X=2) = 0,224041$
+- $P(X=3) = 0,224041$
+- $P(X \leq 3) = 0,647230$
+- $P(X \geq 4) = 1 - 0,647230 = 0,352770 \approx 35,28\%$
+
+**Resposta:** **35,28%**.
+</details>
+
+---
+
+**Analogia 3 — "O Pronto-Socorro"**
+
+Um pronto-socorro recebe em média **2 pacientes por hora** ($\lambda = 2$).
+
+<details>
+<summary>Situação A - Probabilidade de receber exatamente 1 paciente</summary>
+
+**Resolução:**
+$$ P(X = 1) = \frac{e^{-2} \cdot 2^1}{1!} = \frac{0,1353 \cdot 2}{1} = 0,2707 \approx 27,07\% $$
+
+**Resposta:** **27,07%**.
+</details>
+
+<details>
+<summary>Situação B: Probabilidade de receber no máximo 2 pacientes</summary>
+
+**Resolução:**
+- $P(X=0) = 0,1353$
+- $P(X=1) = 0,2707$
+- $P(X=2) = 0,2707$
+- $P(X \leq 2) = 0,1353 + 0,2707 + 0,2707 = 0,6767 \approx 67,67\%$
+
+**Resposta:** **67,67%**.
+</details>
+
+<details>
+<summary>Situação C: Probabilidade de receber pelo menos 3 pacientes</summary>
+
+**Resolução:**
+- $P(X \geq 3) = 1 - P(X \leq 2) = 1 - 0,6767 = 0,3233 \approx 32,33\%$
+
+**Resposta:** **32,33%**.
+</details>
+
+---
+
+**Analogia 4 — "O Site de Vendas"**
+
+Um site de vendas recebe em média **0,5 pedidos por minuto** ($\lambda = 0,5$).
+
+<details>
+<summary>Situação A: Probabilidade de receber exatamente 0 pedidos</summary>
+
+**Resolução:**
+$$ P(X = 0) = \frac{e^{-0,5} \cdot (0,5)^0}{0!} = 0,6065 \approx 60,65\% $$
+
+**Resposta:** **60,65%**.
+</details>
+
+<details>
+<summary>Situação B: Probabilidade de receber exatamente 1 pedido</summary>
+
+**Resolução:**
+$$ P(X = 1) = \frac{e^{-0,5} \cdot (0,5)^1}{1!} = 0,3033 \approx 30,33\% $$
+
+**Resposta:** **30,33%**.
+</details>
+
+<details>
+<summary>Situação C: Probabilidade de receber pelo menos 2 pedidos</summary>
+
+**Resolução:**
+- $P(X \geq 2) = 1 - P(X \leq 1)$
+- $P(X \leq 1) = 0,6065 + 0,3033 = 0,9098$
+- $P(X \geq 2) = 1 - 0,9098 = 0,0902 \approx 9,02\%$
+
+**Resposta:** **9,02%**.
+</details>
+
+---
+
+**Analogia 5 — "O Trânsito na Rodovia"**
+
+Em uma rodovia, passam em média **10 carros por minuto** ($\lambda = 10$).
+
+<details>
+<summary>Situação A: Probabilidade de passarem exatamente 8 carros</summary>
+
+**Resolução:**
+$$ P(X = 8) = \frac{e^{-10} \cdot 10^8}{8!} = \frac{0,0000454 \cdot 100.000.000}{40320} = 0,1126 \approx 11,26\% $$
+
+**Resposta:** **11,26%**.
+</details>
+
+<details>
+<summary>Situação B: Probabilidade de passarem no máximo 7 carros</summary>
+
+**Resolução (usando recorrência):**
+
+| $k$ | $P(X = k)$ | Probabilidade |
+| --- | --- | --- |
+| 0 | $e^{-10}$ | 0,0045% |
+| 1 | $0,0000454 \cdot 10/1 = 0,000454$ | 0,0454% |
+| 2 | $0,000454 \cdot 10/2 = 0,00227$ | 0,227% |
+| 3 | $0,00227 \cdot 10/3 = 0,00757$ | 0,757% |
+| 4 | $0,00757 \cdot 10/4 = 0,0189$ | 1,89% |
+| 5 | $0,0189 \cdot 10/5 = 0,0378$ | 3,78% |
+| 6 | $0,0378 \cdot 10/6 = 0,063$ | 6,30% |
+| 7 | $0,063 \cdot 10/7 = 0,09$ | 9,00% |
+
+**Soma:** $\approx 22,00\%$
+
+**Resposta:** **22,00%**.
+</details>
+
+---
+
+### 3. DE ONDE VEM A FÓRMULA DA POISSON? (DEDUÇÃO COMO LIMITE DA BINOMIAL)
+
+A distribuição de Poisson é obtida como o **limite** da distribuição Binomial quando:
+
+- $n \to \infty$ (número de tentativas tende ao infinito)
+- $p \to 0$ (probabilidade de sucesso tende a zero)
+- $np = \lambda$ (produto se mantém constante)
+
+**Dedução passo a passo:**
+
+Partimos da Binomial:
+$$ P(X = k) = \binom{n}{k} p^k (1-p)^{n-k} $$
+
+Substituímos $p = \lambda/n$:
+$$ P(X = k) = \frac{n!}{k!(n-k)!} \left( \frac{\lambda}{n} \right)^k \left( 1 - \frac{\lambda}{n} \right)^{n-k} $$
+
+Reorganizando:
+$$ P(X = k) = \frac{n(n-1)...(n-k+1)}{n^k} \cdot \frac{\lambda^k}{k!} \cdot \left( 1 - \frac{\lambda}{n} \right)^n \cdot \left( 1 - \frac{\lambda}{n} \right)^{-k} $$
+
+Tomando o limite $n \to \infty$:
+- $\frac{n(n-1)...(n-k+1)}{n^k} \to 1$
+- $\left( 1 - \frac{\lambda}{n} \right)^n \to e^{-\lambda}$
+- $\left( 1 - \frac{\lambda}{n} \right)^{-k} \to 1$
+
+Portanto:
+$$ P(X = k) = \frac{e^{-\lambda} \lambda^k}{k!} $$
+
+**Interpretação:** A Poisson é uma aproximação da Binomial para eventos raros ($p$ pequeno) em um grande número de tentativas ($n$ grande).
+
+### 4. FUNÇÃO DE PROBABILIDADE (FP)
+
+$$ P(X = k) = \frac{e^{-\lambda} \lambda^k}{k!}, \quad k = 0, 1, 2, 3, ... $$
+
+**Propriedades da FP:**
+
+1. **$0 \leq P(X = k) \leq 1$:** $e^{-\lambda} > 0$, $\lambda^k > 0$, $k! > 0$ ✅
+2. **$\sum_{k=0}^{\infty} P(X = k) = 1$:**
+   $$ \sum_{k=0}^{\infty} \frac{e^{-\lambda} \lambda^k}{k!} = e^{-\lambda} \sum_{k=0}^{\infty} \frac{\lambda^k}{k!} = e^{-\lambda} \cdot e^{\lambda} = 1 $$
+
+**Exemplo Ilustrativo — Poisson com $\lambda = 2$:**
+
+| $k$ | $P(X = k)$ | Cálculo | Probabilidade |
+| --- | --- | --- | --- |
+| 0 | $e^{-2} \cdot 2^0 / 0!$ | $0,1353 \cdot 1 / 1$ | 13,53% |
+| 1 | $e^{-2} \cdot 2^1 / 1!$ | $0,1353 \cdot 2 / 1$ | 27,07% |
+| 2 | $e^{-2} \cdot 2^2 / 2!$ | $0,1353 \cdot 4 / 2$ | 27,07% |
+| 3 | $e^{-2} \cdot 2^3 / 3!$ | $0,1353 \cdot 8 / 6$ | 18,04% |
+| 4 | $e^{-2} \cdot 2^4 / 4!$ | $0,1353 \cdot 16 / 24$ | 9,02% |
+| 5 | $e^{-2} \cdot 2^5 / 5!$ | $0,1353 \cdot 32 / 120$ | 3,61% |
+
+**Verificação da soma:** $0,1353 + 0,2707 + 0,2707 + 0,1804 + 0,0902 + 0,0361 + ... \approx 1$ ✅
+
+### 5. FUNÇÃO DE DISTRIBUIÇÃO (FD) — $F(x) = P(X \leq x)$
+
+A FD acumula as probabilidades da FP:
+
+$$ F(x) = P(X \leq x) = \sum_{k=0}^{\lfloor x \rfloor} \frac{e^{-\lambda} \lambda^k}{k!} $$
+
+**Exemplo Ilustrativo — Poisson com $\lambda = 2$:**
+
+| $x$ | $F(x) = P(X \leq x)$ | Cálculo |
+| --- | --- | --- |
+| $x < 0$ | 0 | — |
+| $0 \leq x < 1$ | 0,1353 | $P(X=0)$ |
+| $1 \leq x < 2$ | 0,4060 | $0,1353 + 0,2707$ |
+| $2 \leq x < 3$ | 0,6767 | $0,4060 + 0,2707$ |
+| $3 \leq x < 4$ | 0,8571 | $0,6767 + 0,1804$ |
+| $4 \leq x < 5$ | 0,9473 | $0,8571 + 0,0902$ |
+| $x \geq 5$ | 0,9834 | $0,9473 + 0,0361$ |
+
+### 6. VALOR ESPERADO (MÉDIA) — $E[X]$
+
+$$ E[X] = \sum_{k=0}^{\infty} k \cdot \frac{e^{-\lambda} \lambda^k}{k!} $$
+
+**Cálculo:**
+
+$$ E[X] = e^{-\lambda} \sum_{k=1}^{\infty} k \cdot \frac{\lambda^k}{k!} = e^{-\lambda} \sum_{k=1}^{\infty} \frac{\lambda^k}{(k-1)!} $$
+
+Fazendo $j = k-1$:
+$$ E[X] = e^{-\lambda} \lambda \sum_{j=0}^{\infty} \frac{\lambda^j}{j!} = e^{-\lambda} \lambda e^{\lambda} = \lambda $$
+
+**Exemplo:** Se $\lambda = 5$, $E[X] = 5$.
+
+### 7. VARIÂNCIA — $Var(X)$
+
+$$ Var(X) = E[X^2] - (E[X])^2 $$
+
+**Cálculo:**
+
+$$ E[X^2] = E[X(X-1)] + E[X] $$
+
+$$ E[X(X-1)] = e^{-\lambda} \lambda^2 \sum_{j=0}^{\infty} \frac{\lambda^j}{j!} = \lambda^2 $$
+
+Portanto:
+$$ E[X^2] = \lambda^2 + \lambda $$
+
+$$ Var(X) = (\lambda^2 + \lambda) - \lambda^2 = \lambda $$
+
+**Interpretação:** Na Poisson, a média e a variância são **iguais** a $\lambda$.
+
+### 8. FUNÇÃO GERATRIZ DE MOMENTOS (FGM) — $M_X(t)$
+
+$$ M_X(t) = E[e^{tX}] = e^{\lambda (e^t - 1)} $$
+
+### 9. PROPRIEDADES ESPECIAIS DA POISSON
+
+| Propriedade | Fórmula | Exemplo |
+| --- | --- | --- |
+| **Soma de Poissons** | $X \sim \text{Poisson}(\lambda_1)$, $Y \sim \text{Poisson}(\lambda_2)$ independentes → $X+Y \sim \text{Poisson}(\lambda_1 + \lambda_2)$ | Call center com duas filas: Poisson(2) + Poisson(3) = Poisson(5) |
+| **Fatoração da FGM** | $M_{X+Y}(t) = M_X(t) \cdot M_Y(t)$ | Usada para provar a propriedade acima. |
+| **Aproximação da Binomial** | Se $n \to \infty$, $p \to 0$, $np = \lambda$, então $\text{Binomial}(n,p) \to \text{Poisson}(\lambda)$ | Defeitos em lotes grandes. |
+| **Média = Variância** | $E[X] = Var(X) = \lambda$ | Útil para verificar se dados seguem uma Poisson. |
+
+### 10. TABELA DE PROBABILIDADES DE POISSON (RECORRÊNCIA)
+
+Para facilitar os cálculos, usamos a **fórmula de recorrência**:
+
+$$ \frac{P(X = k+1)}{P(X = k)} = \frac{\lambda}{k+1} $$
+
+**Exemplo Ilustrativo — Poisson com $\lambda = 3$:**
+
+| $k$ | $P(X = k)$ | Cálculo |
+| --- | --- | --- |
+| 0 | $e^{-3} \approx 0,0498$ | |
+| 1 | $0,0498 \cdot \frac{3}{1} = 0,1494$ | |
+| 2 | $0,1494 \cdot \frac{3}{2} = 0,2241$ | |
+| 3 | $0,2241 \cdot \frac{3}{3} = 0,2241$ | |
+| 4 | $0,2241 \cdot \frac{3}{4} = 0,1681$ | |
+| 5 | $0,1681 \cdot \frac{3}{5} = 0,1009$ | |
+| 6 | $0,1009 \cdot \frac{3}{6} = 0,0504$ | |
+
+### 11. APLICAÇÕES PRÁTICAS DA POISSON
+
+| Área | Exemplo | $\lambda$ |
+| --- | --- | --- |
+| **Call Center** | Número de chamadas por hora. | Taxa média de chamadas/hora. |
+| **Trânsito** | Número de carros que passam por um pedágio por minuto. | Taxa média de carros/minuto. |
+| **Acidentes** | Número de acidentes em uma rodovia por mês. | Taxa média de acidentes/mês. |
+| **Biologia** | Número de mutações em uma sequência de DNA. | Taxa média de mutações por unidade de comprimento. |
+| **Medicina** | Número de pacientes que chegam a um pronto-socorro por hora. | Taxa média de chegadas/hora. |
+| **Engenharia** | Número de falhas em um sistema por ano. | Taxa média de falhas/ano. |
+| **Física** | Número de partículas emitidas por uma fonte radioativa por segundo. | Taxa média de emissões/segundo. |
+| **Vendas** | Número de vendas em uma loja por dia. | Taxa média de vendas/dia. |
+
+## 📝 EXERCÍCIOS RESOLVIDOS PASSO A PASSO
+
+<details>
+<summary>📗 Exercício 1 — Poisson Básica</summary>
+
+**Enunciado:** Seja $X \sim \text{Poisson}(\lambda = 3)$. Calcule:
+
+a) $P(X = 2)$
+b) $P(X \leq 2)$
+c) $E[X]$
+d) $Var(X)$
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**a) $P(X = 2)$:**
+$$ P(X = 2) = \frac{e^{-3} \cdot 3^2}{2!} = \frac{0,049787 \cdot 9}{2} = 0,224041 \approx 22,41\% $$
+
+**b) $P(X \leq 2) = P(X=0) + P(X=1) + P(X=2)$:**
+- $P(X=0) = 0,049787$
+- $P(X=1) = 0,149361$
+- $P(X=2) = 0,224041$
+- Soma: $0,423189 \approx 42,32\%$
+
+**c) $E[X] = \lambda = 3$**
+
+**d) $Var(X) = \lambda = 3$**
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Call Center</summary>
+
+**Enunciado:** Um call center recebe em média 4 chamadas por minuto. Qual a probabilidade de:
+
+a) Receber exatamente 3 chamadas em um minuto?
+b) Receber no máximo 2 chamadas em um minuto?
+c) Receber pelo menos 5 chamadas em um minuto?
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**Parâmetro:** $\lambda = 4$
+
+**a)** $P(X = 3) = 0,19536 \approx 19,54\%$
+
+**b)** $P(X \leq 2) = 0,238095 \approx 23,81\%$
+
+**c)** $P(X \geq 5) = 1 - P(X \leq 4) = 1 - 0,628815 = 0,371185 \approx 37,12\%$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Soma de Poissons</summary>
+
+**Enunciado:** Seja $X \sim \text{Poisson}(\lambda_1 = 2)$ e $Y \sim \text{Poisson}(\lambda_2 = 3)$ independentes. Qual a distribuição de $Z = X + Y$?
+
+**Resolução:** $Z \sim \text{Poisson}(5)$
+
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Aproximação da Binomial pela Poisson</summary>
+
+**Enunciado:** Uma fábrica produz peças com taxa de defeito de 1%. Em um lote de 100 peças, qual a probabilidade de encontrar **exatamente 2** peças defeituosas? Use:
+
+a) Binomial exata.
+b) Aproximação pela Poisson.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**a) Binomial:** $P(X = 2) \approx 18,49\%$
+
+**b) Poisson:** $\lambda = 100 \cdot 0,01 = 1$, $P(X = 2) = \frac{e^{-1} \cdot 1^2}{2!} = 0,18395 \approx 18,40\%$
+
+**Comparação:** Excelente aproximação.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Valor Esperado Condicional</summary>
+
+**Enunciado:** Seja $X \sim \text{Poisson}(\lambda)$. Calcule $E[X | X \geq 1]$.
+
+**Resolução:** $$ E[X | X \geq 1] = \frac{\lambda}{1 - e^{-\lambda}} $$
+
+**Exemplo:** Para $\lambda = 2$: $E[X | X \geq 1] = \frac{2}{1 - e^{-2}} = \frac{2}{0,8647} \approx 2,31$
+
+</details>
+
+## 🎯 DESAFIO FINAL
+
+**Enunciado:** Seja $X \sim \text{Poisson}(\lambda)$. Prove que:
+
+a) A moda da Poisson é $\lfloor \lambda \rfloor$ se $\lambda$ não é inteiro, e $\lambda - 1$ e $\lambda$ se $\lambda$ é inteiro.
+b) A assimetria é $1/\sqrt{\lambda}$.
+c) A curtose excedente é $1/\lambda$.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**a) Moda:** Usando a razão de recorrência $\frac{P(X = k+1)}{P(X = k)} = \frac{\lambda}{k+1}$, a função cresce enquanto $k < \lambda - 1$. Portanto, a moda é $\lfloor \lambda \rfloor$ (ou dois modos se $\lambda$ inteiro).
+
+**b) Assimetria:** $\frac{E[(X - \lambda)^3]}{\lambda^{3/2}} = \frac{1}{\sqrt{\lambda}}$
+
+**c) Curtose excedente:** $\frac{E[(X - \lambda)^4]}{\lambda^2} - 3 = \frac{1}{\lambda}$
+
+</details>
+
+> *A distribuição de Poisson é a ferramenta ideal para modelar eventos raros e contagens em intervalos fixos. Sua propriedade de média = variância = $\lambda$ a torna única e extremamente útil em ciência, engenharia e negócios.*

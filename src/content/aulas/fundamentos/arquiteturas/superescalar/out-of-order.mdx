@@ -1,0 +1,406 @@
+# EXECUÇÃO FORA DE ORDEM (OUT-OF-ORDER)
+
+## 1. INTRODUÇÃO
+
+Nas últimas cinco aulas, estudamos o pipeline e como ele executa instruções em estágios. Vimos que, mesmo com forwarding, stalls e branch prediction, o pipeline ainda tem uma limitação fundamental: ele executa instruções **na ordem em que aparecem no programa**.<br><br>
+
+Mas e se a CPU pudesse executar instruções **fora de ordem**? Se houver uma instrução que precisa esperar (por exemplo, um load que ainda não chegou da memória), a CPU poderia simplesmente **pular para a próxima instrução** e executá-la, se ela estiver pronta. Isso é a **execução fora de ordem (Out-of-Order Execution)**.<br><br>
+
+Imagine que você está cozinhando várias receitas ao mesmo tempo. Uma receita pede um molho que leva 10 minutos para ferver. Em vez de ficar parado esperando, você começa a preparar outra receita que não depende desse molho. Quando o molho fica pronto, você volta a ele. É exatamente isso que a execução fora de ordem faz com as instruções da CPU.<br><br>
+
+Nesta aula, vamos estudar a execução fora de ordem: o que é, como funciona, quais são seus componentes (ROB, Reservation Stations), e como ela transforma o desempenho dos processadores modernos.
+
+## 2. O QUE É EXECUÇÃO FORA DE ORDEM?
+
+### 2.1 Definição
+
+> "Execução fora de ordem (Out-of-Order Execution) é uma técnica onde a CPU reordena a execução de instruções para maximizar o uso das unidades funcionais, executando instruções que estão prontas enquanto outras aguardam dados, sem alterar o resultado final do programa."
+
+### 2.2 Características principais
+
+| Característica | Descrição |
+|---------|----------|
+| **O que faz** | Executa instruções em ordem diferente da do programa |
+| **Como mantém correção** | Preserva a ordem original na finalização (commit) |
+| **Componentes principais** | ROB (Reorder Buffer), Reservation Stations |
+| **Vantagem** | Melhor uso das unidades funcionais, maior throughput |
+| **Desafio** | Complexidade, consumo de energia, área do chip |
+
+### 2.3 Analogia
+
+A execução fora de ordem é como um **chef de cozinha com várias receitas**. Se uma receita precisa esperar o forno, o chef não fica parado — ele começa outra receita que não precisa do forno. No final, ele serve todos os pratos na ordem correta (entrada, prato principal, sobremesa), mesmo que tenha preparado a sobremesa antes do prato principal.
+
+## 3. POR QUE EXECUTAR FORA DE ORDEM?
+
+### 3.1 O problema da execução em ordem
+
+Em um pipeline in-order (execução em ordem), as instruções são executadas na ordem do programa. Se uma instrução stall (ex: load que não chegou), **todas as instruções seguintes também stall**.
+
+**Exemplo:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+I1: LDR R1, [R2]     ; Load demora 100 ciclos (cache miss)
+I2: ADD R3, R4, R5   ; Independente de I1, mas precisa esperar!
+I3: SUB R6, R7, R8   ; Independente de I1, mas precisa esperar!
+</pre>
+
+**Em ordem:** I1 → stall → I2 e I3 esperam mesmo estando prontas.
+
+**Fora de ordem:** I1 → stall, mas I2 e I3 executam enquanto I1 espera.
+
+### 3.2 O ganho de desempenho
+
+| Cenário | Em ordem | Fora de ordem | Ganho |
+|---------|---------|---------|---------|
+| Load com cache miss | 100 ciclos perdidos | 0 ciclos perdidos (executa outras) | 100 ciclos |
+| Operação longa (divisão) | 20 ciclos perdidos | 0 ciclos perdidos | 20 ciclos |
+| Vários stalls curtos | Acumula | Espalha | Significativo |
+
+**Exemplo prático:** Processadores modernos executam 3-4 instruções por ciclo em média. Sem out-of-order, esse número seria muito menor.
+
+## 4. COMO FUNCIONA A EXECUÇÃO FORA DE ORDEM?
+
+### 4.1 Os três estágios do Out-of-Order
+
+A execução fora de ordem tem três estágios principais:
+
+<details>
+<summary> **Estágios do Out-of-Order**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+┌─────────────────────────────────────────────────────────────┐
+│                                                             │
+│   1. DECODIFICAÇÃO E RENOMEIAÇÃO                          │
+│      (Decode & Rename)                                     │
+│      → Decodifica instruções                               │
+│      → Renomeia registradores para evitar dependências    │
+│      → Coloca em Reservation Stations                      │
+│                                                             │
+│   2. ESCALONAMENTO (Schedule / Issue)                      │
+│      → Escolhe instruções prontas para executar           │
+│      → Envia para unidades funcionais                     │
+│      → Executa fora de ordem                              │
+│                                                             │
+│   3. COMMIT (Retirada / Graduation)                        │
+│      → Ordena resultados no ROB (Reorder Buffer)         │
+│      → Escreve em registradores na ordem original        │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+    </pre>
+</details>
+
+### 4.2 Componentes principais
+
+| Componente | Função |
+|---------|----------|
+| **Reservation Stations** | Filas de instruções aguardando execução |
+| **ROB (Reorder Buffer)** | Mantém resultados em ordem para commit |
+| **Register Renaming** | Remove dependências WAR/WAW |
+| **Unidades Funcionais** | Executam instruções (ULA, multiplicador, etc.) |
+
+### 4.3 Diagrama: Out-of-Order Execution
+
+<details>
+<summary> **Fluxo da execução fora de ordem**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+┌─────────────────────────────────────────────────────────────┐
+│                                                             │
+│   Instruções (ordem original):                              │
+│   I1: LDR R1, [R2]                                         │
+│   I2: ADD R3, R4, R5                                       │
+│   I3: SUB R6, R1, R7  (depende de I1)                    │
+│   I4: MUL R8, R9, R10                                      │
+│                                                             │
+│   ┌─────────────────────────────────────────────────────┐  │
+│   │  RESERVATION STATIONS                              │  │
+│   │                                                     │  │
+│   │  I1: LDR R1, [R2]  → Aguarda R2                   │  │
+│   │  I2: ADD R3, R4, R5 → PRONTO! (executa agora)    │  │
+│   │  I3: SUB R6, R1, R7 → Aguarda R1                  │  │
+│   │  I4: MUL R8, R9, R10 → PRONTO! (executa agora)    │  │
+│   │                                                     │  │
+│   └─────────────────────────────────────────────────────┘  │
+│                          │                                  │
+│                          ▼                                  │
+│   ┌─────────────────────────────────────────────────────┐  │
+│   │  UNIDADES FUNCIONAIS                              │  │
+│   │                                                     │  │
+│   │  Unidade 1: I2 (ADD)                              │  │
+│   │  Unidade 2: I4 (MUL)                             │  │
+│   │  Unidade 3: I1 (LDR) — demora mais              │  │
+│   │                                                     │  │
+│   └─────────────────────────────────────────────────────┘  │
+│                          │                                  │
+│                          ▼                                  │
+│   ┌─────────────────────────────────────────────────────┐  │
+│   │  ROB (Reorder Buffer)                             │  │
+│   │                                                     │  │
+│   │  Posição 1: I1 (LDR) → [aguardando resultado]     │  │
+│   │  Posição 2: I2 (ADD) → [PRONTO! R3 = ...]        │  │
+│   │  Posição 3: I3 (SUB) → [aguardando R1]           │  │
+│   │  Posição 4: I4 (MUL) → [PRONTO! R8 = ...]       │  │
+│   │                                                     │  │
+│   └─────────────────────────────────────────────────────┘  │
+│                          │                                  │
+│                          ▼                                  │
+│   Commit na ordem original:                               │
+│   I1 → I2 → I3 → I4                                      │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+    </pre>
+</details>
+
+## 5. REGISTER RENAMING — ELIMINANDO DEPENDÊNCIAS FALSAS
+
+### 5.1 O problema das dependências falsas (WAR e WAW)
+
+No pipeline, existem dois tipos de dependências que não são "verdadeiras":
+
+| Tipo | O que é | Exemplo |
+|---------|---------|---------|
+| **WAR (Write After Read)** | Instrução escreve em registrador que outra leu | `SUB R4, R1, R5` / `ADD R1, R2, R3` |
+| **WAW (Write After Write)** | Duas instruções escrevem no mesmo registrador | `ADD R1, R2, R3` / `SUB R1, R4, R5` |
+
+**Problema:** Essas dependências são "falsas" — não há um valor real sendo passado entre as instruções. Elas existem apenas porque as instruções usam o mesmo registrador.
+
+### 5.2 Como o register renaming resolve
+
+O register renaming **renomeia** os registradores físicos, mapeando registradores lógicos (ex: R1) para registradores físicos diferentes.
+
+**Exemplo:**
+
+<details>
+<summary> **Register Renaming**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+Antes do renaming:
+I1: ADD R1, R2, R3   ; Escreve em R1
+I2: SUB R4, R1, R5   ; Lê R1 (RAW - verdadeira)
+I3: MUL R1, R6, R7   ; Escreve em R1 (WAW - falsa)
+
+Depois do renaming:
+I1: ADD P1, R2, R3   ; Mapeia R1 → P1
+I2: SUB R4, P1, R5   ; Lê P1 (RAW - permanece)
+I3: MUL P2, R6, R7   ; Mapeia R1 → P2 (WAW eliminada!)
+    </pre>
+</details>
+
+**Resultado:** I2 e I3 não têm mais conflito por R1. Podem executar em paralelo!
+
+### 5.3 Rename Table
+
+A CPU mantém uma tabela de renomeação:
+
+| Registrador Lógico | Registrador Físico Atual |
+|---------|----------|
+| R1 | P1 (I1 escreve), P2 (I3 escreve) |
+| R2 | P3 |
+| R3 | P4 |
+
+## 6. REORDER BUFFER (ROB) — MANTENDO A ORDEM
+
+### 6.1 O que é o ROB?
+
+O ROB (Reorder Buffer) é um buffer circular que mantém os resultados das instruções na **ordem original do programa**, permitindo que a CPU finalize (commit) as instruções em ordem.
+
+### 6.2 Entradas do ROB
+
+Cada entrada no ROB contém:
+
+| Campo | Descrição |
+|---------|----------|
+| **Instrução** | A instrução que foi executada |
+| **Valor** | O resultado da execução |
+| **Destino** | O registrador destino |
+| **Pronto** | Se a instrução já foi executada |
+| **Exceção** | Se houve um erro |
+
+### 6.3 Como o ROB funciona
+
+1. **Alocar:** Quando uma instrução é decodificada, uma entrada no ROB é alocada.
+2. **Executar:** A instrução executa fora de ordem.
+3. **Escrever resultado:** O resultado é armazenado no ROB (não no registrador ainda).
+4. **Commit:** Na ordem original, os resultados são escritos nos registradores.
+
+**Exemplo:**
+
+<details>
+<summary> **ROB em ação**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+ROB (ordem original):
+Posição 1: I1 (LDR) → não pronto ainda
+Posição 2: I2 (ADD) → PRONTO! (aguarda commit)
+Posição 3: I3 (SUB) → não pronto (depende de I1)
+Posição 4: I4 (MUL) → PRONTO! (aguarda commit)
+
+Commit: I1 → I2 → I3 → I4 (ordem original)
+    </pre>
+</details>
+
+## 7. VANTAGENS E DESVANTAGENS
+
+### 7.1 Vantagens
+
+| Vantagem | Explicação |
+|---------|----------|
+| **Melhor uso de unidades funcionais** | Unidades não ficam ociosas esperando dados |
+| **Maior throughput** | Mais instruções concluídas por ciclo |
+| **Tolerância a latências** | Esconde latências de cache e operações longas |
+| **Especulação** | Base para execução especulativa |
+
+### 7.2 Desvantagens
+
+| Desvantagem | Explicação |
+|---------|----------|
+| **Complexidade** | Muito mais difícil de projetar e verificar |
+| **Consumo de energia** | Mais transistores → mais energia |
+| **Área do chip** | ROB, reservation stations ocupam espaço |
+| **Previsão errada** | Precisa descartar resultados e rollback |
+
+## 8. APLICAÇÕES REAIS
+
+| Processador | Out-of-Order? | Detalhes |
+|---------|---------|---------|
+| **Intel Core i9** | Sim | ROB com ~224 entradas, 6-8 unidades funcionais |
+| **AMD Ryzen** | Sim | ROB com ~192 entradas, 6 unidades funcionais |
+| **ARM Cortex-A76** | Sim | ROB com ~128 entradas, 4-5 unidades |
+| **ARM Cortex-M** | Não | In-order (simples) |
+| **Microcontroladores** | Não | In-order (baixa potência) |
+
+## 9. EXERCÍCIOS
+
+<details>
+<summary>📗 Exercício 1 — O que é Out-of-Order? (Fácil)</summary>
+
+**Enunciado:** Defina o que é execução fora de ordem (Out-of-Order Execution).
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Execução fora de ordem é uma técnica onde a CPU reordena a execução de instruções para maximizar o uso das unidades funcionais, executando instruções que estão prontas enquanto outras aguardam dados.
+
+**Explicação:** A ordem de execução pode ser diferente da ordem do programa, mas os resultados são finalizados na ordem original (commit).
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Por que executar fora de ordem? (Fácil)</summary>
+
+**Enunciado:** Qual o principal benefício da execução fora de ordem?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Melhor uso das unidades funcionais, pois instruções independentes podem executar enquanto outras stalls.
+
+**Explicação:** Em vez de esperar uma instrução stall, a CPU executa outras instruções prontas.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — O que é ROB? (Fácil)</summary>
+
+**Enunciado:** O que significa ROB e qual sua função?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** ROB significa Reorder Buffer (Buffer de Reordenação).
+
+**Função:** Mantém os resultados das instruções na ordem original do programa, permitindo que a CPU finalize (commit) as instruções em ordem.
+
+**Explicação:** Sem o ROB, a CPU não saberia como ordenar os resultados para que o programa funcionasse corretamente.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Register Renaming (Médio)</summary>
+
+**Enunciado:** Explique o que é register renaming e qual problema ele resolve.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Register renaming é uma técnica onde registradores lógicos são mapeados para registradores físicos diferentes.
+
+**Problema resolvido:** Elimina dependências falsas (WAR e WAW), permitindo que instruções executem em paralelo sem conflito.
+
+**Exemplo:** Duas instruções que escrevem em R1 são mapeadas para registradores físicos diferentes (P1 e P2).
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Reservation Stations (Médio)</summary>
+
+**Enunciado:** O que são Reservation Stations e qual sua função?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Reservation Stations são filas de instruções aguardando execução. Cada instrução fica em uma reservation station até que todos os seus operandos estejam disponíveis.
+
+**Função:** Gerenciar instruções prontas para executar e enviá-las para as unidades funcionais disponíveis.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Out-of-Order vs In-Order (Médio)</summary>
+
+**Enunciado:** Compare execução in-order e out-of-order em termos de desempenho e complexidade.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+- **In-order:** Instruções executam na ordem do programa. Simples, barato, mas com stalls frequentes.
+- **Out-of-order:** Instruções executam quando prontas, independente da ordem. Complexo, caro, mas com muito maior throughput.
+
+**Conclusão:** Out-of-order é usado em processadores de alto desempenho; in-order em sistemas embarcados e de baixa potência.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — Reordenando instruções (Difícil)</summary>
+
+**Enunciado:** Dado o código abaixo, mostre como a CPU out-of-order poderia reordenar a execução:
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+I1: LDR R1, [R2]     ; Load (demora 100 ciclos)
+I2: ADD R3, R4, R5   ; Independente
+I3: SUB R6, R1, R7   ; Depende de I1
+I4: MUL R8, R9, R10  ; Independente
+</pre>
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+- **Ordem original:** I1 → I2 → I3 → I4
+- **Ordem de execução:** I2 → I4 → I1 → I3 (ou I1 inicia, mas I2 e I4 executam enquanto I1 espera)
+
+**Explicação:**
+1. I1 inicia o load (demora 100 ciclos).
+2. I2 e I4 são independentes e executam imediatamente.
+3. I3 espera I1 terminar (depende de R1).
+4. Quando I1 termina, I3 executa.
+
+**Resultado:** I2 e I4 não perderam tempo esperando I1.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — Commit vs Execute (Desafio)</summary>
+
+**Enunciado:** Qual a diferença entre execução e commit em um processador out-of-order? Por que o commit é importante?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+- **Execute:** A CPU executa a instrução fora de ordem, calculando o resultado.
+- **Commit:** A CPU escreve o resultado no registrador final, **na ordem original do programa**.
+
+**Importância do commit:** Preserva a semântica do programa. Se uma instrução causa uma exceção, a CPU pode descartar instruções que estavam à frente na execução. Se o commit fosse fora de ordem, o estado do programa ficaria incorreto.
+
+**Exemplo:** Se I3 causa uma exceção, a CPU pode descartar I4 (que executou antes), porque I4 ainda não foi commitada.
+</details>
+</details>
+
+> A execução fora de ordem liberta a CPU da tirania da ordem do programa. Com ROB, reservation stations e register renaming, ela executa instruções que estão prontas enquanto outras esperam, maximizando o uso das unidades funcionais. O resultado é um processador que, mesmo com latências de memória e operações longas, mantém alto throughput e desempenho. A execução fora de ordem é uma das técnicas mais importantes dos processadores modernos. Ela transforma a CPU de uma máquina que executa uma instrução por vez em uma máquina que executa várias instruções simultaneamente, mesmo que estejam em ordem diferente. É o coração dos processadores de alto desempenho — Intel, AMD, ARM Cortex-A — e a razão pela qual eles podem executar bilhões de instruções por segundo.

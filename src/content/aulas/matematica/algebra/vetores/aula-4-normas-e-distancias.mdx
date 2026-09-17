@@ -1,0 +1,520 @@
+# NORMAS E DISTÂNCIAS
+
+## 1. Norma de um Vetor
+
+### 1.1 Definição Formal de Norma
+
+Uma **norma** em um espaço vetorial $V$ sobre $\mathbb{R}$ é uma função:
+
+$$
+\| \cdot \|: V \to \mathbb{R}
+$$
+
+que satisfaz, para todos $\vec{u}, \vec{v} \in V$ e $c \in \mathbb{R}$:
+
+| Propriedade | Condição |
+|-------------|----------|
+| **Positividade** | $\|\vec{v}\| \geq 0$ e $\|\vec{v}\| = 0 \iff \vec{v} = \vec{0}$ |
+| **Homogeneidade** | $\|c\vec{v}\| = |c| \cdot \|\vec{v}\|$ |
+| **Desigualdade Triangular** | $\|\vec{u} + \vec{v}\| \leq \|\vec{u}\| + \|\vec{v}\|$ |
+
+A norma generaliza a noção de **comprimento** ou **magnitude** de um vetor.
+
+## 2. Normas Mais Comuns
+
+### 2.1 Norma Euclidiana (Norma $L^2$)
+
+A norma mais utilizada, também chamada de **norma euclidiana** ou **norma 2**:
+
+$$
+\|\vec{v}\|_2 = \sqrt{\sum_{i=1}^{n} v_i^2} = \sqrt{\vec{v} \cdot \vec{v}}
+$$
+
+**Exemplo:**
+
+$$
+\vec{v} = (3, -2, 5)
+$$
+
+$$
+\|\vec{v}\|_2 = \sqrt{3^2 + (-2)^2 + 5^2} = \sqrt{9 + 4 + 25} = \sqrt{38} \approx 6.164
+$$
+
+### 2.2 Norma $L^1$ (Norma Manhattan)
+
+Também chamada de **norma da soma absoluta**:
+
+$$
+\|\vec{v}\|_1 = \sum_{i=1}^{n} |v_i|
+$$
+
+**Exemplo:**
+
+$$
+\vec{v} = (3, -2, 5)
+$$
+
+$$
+\|\vec{v}\|_1 = |3| + |-2| + |5| = 3 + 2 + 5 = 10
+$$
+
+**Interpretação geométrica:** A distância que você percorreria em uma cidade quarteirões (Manhattan) — andando apenas na horizontal e vertical.
+
+### 2.3 Norma $L^\infty$ (Norma do Máximo)
+
+$$
+\|\vec{v}\|_\infty = \max_{1 \leq i \leq n} |v_i|
+$$
+
+**Exemplo:**
+
+$$
+\vec{v} = (3, -2, 5)
+$$
+
+$$
+\|\vec{v}\|_\infty = \max\{3, 2, 5\} = 5
+$$
+
+### 2.4 Norma $L^p$ (Generalização)
+
+Para qualquer $p \geq 1$:
+
+$$
+\|\vec{v}\|_p = \left( \sum_{i=1}^{n} |v_i|^p \right)^{1/p}
+$$
+
+Casos especiais:
+- $p = 1$: Norma $L^1$
+- $p = 2$: Norma Euclidiana
+- $p = \infty$: Norma do máximo (limite quando $p \to \infty$)
+
+## 3. Vetor Unitário (Normalização)
+
+### 3.1 Definição
+
+Um vetor $\vec{v}$ é dito **unitário** se sua norma é igual a 1:
+
+$$
+\|\vec{v}\| = 1
+$$
+
+### 3.2 Normalização de um Vetor
+
+Dado um vetor $\vec{v} \neq \vec{0}$, o vetor unitário na mesma direção é:
+
+$$
+\hat{v} = \frac{\vec{v}}{\|\vec{v}\|}
+$$
+
+**Exemplo:**
+
+$$
+\vec{v} = (3, 4) \quad \Rightarrow \quad \|\vec{v}\|_2 = \sqrt{3^2 + 4^2} = \sqrt{9 + 16} = \sqrt{25} = 5
+$$
+
+$$
+\hat{v} = \left( \frac{3}{5}, \frac{4}{5} \right) = (0.6, 0.8)
+$$
+
+Verificação: $\sqrt{0.6^2 + 0.8^2} = \sqrt{0.36 + 0.64} = \sqrt{1} = 1$ ✓
+
+**Aplicação:** Normalização é essencial em Machine Learning para garantir que diferentes características estejam na mesma escala (pré-processamento de dados).
+
+## 4. Distância entre Vetores
+
+### 4.1 Definição Formal
+
+A **distância** entre dois vetores $\vec{u}, \vec{v} \in \mathbb{R}^n$ é definida como a norma da diferença:
+
+$$
+d(\vec{u}, \vec{v}) = \|\vec{u} - \vec{v}\|
+$$
+
+### 4.2 Distância Euclidiana (Distância $L^2$)
+
+$$
+d_2(\vec{u}, \vec{v}) = \|\vec{u} - \vec{v}\|_2 = \sqrt{\sum_{i=1}^{n} (u_i - v_i)^2}
+$$
+
+**Exemplo:**
+
+$$
+\vec{u} = (1, 2), \quad \vec{v} = (4, 6)
+$$
+
+$$
+d_2(\vec{u}, \vec{v}) = \sqrt{(1-4)^2 + (2-6)^2} = \sqrt{(-3)^2 + (-4)^2} = \sqrt{9 + 16} = \sqrt{25} = 5
+$$
+
+### 4.3 Distância Manhattan (Distância $L^1$)
+
+$$
+d_1(\vec{u}, \vec{v}) = \|\vec{u} - \vec{v}\|_1 = \sum_{i=1}^{n} |u_i - v_i|
+$$
+
+**Exemplo:**
+
+$$
+\vec{u} = (1, 2), \quad \vec{v} = (4, 6)
+$$
+
+$$
+d_1(\vec{u}, \vec{v}) = |1-4| + |2-6| = 3 + 4 = 7
+$$
+
+**Interpretação:** É a distância percorrida andando apenas na horizontal e vertical (como quarteirões de uma cidade).
+
+### 4.4 Distância de Chebyshev (Distância $L^\infty$)
+
+$$
+d_\infty(\vec{u}, \vec{v}) = \|\vec{u} - \vec{v}\|_\infty = \max_{1 \leq i \leq n} |u_i - v_i|
+$$
+
+**Exemplo:**
+
+$$
+\vec{u} = (1, 2), \quad \vec{v} = (4, 6)
+$$
+
+$$
+d_\infty(\vec{u}, \vec{v}) = \max\{|1-4|, |2-6|\} = \max\{3, 4\} = 4
+$$
+
+## 5. Exemplos Lúdicos para Fixação
+
+### Exemplo 1 – A distância entre duas mochilas
+
+João tem: $\vec{joão} = (3, 2, 1, 5)$ → (cadernos, livros, estojo, canetas)
+
+Maria tem: $\vec{maria} = (2, 4, 1, 3)$ → (cadernos, livros, estojo, canetas)
+
+**Distância Euclidiana (L²):**
+
+$$
+d_2(\vec{joão}, \vec{maria}) = \sqrt{(3-2)^2 + (2-4)^2 + (1-1)^2 + (5-3)^2}
+$$
+
+$$
+d_2(\vec{joão}, \vec{maria}) = \sqrt{1 + 4 + 0 + 4} = \sqrt{9} = 3
+$$
+
+
+**Distância Manhattan (L¹):**
+
+$$
+d_1(\vec{joão}, \vec{maria}) = |3-2| + |2-4| + |1-1| + |5-3| = 1 + 2 + 0 + 2 = 5
+$$
+
+**Interpretação:** A distância Euclidiana (3) e Manhattan (5) medem quão **diferentes** são as mochilas. Quanto menor a distância, mais parecidas.
+
+### Exemplo 2 – O tamanho da mochila (Norma)
+
+João tem: $\vec{joão} = (3, 2, 1, 5)$
+
+**Norma L² (Euclidiana):**
+
+$$
+\|\vec{joão}\|_2 = \sqrt{3^2 + 2^2 + 1^2 + 5^2} = \sqrt{9 + 4 + 1 + 25} = \sqrt{39} \approx 6.245
+$$
+
+**Norma L¹ (Manhattan):**
+
+$$
+\|\vec{joão}\|_1 = 3 + 2 + 1 + 5 = 11
+$$
+
+**Interpretação:** A norma mede o "tamanho total" da mochila — quanto maior a norma, mais materiais ele tem (em termos de quantidade ou importância).
+
+### Exemplo 3 – As notas do João e da Maria
+
+João: $\vec{joão} = (8.5, 7.0, 9.2)$ → (Matemática, Português, História)
+Maria: $\vec{maria} = (7.0, 8.0, 8.5)$
+
+**Distância Euclidiana:**
+
+$$
+d_2 = \sqrt{(8.5-7.0)^2 + (7.0-8.0)^2 + (9.2-8.5)^2}
+$$
+
+$$
+= \sqrt{1.5^2 + (-1.0)^2 + 0.7^2} = \sqrt{2.25 + 1.0 + 0.49} = \sqrt{3.74} \approx 1.934
+$$
+
+**Interpretação:** A distância entre as notas deles é pequena (1.934) — eles têm desempenhos parecidos.
+
+## 6. Propriedades das Distâncias
+
+Para quaisquer $\vec{u}, \vec{v}, \vec{w} \in \mathbb{R}^n$, a distância $d$ satisfaz:
+
+| Propriedade | Condição |
+|-------------|----------|
+| **Não negatividade** | $d(\vec{u}, \vec{v}) \geq 0$ e $d(\vec{u}, \vec{v}) = 0 \iff \vec{u} = \vec{v}$ |
+| **Simetria** | $d(\vec{u}, \vec{v}) = d(\vec{v}, \vec{u})$ |
+| **Desigualdade Triangular** | $d(\vec{u}, \vec{v}) \leq d(\vec{u}, \vec{w}) + d(\vec{w}, \vec{v})$ |
+
+## 7. Aplicação Direta na Tese
+
+### 7.1 Regularização em Machine Learning
+
+Em modelos de regressão, adicionamos penalidades à função de perda para evitar overfitting:
+
+- **Regularização L2 (Ridge):** $\lambda \|\vec{w}\|_2^2 = \lambda \sum w_i^2$
+- **Regularização L1 (Lasso):** $\lambda \|\vec{w}\|_1 = \lambda \sum |w_i|$
+
+**Interpretação:** A norma L2 penaliza pesos grandes (quadraticamente), enquanto a norma L1 induz esparsidade (força alguns pesos a zero).
+
+### 7.2 KNN (K-Nearest Neighbors)
+
+O algoritmo KNN classifica um novo ponto com base na **distância** para os pontos já conhecidos:
+
+1. Calcula a distância (geralmente Euclidiana) do novo ponto para todos os pontos do conjunto de treino.
+2. Seleciona os K pontos mais próximos.
+3. Atribui a classe mais frequente entre eles.
+
+**Exemplo:** Classificar um novo cliente como "bom" ou "ruim" com base na distância para clientes conhecidos.
+
+### 7.3 Clusterização (K-Means)
+
+O algoritmo K-Means agrupa dados em K clusters minimizando a **distância** dos pontos ao centroide do cluster:
+
+$$
+J = \sum_{j=1}^{K} \sum_{\vec{x} \in C_j} \|\vec{x} - \vec{\mu}_j\|_2^2
+$$
+
+**Interpretação:** Minimiza a soma das distâncias Euclidianas dentro de cada cluster.
+
+### 7.4 Normalização de Dados (Pré-processamento)
+
+Em Machine Learning, características com escalas diferentes podem distorcer as distâncias.
+
+**Solução:** Normalizar cada característica para que tenha média 0 e variância 1 (Z-score normalization):
+
+$$
+x'_{i} = \frac{x_i - \mu_i}{\sigma_i}
+$$
+
+**Interpretação:** Transforma os dados para que todas as características tenham a mesma "escala" — essencial para KNN, SVM e redes neurais.
+
+### 7.5 Convergência em Federação de Aprendizado
+
+No Federated Learning, o servidor monitora a **distância** entre o modelo global e os modelos locais para avaliar a convergência:
+
+$$
+\text{Distância} = \|\vec{w}_{global} - \vec{w}_{local}\|_2
+$$
+
+Se a distância for pequena, os modelos estão convergindo.
+
+## 8. Resumo Estruturado
+
+| Conceito | Definição | Fórmula |
+|----------|-----------|---------|
+| **Norma L²** | Raiz da soma dos quadrados | $\|\vec{v}\|_2 = \sqrt{\sum v_i^2}$ |
+| **Norma L¹** | Soma dos valores absolutos | $\|\vec{v}\|_1 = \sum |v_i|$ |
+| **Norma L∞** | Máximo dos valores absolutos | $\|\vec{v}\|_\infty = \max |v_i|$ |
+| **Vetor Unitário** | Norma igual a 1 | $\hat{v} = \vec{v} / \|\vec{v}\|$ |
+| **Distância L²** | Raiz da soma dos quadrados das diferenças | $d_2 = \sqrt{\sum (u_i - v_i)^2}$ |
+| **Distância L¹** | Soma dos valores absolutos das diferenças | $d_1 = \sum |u_i - v_i|$ |
+
+## 9. Exercícios Propostos
+
+<details>
+<summary>📗 Exercício 1 (Cálculo de Normas)</summary>
+
+**Enunciado:** Dado $\vec{v} = (1, -3, 4, 2)$, calcule:
+
+a) $\|\vec{v}\|_2$  
+b) $\|\vec{v}\|_1$  
+c) $\|\vec{v}\|_\infty$  
+d) O vetor unitário $\hat{v}$ na direção de $\vec{v}$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\|\vec{v}\|_2 = \sqrt{1^2 + (-3)^2 + 4^2 + 2^2} = \sqrt{1 + 9 + 16 + 4} = \sqrt{30} \approx 5.477$
+
+b) $\|\vec{v}\|_1 = |1| + |-3| + |4| + |2| = 1 + 3 + 4 + 2 = 10$
+
+c) $\|\vec{v}\|_\infty = \max\{1, 3, 4, 2\} = 4$
+
+d) $\hat{v} = \frac{(1, -3, 4, 2)}{\sqrt{30}} \approx (0.183, -0.548, 0.730, 0.365)$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 (Distâncias)</summary>
+
+**Enunciado:** Dados $\vec{u} = (5, 1, 3)$ e $\vec{v} = (2, 4, 6)$, calcule:
+
+a) $d_2(\vec{u}, \vec{v})$  
+b) $d_1(\vec{u}, \vec{v})$  
+c) $d_\infty(\vec{u}, \vec{v})$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+$\vec{u} - \vec{v} = (3, -3, -3)$
+
+a) $d_2 = \sqrt{3^2 + (-3)^2 + (-3)^2} = \sqrt{9 + 9 + 9} = \sqrt{27} = 3\sqrt{3} \approx 5.196$
+
+b) $d_1 = |3| + |-3| + |-3| = 3 + 3 + 3 = 9$
+
+c) $d_\infty = \max\{3, 3, 3\} = 3$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 (Desigualdade Triangular)</summary>
+
+**Enunciado:** Verifique a desigualdade triangular para:
+
+$$
+\vec{u} = (1, 2), \quad \vec{v} = (4, 6), \quad \vec{w} = (3, 1)
+$$
+
+usando a norma Euclidiana:
+
+$$
+\|\vec{u} - \vec{v}\|_2 \leq \|\vec{u} - \vec{w}\|_2 + \|\vec{w} - \vec{v}\|_2
+$$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+$\vec{u} - \vec{v} = (-3, -4)$ → $\|\vec{u} - \vec{v}\|_2 = \sqrt{9 + 16} = 5$
+
+$\vec{u} - \vec{w} = (-2, 1)$ → $\|\vec{u} - \vec{w}\|_2 = \sqrt{4 + 1} = \sqrt{5} \approx 2.236$
+
+$\vec{w} - \vec{v} = (-1, -5)$ → $\|\vec{w} - \vec{v}\|_2 = \sqrt{1 + 25} = \sqrt{26} \approx 5.099$
+
+Lado esquerdo: $5$  
+Lado direito: $2.236 + 5.099 = 7.335$
+
+$5 \leq 7.335$ ✓ Desigualdade verificada.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 (Normalização)</summary>
+
+**Enunciado:** Dado o vetor $\vec{v} = (2, 4, 1, 3)$, normalize-o para que tenha:
+
+a) Norma L² igual a 1  
+b) Norma L¹ igual a 1
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+$\|\vec{v}\|_2 = \sqrt{4 + 16 + 1 + 9} = \sqrt{30} \approx 5.477$
+
+a) $\hat{v}_2 = \frac{(2, 4, 1, 3)}{\sqrt{30}} \approx (0.365, 0.730, 0.183, 0.548)$
+
+$\|\vec{v}\|_1 = 2 + 4 + 1 + 3 = 10$
+
+b) $\hat{v}_1 = \frac{(2, 4, 1, 3)}{10} = (0.2, 0.4, 0.1, 0.3)$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 (Aplicação – KNN)</summary>
+
+**Enunciado:** Um novo cliente tem o vetor de características $\vec{x} = (3, 2)$. Os clientes conhecidos são:
+
+$$
+A = (1, 4), \quad B = (2, 3), \quad C = (5, 1), \quad D = (6, 2)
+$$
+
+Calcule a distância Euclidiana de $\vec{x}$ para cada cliente e determine qual é o mais próximo.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+$d(\vec{x}, A) = \|(3-1, 2-4)\| = \|(2, -2)\| = \sqrt{4+4} = \sqrt{8} \approx 2.828$
+
+$d(\vec{x}, B) = \|(3-2, 2-3)\| = \|(1, -1)\| = \sqrt{2} \approx 1.414$
+
+$d(\vec{x}, C) = \|(3-5, 2-1)\| = \|(-2, 1)\| = \sqrt{5} \approx 2.236$
+
+$d(\vec{x}, D) = \|(3-6, 2-2)\| = \|(-3, 0)\| = 3$
+
+**Mais próximo:** Cliente B (distância $\sqrt{2} \approx 1.414$)
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 (Aplicação – Regularização L2)</summary>
+
+**Enunciado:** Um modelo de regressão linear tem vetor de pesos $\vec{w} = (2, -1, 3, 0.5)$. Calcule o termo de regularização L2 para $\lambda = 0.1$:
+
+$$
+\lambda \|\vec{w}\|_2^2
+$$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+$\|\vec{w}\|_2^2 = 2^2 + (-1)^2 + 3^2 + 0.5^2 = 4 + 1 + 9 + 0.25 = 14.25$
+
+Termo L2 = $\lambda \|\vec{w}\|_2^2 = 0.1 \cdot 14.25 = 1.425$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 (Aplicação – Federação)</summary>
+
+**Enunciado:** Em um sistema federado, o modelo global é:
+
+$$
+\vec{w}_{global} = (2, 3, 1)
+$$
+
+Três clientes têm modelos locais:
+
+$$
+\vec{w}_1 = (1.8, 3.2, 1.1), \quad \vec{w}_2 = (2.5, 2.5, 1.5), \quad \vec{w}_3 = (1.5, 3.5, 0.8)
+$$
+
+Calcule a distância Euclidiana de cada cliente ao modelo global. Qual cliente está mais próximo?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+$d_2(\vec{w}_{global}, \vec{w}_1) = \|(2-1.8, 3-3.2, 1-1.1)\| = \|(0.2, -0.2, -0.1)\|$
+
+$= \sqrt{0.04 + 0.04 + 0.01} = \sqrt{0.09} = 0.3$
+
+$d_2(\vec{w}_{global}, \vec{w}_2) = \|(2-2.5, 3-2.5, 1-1.5)\| = \|(-0.5, 0.5, -0.5)\|$
+
+$= \sqrt{0.25 + 0.25 + 0.25} = \sqrt{0.75} \approx 0.866$
+
+$d_2(\vec{w}_{global}, \vec{w}_3) = \|(2-1.5, 3-3.5, 1-0.8)\| = \|(0.5, -0.5, 0.2)\|$
+
+$= \sqrt{0.25 + 0.25 + 0.04} = \sqrt{0.54} \approx 0.735$
+
+**Mais próximo:** Cliente 1 (distância 0.3)
+
+</details>
+</details>
+
+> *Normas e distâncias são ferramentas fundamentais para medir "tamanhos" e "diferenças" em espaços vetoriais. Elas são a base de algoritmos como KNN, K-Means, regularização e monitoramento de convergência em Federação de Aprendizado. Domine-as e você terá controle sobre a geometria dos seus dados.*

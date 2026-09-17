@@ -1,0 +1,464 @@
+# Gráfico de Proporção
+
+## 1. 🎯 Identidade do Grupo
+
+### 1.1 Por que se chama Gráfico de Proporção?
+
+Porque o **único objetivo** dele é responder à pergunta:
+
+> **"Quanto cada parte representa do todo (100%)?"**
+
+Ele existe para mostrar **fatias de um bolo** — ou seja, como um total é dividido entre suas partes.
+
+### 1.2 Para que serve?
+ 
++ **Mostrar participação de mercado** *Qual empresa tem a maior fatia?*
++ **Mostrar composição de um orçamento** *Quanto vai para saúde, educação, transporte?*
++ **Mostrar distribuição de respostas** *Quantos disseram Sim, Não, Talvez?*
++ **Mostrar composição populacional** *Qual a porcentagem de cada faixa etária?*
+
+### 1.3 O gráfico principal: Pizza (Setores)
+
+**O que é:** Um círculo dividido em fatias (setores). Cada fatia representa uma categoria. O tamanho da fatia é **proporcional à porcentagem** que ela representa.
+
+**Nome oficial:** Gráfico de Setores (ou Pie Chart, em inglês).
+
+### 1.4 Quando usar?
+
+
++ **Você tem uma *variável qualitativa* (nominal ou ordinal)**  *Categorias: produtos, partidos, faixas etárias*
++ **A **soma das partes faz sentido como um todo (100%)*** *Orçamento: 100% é o total de gastos*
++ **A pergunta é *"quanto cada parte vale do total?"*** *"Qual a fatia de mercado de cada empresa?"*
++ **Você tem *POUCAS categorias* (máximo 5 a 6)** *4 produtos, 5 respostas de pesquisa*
+
+### 1.5 Quando NÃO usar?
+
+| **Situação** | **Motivo** | **Alternativa** |
+| ---- | ---- | ---- |
+| Mais de **6 categorias** | Fica poluído e as fatias ficam muito finas | **Barras** (Grupo 1) ou **tabela** |
+| Os valores são **muito parecidos** | Difícil ver diferença entre as fatias | **Barras** (Grupo 1) |
+| Você quer **comparar magnitudes** ("qual é maior?") | Pizza não mostra comparação clara | **Barras** (Grupo 1) |
+| Você quer mostrar **evolução no tempo** | Pizza não mostra tendência | **Linhas** (Grupo 4) |
+| As partes **não somam um todo** | Ex: idades de 5 pessoas soltas | **Barras** (Grupo 1) |
+
+### 🧠 Decisão Rápida (Fluxo)
+
+```text
+Quero mostrar FATIAS de um TODO?
+        │
+    ┌───┴───┐
+    ▼       ▼
+   SIM     NÃO
+    │       │
+    │       └──► Quero comparar magnitudes? → Grupo 1 (Barras)
+    │       └──► Quero evolução no tempo? → Grupo 4 (Linhas)
+    │
+    ▼
+Tenho POUCAS categorias (≤ 6)?
+        │
+    ┌───┴───┐
+    ▼       ▼
+   SIM     NÃO
+    │       │
+    │       └──► Use BARRAS (Grupo 1) ou tabela
+    │
+    ▼
+┌──────────────────────────────┐
+│ GRUPO 2 – GRÁFICO DE PROPORÇÃO │
+│       (PIZZA / SETORES)        │
+└──────────────────────────────┘
+```
+
+## 2. 📐 A Matemática da Pizza: Ângulos
+
+Cada fatia da pizza é um **ângulo** dentro do círculo.
+
+**Regra:** O círculo tem **360 graus** (360°). A soma de todas as fatias = 360°.
+
+**Fórmula:**
+```text
+Ângulo da fatia = (Valor da categoria / Total) × 360°
+```
+
+**Ou, em porcentagem:**
+```text
+Ângulo da fatia = Porcentagem × 3,6°
+```
+(Porque 1% = 3,6°)
+
+### Exemplo de Cálculo
+
+**Dados:** Vendas de 4 produtos
+
+| Produto | Vendas | Porcentagem | Ângulo (graus) |
+| ---- | ---- | ---- | ---- |
+| A | 50 | 25% | 25 × 3,6 = 90° |
+| B | 80 | 40% | 40 × 3,6 = 144° |
+| C | 35 | 17,5% | 17,5 × 3,6 = 63° |
+| D | 35 | 17,5% | 17,5 × 3,6 = 63° |
+| **Total** | **200** | **100%** | **360°** |
+
+### Regra de Ouro da Pizza
+
+> **SEMPRE comece a primeira fatia a partir das 12 horas (meio-dia) e vá no sentido horário.**
+> 
+> **Ordene as fatias da maior para a menor** (começando pela maior).
+
+## 3. 🎨 Exemplos Visuais
+
+### Exemplo 1 — Pizza Simples (4 fatias)
+
+**Dados:** Vendas de 4 produtos (A=50, B=80, C=35, D=35)
+
+**Pergunta:** "Qual produto tem a maior participação?"
+
+```text
+        (12h)
+          ↓
+    ┌─────────┐
+   ╱    B     ╲
+  │   144°     │
+  │            │
+  │   ┌─────── │ ← A (90°)
+  │   │        │
+   ╲  │        ╱
+    └─│────────┘
+      │  C(63°)
+      └── D(63°)
+```
+
+**Interpretação:**
+- **B** tem a maior fatia (40%) → campeão.
+- **A** é o segundo (25%).
+- **C** e **D** têm fatias iguais (17,5% cada).
+
+### Exemplo 2 — Pizza com Ordenação
+
+**Dados:** Participação de mercado de 5 empresas
+
+| Empresa | Participação |
+| ---- | ---- |
+| Alpha | 45% |
+| Beta | 25% |
+| Gamma | 15% |
+| Delta | 10% |
+| Epsilon | 5% |
+
+**Pizza ordenada (maior para menor, a partir das 12h):**
+
+```text
+        (12h)
+          ↓
+    ┌─────────┐
+   ╱  Alpha   ╲
+  │   45%      │
+  │            │
+  │   ──────── │ ← Beta (25%)
+  │   │        │
+   ╲  │        ╱
+    └─│────────┘
+      │ Gamma (15%)
+      ├── Delta (10%)
+      └── Epsilon (5%)
+```
+
+**Interpretação:** Alpha é líder isolada (45%). Epsilon é a menor (5%).
+
+### Exemplo 3 — Quando NÃO usar Pizza (muitas categorias)
+
+**Dados:** Preferência de cor de 100 pessoas (10 cores diferentes)
+
+| Cor | Votos |
+| ---- | ---- |
+| Azul | 22 |
+| Vermelho | 18 |
+| Verde | 15 |
+| Preto | 12 |
+| Amarelo | 10 |
+| Branco | 8 |
+| Rosa | 6 |
+| Laranja | 4 |
+| Roxo | 3 |
+| Cinza | 2 |
+
+**Problema:** 10 fatias → fica poluído e ilegível.
+
+**Solução:** Use **Barras** (Grupo 1) ou agrupe categorias pequenas em "Outros".
+
+### Exemplo 4 — Quando NÃO usar Pizza (valores parecidos)
+
+**Dados:** Vendas de 4 produtos
+
+| Produto | Vendas |
+| ---- | ---- |
+| A | 105 |
+| B | 100 |
+| C | 98 |
+| D | 97 |
+
+**Problema:** As fatias são quase do mesmo tamanho → difícil ver diferença.
+
+**Solução:** Use **Barras** (Grupo 1) — a diferença fica mais clara.
+
+## 4. 📊 Representação: Pizza
+
+O Grupo 2 tem **UMA representação principal**:
+
+```text
+GRUPO 2 – GRÁFICO DE PROPORÇÃO
+            │
+            ▼
+┌──────────────────────────────┐
+│        PIZZA / SETORES         │
+│   (círculo dividido em fatias) │
+└──────────────────────────────┘
+```
+
+### 4.1 Variação: Pizza 3D (CUIDADO!)
+
+**O que é:** Pizza com efeito tridimensional (profundidade).
+
+**Problema:** Distorce a percepção das fatias — as fatias da frente parecem maiores.
+
+**Regra:** **NUNCA use pizza 3D** em análises sérias. Use sempre 2D (plana).
+
+### 4.2 Variação: Pizza Explodida (Exploded Pie)
+
+**O que é:** Uma ou mais fatias são "puxadas" para fora do círculo.
+
+**Quando usar:** Quando você quer **destacar** uma fatia específica (ex: "a participação da nossa empresa").
+
+**Cuidado:** Use com moderação. Muitas fatias explodidas perdem o efeito.
+
+## 5. 🔍 Interpretação da Pizza
+
+| **Elemento** | **O que revela** |
+| ---- | ---- |
+| Tamanho da fatia | Participação percentual — quanto maior, maior a proporção |
+| Ordem das fatias (maior para menor) | Ranking de contribuição |
+| Fatia destacada (explodida) | Ênfase em uma categoria específica |
+| Cores diferentes | Identificação das categorias (use cores contrastantes) |
+
+## 6. 👑 Regras de Ouro da Pizza
+
+| **Regra** | **Por quê?** |
+| ---- | ---- |
+| **Máximo de 6 fatias** | Mais que isso fica poluído |
+| **Ordene da maior para a menor** | Facilita a comparação |
+| **Comece a maior às 12h** | Facilita a leitura |
+| **Use cores contrastantes** | Diferencia as fatias |
+| **Mostre os valores (%)** | Facilita a leitura exata |
+| **NUNCA use 3D** | Distorce a percepção |
+| **Use apenas quando os dados SOMAM 100%** | A pizza exige um todo |
+
+<details>
+<summary>**💻 Código Python — Pizza**</summary>
+
+```python
+import matplotlib.pyplot as plt
+
+# Dados
+produtos = ['Produto A', 'Produto B', 'Produto C', 'Produto D']
+vendas = [50, 80, 35, 35]
+
+# Calcular porcentagens
+total = sum(vendas)
+porcentagens = [v/total * 100 for v in vendas]
+
+# Criar gráfico de pizza
+plt.figure(figsize=(8, 8))
+plt.pie(vendas, 
+        labels=produtos, 
+        autopct='%1.1f%%',  # Mostra as porcentagens
+        startangle=90,      # Começa às 12h
+        counterclock=False, # Vai no sentido horário
+        colors=['skyblue', 'orange', 'lightgreen', 'salmon'],
+        explode=(0, 0.1, 0, 0),  # Destaca o Produto B
+        shadow=False)
+
+plt.title('Participação de Vendas por Produto', fontsize=14, fontweight='bold')
+plt.tight_layout()
+plt.show()
+```
+
+
+### Parâmetros importantes:
+
+| **Parâmetro** | **O que faz** |
+| ---- | ---- |
+| `labels` | Nomes das categorias |
+| `autopct` | Mostra as porcentagens (formato) |
+| `startangle` | Onde começa a primeira fatia (90 = 12h) |
+| `counterclock` | Sentido horário (False) ou anti-horário (True) |
+| `explode` | Distância que cada fatia sai do centro |
+| `colors` | Cores de cada fatia |
+| `shadow` | Sombra (NUNCA use em análises sérias) |
+</details>
+<details>
+<summary>**💻 Código R — Pizza**</summary>
+
+```r
+library(ggplot2)
+library(dplyr)
+
+# Dados
+dados <- data.frame(
+  Produto = c('Produto A', 'Produto B', 'Produto C', 'Produto D'),
+  Vendas = c(50, 80, 35, 35)
+)
+
+# Calcular porcentagem
+dados <- dados %>%
+  mutate(porcentagem = Vendas / sum(Vendas) * 100,
+         label = paste0(Produto, "\n", round(porcentagem, 1), "%"))
+
+# Criar gráfico de pizza
+ggplot(dados, aes(x = "", y = Vendas, fill = Produto)) +
+  geom_bar(stat = "identity", width = 1, color = "white") +
+  coord_polar(theta = "y") +  # Transforma em pizza
+  geom_text(aes(label = label), 
+            position = position_stack(vjust = 0.5),
+            size = 4) +
+  scale_fill_manual(values = c("skyblue", "orange", "lightgreen", "salmon")) +
+  theme_void() +  # Remove eixos e fundo
+  labs(title = "Participação de Vendas por Produto") +
+  theme(plot.title = element_text(hjust = 0.5, face = "bold"))
+```
+</details>
+
+### Explicação:
+
+| **Comando** | **O que faz** |
+| ---- | ---- |
+| `geom_bar(stat = "identity")` | Cria barras com altura = valor |
+| `width = 1` | Barras ocupam todo o espaço |
+| `coord_polar(theta = "y")` | Transforma barras em pizza |
+| `position_stack(vjust = 0.5)` | Posiciona os rótulos no centro das fatias |
+| `theme_void()` | Remove eixos, grades e fundo |
+
+## 📝 Frase de Fixação
+
+> *"Uso pizza para mostrar partes do todo, mas só se tiver poucas fatias (máximo 6). Começo a maior às 12h e mostro as porcentagens."*
+
+## 📝 Exercícios
+
+<details>
+<summary>📗 Exercício 1</summary>
+
+**Enunciado:** Para cada situação abaixo, indique se deve usar Pizza (SIM) ou NÃO:
+
+a) Participação de 4 empresas no mercado
+
+b) Preferência de 20 cores por 100 pessoas
+
+c) Vendas de 3 produtos muito parecidas (34%, 33%, 33%)
+
+d) Gastos do governo divididos em 5 áreas (Saúde, Educação, etc.)
+
+e) Evolução da temperatura ao longo de 12 meses
+
+f) Número de alunos por curso (5 cursos)
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) **SIM** — Poucas categorias, mostra fatias do todo
+
+b) **NÃO** — Muitas categorias → poluído
+
+c) **NÃO** — Difícil ver diferença → use barras
+
+d) **SIM** — Mostra composição do orçamento
+
+e) **NÃO** — Dado temporal → use linhas
+
+f) **SIM (ou barras)** — Pizza funciona, mas barras também
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2</summary>
+
+**Enunciado:** Calcule os ângulos de cada fatia para os dados abaixo:
+
+| Produto | Vendas |
+| ---- | ---- |
+| A | 60 |
+| B | 90 |
+| C | 30 |
+| D | 20 |
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+Total = 60 + 90 + 30 + 20 = 200
+
+| Produto | % | Ângulo |
+| ---- | ---- | ---- |
+| A | 30% | 30 × 3,6 = 108° |
+| B | 45% | 45 × 3,6 = 162° |
+| C | 15% | 15 × 3,6 = 54° |
+| D | 10% | 10 × 3,6 = 36° |
+| **Total** | **100%** | **360°** |
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3</summary>
+
+**Enunciado:** Qual a regra de ouro da pizza em relação à ordem das fatias e por que ela é importante?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+A regra de ouro é: **Ordene as fatias da maior para a menor** e **comece a maior às 12h**.
+
+Ela é importante porque:
+1. Facilita a comparação visual entre as fatias.
+2. O olho humano naturalmente começa a leitura no topo (12h) e segue no sentido horário.
+3. Colocar a maior fatia primeiro ajuda o leitor a identificar rapidamente a categoria dominante.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4</summary>
+
+**Enunciado:** Por que a pizza 3D deve ser evitada em análises sérias?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+A pizza 3D **distorce a percepção** das fatias. As fatias que estão na frente (mais próximas do observador) parecem maiores do que realmente são, enquanto as fatias atrás parecem menores. Isso pode levar a interpretações incorretas dos dados.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5</summary>
+
+**Enunciado:** Em que situação a Pizza Explodida (Exploded Pie) é útil? Dê um exemplo.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+A Pizza Explodida é útil quando você quer **destacar** uma fatia específica do gráfico. Ela chama a atenção do leitor para aquela categoria em particular.
+
+**Exemplo:** Em um gráfico de participação de mercado, você pode "explodir" a fatia da sua empresa para destacar que ela tem 45% do mercado, enquanto as outras empresas têm fatias menores.
+
+</details>
+</details>
+
+> *Uso pizza para mostrar partes do todo, mas só se tiver poucas fatias (máximo 6). Começo a maior às 12h e mostro as porcentagens.*

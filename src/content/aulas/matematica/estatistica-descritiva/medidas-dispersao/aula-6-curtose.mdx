@@ -1,0 +1,496 @@
+# Curtose
+
+## 1. INTRODUÇÃO
+
+&emsp;&emsp;&emsp;Na aula anterior estudámos a **assimetria** — a medida que nos diz **para que lado** a distribuição está "puxada". Mas há uma outra característica igualmente importante que nenhuma medida estudada até agora responde: **"Qual é o 'pico' da distribuição? As caudas são pesadas ou leves?"**<br>
+
+&emsp;&emsp;&emsp;Considera o seguinte problema prático:
+
+> **Três distribuições com a mesma média (0) e o mesmo desvio-padrão (1):**
+>
+> - **Distribuição A:** Mesocúrtica (normal) — pico moderado, caudas moderadas
+> - **Distribuição B:** Leptocúrtica — pico alto, caudas leves
+> - **Distribuição C:** Platicúrtica — pico baixo, caudas pesadas
+
+**Vamos calcular as medidas que já conhecemos:**
+
+| Medida | A (Mesocúrtica) | B (Leptocúrtica) | C (Platicúrtica) |
+|---------|---------|---------|---------|
+| **Média** | 0 | 0 | 0 |
+| **Desvio-Padrão** | 1 | 1 | 1 |
+| **Assimetria** | 0 | 0 | 0 |
+
+&emsp;&emsp;&emsp;Todas as medidas que estudámos até agora **não distinguem** estas três distribuições. Elas têm a mesma média, o mesmo desvio-padrão e a mesma assimetria — mas **formas completamente diferentes**.
+
+- A **Distribuição B** (leptocúrtica) tem um **pico alto** e **caudas leves** — os dados concentram-se muito no centro.
+- A **Distribuição C** (platicúrtica) tem um **pico baixo** e **caudas pesadas** — os dados estão mais distribuídos pelos extremos.
+
+&emsp;&emsp;&emsp;Precisamos de uma medida que quantifique o **grau de "pico"** e o **peso das caudas** da distribuição.
+
+<details>
+<summary>📊 Ver a família das medidas de forma</summary>
+<style>
+.r{font:14px system-ui;text-align:center}
+.r b{display:inline-block;padding:4px 10px;background:#333;color:#fff;border-radius:6px}
+.r i{display:block;width:2px;height:18px;background:#333;margin:0 auto}
+.r em{display:flex;gap:8px;justify-content:center;position:relative;padding-top:18px}
+.r em::before{content:'';position:absolute;top:0;left:25%;right:25%;height:2px;background:#333}
+.r em span{flex:1;padding:8px;border:2px solid #333;border-radius:8px;max-width:140px}
+.r em span::before{content:'';position:absolute;top:-18px;left:50%;width:2px;height:18px;background:#333}
+.r em span{position:relative}
+</style>
+<div class="r">
+  <b>Medidas de Forma</b>
+  <i></i>
+  <em>
+    <span>Assimetria<br>(Skewness)</span>
+    <span>Curtose<br>(Kurtosis)</span>
+  </em>
+</div>
+</details>
+
+> **💡 Dica de Ouro:** A assimetria diz-te para que lado a distribuição está "puxada". A curtose diz-te quão "pontiaguda" ou "achatada" é a distribuição — e quão pesadas são as caudas.
+
+## 2. O QUE É A CURTOSE?
+
+&emsp;&emsp;&emsp;A **curtose** (ou *kurtosis*) mede o **grau de "pico"** (concentração central) e o **peso das caudas** de uma distribuição. Compara a forma da distribuição com a **distribuição normal** (que é a referência).
+
+**📌 Tipos de curtose:**
+
+| Tipo | Descrição | Comparação com a Normal |
+|---------|---------|---------|
+| **Mesocúrtica** | Pico moderado, caudas moderadas | Igual à normal |
+| **Leptocúrtica** | Pico alto, caudas leves | Mais "pontiaguda" que a normal |
+| **Platicúrtica** | Pico baixo, caudas pesadas | Mais "achatada" que a normal |
+
+**📌 Visualização em HTML+CSS:**
+
+<div style="background: #0a0f1e; padding: 2rem 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Segoe UI', system-ui, sans-serif; max-width: 700px; margin: 1.5rem auto; text-align: center;">
+
+  <div style="color: #fbbf24; font-size: 1rem; font-weight: 700; margin-bottom: 1.2rem; letter-spacing: 0.5px;">
+    📊 TIPOS DE CURTOSE
+  </div>
+
+  <!-- LEPTOCÚRTICA -->
+  <div style="background: #1a1a2e; padding: 1rem; border-radius: 12px; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.05);">
+    <div style="color: #fca5a5; font-weight: 600; font-size: 0.8rem; margin-bottom: 0.6rem;">LEPTOCÚRTICA (K &gt; 0)</div>
+    <div style="display: flex; align-items: flex-end; justify-content: center; gap: 3px; height: 80px;">
+      <div style="width: 8px; height: 5px; background: #2d1b69; border-radius: 2px;"></div>
+      <div style="width: 8px; height: 10px; background: #2d1b69; border-radius: 2px;"></div>
+      <div style="width: 8px; height: 25px; background: #5c1a1a; border-radius: 2px;"></div>
+      <div style="width: 8px; height: 50px; background: #5c1a1a; border-radius: 2px;"></div>
+      <div style="width: 8px; height: 80px; background: #a78bfa; border-radius: 2px;"></div>
+      <div style="width: 8px; height: 50px; background: #5c1a1a; border-radius: 2px;"></div>
+      <div style="width: 8px; height: 25px; background: #5c1a1a; border-radius: 2px;"></div>
+      <div style="width: 8px; height: 10px; background: #2d1b69; border-radius: 2px;"></div>
+      <div style="width: 8px; height: 5px; background: #2d1b69; border-radius: 2px;"></div>
+    </div>
+    <div style="color: #6b7280; font-size: 0.6rem; margin-top: 0.5rem;">Pico alto · Caudas leves</div>
+  </div>
+
+  <!-- MESOCÚRTICA -->
+  <div style="background: #1a1a2e; padding: 1rem; border-radius: 12px; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.05);">
+    <div style="color: #6ee7b7; font-weight: 600; font-size: 0.8rem; margin-bottom: 0.6rem;">MESOCÚRTICA (K ≈ 0) — Normal</div>
+    <div style="display: flex; align-items: flex-end; justify-content: center; gap: 3px; height: 80px;">
+      <div style="width: 8px; height: 8px; background: #1a3a5c; border-radius: 2px;"></div>
+      <div style="width: 8px; height: 20px; background: #1a3a5c; border-radius: 2px;"></div>
+      <div style="width: 8px; height: 45px; background: #2d1b69; border-radius: 2px;"></div>
+      <div style="width: 8px; height: 65px; background: #2d1b69; border-radius: 2px;"></div>
+      <div style="width: 8px; height: 80px; background: #a78bfa; border-radius: 2px;"></div>
+      <div style="width: 8px; height: 65px; background: #2d1b69; border-radius: 2px;"></div>
+      <div style="width: 8px; height: 45px; background: #2d1b69; border-radius: 2px;"></div>
+      <div style="width: 8px; height: 20px; background: #1a3a5c; border-radius: 2px;"></div>
+      <div style="width: 8px; height: 8px; background: #1a3a5c; border-radius: 2px;"></div>
+    </div>
+    <div style="color: #6b7280; font-size: 0.6rem; margin-top: 0.5rem;">Pico moderado · Caudas moderadas</div>
+  </div>
+
+  <!-- PLATICÚRTICA -->
+  <div style="background: #1a1a2e; padding: 1rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+    <div style="color: #fca5a5; font-weight: 600; font-size: 0.8rem; margin-bottom: 0.6rem;">PLATICÚRTICA (K &lt; 0)</div>
+    <div style="display: flex; align-items: flex-end; justify-content: center; gap: 3px; height: 80px;">
+      <div style="width: 8px; height: 20px; background: #5c1a1a; border-radius: 2px;"></div>
+      <div style="width: 8px; height: 35px; background: #5c1a1a; border-radius: 2px;"></div>
+      <div style="width: 8px; height: 50px; background: #2d1b69; border-radius: 2px;"></div>
+      <div style="width: 8px; height: 60px; background: #2d1b69; border-radius: 2px;"></div>
+      <div style="width: 8px; height: 65px; background: #a78bfa; border-radius: 2px;"></div>
+      <div style="width: 8px; height: 60px; background: #2d1b69; border-radius: 2px;"></div>
+      <div style="width: 8px; height: 50px; background: #2d1b69; border-radius: 2px;"></div>
+      <div style="width: 8px; height: 35px; background: #5c1a1a; border-radius: 2px;"></div>
+      <div style="width: 8px; height: 20px; background: #5c1a1a; border-radius: 2px;"></div>
+    </div>
+    <div style="color: #6b7280; font-size: 0.6rem; margin-top: 0.5rem;">Pico baixo · Caudas pesadas</div>
+  </div>
+
+</div>
+
+**📌 Coeficiente de Curtose de Pearson:**
+
+$$
+\color{blue} K = \frac{\sum (x_i - \bar{x})^4}{n \cdot s^4} - 3
+$$
+
+Onde:
+- **xi** = cada valor
+- **x̄** = média
+- **s** = desvio-padrão
+- **n** = número de dados
+
+**📌 Interpretação:**
+
+| K | Tipo | Significado |
+|---------|---------|---------|
+| K = 0 | **Mesocúrtica** | Igual à normal |
+| K > 0 | **Leptocúrtica** | Pico alto, caudas leves |
+| K < 0 | **Platicúrtica** | Pico baixo, caudas pesadas |
+
+> **💡 Nota:** O "-3" na fórmula serve para **normalizar** o coeficiente. Na distribuição normal, o quociente é 3, então K = 0. Este ajuste é chamado de **excesso de curtose**.
+
+**📌 Curtose de Moors (alternativa robusta):**
+
+$$
+\color{blue} K_M = \frac{(E_7 - E_5) + (E_3 - E_1)}{E_6 - E_2}
+$$
+
+Onde E1, ..., E7 são os **octis** (dividem os dados em 8 partes iguais).
+
+> **💡 Vantagem:** A curtose de Moors usa octis, que são **robustos a outliers**.
+
+## 3. PASSO A PASSO
+
+### 3.1 Curtose para Dados Brutos (Não Agrupados)
+
+**📐 Método**
+
+| Passo | Descrição |
+|---------|----------|
+| **1** | Calcular a média x̄ |
+| **2** | Calcular o desvio-padrão s |
+| **3** | Para cada valor, calcular (xi − x̄)⁴ |
+| **4** | Somar todos os valores: Σ(xi − x̄)⁴ |
+| **5** | Dividir por n · s⁴ |
+| **6** | Subtrair 3: <code>K = (Σ(xi − x̄)⁴ / (n · s⁴)) − 3</code> |
+
+<center><details>
+<summary>**📌 Exemplo Prático 1 — Distribuição Mesocúrtica (Normal)**</summary>
+
+**Problema:** Calcular a curtose dos dados: `2, 4, 4, 4, 5, 5, 5, 5, 5, 6, 6, 6, 7, 7, 8` (aproximação de uma normal)
+
+**Passo 1 — Média:**
+x̄ = (2+4+4+4+5+5+5+5+5+6+6+6+7+7+8) / 15 = 80/15 ≈ 5,33
+
+**Passo 2 — Desvio-padrão:**
+s ≈ 1,54
+
+**Passo 3 — Tabela de cálculo (parcial):**
+
+| xi | xi − 5,33 | (xi − 5,33)⁴ |
+|---------|---------|---------|
+| 2 | −3,33 | 123,45 |
+| 4 | −1,33 | 3,13 |
+| 4 | −1,33 | 3,13 |
+| 4 | −1,33 | 3,13 |
+| 5 | −0,33 | 0,01 |
+| 5 | −0,33 | 0,01 |
+| 5 | −0,33 | 0,01 |
+| 5 | −0,33 | 0,01 |
+| 5 | −0,33 | 0,01 |
+| 6 | 0,67 | 0,20 |
+| 6 | 0,67 | 0,20 |
+| 6 | 0,67 | 0,20 |
+| 7 | 1,67 | 7,78 |
+| 7 | 1,67 | 7,78 |
+| 8 | 2,67 | 50,79 |
+| **Total** | | **200,05** |
+
+**Passo 4 — Cálculo:**
+200,05 / (15 × 1,54⁴) = 200,05 / (15 × 5,62) = 200,05 / 84,3 ≈ 2,37
+
+K = 2,37 − 3 = **−0,63**
+
+✅ A curtose é **−0,63** — **platicúrtica** (ligeiramente).
+
+> **🔍 Interpretação:** O coeficiente de curtose é negativo (−0,63), indicando que a distribuição é **platicúrtica** — tem um pico mais baixo e caudas mais pesadas que a distribuição normal. Isto significa que há mais dados nos extremos do que seria esperado numa normal.
+</details></center>
+
+<center><details>
+<summary>**📌 Exemplo Prático 2 — Distribuição Leptocúrtica**</summary>
+
+**Problema:** Calcular a curtose dos dados: `4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 7` (pico alto)
+
+**Passo 1 — Média:** x̄ = 5
+
+**Passo 2 — Desvio-padrão:** s ≈ 0,76
+
+**Passo 3 — Cálculo:** K ≈ **1,5**
+
+✅ A curtose é **1,5** — **leptocúrtica**.
+
+> **🔍 Interpretação:** O coeficiente de curtose é positivo (1,5), indicando que a distribuição é **leptocúrtica** — tem um pico mais alto e caudas mais leves que a normal. Isto significa que os dados estão mais concentrados no centro e há menos valores extremos.
+</details></center>
+
+### 3.2 Curtose para Dados Agrupados por Lista
+
+&emsp;&emsp;&emsp;Quando os dados estão numa **tabela de frequências**, usamos as frequências na fórmula.
+
+**📐 Fórmula**
+
+$$
+\color{blue} K = \frac{\sum f_i \cdot (x_i - \bar{x})^4}{n \cdot s^4} - 3
+$$
+
+<center><details>
+<summary>**📌 Exemplo Prático**</summary>
+
+**Problema:** Calcular a curtose da tabela:
+
+| xi | fi |
+|---------|---------|
+| 4 | 1 |
+| 5 | 2 |
+| 6 | 3 |
+| 7 | 2 |
+| 8 | 1 |
+| **Total** | **9** |
+
+**Passo 1 — Média:** x̄ = 6
+
+**Passo 2 — Desvio-padrão:** s ≈ 1,22
+
+**Passo 3 — Tabela de cálculo:**
+
+| xi | fi | xi − 6 | (xi − 6)⁴ | fi · (xi − 6)⁴ |
+|---------|---------|---------|---------|---------|
+| 4 | 1 | −2 | 16 | 16 |
+| 5 | 2 | −1 | 1 | 2 |
+| 6 | 3 | 0 | 0 | 0 |
+| 7 | 2 | 1 | 1 | 2 |
+| 8 | 1 | 2 | 16 | 16 |
+| **Total** | **9** | | | **36** |
+
+**Passo 4 — Cálculo:**
+36 / (9 × 1,22⁴) = 36 / (9 × 2,22) = 36/19,98 ≈ 1,80
+
+K = 1,80 − 3 = **−1,20**
+
+✅ A curtose é **−1,20** — **platicúrtica**.
+
+> **🔍 Interpretação:** A distribuição é **platicúrtica** — tem um pico baixo e caudas pesadas. Há mais dados nos extremos (4 e 8) do que seria esperado numa normal.
+</details></center>
+
+### 3.3 Curtose para Dados Agrupados por Intervalo
+
+&emsp;&emsp;&emsp;Quando os dados estão em **classes**, usamos os **pontos médios** de cada classe.
+
+**📐 Fórmula**
+
+$$
+\color{blue} K = \frac{\sum f_i \cdot (x_i - \bar{x})^4}{n \cdot s^4} - 3
+$$
+
+<center><details>
+<summary>**📌 Exemplo Prático**</summary>
+
+**Problema:** Calcular a curtose das notas agrupadas:
+
+| Classe | xi | fi |
+|---------|---------|-----|
+| [4, 8[ | 6 | 7 |
+| [8, 12[ | 10 | 5 |
+| [12, 16[ | 14 | 5 |
+| [16, 20] | 18 | 3 |
+| **Total** | | **20** |
+
+**Passo 1 — Média:** x̄ = 10,8
+
+**Passo 2 — Desvio-padrão:** s ≈ 4,42
+
+**Passo 3 — Tabela de cálculo:**
+
+| xi | fi | xi − 10,8 | (xi − 10,8)⁴ | fi · (xi − 10,8)⁴ |
+|---------|---------|---------|---------|---------|
+| 6 | 7 | −4,8 | 530,84 | 3715,88 |
+| 10 | 5 | −0,8 | 0,41 | 2,05 |
+| 14 | 5 | 3,2 | 104,86 | 524,30 |
+| 18 | 3 | 7,2 | 2687,39 | 8062,17 |
+| **Total** | **20** | | | **12304,40** |
+
+**Passo 4 — Cálculo:**
+12304,40 / (20 × 4,42⁴) = 12304,40 / (20 × 381,47) = 12304,40 / 7629,40 ≈ 1,61
+
+K = 1,61 − 3 = **−1,39**
+
+✅ A curtose é **−1,39** — **platicúrtica**.
+
+> **🔍 Interpretação:** A distribuição é **platicúrtica** — tem um pico baixo e caudas pesadas. Há mais dados nos extremos do que seria esperado numa normal.
+</details></center>
+
+## 4. VANTAGENS E DESVANTAGENS
+
+| Medida | Vantagens | Desvantagens |
+|---------|----------|----------|
+| **Pearson** | ✅ Usa todos os dados; informação completa | ❌ Sensível a outliers (eleva à quarta potência) |
+| **Moors** | ✅ Robusto a outliers (usa octis) | ❌ Mais complexo de calcular |
+
+## 5. INTERPRETAÇÃO DA CURTOSE
+
+> **💡 A curtose diz-te quão "pontiaguda" ou "achatada" é a distribuição**
+
+**📌 Exemplos de interpretação:**
+
+| Contexto | K | Interpretação |
+|---------|---------|---------|
+| **Retornos financeiros** | +2,5 | Leptocúrtica — pico alto, caudas leves |
+| **Alturas** | 0 | Mesocúrtica — próximo da normal |
+| **Salários** | −1,2 | Platicúrtica — pico baixo, caudas pesadas |
+| **Notas** | −1,39 | Platicúrtica — pico baixo, caudas pesadas |
+
+**📌 Regra prática:**
+
+| K | Interpretação |
+|---------|----------|
+| K ≈ 0 | Distribuição **mesocúrtica** (normal) |
+| K > 0 | Distribuição **leptocúrtica** (pico alto) |
+| K < 0 | Distribuição **platicúrtica** (pico baixo) |
+
+> **⚠️ Atenção:** Em finanças, a curtose é frequentemente **positiva** (leptocúrtica) — os retornos têm picos altos e caudas pesadas. Isto é importante para a gestão de risco.
+
+## 6. QUANDO USAR A CURTOSE
+
+| Critério | Curtose |
+|---------|----------|
+| **Verificar se a distribuição é normal** | ✅ Único |
+| **Detectar caudas pesadas** | ✅ Único |
+| **Análise de risco financeiro** | ✅ Único |
+| **Base para testes de normalidade** | ✅ Único |
+| **Dados com outliers** | ✅ Moors (robusto) |
+| **Interpretação absoluta da dispersão** | ❌ Usar desvio-padrão |
+
+**Fluxo de Decisão:**
+
+1. Queres saber se a distribuição é **normal**? → **Curtose**
+2. Queres detectar **caudas pesadas**? → **Curtose**
+3. Queres analisar **risco financeiro**? → **Curtose**
+4. Os dados têm **outliers**? → **Moors** (robusto)
+5. Queres **informação completa**? → **Pearson**
+
+## 7. EXERCÍCIOS
+
+<details>
+<summary>📗 Exercício 1 — Curtose (Dados Brutos)</summary>
+
+**Enunciado:** Calcule a curtose dos dados: 2, 4, 4, 4, 5, 5, 5, 5, 5, 6, 6, 6, 7, 7, 8
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+Média ≈ 5,33
+
+Desvio-padrão ≈ 1,54
+
+K = (200,05 / (15 × 1,54⁴)) − 3 ≈ 2,37 − 3 = **−0,63**
+
+**Interpretação:** Platicúrtica (pico baixo, caudas pesadas).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Curtose (Dados Agrupados por Lista)</summary>
+
+**Enunciado:** Calcule a curtose da tabela:
+
+| xi | fi |
+|---------|---------|
+| 4 | 1 |
+| 5 | 2 |
+| 6 | 3 |
+| 7 | 2 |
+| 8 | 1 |
+| **Total** | **9** |
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+Média = 6
+
+Desvio-padrão ≈ 1,22
+
+K = (36 / (9 × 1,22⁴)) − 3 ≈ 1,80 − 3 = **−1,20**
+
+**Interpretação:** Platicúrtica.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Curtose (Dados Agrupados por Intervalo)</summary>
+
+**Enunciado:** Calcule a curtose das notas agrupadas:
+
+| Classe | xi | fi |
+|---------|---------|-----|
+| [4, 8[ | 6 | 7 |
+| [8, 12[ | 10 | 5 |
+| [12, 16[ | 14 | 5 |
+| [16, 20] | 18 | 3 |
+| **Total** | | **20** |
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+Média = 10,8
+
+Desvio-padrão ≈ 4,42
+
+K = (12304,40 / (20 × 4,42⁴)) − 3 ≈ 1,61 − 3 = **−1,39**
+
+**Interpretação:** Platicúrtica.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Interpretação da Curtose</summary>
+
+**Enunciado:** Um conjunto de dados tem curtose K = 2,5. O que podes concluir?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+K = 2,5 indica **leptocúrtica** — a distribuição tem um **pico alto** e **caudas leves**. Isto significa que:
+- Os dados estão mais concentrados no centro.
+- Há menos valores extremos que numa normal.
+- A distribuição é mais "pontiaguda".
+
+**Interpretação prática:** Se forem retornos financeiros, há menos risco de eventos extremos.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Comparação de Curtose</summary>
+
+**Enunciado:** Duas distribuições têm a mesma média e o mesmo desvio-padrão. A primeira tem K = −1,5 e a segunda tem K = 1,5. Qual tem caudas mais pesadas?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+A primeira distribuição (K = −1,5) tem **caudas mais pesadas**. Um K negativo indica **platicúrtica** — pico baixo e caudas pesadas. A segunda (K = 1,5) é **leptocúrtica** — pico alto e caudas leves.
+
+**Interpretação:** A primeira distribuição tem mais valores extremos (caudas pesadas), enquanto a segunda tem menos valores extremos (caudas leves).
+
+</details>
+</details>
+
+> A assimetria diz-te para que lado a distribuição está "puxada". A curtose diz-te quão "pontiaguda" ou "achatada" é — e quão pesadas são as caudas. Juntas, elas completam o retrato da forma da distribuição.

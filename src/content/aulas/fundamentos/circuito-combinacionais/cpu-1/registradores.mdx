@@ -1,0 +1,454 @@
+# Registradores de Uso Geral
+
+## 1. Introdução
+
+Nas últimas aulas, exploramos os registradores especializados da CPU: o **PC** (Contador de Programa), que aponta para a próxima instrução; o **IR** (Registrador de Instrução), que guarda a instrução atual; o **MAR** (Registrador de Endereço de Memória), que segura o endereço a ser acessado; e o **MBR** (Registrador de Buffer de Memória), que armazena os dados em trânsito entre a CPU e a memória.<br><br>
+
+Todos esses registradores têm funções específicas e essenciais. Mas há um outro tipo de registrador que é igualmente importante: os **Registradores de Uso Geral** (também chamados de *General-Purpose Registers*).<br><br>
+
+Se os registradores especializados são como funcionários dedicados a tarefas específicas (o carteiro, o entregador, o arquivista), os registradores de uso geral são como **caixas de ferramentas** — armários onde a CPU guarda dados temporários, operandos e resultados de operações. São a "mesa de trabalho" do processador.<br><br>
+
+Pense neles como o **balcão de um marceneiro**:
+
+- O marceneiro (CPU) tem várias ferramentas (ULA, UC).
+- Ele precisa de uma superfície (registradores) para colocar as peças (dados) enquanto trabalha.
+- Ele pode colocar qualquer peça em qualquer lugar do balcão (uso geral).
+- Quanto maior o balcão, mais peças ele pode manipular ao mesmo tempo.
+
+Os registradores de uso geral são o **armazenamento de dados mais rápido** da CPU. Eles são usados para:
+
+- Armazenar operandos para operações da ULA.
+- Guardar resultados intermediários.
+- Manter variáveis frequentemente acessadas.
+- Passar parâmetros entre funções.
+
+Nesta aula, vamos explorar os registradores de uso geral: como eles funcionam, como são organizados, e por que são tão importantes para o desempenho do processador.
+
+
+## 2. O Que São Registradores de Uso Geral?
+
+### 2.1 Definição
+
+**Registradores de Uso Geral** (RUG) são registradores da CPU que:
+
+> **Não têm função fixa — podem ser usados para armazenar qualquer dado temporário, operando ou resultado durante a execução de instruções.**
+
+### 2.2 Características principais
+
+| Característica | Descrição |
+|----------------|-----------|
+| **Tamanho** | Igual à palavra do processador (8, 16, 32, 64 bits) |
+| **Quantidade** | Varia conforme a arquitetura (8 a 32 registradores) |
+| **Função** | Armazenamento temporário de alta velocidade |
+| **Acesso** | Muito rápido (1 ciclo de clock) |
+| **Uso** | Operandos, resultados, variáveis, parâmetros |
+
+### 2.3 Analogia
+
+Pense nos registradores de uso geral como **uma prancheta na mão do arquiteto**:
+
+<details>
+<summary>🔧 Ver Analogia dos Registradores de Uso Geral</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 450px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">REGISTRADORES DE USO GERAL</div>
+
+  <pre style="color: #93c5fd; font-size: 0.65rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    ┌─────────────────────────────────────────────────────┐
+    │                                                     │
+    │   ARQUITETO (CPU)                                  │
+    │                                                     │
+    │   ┌─────────────────────────────────────────────┐   │
+    │   │  PRANCHETA (REGISTRADORES)                 │   │
+    │   │                                             │   │
+    │   │  ┌───────┐ ┌───────┐ ┌───────┐ ┌───────┐ │   │
+    │   │  │  R0   │ │  R1   │ │  R2   │ │  R3   │ │   │
+    │   │  │  = 5  │ │  = 3  │ │  = 8  │ │  = 0  │ │   │
+    │   │  └───────┘ └───────┘ └───────┘ └───────┘ │   │
+    │   │                                             │   │
+    │   │  O arquiteto anota números rapidamente     │   │
+    │   │  e os usa em seus cálculos.                │   │
+    │   └─────────────────────────────────────────────┘   │
+    │                                                     │
+    └─────────────────────────────────────────────────────┘
+  </pre>
+
+</div>
+</details>
+
+### 2.4 Diagrama
+
+<details>
+<summary>🔧 Ver Diagrama dos Registradores de Uso Geral</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 550px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">REGISTRADORES DE USO GERAL</div>
+
+  <pre style="color: #93c5fd; font-size: 0.55rem; line-height: 1.6; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    ┌─────────────────────────────────────────────────────────────────┐
+    │                         CPU                                     │
+    │                                                                 │
+    │  ┌─────────────────────────────────────────────────────────┐    │
+    │  │                REGISTRADORES DE USO GERAL               │    │
+    │  │                                                         │    │
+    │  │  ┌──────┐  ┌──────┐  ┌──────┐  ┌──────┐  ┌──────┐    │    │
+    │  │  │  R0  │  │  R1  │  │  R2  │  │  R3  │  │  R4  │    │    │
+    │  │  │ 0x5A │  │ 0x3F │  │ 0x00 │  │ 0xFF │  │ 0x01 │    │    │
+    │  │  └──────┘  └──────┘  └──────┘  └──────┘  └──────┘    │    │
+    │  │  ┌──────┐  ┌──────┐  ┌──────┐  ┌──────┐  ┌──────┐    │    │
+    │  │  │  R5  │  │  R6  │  │  R7  │  │  R8  │  │  R9  │    │    │
+    │  │  │ 0x00 │  │ 0x00 │  │ 0x00 │  │ 0x00 │  │ 0x00 │    │    │
+    │  │  └──────┘  └──────┘  └──────┘  └──────┘  └──────┘    │    │
+    │  │                                                         │    │
+    │  │  ┌──────┐  ┌──────┐  ┌──────┐  ┌──────┐  ┌──────┐    │    │
+    │  │  │ R10  │  │ R11  │  │ R12  │  │ R13  │  │ R14  │    │    │
+    │  │  │ 0x00 │  │ 0x00 │  │ 0x00 │  │ 0x00 │  │ 0x00 │    │    │
+    │  │  └──────┘  └──────┘  └──────┘  └──────┘  └──────┘    │    │
+    │  │                                                         │    │
+    │  │  ┌──────┐                                              │    │
+    │  │  │ R15  │                                              │    │
+    │  │  │ 0x00 │                                              │    │
+    │  │  └──────┘                                              │    │
+    │  └─────────────────────────────────────────────────────────┘    │
+    │                              │                                  │
+    │                              ▼                                  │
+    │                    ┌─────────────────┐                        │
+    │                    │       ULA       │                        │
+    │                    │  (A op B = C)   │                        │
+    │                    └─────────────────┘                        │
+    └─────────────────────────────────────────────────────────────────┘
+  </pre>
+
+</div>
+</details>
+
+
+## 3. Tipos de Registradores
+
+### 3.1 Registradores de Uso Geral vs Especializados
+
+| Tipo | Exemplos | Função |
+|------|----------|--------|
+| **Uso Geral** | R0, R1, R2, ... | Qualquer dado temporário |
+| **Especializados** | PC, IR, MAR, MBR | Funções específicas |
+
+### 3.2 Registradores com funções sugeridas
+
+Em algumas arquiteturas, os registradores têm usos sugeridos (mas não obrigatórios):
+
+| Arquitetura | Registrador | Uso sugerido |
+|-------------|-------------|--------------|
+| **ARM** | R0-R3 | Parâmetros de função |
+| **ARM** | R4-R11 | Variáveis locais |
+| **ARM** | R13 (SP) | Ponteiro de pilha |
+| **ARM** | R14 (LR) | Endereço de retorno |
+| **ARM** | R15 (PC) | Contador de programa |
+| **x86** | EAX | Acumulador (resultados) |
+| **x86** | EBX | Base (ponteiro) |
+| **x86** | ECX | Contador (loops) |
+| **x86** | EDX | Dados (operações) |
+
+### 3.3 Exemplo: ARM (32 registradores de 32 bits)
+
+<details>
+<summary>🔧 Ver Estrutura dos Registradores ARM</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 400px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">REGISTRADORES ARM</div>
+
+  <pre style="color: #93c5fd; font-size: 0.65rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    ┌─────────────────────────────────────────────────────────────┐
+    │                                                             │
+    │  R0 ───► Parâmetro 1 / Resultado                          │
+    │  R1 ───► Parâmetro 2 / Resultado                          │
+    │  R2 ───► Parâmetro 3 / Resultado                          │
+    │  R3 ───► Parâmetro 4 / Resultado                          │
+    │  R4 ───► Variável local                                   │
+    │  R5 ───► Variável local                                   │
+    │  R6 ───► Variável local                                   │
+    │  R7 ───► Variável local                                   │
+    │  R8 ───► Variável local                                   │
+    │  R9 ───► Variável local                                   │
+    │  R10 ──► Variável local                                   │
+    │  R11 ──► Variável local                                   │
+    │  R12 ──► Variável local                                   │
+    │  R13 ──► Ponteiro de Pilha (SP)                           │
+    │  R14 ──► Endereço de Retorno (LR)                         │
+    │  R15 ──► Contador de Programa (PC)                        │
+    │                                                             │
+    └─────────────────────────────────────────────────────────────┘
+  </pre>
+
+</div>
+</details>
+
+
+## 4. O Uso dos Registradores na Execução
+
+### 4.1 Exemplo: Instrução ADD
+
+**Instrução:** `ADD R0, R1, R2` (R0 = R1 + R2)
+
+<details>
+<summary>🔧 Ver Execução da Instrução ADD</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 400px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">EXECUÇÃO DA INSTRUÇÃO ADD</div>
+
+  <pre style="color: #93c5fd; font-size: 0.65rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    ┌─────────────────────────────────────────────────────────────┐
+    │                                                             │
+    │  ANTES:                                                     │
+    │  R0 = 0x0000                                               │
+    │  R1 = 0x0005                                               │
+    │  R2 = 0x0003                                               │
+    │                                                             │
+    │  EXECUÇÃO:                                                  │
+    │  1. UC: "Leia R1 e R2"                                     │
+    │  2. ULA: R1 + R2 = 0x0005 + 0x0003 = 0x0008              │
+    │  3. UC: "Escreva resultado em R0"                          │
+    │                                                             │
+    │  DEPOIS:                                                    │
+    │  R0 = 0x0008                                               │
+    │  R1 = 0x0005                                               │
+    │  R2 = 0x0003                                               │
+    │                                                             │
+    └─────────────────────────────────────────────────────────────┘
+  </pre>
+
+</div>
+</details>
+
+### 4.2 Exemplo: Programa simples
+
+<pre>
+Instrução          | O que faz                     | Estado dos registradores
+-------------------|-------------------------------|--------------------------
+MOV R0, #5         | R0 = 5                        | R0=5, R1=0, R2=0
+MOV R1, #3         | R1 = 3                        | R0=5, R1=3, R2=0
+ADD R2, R0, R1     | R2 = R0 + R1 = 5 + 3 = 8    | R0=5, R1=3, R2=8
+SUB R0, R2, R1     | R0 = R2 - R1 = 8 - 3 = 5    | R0=5, R1=3, R2=8
+CMP R0, R1         | Compara R0 e R1              | Flags atualizadas
+BEQ fim            | Se R0 = R1, pula para "fim" | (salta se iguais)
+</pre>
+
+
+## 5. Banco de Registradores
+
+### 5.1 O que é um banco de registradores?
+
+O **Banco de Registradores** é um conjunto de registradores de uso geral organizados como uma pequena memória de alta velocidade dentro da CPU.
+
+### 5.2 Estrutura do banco
+
+<details>
+<summary>🔧 Ver Estrutura do Banco de Registradores</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 300px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">BANCO DE REGISTRADORES</div>
+
+  <pre style="color: #93c5fd; font-size: 0.65rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    ┌─────────────────────────────────────────────────────────────┐
+    │                                                             │
+    │  ┌─────────┐                                               │
+    │  │  R0     │  ← Endereço 00000                            │
+    │  ├─────────┤                                               │
+    │  │  R1     │  ← Endereço 00001                            │
+    │  ├─────────┤                                               │
+    │  │  R2     │  ← Endereço 00010                            │
+    │  ├─────────┤                                               │
+    │  │  ...    │                                               │
+    │  ├─────────┤                                               │
+    │  │  R31    │  ← Endereço 11111                            │
+    │  └─────────┘                                               │
+    │                                                             │
+    │  Cada registrador é acessado por um endereço de 5 bits.   │
+    │                                                             │
+    └─────────────────────────────────────────────────────────────┘
+  </pre>
+
+</div>
+</details>
+
+### 5.3 Acesso ao banco de registradores
+
+A UC usa **endereços** para selecionar quais registradores ler ou escrever:
+
+<pre>
+Instrução: ADD R0, R1, R2
+Campos da instrução:
+- ${\color{white}\text{Opcode: ADD (soma)}}$
+- ${\color{white}\text{Destino: R0 (endereço 00000)}}$
+- ${\color{white}\text{Operando 1: R1 (endereço 00001)}}$
+- ${\color{white}\text{Operando 2: R2 (endereço 00010)}}$
+
+A UC:
+1. ${\color{white}\text{Lê R1 e R2 do banco de registradores.}}$ 
+2. ${\color{white}\text{Envia para a ULA.}}$ 
+3. ${\color{white}\text{Escreve o resultado em R0.}}$ 
+</pre>
+
+
+## 6. Vantagens dos Registradores
+
+### 6.1 Velocidade
+
+Os registradores são o **armazenamento mais rápido** da hierarquia de memória:
+
+| Nível | Tempo de acesso | Capacidade |
+|-------|-----------------|------------|
+| Registradores | ~1 ciclo | ~1 KB |
+| Cache L1 | ~2-4 ciclos | ~32 KB |
+| Cache L2 | ~10 ciclos | ~256 KB |
+| RAM | ~50-100 ns | ~16 GB |
+
+### 6.2 Eficiência
+
+- Operações com registradores são **muito mais rápidas** que com memória.
+- Instruções que usam registradores são **menores** (ocupam menos espaço).
+- Registradores **reduzem o tráfego** no barramento de dados.
+
+### 6.3 Flexibilidade
+
+- Qualquer registrador pode armazenar qualquer dado.
+- O programador (ou compilador) decide como usar os registradores.
+- Diferentes convenções de chamada usam registradores de maneiras diferentes.
+
+
+## 7. Exercícios
+
+<details>
+<summary>📗 Exercício 1 — Definição (fácil)</summary>
+
+**Enunciado:** O que são Registradores de Uso Geral?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** São registradores da CPU que não têm função fixa e podem ser usados para armazenar qualquer dado temporário, operando ou resultado durante a execução de instruções.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Função (fácil)</summary>
+
+**Enunciado:** Qual é a principal vantagem dos registradores de uso geral?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Eles são extremamente rápidos (acesso em 1 ciclo de clock) e flexíveis, podendo armazenar qualquer tipo de dado temporário durante a execução do programa.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Exemplo de uso (médio)</summary>
+
+**Enunciado:** Dê um exemplo de como os registradores R0, R1 e R2 seriam usados para calcular R0 = R1 + R2.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+1. A UC lê R1 (ex: 5) e R2 (ex: 3).
+2. A ULA soma: 5 + 3 = 8.
+3. A UC escreve o resultado (8) em R0.
+4. Resultado final: R0 = 8, R1 = 5, R2 = 3.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Registradores na ARM (médio)</summary>
+
+**Enunciado:** Quantos registradores de uso geral tem a arquitetura ARM?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** 16 registradores de uso geral (R0 a R15), sendo que alguns têm funções sugeridas (R13 = SP, R14 = LR, R15 = PC).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Banco de registradores (médio)</summary>
+
+**Enunciado:** O que é um banco de registradores?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** É um conjunto de registradores de uso geral organizados como uma pequena memória de alta velocidade dentro da CPU, onde cada registrador é acessado por um endereço.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Velocidade (conceitual)</summary>
+
+**Enunciado:** Por que os registradores são mais rápidos que a memória RAM?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Os registradores estão dentro da CPU, próximos à ULA e à UC, e são feitos com tecnologia de flip-flops (SRAM), que é mais rápida que a DRAM usada na memória principal. Além disso, não precisam passar pelos barramentos externos.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — Uso sugerido (conceitual)</summary>
+
+**Enunciado:** O que significa um registrador ter um "uso sugerido"?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Significa que, embora o registrador possa ser usado para qualquer coisa, a arquitetura sugere um uso específico para ele (ex: R13 como ponteiro de pilha, R14 como endereço de retorno). Isso ajuda a padronizar a forma como os programas são escritos.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — Instrução com registradores (desafio)</summary>
+
+**Enunciado:** Dado R0=10, R1=4, R2=2, qual é o estado final dos registradores após a sequência de instruções abaixo?
+
+<pre>
+ADD R3, R0, R1    (R3 = R0 + R1)
+SUB R4, R3, R2    (R4 = R3 - R2)
+ADD R0, R4, R1    (R0 = R4 + R1)
+</pre>
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Passo 1:** ADD R3, R0, R1 → R3 = 10 + 4 = 14
+
+**Passo 2:** SUB R4, R3, R2 → R4 = 14 - 2 = 12
+
+**Passo 3:** ADD R0, R4, R1 → R0 = 12 + 4 = 16
+
+**Estado final:**
+- R0 = 16
+- R1 = 4
+- R2 = 2
+- R3 = 14
+- R4 = 12
+
+</details>
+</details>
+
+
+## 8. Resumo
+
+> **"Os Registradores de Uso Geral são o armazém de dados da CPU — a área de trabalho onde os dados são mantidos durante o processamento. Eles são extremamente rápidos (acesso em 1 ciclo), flexíveis (podem armazenar qualquer dado) e essenciais para o desempenho do processador. Enquanto registradores especializados (PC, IR, MAR, MBR) têm funções fixas, os registradores de uso geral são o 'espaço de trabalho' do programador, onde operandos são colocados, operações são executadas e resultados são armazenados. Em arquiteturas modernas, há de 8 a 32 registradores de uso geral, organizados em um banco de registradores. Sem eles, a CPU teria que acessar a memória a cada operação — o que seria milhares de vezes mais lento."**
+

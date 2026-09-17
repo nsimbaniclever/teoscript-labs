@@ -1,0 +1,328 @@
+# INTRODUÇÃO À DERIVADA
+
+## 1. Definição
+
+### 1.1 O que é a Derivada?
+
+A **derivada** de uma função $f$ em um ponto $a$ é a **taxa de variação instantânea** de $f$ em relação à variável independente $x$.
+
+**Definição formal (limite):**
+$$
+f'(a) = \lim_{h \to 0} \frac{f(a + h) - f(a)}{h}
+$$
+
+**Interpretação geométrica:** A derivada é a **inclinação da reta tangente** ao gráfico de $f$ no ponto $(a, f(a))$.
+
+**Interpretação física:** A derivada é a **velocidade instantânea** (se $f$ for posição, $f'$ é velocidade).
+
+### 1.2 Notações para a Derivada
+
+| Notação | Significado |
+|---------|-------------|
+| $f'(x)$ | Derivada de $f$ em relação a $x$ |
+| $\frac{df}{dx}$ | Notação de Leibniz |
+| $\dot{f}$ | Notação de Newton (física) |
+| $D_x f$ | Notação de operador |
+
+## 2. Cálculo da Derivada pela Definição
+
+### 2.1 Exemplo 1: $f(x) = x^2$
+
+**Passo 1:** Calcular $f(a + h)$:
+$$
+f(a + h) = (a + h)^2 = a^2 + 2ah + h^2
+$$
+
+**Passo 2:** Calcular $f(a + h) - f(a)$:
+$$
+(a^2 + 2ah + h^2) - a^2 = 2ah + h^2
+$$
+
+**Passo 3:** Dividir por $h$:
+$$
+\frac{f(a + h) - f(a)}{h} = \frac{2ah + h^2}{h} = 2a + h
+$$
+
+**Passo 4:** Calcular o limite $h \to 0$:
+$$
+f'(a) = \lim_{h \to 0} (2a + h) = 2a
+$$
+
+**Resultado:** $f'(x) = 2x$
+
+**Interpretação:** A inclinação da reta tangente à parábola $y = x^2$ no ponto $x$ é $2x$.
+
+### 2.2 Exemplo 2: $f(x) = \frac{1}{x}$
+
+**Passo 1:** Calcular $f(a + h)$:
+$$
+f(a + h) = \frac{1}{a + h}
+$$
+
+**Passo 2:** Calcular $f(a + h) - f(a)$:
+$$
+\frac{1}{a + h} - \frac{1}{a} = \frac{a - (a + h)}{a(a + h)} = \frac{-h}{a(a + h)}
+$$
+
+**Passo 3:** Dividir por $h$:
+$$
+\frac{f(a + h) - f(a)}{h} = \frac{-h}{a(a + h)} \cdot \frac{1}{h} = \frac{-1}{a(a + h)}
+$$
+
+**Passo 4:** Calcular o limite $h \to 0$:
+$$
+f'(a) = \lim_{h \to 0} \frac{-1}{a(a + h)} = -\frac{1}{a^2}
+$$
+
+**Resultado:** $f'(x) = -\frac{1}{x^2}$
+
+### 2.3 Exemplo 3: $f(x) = \sqrt{x}$
+
+**Passo 1:** Calcular $f(a + h)$:
+$$
+f(a + h) = \sqrt{a + h}
+$$
+
+**Passo 2:** Calcular $f(a + h) - f(a)$:
+$$
+\sqrt{a + h} - \sqrt{a}
+$$
+
+**Passo 3:** Racionalizar:
+$$
+\frac{\sqrt{a + h} - \sqrt{a}}{h} \cdot \frac{\sqrt{a + h} + \sqrt{a}}{\sqrt{a + h} + \sqrt{a}} = \frac{(a + h) - a}{h(\sqrt{a + h} + \sqrt{a})} = \frac{h}{h(\sqrt{a + h} + \sqrt{a})}
+$$
+
+**Passo 4:** Simplificar:
+$$
+\frac{1}{\sqrt{a + h} + \sqrt{a}}
+$$
+
+**Passo 5:** Calcular o limite $h \to 0$:
+$$
+f'(a) = \lim_{h \to 0} \frac{1}{\sqrt{a + h} + \sqrt{a}} = \frac{1}{2\sqrt{a}}
+$$
+
+**Resultado:** $f'(x) = \frac{1}{2\sqrt{x}}$
+
+## 3. Interpretação Geométrica da Derivada
+
+### 3.1 Reta Tangente
+
+A reta tangente ao gráfico de $f$ no ponto $(a, f(a))$ tem equação:
+$$
+y = f(a) + f'(a)(x - a)
+$$
+
+**Exemplo:** Para $f(x) = x^2$ no ponto $a = 1$:
+- $f(1) = 1$
+- $f'(1) = 2$
+- Reta tangente: $y = 1 + 2(x - 1) = 2x - 1$
+
+### 3.2 Taxa de Variação Média vs Instantânea
+
+| Conceito | Fórmula | Interpretação |
+|----------|---------|---------------|
+| **Taxa de variação média** | $\frac{f(b) - f(a)}{b - a}$ | Inclinação da reta secante |
+| **Taxa de variação instantânea** | $\lim_{h \to 0} \frac{f(a+h) - f(a)}{h}$ | Inclinação da reta tangente |
+
+## 4. Exemplos Lúdicos Aprimorados
+
+### 🍔 EXEMPLO 1 – A LANCHONETE (CUSTO MARGINAL)
+
+A lanchonete tem uma função de custo:
+$$
+C(x) = 2x^2 + 50
+$$
+Onde $x$ é o número de sanduíches.
+
+**Custo marginal (derivada):**
+$$
+C'(x) = 4x
+$$
+
+**Interpretação:** O custo marginal é a variação do custo ao produzir mais um sanduíche. Para $x = 10$, $C'(10) = 40$. Isso significa que o custo aumenta R$ 40,00 ao produzir o 11º sanduíche.
+
+### 🧃 EXEMPLO 2 – A CANTINA (VELOCIDADE DE CRESCIMENTO)
+
+A cantina tem uma função de crescimento de vendas:
+$$
+V(t) = 100e^{0.1t}
+$$
+Onde $t$ é o tempo em meses.
+
+**Derivada:**
+$$
+V'(t) = 10e^{0.1t}
+$$
+
+**Interpretação:** A taxa de crescimento das vendas é $10e^{0.1t}$ unidades por mês. Para $t = 0$, $V'(0) = 10$.
+
+## 5. Aplicação na Tese: Gradiente Descendente
+
+### 5.1 O que é o Gradiente?
+
+O **gradiente** de uma função de várias variáveis $f(\vec{w})$ é o vetor de derivadas parciais:
+$$
+\nabla f(\vec{w}) = \begin{bmatrix} \frac{\partial f}{\partial w_1} \\ \frac{\partial f}{\partial w_2} \\ \vdots \\ \frac{\partial f}{\partial w_n} \end{bmatrix}
+$$
+
+**Interpretação:** O gradiente aponta na direção de **maior crescimento** da função.
+
+### 5.2 Gradiente Descendente
+
+O algoritmo de otimização mais importante em ML:
+$$
+\vec{w}_{t+1} = \vec{w}_t - \eta \nabla L(\vec{w}_t)
+$$
+
+**Interpretação:** Para minimizar a perda $L$, andamos na direção **oposta** ao gradiente (direção de maior decrescimento).
+
+## 6. Exercícios Propostos (Manuais)
+
+<details>
+<summary>📗 Exercício 1 (Derivada pela Definição)</summary>
+
+**Enunciado:** Calcule a derivada pela definição:
+
+a) $f(x) = 3x^2$
+
+b) $f(x) = \frac{1}{x^2}$
+
+c) $f(x) = \sqrt{x+1}$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $f'(x) = 6x$
+
+b) $f'(x) = -\frac{2}{x^3}$
+
+c) $f'(x) = \frac{1}{2\sqrt{x+1}}$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 (Interpretação Geométrica)</summary>
+
+**Enunciado:** Para $f(x) = x^2 - 4x + 3$:
+
+a) Calcule $f'(x)$.
+
+b) Encontre a equação da reta tangente no ponto $x = 2$.
+
+c) Esboce o gráfico e a reta tangente.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $f'(x) = 2x - 4$
+
+b) $f(2) = 4 - 8 + 3 = -1$, $f'(2) = 4 - 4 = 0$
+
+Reta tangente: $y = -1 + 0(x - 2) = -1$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 (Taxa de Variação)</summary>
+
+**Enunciado:** A posição de um objeto é dada por:
+$$
+s(t) = t^3 - 6t^2 + 9t
+$$
+
+a) Qual é a velocidade instantânea em $t = 2$?
+
+b) Quando o objeto está em repouso?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $s'(t) = 3t^2 - 12t + 9$, $s'(2) = 12 - 24 + 9 = -3$
+
+b) $s'(t) = 0 \Rightarrow 3t^2 - 12t + 9 = 0 \Rightarrow t^2 - 4t + 3 = 0 \Rightarrow t = 1$ ou $t = 3$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 (Aplicação – ML)</summary>
+
+**Enunciado:** Uma função de perda é:
+$$
+L(w) = (w - 3)^2 + 5
+$$
+
+a) Calcule $L'(w)$.
+
+b) Onde a perda é mínima?
+
+c) O que a derivada indica sobre a direção de descida?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $L'(w) = 2(w - 3)$
+
+b) $L'(w) = 0 \Rightarrow w = 3$
+
+c) A derivada é negativa para $w < 3$ (descer para a direita) e positiva para $w > 3$ (descer para a esquerda).
+
+</details>
+</details>
+
+## 7. 💻 EXERCÍCIO COMPUTACIONAL
+
+<details>
+<summary>🐍 Ver código (Python/SymPy e Matplotlib)</summary>
+
+```python
+import sympy as sp
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Derivada simbólica
+x = sp.Symbol('x')
+f = x**2
+f_prime = sp.diff(f, x)
+print(f"f(x) = {f}")
+print(f"f'(x) = {f_prime}")
+
+# Derivada numérica (aproximação)
+def derivada_numerica(f, a, h=1e-5):
+    return (f(a + h) - f(a)) / h
+
+# Exemplo: f(x) = x^2 em x=2
+f = lambda x: x**2
+print(f"f'(2) numérica: {derivada_numerica(f, 2)}")
+
+# Visualização
+x_vals = np.linspace(-3, 3, 100)
+y_vals = x_vals**2
+
+plt.plot(x_vals, y_vals, label='f(x) = x²')
+plt.plot(2, 4, 'ro', label='Ponto (2,4)')
+
+# Reta tangente em x=2
+tangente = lambda x: 4 + 4*(x - 2)  # f(2)=4, f'(2)=4
+plt.plot(x_vals, tangente(x_vals), '--', label='Reta tangente')
+
+plt.grid()
+plt.legend()
+plt.show()
+```
+
+</details>
+
+> *A derivada é a ferramenta fundamental para medir taxas de variação instantâneas. Em Machine Learning, ela é a base do **gradiente descendente**, que permite otimizar funções de perda e treinar modelos. A definição formal pela limite é importante para entender o conceito, mas na prática usamos regras de derivação (próximas aulas).*

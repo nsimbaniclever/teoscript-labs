@@ -1,0 +1,344 @@
+# Organização dos dados 
+
+## 2. Dados Agrupados por Intervalos de Classe
+
+&emsp;&emsp;&emsp;**Agrupar em intervalos de classe** é criar "caixas" ou "faixas" de valores — por exemplo, de 10 a 20, de 20 a 30 — para resumir grandes conjuntos de dados numéricos contínuos.
+
+> **🔑 Ideia central:** Imagine que você tem 1.000 pessoas com alturas diferentes. Em vez de listar 1,58; 1,59; 1,60; 1,61... (o que seria inútil), você cria **caixas**: [1,50 - 1,60[, [1,60 - 1,70[, [1,70 - 1,80[ e conta quantas pessoas **caem em cada caixa**.
+
+### 1. A importância do Agrupamento por Intervalos de Classe
+
+&emsp;&emsp;&emsp;O agrupamento por intervalos de classe constitui uma das decisões mais importantes na organização de dados estatísticos, representando aquilo que podemos designar como o trade-off fundamental da Estatística Descritiva.
+
+#### ❌ O que perdemos?
+
+&emsp;&emsp;&emsp;Ao agrupar os dados em classes, perdemos inevitavelmente o valor exato de cada observação. Deixa de ser possível saber quem mede precisamente 1,72 m — sabemos apenas que esse indivíduo se encontra na classe [1,70 – 1,80[. Há, portanto, uma perda de precisão individual em favor de uma organização mais sintética.
+
+#### ✅ O que ganhamos
+
+&emsp;&emsp;&emsp;Em contrapartida, ganhamos algo essencial: a capacidade de visualizar a forma da distribuição mesmo quando lidamos com milhares de dados. O agrupamento permite identificar padrões, concentrações, assimetrias e dispersões que seriam impossíveis de detetar numa listagem exaustiva de valores. É através dele que a macro-visão do fenómeno em estudo se revela. O agrupamento por intervalos de classe é importante porque:
+
+- Torna os dados interpretáveis — uma tabela com centenas de valores distintos é ilegível; uma tabela com 5 a 10 classes é imediatamente compreensível;
+
+- Revela a estrutura da distribuição — permite identificar onde os dados se concentram e onde são mais escassos;
+
+- Viabiliza representações gráficas — histogramas e polígonos de frequência só são possíveis com dados agrupados;
+
+- Permite o cálculo de medidas estatísticas — a média, a mediana e o desvio padrão podem ser estimados a partir das classes;
+
+- Facilita a comparação entre conjuntos — dois grupos distintos podem ser comparados rapidamente através das suas distribuições de frequência.
+
+> **🚨 ATENÇÃO: NÃO É POSSÍVEL CRIAR INTERVALOS DE CLASSE PARA VARIÁVEIS QUALITATIVAS**
+
+&emsp;&emsp;&emsp; Intervalos de classe exigem matemática contínua — subtração, soma, ordenação numérica. Eles funcionam exclusivamente para Variáveis Quantitativas Contínuas (altura, peso, temperatura, salário). <br><br>
+
+&emsp;&emsp;&emsp;Para variáveis qualitativas (como letras A, B, C ou categorias como "Azul", "Verde"), **NÃO EXISTE** a ideia de intervalo". O que fazemos com elas é a contagem simples de categorias, como você aprendeu na aula anterior.
+
+- **✅ Correto para contínuas:** [1,50 - 1,60[, [1,60 - 1,70[
+
+- **❌ Errado para qualitativas:** "Azul - Verde", "A - B"
+
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;**Esta aula é EXCLUSIVA para Variáveis Quantitativas Contínuas.**
+
+### 2. 📐 O Passo a Passo Matemático
+
+Antes de usar qualquer ferramenta, você precisa entender a **lógica manual**. São cinco passos simples:
+
+#### Passo 1: Amplitude Total (AT)
+
+**Formula: AT = Máximo − Mínimo**
+
+Exemplo: Máx = 1,90 | Mín = 1,50
+
+AT = 1,90 − 1,50 = 0,40
+
+#### Passo 2: Número de Classes (k)
+
+Quantas "caixas" vamos criar?
+
+- **Regra da Raiz (n ≤ 50): k = √n**
+- **Regra de Sturges (n > 50): k = 1 + 3,322 · log(n)**
+
+**Exemplo:** n = 20 dados
+
+k = √20 ≈ 4,47 ≈ 5 classes
+
+#### Passo 3: Largura da Classe (h)
+
+O tamanho de cada "caixa".
+
+**h = AT / k**
+
+Exemplo: AT = 0,40 | k = 5
+
+h = 0,40 / 5 = 0,08
+
+#### Passo 4: Limites das Classes
+
+Definir onde cada "caixa" começa e termina.
+
+**[Limite Inferior, Limite Superior[**
+
+Exemplo: [1,50; 1,58[, [1,58; 1,66[, [1,66; 1,74[, ...
+
+**Notação:** `[` inclui | `[` ou `)` exclui
+
+#### Passo 5: Ponto Médio
+
+O valor central de cada "caixa". 
+
+$\Large \color{blue}{\bar{x} = \frac{(L_i + L_s)}{2}}$
+
+Exemplo: [1,50; 1,58[
+
+Ponto Médio = (1,50 + 1,58) / 2 = 1,54
+
+> **📌 Lembre-se:** A notação **`[a, b[`** significa que o valor `a` está **incluído** e o valor `b` está **excluído**. Isso garante que nenhum dado seja contado duas vezes — o valor 1,58 não será contado no intervalo [1,50; 1,58[ e também não será contado no próximo [1,58; 1,66[; ele **pertence apenas ao segundo**.
+
+### 3. 💻 Prática — Variáveis Quantitativas Contínuas
+
+- Dados de Exemplo: Vamos usar 20 alturas (em metros) de alunos como exemplo:
+
+`1,55; 1,62; 1,78; 1,81; 1,59; 1,63; 1,71; 1,85; 1,52; 1,67; 1,74; 1,58; 1,69; 1,82; 1,61; 1,57; 1,73; 1,68; 1,79; 1,54`
+
+<details>
+<summary>📝 Exemplo na Mão</summary>
+
+Com 20 dados, podemos fazer o processo na mão para entender a lógica.
+
+**Passo 1: Calcular a Amplitude Total**
+
+- Máximo: 1,85 | Mínimo: 1,52
+- AT = 1,85 − 1,52 = 0,33
+
+**Passo 2: Definir o número de classes**
+
+Usaremos a Regra da Raiz, porque n ≤ 50
+
+- n = 20 dados
+
+- k = √20 ≈ 4,47 ≈ 5 classes
+
+**Passo 3: Calcular a largura da classe**
+
+h = AT / k = 0,33 / 5 = 0,066
+
+Arredondamos para um valor prático: h = 0,07
+
+**Passo 4: Montar os intervalos**
+
+Começando pelo valor mínimo (1,52):
+
+- [1,52; 1,59[ → classe 1: (1,52 + 0,07 = 1,59)
+- [1,59; 1,66[ → classe 2: (1,59 + 0,07 = 1,66)
+- [1,66; 1,73[ → classe 3: (1,66 + 0,07 = 1,73)
+- [1,73; 1,80[ → classe 4: (1,73 + 0,07 = 1,80)
+- [1,80; 1,87[ → classe 5: (1,80 + 0,07 = 1,87)
+
+**Passo 5: Contar quantos dados caem em cada intervalo**
+
+- [1,52; 1,59[: 4 dados
+- [1,59; 1,66[: 5 dados
+- [1,66; 1,73[: 4 dados
+- [1,73; 1,80[: 4 dados
+- [1,80; 1,87[: 3 dados
+
+**Total: 20 dados**
+</details>
+
+
+<details>
+<summary>📊 Exemplo no Excel</summary>
+
+Com o Excel, podemos seguir os **5 passos** usando fórmulas diretas. Vamos usar o exemplo das 20 alturas:
+
+**Passo 1:** Calcular a Amplitude Total (AT) = Máximo - Mínimo
+
+*Máximo* <br>
+------- <br>
+
+=MAX(intervalo) <br>
+=MAX(A2:A21) <br>
+
+
+*Mínimo* <br>
+-------- <br>
+
+=MIN(intervalo) <br>
+=MIN(A2:A21) <br>
+
+
+*Amplitude Total (AT) = Máximo − Mínimo* <br>
+--------------------------------------- <br>
+AT = MAX(A2:A21) - MIN(A2:A21) <br>
+
+Resultado: 1,85 − 1,52 = **0,33** <br><br>
+
+**Passo 2:** Definir o número de classes (k) <br>
+
+*Regra da Raiz (para n < 50): k = √n* <br>
+
+=SQRT(CONT.VALORES(n)) <br>
+=SQRT(CONT.VALORES(A2:A21)) <br>
+
+Resultado: √20 = **4,47 ≈ 5** classes <br>
+
+*Regra de Sturges (para n ≥ 50): k = 1 + 3,322 · log(n)* <br>
+
+=1 + (3,322 * LOG(CONT.VALORES(A2:A21); 10)) <br>
+
+**Nota:** A função `LOG(n; 10)` calcula o logaritmo na base 10. <br><br>
+
+**Passo 3:** Calcular a largura da classe (h) <br>
+
+*h = AT / k* <br>
+
+=(MAX(A2:A21) - MIN(A2:A21)) / 5 <br>
+
+Resultado: 0,33 / 5 = **0,066** <br>
+
+**💡 Dica:** Arredondamos para um valor prático: **h = 0,07** <br><br>
+
+**Passo 4:** Montar os intervalos (limites das classes) <br>
+
+Começando pelo valor mínimo (1,52) e somando a largura da classe (0,07): <br>
+
+| Classe | Limite Inferior | Limite Superior | Intervalo |
+|--------|-----------------|-----------------|-----------|
+| 1 | 1,52 | 1,59 | [1,52; 1,59[ |
+| 2 | 1,59 | 1,66 | [1,59; 1,66[ |
+| 3 | 1,66 | 1,73 | [1,66; 1,73[ |
+| 4 | 1,73 | 1,80 | [1,73; 1,80[ |
+| 5 | 1,80 | 1,87 | [1,80; 1,87[ |
+
+**Notação:** O colchete `[` inclui o valor, o `[` ou `)` exclui.
+
+**Passo 5:** Contar quantos dados caem em cada intervalo
+
+Use a função **`=FREQUÊNCIA(dados; limites_superiores)`**:
+
+=FREQUÊNCIA(A2:A21; E2:E6)
+
+Onde: **A2:A21** são os dados brutos e **E2:E6** são os limites superiores (1,59; 1,66; 1,73; 1,80; 1,87)
+
+**Resultado final:**
+
+| Intervalo | Limite Inferior | Limite Superior | Quantas vezes se repetiu |
+|-----------|-----------------|-----------------|--------------------------|
+| [1,52; 1,59[ | 1,52 | 1,59 | 4 |
+| [1,59; 1,66[ | 1,59 | 1,66 | 5 |
+| [1,66; 1,73[ | 1,66 | 1,73 | 4 |
+| [1,73; 1,80[ | 1,73 | 1,80 | 4 |
+| [1,80; 1,87[ | 1,80 | 1,87 | 3 |
+| **Total** | | | **20** |
+
+**📌 Resumo das Fórmulas no Excel**
+
+| Passo | Fórmula em Inglês | Explicação |
+|-------|-------------------|------------|
+| 1 | `=MAX(A2:A21) - MIN(A2:A21)` | Amplitude Total |
+| 2 | `=SQRT(CONT.VALORES(A2:A21))` | Nº de classes (Raiz) |
+| 3 | `=(MAX(A2:A21) - MIN(A2:A21)) / k` | Largura da classe |
+| 4 | `=FREQUÊNCIA(A2:A21; E2:E6)` | Contagem por intervalo |
+
+</details>
+
+
+## 📝 Resumo 
+
+| Conceito | Fórmula | Exemplo (n=20, AT=0,33) |
+|----------|---------|--------------------------|
+| **Amplitude Total (AT)** | `Máximo − Mínimo` | 1,85 − 1,52 = **0,33** |
+| **Número de Classes (k)** | `k = √n` (Raiz) ou `k = 1 + 3,322·log(n)` (Sturges) | k = √20 ≈ **5** |
+| **Largura da Classe (h)** | `h = AT / k` | 0,33 / 5 = **0,066 ≈ 0,07** |
+| **Notação dos Limites** | `[Li, Ls[` | **[1,52; 1,59[** |
+| **Ponto Médio** | `(Li + Ls) / 2` | (1,52 + 1,59) / 2 = **1,555** |
+
+> **📌 Conclusão:** Agrupar em intervalos de classe é a técnica que permite **resumir grandes volumes de dados contínuos**. Perdemos o dado exato, mas ganhamos a capacidade de **enxergar a distribuição como um todo** — a **macro-visão** que os dados brutos não nos dão.
+>
+> **Lembre-se:** Esta técnica é **exclusiva para Variáveis Quantitativas Contínuas**. Para qualitativas, a contagem simples de categorias continua sendo a única abordagem possível.
+
+## 📝 Exercícios
+
+<details>
+<summary>📗 Exercício 1</summary>
+
+**Enunciado:** Por que não é possível criar intervalos de classe para variáveis qualitativas?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+Intervalos de classe exigem **matemática contínua** — subtração, soma, ordenação numérica. Variáveis qualitativas (como cores, categorias, letras) não têm ordem numérica ou continuidade matemática. Não faz sentido criar um "intervalo" entre "Azul" e "Verde". Para variáveis qualitativas, o agrupamento é feito por **contagem simples de categorias**.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2</summary>
+
+**Enunciado:** Para um conjunto de dados com n = 40, qual o número de classes pela Regra da Raiz?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+k = √40 ≈ 6,32 ≈ **6** classes
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3</summary>
+
+**Enunciado:** Calcule a Amplitude Total (AT) e a largura da classe (h) para os dados abaixo, considerando k = 4:
+
+12, 15, 18, 22, 25, 28, 30, 35
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+Máximo = 35 | Mínimo = 12
+
+AT = 35 - 12 = **23**
+
+h = 23 / 4 = **5,75**
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4</summary>
+
+**Enunciado:** O que significa a notação [1,50; 1,60[ e por que ela é importante?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+A notação [1,50; 1,60[ significa que o valor **1,50** está **incluído** na classe, enquanto o valor **1,60** está **excluído**. Ela é importante porque garante que **nenhum dado seja contado duas vezes** — o valor 1,60 será contado no próximo intervalo [1,60; 1,70[ e não no intervalo anterior.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5</summary>
+
+**Enunciado:** Calcule o ponto médio da classe [20; 30[.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+Ponto Médio = (20 + 30) / 2 = **25**
+
+</details>
+</details>
+
+> *O agrupamento em intervalos de classe é a arte de transformar o caos dos dados em uma história clara — a história da distribuição, contada não por números individuais, mas pela forma que eles assumem juntos.*

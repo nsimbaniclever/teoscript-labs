@@ -1,0 +1,357 @@
+# Tabela ASCII
+
+## O Primeiro Padrão Internacional de Codificação de Caracteres
+
+**Duração estimada:** 40 minutos (leitura) / 1h (com exercícios práticos)   <br>
+**Público-alvo:** Estudante com conhecimento de sistema binário  <br>
+**Pré-requisito:** Sistema Binário, Bit e Byte <br>
+
+
+## 1. Introdução
+
+O computador só entende 0 e 1. Não entende letras, números, símbolos, nem emojis. Mas nós, seres humanos, usamos letras, números e símbolos para nos comunicar. Como então o computador mostra "A", "B", "7", "@" e "!" na tela se ele só entende 0 e 1? A resposta está nas **tabelas de codificação** — dicionários que traduzem entre o mundo humano (letras) e o mundo da máquina (números binários). <br><br>
+
+
+Imagine um mundo sem padrões, onde computadores foram fabricados em varios pontos do mundo:
+
+- Um computador fabricado na **China** usaria o sistema **binário** para representar seus caracteres. 
+- Um computador fabricado em **Angola** usaria o sistema **hexadecimal**. 
+- E outro computador fabricado na **Rússia** usaria o sistema **octal**. 
+
+O resultado seria um caos completo: um arquivo salvo em um computador **chinês**, quando aberto em um computador **angolano**, viraria garrancho — símbolos sem sentido.  <br><br>
+
+Um texto em **português**, salvo em um computador brasileiro, seria completamente **ilegível em um computador alemão**. Seria a Torre de Babel digital: ninguém se entenderia, e a comunicação entre computadores de diferentes países seria impossível.
+
+> A solução foi criar **padrões internacionais** que todos os fabricantes — IBM, Apple, Microsoft, Linux — concordassem em seguir. O primeiro desses padrões foi o **ASCII** (1960), criado nos Estados Unidos para padronizar a comunicação entre computadores americanos. Depois vieram outros: o **ISO-8859-1** (1980) para a Europa, e finalmente o **Unicode + UTF-8** (1993) para o mundo inteiro.<br>
+
+Nesta aula, vamos estudar o **ASCII** — o avô de todos os padrões de codificação. Vamos entender o que ele é, como funciona, o que ele suporta (e o que **não** suporta), e por que ele foi importante e depois substituído.
+
+
+## 2. O Que é o ASCII?
+
+> **ASCII** significa:  **A**merican **S**tandard **C**ode for **I**nformation **I**nterchange
+
+Em português: *Código Padrão Americano para Intercâmbio de Informações*.
+
+Criado em **1960** nos Estados Unidos, seu objetivo era padronizar a comunicação entre computadores americanos. O ASCII usa **7 bits**, o que permite **128 combinações** possíveis (2⁷ = 128). Mais tarde, surgiu uma versão estendida com **8 bits** (256 combinações), mas a base permaneceu a mesma.
+
+**Por que 7 bits?** Porque 128 combinações eram suficientes para:
+- 26 letras maiúsculas (A-Z)
+- 26 letras minúsculas (a-z)
+- 10 dígitos (0-9)
+- Símbolos básicos (!, @, #, $, %, etc.)
+- 32 caracteres de controle (enter, tab, backspace, etc.)
+
+**O que o ASCII suporta?** Letras inglesas, números, pontuação básica e caracteres de controle.  
+**O que o ASCII NÃO suporta?** Acentos, a letra 'ç', letras de outros idiomas (como ñ, ü, ø), símbolos europeus (€, £, ¥), caracteres asiáticos, emojis e símbolos matemáticos.
+
+Em resumo: o ASCII é **excelente** para o inglês, mas **inútil** para o português e para a maioria dos outros idiomas do mundo.
+
+
+## 3. A Tabela ASCII Básica (0 a 127)
+
+### 3.1 Caracteres de Controle (0 a 31)
+
+<details>
+<summary>🔧 Ver Tabela de Caracteres de Controle</summary>
+
+| Decimal | Binário (7 bits) | Caractere | Descrição |
+|---------|------------------|-----------|-----------|
+| 0 | 000 0000 | NUL | Null (vazio) |
+| 1 | 000 0001 | SOH | Início de cabeçalho |
+| 2 | 000 0010 | STX | Início de texto |
+| 3 | 000 0011 | ETX | Fim de texto |
+| 4 | 000 0100 | EOT | Fim de transmissão |
+| 5 | 000 0101 | ENQ | Consulta |
+| 6 | 000 0110 | ACK | Reconhecimento |
+| 7 | 000 0111 | BEL | Bell (campainha) |
+| 8 | 000 1000 | BS | Backspace (volta) |
+| 9 | 000 1001 | TAB | Tabulação horizontal |
+| 10 | 000 1010 | LF | Line Feed (nova linha) |
+| 11 | 000 1011 | VT | Tabulação vertical |
+| 12 | 000 1100 | FF | Form Feed (nova página) |
+| 13 | 000 1101 | CR | Carriage Return (enter) |
+| 14 | 000 1110 | SO | Shift Out |
+| 15 | 000 1111 | SI | Shift In |
+| 16 | 001 0000 | DLE | Data Link Escape |
+| 17 | 001 0001 | DC1 | Controle de dispositivo 1 |
+| 18 | 001 0010 | DC2 | Controle de dispositivo 2 |
+| 19 | 001 0011 | DC3 | Controle de dispositivo 3 |
+| 20 | 001 0100 | DC4 | Controle de dispositivo 4 |
+| 21 | 001 0101 | NAK | Negative Acknowledge |
+| 22 | 001 0110 | SYN | Sincronização |
+| 23 | 001 0111 | ETB | Fim de bloco de texto |
+| 24 | 001 1000 | CAN | Cancelar |
+| 25 | 001 1001 | EM | Fim de mídia |
+| 26 | 001 1010 | SUB | Substituto |
+| 27 | 001 1011 | ESC | Escape |
+| 28 | 001 1100 | FS | Separador de arquivos |
+| 29 | 001 1101 | GS | Separador de grupos |
+| 30 | 001 1110 | RS | Separador de registros |
+| 31 | 001 1111 | US | Separador de unidades |
+
+</details>
+
+**Observação:** Esses caracteres não são "visíveis" — eles controlam o comportamento do computador (ex: ENTER = nova linha, TAB = espaço, BACKSPACE = apagar).
+
+### 3.2 Caracteres Visíveis (32 a 126)
+
+<details>
+<summary>🔑 Ver Tabela ASCII (32 a 126)</summary>
+
+| Decimal | Binário (7 bits) | Caractere | Decimal | Binário (7 bits) | Caractere |
+|---------|------------------|-----------|---------|------------------|-----------|
+| 32 | 010 0000 | (espaço) | 80 | 101 0000 | P |
+| 33 | 010 0001 | ! | 81 | 101 0001 | Q |
+| 34 | 010 0010 | " | 82 | 101 0010 | R |
+| 35 | 010 0011 | # | 83 | 101 0011 | S |
+| 36 | 010 0100 | $ | 84 | 101 0100 | T |
+| 37 | 010 0101 | % | 85 | 101 0101 | U |
+| 38 | 010 0110 | & | 86 | 101 0110 | V |
+| 39 | 010 0111 | ' | 87 | 101 0111 | W |
+| 40 | 010 1000 | ( | 88 | 101 1000 | X |
+| 41 | 010 1001 | ) | 89 | 101 1001 | Y |
+| 42 | 010 1010 | * | 90 | 101 1010 | Z |
+| 43 | 010 1011 | + | 91 | 101 1011 | [ |
+| 44 | 010 1100 | , | 92 | 101 1100 | \ |
+| 45 | 010 1101 | - | 93 | 101 1101 | ] |
+| 46 | 010 1110 | . | 94 | 101 1110 | ^ |
+| 47 | 010 1111 | / | 95 | 101 1111 | _ |
+| 48 | 011 0000 | 0 | 96 | 110 0000 |  |
+| 49 | 011 0001 | 1 | 97 | 110 0001 | a |
+| 50 | 011 0010 | 2 | 98 | 110 0010 | b |
+| 51 | 011 0011 | 3 | 99 | 110 0011 | c |
+| 52 | 011 0100 | 4 | 100 | 110 0100 | d |
+| 53 | 011 0101 | 5 | 101 | 110 0101 | e |
+| 54 | 011 0110 | 6 | 102 | 110 0110 | f |
+| 55 | 011 0111 | 7 | 103 | 110 0111 | g |
+| 56 | 011 1000 | 8 | 104 | 110 1000 | h |
+| 57 | 011 1001 | 9 | 105 | 110 1001 | i |
+| 58 | 011 1010 | : | 106 | 110 1010 | j |
+| 59 | 011 1011 | ; | 107 | 110 1011 | k |
+| 60 | 011 1100 | < | 108 | 110 1100 | l |
+| 61 | 011 1101 | = | 109 | 110 1101 | m |
+| 62 | 011 1110 | > | 110 | 110 1110 | n |
+| 63 | 011 1111 | ? | 111 | 110 1111 | o |
+| 64 | 100 0000 | @ | 112 | 111 0000 | p |
+| 65 | 100 0001 | A | 113 | 111 0001 | q |
+| 66 | 100 0010 | B | 114 | 111 0010 | r |
+| 67 | 100 0011 | C | 115 | 111 0011 | s |
+| 68 | 100 0100 | D | 116 | 111 0100 | t |
+| 69 | 100 0101 | E | 117 | 111 0101 | u |
+| 70 | 100 0110 | F | 118 | 111 0110 | v |
+| 71 | 100 0111 | G | 119 | 111 0111 | w |
+| 72 | 100 1000 | H | 120 | 111 1000 | x |
+| 73 | 100 1001 | I | 121 | 111 1001 | y |
+| 74 | 100 1010 | J | 122 | 111 1010 | z |
+| 75 | 100 1011 | K | 123 | 111 1011 | { |
+| 76 | 100 1100 | L | 124 | 111 1100 | \| |
+| 77 | 100 1101 | M | 125 | 111 1101 | } |
+| 78 | 100 1110 | N | 126 | 111 1110 | ~ |
+| 79 | 100 1111 | O | 127 | 111 1111 | DEL |
+
+</details>
+
+
+## 4. Como a Máquina Entende Quando Escrevemos uma Letra
+
+Quando pressionamos a tecla "A" no teclado, o computador não vê a letra "A". O que acontece é o seguinte:
+
+1. O teclado envia um sinal elétrico para o computador.
+2. O sistema operacional consulta a tabela ASCII.
+3. Na tabela, a letra 'A' corresponde ao número **65** em decimal.
+4. O computador converte 65 para binário: **1000001** (7 bits) ou **0100 0001** (8 bits).
+5. A máquina armazena e processa esse binário.
+6. Quando precisa mostrar na tela, ela faz o caminho inverso: lê 0100 0001, converte para 65, consulta a tabela e mostra 'A'.
+
+**Exemplo prático:** Quando você escreve a letra **'N'**:
+- O teclado envia o sinal.
+- A tabela ASCII diz: 'N' = **78** em decimal.
+- O computador converte 78 para binário: 0100 1110.
+- A máquina entende que foi o número **78**, que representa a letra 'N'.
+
+**Por que isso é importante?** Porque o computador **não conhece letras**. Ele só conhece números. A tabela ASCII é o dicionário que diz: "Número 78 = Letra N". É assim que a máquina "entende" o que escrevemos.
+
+
+## 5. Limitações do ASCII
+
+O ASCII é **excelente** para o inglês, mas **completamente insuficiente** para:
+
+| Limitação | Exemplo | Consequência |
+|-----------|---------|--------------|
+| **Sem acentos** | á, é, í, ó, ú | Impossível escrever português corretamente |
+| **Sem 'ç'** | ç | Impossível escrever "ação", "coração" |
+| **Sem outros idiomas** | ñ, ü, ø | Impossível escrever espanhol, alemão, dinamarquês |
+| **Sem símbolos europeus** | €, £, ¥ | Não suporta moedas europeias |
+| **Sem caracteres asiáticos** | 中, あ, 한 | Inútil para chinês, japonês, coreano |
+| **Sem emojis** | 😊, 🚀, ❤️ | Não suporta comunicação moderna |
+
+**Contexto histórico:** O ASCII foi criado em **1960** nos **Estados Unidos**, apenas para o **inglês**. Naquela época, 7 bits era suficiente. Os criadores não previram que o mundo se globalizaria tão rápido, que o português, espanhol, francês e alemão precisariam de acentos, que a internet conectaría bilhões de pessoas falando diferentes idiomas, e que emojis seriam inventados 50 anos depois.
+
+**Exemplo prático:** Escrever "Ação" em ASCII é impossível porque:
+- 'A' existe (65)
+- 'ç' **NÃO EXISTE** no ASCII
+- 'ã' **NÃO EXISTE** no ASCII
+- 'o' existe (111)
+
+**Resultado:** 0100 0001 ????? ????? 0110 1111 — o computador não sabe o que fazer com **ç e ã**.
+
+**A primeira tentativa de solução:** O **ASCII Estendido** (8 bits, 256 caracteres). Os primeiros 128 eram iguais ao ASCII original. Os últimos 128 variavam de acordo com o país. O problema: cada país criava sua própria versão! O ASCII brasileiro tinha 'ç' e acentos, mas não tinha 'ñ', 'ü', 'ø'. O ASCII alemão tinha 'ä', 'ö', 'ü', mas não tinha 'ç'. O caos continuou.
+
+## 6. Código Python — Explorando o ASCII
+
+| Função | O que faz | Exemplo |
+|--------|-----------|---------|
+| ord(caractere) | Converte caractere para código ASCII | ord('A') → 65 |
+| chr(codigo) | Converte código ASCII para caractere | chr(65) → 'A' |
+
+
+## 7. Exercícios
+
+<details>
+<summary>📗 Exercício 1 — 'M' para Binário (fácil)</summary>
+
+**Enunciado:** Converta a letra **'M'** para binário usando a tabela ASCII.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Passo 1:** 'M' = 77 (decimal)
+
+**Passo 2:** 77 em binário = 0100 1101
+
+**Resposta:** 0100 1101
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — '7' para Binário (fácil)</summary>
+
+**Enunciado:** Converta o caractere **'7'** para binário usando a tabela ASCII.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Passo 1:** '7' = 55 (decimal)
+
+**Passo 2:** 55 em binário = 0011 0111
+
+**Resposta:** 0011 0111
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — 'BOM' para Binário (médio)</summary>
+
+**Enunciado:** Converta a palavra **"BOM"** para binário usando ASCII.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+- 'B' = 66 = 0100 0010
+- 'O' = 79 = 0100 1111
+- 'M' = 77 = 0100 1101
+
+**Resposta:** 0100 0010 0100 1111 0100 1101
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — 'OLA' para Binário (médio)</summary>
+
+**Enunciado:** Converta a palavra **"OLA"** para binário usando ASCII.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+- 'O' = 79 = 0100 1111
+- 'L' = 76 = 0100 1100
+- 'A' = 65 = 0100 0001
+
+**Resposta:** 0100 1111 0100 1100 0100 0001
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Decodificar 0100 1100 0110 0101 (médio)</summary>
+
+**Enunciado:** O computador leu 0100 1100 0110 0101. Que palavra é? (Use a tabela ASCII).
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+- 0100 1100 = 76 = 'L'
+- 0110 0101 = 101 = 'e'
+
+**Resposta:** "Le"
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Decodificar 0101 0000 0101 0010 0100 1111 (médio)</summary>
+
+**Enunciado:** O computador leu 0101 0000 0101 0010 0100 1111. Que palavra é? (Use a tabela ASCII).
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+- 0101 0000 = 80 = 'P'
+- 0101 0010 = 82 = 'R'
+- 0100 1111 = 79 = 'O'
+
+**Resposta:** "PRO"
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — Limitação do ASCII (conceitual)</summary>
+
+**Enunciado:** Por que o ASCII é insuficiente para escrever em português?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+O ASCII não possui:
+- Letras acentuadas (á, é, í, ó, ú, â, ê, ô, etc.)
+- A letra 'ç'
+- Símbolos como o til (~) que forma ã e õ
+
+Portanto, não é possível escrever palavras como "ação", "coração", "pão", "mês", etc., corretamente.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — Diferença entre maiúsculas e minúsculas (desafio)</summary>
+
+**Enunciado:** Qual é a diferença em decimal entre 'A' e 'a'? E entre 'Z' e 'z'? O que isso revela?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+- 'A' = 65, 'a' = 97 → diferença = 32
+- 'Z' = 90, 'z' = 122 → diferença = 32
+
+**Revelação:** Todas as letras maiúsculas e minúsculas têm uma diferença de **32** em decimal.
+
+Em binário (8 bits), isso significa que o **6º bit** (da esquerda para direita) é 0 para maiúsculas e 1 para minúsculas:
+
+- 'A' = 0100 0001
+- 'a' = 0110 0001
+
+**Resposta:** A diferença é **32**, e isso mostra que o ASCII foi projetado de forma inteligente para permitir conversão fácil entre maiúsculas e minúsculas.
+
+</details>
+</details>
+
+
+> **"O ASCII foi o primeiro padrão internacional de codificação de caracteres. Criado em 1960 com 7 bits e 128 caracteres, ele resolveu o problema da comunicação entre computadores americanos, mas sua limitação ao inglês o tornou insuficiente para o mundo globalizado. Sem acentos, sem 'ç', sem outros idiomas e sem emojis, o ASCII deu lugar a padrões mais abrangentes como o ISO-8859-1 e o Unicode. No entanto, seu legado permanece: ele é o avô de todos os padrões de codificação, e ainda é a base sobre a qual todos os outros foram construídos."**
+
+
+**Próxima aula:** Tabela Unicode — O Padrão Universal

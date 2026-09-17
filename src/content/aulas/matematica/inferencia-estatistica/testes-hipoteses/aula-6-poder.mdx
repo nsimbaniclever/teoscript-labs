@@ -1,0 +1,381 @@
+# Poder e Tamanho Amostral em Testes de Hipóteses
+
+## O que vamos aprender nesta aula?
+
+Nesta aula, vamos explorar a relação entre quatro elementos fundamentais em testes de hipóteses:
+
+1. **Poder do teste ($1-\beta$):** Probabilidade de detectar um efeito quando ele realmente existe.
+2. **Tamanho da amostra ($n$):** Número de observações necessárias.
+3. **Nível de significância ($\alpha$):** Probabilidade de erro Tipo I.
+4. **Tamanho do efeito:** Magnitude da diferença que queremos detectar.
+
+O planejamento adequado de um experimento ou estudo requer o equilíbrio entre esses quatro fatores. Vamos aprender como calcular o tamanho amostral necessário para obter um poder desejado e como construir curvas de poder.
+
+## Revisão: Erros Tipo I e Tipo II
+
+| | $H_0$ é verdadeira | $H_0$ é falsa |
+| --- | --- | --- |
+| **Rejeitar $H_0$** | Erro Tipo I ($\alpha$) | Decisão correta ($1-\beta$) |
+| **Não rejeitar $H_0$** | Decisão correta ($1-\alpha$) | Erro Tipo II ($\beta$) |
+
+- **$\alpha$ (nível de significância):** Probabilidade de rejeitar $H_0$ quando ela é verdadeira.
+- **$\beta$:** Probabilidade de não rejeitar $H_0$ quando ela é falsa.
+- **Poder ($1-\beta$):** Probabilidade de rejeitar $H_0$ quando ela é falsa.
+
+**Analogia:** O poder é como a sensibilidade de um teste médico — a capacidade de detectar a doença quando ela está presente.
+
+## Fatores que Afetam o Poder
+
+O poder de um teste é afetado por quatro fatores:
+
+1. **Tamanho da amostra ($n$):** $\uparrow n \to \uparrow$ poder
+2. **Nível de significância ($\alpha$):** $\uparrow \alpha \to \uparrow$ poder
+3. **Tamanho do efeito:** $\uparrow$ efeito $\to \uparrow$ poder
+4. **Variabilidade ($\sigma$):** $\downarrow \sigma \to \uparrow$ poder
+
+**Relação entre os fatores:**
+
+$$Poder = f(n, \alpha, \text{efeito}, \sigma)$$
+
+**Exemplo visual:**
+
+- Com $n = 30$, $\alpha = 0,05$, $\sigma = 10$, efeito = 2 $\to$ poder = 0,40 (40%)
+- Com $n = 100$, $\alpha = 0,05$, $\sigma = 10$, efeito = 2 $\to$ poder = 0,85 (85%)
+- Com $n = 30$, $\alpha = 0,10$, $\sigma = 10$, efeito = 2 $\to$ poder = 0,55 (55%)
+- Com $n = 30$, $\alpha = 0,05$, $\sigma = 5$, efeito = 2 $\to$ poder = 0,75 (75%)
+
+## Cálculo do Tamanho Amostral para Teste $z$ (Média, $\sigma$ conhecido)
+
+Para um teste $z$ para média com $\sigma$ conhecido, o tamanho amostral necessário para obter um poder desejado é:
+
+### Caso bicaudal ($H_1: \mu \ne \mu_0$):
+
+>> $$n = \frac{(Z_{\alpha/2} + Z_{\beta})^2 \cdot \sigma^2}{(\mu - \mu_0)^2}$$
+
+### Caso unilateral ($H_1: \mu > \mu_0$ ou $\mu < \mu_0$):
+
+>> $$n = \frac{(Z_{\alpha} + Z_{\beta})^2 \cdot \sigma^2}{(\mu - \mu_0)^2}$$
+
+onde:
+- $Z_{\alpha/2}$ ou $Z_{\alpha}$: quantil da Normal para o nível de significância
+- $Z_{\beta}$: quantil da Normal para o poder desejado ($1-\beta$)
+- $\sigma$: desvio padrão populacional
+- $\mu - \mu_0$: tamanho do efeito (diferença que queremos detectar)
+
+**Valores comuns de $Z_\beta$ para poder desejado:**
+
+| Poder ($1-\beta$) | $\beta$ | $Z_\beta$ |
+| --- | --- | --- |
+| 0,80 | 0,20 | 0,842 |
+| 0,85 | 0,15 | 1,036 |
+| 0,90 | 0,10 | 1,282 |
+| 0,95 | 0,05 | 1,645 |
+| 0,99 | 0,01 | 2,326 |
+
+**Exemplo 1: Tamanho amostral para teste $z$ (bicaudal)**
+
+Queremos testar se $\mu \ne 100$ ($\alpha = 0,05$) com poder de 0,80 para detectar uma diferença de 2 unidades. Sabe-se que $\sigma = 5$.
+
+**Resolução:**
+
+$Z_{0,025} = 1,96$; $Z_{0,20} = 0,842$; $\sigma = 5$; efeito = 2
+$n = \frac{(1,96 + 0,842)^2 \cdot 5^2}{2^2} = \frac{(2,802)^2 \cdot 25}{4} = \frac{7,851 \cdot 25}{4} = \frac{196,275}{4} = 49,07$
+
+**Resposta:** $n \ge 50$.
+
+**Exemplo 2: Tamanho amostral para teste $z$ (unilateral superior)**
+
+Queremos testar se $\mu > 100$ ($\alpha = 0,05$) com poder de 0,90 para detectar uma diferença de 1,5 unidades. $\sigma = 4$.
+
+**Resolução:**
+
+$Z_{0,05} = 1,645$; $Z_{0,10} = 1,282$; $\sigma = 4$; efeito = 1,5
+$n = \frac{(1,645 + 1,282)^2 \cdot 4^2}{1,5^2} = \frac{(2,927)^2 \cdot 16}{2,25} = \frac{8,567 \cdot 16}{2,25} = \frac{137,072}{2,25} = 60,92$
+
+**Resposta:** $n \ge 61$.
+
+**Exemplo 3: Tamanho amostral para teste $z$ (bicaudal, poder maior)**
+
+Mesmo exemplo 1, mas com poder de 0,95.
+
+**Resolução:**
+
+$Z_{0,025} = 1,96$; $Z_{0,05} = 1,645$; $\sigma = 5$; efeito = 2
+$n = \frac{(1,96 + 1,645)^2 \cdot 25}{4} = \frac{(3,605)^2 \cdot 25}{4} = \frac{12,996 \cdot 25}{4} = \frac{324,9}{4} = 81,22$
+
+**Resposta:** $n \ge 82$.
+
+**Exemplo 4: Encontrando o poder para um $n$ fixo**
+
+Com $n = 36$, $\alpha = 0,05$ (bicaudal), $\sigma = 5$, e efeito = 2, qual é o poder?
+
+**Resolução:**
+
+$Z = \frac{|\mu - \mu_0| \cdot \sqrt{n}}{\sigma} - Z_{\alpha/2} = \frac{2 \cdot 6}{5} - 1,96 = \frac{12}{5} - 1,96 = 2,4 - 1,96 = 0,44$
+$Z_\beta = 0,44 \to \beta = P(Z < 0,44) = 1 - 0,670 = 0,330$
+Poder = $1 - 0,330 = 0,670$
+
+**Resposta:** O poder é 67%.
+
+**Exemplo 5: Efeito do tamanho do efeito no poder**
+
+$\sigma = 5$, $\alpha = 0,05$ (bicaudal), $n = 50$. Calcule o poder para efeitos de 1, 2, 3 e 4.
+
+**Resolução:**
+
+- Efeito = 1: $Z = \frac{1 \cdot \sqrt{50}}{5} - 1,96 = \frac{7,07}{5} - 1,96 = 1,414 - 1,96 = -0,546 \to$ poder = 0,293 (29,3%)
+- Efeito = 2: $Z = \frac{2 \cdot \sqrt{50}}{5} - 1,96 = \frac{14,14}{5} - 1,96 = 2,828 - 1,96 = 0,868 \to$ poder = 0,807 (80,7%)
+- Efeito = 3: $Z = \frac{3 \cdot \sqrt{50}}{5} - 1,96 = \frac{21,21}{5} - 1,96 = 4,243 - 1,96 = 2,283 \to$ poder = 0,989 (98,9%)
+- Efeito = 4: $Z = \frac{4 \cdot \sqrt{50}}{5} - 1,96 = \frac{28,28}{5} - 1,96 = 5,657 - 1,96 = 3,697 \to$ poder $\approx 1,000$ ($\approx$100%)
+
+**Interpretação:** Quanto maior o efeito, maior o poder. Para detectar efeitos pequenos, precisamos de amostras grandes.
+
+## Cálculo do Tamanho Amostral para Teste $t$ (Média, $\sigma$ desconhecido)
+
+Quando $\sigma$ é desconhecido, o cálculo é iterativo porque $t$ depende de $n$.
+
+**Procedimento:**
+
+1. Faça uma estimativa inicial de $\sigma$ (usando $S$ de um estudo piloto).
+2. Calcule $n_0$ usando $Z$ (aproximação).
+3. Refine usando $t$ com $n_0-1$ graus de liberdade.
+4. Itere até convergência.
+
+**Exemplo: Tamanho amostral para teste $t$ (bicaudal)**
+
+Estudo piloto: $S = 4$. Queremos detectar efeito de 1,5 com $\alpha = 0,05$ e poder = 0,80.
+
+**Resolução:**
+
+Iteração 1 (usando $Z$): $Z_{0,025} = 1,96$; $Z_{0,20} = 0,842$
+$n_0 = \frac{(1,96 + 0,842)^2 \cdot 4^2}{1,5^2} = \frac{(2,802)^2 \cdot 16}{2,25} = \frac{7,851 \cdot 16}{2,25} = \frac{125,616}{2,25} = 55,83 \to n \approx 56$
+
+Iteração 2: $t_{0,025, 55} = 2,004$
+$n = \frac{(2,004 + 0,842)^2 \cdot 16}{2,25} = \frac{(2,846)^2 \cdot 16}{2,25} = \frac{8,100 \cdot 16}{2,25} = \frac{129,6}{2,25} = 57,6 \to n \approx 58$
+
+Iteração 3: $t_{0,025, 57} = 2,002$
+$n = \frac{(2,002 + 0,842)^2 \cdot 16}{2,25} = \frac{(2,844)^2 \cdot 16}{2,25} = \frac{8,088 \cdot 16}{2,25} = \frac{129,41}{2,25} = 57,52 \to n \approx 58$
+
+**Resposta:** $n \ge 58$.
+
+## Cálculo do Tamanho Amostral para Proporções
+
+Para testar uma proporção com poder desejado:
+
+### Uma amostra (teste $z$ para proporção):
+
+>> $$n = \frac{(Z_{\alpha/2} + Z_{\beta})^2 \cdot p_0(1-p_0)}{(p - p_0)^2}$$
+
+### Duas amostras (comparação de proporções):
+
+>> $$n_1 = n_2 = \frac{(Z_{\alpha/2} + Z_{\beta})^2 \cdot [p_1(1-p_1) + p_2(1-p_2)]}{(p_1 - p_2)^2}$$
+
+**Exemplo 1: Tamanho amostral para proporção (uma amostra)**
+
+Queremos testar se $p \ne 0,5$ ($\alpha = 0,05$) com poder de 0,80 para detectar $p = 0,6$.
+
+**Resolução:**
+
+$Z_{0,025} = 1,96$; $Z_{0,20} = 0,842$; $p_0 = 0,5$; $p = 0,6$
+$n = \frac{(1,96 + 0,842)^2 \cdot 0,5 \cdot 0,5}{(0,6 - 0,5)^2} = \frac{(2,802)^2 \cdot 0,25}{0,01} = \frac{7,851 \cdot 0,25}{0,01} = \frac{1,963}{0,01} = 196,3$
+
+**Resposta:** $n \ge 197$.
+
+**Exemplo 2: Tamanho amostral para comparação de proporções**
+
+Queremos detectar diferença entre $p_1 = 0,6$ e $p_2 = 0,5$ ($\alpha = 0,05$, poder = 0,90).
+
+**Resolução:**
+
+$Z_{0,025} = 1,96$; $Z_{0,10} = 1,282$
+Numerador: $(1,96 + 1,282)^2 \cdot [0,6 \cdot 0,4 + 0,5 \cdot 0,5] = (3,242)^2 \cdot [0,24 + 0,25] = 10,51 \cdot 0,49 = 5,150$
+Denominador: $(0,6 - 0,5)^2 = 0,01$
+$n = \frac{5,150}{0,01} = 515$
+
+**Resposta:** $n \ge 515$ para cada grupo.
+
+**Exemplo 3: Poder para proporção ($n$ fixo)**
+
+$n = 200$, $\alpha = 0,05$ (bicaudal), $p_0 = 0,5$, queremos detectar $p = 0,6$. Qual o poder?
+
+**Resolução:**
+
+$Z = \frac{|p - p_0| \cdot \sqrt{n}}{\sqrt{p_0(1-p_0)}} - Z_{\alpha/2} = \frac{0,1 \cdot \sqrt{200}}{\sqrt{0,25}} - 1,96 = \frac{0,1 \cdot 14,14}{0,5} - 1,96 = \frac{1,414}{0,5} - 1,96 = 2,828 - 1,96 = 0,868$
+$Z_\beta = 0,868 \to \beta = 1 - 0,807 = 0,193$
+Poder = $1 - 0,193 = 0,807$
+
+**Resposta:** O poder é aproximadamente 80,7%.
+
+## Curvas de Poder
+
+As curvas de poder mostram a relação entre o tamanho da amostra e o poder para diferentes tamanhos de efeito.
+
+**Exemplo:** Para um teste $z$ com $\alpha = 0,05$, $\sigma = 10$:
+
+| $n$ | Poder (efeito = 2) | Poder (efeito = 3) | Poder (efeito = 4) |
+| --- | --- | --- | --- |
+| 10 | 0,09 | 0,17 | 0,29 |
+| 25 | 0,13 | 0,34 | 0,61 |
+| 50 | 0,22 | 0,56 | 0,85 |
+| 100 | 0,38 | 0,81 | 0,98 |
+| 200 | 0,64 | 0,97 | 1,00 |
+| 500 | 0,91 | 1,00 | 1,00 |
+
+**Interpretação:** Para detectar um efeito pequeno (2), precisamos de $n \ge 500$ para poder de 90%. Para um efeito grande (4), $n = 50$ já dá poder de 85%.
+
+## Tabela de Tamanho Amostral (Referência Rápida)
+
+Para $\alpha = 0,05$, poder = 0,80:
+
+| Tipo de teste | Fórmula | Observação |
+| --- | --- | --- |
+| Média ($\sigma$ conhecido, bicaudal) | $n = (1,96 + 0,842)^2 \cdot \sigma^2/\Delta^2$ | $\Delta = \mu - \mu_0$ |
+| Média ($\sigma$ conhecido, unilateral) | $n = (1,645 + 0,842)^2 \cdot \sigma^2/\Delta^2$ | $\Delta = \mu - \mu_0$ |
+| Proporção (bicaudal) | $n = (1,96 + 0,842)^2 \cdot p_0(1-p_0)/(p-p_0)^2$ | — |
+| Comparação de proporções | $n = (1,96 + 0,842)^2 \cdot [p_1(1-p_1)+p_2(1-p_2)]/(p_1-p_2)^2$ | Cada grupo |
+
+## Analogias
+
+### Analogia 1: O detector de metais
+
+O poder é como a sensibilidade de um detector de metais. Quanto maior a sensibilidade, melhor ele detecta objetos pequenos. Para aumentar a sensibilidade, você precisa de um detector melhor (amostra maior).
+
+### Analogia 2: O farol
+
+O tamanho da amostra é como a intensidade do farol de um carro. Quanto mais forte o farol, mais longe você enxerga. O poder é a distância que você consegue ver.
+
+### Analogia 3: A lupa
+
+O poder é como a ampliação de uma lupa. Para ver detalhes pequenos (efeitos pequenos), você precisa de mais ampliação (amostra maior).
+
+### Analogia 4: O radar
+
+O tamanho do efeito é o tamanho do objeto que o radar está tentando detectar. Objetos grandes são fáceis de detectar (alto poder). Objetos pequenos precisam de um radar mais potente (amostra maior).
+
+## Exercícios Resolvidos
+
+### Exercício 1 (Fácil)
+
+Qual o $n$ necessário para teste $z$ bicaudal com $\alpha = 0,05$, poder = 0,80, $\sigma = 3$, efeito = 1?
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$n = \frac{(1,96 + 0,842)^2 \cdot 9}{1} = 2,802^2 \cdot 9 = 7,851 \cdot 9 = 70,66$
+
+**Resposta:** $n \ge 71$.
+
+</details>
+
+### Exercício 2 (Fácil/Médio)
+
+Qual o poder para $n = 64$, $\alpha = 0,05$ (bicaudal), $\sigma = 4$, efeito = 1,5?
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$Z = \frac{1,5 \cdot 8}{4} - 1,96 = \frac{12}{4} - 1,96 = 3 - 1,96 = 1,04$
+$\beta = 1 - 0,851 = 0,149$
+Poder = 0,851
+
+**Resposta:** 85,1%.
+
+</details>
+
+### Exercício 3 (Médio)
+
+Teste $z$ unilateral superior, $\alpha = 0,01$, poder = 0,90, $\sigma = 5$, efeito = 2. Encontre $n$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$Z_{0,01} = 2,326$; $Z_{0,10} = 1,282$
+$n = \frac{(2,326 + 1,282)^2 \cdot 25}{4} = \frac{(3,608)^2 \cdot 25}{4} = \frac{13,018 \cdot 25}{4} = \frac{325,45}{4} = 81,36$
+
+**Resposta:** $n \ge 82$.
+
+</details>
+
+### Exercício 4 (Médio)
+
+Comparação de proporções: $p_1 = 0,7$, $p_2 = 0,6$, $\alpha = 0,05$, poder = 0,80. Encontre $n$ por grupo.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$n = \frac{(1,96 + 0,842)^2 \cdot [0,7 \cdot 0,3 + 0,6 \cdot 0,4]}{(0,1)^2} = \frac{7,851 \cdot [0,21 + 0,24]}{0,01} = \frac{7,851 \cdot 0,45}{0,01} = \frac{3,533}{0,01} = 353,3$
+
+**Resposta:** $n \ge 354$ por grupo.
+
+</details>
+
+### Exercício 5 (Difícil)
+
+Para um teste $t$ (bicaudal), $S = 6$, efeito = 2, $\alpha = 0,05$, poder = 0,90. Encontre $n$ (use iteração).
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+Iteração 1: $Z_{0,025} = 1,96$; $Z_{0,10} = 1,282$
+$n_0 = \frac{(1,96 + 1,282)^2 \cdot 36}{4} = \frac{(3,242)^2 \cdot 9}{1} = 10,51 \cdot 9 = 94,59 \to n \approx 95$
+
+Iteração 2: $t_{0,025, 94} \approx 1,985$
+$n = \frac{(1,985 + 1,282)^2 \cdot 9}{1} = (3,267)^2 \cdot 9 = 10,67 \cdot 9 = 96,03 \to n \approx 96$
+
+Iteração 3: $t_{0,025, 95} \approx 1,985$
+$n \approx 96$
+
+**Resposta:** $n \ge 96$.
+
+</details>
+
+## Desafio Final com Resolução Completa
+
+Um pesquisador quer testar se um novo medicamento reduz a pressão arterial. Estudos anteriores sugerem que o desvio padrão da redução é 8 mmHg.
+
+a) Qual o tamanho da amostra necessário para detectar uma redução de 3 mmHg com $\alpha = 0,05$ e poder = 0,90 (teste unilateral)?
+
+b) Se o pesquisador usar $n = 50$, qual será o poder para detectar uma redução de 3 mmHg?
+
+c) Qual seria o $n$ necessário para detectar uma redução de 2 mmHg com o mesmo $\alpha$ e poder?
+
+d) Se o pesquisador quisesse poder = 0,95 para detectar 3 mmHg, qual seria $n$?
+
+e) Construa uma curva de poder para $n = 20, 50, 100, 200$ para detectar 3 mmHg.
+
+<details>
+<summary>💡 Ver resolução completa</summary>
+
+a) Teste unilateral: $Z_{0,05} = 1,645$; $Z_{0,10} = 1,282$; $\sigma = 8$; efeito = 3
+   $n = \frac{(1,645 + 1,282)^2 \cdot 64}{9} = \frac{(2,927)^2 \cdot 64}{9} = \frac{8,567 \cdot 64}{9} = \frac{548,29}{9} = 60,92$
+   $n \ge 61$
+
+b) $n = 50$, efeito = 3, $\sigma = 8$, $\alpha = 0,05$ (unilateral)
+   $Z = \frac{3 \cdot \sqrt{50}}{8} - 1,645 = \frac{3 \cdot 7,071}{8} - 1,645 = \frac{21,213}{8} - 1,645 = 2,652 - 1,645 = 1,007$
+   $\beta = 1 - \Phi(1,007) = 1 - 0,843 = 0,157$
+   Poder = $1 - 0,157 = 0,843$ (84,3%)
+
+c) Efeito = 2, $\sigma = 8$, $\alpha = 0,05$, poder = 0,90
+   $n = \frac{(1,645 + 1,282)^2 \cdot 64}{4} = \frac{8,567 \cdot 64}{4} = \frac{548,29}{4} = 137,07$
+   $n \ge 138$
+
+d) Poder = 0,95 $\to \beta = 0,05 \to Z_{0,05} = 1,645$
+   $n = \frac{(1,645 + 1,645)^2 \cdot 64}{9} = \frac{(3,29)^2 \cdot 64}{9} = \frac{10,824 \cdot 64}{9} = \frac{692,74}{9} = 76,97$
+   $n \ge 77$
+
+e) Curva de poder para efeito = 3:
+   $n = 20$: $Z = \frac{3 \cdot \sqrt{20}}{8} - 1,645 = \frac{13,416}{8} - 1,645 = 1,677 - 1,645 = 0,032 \to$ poder = 0,513 (51,3%)
+   $n = 50$: $Z = \frac{3 \cdot \sqrt{50}}{8} - 1,645 = \frac{21,213}{8} - 1,645 = 2,652 - 1,645 = 1,007 \to$ poder = 0,843 (84,3%)
+   $n = 100$: $Z = \frac{3 \cdot 10}{8} - 1,645 = \frac{30}{8} - 1,645 = 3,75 - 1,645 = 2,105 \to$ poder = 0,982 (98,2%)
+   $n = 200$: $Z = \frac{3 \cdot 14,142}{8} - 1,645 = \frac{42,426}{8} - 1,645 = 5,303 - 1,645 = 3,658 \to$ poder $\approx 0,999$ (99,9%)
+
+**Respostas:**
+a) $n \ge 61$
+b) Poder = 84,3%
+c) $n \ge 138$
+d) $n \ge 77$
+e) Curva: $n=20 \to 51\%$; $n=50 \to 84\%$; $n=100 \to 98\%$; $n=200 \to 100\%$
+
+</details>
+
+> *O poder de um teste é a ponte entre a dúvida e a descoberta — com amostras maiores, α mais generosos ou efeitos mais fortes, transformamos o "talvez" em "sim, há evidência".*

@@ -1,0 +1,354 @@
+# INTEGRAIS DEFINIDAS
+
+## 1. Definição Formal
+
+### 1.1 O Teorema Fundamental do Cálculo (Parte 1)
+
+Se $f$ é uma função **contínua** no intervalo $[a, b]$, então a função $F$ definida por:
+
+$$
+F(x) = \int_a^x f(t) \, dt
+$$
+
+é **contínua** e **diferenciável** em $(a, b)$, e:
+
+$$
+F'(x) = f(x)
+$$
+
+**Interpretação:** A derivada da integral (com limite superior variável) é a própria função integranda.
+
+### 1.2 O Teorema Fundamental do Cálculo (Parte 2)
+
+Se $F$ é uma **primitiva** de $f$ (ou seja, $F'(x) = f(x)$), então:
+
+$$
+\int_a^b f(x) \, dx = F(b) - F(a)
+$$
+
+**Interpretação:** Para calcular a integral definida, basta avaliar a primitiva nos limites $a$ e $b$ e subtrair.
+
+**Notação:**
+$$
+\int_a^b f(x) \, dx = \left[ F(x) \right]_a^b = F(b) - F(a)
+$$
+
+## 2. Exemplos Acadêmicos Passo a Passo
+
+### 2.1 Exemplo 1: Integral de $x^2$
+
+Calcular:
+$$
+\int_0^2 x^2 \, dx
+$$
+
+**Passo 1:** Encontrar a primitiva:
+$$
+F(x) = \frac{x^3}{3}
+$$
+
+**Passo 2:** Avaliar nos limites:
+$$
+\int_0^2 x^2 \, dx = \left[ \frac{x^3}{3} \right]_0^2 = \frac{2^3}{3} - \frac{0^3}{3} = \frac{8}{3}
+$$
+
+**Resultado:** $\frac{8}{3}$
+
+### 2.2 Exemplo 2: Integral de $e^x$
+
+Calcular:
+$$
+\int_{-1}^1 e^x \, dx
+$$
+
+**Passo 1:** Encontrar a primitiva:
+$$
+F(x) = e^x
+$$
+
+**Passo 2:** Avaliar nos limites:
+$$
+\int_{-1}^1 e^x \, dx = \left[ e^x \right]_{-1}^1 = e^1 - e^{-1} = e - \frac{1}{e}
+$$
+
+**Resultado:** $e - \frac{1}{e}$
+
+### 2.3 Exemplo 3: Integral de $\frac{1}{x}$
+
+Calcular:
+$$
+\int_1^e \frac{1}{x} \, dx
+$$
+
+**Passo 1:** Encontrar a primitiva:
+$$
+F(x) = \ln|x|
+$$
+
+**Passo 2:** Avaliar nos limites:
+$$
+\int_1^e \frac{1}{x} \, dx = \left[ \ln|x| \right]_1^e = \ln(e) - \ln(1) = 1 - 0 = 1
+$$
+
+**Resultado:** 1
+
+### 2.4 Exemplo 4: Integral de $\sin(x)$
+
+Calcular:
+$$
+\int_0^{\pi} \sin(x) \, dx
+$$
+
+**Passo 1:** Encontrar a primitiva:
+$$
+F(x) = -\cos(x)
+$$
+
+**Passo 2:** Avaliar nos limites:
+$$
+\int_0^{\pi} \sin(x) \, dx = \left[ -\cos(x) \right]_0^{\pi} = -\cos(\pi) - (-\cos(0)) = -(-1) - (-1) = 1 + 1 = 2
+$$
+
+**Resultado:** 2
+
+### 2.5 Exemplo 5: Integral com Substituição e TFC
+
+Calcular:
+$$
+\int_0^1 2x \cos(x^2) \, dx
+$$
+
+**Passo 1:** Substituição $u = x^2$, $du = 2x dx$.
+
+**Passo 2:** Trocar limites:
+- $x = 0 \Rightarrow u = 0$
+- $x = 1 \Rightarrow u = 1$
+
+**Passo 3:** Reescrever:
+$$
+\int_0^1 2x \cos(x^2) \, dx = \int_0^1 \cos(u) \, du
+$$
+
+**Passo 4:** Aplicar o TFC:
+$$
+\left[ \sin(u) \right]_0^1 = \sin(1) - \sin(0) = \sin(1)
+$$
+
+**Resultado:** $\sin(1)$
+
+## 3. Propriedades das Integrais Definidas (Revisão)
+
+| Propriedade | Fórmula |
+|-------------|---------|
+| **Linearidade** | $\int_a^b (c_1 f(x) + c_2 g(x)) dx = c_1 \int_a^b f(x) dx + c_2 \int_a^b g(x) dx$ |
+| **Inversão dos limites** | $\int_b^a f(x) dx = -\int_a^b f(x) dx$ |
+| **Limites iguais** | $\int_a^a f(x) dx = 0$ |
+| **Aditividade** | $\int_a^b f(x) dx = \int_a^c f(x) dx + \int_c^b f(x) dx$ |
+| **Comparação** | Se $f(x) \leq g(x)$, então $\int_a^b f(x) dx \leq \int_a^b g(x) dx$ |
+
+## 4. Exemplos Lúdicos Aprimorados
+
+### 🍔 EXEMPLO 1 – A LANCHONETE (TOTAL DE VENDAS)
+
+A lanchonete tem uma função de vendas:
+$$
+V(t) = 2t + 3
+$$
+onde $t$ é o tempo em horas (de 0 a 4 horas).
+
+**Total de vendas (área sob a curva):**
+$$
+\int_0^4 (2t + 3) \, dt = \left[ t^2 + 3t \right]_0^4 = (16 + 12) - 0 = 28
+$$
+
+**Interpretação:** O total de vendas em 4 horas é 28 unidades.
+
+### 🧃 EXEMPLO 2 – A CANTINA (ACUMULAÇÃO DE ESTOQUE)
+
+A cantina tem um fluxo de estoque:
+$$
+E(t) = 100 - 5t
+$$
+onde $t$ é o tempo em dias (de 0 a 10 dias).
+
+**Estoque total acumulado:**
+$$
+\int_0^{10} (100 - 5t) \, dt = \left[ 100t - \frac{5t^2}{2} \right]_0^{10} = (1000 - 250) - 0 = 750
+$$
+
+**Interpretação:** O estoque total acumulado é 750 unidades.
+
+### 📚 EXEMPLO 3 – A BIBLIOTECA (LEITURA ACUMULADA)
+
+A biblioteca tem uma taxa de leitura:
+$$
+L(t) = 10e^{-0.1t}
+$$
+onde $t$ é o tempo em horas (de 0 a 10 horas).
+
+**Total de páginas lidas:**
+$$
+\int_0^{10} 10e^{-0.1t} \, dt = \left[ -100e^{-0.1t} \right]_0^{10} = -100e^{-1} + 100 = 100(1 - e^{-1})
+$$
+
+**Interpretação:** O total de páginas lidas é aproximadamente 63.2 páginas.
+
+## 5. Aplicação na Tese: Teorema Fundamental no FL
+
+### 5.1 Erro Acumulado
+
+Em FL, o erro acumulado ao longo do treinamento pode ser expresso como:
+$$
+E(T) = \int_0^T e(t) \, dt
+$$
+
+O Teorema Fundamental permite calcular o erro total a partir de uma primitiva da função de erro.
+
+### 5.2 Taxa de Convergência
+
+A taxa de convergência pode ser obtida integrando a função de erro:
+$$
+L(t) - L^* \approx \frac{C}{t^\alpha}
+$$
+
+A integral dessa função fornece o erro acumulado.
+
+## 6. Exercícios Propostos (Manuais)
+
+<details>
+<summary>📗 Exercício 1 (Integrais Definidas)</summary>
+
+**Enunciado:** Calcule as integrais definidas usando o Teorema Fundamental:
+
+a) $\int_0^3 2x \, dx$
+
+b) $\int_1^4 \frac{1}{x} \, dx$
+
+c) $\int_0^{\pi/2} \cos(x) \, dx$
+
+d) $\int_0^1 e^{2x} \, dx$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\int_0^3 2x \, dx = \left[ x^2 \right]_0^3 = 9 - 0 = 9$
+
+b) $\int_1^4 \frac{1}{x} \, dx = \left[ \ln|x| \right]_1^4 = \ln(4) - \ln(1) = \ln(4)$
+
+c) $\int_0^{\pi/2} \cos(x) \, dx = \left[ \sin(x) \right]_0^{\pi/2} = 1 - 0 = 1$
+
+d) $\int_0^1 e^{2x} \, dx = \left[ \frac{e^{2x}}{2} \right]_0^1 = \frac{e^2}{2} - \frac{1}{2} = \frac{e^2 - 1}{2}$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 (Propriedades)</summary>
+
+**Enunciado:** Use as propriedades da integral para calcular:
+
+a) $\int_0^2 (3x^2 + 2x) \, dx$
+
+b) $\int_0^1 x \, dx + \int_1^2 x \, dx$
+
+c) $\int_0^1 x^2 \, dx + \int_1^0 x^2 \, dx$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\int_0^2 3x^2 \, dx + \int_0^2 2x \, dx = 3 \left[ \frac{x^3}{3} \right]_0^2 + 2 \left[ \frac{x^2}{2} \right]_0^2 = 8 + 4 = 12$
+
+b) $\int_0^2 x \, dx = \left[ \frac{x^2}{2} \right]_0^2 = 2$
+
+c) $\int_0^1 x^2 \, dx + \int_1^0 x^2 \, dx = \frac{1}{3} - \frac{1}{3} = 0$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 (Aplicação – Fluxo de Caixa)</summary>
+
+**Enunciado:** Uma empresa tem fluxo de caixa:
+$$
+F(t) = 1000 + 50t
+$$
+onde $t$ é o tempo em meses.
+
+a) Calcule o total acumulado entre $t = 0$ e $t = 12$ meses.
+
+b) Interprete o resultado.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\int_0^{12} (1000 + 50t) \, dt = \left[ 1000t + 25t^2 \right]_0^{12} = 12000 + 3600 = 15600$
+
+b) O fluxo de caixa total acumulado em 12 meses é R$ 15.600,00.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 (Aplicação – FL)</summary>
+
+**Enunciado:** Em FL, a função de perda média ao longo do tempo é:
+$$
+L(t) = \frac{1}{t} \int_0^t e^{-s} \, ds
+$$
+
+Calcule $L(t)$ e seu limite quando $t \to \infty$.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+$L(t) = \frac{1}{t} \int_0^t e^{-s} \, ds = \frac{1}{t} \left[ -e^{-s} \right]_0^t = \frac{1}{t} (-e^{-t} + 1) = \frac{1 - e^{-t}}{t}$
+
+$\lim_{t \to \infty} L(t) = \lim_{t \to \infty} \frac{1 - e^{-t}}{t} = 0$
+
+</details>
+</details>
+
+## 7. 💻 EXERCÍCIO COMPUTACIONAL
+
+<details>
+<summary>🐍 Ver código (Python/SymPy)</summary>
+
+```python
+import sympy as sp
+
+x = sp.Symbol('x')
+
+# Integral definida
+f1 = 2*x
+integral1 = sp.integrate(f1, (x, 0, 3))
+print(f"∫₀³ 2x dx = {integral1}")
+
+f2 = 1/x
+integral2 = sp.integrate(f2, (x, 1, 4))
+print(f"∫₁⁴ 1/x dx = {integral2}")
+
+f3 = sp.cos(x)
+integral3 = sp.integrate(f3, (x, 0, sp.pi/2))
+print(f"∫₀^{sp.pi/2} cos(x) dx = {integral3}")
+
+f4 = sp.exp(2*x)
+integral4 = sp.integrate(f4, (x, 0, 1))
+print(f"∫₀¹ e^(2x) dx = {integral4}")
+
+# Verificação: derivada da primitiva é a função original
+F = sp.integrate(f1, x)
+print(f"Primitiva: {F}")
+print(f"Derivada da primitiva: {sp.diff(F, x)}")
+```
+
+</details>
+
+> *O Teorema Fundamental do Cálculo é a conexão mais importante entre derivadas e integrais. Ele permite calcular integrais definidas de forma simples, encontrando uma primitiva e avaliando nos limites. Em Machine Learning, este teorema é usado para calcular erros acumulados e analisar a convergência de algoritmos.*

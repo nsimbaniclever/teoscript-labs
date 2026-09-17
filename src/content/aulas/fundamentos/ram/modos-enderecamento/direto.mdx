@@ -1,0 +1,364 @@
+# ENDEREÇAMENTO DIRETO
+
+## 1. INTRODUÇÃO
+
+Na aula anterior, estudamos o endereçamento imediato — o modo mais rápido, onde o valor está diretamente na instrução. Vimos que é excelente para constantes, mas tem uma limitação: só funciona com valores fixos e pequenos.<br><br>
+
+E quando precisamos acessar dados que estão na memória? Como a CPU busca um valor que está em uma posição específica da RAM? A resposta é o **endereçamento direto**.<br><br>
+
+No endereçamento direto, a instrução contém o **endereço completo da memória** onde o dado está armazenado. A CPU simplesmente vai até aquele endereço e busca o valor. É como se você tivesse o número exato de uma casa e fosse diretamente até lá, sem precisar de mapas ou referências.<br><br>
+
+Imagine que você está em uma biblioteca gigante e quer um livro específico. O endereçamento direto é como ter a **prateleira e a posição exata** do livro — você vai direto ao ponto, sem precisar consultar o catálogo.<br><br>
+
+Nesta aula, vamos estudar o endereçamento direto: o que é, como funciona, quando é usado, e quais são suas vantagens e limitações.
+
+## 2. O QUE É ENDEREÇAMENTO DIRETO?
+
+### 2.1 Definição
+
+> "Endereçamento direto é um modo onde o operando é um endereço de memória especificado explicitamente na instrução. A CPU acessa diretamente a posição de memória indicada para ler ou escrever o dado."
+
+### 2.2 Características principais
+
+| Característica | Descrição |
+|---------|----------|
+| **Onde está o dado** | Na memória, em um endereço fixo |
+| **Como é especificado** | Endereço literal na instrução |
+| **Velocidade** | Mais lenta que imediato (acesso à memória) |
+| **Uso** | Variáveis globais, endereços fixos, periféricos mapeados em memória |
+
+### 2.3 Sintaxe
+
+Em Assembly, o endereçamento direto usa colchetes `[]` para indicar acesso à memória:
+
+| Arquitetura | Sintaxe | Exemplo |
+|---------|---------|---------|
+| **ARM** | `[endereço]` | `LDR R1, [0x1000]` |
+| **x86** | `[endereço]` | `MOV EAX, [0x1000]` |
+| **MIPS** | `endereço` | `lw $t0, 0x1000` |
+
+## 3. COMO FUNCIONA O ENDEREÇAMENTO DIRETO?
+
+### 3.1 Estrutura da instrução
+
+Uma instrução com endereçamento direto contém:
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+[CÓDIGO DA OPERAÇÃO] [REGISTRADOR DESTINO] [ENDEREÇO DE MEMÓRIA]
+</pre>
+
+**Exemplo (ARM):** `LDR R1, [0x1000]`
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+LDR    R1,    [0x1000]
+Opcode Destino Endereço
+</pre>
+
+### 3.2 Como a CPU executa
+
+1. A CPU busca a instrução da memória.
+2. A CPU decodifica a instrução.
+3. A CPU extrai o endereço de memória da instrução.
+4. A CPU acessa a memória naquele endereço.
+5. A CPU carrega o valor lido para o registrador destino.
+
+### 3.3 Diagrama: Endereçamento Direto
+
+<details>
+<summary> **Fluxo do endereçamento direto**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+┌─────────────────────────────────────────────────────────────┐
+│                                                             │
+│   Instrução na memória:                                     │
+│   ┌─────────────────────────────────────────────────────┐  │
+│   │  LDR  │  R1  │  [0x1000]  │                       │  │
+│   └─────────────────────────────────────────────────────┘  │
+│                          │                                  │
+│                          ▼                                  │
+│   ┌─────────────────────────────────────────────────────┐  │
+│   │  A CPU lê o endereço 0x1000 da instrução           │  │
+│   │                                                      │  │
+│   │  A CPU acessa a memória em 0x1000                  │  │
+│   │                                                      │  │
+│   │  Memória:                                           │  │
+│   │  0x1000: 42  ←─── Valor lido                       │  │
+│   │  0x1001: 30                                        │  │
+│   │  0x1002: 15                                        │  │
+│   │                                                      │  │
+│   │  R1 = 42                                            │  │
+│   └─────────────────────────────────────────────────────┘  │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+    </pre>
+</details>
+
+### 3.4 Exemplo prático
+
+**Instrução:** `LDR R1, [0x2000]`
+
+**Antes:** A posição 0x2000 contém o valor 99.
+**Depois:** R1 = 99
+
+O endereço 0x2000 foi retirado diretamente da instrução.
+
+## 4. EXEMPLOS DE ENDEREÇAMENTO DIRETO
+
+### 4.1 Carregar da memória (LDR)
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+LDR R1, [0x1000]    ; R1 = valor em 0x1000
+LDR R2, [0x1004]    ; R2 = valor em 0x1004
+LDR R3, [0x2000]    ; R3 = valor em 0x2000
+</pre>
+
+### 4.2 Armazenar na memória (STR)
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+STR R1, [0x3000]    ; Valor de R1 → 0x3000
+STR R2, [0x3004]    ; Valor de R2 → 0x3004
+</pre>
+
+### 4.3 Acesso a periféricos mapeados em memória
+
+Em muitos sistemas, periféricos são acessados como se fossem memória:
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+; Acessar um registrador de controle de um periférico
+LDR R1, [0x40000000]   ; Lê o status do periférico
+STR R2, [0x40000004]   ; Escreve um comando no periférico
+</pre>
+
+### 4.4 Acesso a variáveis globais
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+; Variável global em 0x5000
+LDR R1, [0x5000]    ; Carrega o valor da variável
+ADD R1, R1, #1      ; Incrementa
+STR R1, [0x5000]    ; Armazena de volta
+</pre>
+
+## 5. ENDEREÇAMENTO DIRETO EM DIFERENTES ARQUITETURAS
+
+### 5.1 ARM (32 bits)
+
+Em ARM, o endereçamento direto é feito com `LDR` e `STR`:
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+LDR R1, [0x1000]    ; Carrega de 0x1000
+STR R1, [0x1000]    ; Armazena em 0x1000
+</pre>
+
+**Limitação:** Em ARM de 32 bits, o endereço deve estar alinhado a 4 bytes.
+
+### 5.2 x86 (Intel)
+
+Em x86, o endereçamento direto usa colchetes:
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+MOV EAX, [0x1000]   ; Carrega de 0x1000
+MOV [0x1000], EAX   ; Armazena em 0x1000
+</pre>
+
+### 5.3 MIPS
+
+Em MIPS, o endereçamento direto usa o nome do registrador e o endereço:
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+lw $t0, 0x1000      ; Load Word: carrega de 0x1000
+sw $t0, 0x1000      ; Store Word: armazena em 0x1000
+</pre>
+
+## 6. VANTAGENS E LIMITAÇÕES
+
+### 6.1 Vantagens
+
+| Vantagem | Explicação |
+|---------|----------|
+| **Acesso direto** | Vai diretamente ao endereço especificado |
+| **Simples de entender** | O endereço está explícito na instrução |
+| **Útil para endereços fixos** | Periféricos, variáveis globais, buffers |
+
+### 6.2 Limitações
+
+| Limitação | Explicação |
+|---------|----------|
+| **Endereço fixo na instrução** | O endereço é codificado "em tempo de compilação" |
+| **Não é flexível** | Não pode ser alterado em tempo de execução |
+| **Endereço pode ser grande** | Ocupa espaço na instrução |
+| **Tamanho do campo** | O endereço pode não caber na instrução (em algumas arquiteturas) |
+
+### 6.3 Endereço fixo: o problema
+
+O endereço no endereçamento direto é **fixo na instrução**. Isso significa que:
+
+1. O endereço é definido em tempo de compilação.
+2. Não pode ser alterado em tempo de execução.
+3. O programa sempre acessará a mesma posição de memória.
+
+**Consequência:** Endereçamento direto não é adequado para arrays, listas ou estruturas de dados dinâmicas.
+
+## 7. ENDEREÇAMENTO DIRETO VS ENDEREÇAMENTO IMEDIATO
+
+| Característica | Imediato | Direto |
+|---------|---------|---------|
+| **Onde está o dado** | Na instrução | Na memória |
+| **Acesso à memória** | Não | Sim |
+| **Velocidade** | Muito rápida | Mais lenta |
+| **Flexibilidade** | Baixa (valor fixo) | Baixa (endereço fixo) |
+| **Uso** | Constantes | Variáveis globais, periféricos |
+
+## 8. APLICAÇÕES REAIS
+
+| Aplicação | Como usa endereçamento direto |
+|---------|----------|
+| **Variáveis globais** | Acessar variáveis em posições fixas da memória |
+| **Periféricos mapeados em memória** | Ler/escrever registradores de hardware |
+| **Buffers de dados** | Acessar buffers em endereços fixos |
+| **Tabelas de interrupção** | Acessar vetores de interrupção em endereços fixos |
+| **Configuração de sistema** | Acessar áreas de configuração em endereços fixos |
+
+**Exemplo prático:** Em sistemas embarcados, o endereço 0x40000000 pode ser o registrador de status de um sensor. O programa usa `LDR R1, [0x40000000]` para ler o status do sensor.
+
+## 9. EXERCÍCIOS
+
+<details>
+<summary>📗 Exercício 1 — O que é endereçamento direto? (Fácil)</summary>
+
+**Enunciado:** Defina o que é endereçamento direto em Assembly.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Endereçamento direto é um modo onde o operando é um endereço de memória especificado explicitamente na instrução. A CPU acessa diretamente a posição de memória indicada para ler ou escrever o dado.
+
+**Explicação:** O endereço está "embutido" na instrução. É útil para acessar posições fixas da memória.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Identificar endereçamento direto (Fácil)</summary>
+
+**Enunciado:** Quais das seguintes instruções usam endereçamento direto?
+1. `LDR R1, [R2]`
+2. `LDR R1, [0x1000]`
+3. `MOV R1, #5`
+4. `STR R2, [0x2000]`
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** As instruções 2 e 4 usam endereçamento direto.
+
+**Explicação:**
+1. `LDR R1, [R2]` → Endereçamento indireto (o endereço está em R2)
+2. `LDR R1, [0x1000]` → Endereçamento direto (endereço fixo 0x1000)
+3. `MOV R1, #5` → Endereçamento imediato
+4. `STR R2, [0x2000]` → Endereçamento direto (endereço fixo 0x2000)
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Valor de R1 (Fácil)</summary>
+
+**Enunciado:** Se a posição 0x5000 contém o valor 88, qual será o valor de R1 após `LDR R1, [0x5000]`?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** R1 = 88
+
+**Explicação:** LDR carrega para R1 o valor da posição de memória 0x5000.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — STR (Fácil)</summary>
+
+**Enunciado:** Se R2 = 77 e executamos `STR R2, [0x6000]`, qual será o valor em 0x6000?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** 0x6000 = 77
+
+**Explicação:** STR armazena o valor de R2 na posição de memória 0x6000.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Variável global (Médio)</summary>
+
+**Enunciado:** Escreva uma sequência de instruções Assembly para incrementar em 1 uma variável global localizada em 0x7000.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+LDR R1, [0x7000]   ; Carrega o valor da variável
+ADD R1, R1, #1     ; Incrementa
+STR R1, [0x7000]   ; Armazena de volta
+</pre>
+**Explicação:** A variável está em uma posição fixa (0x7000). O programa carrega, incrementa e armazena de volta.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Copiar entre endereços (Médio)</summary>
+
+**Enunciado:** Escreva uma sequência de instruções Assembly para copiar o valor da posição 0x8000 para a posição 0x9000.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+LDR R1, [0x8000]   ; Carrega de 0x8000
+STR R1, [0x9000]   ; Armazena em 0x9000
+</pre>
+**Explicação:** O valor de 0x8000 é carregado para R1 e depois armazenado em 0x9000.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — Endereço fixo vs variável (Difícil)</summary>
+
+**Enunciado:** Por que o endereçamento direto não é adequado para acessar elementos de um array?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Porque o endereço no endereçamento direto é **fixo na instrução**.
+
+**Explicação:** Para acessar diferentes elementos de um array, precisaríamos de endereços diferentes (base + índice). O endereçamento direto só permite acessar um endereço fixo, definido em tempo de compilação. Para acessar arrays, são necessários outros modos como base + deslocamento ou endereçamento indireto.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — Mapeamento de periféricos (Desafio)</summary>
+
+**Enunciado:** Um periférico tem três registradores mapeados em memória: STATUS em 0x4000, DATA em 0x4004, e COMMAND em 0x4008. Escreva uma sequência de instruções para: ler o STATUS, e se for diferente de zero, escrever o valor 1 no COMMAND e depois escrever 55 no DATA.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+LDR R1, [0x4000]   ; Lê STATUS
+CMP R1, #0         ; Compara com zero
+BEQ fim            ; Se STATUS = 0, termina
+
+; STATUS != 0
+MOV R1, #1         
+STR R1, [0x4008]   ; Escreve 1 no COMMAND
+
+MOV R1, #55
+STR R1, [0x4004]   ; Escreve 55 no DATA
+
+fim:
+</pre>
+**Explicação:** Os registradores são acessados como memória em endereços fixos. O programa lê STATUS, toma uma decisão e escreve nos registradores apropriados.
+</details>
+</details>
+
+> O endereçamento direto permite que a CPU acesse posições específicas da memória usando endereços fixos na instrução. É simples e eficiente para variáveis globais e periféricos mapeados em memória, mas é inflexível para dados dinâmicos como arrays e listas. O endereçamento direto é um dos modos mais simples de acesso à memória. Ele é a base para o acesso a variáveis globais, buffers e periféricos. Sua principal limitação — o endereço fixo — é superada pelos modos de endereçamento mais avançados que estudaremos nas próximas aulas.

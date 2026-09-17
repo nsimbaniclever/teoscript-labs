@@ -1,0 +1,738 @@
+# Distribuição na Estatística Descritiva
+
+## 1. 🎯 Identidade do Conceito
+
+### 1.1 O que é uma Distribuição Estatística?
+
+Uma **distribuição estatística** é a forma como os valores de um conjunto de dados se **organizam e se espalham** ao longo de uma escala.
+
+**A pergunta que ela responde:**
+
+> **"Como os meus dados se comportam?"**
+
+### 1.2 Para que serve?
+
+| **Situação** | **Exemplo** |
+| ---- | ---- |
+| Resumir um grande conjunto de dados | 1000 idades em um gráfico |
+| Identificar padrões | "Os dados são simétricos?" |
+| Detectar anomalias | "Há valores estranhos?" |
+| Escolher a melhor análise | "Posso usar a média ou preciso da mediana?" |
+
+### 1.3 O que uma Distribuição Revela?
+
+```text
+┌─────────────────────────────────────────────────────┐
+│                  DISTRIBUIÇÃO                       │
+└─────────────────────────────────────────────────────┘
+                        │
+        ┌───────────────┼───────────────┐
+        ▼               ▼               ▼
+┌───────────────┐ ┌───────────────┐ ┌───────────────┐
+│    CENTRO     │ │   DISPERSÃO   │ │    FORMA      │
+├───────────────┤ ├───────────────┤ ├───────────────┤
+│ Onde os dados │ │ Quanto os     │ │ Como os dados │
+│ se concentram?│ │ dados variam? │ │ se distribuem?│
+├───────────────┤ ├───────────────┤ ├───────────────┤
+│ Média         │ │ Amplitude     │ │ Simétrica     │
+│ Mediana       │ │ Variância     │ │ Assimétrica   │
+│ Moda          │ │ Desvio Padrão │ │ Bimodal       │
+│ Quartis       │ │ IIQ           │ │ Uniforme      │
+└───────────────┘ └───────────────┘ └───────────────┘
+```
+
+## 2. 📊 Tipos de Distribuição
+
+### 2.1 Distribuição de Frequências
+
+**O que é:** Organização dos dados em **classes ou categorias** com suas respectivas frequências.
+
+**Exemplo:**
+
+| Idade | Frequência |
+| ---- | ----: |
+| 18-25 | 15 |
+| 26-33 | 25 |
+| 34-41 | 30 |
+| 42-49 | 20 |
+| 50-57 | 8 |
+| 58-65 | 2 |
+
+**Para que serve:** É a base para construir histogramas e polígonos de frequência.
+
+### 2.2 Distribuição de Probabilidade
+
+**O que é:** Distribuição **teórica** que descreve a probabilidade de cada valor ocorrer.
+
+**Exemplos:**
+- **Normal** (curva em sino)
+- **Binomial** (sucesso/fracasso)
+- **Poisson** (eventos raros)
+
+**Para que serve:** Modelar fenômenos aleatórios e fazer previsões.
+
+### 2.3 Distribuição Amostral
+
+**O que é:** Distribuição de uma **estatística** (ex: média) calculada a partir de muitas amostras.
+
+**Para que serve:** Base da inferência estatística (intervalos de confiança, testes de hipótese).
+
+## 3. 📋 Distribuição de Frequências (O Coração da Descritiva)
+
+### 3.1 O que é?
+
+É a organização de dados brutos em **classes** (intervalos) com suas respectivas **frequências**.
+
+```text
+DADOS BRUTOS
+    │
+    ▼
+┌─────────────────────────────────────────────────────┐
+│                DISTRIBUIÇÃO DE FREQUÊNCIAS          │
+├─────────────┬─────────────┬─────────────┬───────────┤
+│   CLASSE    │  FREQUÊNCIA  │  FREQUÊNCIA  │FREQUÊNCIA │
+│             │   ABSOLUTA   │   RELATIVA   │ ACUMULADA │
+├─────────────┼─────────────┼─────────────┼───────────┤
+│  18 - 25    │     15      │    15%       │    15     │
+│  26 - 33    │     25      │    25%       │    40     │
+│  34 - 41    │     30      │    30%       │    70     │
+│  42 - 49    │     20      │    20%       │    90     │
+│  50 - 57    │      8      │     8%       │    98     │
+│  58 - 65    │      2      │     2%       │   100     │
+└─────────────┴─────────────┴─────────────┴───────────┘
+```
+
+### 3.2 Elementos da Distribuição de Frequências
+
+| **Elemento** | **O que é** | **Exemplo** |
+| ---- | ---- | ---- |
+| **Classe** | Intervalo de valores | 18 - 25 |
+| **Limite Inferior** | Menor valor da classe | 18 |
+| **Limite Superior** | Maior valor da classe | 25 |
+| **Frequência Absoluta** | Número de elementos na classe | 15 |
+| **Frequência Relativa** | Proporção (%) | 15 / 100 = 15% |
+| **Frequência Acumulada** | Soma das frequências até aquela classe | 15 + 25 = 40 |
+
+### 3.3 Como Construir (Passo a Passo)
+
+**Passo 1:** Ordene os dados.
+
+**Passo 2:** Determine o número de classes (k).
+- Regra de Sturges: **k = 1 + 3,3 × log₁₀(n)**
+- Exemplo: n = 100 → k ≈ 1 + 3,3 × 2 = 7,6 → 8 classes
+
+**Passo 3:** Calcule a amplitude de cada classe.
+- Amplitude = (Maior - Menor) / k
+
+**Passo 4:** Defina os limites de cada classe.
+
+**Passo 5:** Conte a frequência em cada classe.
+
+**Passo 6:** Calcule as frequências relativa e acumulada.
+
+## 4. 📊 Representações Gráficas da Distribuição
+
+### 4.1 Histograma
+
+**O que é:** Gráfico de barras **encostadas** que mostra a distribuição de uma variável contínua.
+
+```text
+Frequência
+  │
+20 ┼
+  │          ██████
+15 ┼          ██████    ██████
+  │          ██████    ██████
+10 ┼    ████████████    ██████
+  │    ████████████    ██████
+ 5 ┼    ████████████    ██████    ██████
+  │    ████████████    ██████    ██████    ██████
+ 0 ┼────████████████────██████────██████────██████────
+      18-25        26-33   34-41   42-49   50-57   58-65
+                ↓
+            BARRAS ENCOSTADAS (sem espaço!)
+```
+
+### 4.2 Polígono de Frequência
+
+**O que é:** Versão com **pontos** (nos pontos médios das classes) **unidos por linhas**.
+
+### 4.3 Boxplot (Gráfico de Caixa)
+
+**O que é:** Resumo da distribuição em **5 números**: mínimo, Q1, mediana, Q3, máximo.
+
+```text
+Idade
+  │
+60 ┼
+  │                        o      (outlier)
+50 ┼    ┌─────┐      ┌─────┐
+  │    │     │      │     │
+40 ┼    │  ── │      │ ──  │      ┌─────┐
+  │    │     │      │     │      │     │
+30 ┼    │     │      │     │      │  ── │
+  │    │     │      │     │      │     │
+20 ┼    └─────┘      └─────┘      └─────┘
+  │   ──┴───  ──────┴──────  ─────┴──────
+       Depto A      Depto B      Depto C
+```
+
+### 4.4 Curva de Densidade
+
+**O que é:** Suavização da forma da distribuição.
+
+## 5. 📐 Características de uma Distribuição
+
+### 5.1 Centro
+
+**Onde os dados se concentram?**
+
+| **Medida** | **O que é** |
+| ---- | ---- |
+| **Média** | Ponto de equilíbrio |
+| **Mediana** | Valor central (50%) |
+| **Moda** | Valor mais frequente |
+
+### 5.2 Dispersão
+
+**Quanto os dados variam?**
+
+| **Medida** | **O que é** |
+| ---- | ---- |
+| **Amplitude** | Máximo - Mínimo |
+| **Variância** | Média dos desvios ao quadrado |
+| **Desvio Padrão** | Raiz da variância |
+| **Intervalo Interquartil (IIQ)** | Q3 - Q1 (50% centrais) |
+
+### 5.3 Forma
+
+**Como os dados se distribuem?**
+
+| **Forma** | **Característica** | **Exemplo** |
+| ---- | ---- | ---- |
+| **Simétrica** | Média = Mediana = Moda | Altura de adultos |
+| **Assimétrica Positiva** | Cauda à direita, Média > Mediana | Salários |
+| **Assimétrica Negativa** | Cauda à esquerda, Média < Mediana | Idade de aposentadoria |
+| **Bimodal** | Dois picos | Altura de homens e mulheres |
+| **Uniforme** | Todas as classes com frequência semelhante | Lançamento de dado |
+
+### 5.4 Outliers
+
+**Valores que fogem ao padrão.**
+
+**Como identificar:**
+- Visualmente (boxplot)
+- Estatisticamente: Z-score > 3 ou < -3
+- Pelo IIQ: Q1 - 1,5×IIQ ou Q3 + 1,5×IIQ
+
+## 6. 🎨 Formas da Distribuição (Detalhado)
+
+### 6.1 Distribuição Simétrica
+
+```text
+  │      ██
+  │    ██████
+  │  ██████████
+  │ ████████████
+  └──────────────────
+  Média = Mediana = Moda
+```
+
+**Exemplo:** Altura de adultos, QI.
+
+**Interpretação:** Os dados se distribuem igualmente em ambos os lados do centro.
+
+### 6.2 Assimétrica Positiva (à Direita)
+
+```text
+  │        ██
+  │      ██████
+  │    ██████████
+  │  ██████████████
+  │ ██████████████████
+  └──────────────────────────
+  Moda < Mediana < Média
+```
+
+**Exemplo:** Salários, renda familiar.
+
+**Interpretação:** A maioria dos dados está concentrada na esquerda, mas há uma cauda longa à direita (poucos valores muito altos).
+
+### 6.3 Assimétrica Negativa (à Esquerda)
+
+```text
+  │          ██
+  │        ██████
+  │      ██████████
+  │    ████████████
+  │  ████████████████
+  └────────────────────
+  Média < Mediana < Moda
+```
+
+**Exemplo:** Idade de aposentadoria, tempo de vida útil de produtos.
+
+**Interpretação:** A maioria dos dados está concentrada na direita, mas há uma cauda longa à esquerda (poucos valores muito baixos).
+
+### 6.4 Bimodal
+
+```text
+  │    ██      ██
+  │  ██████  ██████
+  │ ████████████████
+  └──────────────────
+```
+
+**Exemplo:** Altura de uma população com homens e mulheres misturados.
+
+**Interpretação:** Os dados vêm de **duas populações diferentes** — é um sinal de que os dados podem precisar ser separados.
+
+### 6.5 Uniforme
+
+```text
+  │ ████████████████
+  │ ████████████████
+  │ ████████████████
+  └──────────────────
+```
+
+**Exemplo:** Lançamento de um dado honesto.
+
+**Interpretação:** Todos os valores têm frequência semelhante. Não há concentração em nenhum valor específico.
+
+## 7. 📊 Medidas que Descrevem a Distribuição
+
+### 7.1 Medidas de Posição
+
+| **Medida** | **O que é** | **Exemplo** |
+| ---- | ---- | ---- |
+| **Média** | Ponto de equilíbrio | 26,25 anos |
+| **Mediana** | Valor central (50%) | 25,5 anos |
+| **Moda** | Valor mais frequente | 9 (nota) |
+| **Quartis** | Dividem em 4 partes | Q1=22, Q2=27, Q3=35 |
+| **Percentis** | Dividem em 100 partes | P90=45 anos |
+
+
+### 7.2 Medidas de Dispersão
+
+| **Medida** | **O que é** | **Exemplo** |
+| ---- | ---- | ---- |
+| **Amplitude** | Máximo - Mínimo | 35 - 18 = 17 anos |
+| **Variância** | Média dos desvios ao quadrado | 45,2 |
+| **Desvio Padrão** | Raiz da variância | 6,7 anos |
+| **IIQ** | Q3 - Q1 | 35 - 22 = 13 anos |
+
+
+### 7.3 Medidas de Forma
+
+| **Medida** | **O que é** | **Interpretação** |
+| ---- | ---- | ---- |
+| **Assimetria (Skewness)** | Mede o grau de assimetria | $0 = simétrica; >0 = positiva; <0 = negativa$ |
+| **Curtose** | Mede o achatamento | $0 = normal; >0 = mais pontiaguda; <0 = mais achatada$ |
+
+### 7.4 Medidas de Posição Relativa
+
+**Escore z (padronização):**
+
+```text
+z = (x - x̄) / s
+```
+
+**Interpretação:**
+- z = 0 → valor igual à média
+- z = 1 → valor 1 desvio padrão acima da média
+- z = -1 → valor 1 desvio padrão abaixo da média
+
+**Exemplo:** Nota 8 em uma prova com média 6 e desvio padrão 1,5.
+
+$z = (8 - 6) / 1,5 = 1,33$
+
+
+→ O aluno está 1,33 desvios padrão acima da média.
+
+## 8. 🔔 Distribuição Normal (A Mais Importante)
+
+### 8.1 O que é a Distribuição Normal?
+
+É uma distribuição **teórica** em forma de **sino**, completamente descrita por dois parâmetros:
+
+- **Média (μ)** → define o centro
+- **Desvio Padrão (σ)** → define a dispersão
+
+```text
+  │      ██
+  │    ██████
+  │  ██████████
+  │ ████████████
+  └──────────────────
+     μ-3σ μ-2σ μ-σ  μ  μ+σ μ+2σ μ+3σ
+```
+
+### 8.2 Propriedades da Distribuição Normal
+
+| **Propriedade** | **O que significa** |
+| ---- | ---- |
+| **Simétrica** | Média = Mediana = Moda |
+| **68-95-99,7%** | 68% dos dados estão a ±1σ; 95% a ±2σ; 99,7% a ±3σ |
+| **Infinitas curvas** | Cada média e desvio padrão gera uma curva diferente |
+| **Teorema Central do Limite** | Médias amostrais tendem à normal |
+
+**Exemplo da regra 68-95-99,7%:**
+
+```text
+
+  │      ██
+  │    ██████
+  │  ██████████
+  │ ████████████
+  └──────────────────
+     μ-3σ μ-2σ μ-σ  μ  μ+σ μ+2σ μ+3σ
+     │    │    │    │    │    │    │
+     └────┴────┴────┴────┴────┴────┘
+     99,7% dos dados estão aqui
+          └────┴────┴────┴────┘
+           95% dos dados estão aqui
+              └────┴────┘
+               68% dos dados estão aqui
+```
+
+### 8.3 Por que a Normal é Importante?
+
+1. **Muitos fenômenos seguem a normal:** altura, peso, QI, erros de medição.
+2. **Base para testes estatísticos:** t-test, ANOVA, regressão.
+3. **Teorema Central do Limite:** qualquer distribuição, com amostras grandes, tende à normal.
+4. **Fácil de trabalhar:** cálculos simples e bem conhecidos.
+
+### 8.4 Como Verificar a Normalidade?
+
+| **Método** | **O que fazer** |
+| ---- | ---- |
+| **Histograma** | Ver se tem forma de sino |
+| **Boxplot** | Ver se é simétrica |
+| **Q-Q Plot** | Ver se os pontos seguem a linha diagonal |
+| **Teste de Shapiro-Wilk** | Teste estatístico (p > 0,05 → normal) |
+
+**Q-Q Plot:**
+
+```text
+
+Valores observados
+  │
+  │        ●
+  │       ● ●
+  │      ●   ●
+  │     ●     ●
+  │    ●       ●
+  │   ●         ●
+  └──────────────────
+       Valores esperados (normal)
+  Se os pontos seguem a linha, os dados são normais.
+```
+
+## 9. 🌳 Árvore de Decisão: Como Descrever uma Distribuição
+
+```text
+
+┌─────────────────────────────────────────────────────┐
+│              COMO DESCREVER A DISTRIBUIÇÃO?         │
+└─────────────────────────────────────────────────────┘
+                        │
+                        ▼
+┌─────────────────────────────────────────────────────┐
+│ 1. QUAL O CENTRO?                                   │
+│    - Média (se simétrica)                          │
+│    - Mediana (se assimétrica)                     │
+└─────────────────────────────────────────────────────┘
+                        │
+                        ▼
+┌─────────────────────────────────────────────────────┐
+│ 2. QUAL A DISPERSÃO?                               │
+│    - Desvio Padrão (se simétrica)                  │
+│    - IIQ (se assimétrica)                         │
+└─────────────────────────────────────────────────────┘
+                        │
+                        ▼
+┌─────────────────────────────────────────────────────┐
+│ 3. QUAL A FORMA?                                   │
+│    - Simétrica? Assimétrica? Bimodal? Uniforme?   │
+└─────────────────────────────────────────────────────┘
+                        │
+                        ▼
+┌─────────────────────────────────────────────────────┐
+│ 4. HÁ OUTLIERS?                                    │
+│    - Sim? Identifique e decida o que fazer         │
+└─────────────────────────────────────────────────────┘
+```
+
+## 10. 💻 Código Python e R
+
+<details>
+<summary>🐍 Código Python — Explorando a Distribuição</summary>
+
+```python
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+from scipy import stats
+
+# Dados
+np.random.seed(42)
+dados = np.random.normal(50, 10, 100)  # Normal com média 50, desvio 10
+
+# Criar DataFrame
+df = pd.DataFrame(dados, columns=['valores'])
+
+# 1. ESTATÍSTICAS DESCRITIVAS
+print("--- ESTATÍSTICAS DESCRITIVAS ---")
+print(df['valores'].describe())
+
+# 2. MEDIDAS DE POSIÇÃO
+print("\n--- MEDIDAS DE POSIÇÃO ---")
+print(f"Média: {df['valores'].mean():.2f}")
+print(f"Mediana: {df['valores'].median():.2f}")
+print(f"Moda: {df['valores'].mode().tolist()}")
+
+# 3. MEDIDAS DE DISPERSÃO
+print("\n--- MEDIDAS DE DISPERSÃO ---")
+print(f"Desvio Padrão: {df['valores'].std():.2f}")
+print(f"Variância: {df['valores'].var():.2f}")
+print(f"Amplitude: {df['valores'].max() - df['valores'].min():.2f}")
+
+# 4. QUARTIS E PERCENTIS
+q1 = df['valores'].quantile(0.25)
+q2 = df['valores'].quantile(0.50)
+q3 = df['valores'].quantile(0.75)
+print(f"\n--- QUARTIS ---")
+print(f"Q1: {q1:.2f}")
+print(f"Q2: {q2:.2f}")
+print(f"Q3: {q3:.2f}")
+print(f"IIQ: {q3 - q1:.2f}")
+
+# 5. TESTE DE NORMALIDADE
+shapiro = stats.shapiro(df['valores'])
+print(f"\n--- TESTE DE NORMALIDADE ---")
+print(f"Shapiro-Wilk: p = {shapiro.pvalue:.4f}")
+if shapiro.pvalue > 0.05:
+    print("Os dados são normalmente distribuídos (p > 0.05)")
+else:
+    print("Os dados NÃO são normalmente distribuídos (p ≤ 0.05)")
+
+# 6. GRÁFICOS
+fig, axes = plt.subplots(1, 3, figsize=(15, 4))
+
+# Histograma
+axes[0].hist(df['valores'], bins=10, color='skyblue', edgecolor='black')
+axes[0].set_title('Histograma')
+axes[0].set_xlabel('Valor')
+axes[0].set_ylabel('Frequência')
+
+# Boxplot
+axes[1].boxplot(df['valores'], patch_artist=True, 
+                boxprops=dict(facecolor='skyblue'))
+axes[1].set_title('Boxplot')
+axes[1].set_ylabel('Valor')
+
+# Q-Q Plot
+stats.probplot(df['valores'], dist="norm", plot=axes[2])
+axes[2].set_title('Q-Q Plot')
+
+plt.tight_layout()
+plt.show()
+```
+</details>
+
+<details>
+<summary>📊 Código R — Explorando a Distribuição</summary>
+
+```r
+library(ggplot2)
+library(dplyr)
+
+# Dados
+set.seed(42)
+dados <- rnorm(100, mean = 50, sd = 10)
+
+# 1. ESTATÍSTICAS DESCRITIVAS
+cat("--- ESTATÍSTICAS DESCRITIVAS ---\n")
+summary(dados)
+
+# 2. MEDIDAS DE POSIÇÃO
+cat("\n--- MEDIDAS DE POSIÇÃO ---\n")
+cat("Média:", mean(dados), "\n")
+cat("Mediana:", median(dados), "\n")
+
+# Moda (função manual)
+calcular_moda <- function(x) {
+  freq <- table(x)
+  max_freq <- max(freq)
+  as.numeric(names(freq[freq == max_freq]))
+}
+cat("Moda:", calcular_moda(dados)[1], "\n")
+
+# 3. MEDIDAS DE DISPERSÃO
+cat("\n--- MEDIDAS DE DISPERSÃO ---\n")
+cat("Desvio Padrão:", sd(dados), "\n")
+cat("Variância:", var(dados), "\n")
+cat("Amplitude:", max(dados) - min(dados), "\n")
+
+# 4. QUARTIS
+q <- quantile(dados, c(0.25, 0.50, 0.75))
+cat("\n--- QUARTIS ---\n")
+cat("Q1:", q[1], "\n")
+cat("Q2:", q[2], "\n")
+cat("Q3:", q[3], "\n")
+cat("IIQ:", q[3] - q[1], "\n")
+
+# 5. TESTE DE NORMALIDADE
+shapiro <- shapiro.test(dados)
+cat("\n--- TESTE DE NORMALIDADE ---\n")
+cat("Shapiro-Wilk: p =", shapiro$p.value, "\n")
+if (shapiro$p.value > 0.05) {
+  cat("Os dados são normalmente distribuídos (p > 0.05)\n")
+} else {
+  cat("Os dados NÃO são normalmente distribuídos (p ≤ 0.05)\n")
+}
+
+# 6. GRÁFICOS
+df <- data.frame(valores = dados)
+
+# Histograma + curva de densidade
+ggplot(df, aes(x = valores)) +
+  geom_histogram(aes(y = after_stat(density)), 
+                 bins = 10, fill = "skyblue", color = "black") +
+  geom_density(color = "red", size = 1.2) +
+  labs(title = "Histograma + Curva de Densidade",
+       x = "Valor", y = "Densidade") +
+  theme_minimal()
+
+# Boxplot
+ggplot(df, aes(y = valores)) +
+  geom_boxplot(fill = "skyblue", color = "black") +
+  labs(title = "Boxplot", y = "Valor") +
+  theme_minimal()
+
+# Q-Q Plot
+qqnorm(dados)
+qqline(dados, col = "red", lwd = 2)
+title("Q-Q Plot")
+```
+</details>
+
+## 📝 Frase de Fixação
+
+> *"Distribuição é a forma, centro e espalhamento dos dados — o mapa que mostra onde estão os valores, como se comportam e o que é normal ou estranho."*
+
+## 📝 Exercícios — Foco na Interpretação
+
+<details>
+<summary>📗 Exercício 1</summary>
+
+**Enunciado:** Para cada situação abaixo, identifique qual característica da distribuição é mais relevante analisar:
+
+a) Salários de uma empresa
+
+b) Altura de 1000 pessoas
+
+c) Notas de uma prova com dois picos
+
+d) Tempo de espera em uma fila
+
+e) Lançamento de um dado
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) **Forma** (assimétrica positiva), **centro** (mediana), **outliers** (diretor)
+
+b) **Forma** (simétrica), **centro** (média), **dispersão** (desvio padrão)
+
+c) **Forma** (bimodal) → pode indicar duas turmas diferentes
+
+d) **Forma** (assimétrica positiva), **outliers** (quem esperou muito)
+
+e) **Forma** (uniforme)
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2</summary>
+
+**Enunciado:** O que significa uma distribuição bimodal e o que ela pode indicar sobre os dados?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+Uma distribuição bimodal tem **dois picos** (duas modas). Isso geralmente indica que os dados vêm de **duas populações diferentes** que foram misturadas. Por exemplo, altura de homens e mulheres juntos, ou notas de duas turmas diferentes na mesma prova.
+
+**Implicação:** Pode ser necessário separar os dados em dois grupos para uma análise mais adequada.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3</summary>
+
+**Enunciado:** Qual é a regra 68-95-99,7% da distribuição normal e o que ela significa?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+A regra 68-95-99,7% afirma que em uma distribuição normal:
+
+- **68%** dos dados estão a **±1 desvio padrão** da média
+- **95%** dos dados estão a **±2 desvios padrão** da média
+- **99,7%** dos dados estão a **±3 desvios padrão** da média
+
+**Significado:** Em uma distribuição normal, a grande maioria dos dados está concentrada perto da média, e valores muito distantes (acima de 3 desvios) são extremamente raros.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4</summary>
+
+**Enunciado:** Como o boxplot ajuda a identificar a forma da distribuição?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+O boxplot ajuda a identificar a forma da distribuição pela **posição da mediana** dentro da caixa:
+
+- **Mediana central** → distribuição **simétrica**
+- **Mediana próxima ao Q1** (parte inferior) → distribuição **assimétrica positiva** (cauda à direita)
+- **Mediana próxima ao Q3** (parte superior) → distribuição **assimétrica negativa** (cauda à esquerda)
+
+Além disso, o comprimento dos "bigodes" (whiskers) indica a presença de outliers.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5</summary>
+
+**Enunciado:** Um histograma mostra uma forma de sino. O que isso indica sobre os dados? Que medidas de centro e dispersão são mais adequadas?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+Um histograma com forma de sino indica que os dados seguem aproximadamente uma **distribuição normal (simétrica)**.
+
+**Medidas de centro:** **Média** (pois Média = Mediana = Moda em dados simétricos)
+
+**Medidas de dispersão:** **Desvio Padrão** (pois descreve bem a variabilidade em distribuições simétricas)
+
+</details>
+</details>
+
+> *Distribuição é a forma, centro e espalhamento dos dados — o mapa que mostra onde estão os valores, como se comportam e o que é normal ou estranho.*

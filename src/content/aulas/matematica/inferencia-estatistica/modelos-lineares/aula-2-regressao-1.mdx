@@ -1,0 +1,365 @@
+# Regressão Linear Simples I
+
+## O que é Regressão Linear Simples?
+
+A regressão linear simples é um método estatístico que nos permite **modelar a relação entre duas variáveis numéricas** e **fazer previsões**. Enquanto a correlação apenas mede a força e a direção da relação, a regressão nos dá uma equação que descreve essa relação.
+
+Pense na regressão como uma forma de encontrar a "melhor reta" que passa pelos dados. Essa reta nos permite prever o valor de uma variável ($Y$) a partir do valor de outra ($X$).
+
+**Aplicações práticas:**
+
+- Prever vendas futuras com base no investimento em publicidade.
+- Estimar o preço de um imóvel com base em sua área.
+- Prever o desempenho de um aluno com base em horas de estudo.
+- Estimar o tempo de entrega com base na distância.
+
+## O Modelo de Regressão Linear Simples
+
+O modelo de regressão linear simples assume que a relação entre $X$ e $Y$ pode ser descrita por uma reta:
+
+>> $$Y = \beta_0 + \beta_1 X + \varepsilon$$
+
+onde:
+
+- $Y$ é a variável dependente (resposta, variável que queremos prever).
+- $X$ é a variável independente (explicativa, preditora).
+- $\beta_0$ é o intercepto (valor de $Y$ quando $X = 0$).
+- $\beta_1$ é o coeficiente angular (inclinação da reta; mudança em $Y$ para cada unidade de $X$).
+- $\varepsilon$ é o erro (diferença entre o valor observado e o valor previsto pela reta).
+
+**Pressupostos do modelo (para inferência):**
+
+1. **Linearidade:** A relação entre $X$ e $Y$ é linear.
+2. **Independência:** Os erros são independentes.
+3. **Homocedasticidade:** A variância dos erros é constante.
+4. **Normalidade:** Os erros seguem uma distribuição Normal.
+
+## Estimação dos Parâmetros pelo Método dos Mínimos Quadrados (MQO)
+
+O Método dos Mínimos Quadrados encontra a reta que minimiza a **soma dos quadrados dos resíduos** (erros).
+
+**Resíduo:** $e_i = Y_i - \hat{Y}_i$, onde $\hat{Y}_i = \hat{\beta}_0 + \hat{\beta}_1 X_i$ é o valor previsto.
+
+**Objetivo:** Minimizar $SSE = \sum e_i^2 = \sum (Y_i - \hat{Y}_i)^2$
+
+**Fórmulas para os estimadores de MQO:**
+
+>> $$\hat{\beta}_1 = \frac{\sum (X_i - \bar{X})(Y_i - \bar{Y})}{\sum (X_i - \bar{X})^2} = \frac{S_{XY}}{S_{XX}}$$
+
+>> $$\hat{\beta}_0 = \bar{Y} - \hat{\beta}_1 \bar{X}$$
+
+**Fórmulas alternativas:**
+
+$$\hat{\beta}_1 = \frac{\sum XY - \frac{(\sum X)(\sum Y)}{n}}{\sum X^2 - \frac{(\sum X)^2}{n}}$$
+
+$$\hat{\beta}_0 = \frac{\sum Y - \hat{\beta}_1 \sum X}{n}$$
+
+**Relação com a correlação:**
+
+$$\hat{\beta}_1 = r \cdot \frac{S_Y}{S_X}$$
+
+onde $S_X$ e $S_Y$ são os desvios padrão amostrais.
+
+## Interpretação dos Coeficientes
+
+**$\beta_0$ (intercepto):** É o valor previsto de $Y$ quando $X = 0$.
+
+- **Interpretação:** "Quando $X$ é zero, o valor esperado de $Y$ é $\beta_0$."
+- **Cuidado:** Muitas vezes o intercepto não tem interpretação prática (ex: "nota quando o aluno estuda 0 horas" pode fazer sentido, mas "preço quando a área é 0" não).
+
+**$\beta_1$ (coeficiente angular):** É a mudança esperada em $Y$ para cada unidade de aumento em $X$.
+
+- **Interpretação:** "Para cada aumento de uma unidade em $X$, o valor de $Y$ aumenta em $\beta_1$ unidades (em média)."
+
+**Exemplo:** Se $\beta_1 = 2,5$ em um modelo que relaciona horas de estudo ($X$) e nota ($Y$), então:
+- Para cada hora adicional de estudo, a nota aumenta em 2,5 pontos (em média).
+
+## Exemplo 1: Cálculo dos coeficientes
+
+Dados de 5 alunos: horas de estudo ($X$) e nota ($Y$):
+
+| Aluno | $X$ (horas) | $Y$ (nota) |
+| --- | --- | --- |
+| 1 | 2 | 6 |
+| 2 | 3 | 7 |
+| 3 | 5 | 8 |
+| 4 | 7 | 9 |
+| 5 | 8 | 10 |
+
+Encontre a equação de regressão.
+
+**Resolução:**
+
+$\sum X = 25$; $\sum Y = 40$; $\sum XY = 216$; $\sum X^2 = 151$; $n = 5$
+$\bar{X} = 5$; $\bar{Y} = 8$
+
+$\hat{\beta}_1 = \frac{5 \cdot 216 - 25 \cdot 40}{5 \cdot 151 - 25^2} = \frac{1080 - 1000}{755 - 625} = \frac{80}{130} = 0,6154$
+
+$\hat{\beta}_0 = 8 - 0,6154 \cdot 5 = 8 - 3,077 = 4,923$
+
+**Equação:** $\hat{Y} = 4,923 + 0,6154X$
+
+**Interpretação:**
+- Para cada hora adicional de estudo, a nota aumenta em 0,615 pontos ($\approx 0,62$).
+- Um aluno que não estuda ($X=0$) teria nota prevista de 4,923.
+
+**Previsões:**
+- Para $X = 6$: $\hat{Y} = 4,923 + 0,6154 \cdot 6 = 4,923 + 3,692 = 8,615$
+- Para $X = 10$: $\hat{Y} = 4,923 + 0,6154 \cdot 10 = 4,923 + 6,154 = 11,077$
+
+## Exemplo 2: Cálculo com dados maiores
+
+Dados de 8 lojas: gasto em publicidade ($X$, em milhares) e vendas ($Y$, em milhares):
+
+| Loja | $X$ (publicidade) | $Y$ (vendas) |
+| --- | --- | --- |
+| 1 | 2 | 15 |
+| 2 | 3 | 18 |
+| 3 | 5 | 22 |
+| 4 | 7 | 28 |
+| 5 | 8 | 30 |
+| 6 | 10 | 35 |
+| 7 | 12 | 38 |
+| 8 | 15 | 42 |
+
+Encontre a equação de regressão.
+
+**Resolução:**
+
+$\sum X = 62$; $\sum Y = 228$; $\sum XY = 2 \cdot 15+3 \cdot 18+5 \cdot 22+7 \cdot 28+8 \cdot 30+10 \cdot 35+12 \cdot 38+15 \cdot 42 = 30+54+110+196+240+350+456+630 = 2066$
+$\sum X^2 = 4+9+25+49+64+100+144+225 = 620$
+$n = 8$; $\bar{X} = 62/8 = 7,75$; $\bar{Y} = 228/8 = 28,5$
+
+$\hat{\beta}_1 = \frac{8 \cdot 2066 - 62 \cdot 228}{8 \cdot 620 - 62^2} = \frac{16528 - 14136}{4960 - 3844} = \frac{2392}{1116} = 2,143$
+
+$\hat{\beta}_0 = 28,5 - 2,143 \cdot 7,75 = 28,5 - 16,608 = 11,892$
+
+**Equação:** $\hat{Y} = 11,892 + 2,143X$
+
+**Interpretação:**
+- Para cada mil reais gastos em publicidade, as vendas aumentam em R$ 2.143 (em média).
+- Com zero investimento em publicidade, as vendas seriam R$ 11.892.
+
+## Coeficiente de Determinação ($R^2$)
+
+O $R^2$ mede a proporção da variabilidade de $Y$ que é explicada pelo modelo de regressão.
+
+$$R^2 = \frac{SQR}{SQT} = 1 - \frac{SQE}{SQT}$$
+
+onde:
+
+- **$SQT$** (Soma de Quadrados Total): $\sum (Y_i - \bar{Y})^2 \to$ variação total de $Y$.
+- **$SQR$** (Soma de Quadrados da Regressão): $\sum (\hat{Y}_i - \bar{Y})^2 \to$ variação explicada.
+- **$SQE$** (Soma de Quadrados dos Erros): $\sum (Y_i - \hat{Y}_i)^2 \to$ variação não explicada.
+
+**Interpretação do $R^2$:**
+
+- $R^2 = 0,80 \to$ 80% da variabilidade de $Y$ é explicada pelo modelo.
+- $R^2 = 0 \to$ Nenhuma variação é explicada (reta horizontal).
+- $R^2 = 1 \to$ Toda a variação é explicada (todos os pontos na reta).
+
+**Relação com a correlação:** $R^2 = r^2$
+
+**Exemplo:** No exemplo 1, $r = 0,992$, então $R^2 = 0,992^2 = 0,984$. Isso significa que 98,4% da variação das notas é explicada pelas horas de estudo.
+
+## Exemplo 3: Cálculo do $R^2$
+
+Para o exemplo 2 (publicidade e vendas):
+
+| $Y$ | $\hat{Y}$ | $Y - \hat{Y}$ | $(Y - \hat{Y})^2$ | $Y - \bar{Y}$ | $(Y - \bar{Y})^2$ |
+| --- | --- | --- | --- | --- | --- |
+| 15 | 16,18 | -1,18 | 1,39 | -13,5 | 182,25 |
+| 18 | 18,32 | -0,32 | 0,10 | -10,5 | 110,25 |
+| 22 | 22,61 | -0,61 | 0,37 | -6,5 | 42,25 |
+| 28 | 26,89 | 1,11 | 1,23 | -0,5 | 0,25 |
+| 30 | 29,04 | 0,96 | 0,92 | 1,5 | 2,25 |
+| 35 | 33,32 | 1,68 | 2,82 | 6,5 | 42,25 |
+| 38 | 37,60 | 0,40 | 0,16 | 9,5 | 90,25 |
+| 42 | 44,04 | -2,04 | 4,16 | 13,5 | 182,25 |
+
+$SQT = 182,25+110,25+42,25+0,25+2,25+42,25+90,25+182,25 = 652,0$
+$SQE = 1,39+0,10+0,37+1,23+0,92+2,82+0,16+4,16 = 11,15$
+$R^2 = 1 - 11,15/652,0 = 1 - 0,0171 = 0,9829$
+
+**Interpretação:** $R^2 = 98,29\%$ da variação das vendas é explicada pelo investimento em publicidade.
+
+## Resíduos e Análise de Resíduos
+
+Os resíduos são as diferenças entre os valores observados e previstos:
+
+$$e_i = Y_i - \hat{Y}_i$$
+
+**Análise dos resíduos (para verificar os pressupostos):**
+
+1. **Resíduos vs valores ajustados:** Não deve mostrar padrão (homocedasticidade).
+2. **Q-Q plot dos resíduos:** Deve seguir uma linha reta (normalidade).
+3. **Resíduos vs ordem dos dados:** Não deve mostrar padrão (independência).
+4. **Resíduos vs $X$:** Não deve mostrar padrão (linearidade).
+
+## Analogias
+
+### Analogia 1: O ajuste de uma reta
+
+A regressão é como tentar passar uma régua (reta) pelo meio de um conjunto de pontos. A régua é colocada de forma que minimize a distância entre os pontos e a régua.
+
+### Analogia 2: O termostato
+
+O intercepto é como a temperatura inicial do termostato. O coeficiente angular é o quanto a temperatura muda para cada grau que você ajusta.
+
+### Analogia 3: A receita de bolo
+
+$\beta_1$ é como a quantidade de açúcar que você adiciona; $\beta_0$ é a quantidade de farinha que você usa antes de adicionar qualquer açúcar.
+
+### Analogia 4: O velocímetro
+
+O tempo ($X$) e a distância percorrida ($Y$) têm uma relação linear: distância = velocidade × tempo. A velocidade é o coeficiente angular.
+
+## Exercícios Resolvidos
+
+### Exercício 1 (Fácil)
+
+Dados: (1,2), (2,3), (3,4), (4,5). Encontre $\hat{\beta}_1$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$\sum X = 10$; $\sum Y = 14$; $\sum XY = 40$; $\sum X^2 = 30$; $n = 4$
+$\hat{\beta}_1 = \frac{4 \cdot 40 - 10 \cdot 14}{4 \cdot 30 - 10^2} = \frac{160 - 140}{120 - 100} = \frac{20}{20} = 1$
+
+**Resposta:** $\hat{\beta}_1 = 1$.
+
+</details>
+
+### Exercício 2 (Fácil/Médio)
+
+Para os dados do exercício 1, encontre $\hat{\beta}_0$ e a equação de regressão.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$\bar{X} = 10/4 = 2,5$; $\bar{Y} = 14/4 = 3,5$
+$\hat{\beta}_0 = 3,5 - 1 \cdot 2,5 = 1,0$
+Equação: $\hat{Y} = 1 + X$
+
+**Resposta:** $\hat{Y} = 1 + X$.
+
+</details>
+
+### Exercício 3 (Médio)
+
+Para um modelo com $R^2 = 0,64$, qual é a correlação $r$?
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$r = \pm \sqrt{R^2} = \pm \sqrt{0,64} = \pm 0,8$ (o sinal depende da direção)
+
+**Resposta:** $r = \pm 0,8$.
+
+</details>
+
+### Exercício 4 (Médio)
+
+Calcule $R^2$ para os dados do exemplo 1.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$r = 0,992$; $R^2 = 0,992^2 = 0,984$
+
+**Resposta:** 98,4%.
+
+</details>
+
+### Exercício 5 (Difícil)
+
+Interprete $\hat{\beta}_0 = -2$ e $\hat{\beta}_1 = 3$ em um modelo que relaciona tempo de treino ($X$) e erros ($Y$).
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$\hat{\beta}_0 = -2$: Com zero horas de treino, o número previsto de erros é -2 (não faz sentido prático).
+$\hat{\beta}_1 = 3$: Para cada hora adicional de treino, o número de erros aumenta em 3 (contra-intuitivo — treino deveria reduzir erros). Isso pode indicar que o modelo não é adequado ou que a relação é diferente do esperado.
+
+**Resposta:** $\hat{\beta}_0 = -2$ (não prático); $\hat{\beta}_1 = 3$ (aumento de erros com treino — suspeito).
+
+</details>
+
+## Desafio Final com Resolução Completa
+
+Uma empresa de transporte coletou dados de 6 veículos sobre idade do veículo ($X$, em anos) e custo de manutenção ($Y$, em R$ 100):
+
+| Veículo | Idade ($X$) | Custo ($Y$) |
+| --- | --- | --- |
+| 1 | 1 | 2 |
+| 2 | 2 | 3 |
+| 3 | 3 | 4 |
+| 4 | 4 | 5 |
+| 5 | 5 | 6 |
+| 6 | 6 | 8 |
+
+a) Calcule $\hat{\beta}_0$ e $\hat{\beta}_1$.
+
+b) Escreva a equação de regressão.
+
+c) Interprete $\hat{\beta}_0$ e $\hat{\beta}_1$.
+
+d) Calcule $R^2$.
+
+e) Preveja o custo de manutenção para um veículo com 7 anos e outro com 3,5 anos.
+
+<details>
+<summary>💡 Ver resolução completa</summary>
+
+**a)** $\sum X = 1+2+3+4+5+6 = 21$; $\sum Y = 2+3+4+5+6+8 = 28$
+   $\sum X^2 = 1+4+9+16+25+36 = 91$; $\sum XY = 1\cdot 2+2\cdot 3+3\cdot 4+4\cdot 5+5\cdot 6+6\cdot 8 = 2+6+12+20+30+48 = 118$
+   $n = 6$
+
+   $\hat{\beta}_1 = \frac{6 \cdot 118 - 21 \cdot 28}{6 \cdot 91 - 21^2} = \frac{708 - 588}{546 - 441} = \frac{120}{105} = 1,1429$
+
+   $\bar{X} = 21/6 = 3,5$; $\bar{Y} = 28/6 = 4,6667$
+   $\hat{\beta}_0 = 4,6667 - 1,1429 \cdot 3,5 = 4,6667 - 4,000 = 0,6667$
+   
+**b)** $\hat{Y} = 0,6667 + 1,1429X$
+
+**c)** $\hat{\beta}_0 = 0,6667$: Um veículo novo (idade zero) teria custo de manutenção de aproximadamente R\$ 66,67.
+   $\hat{\beta}_1 = 1,1429$: Para cada ano adicional de idade, o custo de manutenção aumenta em R\$ 114,29 (em média).
+
+**d)** Para calcular $R^2$, primeiro precisamos dos valores previstos:
+   $X=1$: $\hat{Y} = 0,6667+1,1429\cdot 1 = 1,8096$
+   $X=2$: $\hat{Y} = 2,9525$
+   $X=3$: $\hat{Y} = 4,0954$
+   $X=4$: $\hat{Y} = 5,2383$
+   $X=5$: $\hat{Y} = 6,3812$
+   $X=6$: $\hat{Y} = 7,5241$
+
+   $SQT = (2-4,6667)^2 + (3-4,6667)^2 + (4-4,6667)^2 + (5-4,6667)^2 + (6-4,6667)^2 + (8-4,6667)^2$
+   $= 7,111 + 2,778 + 0,444 + 0,111 + 1,778 + 11,111 = 23,333$
+
+   $SQE = (2-1,8096)^2 + (3-2,9525)^2 + (4-4,0954)^2 + (5-5,2383)^2 + (6-6,3812)^2 + (8-7,5241)^2$
+   $= 0,036 + 0,002 + 0,009 + 0,057 + 0,145 + 0,226 = 0,475$
+
+   $R^2 = 1 - 0,475/23,333 = 1 - 0,0204 = 0,9796$
+
+**e)** Para $X = 7$: $\hat{Y} = 0,6667 + 1,1429 \cdot 7 = 0,6667 + 8,000 = 8,6667$ (R\$ 866,67)
+   Para $X = 3,5$: $\hat{Y} = 0,6667 + 1,1429 \cdot 3,5 = 0,6667 + 4,000 = 4,6667$ (R\$ 466,67)
+
+**Respostas:**
+
+a) $\hat{\beta}_0 = 0,6667$; $\hat{\beta}_1 = 1,1429$
+
+b) $\hat{Y} = 0,6667 + 1,1429X$
+
+c) $\hat{\beta}_0 = 0,6667$ (custo inicial de R\$ 66,67); \
+$\hat{\beta}_1 = 1,1429$ (aumento de R\$ 114,29 por ano)
+
+d) $R^2 = 97,96\%$
+
+e) 7 anos: R\$ 866,67; 3,5 anos: R\$ 466,67
+</details>
+
+> *A regressão linear transforma nuvens de pontos em uma seta que aponta para o futuro — com uma reta, capturamos a essência da relação e a traduzimos em previsão.*
+
+
+
+

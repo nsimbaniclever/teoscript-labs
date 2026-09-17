@@ -1,0 +1,450 @@
+# PIPELINE DE 5 ESTÁGIOS
+
+## 1. INTRODUÇÃO
+
+Nas aulas anteriores, estudamos como a CPU executa instruções: busca, decodifica, executa, acessa memória e escreve o resultado. Vimos também que cada instrução passa por essas etapas, uma após a outra, de forma sequencial.<br><br>
+
+Mas há um problema: a CPU moderna é incrivelmente rápida, e cada estágio da execução de uma instrução usa partes diferentes do processador. Enquanto a Unidade Lógica e Aritmética (ULA) está executando uma instrução, o restante da CPU — o buscador de instruções, o decodificador, o controlador de memória — fica ocioso. É como uma linha de montagem onde apenas um operário trabalha por vez, enquanto os outros esperam.<br><br>
+
+A solução para esse desperdício é o **pipeline**. Assim como uma linha de montagem de carros, onde cada operário faz uma parte do trabalho e passa o carro para o próximo, o pipeline da CPU permite que **várias instruções sejam executadas em paralelo**, cada uma em um estágio diferente do processo.<br><br>
+
+Imagine uma lavanderia: enquanto uma camisa está sendo lavada (estágio 1), outra pode estar sendo enxaguada (estágio 2), outra centrifugada (estágio 3) e outra passada (estágio 4). Cada máquina trabalha ao mesmo tempo, e a produção total é muito maior. O pipeline da CPU funciona exatamente assim.<br><br>
+
+Nesta aula, vamos estudar o pipeline de 5 estágios: o que é, como funciona, quais são seus estágios, como ele aumenta o desempenho, e quais são suas limitações.
+
+## 2. O QUE É UM PIPELINE?
+
+### 2.1 Definição
+
+> "Pipeline é uma técnica de implementação de processadores onde múltiplas instruções são sobrepostas em sua execução, com cada instrução passando por uma sequência de estágios, permitindo que diferentes estágios de diferentes instruções sejam executados simultaneamente."
+
+### 2.2 Características principais
+
+| Característica | Descrição |
+|---------|----------|
+| **O que faz** | Executa várias instruções em paralelo, cada uma em um estágio diferente |
+| **Estágios típicos** | 5 (IF, ID, EX, MEM, WB) |
+| **Vantagem** | Aumenta o throughput (instruções por segundo) |
+| **Latência** | Cada instrução ainda leva o mesmo tempo total, mas várias são concluídas por ciclo |
+| **Limitação** | Conflitos (hazards) podem parar o pipeline |
+
+### 2.3 Analogia
+
+O pipeline é como uma **linha de montagem de carros**:
+
+- **Estágio 1:** Montar o chassi
+- **Estágio 2:** Instalar o motor
+- **Estágio 3:** Instalar as portas
+- **Estágio 4:** Pintar
+- **Estágio 5:** Inspeção final
+
+Enquanto o carro 1 está sendo pintado, o carro 2 está tendo portas instaladas, o carro 3 está recebendo o motor, e o carro 4 está tendo o chassi montado. Todos os estágios trabalham ao mesmo tempo, e um carro sai da linha a cada ciclo.
+
+## 3. OS 5 ESTÁGIOS DO PIPELINE
+
+### 3.1 Visão geral dos estágios
+
+| Estágio | Nome | O que faz | Componente usado |
+|---------|---------|---------|---------|
+| **IF** | Instruction Fetch | Busca a instrução da memória | Memória, PC |
+| **ID** | Instruction Decode | Decodifica a instrução, lê registradores | Decodificador, Banco de Registradores |
+| **EX** | Execute | Executa a operação (aritmética/lógica) | ULA (ALU) |
+| **MEM** | Memory Access | Acessa a memória (load/store) | Memória, Controlador de Memória |
+| **WB** | Write Back | Escreve o resultado no registrador | Banco de Registradores |
+
+### 3.2 Diagrama: Pipeline de 5 estágios
+
+<details>
+<summary> **Pipeline de 5 estágios em ação**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+┌─────────────────────────────────────────────────────────────────────┐
+│                                                                     │
+│   Instrução 1:  ┌──┐ ┌──┐ ┌──┐ ┌──┐ ┌──┐                         │
+│                 │IF│ │ID│ │EX│ │MEM│ │WB│                         │
+│                 └──┘ └──┘ └──┘ └──┘ └──┘                         │
+│                                                                     │
+│   Instrução 2:      ┌──┐ ┌──┐ ┌──┐ ┌──┐ ┌──┐                    │
+│                     │IF│ │ID│ │EX│ │MEM│ │WB│                    │
+│                     └──┘ └──┘ └──┘ └──┘ └──┘                    │
+│                                                                     │
+│   Instrução 3:          ┌──┐ ┌──┐ ┌──┐ ┌──┐ ┌──┐                │
+│                         │IF│ │ID│ │EX│ │MEM│ │WB│                │
+│                         └──┘ └──┘ └──┘ └──┘ └──┘                │
+│                                                                     │
+│   Instrução 4:              ┌──┐ ┌──┐ ┌──┐ ┌──┐ ┌──┐            │
+│                             │IF│ │ID│ │EX│ │MEM│ │WB│            │
+│                             └──┘ └──┘ └──┘ └──┘ └──┘            │
+│                                                                     │
+│   Ciclo:         1    2    3    4    5    6    7    8    9        │
+│                                                                     │
+│   Sem pipeline:  4 instruções → 20 ciclos                          │
+│   Com pipeline:  4 instruções → 8 ciclos                          │
+│                                                                     │
+└─────────────────────────────────────────────────────────────────────┘
+    </pre>
+</details>
+
+### 3.3 Comparação: Sem pipeline vs Com pipeline
+
+| Cenário | 1 instrução | 4 instruções | 10 instruções |
+|---------|---------|---------|---------|
+| **Sem pipeline** | 5 ciclos | 20 ciclos | 50 ciclos |
+| **Com pipeline** | 5 ciclos | 8 ciclos | 14 ciclos |
+| **Ganho** | 0% | 60% | 72% |
+
+**Observação:** O ganho aumenta com o número de instruções. Para muitas instruções, o pipeline se aproxima de 1 instrução por ciclo (5x mais rápido que sem pipeline).
+
+## 4. COMO FUNCIONA CADA ESTÁGIO
+
+### 4.1 IF — Instruction Fetch (Busca da Instrução)
+
+**O que acontece:**
+1. A CPU lê o endereço no PC (Program Counter).
+2. A CPU busca a instrução na memória (cache L1 ou RAM).
+3. A CPU incrementa o PC para apontar para a próxima instrução.
+4. A instrução é passada para o estágio ID.
+
+**Exemplo:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+PC = 0x1000
+Busca instrução em 0x1000: ADD R1, R2, R3
+PC = 0x1004
+</pre>
+
+### 4.2 ID — Instruction Decode (Decodificação)
+
+**O que acontece:**
+1. A CPU decodifica a instrução (entende o que fazer).
+2. A CPU lê os registradores fonte (R2 e R3).
+3. A CPU identifica o registrador destino (R1).
+4. A CPU gera os sinais de controle para os estágios seguintes.
+
+**Exemplo:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+Instrução: ADD R1, R2, R3
+Decodifica: Operação = SOMA, Fonte1 = R2, Fonte2 = R3, Destino = R1
+Lê R2 e R3
+</pre>
+
+### 4.3 EX — Execute (Execução)
+
+**O que acontece:**
+1. A CPU executa a operação na ULA (ALU).
+2. Para instruções aritméticas: soma, subtrai, multiplica, divide.
+3. Para instruções lógicas: AND, OR, XOR, shift.
+4. Para instruções de desvio: calcula o endereço do salto.
+5. O resultado é passado para o estágio MEM (ou diretamente para WB).
+
+**Exemplo:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+R2 = 5, R3 = 10
+Executa SOMA: 5 + 10 = 15
+Resultado = 15
+</pre>
+
+### 4.4 MEM — Memory Access (Acesso à Memória)
+
+**O que acontece:**
+1. Para instruções LDR/STR: acessa a memória.
+2. Para instruções aritméticas/lógicas: não faz nada (passa o resultado adiante).
+3. Para instruções de desvio: não faz nada (o salto já foi calculado).
+
+**Exemplo (LDR):**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+Instrução: LDR R1, [R2]
+Endereço = R2 = 0x1000
+Lê da memória: valor em 0x1000 = 42
+Resultado = 42
+</pre>
+
+### 4.5 WB — Write Back (Escrita de Volta)
+
+**O que acontece:**
+1. A CPU escreve o resultado no registrador destino.
+2. Para instruções aritméticas: escreve o resultado da ULA.
+3. Para instruções LDR: escreve o valor lido da memória.
+4. Para instruções STR: não escreve nada (já escreveu na memória).
+
+**Exemplo:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+Instrução: ADD R1, R2, R3
+Resultado = 15
+R1 = 15
+</pre>
+
+## 5. O GANHO DE DESEMPENHO DO PIPELINE
+
+### 5.1 Throughput (Taxa de Conclusão)
+
+| Medida | Sem Pipeline | Com Pipeline |
+|---------|---------|---------|
+| **Instruções por ciclo** | 0.2 (1 a cada 5 ciclos) | ~1 (1 por ciclo, no máximo) |
+| **Tempo por instrução** | 5 ciclos | ~1 ciclo (em média) |
+| **Speedup teórico** | 1x | 5x |
+
+### 5.2 Ideal vs Realidade
+
+**Pipeline ideal:**
+- 1 instrução concluída por ciclo.
+- Speedup de 5x (para 5 estágios).
+
+**Pipeline real:**
+- Conflitos (hazards) causam stalls (pausas).
+- Speedup típico: 3x a 4x.
+
+### 5.3 Exemplo de cálculo
+
+**Sem pipeline:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+100 instruções × 5 ciclos = 500 ciclos
+</pre>
+
+**Com pipeline (sem conflitos):**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+5 ciclos (primeira instrução) + 99 ciclos (1 por ciclo) = 104 ciclos
+</pre>
+
+**Com pipeline (com conflitos):**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+5 ciclos + 99 ciclos + 20 ciclos (stalls) = 124 ciclos
+</pre>
+
+**Ganho:** 500 / 124 = 4x mais rápido.
+
+## 6. O QUE ACONTECE EM CADA CICLO?
+
+### 6.1 Exemplo: 4 instruções em pipeline
+
+| Ciclo | IF | ID | EX | MEM | WB |
+|---------|---------|---------|---------|---------|---------|
+| 1 | I1 | — | — | — | — |
+| 2 | I2 | I1 | — | — | — |
+| 3 | I3 | I2 | I1 | — | — |
+| 4 | I4 | I3 | I2 | I1 | — |
+| 5 | I5 | I4 | I3 | I2 | I1 |
+| 6 | I6 | I5 | I4 | I3 | I2 |
+| 7 | I7 | I6 | I5 | I4 | I3 |
+| 8 | I8 | I7 | I6 | I5 | I4 |
+
+**Observação:** No ciclo 5, a primeira instrução (I1) é concluída. A partir daí, uma instrução é concluída a cada ciclo.
+
+### 6.2 Diagrama: Pipeline em ação
+
+<details>
+<summary> **Pipeline passo a passo**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+Ciclo 1:   [IF] I1
+           [ID] ——
+           [EX] ——
+           [MEM] ——
+           [WB] ——
+
+Ciclo 2:   [IF] I2
+           [ID] I1
+           [EX] ——
+           [MEM] ——
+           [WB] ——
+
+Ciclo 3:   [IF] I3
+           [ID] I2
+           [EX] I1
+           [MEM] ——
+           [WB] ——
+
+Ciclo 4:   [IF] I4
+           [ID] I3
+           [EX] I2
+           [MEM] I1
+           [WB] ——
+
+Ciclo 5:   [IF] I5
+           [ID] I4
+           [EX] I3
+           [MEM] I2
+           [WB] I1  ← I1 concluída!
+    </pre>
+</details>
+
+## 7. LIMITAÇÕES DO PIPELINE
+
+### 7.1 Conflitos (Hazards)
+
+O pipeline pode ser interrompido por três tipos de conflitos:
+
+| Tipo | O que é | Exemplo |
+|---------|---------|---------|
+| **Data Hazard** | Instrução depende de resultado anterior | `ADD R1, R2, R3` / `SUB R4, R1, R5` |
+| **Structural Hazard** | Dois estágios precisam do mesmo recurso | IF e MEM acessando memória ao mesmo tempo |
+| **Control Hazard** | Salto condicional | `BEQ label` (não sabe qual instrução buscar) |
+
+### 7.2 Pipeline Stall (Pausa)
+
+Quando um conflito ocorre, o pipeline precisa **parar (stall)** — uma ou mais instruções ficam "presas" em um estágio enquanto o conflito é resolvido.
+
+### 7.3 Overhead do pipeline
+
+- **Registradores de pipeline:** Cada estágio precisa de registradores para guardar o estado.
+- **Atraso de sincronização:** Os registradores de pipeline adicionam atraso.
+- **Complexidade:** O controle do pipeline é mais complexo que o de uma CPU sem pipeline.
+
+## 8. APLICAÇÕES REAIS
+
+| Aplicação | Como usa pipeline |
+|---------|----------|
+| **Processadores Intel Core** | Pipeline de 14-19 estágios |
+| **Processadores ARM** | Pipeline de 5-11 estágios |
+| **Processadores AMD Ryzen** | Pipeline de 12-19 estágios |
+| **Processadores RISC-V** | Pipeline de 5 estágios (simples) |
+| **GPUs** | Pipelines massivamente paralelos |
+
+**Exemplo prático:** Um processador Intel Core i9 tem um pipeline de ~19 estágios, permitindo que execute várias instruções por ciclo, atingindo velocidades de 4-5 GHz.
+
+## 9. EXERCÍCIOS
+
+<details>
+<summary>📗 Exercício 1 — O que é pipeline? (Fácil)</summary>
+
+**Enunciado:** Defina o que é um pipeline em um processador.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Pipeline é uma técnica onde múltiplas instruções são sobrepostas em sua execução, com cada instrução passando por uma sequência de estágios, permitindo que diferentes estágios de diferentes instruções sejam executados simultaneamente.
+
+**Explicação:** É como uma linha de montagem: enquanto uma instrução está no estágio EX, outra pode estar no ID e outra no IF.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Os 5 estágios (Fácil)</summary>
+
+**Enunciado:** Liste os 5 estágios de um pipeline clássico e o que cada um faz.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+1. **IF (Instruction Fetch):** Busca a instrução da memória.
+2. **ID (Instruction Decode):** Decodifica a instrução e lê registradores.
+3. **EX (Execute):** Executa a operação na ULA.
+4. **MEM (Memory Access):** Acessa a memória (load/store).
+5. **WB (Write Back):** Escreve o resultado no registrador.
+
+**Explicação:** Cada estágio é executado por um componente diferente da CPU, permitindo que trabalhem em paralelo.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Ganho de desempenho (Fácil)</summary>
+
+**Enunciado:** Quantos ciclos uma CPU sem pipeline leva para executar 10 instruções? E com pipeline de 5 estágios (sem conflitos)?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+- **Sem pipeline:** 10 × 5 = 50 ciclos
+- **Com pipeline:** 5 + 9 = 14 ciclos
+
+**Explicação:** A primeira instrução leva 5 ciclos. As 9 seguintes levam 1 ciclo cada (uma concluída por ciclo).
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Pipeline em ação (Médio)</summary>
+
+**Enunciado:** Desenhe uma tabela mostrando em qual estágio cada instrução está nos ciclos 1 a 5, para 5 instruções.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+| Ciclo | IF | ID | EX | MEM | WB |
+|---------|---------|---------|---------|---------|---------|
+| 1 | I1 | — | — | — | — |
+| 2 | I2 | I1 | — | — | — |
+| 3 | I3 | I2 | I1 | — | — |
+| 4 | I4 | I3 | I2 | I1 | — |
+| 5 | I5 | I4 | I3 | I2 | I1 |
+
+**Explicação:** A cada ciclo, cada instrução avança um estágio, e uma nova instrução é buscada.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Throughput (Médio)</summary>
+
+**Enunciado:** O que é throughput e como o pipeline o afeta?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Throughput é o número de instruções concluídas por unidade de tempo (ex: instruções por ciclo).
+
+**Efeito do pipeline:** O pipeline aumenta o throughput porque várias instruções estão em execução simultaneamente. Uma instrução é concluída a cada ciclo (em vez de a cada 5 ciclos).
+
+**Explicação:** O throughput máximo teórico de um pipeline de 5 estágios é 1 instrução por ciclo.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Diferença entre latência e throughput (Difícil)</summary>
+
+**Enunciado:** Qual a diferença entre latência e throughput no contexto de um pipeline?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+- **Latência:** Tempo que uma única instrução leva desde o início até a conclusão (5 ciclos, com ou sem pipeline).
+- **Throughput:** Número de instruções concluídas por ciclo (0.2 sem pipeline, ~1 com pipeline).
+
+**Explicação:** O pipeline não reduz a latência de uma única instrução, mas aumenta o throughput — mais instruções são concluídas no mesmo período de tempo.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — Componentes do pipeline (Difícil)</summary>
+
+**Enunciado:** Quais componentes da CPU são usados em cada estágio do pipeline?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+1. **IF:** Memória (cache), PC (Program Counter)
+2. **ID:** Decodificador, Banco de Registradores
+3. **EX:** ULA (ALU)
+4. **MEM:** Memória (cache), Controlador de Memória
+5. **WB:** Banco de Registradores
+
+**Explicação:** Cada estágio usa um componente diferente, permitindo que todos trabalhem em paralelo.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — Speedup do pipeline (Desafio)</summary>
+
+**Enunciado:** Qual é o speedup máximo teórico de um pipeline de 5 estágios? E se houver 20% de stalls?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+- **Máximo teórico:** 5x (5 estágios → 1 instrução por ciclo vs 1 a cada 5 ciclos)
+- **Com 20% de stalls:** 5 / (1 + 0.2) = 5 / 1.2 = 4.17x
+
+**Explicação:** Stalls reduzem o ganho do pipeline. Na prática, o speedup de um pipeline de 5 estágios é de cerca de 3-4x devido a conflitos.
+</details>
+</details>
+
+> O pipeline transforma a CPU de uma linha de produção onde um operário trabalha por vez em uma linha de montagem onde todos trabalham juntos. Com 5 estágios — IF, ID, EX, MEM, WB — a CPU pode executar uma instrução por ciclo, aumentando o throughput em até 5 vezes, sem reduzir a latência de cada instrução individual. O pipeline é uma das técnicas mais importantes da arquitetura de computadores. Ele permite que processadores modernos executem bilhões de instruções por segundo, aproveitando o paralelismo inerente à execução de instruções. Embora tenha limitações — conflitos que causam stalls — o ganho de desempenho é tão significativo que todos os processadores modernos usam pipelines, alguns com dezenas de estágios.

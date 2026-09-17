@@ -1,0 +1,473 @@
+# Contadores
+
+
+## 1. INTRODUÇÃO
+
+Um sistema digital precisa, constantemente, **acompanhar progressos**, **marcar passos** e **gerar sequências**. Quando um processador executa uma lista de instruções, ele precisa saber qual é a próxima. Quando um temporizador mede um intervalo, ele precisa contar os ciclos. Quando um dispositivo periférico gera um endereço de memória, ele precisa percorrer posições de forma ordenada.<br><br>
+
+Tudo isso exige uma capacidade fundamental: **contar**.<br><br>
+
+É aqui que entram os **contadores** — circuitos sequenciais especializados que, a cada pulso de clock, avançam (ou recuam) seu valor armazenado. Eles são a espinha dorsal de operações como temporização, endereçamento sequencial e divisão de frequência. Sem eles, não haveria como medir tempo, nem como o processador saber qual instrução buscar em seguida.<br><br>
+
+Nesta aula, vamos explorar como os contadores são construídos a partir dos flip-flops que já conhecemos, como funcionam os diferentes tipos (crescentes, decrescentes, com reset), e como o **Contador de Programa (PC)** — talvez o contador mais importante de todo o computador — mantém o fluxo de execução do processador.<br><br>
+
+Um contador é um circuito sequencial que:
+
+- **Incrementa** (ou decrementa) seu valor a cada pulso de clock.
+- Pode contar de **0 a (2ⁿ - 1)** (para n bits).
+- Pode ser **resetado** para um valor inicial.
+- Pode ter **carga paralela** (carregar um valor específico).
+
+Os contadores são usados em praticamente todos os sistemas digitais:
+
+- **Contador de Programa (PC)** — rastreia a próxima instrução.
+- **Temporizadores** — contam intervalos de tempo.
+- **Divisores de frequência** — reduzem a frequência do clock.
+- **Medidores de eventos** — contam ocorrências.
+- **Geradores de endereços** — sequenciam operações de memória.
+
+Nesta aula, vamos aprender como os contadores são construídos, como funcionam os diferentes tipos, e como eles são usados em sistemas computacionais.
+
+
+## 2. O Que é um Contador?
+
+### 2.1 Definição
+
+Um **Contador** é um circuito sequencial que:
+
+> **Armazena um valor binário e o incrementa (ou decrementa) em 1 a cada pulso de clock.**
+
+### 2.2 Características de um contador
+
+| Característica | Descrição |
+|----------------|-----------|
+| **n bits** | O contador tem n flip-flops, armazenando valores de 0 a 2ⁿ - 1 |
+| **Clock** | A cada pulso, o valor é atualizado |
+| **Incremento** | A maioria dos contadores incrementa (+1) |
+| **Decremento** | Alguns contadores podem decrementar (-1) |
+| **Reset** | Volta o contador para 0 |
+| **Carry** | Sinal que indica quando o contador atingiu o valor máximo |
+
+### 2.3 Analogia
+
+Pense no contador como um **hodômetro de um carro**:
+
+- Cada quilômetro percorrido (clock) incrementa o número.
+- Quando chega a 99999, volta para 00000 (overflow).
+- Você pode zerar o hodômetro (reset).
+
+
+## 3. Contador de 1 Bit (Flip-Flop T)
+
+### 3.1 O contador mais simples
+
+Um único flip-flop T pode contar de 0 a 1:
+
+- **Clock 1:** Q = 0 → 1 (toggle)
+- **Clock 2:** Q = 1 → 0 (toggle)
+
+| Clock | Q |
+|-------|---|
+| 0 | 0 |
+| 1 ↑ | 1 |
+| 2 ↑ | 0 |
+| 3 ↑ | 1 |
+
+### 3.2 Diagrama
+
+<details>
+<summary>🔧 Ver Diagrama do Contador de 1 Bit</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 250px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">CONTADOR DE 1 BIT</div>
+
+  <pre style="color: #93c5fd; font-size: 0.7rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    Clock ──┤ T │── Q (bit 0)
+            │   │
+            └───┘
+  </pre>
+
+</div>
+</details>
+
+
+## 4. Contador de 2 Bits (MOD-4)
+
+### 4.1 Construção com flip-flops T
+
+Para contar até 3 (2 bits), usamos **2 flip-flops T em cascata**:
+
+- Q₀ alterna a cada clock (toggle em T = 1).
+- Q₁ alterna quando Q₀ muda de 1 para 0 (carry).
+
+<details>
+<summary>🔧 Ver Diagrama do Contador de 2 Bits</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 350px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">CONTADOR DE 2 BITS (MOD-4)</div>
+
+  <pre style="color: #93c5fd; font-size: 0.7rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    Clock ──┤ T │── Q₀ ────────────────────┐
+            │   │                          │
+            └───┘                          │
+                                           │
+                                           └───┤ T │── Q₁
+                                               │   │
+                                               └───┘
+  </pre>
+
+</div>
+</details>
+
+### 4.2 Tabela de contagem
+
+| Clock | Q₁ | Q₀ | Valor |
+|-------|----|----|-------|
+| 0 | 0 | 0 | 0 |
+| 1 ↑ | 0 | 1 | 1 |
+| 2 ↑ | 1 | 0 | 2 |
+| 3 ↑ | 1 | 1 | 3 |
+| 4 ↑ | 0 | 0 | 0 (volta) |
+
+### 4.3 Formas de onda
+
+<details>
+<summary>🔧 Ver Formas de Onda do Contador de 2 Bits</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 450px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">FORMAS DE ONDA — CONTADOR DE 2 BITS</div>
+
+  <pre style="color: #93c5fd; font-size: 0.7rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    Clock:  _|‾‾|_|‾‾|_|‾‾|_|‾‾|_
+    Q₀:    _|‾‾‾‾|_|‾‾‾‾|_|‾‾‾‾|_
+    Q₁:    _|‾‾‾‾‾‾‾‾|_|‾‾‾‾‾‾‾‾|_
+  </pre>
+
+</div>
+</details>
+
+
+## 5. Contador de 4 Bits (MOD-16)
+
+### 5.1 Construção
+
+Para contar até 15 (4 bits), usamos **4 flip-flops T em cascata**:
+
+- Q₀ alterna a cada clock.
+- Q₁ alterna quando Q₀ = 0 → 1.
+- Q₂ alterna quando Q₁ = 0 → 1 (e Q₀ já alternou).
+- Q₃ alterna quando Q₂ = 0 → 1 (e Q₀, Q₁ já alternaram).
+
+### 5.2 Tabela de contagem (parcial)
+
+| Clock | Q₃ | Q₂ | Q₁ | Q₀ | Valor |
+|-------|----|----|----|----|-------|
+| 0 | 0 | 0 | 0 | 0 | 0 |
+| 1 | 0 | 0 | 0 | 1 | 1 |
+| 2 | 0 | 0 | 1 | 0 | 2 |
+| 3 | 0 | 0 | 1 | 1 | 3 |
+| 4 | 0 | 1 | 0 | 0 | 4 |
+| 5 | 0 | 1 | 0 | 1 | 5 |
+| 6 | 0 | 1 | 1 | 0 | 6 |
+| 7 | 0 | 1 | 1 | 1 | 7 |
+| 8 | 1 | 0 | 0 | 0 | 8 |
+| 9 | 1 | 0 | 0 | 1 | 9 |
+| 10 | 1 | 0 | 1 | 0 | 10 |
+| ... | ... | ... | ... | ... | ... |
+| 15 | 1 | 1 | 1 | 1 | 15 |
+| 16 | 0 | 0 | 0 | 0 | 0 (volta) |
+
+### 5.3 O sinal de Carry (Cout)
+
+O sinal de **carry** (ou overflow) indica quando o contador atingiu o valor máximo e está prestes a voltar para 0.
+
+**Carry = 1** quando Q₃ = Q₂ = Q₁ = Q₀ = 1.
+
+
+## 6. Contador com Reset (Zeramento)
+
+### 6.1 Por que precisamos de reset?
+
+Às vezes, precisamos **zerar** o contador antes que ele atinja o valor máximo.
+
+### 6.2 Contador com reset síncrono
+
+- O reset é **síncrono**: o contador zera na próxima borda do clock.
+
+<details>
+<summary>🔧 Ver Diagrama do Contador com Reset</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 450px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">CONTADOR COM RESET</div>
+
+  <pre style="color: #93c5fd; font-size: 0.6rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    Clock ───────────────────────────────────────┐
+                                                  │
+    Reset ─────────────────────────────────────┐   │
+                                               │   │
+    T₃ ────────┐                               │   │
+               │    ┌─────┐                    │   │
+    Q₂ ────────┼────┤     │                    │   │
+               │    │  T  │── Q₃               │   │
+    Q₁ ────────┼────┤     │                    │   │
+               │    └─────┘                    │   │
+    Q₀ ────────┤    ┌─────┐                    │   │
+               └────┤     │                    │   │
+                    │  T  │── Q₂               │   │
+                    │     │                    │   │
+                    └─────┘                    │   │
+                                               │   │
+                    ┌─────┐                    │   │
+                    │     │                    │   │
+                    │  T  │── Q₁               │   │
+                    │     │                    │   │
+                    └─────┘                    │   │
+                                               │   │
+                    ┌─────┐                    │   │
+                    │     │                    │   │
+                    │  T  │── Q₀               │   │
+                    │     │                    │   │
+                    └─────┘                    │   │
+  </pre>
+
+</div>
+</details>
+
+### 6.3 Exemplo prático
+
+**Contador de 4 bits com reset:**
+
+| Clock | Reset | Q₃Q₂Q₁Q₀ |
+|-------|-------|----------|
+| 0 | 0 | 0000 |
+| 1 ↑ | 0 | 0001 |
+| 2 ↑ | 0 | 0010 |
+| 3 ↑ | 1 | 0000 (zera no próximo clock) |
+| 4 ↑ | 1 | 0000 (mantém zero) |
+| 5 ↑ | 0 | 0001 (começa a contar de novo) |
+
+
+## 7. Contador Decrescente (Down Counter)
+
+### 7.1 O que é um contador decrescente?
+
+Um contador decrescente **decrementa** (subtrai 1) a cada clock em vez de incrementar.
+
+- Exemplo: 15 → 14 → 13 → ... → 0 → 15 → 14 → ...
+
+### 7.2 Construção
+
+Um contador decrescente usa a **negação** da saída do flip-flop anterior como entrada do próximo.
+
+<details>
+<summary>🔧 Ver Diagrama do Contador Decrescente</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 350px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">CONTADOR DECRESCENTE</div>
+
+  <pre style="color: #93c5fd; font-size: 0.65rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    Clock ──┤ T │── Q₀ ────────────────────┐
+            │   │                          │
+            └───┘                          │
+                                           │
+                                    ┌──────┴──────┐
+                               ¬Q₀ ─┤ T │── Q₁
+                                    │   │
+                                    └───┘
+  </pre>
+
+</div>
+</details>
+
+
+## 8. Contador de Programa (PC) na CPU
+
+### 8.1 Função do PC
+
+O **Contador de Programa (PC)** é um registrador especial que:
+
+- Armazena o **endereço da próxima instrução**.
+- Incrementa automaticamente após cada instrução (PC = PC + 1).
+- Pode ser **carregado** com um novo endereço (para saltos - jumps).
+
+### 8.2 O PC como contador
+
+<details>
+<summary>🔧 Ver Diagrama do PC na CPU</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 500px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">CONTADOR DE PROGRAMA (PC) NA CPU</div>
+
+  <pre style="color: #93c5fd; font-size: 0.6rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    Clock (ciclo de instrução) ──────────────────┐
+                                                  │
+                                                  ▼
+    PC + 1 ────────────────────────────────┐
+                                           │
+    Endereço de salto (jump) ──────────────┤ (MUX) ──┤ PC (Registrador) ├── Endereço para memória
+                                           │
+    Controle (jump) ───────────────────────┘
+  </pre>
+
+</div>
+</details>
+
+### 8.3 Exemplo de execução
+
+| Instrução | PC (antes) | PC (depois) |
+|-----------|------------|-------------|
+| Início | 0 | - |
+| Instrução 0 | 0 | 1 |
+| Instrução 1 | 1 | 2 |
+| Instrução 2 | 2 | 3 |
+| Jump para 10 | 3 | 10 |
+| Instrução 10 | 10 | 11 |
+
+
+## 9. Aplicações Reais dos Contadores
+
+| Aplicação | Como usa o contador |
+|-----------|---------------------|
+| **Contador de Programa (PC)** | Rastreia a próxima instrução |
+| **Temporizadores** | Conta intervalos de tempo (ex: 1 segundo) |
+| **Divisores de frequência** | Reduz a frequência do clock (ex: 1 MHz → 1 Hz) |
+| **Medidores de eventos** | Conta ocorrências (ex: clicks do mouse) |
+| **Geradores de endereços** | Sequencia operações de memória |
+| **Controles de processos** | Conta quantas vezes uma operação foi executada |
+
+
+## 10. Exercícios
+
+<details>
+<summary>📗 Exercício 1 — Contador de 1 bit (fácil)</summary>
+
+**Enunciado:** Um contador de 1 bit (flip-flop T) tem Q = 0. Qual será Q após 3 pulsos de clock?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Q = 1
+
+**Explicação:** O flip-flop T alterna a cada clock.
+- Clock 1: 0 → 1
+- Clock 2: 1 → 0
+- Clock 3: 0 → 1
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Contador de 2 bits (fácil)</summary>
+
+**Enunciado:** Um contador de 2 bits tem Q₁Q₀ = 01. Qual será o valor após 2 pulsos de clock?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Q₁Q₀ = 11
+
+**Explicação:** 01 (1) → 10 (2) → 11 (3)
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Contador de 4 bits (médio)</summary>
+
+**Enunciado:** Um contador de 4 bits tem Q₃Q₂Q₁Q₀ = 0111. Qual será o valor após 2 pulsos de clock?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Q₃Q₂Q₁Q₀ = 1001
+
+**Explicação:** 0111 (7) → 1000 (8) → 1001 (9)
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Carry (médio)</summary>
+
+**Enunciado:** Em um contador de 4 bits, quando o sinal de carry é 1?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Carry = 1 quando o contador está em 1111 (15), prestes a voltar para 0000.
+
+**Explicação:** O carry indica que o contador atingiu seu valor máximo.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Contador com Reset (médio)</summary>
+
+**Enunciado:** Um contador de 4 bits com reset está em Q = 1010. Aplicamos Reset = 1. Qual será Q após a próxima borda do clock?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Q = 0000
+
+**Explicação:** Reset força o contador a zerar.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Contador decrescente (médio)</summary>
+
+**Enunciado:** Um contador decrescente de 3 bits está em Q₂Q₁Q₀ = 100. Qual será o valor após 2 pulsos?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Q₂Q₁Q₀ = 010
+
+**Explicação:** 100 (4) → 011 (3) → 010 (2)
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — Contador de Programa (conceitual)</summary>
+
+**Enunciado:** Qual a função do Contador de Programa (PC) em uma CPU?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** O PC armazena o endereço da próxima instrução a ser executada. Ele incrementa automaticamente após cada instrução, exceto quando uma instrução de salto (jump) carrega um novo endereço.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — Divisor de frequência (desafio)</summary>
+
+**Enunciado:** Quantos flip-flops são necessários para construir um divisor de frequência que reduz um clock de 1 MHz para 1 Hz?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** 20 flip-flops
+
+**Explicação:** 1 MHz = 1.000.000 Hz. Precisamos de um contador que conte até 1.000.000. 2²⁰ = 1.048.576, que é o menor número de bits que pode contar até 1.000.000.
+
+**Cálculo:** log₂(1.000.000) ≈ 19,93 → 20 bits.
+
+</details>
+</details>
+
+
+## 11. Resumo
+
+> **"O contador é um circuito sequencial que incrementa (ou decrementa) seu valor a cada pulso de clock. Contadores de 1 bit (flip-flop T), 2 bits (MOD-4) e n bits (MOD-2ⁿ) são construídos encadeando flip-flops T. O sinal de carry indica quando o contador atinge seu valor máximo. O reset permite zerar o contador a qualquer momento. O contador decrescente decrementa em vez de incrementar. O Contador de Programa (PC) é o contador mais importante em um computador — ele rastreia a próxima instrução a ser executada. Contadores são usados em temporizadores, divisores de frequência, geradores de endereços e inúmeras outras aplicações."**

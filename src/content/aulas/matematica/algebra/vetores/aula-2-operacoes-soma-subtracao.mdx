@@ -1,0 +1,335 @@
+# OPERAÇÕES COM VETORES I
+
+**Soma, Subtração e Multiplicação por Escalar**
+
+## 1. Soma de Vetores
+
+### 1.1 Definição
+
+Sejam $\vec{u}, \vec{v} \in \mathbb{R}^n$, com:
+
+$$
+\vec{u} = (u_1, u_2, \ldots, u_n), \quad \vec{v} = (v_1, v_2, \ldots, v_n)
+$$
+
+A **soma** $\vec{u} + \vec{v}$ é definida como:
+
+$$
+\vec{u} + \vec{v} = (u_1 + v_1, u_2 + v_2, \ldots, u_n + v_n)
+$$
+
+Ou seja, a soma é **coordenada a coordenada**.
+
+**Observação:** A soma só é definida para vetores de **mesma dimensão** ($n$ igual).
+
+### 1.2 Exemplo
+
+$$
+\vec{u} = (3, -2, 5), \quad \vec{v} = (1, 4, -3)
+$$
+
+$$
+\vec{u} + \vec{v} = (3+1, -2+4, 5+(-3)) = (4, 2, 2)
+$$
+
+### 1.3 Exemplo Lúdico
+
+João tem na mochila:  
+$\vec{joão} = (3, 2, 1, 5)$ → (cadernos, livros, estojo, canetas)
+
+Maria tem na mochila:  
+$\vec{maria} = (2, 4, 1, 3)$ → (cadernos, livros, estojo, canetas)
+
+Se eles **juntarem** os materiais:
+
+$$
+\vec{joão} + \vec{maria} = (3+2, 2+4, 1+1, 5+3) = (5, 6, 2, 8)
+$$
+
+**Interpretação:** Juntos, eles têm 5 cadernos, 6 livros, 2 estojos e 8 canetas.
+
+## 2. Subtração de Vetores
+
+### 2.1 Definição
+
+A subtração $\vec{u} - \vec{v}$ é definida como:
+
+$$
+\vec{u} - \vec{v} = (u_1 - v_1, u_2 - v_2, \ldots, u_n - v_n)
+$$
+
+**Observação:** A subtração é equivalente a $\vec{u} + (-\vec{v})$, onde $-\vec{v}$ é o vetor oposto.
+
+### 2.2 Exemplo
+
+$$
+\vec{u} = (3, -2, 5), \quad \vec{v} = (1, 4, -3)
+$$
+
+$$
+\vec{u} - \vec{v} = (3-1, -2-4, 5-(-3)) = (2, -6, 8)
+$$
+
+### 2.3 Exemplo Lúdico
+
+João tem: $\vec{joão} = (3, 2, 1, 5)$  
+Maria tem: $\vec{maria} = (2, 4, 1, 3)$
+
+Quem tem mais de cada item?
+
+$$
+\vec{joão} - \vec{maria} = (3-2, 2-4, 1-1, 5-3) = (1, -2, 0, 2)
+$$
+
+**Interpretação:**  
+- João tem 1 caderno a mais que Maria.  
+- João tem 2 livros a menos que Maria (por isso o -2).  
+- Têm o mesmo número de estojos (0).  
+- João tem 2 canetas a mais que Maria.
+
+## 3. Multiplicação por Escalar
+
+### 3.1 Definição 
+
+Seja $\vec{v} \in \mathbb{R}^n$, $\vec{v} = (v_1, v_2, \ldots, v_n)$, e $c \in \mathbb{R}$ um escalar.
+
+O **produto** $c \cdot \vec{v}$ (ou $c\vec{v}$) é definido como:
+
+$$
+c\vec{v} = (c \cdot v_1, c \cdot v_2, \ldots, c \cdot v_n)
+$$
+
+Ou seja, **todas as coordenadas são multiplicadas pelo mesmo escalar**.
+
+### 3.2 Exemplo
+
+$$
+\vec{v} = (3, -2, 5), \quad c = 4
+$$
+
+$$
+4\vec{v} = (4 \cdot 3, 4 \cdot (-2), 4 \cdot 5) = (12, -8, 20)
+$$
+
+### 3.3 Exemplo Lúdico
+
+João tem: $\vec{joão} = (3, 2, 1, 5)$
+
+Se ele **dobrar** a quantidade de cada material:
+
+$$
+2 \cdot \vec{joão} = (2 \cdot 3, 2 \cdot 2, 2 \cdot 1, 2 \cdot 5) = (6, 4, 2, 10)
+$$
+
+**Interpretação:** Agora ele tem 6 cadernos, 4 livros, 2 estojos e 10 canetas.
+
+### 3.4 Caso Especial – Escalar Negativo
+
+Se $c = -1$:
+
+$$
+-1 \cdot \vec{v} = (-v_1, -v_2, \ldots, -v_n) = -\vec{v}
+$$
+
+Isso é o **vetor oposto** (inverte o sentido de todas as coordenadas).
+
+## 4. Propriedades Algébricas das Operações
+
+Sejam $\vec{u}, \vec{v}, \vec{w} \in \mathbb{R}^n$ e $c, d \in \mathbb{R}$. Valem:
+
+| Propriedade | Fórmula |
+|-------------|---------|
+| **Comutatividade** | $\vec{u} + \vec{v} = \vec{v} + \vec{u}$ |
+| **Associatividade** | $(\vec{u} + \vec{v}) + \vec{w} = \vec{u} + (\vec{v} + \vec{w})$ |
+| **Elemento Neutro** | $\vec{v} + \vec{0} = \vec{v}$, onde $\vec{0} = (0,\ldots,0)$ |
+| **Inverso Aditivo** | $\vec{v} + (-\vec{v}) = \vec{0}$ |
+| **Distributiva (escalar sobre vetores)** | $c(\vec{u} + \vec{v}) = c\vec{u} + c\vec{v}$ |
+| **Distributiva (soma de escalares)** | $(c + d)\vec{v} = c\vec{v} + d\vec{v}$ |
+| **Associatividade mista** | $c(d\vec{v}) = (cd)\vec{v}$ |
+| **Elemento Neutro da Multiplicação** | $1 \cdot \vec{v} = \vec{v}$ |
+
+## 5. Interpretação Geométrica (para $n = 2$ ou $n = 3$)
+
+### 5.1 Soma: Regra do Paralelogramo
+
+Dados $\vec{u}$ e $\vec{v}$ partindo da mesma origem, a soma $\vec{u} + \vec{v}$ é a **diagonal do paralelogramo** formado por eles.
+
+### 5.2 Subtração: Vetor Diferença
+
+$\vec{u} - \vec{v}$ é o vetor que **vai da ponta de $\vec{v}$ até a ponta de $\vec{u}$**.
+
+### 5.3 Multiplicação por Escalar
+
+- $c > 1$: alonga o vetor (mesma direção e sentido).
+- $0 < c < 1$: comprime o vetor (mesma direção e sentido).
+- $c < 0$: inverte o sentido (e altera o comprimento conforme $|c|$).
+
+## 6. Aplicação Direta na Tese (Federated Learning)
+
+### 6.1 FedAvg (Média Ponderada de Vetores)
+
+No aprendizado federado, cada cliente $i$ treina um modelo local e obtém um vetor de pesos $\vec{w}_i \in \mathbb{R}^p$.
+
+O servidor agrega os modelos calculando uma **média ponderada**:
+
+$$
+\vec{w}_{global} = \frac{1}{N} \sum_{i=1}^N \vec{w}_i
+$$
+
+Isso é uma **combinação de soma e multiplicação por escalar** ($c = 1/N$).
+
+**Portanto, a operação fundamental do FedAvg é exatamente a soma vetorial e a multiplicação por escalar!**
+
+### 6.2 Atualização de Gradientes
+
+No treinamento de redes neurais, a atualização dos pesos é:
+
+$$
+\vec{w}_{novo} = \vec{w}_{velho} - \eta \cdot \vec{g}
+$$
+
+onde:
+- $\vec{w}_{velho}$ = vetor de pesos atual
+- $\vec{g}$ = vetor gradiente
+- $\eta$ = taxa de aprendizado (escalar)
+
+Isso é uma **subtração de vetores** combinada com **multiplicação por escalar**.
+
+## 7. Resumo Estruturado
+
+| Operação | Definição Formal | Exemplo ($n=3$) |
+|----------|------------------|------------------|
+| **Soma** | $(u_i + v_i)$ | $(1,2,3)+(4,5,6) = (5,7,9)$ |
+| **Subtração** | $(u_i - v_i)$ | $(1,2,3)-(4,5,6) = (-3,-3,-3)$ |
+| **Escalar** | $(c \cdot v_i)$ | $2 \cdot (1,2,3) = (2,4,6)$ |
+
+## 8. Exercícios Propostos
+
+<details>
+<summary>📗 Exercício 1 (Operações básicas)</summary>
+
+**Enunciado:** Dados $\vec{u} = (4, -1, 2)$ e $\vec{v} = (3, 5, -2)$, calcule:
+
+a) $\vec{u} + \vec{v}$  
+b) $\vec{u} - \vec{v}$  
+c) $3\vec{u}$  
+d) $-2\vec{v}$  
+e) $2\vec{u} - \vec{v}$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $(7, 4, 0)$
+
+b) $(1, -6, 4)$
+
+c) $(12, -3, 6)$
+
+d) $(-6, -10, 4)$
+
+e) $2(4, -1, 2) - (3, 5, -2) = (8, -2, 4) - (3, 5, -2) = (5, -7, 6)$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 (Propriedades)</summary>
+
+**Enunciado:** Verifique a propriedade distributiva $c(\vec{u} + \vec{v}) = c\vec{u} + c\vec{v}$ para:
+
+$$
+\vec{u} = (1, 3), \quad \vec{v} = (2, -1), \quad c = 4
+$$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+Lado esquerdo:
+
+$4((1,3)+(2,-1)) = 4(3,2) = (12,8)$
+
+Lado direito:
+
+$4(1,3) + 4(2,-1) = (4,12) + (8,-4) = (12,8)$
+
+✓ Propriedade verificada.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 (Aplicação FedAvg)</summary>
+
+**Enunciado:** Três clientes em um sistema federado treinaram modelos locais com os seguintes vetores de pesos (em $\mathbb{R}^3$):
+
+$$
+\vec{w}_1 = (2, 4, 1), \quad \vec{w}_2 = (3, 1, 5), \quad \vec{w}_3 = (1, 2, 3)
+$$
+
+Calcule o vetor global $\vec{w}_{global} = \frac{1}{3}(\vec{w}_1 + \vec{w}_2 + \vec{w}_3)$.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+$$
+\vec{w}_1 + \vec{w}_2 + \vec{w}_3 = (2+3+1, 4+1+2, 1+5+3) = (6, 7, 9)
+$$
+
+$$
+\vec{w}_{global} = \frac{1}{3}(6, 7, 9) = \left(2, \frac{7}{3}, 3\right)
+$$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 (Interpretação geométrica)</summary>
+
+**Enunciado:** Desenhe no plano cartesiano os vetores $\vec{u} = (2, 3)$ e $\vec{v} = (4, 1)$. Em seguida, desenhe:
+
+a) $\vec{u} + \vec{v}$  
+b) $\vec{u} - \vec{v}$  
+c) $2\vec{u}$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** *(Desenho esperado: setas partindo da origem (0,0) até os pontos indicados; soma = (6,4), diferença = (-2,2), dobro = (4,6).)*
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 (Contexto lúdico)</summary>
+
+**Enunciado:** Uma lanchonete vende três produtos: hambúrguer, batata frita e refrigerante. Os preços são:
+
+$$
+\vec{p} = (12.00, 8.00, 5.00)
+$$
+
+Um cliente pede 2 hambúrgueres, 3 batatas e 1 refrigerante. Represente o pedido como um vetor $\vec{q}$ e calcule o valor total usando combinação linear (dica: multiplique o preço de cada item pela quantidade e some).
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+Pedido: $\vec{q} = (2, 3, 1)$
+
+Valor total:
+
+$2 \cdot 12 + 3 \cdot 8 + 1 \cdot 5 = 24 + 24 + 5 = 53$ reais.
+
+(Isso já é uma combinação linear, que será formalizada na Aula 5.)
+
+</details>
+</details>
+
+> *Soma, subtração e multiplicação por escalar são as operações fundamentais da Álgebra Linear. Elas aparecem em cada etapa do treinamento de modelos de Machine Learning — desde a agregação de parâmetros até a atualização de gradientes. Domine essas operações e você dominará a linguagem dos algoritmos.*

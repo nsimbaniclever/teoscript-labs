@@ -1,0 +1,370 @@
+#  Momentos e Funções Geratrizes
+
+Momentos Ordinários, Centrais, Função Geratriz de Momentos (FGM), Função Característica, Desigualdades de Markov e Chebyshev
+
+### 1. O que são Momentos de uma Variável Aleatória?
+
+Os **momentos** de uma variável aleatória são quantidades que resumem características importantes da distribuição, como centro, dispersão, assimetria e curtose. Eles são a base para a descrição completa de uma distribuição.
+
+#### 1.1. Momentos Ordinários
+
+> O **momento ordinário de ordem $k$** de uma variável aleatória $X$ é definido como:
+> $$ \mu_k' = E[X^k] $$
+
+**Interpretação:**
+- $k = 1$: $E[X]$ — a média (centro da distribuição).
+- $k = 2$: $E[X^2]$ — usado para calcular a variância.
+- $k = 3$: $E[X^3]$ — relacionado à assimetria.
+- $k = 4$: $E[X^4]$ — relacionado à curtose.
+
+**Cálculo prático:**
+- **Discreta:** $E[X^k] = \sum_{x} x^k \cdot P(X = x)$
+- **Contínua:** $E[X^k] = \int_{-\infty}^{\infty} x^k \cdot f(x) \, dx$
+
+**Exemplo 1 — Momentos ordinários:**
+
+Seja $X$ com a seguinte FP:
+
+| $x$ | 0 | 1 | 2 |
+| --- | --- | --- | --- |
+| $P(X = x)$ | 0,2 | 0,5 | 0,3 |
+
+Calcule:
+- a) $\mu_1' = E[X]$
+- b) $\mu_2' = E[X^2]$
+- c) $\mu_3' = E[X^3]$
+
+**Resolução:**
+
+a) $\mu_1' = 0 \cdot 0,2 + 1 \cdot 0,5 + 2 \cdot 0,3 = 0 + 0,5 + 0,6 = 1,1$
+
+b) $\mu_2' = 0^2 \cdot 0,2 + 1^2 \cdot 0,5 + 2^2 \cdot 0,3 = 0 + 0,5 + 1,2 = 1,7$
+
+c) $\mu_3' = 0^3 \cdot 0,2 + 1^3 \cdot 0,5 + 2^3 \cdot 0,3 = 0 + 0,5 + 2,4 = 2,9$
+
+#### 1.2. Momentos Centrais
+
+> O **momento central de ordem $k$** de uma variável aleatória $X$ é definido como:
+> $$ \mu_k = E[(X - \mu)^k] $$
+
+onde $\mu = E[X]$ é a média.
+
+**Interpretação:**
+- $k = 1$: $E[X - \mu] = 0$ (sempre).
+- $k = 2$: $E[(X - \mu)^2] = Var(X)$ — a variância.
+- $k = 3$: $E[(X - \mu)^3] / \sigma^3$ — assimetria (skewness).
+- $k = 4$: $E[(X - \mu)^4] / \sigma^4$ — curtose.
+
+**Exemplo 2 — Momentos centrais:**
+
+Usando a FP do Exemplo 1, calcule:
+- a) $\mu_2 = Var(X)$
+- b) $\mu_3 = E[(X - \mu)^3]$
+
+**Resolução:**
+
+Já temos $\mu = 1,1$.
+
+a) $\mu_2 = E[X^2] - [E[X]]^2 = 1,7 - (1,1)^2 = 1,7 - 1,21 = 0,49$
+
+b) $\mu_3 = E[(X - 1,1)^3]$
+$$ = (0 - 1,1)^3 \cdot 0,2 + (1 - 1,1)^3 \cdot 0,5 + (2 - 1,1)^3 \cdot 0,3 $$
+$$ = (-1,1)^3 \cdot 0,2 + (-0,1)^3 \cdot 0,5 + (0,9)^3 \cdot 0,3 $$
+$$ = (-1,331) \cdot 0,2 + (-0,001) \cdot 0,5 + 0,729 \cdot 0,3 $$
+$$ = -0,2662 - 0,0005 + 0,2187 = -0,048 $$
+
+### 2. Função Geratriz de Momentos (FGM)
+
+> A **Função Geratriz de Momentos** (FGM) de uma variável aleatória $X$ é definida como:
+> $$ M_X(t) = E[e^{tX}] $$
+
+**Cálculo prático:**
+- **Discreta:** $M_X(t) = \sum_{x} e^{tx} \cdot P(X = x)$
+- **Contínua:** $M_X(t) = \int_{-\infty}^{\infty} e^{tx} \cdot f(x) \, dx$
+
+**Propriedades fundamentais:**
+
+| Propriedade | Fórmula |
+| --- | --- |
+| **1. Geração dos momentos** | $\mu_k' = M_X^{(k)}(0) = \left. \frac{d^k}{dt^k} M_X(t) \right|_{t=0}$ |
+| **2. Transformação linear** | $M_{aX+b}(t) = e^{bt} \cdot M_X(at)$ |
+| **3. Soma de variáveis independentes** | $M_{X+Y}(t) = M_X(t) \cdot M_Y(t)$ |
+| **4. Unicidade** | Se $M_X(t) = M_Y(t)$ para todo $t$ em um intervalo, então $X$ e $Y$ têm a mesma distribuição. |
+
+**Exemplo 3 — FGM da Bernoulli:**
+
+Seja $X \sim Bernoulli(p)$, com $P(X = 1) = p$ e $P(X = 0) = 1 - p$.
+
+**Resolução:**
+$$ M_X(t) = E[e^{tX}] = e^{t \cdot 1} \cdot p + e^{t \cdot 0} \cdot (1-p) = p e^t + (1-p) $$
+
+**Verificação:**
+- $M_X'(t) = p e^t$
+- $E[X] = M_X'(0) = p$ ✅
+- $M_X''(t) = p e^t$
+- $E[X^2] = M_X''(0) = p$ ✅
+
+**Exemple 4 — FGM da Binomial:**
+
+Seja $X \sim Binomial(n, p)$.
+
+**Resolução:**
+- Sabemos que $X = \sum_{i=1}^n Y_i$, onde $Y_i \sim Bernoulli(p)$ independentes.
+- $M_Y(t) = (1-p) + p e^t$
+- $M_X(t) = [M_Y(t)]^n = [(1-p) + p e^t]^n$
+
+**Verificação:**
+- $E[X] = M_X'(0) = n \cdot [(1-p) + p e^t]^{n-1} \cdot p e^t \big|_{t=0} = n p$ ✅
+- $Var(X) = M_X''(0) - [M_X'(0)]^2 = n p (1-p)$ ✅
+
+**Exemplo 5 — FGM da Exponencial:**
+
+Seja $X \sim Exponencial(\lambda)$, com $f(x) = \lambda e^{-\lambda x}$, $x \geq 0$.
+
+**Resolução:**
+$$ M_X(t) = \int_{0}^{\infty} e^{tx} \lambda e^{-\lambda x} dx = \lambda \int_{0}^{\infty} e^{-(\lambda - t)x} dx = \frac{\lambda}{\lambda - t}, \quad t < \lambda $$
+
+**Verificação:**
+- $E[X] = M_X'(0) = \left. \frac{\lambda}{(\lambda - t)^2} \right|_{0} = \frac{1}{\lambda}$ ✅
+- $E[X^2] = M_X''(0) = \left. \frac{2\lambda}{(\lambda - t)^3} \right|_{0} = \frac{2}{\lambda^2}$
+- $Var(X) = 2/\lambda^2 - 1/\lambda^2 = 1/\lambda^2$ ✅
+
+### 3. Função Característica
+
+> A **Função Característica** de uma variável aleatória $X$ é definida como:
+> $$ \varphi_X(t) = E[e^{itX}] $$
+> onde $i = \sqrt{-1}$.
+
+**Vantagens sobre a FGM:**
+1. **Sempre existe** — não depende de convergência de integrais.
+2. **Sempre é limitada:** $|\varphi_X(t)| \leq 1$.
+3. **Determina unicamente a distribuição** — inversão via transformada de Fourier.
+4. **Simplifica a prova do Teorema Central do Limite.**
+
+**Exemplo 6 — Função Característica da Bernoulli:**
+$$ \varphi_X(t) = E[e^{itX}] = p e^{it} + (1-p) $$
+
+**Exemplo 7 — Função Característica da Normal:**
+$$ \varphi_X(t) = e^{i\mu t - \frac{\sigma^2 t^2}{2}} $$
+
+### 4. Desigualdades de Markov e Chebyshev
+
+Essas desigualdades são **ferramentas fundamentais** para estimar probabilidades sem conhecer a distribuição completa.
+
+#### 4.1. Desigualdade de Markov
+
+> Para qualquer variável aleatória $X \geq 0$ e qualquer $a > 0$:
+> $$ P(X \geq a) \leq \frac{E[X]}{a} $$
+
+**Interpretação:** A probabilidade de $X$ ser maior ou igual a $a$ é limitada pela média dividida por $a$. É uma desigualdade **geral**, mas muitas vezes é muito **fraca** (pouco precisa).
+
+**Exemplo 8 — Markov:**
+
+O número médio de chamadas em um call center é 10 por hora. Qual a probabilidade de haver mais de 30 chamadas em uma hora?
+
+**Resolução:**
+$$ P(X \geq 30) \leq \frac{E[X]}{30} = \frac{10}{30} = \frac{1}{3} \approx 33,3\% $$
+
+**Interpretação:** A probabilidade é **no máximo** 33,3%. Na prática, pode ser bem menor.
+
+#### 4.2. Desigualdade de Chebyshev
+
+> Para qualquer variável aleatória $X$ com $E[X] = \mu$ e $Var(X) = \sigma^2$, e para qualquer $k > 0$:
+> $$ P(|X - \mu| \geq k\sigma) \leq \frac{1}{k^2} $$
+
+**Forma equivalente:** Para qualquer $\varepsilon > 0$:
+$$ P(|X - \mu| \geq \varepsilon) \leq \frac{\sigma^2}{\varepsilon^2} $$
+
+**Interpretação:** A probabilidade de $X$ se afastar da média por mais de $k$ desvios padrão é **no máximo** $1/k^2$. É uma desigualdade mais precisa que Markov, pois usa a variância.
+
+**Exemplo 9 — Chebyshev:**
+
+A média das notas de uma turma é 7,0 e o desvio padrão é 1,5. Qual a probabilidade de um aluno ter nota entre 4,0 e 10,0?
+
+**Resolução:**
+- $\mu = 7$, $\sigma = 1,5$
+- Queremos $P(|X - 7| < 3)$
+- $\varepsilon = 3$
+- $P(|X - 7| \geq 3) \leq \frac{1,5^2}{3^2} = \frac{2,25}{9} = 0,25$
+- $P(|X - 7| < 3) \geq 1 - 0,25 = 0,75$
+
+**Interpretação:** Pelo menos 75% dos alunos têm nota entre 4,0 e 10,0.
+
+**Exemplo 10 — Chebyshev com $k$ desvios:**
+
+Quantos desvios padrão são necessários para garantir que a probabilidade de $X$ estar fora do intervalo seja no máximo 5%?
+
+**Resolução:**
+- Queremos $P(|X - \mu| \geq k\sigma) \leq 0,05$
+- $1/k^2 \leq 0,05 \Rightarrow k^2 \geq 20 \Rightarrow k \geq \sqrt{20} \approx 4,47$
+
+**Interpretação:** Com cerca de 4,47 desvios padrão, garantimos que pelo menos 95% dos dados estão dentro do intervalo.
+
+### 5. Resumo — Momentos e Funções Geratrizes
+
+| Conceito | Definição | Propriedade principal |
+| --- | --- | --- |
+| **Momento ordinário $\mu_k'$** | $E[X^k]$ | $\mu_1' = E[X]$, $\mu_2' = E[X^2]$ |
+| **Momento central $\mu_k$** | $E[(X - \mu)^k]$ | $\mu_2 = Var(X)$ |
+| **FGM $M_X(t)$** | $E[e^{tX}]$ | $E[X^k] = M_X^{(k)}(0)$ |
+| **Função Característica $\varphi_X(t)$** | $E[e^{itX}]$ | Determina unicamente a distribuição |
+| **Desigualdade de Markov** | $P(X \geq a) \leq E[X]/a$ | Para $X \geq 0$ |
+| **Desigualdade de Chebyshev** | $P(|X-\mu| \geq \varepsilon) \leq \sigma^2/\varepsilon^2$ | Usa variância |
+
+## 📝 EXERCÍCIOS RESOLVIDOS
+
+<details>
+<summary>📗 Exercício 1 — Momentos</summary>
+
+**Enunciado:** Seja $X$ com a seguinte FP:
+
+| $x$ | -1 | 0 | 1 | 2 |
+| --- | --- | --- | --- | --- |
+| $P(X = x)$ | 0,2 | 0,3 | 0,4 | 0,1 |
+
+Calcule:
+a) $E[X]$
+b) $E[X^2]$
+c) $E[X^3]$
+d) $Var(X)$
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**a) $E[X]$:**
+$$ E[X] = (-1) \cdot 0,2 + 0 \cdot 0,3 + 1 \cdot 0,4 + 2 \cdot 0,1 = -0,2 + 0 + 0,4 + 0,2 = 0,4 $$
+
+**b) $E[X^2]$:**
+$$ E[X^2] = 1 \cdot 0,2 + 0 \cdot 0,3 + 1 \cdot 0,4 + 4 \cdot 0,1 = 0,2 + 0 + 0,4 + 0,4 = 1,0 $$
+
+**c) $E[X^3]$:**
+$$ E[X^3] = (-1) \cdot 0,2 + 0 \cdot 0,3 + 1 \cdot 0,4 + 8 \cdot 0,1 = -0,2 + 0 + 0,4 + 0,8 = 1,0 $$
+
+**d) $Var(X)$:**
+$$ Var(X) = E[X^2] - [E[X]]^2 = 1,0 - (0,4)^2 = 1,0 - 0,16 = 0,84 $$
+
+**Respostas:** a) 0,4; b) 1,0; c) 1,0; d) 0,84.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — FGM da Uniforme Discreta</summary>
+
+**Enunciado:** Seja $X$ com distribuição uniforme discreta nos valores $\{1, 2, 3, 4, 5\}$. Encontre $M_X(t)$ e use-a para calcular $E[X]$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**FGM:**
+$$ M_X(t) = \frac{1}{5} \sum_{x=1}^{5} e^{tx} = \frac{1}{5} (e^t + e^{2t} + e^{3t} + e^{4t} + e^{5t}) $$
+
+**Cálculo de $E[X]$:**
+$$ M_X'(t) = \frac{1}{5} (e^t + 2e^{2t} + 3e^{3t} + 4e^{4t} + 5e^{5t}) $$
+$$ E[X] = M_X'(0) = \frac{1}{5} (1 + 2 + 3 + 4 + 5) = \frac{15}{5} = 3 $$
+
+**Resposta:** $M_X(t) = \frac{1}{5} \sum_{x=1}^{5} e^{tx}$; $E[X] = 3$.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — FGM da Normal</summary>
+
+**Enunciado:** A FGM da distribuição Normal $N(\mu, \sigma^2)$ é $M_X(t) = e^{\mu t + \sigma^2 t^2/2}$. Use-a para encontrar:
+a) $E[X]$
+b) $Var(X)$
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**a) $E[X] = M_X'(0)$:**
+$$ M_X'(t) = e^{\mu t + \sigma^2 t^2/2} \cdot (\mu + \sigma^2 t) $$
+$$ E[X] = M_X'(0) = e^{0} \cdot (\mu + 0) = \mu $$
+
+**b) $E[X^2] = M_X''(0)$:**
+$$ M_X''(t) = e^{\mu t + \sigma^2 t^2/2} \cdot (\mu + \sigma^2 t)^2 + e^{\mu t + \sigma^2 t^2/2} \cdot \sigma^2 $$
+$$ E[X^2] = M_X''(0) = \mu^2 + \sigma^2 $$
+$$ Var(X) = E[X^2] - [E[X]]^2 = (\mu^2 + \sigma^2) - \mu^2 = \sigma^2 $$
+
+**Respostas:** a) $\mu$; b) $\sigma^2$.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Markov</summary>
+
+**Enunciado:** O consumo médio de energia de uma máquina é de 10 kWh por hora. Use a desigualdade de Markov para limitar a probabilidade de a máquina consumir mais de 25 kWh em uma hora.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$$ P(X \geq 25) \leq \frac{E[X]}{25} = \frac{10}{25} = 0,4 $$
+
+**Resposta:** A probabilidade é **no máximo 40%**.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Chebyshev</summary>
+
+**Enunciado:** A média de vida de uma lâmpada é 1.000 horas e o desvio padrão é 50 horas. Use a desigualdade de Chebyshev para estimar a probabilidade de uma lâmpada durar entre 900 e 1.100 horas.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+- $\mu = 1000$, $\sigma = 50$
+- Queremos $P(900 < X < 1100) = P(|X - 1000| < 100)$
+- $\varepsilon = 100$
+- $P(|X - 1000| \geq 100) \leq \frac{50^2}{100^2} = \frac{2500}{10000} = 0,25$
+- $P(900 < X < 1100) \geq 1 - 0,25 = 0,75$
+
+**Resposta:** Pelo menos 75% das lâmpadas duram entre 900 e 1.100 horas.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Chebyshev com $k$ desvios</summary>
+
+**Enunciado:** Quantos desvios padrão são necessários para garantir que pelo menos 90% dos dados estejam dentro do intervalo?
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$$ P(|X - \mu| < k\sigma) \geq 1 - \frac{1}{k^2} \geq 0,90 $$
+$$ \frac{1}{k^2} \leq 0,10 \Rightarrow k^2 \geq 10 \Rightarrow k \geq \sqrt{10} \approx 3,16 $$
+
+**Resposta:** Cerca de 3,16 desvios padrão.
+
+</details>
+</details>
+
+## 🎯 DESAFIO FINAL
+
+**Enunciado:** Seja $X$ uma variável aleatória com $E[X] = 5$ e $Var(X) = 2$.
+
+a) Use a desigualdade de Chebyshev para estimar $P(|X - 5| \geq 3)$.
+b) Use a desigualdade de Markov para estimar $P(X \geq 8)$ (supondo $X \geq 0$).
+c) Compare os dois resultados e discuta qual é mais preciso.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**a) Chebyshev:**
+$$ P(|X - 5| \geq 3) \leq \frac{2}{3^2} = \frac{2}{9} \approx 0,222 $$
+
+**b) Markov:**
+$$ P(X \geq 8) \leq \frac{E[X]}{8} = \frac{5}{8} = 0,625 $$
+
+**c) Comparação:**
+- Chebyshev: $P \leq 22,2\%$ (mais preciso, pois usa variância).
+- Markov: $P \leq 62,5\%$ (menos preciso, pois só usa média).
+
+**Conclusão:** Chebyshev é mais preciso porque usa informação da variância. Markov é mais geral, mas mais fraco.
+
+</details>
+
+> *Os momentos e as funções geratrizes são ferramentas poderosas para descrever distribuições e extrair informações como média, variância e assimetria. As desigualdades de Markov e Chebyshev permitem fazer afirmações sobre probabilidades mesmo sem conhecer a distribuição completa.*

@@ -1,0 +1,327 @@
+# REGRAS DE DERIVAÇÃO `parte II`
+
+## 1. Regras de Derivação Avançadas
+
+### 1.1 Regra do Produto
+
+Se $f(x) = u(x) \cdot v(x)$, onde $u$ e $v$ são funções diferenciáveis, então:
+
+$$
+f'(x) = u'(x) \cdot v(x) + u(x) \cdot v'(x)
+$$
+
+**Memorização:** "A derivada do primeiro vezes o segundo, mais o primeiro vezes a derivada do segundo."
+
+### 1.2 Regra do Quociente
+
+Se $f(x) = \frac{u(x)}{v(x)}$, onde $u$ e $v$ são funções diferenciáveis e $v(x) \neq 0$, então:
+
+$$
+f'(x) = \frac{u'(x) \cdot v(x) - u(x) \cdot v'(x)}{[v(x)]^2}
+$$
+
+**Memorização:** "A derivada do numerador vezes o denominador, menos o numerador vezes a derivada do denominador, tudo sobre o denominador ao quadrado."
+
+## 2. Exemplos Acadêmicos Passo a Passo
+
+### 2.1 Exemplo 1: Regra do Produto
+
+$$
+f(x) = x^2 \cdot \sin(x)
+$$
+
+**Passo 1:** Identificar $u(x) = x^2$ e $v(x) = \sin(x)$.
+
+**Passo 2:** Calcular as derivadas:
+$$
+u'(x) = 2x, \quad v'(x) = \cos(x)
+$$
+
+**Passo 3:** Aplicar a regra do produto:
+$$
+f'(x) = u'(x)v(x) + u(x)v'(x) = 2x \cdot \sin(x) + x^2 \cdot \cos(x)
+$$
+
+**Resultado:** $f'(x) = 2x\sin(x) + x^2\cos(x)$
+
+### 2.2 Exemplo 2: Regra do Quociente
+
+$$
+f(x) = \frac{x^2 + 1}{x - 1}
+$$
+
+**Passo 1:** Identificar $u(x) = x^2 + 1$ e $v(x) = x - 1$.
+
+**Passo 2:** Calcular as derivadas:
+$$
+u'(x) = 2x, \quad v'(x) = 1
+$$
+
+**Passo 3:** Aplicar a regra do quociente:
+$$
+f'(x) = \frac{2x \cdot (x - 1) - (x^2 + 1) \cdot 1}{(x - 1)^2}
+$$
+
+**Passo 4:** Simplificar:
+$$
+f'(x) = \frac{2x^2 - 2x - x^2 - 1}{(x - 1)^2} = \frac{x^2 - 2x - 1}{(x - 1)^2}
+$$
+
+**Resultado:** $f'(x) = \frac{x^2 - 2x - 1}{(x - 1)^2}$
+
+### 2.3 Exemplo 3: Produto com Mais de Dois Fatores
+
+$$
+f(x) = x \cdot e^x \cdot \sin(x)
+$$
+
+**Passo 1:** Aplicar a regra do produto duas vezes ou usar a versão estendida:
+
+$$
+f'(x) = u'vw + uv'w + uvw'
+$$
+
+Onde $u = x, v = e^x, w = \sin(x)$.
+
+**Passo 2:** Calcular as derivadas:
+$$
+u' = 1, \quad v' = e^x, \quad w' = \cos(x)
+$$
+
+**Passo 3:** Aplicar:
+$$
+f'(x) = 1 \cdot e^x \cdot \sin(x) + x \cdot e^x \cdot \sin(x) + x \cdot e^x \cdot \cos(x)
+$$
+
+**Resultado:** $f'(x) = e^x\sin(x) + xe^x\sin(x) + xe^x\cos(x)$
+
+## 3. Exemplos Lúdicos Aprimorados
+
+### 🍔 EXEMPLO 1 – A LANCHONETE (RECEITA × CUSTO)
+
+A lanchonete tem receita e custo como funções do número de sanduíches $x$:
+
+**Receita:** $R(x) = 10x \cdot \ln(x + 1)$ (preço varia com a demanda)
+
+**Custo:** $C(x) = x^2 + 5x$
+
+**Lucro:** $L(x) = R(x) - C(x)$
+
+**Derivada da receita (regra do produto):**
+$$
+R'(x) = 10\ln(x+1) + 10x \cdot \frac{1}{x+1} = 10\ln(x+1) + \frac{10x}{x+1}
+$$
+
+**Interpretação:** A receita marginal é a taxa de variação da receita com a quantidade vendida.
+
+### 🧃 EXEMPLO 2 – A CANTINA (EFICIÊNCIA DE PRODUÇÃO)
+
+A cantina tem uma função de eficiência:
+$$
+E(x) = \frac{x^2}{x + 1}
+$$
+
+**Derivada (regra do quociente):**
+$$
+E'(x) = \frac{2x(x+1) - x^2(1)}{(x+1)^2} = \frac{2x^2 + 2x - x^2}{(x+1)^2} = \frac{x^2 + 2x}{(x+1)^2}
+$$
+
+**Interpretação:** A eficiência marginal indica o ganho de eficiência ao aumentar a produção.
+
+## 4. Aplicação na Tese: Backpropagation
+
+### 4.1 Regra do Produto no Backpropagation
+
+Em redes neurais, a função de perda é uma composição de muitas funções. A **regra do produto** aparece quando calculamos derivadas de produtos de ativações.
+
+**Exemplo:** Se uma camada tem saída $a = \sigma(Wx + b)$, e a perda é $L = \frac{1}{2}(a - y)^2$, a derivada em relação a $W$ envolve o produto de várias derivadas (regra da cadeia).
+
+### 4.2 Regra do Quociente em Funções de Ativação
+
+A função **tangente hiperbólica** (tanh) é usada como ativação:
+$$
+\tanh(x) = \frac{e^x - e^{-x}}{e^x + e^{-x}}
+$$
+
+Sua derivada (regra do quociente) é:
+$$
+\frac{d}{dx}\tanh(x) = 1 - \tanh^2(x)
+$$
+
+## 5. Exercícios Propostos (Manuais)
+
+<details>
+<summary>📗 Exercício 1 (Regra do Produto)</summary>
+
+**Enunciado:** Calcule a derivada das seguintes funções:
+
+a) $f(x) = x^3 \ln(x)$
+
+b) $g(x) = e^x \sin(x)$
+
+c) $h(x) = x^2 e^x \cos(x)$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $f'(x) = 3x^2\ln(x) + x^3 \cdot \frac{1}{x} = 3x^2\ln(x) + x^2$
+
+b) $g'(x) = e^x\sin(x) + e^x\cos(x) = e^x(\sin(x) + \cos(x))$
+
+c) $h'(x) = 2x e^x\cos(x) + x^2 e^x\cos(x) - x^2 e^x\sin(x)$
+$$
+h'(x) = e^x[2x\cos(x) + x^2\cos(x) - x^2\sin(x)]
+$$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 (Regra do Quociente)</summary>
+
+**Enunciado:** Calcule a derivada das seguintes funções:
+
+a) $f(x) = \frac{x}{x+1}$
+
+b) $g(x) = \frac{\sin(x)}{x}$
+
+c) $h(x) = \frac{e^x}{x^2 + 1}$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $f'(x) = \frac{1 \cdot (x+1) - x \cdot 1}{(x+1)^2} = \frac{1}{(x+1)^2}$
+
+b) $g'(x) = \frac{\cos(x) \cdot x - \sin(x) \cdot 1}{x^2} = \frac{x\cos(x) - \sin(x)}{x^2}$
+
+c) $h'(x) = \frac{e^x(x^2+1) - e^x(2x)}{(x^2+1)^2} = \frac{e^x(x^2 - 2x + 1)}{(x^2+1)^2} = \frac{e^x(x-1)^2}{(x^2+1)^2}$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 (Combinação de Regras)</summary>
+
+**Enunciado:** Calcule a derivada de:
+
+a) $f(x) = \frac{x^2 e^x}{\sin(x)}$
+
+b) $g(x) = \frac{\ln(x)}{\sqrt{x}}$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $f'(x) = \frac{(2x e^x + x^2 e^x)\sin(x) - x^2 e^x\cos(x)}{\sin^2(x)}$
+
+b) $g'(x) = \frac{\frac{1}{x}\sqrt{x} - \ln(x)\frac{1}{2\sqrt{x}}}{x} = \frac{\frac{1}{\sqrt{x}} - \frac{\ln(x)}{2\sqrt{x}}}{x} = \frac{2 - \ln(x)}{2x\sqrt{x}}$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 (Aplicação – Lucro)</summary>
+
+**Enunciado:** Uma empresa tem receita $R(x) = 100x - x^2$ e custo $C(x) = x^2 + 20x + 100$.
+
+a) Calcule a função lucro $L(x)$.
+
+b) Calcule $L'(x)$.
+
+c) Onde o lucro é máximo?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $L(x) = R(x) - C(x) = (100x - x^2) - (x^2 + 20x + 100) = -2x^2 + 80x - 100$
+
+b) $L'(x) = -4x + 80$
+
+c) $L'(x) = 0 \Rightarrow -4x + 80 = 0 \Rightarrow x = 20$
+
+O lucro máximo ocorre em $x = 20$.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 (Aplicação – ML)</summary>
+
+**Enunciado:** Uma rede neural tem uma ativação sigmoide $\sigma(x) = \frac{1}{1 + e^{-x}}$. A derivada da sigmoide é $\sigma'(x) = \sigma(x)(1 - \sigma(x))$.
+
+**Desafio:** Usando a regra do quociente, prove que $\sigma'(x) = \sigma(x)(1 - \sigma(x))$.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+$$
+\sigma(x) = \frac{1}{1 + e^{-x}}
+$$
+
+Seja $u(x) = 1$ e $v(x) = 1 + e^{-x}$.
+
+$u'(x) = 0$, $v'(x) = -e^{-x}$
+
+$$
+\sigma'(x) = \frac{0 \cdot (1 + e^{-x}) - 1 \cdot (-e^{-x})}{(1 + e^{-x})^2} = \frac{e^{-x}}{(1 + e^{-x})^2}
+$$
+
+Mas $\sigma(x) = \frac{1}{1 + e^{-x}}$, $1 - \sigma(x) = \frac{e^{-x}}{1 + e^{-x}}$
+
+Logo:
+$$
+\sigma(x)(1 - \sigma(x)) = \frac{1}{1 + e^{-x}} \cdot \frac{e^{-x}}{1 + e^{-x}} = \frac{e^{-x}}{(1 + e^{-x})^2} = \sigma'(x) ✓
+$$
+
+</details>
+</details>
+
+## 6. 💻 EXERCÍCIO COMPUTACIONAL
+
+<details>
+<summary>🐍 Ver código (Python/SymPy)</summary>
+
+```python
+import sympy as sp
+
+x = sp.Symbol('x')
+
+# Regra do produto
+f1 = x**3 * sp.log(x)
+print(f"f'(x) = {sp.diff(f1, x)}")
+
+f2 = sp.exp(x) * sp.sin(x)
+print(f"f'(x) = {sp.diff(f2, x)}")
+
+# Regra do quociente
+f3 = x / (x + 1)
+print(f"f'(x) = {sp.diff(f3, x)}")
+
+f4 = sp.sin(x) / x
+print(f"f'(x) = {sp.diff(f4, x)}")
+
+# Combinação
+f5 = x**2 * sp.exp(x) / sp.sin(x)
+print(f"f'(x) = {sp.diff(f5, x)}")
+
+# Derivada numérica
+def derivada_numerica(f, a, h=1e-5):
+    return (f(a + h) - f(a)) / h
+
+import numpy as np
+f_num = lambda x: x**2 * np.sin(x)
+print(f"f'(1) numérica: {derivada_numerica(f_num, 1)}")
+```
+
+</details>
+
+> *As regras do produto e do quociente são ferramentas essenciais para derivar funções mais complexas. Elas aparecem em: otimização de funções de custo, backpropagation em redes neurais e cálculo de gradientes em Machine Learning. Dominar essas regras é fundamental para entender como os modelos aprendem.*

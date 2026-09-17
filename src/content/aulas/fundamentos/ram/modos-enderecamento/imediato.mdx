@@ -1,0 +1,355 @@
+# ENDEREÇAMENTO IMEDIATO
+
+## 1. INTRODUÇÃO
+
+Nas aulas anteriores, estudamos as instruções que a CPU executa: aritméticas, lógicas, de transferência e de desvio. Vimos como a CPU soma, subtrai, compara, carrega da memória e salta para diferentes partes do código. Mas há uma pergunta fundamental: **como a CPU sabe onde estão os dados que precisa processar?**<br><br>
+
+A resposta está nos **modos de endereçamento**. Cada instrução precisa especificar de onde vêm os dados (operandos) e para onde vão os resultados. O modo de endereçamento define exatamente como a CPU interpreta os operandos da instrução.<br><br>
+
+O primeiro e mais simples modo de endereçamento é o **endereçamento imediato**. Neste modo, o valor do operando é fornecido **diretamente na própria instrução**, como uma constante literal. É o modo mais rápido porque a CPU não precisa buscar o dado em lugar nenhum — ele já está na instrução.<br><br>
+
+Imagine que você está cozinhando e uma receita diz "adicione 3 colheres de sal". O número 3 está escrito na receita (instrução) — você não precisa ir buscar em outro lugar. Esse é o endereçamento imediato.<br><br>
+
+Nesta aula, vamos estudar o endereçamento imediato: o que é, como funciona, quando é usado, e quais são suas vantagens e limitações.
+
+## 2. O QUE É ENDEREÇAMENTO IMEDIATO?
+
+### 2.1 Definição
+
+> "Endereçamento imediato é um modo onde o operando é um valor literal (constante) incluído na própria instrução, sendo acessado diretamente sem necessidade de buscar o dado na memória ou em registradores."
+
+### 2.2 Características principais
+
+| Característica | Descrição |
+|---------|----------|
+| **Onde está o dado** | Dentro da própria instrução |
+| **Velocidade** | A mais rápida (acesso imediato) |
+| **Uso** | Constantes, valores fixos, inicializações |
+| **Limitação** | Valores limitados pelo tamanho do campo imediato da instrução |
+
+### 2.3 Sintaxe
+
+Em Assembly, valores imediatos são geralmente precedidos por `#`:
+
+| Arquitetura | Sintaxe | Exemplo |
+|---------|---------|---------|
+| **ARM** | `#valor` | `ADD R1, R2, #5` |
+| **x86** | `valor` | `ADD EAX, 5` |
+| **MIPS** | `#valor` | `addi $t0, $t1, 5` |
+
+## 3. COMO FUNCIONA O ENDEREÇAMENTO IMEDIATO?
+
+### 3.1 Estrutura da instrução
+
+Uma instrução com endereçamento imediato contém:
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+[CÓDIGO DA OPERAÇÃO] [REGISTRADOR DESTINO] [REGISTRADOR FONTE] [VALOR IMEDIATO]
+</pre>
+
+**Exemplo (ARM):** `ADD R1, R2, #5`
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+ADD    R1,    R2,    #5
+Opcode Destino Fonte  Imediato
+</pre>
+
+### 3.2 Como a CPU executa
+
+1. A CPU busca a instrução da memória.
+2. A CPU decodifica a instrução.
+3. A CPU extrai o valor imediato da instrução.
+4. A CPU executa a operação usando o valor imediato.
+5. **Não há acesso à memória ou a registradores para buscar o operando.**
+
+### 3.3 Diagrama: Endereçamento Imediato
+
+<details>
+<summary> **Fluxo do endereçamento imediato**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+┌─────────────────────────────────────────────────────────────┐
+│                                                             │
+│   Instrução na memória:                                     │
+│   ┌─────────────────────────────────────────────────────┐  │
+│   │  ADD  │  R1  │  R2  │  #5  │                       │  │
+│   └─────────────────────────────────────────────────────┘  │
+│                          │                                  │
+│                          ▼                                  │
+│   ┌─────────────────────────────────────────────────────┐  │
+│   │  A CPU lê o valor imediato diretamente da instrução │  │
+│   │                                                      │  │
+│   │  R1 = R2 + 5                                        │  │
+│   │  (5 é o valor imediato)                             │  │
+│   └─────────────────────────────────────────────────────┘  │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+    </pre>
+</details>
+
+### 3.4 Exemplo prático
+
+**Instrução:** `ADD R1, R2, #10`
+
+**Antes:** R2 = 5
+**Depois:** R1 = 5 + 10 = 15
+
+O valor 10 foi retirado diretamente da instrução.
+
+## 4. EXEMPLOS DE ENDEREÇAMENTO IMEDIATO
+
+### 4.1 Inicialização de registradores
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+MOV R1, #0        ; R1 = 0
+MOV R2, #100      ; R2 = 100
+MOV R3, #0xFF     ; R3 = 255 (em hexadecimal)
+</pre>
+
+### 4.2 Operações aritméticas com constantes
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+ADD R1, R1, #1    ; R1 = R1 + 1 (incremento)
+SUB R2, R2, #5    ; R2 = R2 - 5
+MUL R3, R3, #2    ; R3 = R3 × 2
+</pre>
+
+### 4.3 Máscaras lógicas
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+AND R1, R1, #0x0F  ; R1 = R1 & 15 (mantém só os 4 bits inferiores)
+OR R2, R2, #0x80   ; R2 = R2 | 128 (ativa o bit 7)
+XOR R3, R3, #0xFF  ; R3 = R3 ^ 255 (inverte todos os bits)
+</pre>
+
+### 4.4 Comparações
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+CMP R1, #10        ; Compara R1 com 10
+CMP R2, #0         ; Compara R2 com 0
+</pre>
+
+### 4.5 Deslocamentos
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+LSL R1, R2, #3     ; R1 = R2 << 3 (multiplica por 8)
+LSR R3, R4, #2     ; R3 = R4 >> 2 (divide por 4)
+</pre>
+
+## 5. LIMITAÇÕES DO ENDEREÇAMENTO IMEDIATO
+
+### 5.1 Tamanho limitado do campo imediato
+
+O campo imediato na instrução tem um número fixo de bits. Isso limita o tamanho do valor que pode ser usado.
+
+| Arquitetura | Tamanho do imediato | Valor máximo |
+|---------|---------|---------|
+| **ARM (32 bits)** | 8-12 bits | 0-4095 |
+| **x86 (32 bits)** | 8-32 bits | 0-4.294.967.295 |
+| **MIPS (32 bits)** | 16 bits | 0-65.535 |
+
+### 5.2 Exemplo: ARM e o campo imediato de 8 bits
+
+Em ARM, o campo imediato tem 8 bits (0-255), mas com rotação para valores maiores.
+
+**Valores imediatos válidos em ARM:**
+- `#0` a `#255` (diretamente)
+- `#256` a `#4095` (através de rotação)
+- Nem todos os valores entre 256 e 4095 são válidos.
+
+### 5.3 Como contornar a limitação
+
+Para valores maiores que o campo imediato permite, é necessário usar outras técnicas:
+
+1. **Carregar de uma constante na memória:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+LDR R1, =0x12345678   ; Carrega uma constante grande da memória
+</pre>
+
+2. **Carregar em duas etapas:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+MOV R1, #0x1234       ; Parte baixa
+LSL R1, R1, #16       ; Desloca para cima
+ADD R1, R1, #0x5678   ; Adiciona a parte baixa
+</pre>
+
+## 6. VANTAGENS DO ENDEREÇAMENTO IMEDIATO
+
+### 6.1 Velocidade
+
+O endereçamento imediato é o mais rápido porque:
+- **Não acessa a memória** (como load/store)
+- **Não acessa registradores** para buscar o operando (como registro)
+- O valor está **dentro da instrução** que já foi buscada
+
+### 6.2 Simplicidade
+
+Não há necessidade de calcular endereços ou acessar outras estruturas. A CPU simplesmente extrai o valor da instrução.
+
+### 6.3 Eficiência de código
+
+Muitas operações usam constantes pequenas:
+- Incrementar (`ADD R1, R1, #1`)
+- Zerar (`MOV R1, #0`)
+- Comparar (`CMP R1, #10`)
+- Máscaras (`AND R1, R1, #0xFF`)
+
+## 7. APLICAÇÕES REAIS
+
+| Aplicação | Como usa endereçamento imediato |
+|---------|----------|
+| **Contadores de loop** | `ADD R1, R1, #1` (incremento) |
+| **Comparações** | `CMP R1, #10` (comparar com constante) |
+| **Inicialização** | `MOV R1, #0` (zerar registrador) |
+| **Máscaras** | `AND R1, R1, #0x0F` (extrair bits) |
+| **Deslocamentos** | `LSL R1, R2, #3` (multiplicar por 8) |
+| **Acesso a periféricos** | Configurar bits com `OR R1, R1, #0x01` |
+
+**Exemplo prático:** Um programa que conta de 0 a 10 usa constantes imediatas para o contador e o limite.
+
+## 8. EXERCÍCIOS
+
+<details>
+<summary>📗 Exercício 1 — O que é endereçamento imediato? (Fácil)</summary>
+
+**Enunciado:** Defina o que é endereçamento imediato em Assembly.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Endereçamento imediato é um modo onde o operando é um valor literal (constante) incluído na própria instrução, sendo acessado diretamente sem necessidade de buscar o dado na memória ou em registradores.
+
+**Explicação:** O valor está "embutido" na instrução. É o modo mais rápido, mas limitado pelo tamanho do campo imediato.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Identificar endereçamento imediato (Fácil)</summary>
+
+**Enunciado:** Quais das seguintes instruções usam endereçamento imediato?
+1. `ADD R1, R2, R3`
+2. `ADD R1, R2, #5`
+3. `LDR R1, [R2]`
+4. `MOV R1, #0`
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** As instruções 2 e 4 usam endereçamento imediato.
+
+**Explicação:**
+1. `ADD R1, R2, R3` → Endereçamento por registrador
+2. `ADD R1, R2, #5` → Endereçamento imediato (constante 5)
+3. `LDR R1, [R2]` → Endereçamento indireto (acesso à memória)
+4. `MOV R1, #0` → Endereçamento imediato (constante 0)
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Valor de R1 (Fácil)</summary>
+
+**Enunciado:** Se R2 = 7, qual será o valor de R1 após `ADD R1, R2, #3`?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** R1 = 10
+
+**Explicação:** R1 = R2 + 3 = 7 + 3 = 10. O valor 3 está na instrução (endereçamento imediato).
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Valor de R2 (Fácil)</summary>
+
+**Enunciado:** Qual será o valor de R2 após `MOV R2, #15`?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** R2 = 15
+
+**Explicação:** MOV move o valor imediato 15 para o registrador R2.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Limitação do imediato (Médio)</summary>
+
+**Enunciado:** Em uma arquitetura com campo imediato de 8 bits, qual é o maior valor decimal que pode ser usado diretamente em uma instrução?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** 255 (2⁸ - 1)
+
+**Explicação:** Com 8 bits, é possível representar valores de 0 a 255. Valores maiores precisam ser carregados de outra forma (memória ou múltiplas instruções).
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Loop com imediato (Médio)</summary>
+
+**Enunciado:** Escreva uma sequência de instruções Assembly que execute um loop 5 vezes, usando endereçamento imediato para o contador e o limite.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+MOV R1, #0        ; R1 = 0 (contador)
+loop:
+CMP R1, #5        ; Compara R1 com 5 (limite imediato)
+BGE loop_end      ; Se R1 >= 5, sai
+ADD R1, R1, #1    ; R1 = R1 + 1 (incremento imediato)
+JMP loop
+loop_end:
+</pre>
+**Explicação:** O valor 0, 5 e 1 são todos valores imediatos.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — Soma com constantes (Médio)</summary>
+
+**Enunciado:** Escreva uma sequência de instruções Assembly para somar os valores 10, 20 e 30 (usando endereçamento imediato) e colocar o resultado em R4.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+MOV R1, #10       ; R1 = 10
+MOV R2, #20       ; R2 = 20
+MOV R3, #30       ; R3 = 30
+ADD R4, R1, R2    ; R4 = 10 + 20 = 30
+ADD R4, R4, R3    ; R4 = 30 + 30 = 60
+</pre>
+**Explicação:** Todos os valores são constantes imediatas.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — Máscara com imediato (Desafio)</summary>
+
+**Enunciado:** Escreva uma instrução Assembly que extraia os 4 bits superiores de R1 e coloque em R2 (deslocando-os para a posição 0-3).
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+; Primeiro, isola os 4 bits superiores com máscara
+AND R2, R1, #0xF0   ; R2 = R1 & 0xF0 (mantém bits 4-7)
+
+; Depois, desloca para a direita
+LSR R2, R2, #4      ; R2 = R2 >> 4 (bits 4-7 vão para 0-3)
+</pre>
+**Explicação:** 
+- `AND R2, R1, #0xF0` usa uma máscara imediata (0xF0 = 1111 0000) para manter apenas os 4 bits superiores.
+- `LSR R2, R2, #4` desloca 4 posições para a direita, movendo os bits para a posição 0-3.
+</details>
+</details>
+
+> O endereçamento imediato é o modo mais rápido e simples de especificar um operando: o valor está literalmente na instrução. Embora limitado pelo tamanho do campo imediato, é essencial para constantes pequenas, contadores, comparações e máscaras. O endereçamento imediato é a base de muitas operações cotidianas em Assembly. Incrementar um contador, comparar um valor com zero, aplicar uma máscara — todas essas operações usam constantes imediatas. Sua simplicidade e velocidade o tornam indispensável, mesmo com sua limitação de tamanho.

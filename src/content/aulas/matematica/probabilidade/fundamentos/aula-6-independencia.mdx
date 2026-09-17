@@ -1,0 +1,367 @@
+# Independência de Eventos
+
+## 1. 🎯 O que é Independência?
+
+> Dois eventos **A** e **B** são **independentes** se a ocorrência de um **NÃO altera** a probabilidade de ocorrência do outro.
+
+**Em outras palavras:** Saber que A aconteceu não dá nenhuma informação sobre B, e vice-versa.
+
+## 2. 📐 A Regra de Ouro para Testar Independência
+
+> **Para testar se dois eventos são independentes, use a fórmula da INTERSEÇÃO:**
+
+$$P(A \cap B) \stackrel{?}{=} P(A) \times P(B)$$
+
+### Regra de Decisão:
+
+| Resultado do Teste | Conclusão |
+|----|----|
+| **$P(A \cap B) = P(A) \times P(B)$** | Os eventos são **INDEPENDENTES** |
+| **$P(A \cap B) \neq P(A) \times P(B)$** | Os eventos são **DEPENDENTES** |
+
+> **Importante:** Se os eventos **não são independentes**, eles são **automaticamente dependentes**. Não há um terceiro caso.
+
+## 3. 🤔 Por que Usamos a Interseção para Testar?
+
+A fórmula da interseção **quando os eventos são independentes** é:
+
+$$P(A \cap B) = P(A) \times P(B)$$
+
+Portanto, para **testar** se eles são independentes, calculamos $P(A) \times P(B)$ e comparamos com a interseção real $P(A \cap B)$.
+
+- Se forem **iguais** → a fórmula da interseção se confirma → são **independentes**.
+- Se forem **diferentes** → a fórmula da interseção **não se aplica** → são **dependentes**.
+
+## 4. 📊 Como Calcular a Interseção Quando São Dependentes?
+
+Se os eventos são **dependentes**, a fórmula da interseção muda. Você **deve** usar a **Probabilidade Condicional**:
+
+$$P(A \cap B) = P(A) \times P(B|A)$$
+
+Ou, equivalentemente:
+
+$$P(A \cap B) = P(B) \times P(A|B)$$
+
+> **Resumo:** Se são independentes, use $P(A) \times P(B)$. Se são dependentes, use $P(A) \times P(B|A)$.
+
+## 5. 📋 Quadro Resumo — Independência e Interseção
+
+| Situação | Como testar | Fórmula da Interseção |
+|----|----|----|
+| **Quer saber se são independentes?** | Compare $P(A \cap B)$ com $P(A) \times P(B)$ | Use o teste |
+| **São independentes** | $P(A \cap B) = P(A) \times P(B)$ | $P(A) \times P(B)$ |
+| **São dependentes** | $P(A \cap B) \neq P(A) \times P(B)$ | $P(A) \times P(B|A)$ |
+
+## 6. 💡 Exemplos Detalhados
+
+### Exemplo 1 — Teste de Independência (Dado)
+
+**Enunciado:** Lança-se um dado de 6 faces. Sejam:
+- A = sair **número par** = [2,4,6]
+- B = sair **número maior que 3** = [4,5,6]
+
+**Pergunta:** A e B são independentes?
+
+**Passo 1 — Calcular $P(A)$, $P(B)$ e $P(A \cap B)$:**
+- $P(A) = 3/6 = 1/2 = 0,5$
+- $P(B) = 3/6 = 1/2 = 0,5$
+- $A \cap B = \{4,6\}$ → $P(A \cap B) = 2/6 = 1/3 \approx 0,333$
+
+**Passo 2 — Calcular $P(A) \times P(B)$:**
+- $0,5 \times 0,5 = 0,25$
+
+**Passo 3 — Comparar:**
+- $P(A \cap B) = 0,333$
+- $P(A) \times P(B) = 0,25$
+- $0,333 \neq 0,25$
+
+**Conclusão:** Os eventos são **DEPENDENTES**.
+
+**Explicação:** Saber que o número é par (A) aumenta a chance de ele ser maior que 3 (B)? Sim! Entre os pares {2,4,6}, dois são maiores que 3 (4 e 6), ou seja, $P(B|A) = 2/3$, enquanto $P(B) = 1/2$. Um afeta o outro.
+
+---
+
+### Exemplo 2 — Teste de Independência (Moeda e Dado)
+
+**Enunciado:** Lança-se uma moeda e um dado. Sejam:
+- A = moeda dá **cara**
+- B = dado dá **número 6**
+
+**Pergunta:** A e B são independentes?
+
+**Passo 1 — Calcular $P(A)$, $P(B)$ e $P(A \cap B)$:**
+- $P(A) = 1/2 = 0,5$
+- $P(B) = 1/6 \approx 0,167$
+- $P(A \cap B) = 1/2 \times 1/6 = 1/12 \approx 0,083$ (pois são independentes por natureza, mas vamos testar)
+
+**Passo 2 — Calcular $P(A) \times P(B)$:**
+- $0,5 \times 0,167 = 0,083$
+
+**Passo 3 — Comparar:**
+- $P(A \cap B) = 0,083$
+- $P(A) \times P(B) = 0,083$
+- $0,083 = 0,083$
+
+**Conclusão:** Os eventos são **INDEPENDENTES**.
+
+**Explicação:** A moeda e o dado são mundos separados. Saber que a moeda deu cara não muda em nada a chance de o dado dar 6. $P(B|A) = 1/6 = P(B)$.
+
+---
+
+### Exemplo 3 — Teste de Independência (Urna sem Reposição)
+
+**Enunciado:** Uma urna tem 4 bolas vermelhas e 6 azuis. Retiram-se 2 bolas **sem reposição**. Sejam:
+- A = 1ª bola é **vermelha**
+- B = 2ª bola é **vermelha**
+
+**Pergunta:** A e B são independentes?
+
+**Passo 1 — Calcular $P(A)$, $P(B)$ e $P(A \cap B)$:**
+- $P(A) = 4/10 = 0,4$
+- $P(B) = 4/10 = 0,4$ (probabilidade incondicional da 2ª ser vermelha, sem saber a 1ª)
+- $P(A \cap B) = 4/10 \times 3/9 = 12/90 = 2/15 \approx 0,133$
+
+**Passo 2 — Calcular $P(A) \times P(B)$:**
+- $0,4 \times 0,4 = 0,16$
+
+**Passo 3 — Comparar:**
+- $P(A \cap B) = 0,133$
+- $P(A) \times P(B) = 0,16$
+- $0,133 \neq 0,16$
+
+**Conclusão:** Os eventos são **DEPENDENTES**.
+
+**Explicação:** Se a primeira bola foi vermelha, sobraram 3 vermelhas em 9 bolas, então $P(B|A) = 3/9 = 1/3 \approx 0,333$, enquanto $P(B) = 0,4$. A primeira afeta a segunda.
+
+---
+
+### Exemplo 4 — Como Calcular a Interseção (Dependentes)
+
+**Enunciado:** Usando o mesmo exemplo da urna (4 vermelhas, 6 azuis, sem reposição), calcule $P(A \cap B)$ sabendo que A e B são **dependentes**.
+
+**Passo 1 — Identificar os eventos:**
+- A = 1ª é vermelha → $P(A) = 4/10$
+- B = 2ª é vermelha → $P(B|A) = 3/9$
+
+**Passo 2 — Aplicar a fórmula para dependentes:**
+- $P(A \cap B) = P(A) \times P(B|A) = 4/10 \times 3/9 = 12/90 = 2/15 \approx 0,133$
+
+**Resposta:** A probabilidade de ambas serem vermelhas é $2/15$ (13,3%).
+
+---
+
+### Exemplo 5 — Como Calcular a Interseção (Independentes)
+
+**Enunciado:** Lança-se uma moeda e um dado. Calcule $P(\text{cara e 6})$.
+
+**Passo 1 — Identificar os eventos:**
+- A = moeda dá **cara** → $P(A) = 1/2$
+- B = dado dá **6** → $P(B) = 1/6$
+
+**Passo 2 — Verificar se são independentes:**
+- São independentes (um não afeta o outro).
+
+**Passo 3 — Aplicar a fórmula para independentes:**
+- $P(A \cap B) = P(A) \times P(B) = 1/2 \times 1/6 = 1/12 \approx 0,083$
+
+**Resposta:** A probabilidade é $1/12$ (8,33%).
+
+## 7. 🌳 Fluxograma de Decisão
+
+```text
+┌─────────────────────────────────────────────────────────────┐
+│                   INÍCIO DO PROBLEMA                        │
+│         "Quer testar se A e B são independentes?"          │
+└─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+                 ┌─────────────────────────┐
+                 │  Calcule P(A), P(B) e   │
+                 │     P(A ∩ B) real       │
+                 └─────────────────────────┘
+                              │
+                              ▼
+                 ┌─────────────────────────┐
+                 │  P(A∩B) = P(A)×P(B)?    │
+                 └─────────────────────────┘
+                      │              │
+                   SIM │              │ NÃO
+                      ▼              ▼
+        ┌─────────────────┐  ┌─────────────────────────┐
+        │   INDEPENDENTES │  │   DEPENDENTES           │
+        │                 │  │                         │
+        │ Para calcular   │  │ Para calcular a         │
+        │ a interseção:   │  │ interseção:             │
+        │ P(A)×P(B)       │  │ P(A)×P(B|A)             │
+        └─────────────────┘  └─────────────────────────┘
+```
+
+
+
+## 📝 Exercícios Resolvidos Passo a Passo
+
+<details>
+<summary>📗 Exercício 1 — Teste de Independência (Dado)</summary>
+
+**Enunciado:** Lança-se um dado. Sejam:
+- A = sair **número ímpar** = {1,3,5}
+- B = sair **número maior que 4** = {5,6}
+
+A e B são independentes?
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**Passo 1 — Calcular probabilidades:**
+- $P(A) = 3/6 = 1/2 = 0,5$
+- $P(B) = 2/6 = 1/3 \approx 0,333$
+- $A \cap B = {5}$ → $P(A \cap B) = 1/6 \approx 0,167$
+
+**Passo 2 — Calcular $P(A) \times P(B)$:**
+- $0,5 \times 0,333 = 0,167$
+
+**Passo 3 — Comparar:**
+- $P(A \cap B) = 0,167$
+- $P(A) \times P(B) = 0,167$
+- $0,167 = 0,167$
+
+**Conclusão:** São **INDEPENDENTES!**
+
+**Explicação:** Apesar de parecerem conectados, saber que o número é ímpar não altera a chance de ser maior que 4? Vamos ver: entre os ímpares {1,3,5}, apenas 1 é maior que 4 (o 5), então $P(B|A) = 1/3$, que é exatamente $P(B)$. Portanto, são independentes.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Teste de Independência (Cartas)</summary>
+
+**Enunciado:** Retira-se uma carta de um baralho de 52. Sejam:
+- A = carta é **de ouros** (13 cartas)
+- B = carta é **um rei** (4 cartas)
+
+A e B são independentes?
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**Passo 1 — Calcular probabilidades:**
+- $P(A) = 13/52 = 1/4 = 0,25$
+- $P(B) = 4/52 = 1/13 \approx 0,077$
+- $A \cap B = \text{rei de ouros}$ → 1 carta → $P(A \cap B) = 1/52 \approx 0,0192$
+
+**Passo 2 — Calcular $P(A) \times P(B)$:**
+- $0,25 \times 0,077 = 0,0192$
+
+**Passo 3 — Comparar:**
+- $P(A \cap B) = 0,0192$
+- $P(A) \times P(B) = 0,0192$
+- $0,0192 = 0,0192$
+
+**Conclusão:** São **INDEPENDENTES!**
+
+**Explicação:** A proporção de reis entre as cartas de ouros é 1/13, que é a mesma proporção de reis no baralho inteiro. Um não afeta o outro.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Teste de Independência (Urna com Reposição)</summary>
+
+**Enunciado:** Uma urna tem 3 bolas vermelhas e 7 azuis. Retiram-se 2 bolas **com reposição**. Sejam:
+- A = 1ª bola é **vermelha**
+- B = 2ª bola é **vermelha**
+
+A e B são independentes?
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**Passo 1 — Calcular probabilidades:**
+- $P(A) = 3/10 = 0,3$
+- $P(B) = 3/10 = 0,3$
+- $P(A \cap B) = 3/10 \times 3/10 = 9/100 = 0,09$ (com reposição)
+
+**Passo 2 — Calcular $P(A) \times P(B)$:**
+- $0,3 \times 0,3 = 0,09$
+
+**Passo 3 — Comparar:**
+- $0,09 = 0,09$
+
+**Conclusão:** São **INDEPENDENTES!**
+
+**Explicação:** Com reposição, a urna volta ao estado inicial. A primeira bola não afeta a segunda.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Teste de Independência (Urna sem Reposição)</summary>
+
+**Enunciado:** A mesma urna (3 vermelhas, 7 azuis), mas agora **sem reposição**. A e B são independentes?
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**Passo 1 — Calcular probabilidades:**
+- $P(A) = 3/10 = 0,3$
+- $P(B) = 3/10 = 0,3$ (incondicional)
+- $P(A \cap B) = 3/10 \times 2/9 = 6/90 = 1/15 \approx 0,067$
+
+**Passo 2 — Calcular $P(A) \times P(B)$:**
+- $0,3 \times 0,3 = 0,09$
+
+**Passo 3 — Comparar:**
+- $0,067 \neq 0,09$
+
+**Conclusão:** São **DEPENDENTES!**
+
+**Explicação:** Sem reposição, a primeira bola afeta a segunda. Se a primeira foi vermelha, sobraram 2 vermelhas em 9, então $P(B|A) = 2/9$, que é diferente de $P(B) = 3/10$.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Calcule a Interseção (Dependentes)</summary>
+
+**Enunciado:** Usando o exemplo anterior (urna sem reposição, 3 vermelhas e 7 azuis), calcule $P(A \cap B)$ sabendo que A e B são **dependentes**.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**Passo 1 — Identificar os eventos:**
+- A = 1ª é vermelha → $P(A) = 3/10$
+- B = 2ª é vermelha → $P(B|A) = 2/9$
+
+**Passo 2 — Aplicar a fórmula para dependentes:**
+- $P(A \cap B) = P(A) \times P(B|A) = 3/10 \times 2/9 = 6/90 = 1/15 \approx 0,067$
+
+**Resposta:** A probabilidade é $1/15$ (6,7%).
+
+</details>
+</details>
+
+## 🎯 Desafio Final
+
+**Enunciado:** Em uma pesquisa, 60% das pessoas gostam de café, 50% gostam de chá, e 30% gostam de ambos.
+
+- a) Café e chá são independentes? Justifique.
+- b) Se forem dependentes, qual a probabilidade de uma pessoa gostar de café, sabendo que gosta de chá?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**a) Teste de independência:**
+- $P(C) = 0,6$
+- $P(T) = 0,5$
+- $P(C \cap T) = 0,3$
+- $P(C) \times P(T) = 0,6 \times 0,5 = 0,3$
+- $0,3 = 0,3$ → **SÃO INDEPENDENTES!** ✅
+
+**b) Como são independentes:**
+- $P(C|T) = P(C) = 0,6 = 60\%$
+
+**Resposta:** São independentes; a probabilidade de gostar de café dado que gosta de chá é 60%.
+
+</details>
+
+> *A regra de ouro da independência é: teste sempre pela interseção. Se $P(A \cap B) = P(A) \times P(B)$, são independentes. Caso contrário, são dependentes — e aí você usa a condicional para calcular.*

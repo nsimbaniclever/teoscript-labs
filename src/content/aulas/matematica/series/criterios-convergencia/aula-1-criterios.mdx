@@ -1,0 +1,226 @@
+# CRITÉRIOS DE CONVERGÊNCIA (RAZÃO, RAIZ E LEIBNIZ)
+
+## 1. Por que precisamos de critérios?
+
+Nem sempre conseguimos calcular a soma exata de uma série. Os **critérios de convergência** são ferramentas que nos permitem **classificar** uma série como **convergente** ou **divergente** sem precisar somar todos os termos — o que seria impossível na prática.
+
+## 2. Critério da Razão (D'Alembert)
+
+### 2.1 Definição
+
+Para uma série $\sum a_n$ com termos positivos, calculamos:
+
+$$
+L = \lim_{n \to \infty} \left| \frac{a_{n+1}}{a_n} \right|
+$$
+
+| Condição | Comportamento |
+|----------|---------------|
+| $L < 1$ | ✅ **Converge** |
+| $L > 1$ | ❌ **Diverge** |
+| $L = 1$ | ⚠️ **Inconclusivo** (usar outro critério) |
+
+### 2.2 Exemplo Passo a Passo
+
+**Testar:** $\sum_{n=1}^{\infty} \frac{1}{n!}$
+
+**Passo 1:** $a_n = \frac{1}{n!}$, $a_{n+1} = \frac{1}{(n+1)!}$
+
+**Passo 2:** Calcular a razão:
+$$
+\frac{a_{n+1}}{a_n} = \frac{1/(n+1)!}{1/n!} = \frac{n!}{(n+1)!} = \frac{1}{n+1}
+$$
+
+**Passo 3:** Calcular o limite:
+$$
+L = \lim_{n \to \infty} \frac{1}{n+1} = 0
+$$
+
+**Passo 4:** Como $L = 0 < 1$, a série **converge**.
+
+### 2.3 Exemplo 2: Série Divergente
+
+**Testar:** $\sum_{n=1}^{\infty} n$
+
+$a_n = n$, $a_{n+1} = n+1$
+
+$$
+L = \lim_{n \to \infty} \frac{n+1}{n} = 1
+$$
+
+⚠️ **Inconclusivo!** (mas sabemos que diverge — usamos outro critério ou intuição).
+
+## 3. Critério da Raiz (Cauchy)
+
+### 3.1 Definição
+
+Para uma série $\sum a_n$ com termos positivos:
+
+$$
+L = \lim_{n \to \infty} \sqrt[n]{a_n}
+$$
+
+| Condição | Comportamento |
+|----------|---------------|
+| $L < 1$ | ✅ **Converge** |
+| $L > 1$ | ❌ **Diverge** |
+| $L = 1$ | ⚠️ **Inconclusivo** |
+
+### 3.2 Exemplo Passo a Passo
+
+**Testar:** $\sum_{n=1}^{\infty} \left( \frac{1}{2} \right)^n$
+
+**Passo 1:** $a_n = \left( \frac{1}{2} \right)^n$
+
+**Passo 2:** Calcular a raiz:
+$$
+\sqrt[n]{a_n} = \sqrt[n]{\left( \frac{1}{2} \right)^n} = \frac{1}{2}
+$$
+
+**Passo 3:** $L = \frac{1}{2} < 1$ → **converge**.
+
+### 3.3 Exemplo 2: Série Divergente
+
+**Testar:** $\sum_{n=1}^{\infty} \left( \frac{n}{n+1} \right)^{n^2}$
+
+$$
+L = \lim_{n \to \infty} \sqrt[n]{\left( \frac{n}{n+1} \right)^{n^2}} = \lim_{n \to \infty} \left( \frac{n}{n+1} \right)^n = e^{-1} < 1
+$$
+
+✅ **Converge!**
+
+## 4. Critério de Leibniz (Séries Alternadas)
+
+### 4.1 Definição
+
+Para uma série alternada da forma:
+
+$$
+\sum_{n=1}^{\infty} (-1)^{n+1} a_n = a_1 - a_2 + a_3 - a_4 + \cdots
+$$
+
+**Condições para convergência:**
+1. $a_n > 0$
+2. $a_n$ é **decrescente** ($a_{n+1} \leq a_n$)
+3. $\lim_{n \to \infty} a_n = 0$
+
+Se todas forem satisfeitas, a série **converge**.
+
+### 4.2 Exemplo Passo a Passo
+
+**Testar:** $\sum_{n=1}^{\infty} \frac{(-1)^{n+1}}{n} = 1 - \frac{1}{2} + \frac{1}{3} - \frac{1}{4} + \cdots$
+
+**Passo 1:** $a_n = \frac{1}{n}$
+
+**Passo 2:** Verificar se é decrescente:
+$$
+\frac{1}{n+1} \leq \frac{1}{n} \quad \text{para todo } n \geq 1 \quad ✅
+$$
+
+**Passo 3:** Verificar o limite:
+$$
+\lim_{n \to \infty} \frac{1}{n} = 0 \quad ✅
+$$
+
+**Conclusão:** A série **converge** (para $\ln 2$).
+
+## 5. Comparação entre os Critérios
+
+| Critério | Melhor para | Cuidado |
+|----------|-------------|---------|
+| **Razão** | Fatoriais, exponenciais | Pode ser inconclusivo |
+| **Raiz** | Potências $n$-ésimas | Pode ser inconclusivo |
+| **Leibniz** | Séries alternadas | Só funciona para alternadas |
+
+## 6. Por que isso é importante para projetos/ML?
+
+### 6.1 Análise de Erro em Algoritmos
+
+Se o erro em cada época decai como $\frac{1}{n^2}$, o erro total é finito. Se decai como $\frac{1}{n}$, o erro total diverge — indicando que o modelo pode nunca convergir completamente.
+
+### 6.2 Escolha da Taxa de Aprendizado
+
+Em otimização, se $\eta_t = \frac{1}{t}$, a série $\sum \eta_t$ diverge (harmônica). Isso significa que o algoritmo **nunca para de se mover**, o que pode ser bom para explorar, mas ruim para convergência fina.
+
+### 6.3 Estabilidade de Sistemas
+
+Em sistemas dinâmicos, séries alternadas aparecem em **oscilações**. O critério de Leibniz ajuda a garantir que essas oscilações não divergem.
+
+## 7. Exemplo Lúdico – A Lanchonete
+
+A lanchonete tem lucros que alternam sinal:
+
+$$
+100 - 50 + 25 - 12.5 + 6.25 - \cdots
+$$
+
+**Critério de Leibniz:** $a_n = 100 \cdot \left( \frac{1}{2} \right)^n$ é decrescente e tende a zero.
+
+**Conclusão:** O lucro total converge para $\frac{100}{1 + 0.5} = 66.67$ — mesmo com altos e baixos, o total é finito.
+
+## 8. Exercícios Propostos
+
+<details>
+<summary>📗 Exercício 1 (Critério da Razão)</summary>
+
+**Enunciado:** Teste a convergência:
+
+a) $\sum_{n=1}^{\infty} \frac{2^n}{n!}$
+
+b) $\sum_{n=1}^{\infty} \frac{n^2}{2^n}$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $L = \lim \frac{2}{n+1} = 0 < 1$ → ✅ **Converge**
+
+b) $L = \lim \frac{(n+1)^2}{2n^2} = \frac{1}{2} < 1$ → ✅ **Converge**
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 (Critério da Raiz)</summary>
+
+**Enunciado:** Teste a convergência:
+
+a) $\sum_{n=1}^{\infty} \left( \frac{1}{3} \right)^n$
+
+b) $\sum_{n=1}^{\infty} \left( \frac{n}{n+1} \right)^{n^2}$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $L = \frac{1}{3} < 1$ → ✅ **Converge**
+
+b) $L = e^{-1} < 1$ → ✅ **Converge**
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 (Critério de Leibniz)</summary>
+
+**Enunciado:** Teste a convergência:
+
+a) $\sum_{n=1}^{\infty} \frac{(-1)^{n+1}}{n^2}$
+
+b) $\sum_{n=1}^{\infty} \frac{(-1)^{n+1}}{\sqrt{n}}$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $a_n = \frac{1}{n^2}$ decrescente e tende a 0 → ✅ **Converge** (Leibniz)
+
+b) $a_n = \frac{1}{\sqrt{n}}$ decrescente e tende a 0 → ✅ **Converge** (Leibniz)
+
+</details>
+</details>
+
+> *Critérios de convergência são como detectores de metais: não precisamos cavar até o fim para saber se há algo valioso — uma análise na superfície já nos diz se vale a pena continuar.*

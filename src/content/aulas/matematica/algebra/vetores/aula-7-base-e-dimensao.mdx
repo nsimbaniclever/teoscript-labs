@@ -1,0 +1,694 @@
+# BASE E DIMENSÃO
+
+## 1. Definições Formais
+
+### 1.1 Base de um Espaço Vetorial
+
+Um conjunto de vetores $\mathcal{B} = \{\vec{v}_1, \vec{v}_2, \ldots, \vec{v}_n\} \subset \mathbb{R}^n$ é uma **base** de $\mathbb{R}^n$ se:
+
+1. **Gera** $\mathbb{R}^n$: todo vetor $\vec{w} \in \mathbb{R}^n$ pode ser escrito como combinação linear dos vetores de $\mathcal{B}$.
+2. É **linearmente independente (LI)**: a única combinação linear que resulta no vetor nulo é a trivial.
+
+Em outras palavras:
+
+> **Base = conjunto de vetores LI que gera todo o espaço.**
+
+### 1.2 Dimensão de um Espaço Vetorial
+
+A **dimensão** de um espaço vetorial $V$ é o **número de vetores** em uma base de $V$.
+
+$$
+\dim(V) = |\mathcal{B}|
+$$
+
+**Observação:** Todas as bases de um mesmo espaço têm o mesmo número de vetores. Esse número é único e é chamado de **dimensão**.
+
+### 1.3 Coordenadas em Relação a uma Base
+
+Se $\mathcal{B} = \{\vec{v}_1, \vec{v}_2, \ldots, \vec{v}_n\}$ é uma base de $\mathbb{R}^n$, então qualquer vetor $\vec{w} \in \mathbb{R}^n$ pode ser escrito **de maneira única** como:
+
+$$
+\vec{w} = c_1 \vec{v}_1 + c_2 \vec{v}_2 + \cdots + c_n \vec{v}_n
+$$
+
+Os coeficientes $c_1, c_2, \ldots, c_n$ são chamados de **coordenadas** de $\vec{w}$ na base $\mathcal{B}$.
+
+### 1.4 Base Canônica do $\mathbb{R}^n$
+
+A base mais natural e comum é a **base canônica**:
+
+$$
+\mathcal{B}_{can} = \{\vec{e}_1, \vec{e}_2, \ldots, \vec{e}_n\}
+$$
+
+Onde:
+$$
+\vec{e}_1 = (1,0,0,\ldots,0), \quad \vec{e}_2 = (0,1,0,\ldots,0), \quad \ldots, \quad \vec{e}_n = (0,0,\ldots,0,1)
+$$
+
+**Exemplos:**
+- Em $\mathbb{R}^2$: $\{(1,0), (0,1)\}$
+- Em $\mathbb{R}^3$: $\{(1,0,0), (0,1,0), (0,0,1)\}$
+
+## 2. Exemplos Acadêmicos Passo a Passo
+
+### 2.1 Exemplo de Base em $\mathbb{R}^2$
+
+**Vetores:** $\vec{v}_1 = (1, 0)$, $\vec{v}_2 = (0, 1)$
+
+**Verificação:**
+
+1. **LI?** $c_1(1,0) + c_2(0,1) = (0,0) \Rightarrow (c_1, c_2) = (0,0)$ → **SIM!**
+2. **Gera $\mathbb{R}^2$?** Qualquer $(x,y) = x(1,0) + y(0,1)$ → **SIM!**
+
+**Conclusão:** $\{(1,0), (0,1)\}$ é uma base do $\mathbb{R}^2$.  
+**Dimensão:** $\dim(\mathbb{R}^2) = 2$.
+
+### 2.2 Exemplo de Base em $\mathbb{R}^2$ (Não Canônica)
+
+**Vetores:** $\vec{v}_1 = (1, 2)$, $\vec{v}_2 = (3, 4)$
+
+**Verificação:**
+
+1. **LI?** Determinante:
+$$
+\det\begin{bmatrix}1 & 3 \\ 2 & 4\end{bmatrix} = 1\cdot4 - 3\cdot2 = 4 - 6 = -2 \neq 0
+$$
+→ **SIM!**
+
+2. **Gera $\mathbb{R}^2$?** Como são 2 vetores LI em $\mathbb{R}^2$, eles geram todo o espaço → **SIM!**
+
+**Conclusão:** $\{(1,2), (3,4)\}$ é uma base do $\mathbb{R}^2$.  
+**Dimensão:** $\dim(\mathbb{R}^2) = 2$.
+
+**Observação:** A dimensão é a mesma (2), mas a base é diferente! Isso mostra que um espaço pode ter muitas bases diferentes.
+
+### 2.3 Exemplo que NÃO é Base em $\mathbb{R}^2$
+
+**Vetores:** $\vec{v}_1 = (1, 2)$, $\vec{v}_2 = (2, 4)$
+
+**Verificação:**
+
+1. **LI?** Determinante:
+$$
+\det\begin{bmatrix}1 & 2 \\ 2 & 4\end{bmatrix} = 1\cdot4 - 2\cdot2 = 4 - 4 = 0
+$$
+→ **NÃO!** (são LD)
+
+**Conclusão:** $\{(1,2), (2,4)\}$ **não** é uma base do $\mathbb{R}^2$.  
+**Dimensão do espaço gerado:** 1 (apenas uma reta).
+
+### 2.4 Exemplo de Base em $\mathbb{R}^3$
+
+**Vetores:** $\vec{v}_1 = (1,0,0)$, $\vec{v}_2 = (0,1,0)$, $\vec{v}_3 = (0,0,1)$
+
+**Verificação:** É a base canônica do $\mathbb{R}^3$.  
+**Dimensão:** $\dim(\mathbb{R}^3) = 3$.
+
+### 2.5 Exemplo que NÃO é Base em $\mathbb{R}^3$
+
+**Vetores:** $\vec{v}_1 = (1,2,3)$, $\vec{v}_2 = (2,4,6)$, $\vec{v}_3 = (3,6,9)$
+
+**Verificação:**
+
+1. **LI?** $\vec{v}_2 = 2\vec{v}_1$, $\vec{v}_3 = 3\vec{v}_1$ → são LD!  
+Determinante:
+$$
+\det\begin{bmatrix}
+1 & 2 & 3 \\
+2 & 4 & 6 \\
+3 & 6 & 9
+\end{bmatrix} = 0
+$$
+→ **NÃO!**
+
+**Conclusão:** $\{(1,2,3), (2,4,6), (3,6,9)\}$ **não** é uma base do $\mathbb{R}^3$.  
+**Dimensão do espaço gerado:** 1 (apenas uma reta).
+
+## 3. Exemplos Lúdicos Aprimorados
+
+### 🍔 EXEMPLO 1 – A LANCHONETE (VERSÃO BASE E DIMENSÃO)
+
+#### 1.1 Base da Lanchonete (Ingredientes Fundamentais)
+
+A lanchonete tem três ingredientes base:
+$$
+\vec{p} = (1,0,0), \quad \vec{c} = (0,1,0), \quad \vec{q} = (0,0,1)
+$$
+
+**Este conjunto é uma base do $\mathbb{R}^3$?** SIM!
+
+**Verificação:**
+1. **LI?** Sim (já vimos na Aula 6).
+2. **Gera $\mathbb{R}^3$?** Qualquer combinação de ingredientes $(a,b,c)$ pode ser escrita como:
+$$
+(a,b,c) = a(1,0,0) + b(0,1,0) + c(0,0,1)
+$$
+
+**Conclusão:** Os ingredientes base formam uma base do espaço de receitas.  
+**Dimensão:** 3 (precisamos de 3 ingredientes fundamentais para descrever qualquer receita).
+
+**Interpretação:** Com pão, carne e queijo, você pode fazer qualquer sanduíche possível neste universo de 3 ingredientes.
+
+#### 1.2 Outra Base da Lanchonete (Cardápio como Base)
+
+Agora, a lanchonete tem três sanduíches:
+- Hambúrguer simples: $\vec{h} = (1,1,0)$
+- Hambúrguer com queijo: $\vec{hq} = (1,1,1)$
+- Vegetariano: $\vec{v} = (1,0,2)$
+
+**Este conjunto é uma base do $\mathbb{R}^3$?** SIM! (já vimos que são LI e geram o espaço).
+
+**Dimensão:** 3.
+
+**Interpretação:** Com esses três sanduíches, você pode descrever qualquer combinação de ingredientes. Por exemplo, o pedido $(2,3,1)$ pode ser escrito como combinação desses sanduíches.
+
+#### 1.3 Conjunto que NÃO é Base (Redundância)
+
+Agora, a lanchonete tem:
+- Hambúrguer simples: $\vec{h} = (1,1,0)$
+- Hambúrguer com queijo: $\vec{hq} = (1,1,1)$
+- X-tudo: $\vec{x} = (2,2,2)$
+
+**Este conjunto é uma base?** NÃO! Porque $\vec{x} = 2\vec{hq}$.
+
+**Dimensão do espaço gerado:** 2 (apenas um plano, não o espaço todo).
+
+**Interpretação:** O X-tudo é redundante. A lanchonete não precisa dele para descrever todas as receitas.
+
+### 🧃 EXEMPLO 2 – A CANTINA (VERSÃO BASE E DIMENSÃO)
+
+#### 2.1 Base Nutricional
+
+A cantina vende:
+- Suco: $\vec{s} = (10, 0, 50)$ → (açúcar, cálcio, vitamina C)
+- Leite: $\vec{l} = (5, 20, 0)$
+- Bolo: $\vec{b} = (30, 0, 0)$
+
+**Este conjunto é uma base do $\mathbb{R}^3$?** SIM! (já vimos que são LI, determinante ≠ 0).
+
+**Dimensão:** 3.
+
+**Interpretação:** Com suco, leite e bolo, você pode atingir qualquer combinação de açúcar, cálcio e vitamina C. Esses três alimentos são os "ingredientes fundamentais" da dieta.
+
+#### 2.2 Base Reduzida (Subespaço)
+
+Agora, a cantina vende apenas:
+- Leite: $\vec{l} = (5, 20, 0)$
+- Queijo: $\vec{q} = (0, 30, 0)$
+
+**Este conjunto é uma base de quê?** É uma base do **subespaço** gerado por eles:
+$$
+V = \text{span}\{(5,20,0), (0,30,0)\} = \{(a, b, 0) \mid a, b \in \mathbb{R}\}
+$$
+
+**Dimensão:** 2.
+
+**Interpretação:** Com leite e queijo, você só pode atingir combinações de açúcar e cálcio. Não consegue obter vitamina C. O espaço de possibilidades é um plano, não o espaço todo.
+
+### 📚 EXEMPLO 3 – A BIBLIOTECA (VERSÃO BASE E DIMENSÃO)
+
+#### 3.1 Base do Conhecimento
+
+A biblioteca tem:
+- Matemática: $\vec{m} = (10, 5, 0)$ → (teoria, exercícios, figuras)
+- História: $\vec{h} = (8, 0, 12)$
+- Ciências: $\vec{c} = (6, 8, 4)$
+
+**Este conjunto é uma base do $\mathbb{R}^3$?** SIM! (já vimos que são LI, determinante ≠ 0).
+
+**Dimensão:** 3.
+
+**Interpretação:** Com esses três livros, você pode montar qualquer plano de estudo, combinando teoria, exercícios e figuras em diferentes proporções.
+
+#### 3.2 Mudança de Base (Coordenadas)
+
+Suponha que você queira estudar 20 páginas de teoria, 10 exercícios e 6 figuras. Na base canônica, o vetor é:
+$$
+\vec{w} = (20, 10, 6)
+$$
+
+**Quais são as coordenadas de $\vec{w}$ na base dos livros?** Precisamos encontrar $c_1, c_2, c_3$ tais que:
+$$
+c_1(10,5,0) + c_2(8,0,12) + c_3(6,8,4) = (20, 10, 6)
+$$
+
+**Sistema:**
+$$
+\begin{cases}
+10c_1 + 8c_2 + 6c_3 = 20 \\
+5c_1 + 0c_2 + 8c_3 = 10 \\
+0c_1 + 12c_2 + 4c_3 = 6
+\end{cases}
+$$
+
+Resolvendo (você pode verificar):
+$$
+c_1 = 1, \quad c_2 = 0.5, \quad c_3 = 0.5
+$$
+
+**Interpretação:** Para estudar 20 páginas de teoria, 10 exercícios e 6 figuras, o aluno precisa ler 1 livro de Matemática, 0.5 livro de História e 0.5 livro de Ciências.
+
+### 🎨 EXEMPLO 4 – AS CORES (VERSÃO BASE E DIMENSÃO)
+
+#### 4.1 Base RGB (Espaço de Cores)
+
+As cores primárias RGB formam a base canônica do $\mathbb{R}^3$:
+$$
+\vec{r} = (1,0,0), \quad \vec{g} = (0,1,0), \quad \vec{b} = (0,0,1)
+$$
+
+**Dimensão:** 3.
+
+**Interpretação:** Com vermelho, verde e azul, você pode gerar **todas as cores** do espectro RGB. Cada cor é uma combinação linear dessas três.
+
+#### 4.2 Subespaço de Cores (Apenas Vermelho e Verde)
+
+Agora, considere apenas as cores:
+- Vermelho: $\vec{r} = (1,0,0)$
+- Verde: $\vec{g} = (0,1,0)$
+
+**Dimensão:** 2.
+
+**Interpretação:** Com apenas vermelho e verde, você só pode gerar cores no plano XY (sem azul). Por exemplo, amarelo $(1,1,0)$ pode ser feito, mas azul $(0,0,1)$ não.
+
+#### 4.3 Mudança de Base (De RGB para CMYK)
+
+No mundo da impressão, usamos o modelo CMYK (Ciano, Magenta, Amarelo, Preto). Este é um espaço de **dimensão 4** (embora haja relações de dependência na prática).
+
+**Observação:** A dimensão do espaço de cores visíveis ao olho humano é 3. Modelos com mais de 3 cores (como CMYK) têm dependências (são LD) porque o olho humano só vê 3 cores primárias.
+
+**Interpretação:** A dimensão é uma propriedade **intrínseca** do espaço, não da base escolhida.
+
+### 🏀 EXEMPLO 5 – OS ESPORTES (VERSÃO BASE E DIMENSÃO)
+
+#### 5.1 Base de Desempenho
+
+Três atletas têm desempenhos:
+$$
+\vec{a}_1 = (10, 5, 8), \quad \vec{a}_2 = (7, 9, 6), \quad \vec{a}_3 = (12, 4, 10)
+$$
+
+**Este conjunto é uma base do $\mathbb{R}^3$?** SIM! (já vimos que são LI, determinante ≠ 0).
+
+**Dimensão:** 3.
+
+**Interpretação:** Com esses três atletas, o treinador pode montar qualquer estratégia de time, combinando corrida, natação e ciclismo em diferentes proporções.
+
+#### 5.2 Time como Combinação Linear (Coordenadas)
+
+O treinador quer um time com desempenho:
+$$
+\vec{time} = (50, 30, 40)
+$$
+
+**Coordenadas na base dos atletas:** Precisamos encontrar $c_1, c_2, c_3$ tais que:
+$$
+c_1(10,5,8) + c_2(7,9,6) + c_3(12,4,10) = (50, 30, 40)
+$$
+
+**Sistema:**
+$$
+\begin{cases}
+10c_1 + 7c_2 + 12c_3 = 50 \\
+5c_1 + 9c_2 + 4c_3 = 30 \\
+8c_1 + 6c_2 + 10c_3 = 40
+\end{cases}
+$$
+
+Resolvendo (por eliminação ou inversão de matriz):
+$$
+c_1 = 2, \quad c_2 = 1, \quad c_3 = 1.5
+$$
+
+**Interpretação:** O treinador precisa de 2 atletas do tipo 1, 1 atleta do tipo 2 e 1.5 atletas do tipo 3 (na prática, 2 atletas do tipo 3 e ajustes).
+
+### 🎮 EXEMPLO 6 – OS JOGOS (NOVO EXEMPLO – BASE E DIMENSÃO)
+
+#### 6.1 Base de Habilidades (Personagens)
+
+Três personagens de um jogo têm habilidades:
+- Guerreiro: $\vec{g} = (10, 2, 5)$ → (força, agilidade, magia)
+- Arqueiro: $\vec{a} = (3, 10, 2)$
+- Mago: $\vec{m} = (2, 3, 10)$
+
+**Este conjunto é uma base do $\mathbb{R}^3$?** SIM! (já vimos que são LI, determinante ≠ 0).
+
+**Dimensão:** 3.
+
+**Interpretação:** Com guerreiro, arqueiro e mago, o jogador pode montar qualquer combinação de habilidades (força, agilidade, magia) para enfrentar diferentes desafios.
+
+#### 6.2 Personagem Híbrido (Coordenadas)
+
+O jogador quer um personagem com habilidades:
+$$
+\vec{personagem} = (25, 15, 20)
+$$
+
+**Coordenadas na base dos personagens:** Precisamos encontrar $c_1, c_2, c_3$ tais que:
+$$
+c_1(10,2,5) + c_2(3,10,2) + c_3(2,3,10) = (25, 15, 20)
+$$
+
+**Sistema:**
+$$
+\begin{cases}
+10c_1 + 3c_2 + 2c_3 = 25 \\
+2c_1 + 10c_2 + 3c_3 = 15 \\
+5c_1 + 2c_2 + 10c_3 = 20
+\end{cases}
+$$
+
+Resolvendo (por eliminação):
+Da primeira: $10c_1 = 25 - 3c_2 - 2c_3$  
+Substituindo e resolvendo:
+$$
+c_1 = 1.5, \quad c_2 = 0.5, \quad c_3 = 1
+$$
+
+**Interpretação:** O jogador precisa combinar 1.5 guerreiros, 0.5 arqueiros e 1 mago para obter as habilidades desejadas.
+
+## 4. Propriedades Fundamentais
+
+| Propriedade | Descrição |
+|-------------|-----------|
+| **Toda base tem o mesmo número de vetores** | A dimensão é única para um dado espaço |
+| **Todo conjunto LI com $n$ vetores em $\mathbb{R}^n$ é base** | Se são LI e em número igual à dimensão, geram o espaço |
+| **Todo conjunto gerador com $n$ vetores em $\mathbb{R}^n$ é base** | Se geram o espaço e são em número igual à dimensão, são LI |
+| **Mudança de base** | Um mesmo vetor tem coordenadas diferentes em bases diferentes |
+| **Dimensão de subespaço** | ≤ dimensão do espaço que o contém |
+
+## 5. Interpretação Geométrica (Visual)
+
+| Dimensão | Espaço | Exemplo Geométrico |
+|----------|--------|-------------------|
+| 0 | Ponto | Apenas a origem $\{\vec{0}\}$ |
+| 1 | Reta | Qualquer reta passando pela origem |
+| 2 | Plano | Qualquer plano passando pela origem |
+| 3 | Espaço 3D | Todo o espaço tridimensional |
+| n | Hiperespaço | Espaço de dimensão $n$ (ex: $\mathbb{R}^n$) |
+
+## 6. Aplicação Direta na Tese
+
+### 6.1 Dimensionalidade dos Dados
+
+Em Machine Learning, a **dimensão** dos dados é o número de **características independentes**.
+
+**Exemplo:** Dataset com 50 colunas, mas posto = 35 → **dimensão real = 35** (não 50).
+
+**Consequência:** 15 características são redundantes. Podemos reduzi-las.
+
+### 6.2 PCA (Análise de Componentes Principais)
+
+O PCA encontra uma **nova base** para os dados:
+- **Base original:** características originais (ex: 100)
+- **Nova base:** componentes principais (combinações lineares)
+
+**Redução de dimensionalidade:** Os primeiros $k$ componentes principais formam uma base de um **subespaço** de dimensão $k$ que aproxima os dados.
+
+**Interpretação:** PCA é uma mudança de base que revela a **estrutura intrínseca** dos dados.
+
+### 6.3 Feature Engineering (Mudança de Base)
+
+Criar novas características a partir das originais é uma **mudança de base**.
+
+**Exemplo:** (idade, altura, peso) → (IMC = peso/altura², idade, sexo)
+
+**Interpretação:** Estamos mudando para uma base que pode ser mais adequada para o modelo.
+
+### 6.4 Embeddings (Base Semântica)
+
+Em NLP e sistemas de recomendação, os embeddings são representações em baixa dimensão (ex: 300D) de palavras/items.
+
+**Interpretação:** Cada dimensão do embedding é uma "direção" que captura um aspecto semântico. A base do espaço de embeddings é um conjunto de direções semânticas fundamentais.
+
+**Exemplo:** "Rei" - "Homem" + "Mulher" = "Rainha" → operações na base semântica.
+
+### 6.5 Autoencoders (Aprendendo uma Nova Base)
+
+Autoencoders aprendem uma **nova base** (codificação) para representar dados:
+
+- Entrada: 784 pixels (28×28)
+- Codificador: reduz para 32 dimensões (nova base)
+- A base aprendida captura os **padrões fundamentais** das imagens.
+
+**Interpretação:** O autoencoder encontra uma base que comprime a informação essencial.
+
+### 6.6 Regularização e Dimensão Efetiva
+
+Modelos com **muitos parâmetros** (alta dimensão) tendem a overfit.
+
+- **Lasso (L1):** força alguns coeficientes a zero → reduz a **dimensão efetiva**.
+- **Ridge (L2):** encolhe todos os coeficientes → reduz variância.
+
+**Interpretação:** A regularização reduz a dimensão do espaço de soluções.
+
+### 6.7 Federação de Aprendizado (Diversidade de Dados)
+
+Em FL, queremos que os dados dos clientes sejam **diversos** — ou seja, que os vetores de dados gerem um espaço de **alta dimensão**.
+
+**Interpretação:** Quanto maior a dimensão do espaço gerado pelos dados dos clientes, mais diverso é o aprendizado.
+
+## 7. Resumo Estruturado
+
+| Conceito | Definição | Exemplo |
+|----------|-----------|---------|
+| **Base** | Conjunto LI que gera o espaço | $\{(1,0), (0,1)\}$ no $\mathbb{R}^2$ |
+| **Dimensão** | Número de vetores na base | $\dim(\mathbb{R}^2) = 2$ |
+| **Coordenadas** | Coeficientes únicos para escrever um vetor na base | $(x,y)$ na base canônica |
+| **Mudança de base** | Reescrever um vetor em outra base | De RGB para CMYK |
+| **Subespaço** | Conjunto gerado por alguns vetores | Plano gerado por dois vetores LI |
+
+## 8. Exercícios Propostos
+
+<details>
+<summary>📗 Exercício 1 (Verificação de Base)</summary>
+
+**Enunciado:** Determine se os seguintes conjuntos são bases do $\mathbb{R}^3$:
+
+a) $\{(1,0,0), (0,1,0), (0,0,1)\}$  
+b) $\{(1,2,3), (2,4,6), (3,6,9)\}$  
+c) $\{(1,0,1), (0,1,1), (1,1,0)\}$  
+d) $\{(1,1,1), (1,1,0), (1,0,0)\}$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\{(1,0,0), (0,1,0), (0,0,1)\}$ → base canônica → **É base!**
+
+b) $(2,4,6) = 2(1,2,3)$, $(3,6,9) = 3(1,2,3)$ → LD → **Não é base!**
+
+c) Determinante = -2 ≠ 0 → **É base!**
+
+d) Matriz:
+$$
+\det\begin{bmatrix}
+1 & 1 & 1 \\
+1 & 1 & 0 \\
+1 & 0 & 0
+\end{bmatrix} = 1(1\cdot0 - 0\cdot0) - 1(1\cdot0 - 0\cdot1) + 1(1\cdot0 - 1\cdot1) = 0 - 0 + (-1) = -1 \neq 0
+$$
+→ **É base!**
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 (Coordenadas em uma Base)</summary>
+
+**Enunciado:** Dada a base $\mathcal{B} = \{(1,2), (3,4)\}$ do $\mathbb{R}^2$, encontre as coordenadas do vetor $\vec{w} = (5,7)$ nessa base.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+Queremos $c_1, c_2$ tais que:
+$$
+c_1(1,2) + c_2(3,4) = (5,7)
+$$
+
+Sistema:
+$$
+\begin{cases}
+c_1 + 3c_2 = 5 \\
+2c_1 + 4c_2 = 7
+\end{cases}
+$$
+
+Da primeira: $c_1 = 5 - 3c_2$  
+Substituindo: $2(5 - 3c_2) + 4c_2 = 7 \Rightarrow 10 - 6c_2 + 4c_2 = 7 \Rightarrow -2c_2 = -3 \Rightarrow c_2 = 1.5$  
+$c_1 = 5 - 3(1.5) = 5 - 4.5 = 0.5$
+
+**Coordenadas:** $(0.5, 1.5)$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 (Dimensão de Subespaço)</summary>
+
+**Enunciado:** Determine a dimensão do subespaço gerado por:
+$$
+\vec{v}_1 = (1,2,3), \quad \vec{v}_2 = (2,4,6), \quad \vec{v}_3 = (3,6,9)
+$$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+$\vec{v}_2 = 2\vec{v}_1$, $\vec{v}_3 = 3\vec{v}_1$ → todos estão na mesma reta.
+
+**Dimensão:** 1.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 (Mudança de Base – Lanchonete)</summary>
+
+**Enunciado:** Na lanchonete, os ingredientes base são:
+$$
+\vec{p} = (1,0,0), \quad \vec{c} = (0,1,0), \quad \vec{q} = (0,0,1)
+$$
+
+Um pedido é $(3, 2, 4)$ → (pães, carnes, queijos).
+
+a) Quais são as coordenadas desse pedido na base dos ingredientes?  
+b) Se a lanchonete mudar para a base dos sanduíches:  
+- Hambúrguer simples: $(1,1,0)$  
+- Hambúrguer com queijo: $(1,1,1)$  
+- Vegetariano: $(1,0,2)$  
+
+Quais são as coordenadas do mesmo pedido nessa nova base?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) Na base dos ingredientes, o pedido $(3,2,4)$ tem coordenadas $(3,2,4)$ (é trivial, porque a base é canônica).
+
+b) Queremos $c_1, c_2, c_3$ tais que:
+$$
+c_1(1,1,0) + c_2(1,1,1) + c_3(1,0,2) = (3,2,4)
+$$
+
+Sistema:
+$$
+\begin{cases}
+c_1 + c_2 + c_3 = 3 \\
+c_1 + c_2 = 2 \\
+c_2 + 2c_3 = 4
+\end{cases}
+$$
+
+Da segunda: $c_1 = 2 - c_2$  
+Da primeira: $(2 - c_2) + c_2 + c_3 = 3 \Rightarrow c_3 = 1$  
+Da terceira: $c_2 + 2(1) = 4 \Rightarrow c_2 = 2$  
+$c_1 = 2 - 2 = 0$
+
+**Coordenadas:** $(0, 2, 1)$
+
+**Interpretação:** O pedido pode ser feito com 0 hambúrgueres simples, 2 hambúrgueres com queijo e 1 vegetariano.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 (Mudança de Base – Cores)</summary>
+
+**Enunciado:** No espaço RGB, a base canônica é $\{(1,0,0), (0,1,0), (0,0,1)\}$.
+
+A cor roxa $(0.8, 0, 0.6)$ tem coordenadas $(0.8, 0, 0.6)$ na base canônica.
+
+Se mudarmos para a base:
+$$
+\mathcal{B} = \{(1,0,0), (0.5,0.5,0), (0,0,1)\}
+$$
+
+Quais são as coordenadas da cor roxa nessa nova base?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+Queremos $c_1, c_2, c_3$ tais que:
+$$
+c_1(1,0,0) + c_2(0.5,0.5,0) + c_3(0,0,1) = (0.8, 0, 0.6)
+$$
+
+Sistema:
+$$
+\begin{cases}
+c_1 + 0.5c_2 = 0.8 \\
+0.5c_2 = 0 \\
+c_3 = 0.6
+\end{cases}
+$$
+
+Da segunda: $c_2 = 0$  
+Da primeira: $c_1 = 0.8$  
+Da terceira: $c_3 = 0.6$
+
+**Coordenadas:** $(0.8, 0, 0.6)$
+
+**Observação:** A base tem um vetor que é combinação de vermelho e verde $(0.5,0.5,0)$. Como a cor roxa não tem verde, o coeficiente $c_2$ é zero.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 (Aplicação – PCA)</summary>
+
+**Enunciado:** Você tem um dataset com 100 características. O posto da matriz é 45.
+
+a) Qual é a dimensão real dos dados?  
+b) Quantas características são redundantes?  
+c) O que você faria para reduzir a dimensionalidade?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) Dimensão real = posto = **45**.
+
+b) Redundantes = $100 - 45 = 55$ características.
+
+c) Reduzir dimensionalidade com PCA, mantendo os 45 componentes principais.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 (Aplicação – Federação)</summary>
+
+**Enunciado:** Em um sistema federado, três clientes têm dados:
+- Cliente 1: $(1, 2, 3)$
+- Cliente 2: $(2, 4, 6)$
+- Cliente 3: $(3, 6, 9)$
+
+a) Qual é a dimensão do espaço gerado pelos dados dos clientes?  
+b) O que isso significa para a diversidade dos dados?  
+c) A agregação vai trazer ganho?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) Os dados são $(1,2,3)$, $(2,4,6)$, $(3,6,9)$. Todos são múltiplos de $(1,2,3)$ → **dimensão = 1**.
+
+b) Os dados são **idênticos** em distribuição (apenas escalados). Não há diversidade.
+
+c) A agregação **não** traz ganho — todos os clientes têm a mesma informação.
+
+</details>
+</details>
+
+>> *Base e dimensão são conceitos fundamentais que definem a "estrutura" de um espaço vetorial. Em Machine Learning, a dimensionalidade dos dados (posto da matriz) determina quantas características realmente importam. Mudanças de base (como PCA, embeddings, feature engineering) são ferramentas poderosas para melhorar modelos.*

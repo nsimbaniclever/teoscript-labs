@@ -1,0 +1,401 @@
+# MÉTODO DE FRAÇÕES PARCIAIS
+
+## 1. Definição
+
+### 1.1 O que são Frações Parciais?
+
+O método das **frações parciais** decompõe uma função racional $\frac{P(x)}{Q(x)}$ (onde $P$ e $Q$ são polinômios) em uma **soma de frações mais simples**, que são fáceis de integrar.
+
+**Objetivo:** Transformar:
+$$
+\frac{P(x)}{Q(x)} \quad \text{em} \quad \sum_{i} \frac{A_i}{(x - r_i)^{k_i}} + \sum_{j} \frac{B_j x + C_j}{(x^2 + b_j x + c_j)^{k_j}}
+$$
+
+### 1.2 Condições para Usar Frações Parciais
+
+1. **Grau de $P$ < Grau de $Q$** (fração própria).
+   - Se $\deg(P) \geq \deg(Q)$, primeiro faça a **divisão polinomial**.
+
+2. **Fatorar $Q(x)$** em fatores lineares e/ou quadráticos irredutíveis.
+
+## 2. Casos de Decomposição
+
+### 2.1 Caso 1: Fatores Lineares Distintos
+
+$$
+\frac{P(x)}{(x - a_1)(x - a_2) \cdots (x - a_n)} = \frac{A_1}{x - a_1} + \frac{A_2}{x - a_2} + \cdots + \frac{A_n}{x - a_n}
+$$
+
+### 2.2 Caso 2: Fatores Lineares Repetidos
+
+$$
+\frac{P(x)}{(x - a)^k} = \frac{A_1}{x - a} + \frac{A_2}{(x - a)^2} + \cdots + \frac{A_k}{(x - a)^k}
+$$
+
+### 2.3 Caso 3: Fatores Quadráticos Irredutíveis (Distintos)
+
+$$
+\frac{P(x)}{(x^2 + b_1 x + c_1)(x^2 + b_2 x + c_2)} = \frac{A_1 x + B_1}{x^2 + b_1 x + c_1} + \frac{A_2 x + B_2}{x^2 + b_2 x + c_2}
+$$
+
+### 2.4 Caso 4: Fatores Quadráticos Repetidos
+
+$$
+\frac{P(x)}{(x^2 + bx + c)^k} = \frac{A_1 x + B_1}{x^2 + bx + c} + \frac{A_2 x + B_2}{(x^2 + bx + c)^2} + \cdots + \frac{A_k x + B_k}{(x^2 + bx + c)^k}
+$$
+
+## 3. Exemplos Acadêmicos Passo a Passo
+
+### 3.1 Exemplo 1: Fatores Lineares Distintos
+
+Calcular:
+$$
+\int \frac{5x + 1}{(x + 1)(x - 2)} \, dx
+$$
+
+**Passo 1:** Decompor:
+$$
+\frac{5x + 1}{(x + 1)(x - 2)} = \frac{A}{x + 1} + \frac{B}{x - 2}
+$$
+
+**Passo 2:** Multiplicar pelo denominador:
+$$
+5x + 1 = A(x - 2) + B(x + 1)
+$$
+
+**Passo 3:** Encontrar $A$ e $B$:
+
+- **Método 1: Substituir raízes**
+  - $x = 2$: $5(2) + 1 = A(0) + B(3) \Rightarrow 11 = 3B \Rightarrow B = \frac{11}{3}$
+  - $x = -1$: $5(-1) + 1 = A(-3) + B(0) \Rightarrow -4 = -3A \Rightarrow A = \frac{4}{3}$
+
+- **Método 2: Sistema de equações** (expandindo):
+  - $5x + 1 = (A + B)x + (-2A + B)$
+  - $A + B = 5$
+  - $-2A + B = 1$
+  - Resolvendo: $A = \frac{4}{3}, B = \frac{11}{3}$
+
+**Passo 4:** Reescrever a integral:
+$$
+\int \frac{5x + 1}{(x + 1)(x - 2)} \, dx = \int \left( \frac{4/3}{x+1} + \frac{11/3}{x-2} \right) dx
+$$
+
+**Passo 5:** Integrar:
+$$
+\frac{4}{3} \ln|x+1| + \frac{11}{3} \ln|x-2| + C
+$$
+
+### 3.2 Exemplo 2: Fatores Lineares Repetidos
+
+Calcular:
+$$
+\int \frac{2x + 1}{(x - 1)^2} \, dx
+$$
+
+**Passo 1:** Decompor:
+$$
+\frac{2x + 1}{(x - 1)^2} = \frac{A}{x - 1} + \frac{B}{(x - 1)^2}
+$$
+
+**Passo 2:** Multiplicar pelo denominador:
+$$
+2x + 1 = A(x - 1) + B
+$$
+
+**Passo 3:** Encontrar $A$ e $B$:
+
+- **Método 1: Substituir raízes**
+  - $x = 1$: $2(1) + 1 = A(0) + B \Rightarrow B = 3$
+  - $x = 0$: $1 = A(-1) + 3 \Rightarrow -A = -2 \Rightarrow A = 2$
+
+**Passo 4:** Reescrever a integral:
+$$
+\int \frac{2x + 1}{(x - 1)^2} \, dx = \int \left( \frac{2}{x-1} + \frac{3}{(x-1)^2} \right) dx
+$$
+
+**Passo 5:** Integrar:
+$$
+2 \ln|x-1| - \frac{3}{x-1} + C
+$$
+
+### 3.3 Exemplo 3: Fator Quadrático Irredutível
+
+Calcular:
+$$
+\int \frac{2x + 3}{x^2 + 2x + 5} \, dx
+$$
+
+**Observação:** $x^2 + 2x + 5$ não tem raízes reais ($\Delta = 4 - 20 = -16 < 0$).
+
+**Passo 1:** A decomposição é direta (já é um denominador quadrático):
+$$
+\int \frac{2x + 3}{x^2 + 2x + 5} \, dx
+$$
+
+**Passo 2:** Reescrever o numerador para que a derivada do denominador apareça:
+$$
+\frac{d}{dx}(x^2 + 2x + 5) = 2x + 2
+$$
+
+$$
+2x + 3 = (2x + 2) + 1
+$$
+
+**Passo 3:** Separar a integral:
+$$
+\int \frac{2x + 2}{x^2 + 2x + 5} \, dx + \int \frac{1}{x^2 + 2x + 5} \, dx
+$$
+
+**Passo 4:** Primeira integral (substituição $u = x^2 + 2x + 5$, $du = (2x + 2) dx$):
+$$
+\int \frac{du}{u} = \ln|x^2 + 2x + 5| + C
+$$
+
+**Passo 5:** Segunda integral (completar quadrados):
+$$
+x^2 + 2x + 5 = (x + 1)^2 + 4
+$$
+
+$$
+\int \frac{1}{(x + 1)^2 + 4} \, dx = \frac{1}{2} \arctan\left(\frac{x + 1}{2}\right) + C
+$$
+
+**Passo 6:** Resultado:
+$$
+\int \frac{2x + 3}{x^2 + 2x + 5} \, dx = \ln|x^2 + 2x + 5| + \frac{1}{2} \arctan\left(\frac{x + 1}{2}\right) + C
+$$
+
+### 3.4 Exemplo 4: Fração Imprópria (Divisão Polinomial)
+
+Calcular:
+$$
+\int \frac{x^3 + 1}{x^2 - 1} \, dx
+$$
+
+**Passo 1:** Grau do numerador (3) > grau do denominador (2) → **divisão polinomial**.
+
+$$
+\frac{x^3 + 1}{x^2 - 1} = x + \frac{x + 1}{x^2 - 1}
+$$
+
+**Passo 2:** Decompor a fração restante:
+$$
+\frac{x + 1}{(x - 1)(x + 1)} = \frac{1}{x - 1} \quad (\text{pois } x+1 \text{ cancela})
+$$
+
+**Passo 3:** Integrar:
+$$
+\int \left( x + \frac{1}{x - 1} \right) dx = \frac{x^2}{2} + \ln|x - 1| + C
+$$
+
+## 4. Exemplos Lúdicos Aprimorados
+
+### 🍔 EXEMPLO 1 – A LANCHONETE (DECOMPOSIÇÃO DE CUSTO)
+
+A lanchonete tem um custo marginal:
+$$
+C'(x) = \frac{5x + 1}{x^2 + x - 2}
+$$
+
+**Decomposição em frações parciais:**
+$$
+x^2 + x - 2 = (x + 2)(x - 1)
+$$
+
+$$
+\frac{5x + 1}{(x + 2)(x - 1)} = \frac{A}{x + 2} + \frac{B}{x - 1}
+$$
+
+$$
+5x + 1 = A(x - 1) + B(x + 2)
+$$
+
+$ x = 1$: $6 = 3B \Rightarrow B = 2$
+$ x = -2$: $-9 = -3A \Rightarrow A = 3$
+
+**Integral:**
+$$
+C(x) = \int \left( \frac{3}{x+2} + \frac{2}{x-1} \right) dx = 3\ln|x+2| + 2\ln|x-1| + K
+$$
+
+**Interpretação:** O custo total é a soma de dois termos logarítmicos, cada um associado a um fator do denominador.
+
+### 🧃 EXEMPLO 2 – A CANTINA (FLUXO DE ESTOQUE)
+
+A cantina tem fluxo de estoque:
+$$
+E'(t) = \frac{1}{t^2 - 1}
+$$
+
+**Decomposição em frações parciais:**
+$$
+\frac{1}{t^2 - 1} = \frac{1}{(t - 1)(t + 1)} = \frac{A}{t-1} + \frac{B}{t+1}
+$$
+
+$$
+1 = A(t + 1) + B(t - 1)
+$$
+
+$t = 1$: $1 = 2A \Rightarrow A = \frac{1}{2}$
+$t = -1$: $1 = -2B \Rightarrow B = -\frac{1}{2}$
+
+**Integral:**
+$$
+E(t) = \int \left( \frac{1/2}{t-1} - \frac{1/2}{t+1} \right) dt = \frac{1}{2} \ln|t-1| - \frac{1}{2} \ln|t+1| + C = \frac{1}{2} \ln\left|\frac{t-1}{t+1}\right| + C
+$$
+
+## 5. Aplicação na Tese
+
+### 5.1 Análise de Sistemas Dinâmicos
+
+Em FL, funções racionais aparecem na análise de **funções de transferência**. A decomposição em frações parciais permite:
+- Separar modos de convergência.
+- Identificar componentes rápidas e lentas.
+- Simplificar expressões de erro.
+
+### 5.2 Transformada de Laplace
+
+Em controle e sistemas, a Transformada de Laplace frequentemente resulta em funções racionais. Frações parciais são essenciais para:
+- Inverter a transformada.
+- Analisar a resposta do sistema.
+
+## 6. Exercícios Propostos (Manuais)
+
+<details>
+<summary>📗 Exercício 1 (Fatores Lineares Distintos)</summary>
+
+**Enunciado:** Calcule as integrais:
+
+a) $\int \frac{1}{(x - 1)(x + 2)} \, dx$
+
+b) $\int \frac{3x + 2}{(x - 1)(x + 3)} \, dx$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\frac{1}{(x-1)(x+2)} = \frac{1/3}{x-1} - \frac{1/3}{x+2}$
+$$
+\int = \frac{1}{3} \ln|x-1| - \frac{1}{3} \ln|x+2| + C = \frac{1}{3} \ln\left|\frac{x-1}{x+2}\right| + C
+$$
+
+b) $\frac{3x+2}{(x-1)(x+3)} = \frac{5/4}{x-1} + \frac{7/4}{x+3}$
+$$
+\int = \frac{5}{4} \ln|x-1| + \frac{7}{4} \ln|x+3| + C
+$$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 (Fatores Lineares Repetidos)</summary>
+
+**Enunciado:** Calcule as integrais:
+
+a) $\int \frac{1}{(x - 2)^2} \, dx$
+
+b) $\int \frac{4x + 1}{(x + 1)^2} \, dx$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\int \frac{1}{(x-2)^2} dx = -\frac{1}{x-2} + C$
+
+b) $\frac{4x+1}{(x+1)^2} = \frac{4}{x+1} - \frac{3}{(x+1)^2}$
+$$
+\int = 4 \ln|x+1| + \frac{3}{x+1} + C
+$$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 (Fatores Quadráticos)</summary>
+
+**Enunciado:** Calcule as integrais:
+
+a) $\int \frac{1}{x^2 + 4x + 5} \, dx$
+
+b) $\int \frac{2x + 1}{x^2 + 2x + 2} \, dx$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\int \frac{1}{(x+2)^2 + 1} dx = \arctan(x+2) + C$
+
+b) $\frac{2x+1}{x^2+2x+2} = \frac{2x+2}{x^2+2x+2} - \frac{1}{x^2+2x+2}$
+$$
+\int = \ln|x^2+2x+2| - \arctan(x+1) + C
+$$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 (Aplicação – FL)</summary>
+
+**Enunciado:** Em FL, o erro de convergência é modelado por:
+$$
+E(t) = \int \frac{1}{t^2 + 3t + 2} \, dt
+$$
+
+a) Decomponha a função em frações parciais.
+b) Calcule $E(t)$.
+c) Qual é o limite $\lim_{t \to \infty} E(t)$?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\frac{1}{t^2+3t+2} = \frac{1}{(t+1)(t+2)} = \frac{1}{t+1} - \frac{1}{t+2}$
+
+b) $E(t) = \int \left( \frac{1}{t+1} - \frac{1}{t+2} \right) dt = \ln|t+1| - \ln|t+2| + C = \ln\left|\frac{t+1}{t+2}\right| + C$
+
+c) $\lim_{t \to \infty} E(t) = \ln(1) + C = C$
+
+</details>
+</details>
+
+## 7. 💻 EXERCÍCIO COMPUTACIONAL
+
+<details>
+<summary>🐍 Ver código (Python/SymPy)</summary>
+
+```python
+import sympy as sp
+
+x = sp.Symbol('x')
+
+# Fatores lineares distintos
+f1 = 1 / ((x - 1)*(x + 2))
+print(f"∫{f1} dx = {sp.integrate(f1, x)}")
+
+f2 = (3*x + 2) / ((x - 1)*(x + 3))
+print(f"∫{f2} dx = {sp.integrate(f2, x)}")
+
+# Fatores lineares repetidos
+f3 = 1 / (x - 2)**2
+print(f"∫{f3} dx = {sp.integrate(f3, x)}")
+
+f4 = (4*x + 1) / (x + 1)**2
+print(f"∫{f4} dx = {sp.integrate(f4, x)}")
+
+# Fatores quadráticos
+f5 = 1 / (x**2 + 4*x + 5)
+print(f"∫{f5} dx = {sp.integrate(f5, x)}")
+
+# Verificação da decomposição
+from sympy import apart
+expr = (5*x + 1) / ((x + 1)*(x - 2))
+print(f"Decomposição: {apart(expr)}")
+```
+
+</details>
+
+> *O método das frações parciais é uma ferramenta poderosa para integrar funções racionais. Ele decompõe uma fração complexa em uma soma de frações simples, permitindo a integração termo a termo. Este método é amplamente utilizado em análise de sistemas, processamento de sinais e problemas de otimização.*

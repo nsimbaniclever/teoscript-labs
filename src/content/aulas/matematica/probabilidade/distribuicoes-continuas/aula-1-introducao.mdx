@@ -1,0 +1,319 @@
+# Introdução às Distribuições
+
+## O que são variáveis aleatórias contínuas?
+
+Até agora, estudamos variáveis aleatórias **discretas**, que assumem valores isolados e contáveis. Por exemplo, o número de carros que passam em um pedágio por minuto (0, 1, 2, 3, ...) ou o número de defeitos em uma peça (0, 1, 2, ...). Para essas variáveis, a gente podia calcular a probabilidade de $X$ ser exatamente igual a um valor específico, como $P(X = 3)$.
+
+Agora vamos começar a estudar um novo tipo de variável: as **variáveis aleatórias contínuas**. Elas são diferentes porque podem assumir **QUALQUER valor** dentro de um intervalo.
+
+Pense na altura de uma pessoa. Ela pode medir 1,70 metros, 1,705 metros, 1,7053 metros, e assim por diante. Existem infinitas possibilidades entre 1,70 e 1,71. Ou pense no tempo que você leva para chegar à faculdade: pode ser 25 minutos, 25,5 minutos, 25,37 minutos. Esses são exemplos de variáveis contínuas.
+
+A grande diferença é que, para variáveis contínuas, a probabilidade de a variável assumir **exatamente** um valor específico é **SEMPRE ZERO**. Isso parece estranho, mas faz sentido: qual é a probabilidade de uma pessoa ter exatamente 1,700000000... metros de altura? Praticamente zero. Então, para variáveis contínuas, a gente **nunca** pergunta $P(X = \text{um valor específico})$. Em vez disso, perguntamos coisas como $P(a < X < b)$, ou seja, a probabilidade de a variável estar entre dois valores.
+
+## Como descrevemos uma variável contínua?
+
+Para variáveis discretas, usávamos a **função de probabilidade** $p(x) = P(X = x)$. Para variáveis contínuas, **não podemos fazer isso** porque $P(X = x) = 0$. Então criamos um novo conceito: a **função densidade de probabilidade**, que denotamos por $f(x)$.
+
+A função densidade $f(x)$ tem três propriedades importantes:
+
+> **Primeira propriedade:** $f(x) \ge 0$ para todo $x$. Ou seja, a densidade nunca é negativa.
+
+>> **Segunda propriedade:** a área total sob a curva de $f(x)$ é igual a 1. Isso significa que a integral de $f(x)$ de menos infinito até mais infinito é igual a 1:\
+$$\int_{-\infty}^{\infty} f(x) \, dx = 1$$
+
+>>> **Terceira propriedade:** a probabilidade de $X$ estar entre dois valores $a$ e $b$ é a área sob a curva de $f(x)$ nesse intervalo:\
+$$P(a \le X \le b) = \int_{a}^{b} f(x) \, dx$$
+
+É importante entender: $f(x)$ **NÃO é uma probabilidade**. $f(x)$ é uma densidade. A probabilidade é sempre uma **área sob a curva**. Quanto maior a área, maior a probabilidade.
+
+## A função de distribuição acumulada (FDA)
+
+Assim como nas variáveis discretas tínhamos a função de distribuição acumulada $F(x) = P(X \le x)$, nas variáveis contínuas também temos. A diferença é que, para variáveis contínuas, $F(x)$ é calculada como a integral da densidade:
+
+>> **$$F(x) = P(X \le x) = \int_{-\infty}^{x} f(t) \, dt$$**
+
+A função $F(x)$ nos dá a probabilidade acumulada até o ponto $x$. E uma relação importante: a densidade $f(x)$ é a derivada da FDA, ou seja, $f(x) = F'(x)$.
+
+## Valor esperado e variância para variáveis contínuas
+
+Assim como nas variáveis discretas, também podemos calcular a média e a variância para variáveis contínuas. Mas, em vez de somas, usamos integrais.
+
+O **valor esperado** (ou média) de uma variável contínua $X$ é:
+>> **$$E[X] = \int_{-\infty}^{\infty} x \cdot f(x) \, dx$$**
+
+Isso representa o centro de massa da distribuição.
+
+A **variância**, que mede o quanto os valores se dispersam em torno da média, é:\
+**$$Var(X) = \int_{-\infty}^{\infty} (x - \mu)^2 \cdot f(x) \, dx$$
+onde $\mu = E[X]$.**
+
+Uma forma alternativa e mais fácil de calcular a variância é:
+>> $$Var(X) = E[X^2] - (E[X])^2$$
+onde $E[X^2] = \int_{-\infty}^{\infty} x^2 \cdot f(x) \, dx$.
+
+## Comparação entre variáveis discretas e contínuas
+
+É importante entender as diferenças:
+
+| Característica | Variáveis Discretas | Variáveis Contínuas |
+| --- | --- | --- |
+| Valores assumidos | Valores isolados (0, 1, 2, 3, ...) | Qualquer valor em um intervalo |
+| Função de probabilidade | $p(x) = P(X = x)$ | $f(x)$ (densidade) — não é probabilidade |
+| Probabilidade de um valor exato | $P(X = x)$ pode ser maior que zero | $P(X = x) = 0$ |
+| Cálculo de probabilidade | Somatório: $\sum p(x)$ | Integral: $\int f(x) dx$ |
+| FDA | $F(x) = \sum_{t \le x} p(t)$ | $F(x) = \int_{-\infty}^{x} f(t) dt$ |
+| Esperança | $E[X] = \sum x \cdot p(x)$ | $E[X] = \int x \cdot f(x) dx$ |
+| Variância | $Var(X) = \sum (x-\mu)^2 \cdot p(x)$ | $Var(X) = \int (x-\mu)^2 \cdot f(x) dx$ |
+
+## Por que estudar variáveis contínuas?
+
+Muitos fenômenos do mundo real são contínuos: altura, peso, tempo, temperatura, distância, velocidade, corrente elétrica, pressão arterial. Para modelar esses fenômenos probabilisticamente, precisamos entender variáveis contínuas.
+
+Além disso, o Teorema Central do Limite, que veremos mais adiante, nos diz que a média de muitas variáveis (mesmo discretas) se comporta como uma variável contínua quando a amostra é grande. Por isso, as distribuições contínuas são a base de toda a inferência estatística.
+
+## Quando NÃO usar variáveis contínuas?
+
+Se a variável que você está estudando assume apenas valores isolados e contáveis, você deve usar distribuições discretas. Por exemplo, número de filhos em uma família, número de acidentes em um dia, número de chamadas recebidas por uma central telefônica. Para esses casos, as distribuições discretas (Binomial, Poisson, etc.) são as adequadas.
+
+Se você tentar usar uma distribuição contínua para dados discretos, vai cometer erros. Por exemplo, não faz sentido modelar o número de carros em um estacionamento (0, 1, 2, 3, ...) como uma variável contínua, porque o número de carros nunca pode ser 2,5.
+
+### Analogia 1: O tempo de espera no restaurante
+
+Imagine que você vai a um restaurante self-service. O tempo que você leva para se servir, desde que pega o prato até voltar à mesa, é uma variável contínua. Digamos que a função densidade desse tempo (em minutos) seja $f(x) = 0,2 - 0,02x$ para $0 \le x \le 10$, e $f(x) = 0$ para qualquer outro valor.
+
+**Pergunta:** Qual a probabilidade de você levar entre 3 e 5 minutos para se servir? Ou seja, calcule $P(3 \le X \le 5)$.
+
+**Resolução passo a passo:**
+
+1. A probabilidade é a área sob a curva da densidade no intervalo de 3 a 5:\
+   $$P(3 \le X \le 5) = \int_{3}^{5} (0,2 - 0,02x) \, dx$$
+
+2. Calculando a integral:
+   $$\int (0,2 - 0,02x) \, dx = 0,2x - 0,01x^2$$
+
+3. Avaliando de 3 até 5:
+   - Em $x = 5$: $0,2 \cdot 5 - 0,01 \cdot 5^2 = 1 - 0,25 = 0,75$
+   - Em $x = 3$: $0,2 \cdot 3 - 0,01 \cdot 3^2 = 0,6 - 0,09 = 0,51$
+
+4. Subtraindo: $0,75 - 0,51 = 0,24$
+
+**Resposta:** A probabilidade de você levar entre 3 e 5 minutos para se servir é de **24%**.
+
+### Analogia 2: A nota em uma prova
+
+Um professor aplica uma prova cujas notas podem variar de 0 a 10. A distribuição das notas dos alunos é modelada pela função densidade:
+- $f(x) = 0,06x$ para $0 \le x \le 5$
+- $f(x) = 0,12 - 0,012x$ para $5 \le x \le 10$
+
+**Pergunta:** Qual a probabilidade de um aluno tirar uma nota entre 4 e 7?
+
+**Resolução passo a passo:**
+
+1. Note que a função densidade muda no ponto $x = 5$. Então precisamos dividir a probabilidade em duas partes:
+   $$P(4 \le X \le 7) = P(4 \le X \le 5) + P(5 \le X \le 7)$$
+
+2. Primeira parte: $P(4 \le X \le 5) = \int_{4}^{5} 0,06x \, dx$
+   $$\int 0,06x \, dx = 0,03x^2$$
+   - Em $x = 5$: $0,03 \cdot 25 = 0,75$
+   - Em $x = 4$: $0,03 \cdot 16 = 0,48$
+   - $0,75 - 0,48 = 0,27$
+
+3. Segunda parte: $P(5 \le X \le 7) = \int_{5}^{7} (0,12 - 0,012x) \, dx$
+   $$\int (0,12 - 0,012x) \, dx = 0,12x - 0,006x^2$$
+   - Em $x = 7$: $0,12 \cdot 7 - 0,006 \cdot 49 = 0,84 - 0,294 = 0,546$
+   - Em $x = 5$: $0,12 \cdot 5 - 0,006 \cdot 25 = 0,6 - 0,15 = 0,45$
+   - $0,546 - 0,45 = 0,096$
+
+4. Somando as duas partes: $0,27 + 0,096 = 0,366$
+
+**Resposta:** A probabilidade de um aluno tirar nota entre 4 e 7 é de **36,6%**.
+
+### Analogia 3: O consumo de água em uma casa
+
+O consumo diário de água em uma casa (em litros) é uma variável contínua. Suponha que a função densidade seja:
+- $f(x) = 0,001x$ para $0 \le x \le 40$
+- $f(x) = 0,08 - 0,001x$ para $40 \le x \le 80$
+
+**Pergunta:** Qual a probabilidade de o consumo diário ser superior a 50 litros? Ou seja, $P(X > 50)$?
+
+**Resolução passo a passo:**
+
+1. $P(X > 50) = \int_{50}^{80} (0,08 - 0,001x) \, dx$
+
+2. $$\int (0,08 - 0,001x) \, dx = 0,08x - 0,0005x^2$$
+
+3. Avaliando:
+   - Em $x = 80$: $0,08 \cdot 80 - 0,0005 \cdot 6400 = 6,4 - 3,2 = 3,2$
+   - Em $x = 50$: $0,08 \cdot 50 - 0,0005 \cdot 2500 = 4 - 1,25 = 2,75$
+
+4. Subtraindo: $3,2 - 2,75 = 0,45$
+
+**Resposta:** A probabilidade de o consumo diário ser superior a 50 litros é de **45%**.
+
+## Propriedades importantes que você deve guardar
+
+1. **A probabilidade de um valor exato é zero:** Para qualquer variável contínua, $P(X = a) = 0$ para qualquer valor específico $a$. Por isso, $P(a \le X \le b) = P(a < X < b) = P(a \le X < b) = P(a < X \le b)$. As extremidades não fazem diferença.
+
+2. **A área total é 1:** A integral de $f(x)$ de $-\infty$ até $\infty$ é sempre igual a 1. Isso é uma propriedade fundamental e você deve sempre verificar isso quando for dada uma função densidade.
+
+3. **A densidade nunca é negativa:** $f(x) \ge 0$ para todo $x$. Se você encontrar uma função que assume valores negativos, ela não pode ser uma densidade válida.
+
+4. **A FDA é sempre crescente:** Como $F(x) = P(X \le x)$, conforme $x$ aumenta, a probabilidade acumulada também aumenta ou fica igual. Então $F(x)$ é uma função não-decrescente.
+
+5. **Limites da FDA:** $F(-\infty) = 0$ e $F(+\infty) = 1$. Isso faz sentido: a probabilidade de $X$ ser menor que menos infinito é zero, e a probabilidade de $X$ ser menor que mais infinito é 1.
+
+## Exercícios resolvidos
+
+### Exercício 1 (Fácil)
+
+Seja $X$ uma variável contínua com função densidade $f(x) = 2x$ para $0 \le x \le 1$, e $f(x) = 0$ para outros valores.
+
+a) Verifique que $f(x)$ é uma densidade válida.
+b) Calcule $P(X \le 0,5)$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+a) Para ser uma densidade válida, precisamos que $f(x) \ge 0$ (verdade, $2x \ge 0$ para $x \ge 0$) e que a área total seja 1:
+$$\int_{0}^{1} 2x \, dx = [x^2]_{0}^{1} = 1 - 0 = 1$$
+Como a área total é 1 e $f(x) \ge 0$, é uma densidade válida.
+
+b) $P(X \le 0,5) = \int_{0}^{0,5} 2x \, dx = [x^2]_{0}^{0,5} = 0,25 - 0 = 0,25$
+
+**Resposta:** $P(X \le 0,5) = 0,25$ ou **25%**.
+
+</details>
+
+### Exercício 2 (Fácil)
+
+Seja $X$ uma variável contínua com função densidade $f(x) = 3x^2$ para $0 \le x \le 1$, e $f(x) = 0$ para outros valores. Calcule $P(0,2 \le X \le 0,8)$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$$P(0,2 \le X \le 0,8) = \int_{0,2}^{0,8} 3x^2 \, dx = [x^3]_{0,2}^{0,8}$$
+
+- Em $x = 0,8$: $(0,8)^3 = 0,512$
+- Em $x = 0,2$: $(0,2)^3 = 0,008$
+- $0,512 - 0,008 = 0,504$
+
+**Resposta:** $P(0,2 \le X \le 0,8) = 0,504$ ou **50,4%**.
+
+</details>
+
+### Exercício 3 (Médio)
+
+Seja $X$ uma variável contínua com função densidade $f(x) = kx$ para $0 \le x \le 2$. Encontre o valor de $k$ para que $f(x)$ seja uma densidade válida.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+Para ser uma densidade válida, a área total deve ser 1:
+$$\int_{0}^{2} kx \, dx = 1$$
+$$k \int_{0}^{2} x \, dx = 1$$
+$$k \left[ \frac{x^2}{2} \right]_{0}^{2} = 1$$
+$$k \left( \frac{4}{2} - 0 \right) = 1$$
+$$k \cdot 2 = 1$$
+$$k = \frac{1}{2} = 0,5$$
+
+**Resposta:** $k = 0,5$.
+
+</details>
+
+### Exercício 4 (Médio)
+
+Para o exercício anterior ($f(x) = 0,5x$ para $0 \le x \le 2$), calcule:
+a) $P(0,5 \le X \le 1,5)$
+b) A média $E[X]$
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+a) $P(0,5 \le X \le 1,5) = \int_{0,5}^{1,5} 0,5x \, dx = 0,5 \left[ \frac{x^2}{2} \right]_{0,5}^{1,5} = 0,25 [x^2]_{0,5}^{1,5}$
+   - Em $x = 1,5$: $0,25 \cdot 2,25 = 0,5625$
+   - Em $x = 0,5$: $0,25 \cdot 0,25 = 0,0625$
+   - $0,5625 - 0,0625 = 0,5$
+
+b) $E[X] = \int_{0}^{2} x \cdot 0,5x \, dx = \int_{0}^{2} 0,5x^2 \, dx = 0,5 \left[ \frac{x^3}{3} \right]_{0}^{2} = \frac{1}{6} [x^3]_{0}^{2} = \frac{1}{6} \cdot 8 = \frac{4}{3}$
+
+**Resposta:** $P(0,5 \le X \le 1,5) = 0,5$ ou **50%**; $E[X] = \frac{4}{3}$.
+
+</details>
+
+### Exercício 5 (Médio/Difícil)
+
+Seja $X$ uma variável contínua com função densidade $f(x) = 2(1 - x)$ para $0 \le x \le 1$, e $f(x) = 0$ para outros valores.
+
+a) Calcule $P(X \ge 0,3)$.
+b) Calcule $E[X]$ e $Var(X)$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+a) $P(X \ge 0,3) = \int_{0,3}^{1} 2(1 - x) \, dx = 2 \left[ x - \frac{x^2}{2} \right]_{0,3}^{1}$
+   - Em $x = 1$: $1 - \frac{1}{2} = 0,5$
+   - Em $x = 0,3$: $0,3 - \frac{0,09}{2} = 0,3 - 0,045 = 0,255$
+   - $0,5 - 0,255 = 0,245$
+   - Multiplicando por 2: $0,49$
+
+b) $E[X] = \int_{0}^{1} x \cdot 2(1 - x) \, dx = 2 \int_{0}^{1} (x - x^2) \, dx = 2 \left[ \frac{x^2}{2} - \frac{x^3}{3} \right]_{0}^{1}$
+   - Em $x = 1$: $\frac{1}{2} - \frac{1}{3} = \frac{1}{6}$
+   - $2 \cdot \frac{1}{6} = \frac{1}{3}$
+
+   $E[X^2] = \int_{0}^{1} x^2 \cdot 2(1 - x) \, dx = 2 \int_{0}^{1} (x^2 - x^3) \, dx = 2 \left[ \frac{x^3}{3} - \frac{x^4}{4} \right]_{0}^{1}$
+   - Em $x = 1$: $\frac{1}{3} - \frac{1}{4} = \frac{1}{12}$
+   - $2 \cdot \frac{1}{12} = \frac{1}{6}$
+
+   $Var(X) = E[X^2] - (E[X])^2 = \frac{1}{6} - \left( \frac{1}{3} \right)^2 = \frac{1}{6} - \frac{1}{9} = \frac{3 - 2}{18} = \frac{1}{18}$
+
+**Resposta:** $P(X \ge 0,3) = 0,49$ ou **49%**; $E[X] = \frac{1}{3}$; $Var(X) = \frac{1}{18}$.
+
+</details>
+
+## Desafio final com resolução completa
+
+Seja $X$ uma variável contínua com função densidade $f(x) = ax + b$ para $0 \le x \le 2$, e $f(x) = 0$ para outros valores. Sabendo que $E[X] = 1$, encontre os valores de $a$ e $b$.
+
+<details>
+<summary>💡 Ver resolução completa</summary>
+
+Temos duas condições: a área total deve ser 1, e a média deve ser 1.
+
+**Primeira condição:** a área total é 1.
+$$\int_{0}^{2} (ax + b) \, dx = 1$$
+$$\left[ \frac{ax^2}{2} + bx \right]_{0}^{2} = 1$$
+$$\frac{a \cdot 4}{2} + b \cdot 2 = 1$$
+$$2a + 2b = 1$$
+$$a + b = \frac{1}{2} \quad \text{(Equação 1)}$$
+
+**Segunda condição:** $E[X] = 1$.
+$$E[X] = \int_{0}^{2} x \cdot (ax + b) \, dx = 1$$
+$$\int_{0}^{2} (ax^2 + bx) \, dx = 1$$
+$$\left[ \frac{ax^3}{3} + \frac{bx^2}{2} \right]_{0}^{2} = 1$$
+$$\frac{a \cdot 8}{3} + \frac{b \cdot 4}{2} = 1$$
+$$\frac{8a}{3} + 2b = 1 \quad \text{(Equação 2)}$$
+
+Agora temos um sistema de duas equações:
+$$\begin{cases} a + b = \frac{1}{2} \\ \frac{8a}{3} + 2b = 1 \end{cases}$$
+
+Da primeira equação, $b = \frac{1}{2} - a$.
+
+Substituindo na segunda equação:
+$$\frac{8a}{3} + 2\left(\frac{1}{2} - a\right) = 1$$
+$$\frac{8a}{3} + 1 - 2a = 1$$
+$$\frac{8a}{3} - 2a = 0$$
+$$\frac{8a - 6a}{3} = 0$$
+$$\frac{2a}{3} = 0$$
+$$a = 0$$
+
+Se $a = 0$, então $b = \frac{1}{2}$.
+
+Verificando: $f(x) = 0 \cdot x + \frac{1}{2} = \frac{1}{2}$ para $0 \le x \le 2$.
+- Área total: $\int_{0}^{2} \frac{1}{2} dx = \frac{1}{2} \cdot 2 = 1$ ✅
+- Média: $\int_{0}^{2} x \cdot \frac{1}{2} dx = \frac{1}{2} \left[ \frac{x^2}{2} \right]_{0}^{2} = \frac{1}{2} \cdot 2 = 1$ ✅
+
+**Resposta:** $a = 0$ e $b = \frac{1}{2}$.
+
+</details>
+
+> *Esta é a base para todas as distribuições contínuas que vamos estudar a partir de agora. Você aprendeu o conceito de função densidade, como calcular probabilidades como áreas, como encontrar a média e a variância usando integrais, e as principais diferenças entre variáveis discretas e contínuas.*

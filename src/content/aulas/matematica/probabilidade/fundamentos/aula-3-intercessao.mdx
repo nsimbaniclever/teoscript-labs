@@ -1,0 +1,470 @@
+# Interseção (∩)
+
+
+## 1. 🎯 O que é Interseção?
+
+> **Interseção (A ∩ B)** é o evento que ocorre quando **A E B acontecem simultaneamente**.
+
+**Palavra-chave:** **E** (ambos).
+
+### Explicação
+
+Imagine que você tem dois eventos:
+- **A** = "hoje é domingo"
+- **B** = "está chovendo"
+
+A interseção **A ∩ B** = "hoje é domingo **E** está chovendo" — as duas coisas precisam ser verdade ao mesmo tempo.
+
+### Notação
+- **A ∩ B** (lê-se "A interseção B")
+- **P(A ∩ B)** = probabilidade de A e B acontecerem juntos
+
+### Representação Visual
+
+```text
+                    █████████████████████            █████████████████████
+                 ████                   ████     ████                     ████
+               ███                         ███  █                             ███
+             ██                               ██                                 ██
+            █                               █   █                                  █
+           █                               █     █                                  █
+          █                               █       █                                  █
+          █                              █          █                                 █
+          █             B               █    A∩B     █                A               █     
+          █                            █            █                                 █
+          █                              █         █                                  █
+           █                              █      █                                   █
+            █                              █    █                                   █
+             ██                              ███                                 ██
+               ███                         ███ █                              ███
+                 ████                   ████     ████                     ████
+                    █████████████████████            █████████████████████
+                  
+```
+
+**A ∩ B** = a região onde os dois círculos se sobrepõem.
+
+## 2. 📋 Como Calcular a Interseção? — Os 3 Casos Fundamentais
+
+A fórmula da interseção **depende da relação entre os eventos**. Existem **3 casos fundamentais**:
+
+| Caso | Relação entre os eventos | Fórmula |
+|------|--------------------------|---------|
+| **1** | **Independentes** | $P(A \cap B) = P(A) \times P(B)$ |
+| **2** | **Dependentes** | $P(A \cap B) = P(A) \times P(B \mid A)$ |
+| **3** | **Mutuamente Exclusivos** | $P(A \cap B) = 0$ |
+
+## 3. 📊 Caso 1 — Eventos Independentes
+
+### Definição
+> Dois eventos são **independentes** quando a ocorrência de um **NÃO altera** a probabilidade do outro.
+
+### Explicação
+Se você joga uma moeda e um dado, o resultado do dado **não muda** porque a moeda deu cara. Eles são independentes — mundos separados.
+
+### Fórmula
+> **$P(A \cap B) = P(A) \times P(B)$**
+
+### Regra de Ouro
+> **Só use esta fórmula se tiver certeza de que os eventos são independentes!**
+
+### Exemplo 1.1 — Dois dados
+
+**Enunciado:** Lançam-se um dado vermelho e um dado azul. Qual a probabilidade de sair **número par no vermelho E número 5 no azul**?
+
+**Passo 1 — Identificar os eventos:**
+- A = dado vermelho dá **número par**
+- B = dado azul dá **número 5**
+
+**Passo 2 — Calcular as probabilidades individuais:**
+- $P(A) = 3/6 = 1/2$ (os pares são {2,4,6})
+- $P(B) = 1/6$ (o número 5 é uma face em 6)
+
+**Passo 3 — Verificar se são independentes:**
+- O resultado do dado vermelho **não afeta** o resultado do dado azul.
+- **São independentes!** ✅
+
+**Passo 4 — Aplicar a fórmula:**
+> $P(A \cap B) = 1/2 \times 1/6 = 1/12 \approx 8,33\%$
+
+**Resposta:** A probabilidade é de **1/12** (cerca de 8,33%).
+
+### Exemplo 1.2 — Moeda e dado
+
+**Enunciado:** Lança-se uma moeda e um dado. Qual a probabilidade de sair **coroa E número maior que 4**?
+
+**Passo 1 — Identificar os eventos:**
+- A = moeda dá **coroa**
+- B = dado dá **número maior que 4** = {5,6}
+
+**Passo 2 — Calcular as probabilidades individuais:**
+- $P(A) = 1/2$
+- $P(B) = 2/6 = 1/3$
+
+**Passo 3 — Verificar se são independentes:**
+- A moeda **não afeta** o dado.
+- **São independentes!** ✅
+
+**Passo 4 — Aplicar a fórmula:**
+> $P(A \cap B) = 1/2 \times 1/3 = 1/6 \approx 16,67\%$
+
+**Resposta:** A probabilidade é de **1/6** (cerca de 16,67%).
+
+### Exemplo 1.3 — Três moedas (múltiplos eventos independentes)
+
+**Enunciado:** Lançam-se 3 moedas. Qual a probabilidade de sair **cara nas 3**?
+
+**Passo 1 — Identificar os eventos:**
+- $E_1$ = 1ª moeda dá **cara**
+- $E_2$ = 2ª moeda dá **cara**
+- $E_3$ = 3ª moeda dá **cara**
+
+**Passo 2 — Calcular as probabilidades individuais:**
+- $P(E_1) = 1/2$
+- $P(E_2) = 1/2$
+- $P(E_3) = 1/2$
+
+**Passo 3 — Verificar se são independentes:**
+- Cada moeda é um lançamento independente.
+- **São independentes!** ✅
+
+**Passo 4 — Aplicar a fórmula (generalizada para 3 eventos):**
+> $P(E_1 \cap E_2 \cap E_3) = 1/2 \times 1/2 \times 1/2 = 1/8 = 12,5\%$
+
+**Resposta:** A probabilidade é de **1/8** (12,5%).
+
+## 4. 📊 Caso 2 — Eventos Dependentes
+
+### Definição
+> Dois eventos são **dependentes** quando a ocorrência de um **altera** a probabilidade do outro.
+
+### Explicação
+Se você tira uma carta de um baralho e **não a devolve**, a probabilidade da segunda carta ser um rei **muda** dependendo do que saiu na primeira. O primeiro evento afeta o segundo.
+
+### Fórmula
+> **$P(A \cap B) = P(A) \times P(B | A)$**
+
+Onde **$P(B | A)$** = probabilidade de B acontecer **dado que** A já aconteceu (lê-se "probabilidade de B dado A").
+
+### Regra de Ouro
+> **Use esta fórmula sempre que os eventos forem dependentes (ex: sem reposição).**
+
+### Subcaso 2.1 — Dependentes com ORDEM IMPORTA
+
+> A ordem em que os eventos ocorrem **faz diferença** no cálculo.
+
+### Exemplo 2.1.1 — Cargos distintos (presidente e vice)
+
+**Enunciado:** Em uma eleição com 10 candidatos, sorteiam-se 2 pessoas para os cargos de **presidente** e **vice** (cargos distintos). Qual a probabilidade de **João ser presidente E Maria ser vice**?
+
+**Passo 1 — Identificar os eventos:**
+- A = João é **presidente** (1º sorteado)
+- B = Maria é **vice** (2ª sorteada)
+
+**Passo 2 — Calcular as probabilidades:**
+- $P(A) = 1/10$ (João é 1 entre 10)
+- $P(B|A) = 1/9$ (dado que João já foi sorteado, sobraram 9 pessoas, Maria é 1 delas)
+
+**Passo 3 — Verificar se são dependentes:**
+- O sorteio do presidente **afeta** quem pode ser vice (João não pode ser os dois).
+- **São dependentes!** ✅
+
+**Passo 4 — Aplicar a fórmula:**
+> $P(A \cap B) = 1/10 \times 1/9 = 1/90 \approx 1,11\%$
+
+**Resposta:** A probabilidade é de **1/90** (cerca de 1,11%).
+
+### Exemplo 2.1.2 — Cartas sem reposição (ordem específica)
+
+**Enunciado:** Retiram-se 2 cartas **sem reposição** de um baralho de 52. Qual a probabilidade de sair **Ás na 1ª E Rei na 2ª** (nesta ordem exata)?
+
+**Passo 1 — Identificar os eventos:**
+- A = 1ª carta é **Ás**
+- B = 2ª carta é **Rei**
+
+**Passo 2 — Calcular as probabilidades:**
+- $P(A) = 4/52 = 1/13$ (4 ases em 52 cartas)
+- $P(B|A) = 4/51$ (após tirar o ás, sobraram 51 cartas, ainda há 4 reis)
+
+**Passo 3 — Verificar se são dependentes:**
+- A 1ª carta **afeta** a 2ª (não há reposição).
+- **São dependentes!** ✅
+
+**Passo 4 — Aplicar a fórmula:**
+> $P(A \cap B) = 4/52 \times 4/51 = 16/2652 = 4/663 \approx 0,60\%$
+
+**Resposta:** A probabilidade é de **4/663** (cerca de 0,60%).
+
+### Subcaso 2.2 — Dependentes com ORDEM NÃO IMPORTA
+
+> A ordem **não importa** — o que interessa é o conjunto final.
+
+### Exemplo 2.2.1 — Comitê (sem cargos)
+
+**Enunciado:** Em uma sala com 10 pessoas, sorteiam-se 2 para formar um **comitê** (sem cargos). Qual a probabilidade de **João E Maria** estarem no comitê?
+
+**Passo 1 — Identificar os eventos:**
+- A = João está no comitê
+- B = Maria está no comitê
+
+**Passo 2 — Calcular (por combinação):**
+- Total de comitês possíveis = $\binom{10}{2} = 45$
+- Comitês com João e Maria = 1 (só eles dois)
+
+**Passo 3 — Calcular a probabilidade:**
+> $P(A \cap B) = 1/45 \approx 2,22\%$
+
+**Resolução alternativa (por multiplicação):**
+- $P(\text{João ser sorteado}) = 2/10$ (ele pode ser o 1º ou o 2º)
+- $P(\text{Maria ser sorteada | João já foi}) = 1/9$
+- $P = 2/10 \times 1/9 = 2/90 = 1/45$ ✅
+
+**Resposta:** A probabilidade é de **1/45** (cerca de 2,22%).
+
+### Exemplo 2.2.2 — Mão de cartas (pôquer)
+
+**Enunciado:** Retiram-se 2 cartas de um baralho de 52, **sem reposição**, e a ordem **NÃO** importa. Qual a probabilidade de ter **um Ás E um Rei** na mão?
+
+**Passo 1 — Identificar os eventos:**
+- A = ter um **Ás** na mão
+- B = ter um **Rei** na mão
+
+**Passo 2 — Calcular (por combinação):**
+- Total de mãos possíveis = $\binom{52}{2} = 1326$
+- Mãos com 1 Ás e 1 Rei = $4 \times 4 = 16$
+
+**Passo 3 — Calcular a probabilidade:**
+> $P(A \cap B) = 16/1326 = 8/663 \approx 1,21\%$
+
+**Resolução alternativa (por multiplicação):**
+- Caso 1: 1º Ás e 2º Rei → $4/52 \times 4/51 = 16/2652$
+- Caso 2: 1º Rei e 2º Ás → $4/52 \times 4/51 = 16/2652$
+- Somar os dois casos: $16/2652 + 16/2652 = 32/2652 = 8/663$ ✅
+
+**Resposta:** A probabilidade é de **8/663** (cerca de 1,21%).
+
+### Exemplo 2.2.3 — Múltiplos eventos dependentes (3 bolas)
+
+**Enunciado:** Uma urna tem 5 bolas vermelhas e 3 azuis (total 8). Retiram-se **3 bolas sem reposição**. Qual a probabilidade de sair **3 vermelhas**?
+
+**Passo 1 — Identificar os eventos:**
+- $E_1$ = 1ª bola é **vermelha**
+- $E_2$ = 2ª bola é **vermelha**
+- $E_3$ = 3ª bola é **vermelha**
+
+**Passo 2 — Calcular as probabilidades condicionais:**
+- $P(E_1) = 5/8$
+- $P(E_2|E_1) = 4/7$ (sobraram 4 vermelhas em 7)
+- $P(E_3|E_1 \cap E_2) = 3/6 = 1/2$ (sobraram 3 vermelhas em 6)
+
+**Passo 3 — Aplicar a fórmula generalizada:**
+> $P(E_1 \cap E_2 \cap E_3) = 5/8 \times 4/7 \times 3/6 = 60/336 = 5/28 \approx 17,86\%$
+
+**Resposta:** A probabilidade é de **5/28** (cerca de 17,86%).
+
+## 5. 📊 Caso 3 — Eventos Mutuamente Exclusivos
+
+### Definição
+> Dois eventos são **mutuamente exclusivos** quando **NÃO podem ocorrer juntos**.
+
+### Explicação
+Se você joga uma moeda, ela não pode dar **cara e coroa** ao mesmo tempo. São mutuamente exclusivos — a interseção é vazia.
+
+### Fórmula
+> **$P(A \cap B) = 0$**
+
+### Regra de Ouro
+> **Sempre que $A \cap B = \emptyset$, a probabilidade da interseção é ZERO.**
+
+### Exemplo 3.1 — Moeda
+
+**Enunciado:** Lança-se uma moeda. Qual a probabilidade de sair **cara E coroa**?
+
+**Passo 1 — Identificar os eventos:**
+- A = sair **cara**
+- B = sair **coroa**
+
+**Passo 2 — Verificar se são mutuamente exclusivos:**
+- Uma moeda não pode dar cara e coroa ao mesmo tempo.
+- **$A \cap B = \emptyset$** → **Mutuamente Exclusivos!** ✅
+
+**Passo 3 — Aplicar a fórmula:**
+> $P(A \cap B) = 0$
+
+**Resposta:** A probabilidade é **0%** (impossível).
+
+### Exemplo 3.2 — Dado (par e ímpar)
+
+**Enunciado:** Lança-se um dado. Qual a probabilidade de sair **número par E número ímpar**?
+
+**Passo 1 — Identificar os eventos:**
+- A = sair **par** = {2,4,6}
+- B = sair **ímpar** = {1,3,5}
+
+**Passo 2 — Verificar se são mutuamente exclusivos:**
+- Não há número que seja par e ímpar ao mesmo tempo.
+- **$A \cap B = \emptyset$** → **Mutuamente Exclusivos!** ✅
+
+**Passo 3 — Aplicar a fórmula:**
+> $P(A \cap B) = 0$
+
+**Resposta:** A probabilidade é **0%** (impossível).
+
+## 6. 📊 Generalização para Múltiplos Eventos ($n$ eventos)
+
+### Fórmulas Gerais
+
+| Situação | Fórmula para $n$ eventos |
+|----------|--------------------------|
+| **Independentes** | $P(E_1 \cap ... \cap E_n) = P(E_1) \times ... \times P(E_n)$ |
+| **Dependentes** | $P(E_1 \cap \cdots \cap E_n) = P(E_1) \times P(E_2 \mid E_1) \times \cdots \times P(E_n \mid E_1 \cap \cdots \cap E_{n-1})$ |
+| **Mutuamente Exclusivos** | $P(E_1 \cap ... \cap E_n) = 0$ (se $n \geq 2$) |
+
+## 7. 📋 Quadro Resumo Completo
+
+| Situação | Fórmula | Quando usar | Exemplo |
+|----------|---------|-------------|---------|
+| **Independentes** | $P(A) \times P(B)$ | Um evento não afeta o outro | Dados, moedas |
+| **Dependentes (ordem importa)** | $P(A) \times P(B\|A)$ | Sem reposição, ordem relevante | Cargos, pódio |
+| **Dependentes (ordem não importa)** | $P(A) \times P(B\|A)$ ou combinação | Sem reposição, ordem irrelevante | Comitê, mão de cartas |
+| **Mutuamente Exclusivos** | $0$ | Não podem ocorrer juntos | Cara e coroa |
+
+## 8. 🧠 Macete de Ouro — Como Saber Qual Fórmula Usar
+
+| Pergunta | Se SIM | Se NÃO |
+|----------|--------|--------|
+| **Os eventos podem ocorrer juntos?** | Use interseção | É mutuamente exclusivo → $P=0$ |
+| **Um evento afeta o outro?** | Use $P(A) \times P(B\|A)$ | Use $P(A) \times P(B)$ |
+
+## 9. 🗺️ Mapa Mental da Interseção
+
+```text
+INTERSEÇÃO (∩) — "E"
+│
+├── 1. DEFINIÇÃO
+│   └── A e B acontecem juntos
+│
+├── 2. CLASSIFICAÇÃO BASE
+│   ├── Independentes → P(A) × P(B)
+│   │   Ex: Dados, moedas
+│   │
+│   ├── Dependentes → P(A) × P(B|A)
+│   │   ├── Ordem importa (Ex: cargos, pódio)
+│   │   └── Ordem não importa (Ex: comitê, mão de cartas)
+│   │
+│   └── Mutuamente Exclusivos → 0
+│       Ex: Cara e coroa, par e ímpar
+│
+├── 3. GENERALIZAÇÃO PARA n EVENTOS
+│   ├── Independentes → produto das probabilidades
+│   ├── Dependentes → produto das condicionais
+│   └── Mutuamente Exclusivos → 0
+│
+└── 4. EXEMPLOS PRÁTICOS
+    ├── Dados, moedas, cartas
+    ├── Cargos, comitês, pódios
+    └── Urnas, baralhos, loterias
+```
+
+## 📝 Exercícios
+
+<details>
+<summary>📗 Exercício 1 — Classifique a relação</summary>
+
+**Enunciado:** Classifique a relação entre os eventos como Independente, Dependente ou Mutuamente Exclusivo:
+
+| Experimento | A | B | Relação |
+|-------------|---|---|-------------------------------------------------------------|
+| Lançar 2 dados | Dado1 dá par | Dado2 dá 5 | |
+| Tirar 2 cartas sem reposição | 1ª é rei | 2ª é rei | |
+| Lançar uma moeda | Sai cara | Sai coroa | |
+| Sortear 2 pessoas para comitê | João está no comitê | Maria está no comitê | |
+| Sortear 2 pessoas para cargos | João é presidente | Maria é vice | |
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+| Experimento | Relação |
+|-------------|---------|
+| Lançar 2 dados | **Independente** |
+| Tirar 2 cartas sem reposição | **Dependente** |
+| Lançar uma moeda | **Mutuamente Exclusivo** |
+| Sortear 2 pessoas para comitê | **Dependente** |
+| Sortear 2 pessoas para cargos | **Dependente** |
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Calcule a interseção</summary>
+
+**Enunciado:** Uma urna tem 4 bolas vermelhas e 6 azuis. Retiram-se **2 bolas sem reposição**. Calcule:
+
+- a) P(duas vermelhas)
+- b) P(1ª vermelha E 2ª azul)
+- c) P(duas azuis)
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+Total = 10 bolas.
+
+**a) Duas vermelhas:**
+- $P(1ª V) = 4/10$
+- $P(2ª V | 1ª V) = 3/9$
+- $P = 4/10 \times 3/9 = 12/90 = 2/15 \approx 13,3\%$
+
+**b) 1ª vermelha E 2ª azul:**
+- $P(1ª V) = 4/10$
+- $P(2ª A | 1ª V) = 6/9$
+- $P = 4/10 \times 6/9 = 24/90 = 4/15 \approx 26,7\%$
+
+**c) Duas azuis:**
+- $P(1ª A) = 6/10$
+- $P(2ª A | 1ª A) = 5/9$
+- $P = 6/10 \times 5/9 = 30/90 = 1/3 \approx 33,3\%$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Múltiplos eventos</summary>
+
+**Enunciado:** Uma urna tem 3 bolas vermelhas, 4 azuis e 3 verdes (total 10). Retiram-se **3 bolas sem reposição**. Calcule:
+
+- a) P(3 vermelhas)
+- b) P(vermelha, azul, verde) — **nesta ordem exata**
+- c) P(3 azuis)
+
+<details>
+<summary>💡 Ver respostas</summary>
+
+**a) 3 vermelhas:**
+- $P = 3/10 \times 2/9 \times 1/8 = 6/720 = 1/120 \approx 0,83\%$
+
+**b) Vermelha, azul, verde (nesta ordem):**
+- $P = 3/10 \times 4/9 \times 3/8 = 36/720 = 1/20 = 5\%$
+
+**c) 3 azuis:**
+- $P = 4/10 \times 3/9 \times 2/8 = 24/720 = 1/30 \approx 3,33\%$
+
+</details>
+</details>
+
+## 🎯 Desafio Final
+
+**Enunciado:** Uma urna tem 5 bolas brancas e 5 pretas. Retiram-se **4 bolas sem reposição**. Qual a probabilidade de sair **4 brancas**?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+- $P(1ª B) = 5/10$
+- $P(2ª B | 1ª B) = 4/9$
+- $P(3ª B | 1ª e 2ª B) = 3/8$
+- $P(4ª B | 1ª, 2ª e 3ª B) = 2/7$
+
+> $P = 5/10 \times 4/9 \times 3/8 \times 2/7 = 120/5040 = 1/42 \approx 2,38\%$
+
+</details>
+
+> *A interseção é a arte de calcular o "junto" — dominar o "E" é o que separa quem chuta de quem realmente calcula probabilidades.*

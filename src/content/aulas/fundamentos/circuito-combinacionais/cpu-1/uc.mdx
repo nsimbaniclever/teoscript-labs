@@ -1,0 +1,397 @@
+# Unidade de Controle (UC)
+
+## 1. Introdução
+
+Na aula anterior, conhecemos a **ULA** — o coração computacional da CPU, o componente que efetivamente executa as operações aritméticas e lógicas. Vimos como ela soma, subtrai, compara e processa dados com velocidade impressionante.<br><br>
+
+Mas a ULA, por mais poderosa que seja, é apenas uma **ferramenta**. Ela faz o que lhe mandam fazer, mas não sabe *o que* fazer em cada momento. Ela precisa de alguém que diga: *"agora some", "agora compare", "agora guarde o resultado"*.<br><br>
+
+Esse alguém é a **Unidade de Controle** — a UC.<br><br>
+
+Se a ULA é o coração da CPU, a UC é o **cérebro**. Ela é responsável por:
+
+- **Decodificar** as instruções que chegam da memória.
+- **Gerar** os sinais de controle que ativam os circuitos corretos.
+- **Coordenar** o fluxo de dados entre a ULA, os registradores e a memória.
+- **Controlar** o Contador de Programa (PC) e o fluxo de execução.
+
+A UC é, em muitos sentidos, o componente mais complexo e fascinante do processador. Ela traduz as instruções abstratas do programador (em Assembly, C, Python) em sinais elétricos concretos que fazem o hardware funcionar.
+
+Nesta aula, vamos explorar como a Unidade de Controle funciona, como ela decodifica instruções, como ela gera sinais de controle, e como ela orquestra toda a operação da CPU.
+
+
+## 2. O Que é a Unidade de Controle?
+
+### 2.1 Definição
+
+A **Unidade de Controle** (UC), ou **Control Unit** (CU) em inglês, é o componente da CPU responsável por:
+
+> **Decodificar instruções e gerar os sinais de controle que coordenam todas as operações da CPU.**
+
+### 2.2 Funções principais
+
+| Função | Descrição |
+|--------|-----------|
+| **Busca (Fetch)** | Buscar a próxima instrução da memória |
+| **Decodificação (Decode)** | Interpretar o opcode e os operandos |
+| **Geração de sinais** | Ativar os circuitos corretos (ULA, registradores, memória) |
+| **Controle de fluxo** | Gerenciar saltos (jumps) e chamadas de função |
+| **Coordenação** | Sincronizar todas as operações com o clock |
+
+### 2.3 Analogia
+
+Pense na UC como o **maestro de uma orquestra**:
+
+- A partitura é a **instrução** (o programa).
+- O maestro lê a partitura (busca).
+- O maestro interpreta o que deve ser tocado (decodificação).
+- O maestro indica a cada músico o que fazer (sinais de controle).
+- O maestro mantém o ritmo (clock).
+- O maestro coordena a transição entre partes (saltos e chamadas).
+
+### 2.4 Diagrama da UC
+
+<details>
+<summary>🔧 Ver Diagrama da Unidade de Controle</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 500px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">UNIDADE DE CONTROLE (UC)</div>
+
+  <pre style="color: #93c5fd; font-size: 0.6rem; line-height: 1.6; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    ┌─────────────────────────────────────────────────────────────────┐
+    │                    UNIDADE DE CONTROLE (UC)                     │
+    │                                                                 │
+    │  ┌─────────────────────────────────────────────────────────┐    │
+    │  │               RELÓGIO INTERNO                           │    │
+    │  │  (Clock)                                               │    │
+    │  └─────────────────────────────────────────────────────────┘    │
+    │                              │                                   │
+    │                              ▼                                   │
+    │  ┌─────────────────────────────────────────────────────────┐    │
+    │  │               DECODIFICADOR DE INSTRUÇÕES              │    │
+    │  │  (Traduz opcode em sinais de controle)                 │    │
+    │  └─────────────────────────────────────────────────────────┘    │
+    │                              │                                   │
+    │                              ▼                                   │
+    │  ┌─────────────────────────────────────────────────────────┐    │
+    │  │          GERADOR DE SINAIS DE CONTROLE                 │    │
+    │  │  (Ativa ULA, registradores, memória, barramentos)      │    │
+    │  └─────────────────────────────────────────────────────────┘    │
+    │                                                                 │
+    └─────────────────────────────────────────────────────────────────┘
+         ↑                ↑                    ↓
+    ┌────┴────┐    ┌──────┴──────┐    ┌────────┴────────┐
+    │ Instrução│    │   Flags     │    │ Sinais de       │
+    │ (do IR)  │    │   (da ULA)  │    │ Controle        │
+    └──────────┘    └─────────────┘    └─────────────────┘
+  </pre>
+
+</div>
+</details>
+
+
+## 3. O Ciclo da UC
+
+### 3.1 O ciclo Fetch-Decode-Execute
+
+A UC opera em um ciclo contínuo de três etapas:
+
+<details>
+<summary>🔧 Ver Ciclo Fetch-Decode-Execute</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 450px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">CICLO FETCH-DECODE-EXECUTE</div>
+
+  <pre style="color: #93c5fd; font-size: 0.65rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    ┌─────────────────────────────────────────────────────────┐
+    │                                                         │
+    │   1. BUSCA (FETCH)                                      │
+    │      Busca a próxima instrução da memória              │
+    │      e coloca no Registrador de Instrução (IR).        │
+    │                                                         │
+    │                      ▼                                  │
+    │                                                         │
+    │   2. DECODIFICAÇÃO (DECODE)                             │
+    │      Interpreta o opcode e os operandos.               │
+    │      Determina quais circuitos ativar.                 │
+    │                                                         │
+    │                      ▼                                  │
+    │                                                         │
+    │   3. EXECUÇÃO (EXECUTE)                                 │
+    │      Gera os sinais de controle.                       │
+    │      ULA executa a operação.                           │
+    │      Resultado é armazenado.                           │
+    │                                                         │
+    │                      ▼                                  │
+    │                                                         │
+    │   4. REPETE                                            │
+    │                                                         │
+    └─────────────────────────────────────────────────────────┘
+  </pre>
+
+</div>
+</details>
+
+### 3.2 Busca (Fetch)
+
+**O que acontece:**
+
+1. A UC coloca o valor do **PC** (Contador de Programa) no barramento de endereços.
+2. A UC ativa o sinal de **leitura (RD)**.
+3. A memória coloca a instrução no barramento de dados.
+4. A UC armazena a instrução no **Registrador de Instrução (IR)**.
+5. A UC incrementa o PC (PC = PC + 1).
+
+**Exemplo:**
+
+- PC = 0x1000
+- Memória[0x1000] = 0x8A (instrução)
+- IR = 0x8A
+- PC = 0x1001
+
+
+### 3.3 Decodificação (Decode)
+
+**O que acontece:**
+
+1. A UC analisa o opcode no IR.
+2. A UC determina:
+   - Qual operação executar (soma, subtração, etc.).
+   - Quais registradores usar.
+   - Se precisa buscar dados adicionais da memória.
+
+**Exemplo:**
+
+- IR = 0x8A
+- Opcode = 0x8 (soma)
+- Operando = A (registrador 0)
+
+
+### 3.4 Execução (Execute)
+
+**O que acontece:**
+
+1. A UC gera os sinais de controle:
+   - **Sinal para a ULA:** "Execute soma".
+   - **Sinal para registradores:** "Leia A e B".
+   - **Sinal para a memória:** "Escreva resultado".
+2. A ULA executa a operação.
+3. O resultado é armazenado.
+
+**Exemplo:**
+
+- Opcode: Soma
+- A = 5, B = 3
+- ULA: 5 + 3 = 8
+- Resultado = 8
+
+
+
+## 4. Sinais de Controle
+
+### 4.1 O que são sinais de controle?
+
+Os **sinais de controle** são pulsos elétricos que a UC envia para ativar ou desativar componentes específicos da CPU.
+
+### 4.2 Exemplos de sinais de controle
+
+| Sinal | Destino | Função |
+|-------|---------|--------|
+| **ALU_OP** | ULA | Seleciona a operação (soma, subtração, AND, etc.) |
+| **REG_READ** | Registradores | Lê o valor de um registrador |
+| **REG_WRITE** | Registradores | Escreve em um registrador |
+| **MEM_READ** | Memória | Lê dados da memória |
+| **MEM_WRITE** | Memória | Escreve dados na memória |
+| **PC_WRITE** | Contador de Programa | Carrega um novo valor no PC |
+| **IR_WRITE** | IR | Armazena a instrução atual |
+
+### 4.3 Tabela de decodificação (exemplo)
+
+| Opcode | ALU_OP | REG_READ | REG_WRITE | MEM_READ | MEM_WRITE | PC_WRITE |
+|--------|--------|----------|-----------|----------|-----------|----------|
+| 00 (Soma) | Soma | A,B | Resultado | 0 | 0 | 0 |
+| 01 (Sub) | Sub | A,B | Resultado | 0 | 0 | 0 |
+| 10 (AND) | AND | A,B | Resultado | 0 | 0 | 0 |
+| 11 (OR) | OR | A,B | Resultado | 0 | 0 | 0 |
+| A0 (Load) | - | - | A | 1 | 0 | 0 |
+| B0 (Store) | - | A | - | 0 | 1 | 0 |
+| C0 (Jump) | - | - | - | 0 | 0 | 1 |
+
+
+## 5. Tipos de Unidade de Controle
+
+### 5.1 UC Rígida (Hardwired Control)
+
+**Características:**
+- Sinais de controle gerados por **circuitos lógicos dedicados**.
+- Mais rápida, pois não há interpretação.
+- **Difícil de modificar** — requer mudanças no hardware.
+- Usada em processadores simples e em partes críticas de processadores modernos.
+
+**Exemplo:** Decodificador de instruções implementado com portas lógicas.
+
+### 5.2 UC Microprogramada (Microprogrammed Control)
+
+**Características:**
+- Sinais de controle armazenados em uma **memória ROM** (microprograma).
+- Mais **flexível** — pode ser modificada atualizando o microprograma.
+- **Mais lenta** que a rígida (requer acesso à ROM).
+- Usada em processadores complexos (CISC).
+
+**Exemplo:** Intel 8086, processadores com muitas instruções.
+
+### 5.3 Comparação
+
+| Característica | UC Rígida | UC Microprogramada |
+|----------------|-----------|---------------------|
+| **Velocidade** | Muito rápida | Mais lenta |
+| **Flexibilidade** | Baixa | Alta |
+| **Complexidade** | Alta (circuitos) | Média (ROM) |
+| **Custo** | Alto (projeto) | Médio (ROM) |
+| **Modificação** | Difícil | Fácil |
+| **Uso** | RISC, partes críticas | CISC, processadores complexos |
+
+
+## 6. A UC e o Controle de Fluxo
+
+### 6.1 Saltos (Jumps)
+
+A UC controla o fluxo do programa:
+
+**Salto incondicional:**
+- **Instrução:** `JMP 0x2000`
+- **UC faz:** PC = 0x2000
+
+**Salto condicional:**
+- **Instrução:** `JE 0x2000` (Jump if Equal)
+- **UC faz:** Se Z (Zero) = 1, então PC = 0x2000
+- **UC faz:** Se Z = 0, então PC = PC + 1
+
+### 6.2 Chamadas de função (CALL)
+
+- **Instrução:** `CALL 0x3000`
+- **UC faz:** Salva o PC atual na pilha.
+- **UC faz:** PC = 0x3000
+
+### 6.3 Retorno de função (RET)
+
+- **Instrução:** `RET`
+- **UC faz:** Recupera o endereço da pilha.
+- **UC faz:** PC = endereço recuperado.
+
+
+## 7. Exercícios
+
+<details>
+<summary>📗 Exercício 1 — Definição (fácil)</summary>
+
+**Enunciado:** O que é a Unidade de Controle (UC)?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** A Unidade de Controle é o componente da CPU responsável por decodificar instruções e gerar os sinais de controle que coordenam todas as operações da CPU, incluindo a ULA, registradores e memória.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Funções (fácil)</summary>
+
+**Enunciado:** Quais são as três etapas principais do ciclo da UC?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Busca (Fetch), Decodificação (Decode) e Execução (Execute).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Busca (médio)</summary>
+
+**Enunciado:** Descreva o que acontece durante a etapa de busca (fetch).
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Durante a busca, a UC coloca o valor do PC no barramento de endereços, ativa o sinal de leitura (RD), recebe a instrução da memória, armazena no IR e incrementa o PC.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Decodificação (médio)</summary>
+
+**Enunciado:** Descreva o que acontece durante a etapa de decodificação.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Durante a decodificação, a UC analisa o opcode no IR para determinar qual operação executar, quais registradores usar e se precisa buscar dados adicionais da memória.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Sinais de controle (médio)</summary>
+
+**Enunciado:** Cite três sinais de controle e suas funções.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+- **ALU_OP:** Seleciona a operação da ULA.
+- **REG_WRITE:** Permite escrever em um registrador.
+- **MEM_READ:** Permite ler dados da memória.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — UC Rígida vs Microprogramada (conceitual)</summary>
+
+**Enunciado:** Qual a diferença entre uma UC rígida e uma microprogramada?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** A UC rígida usa circuitos lógicos dedicados para gerar sinais de controle (rápida, difícil de modificar). A UC microprogramada usa uma memória ROM que contém o microprograma (mais flexível, mais lenta).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — Salto condicional (conceitual)</summary>
+
+**Enunciado:** Como a UC executa um salto condicional?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** A UC verifica as flags da ULA (ex: Z = Zero). Se a condição for verdadeira, a UC carrega o endereço de destino no PC. Se for falsa, a UC incrementa o PC normalmente.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — UC e ULA (desafio)</summary>
+
+**Enunciado:** Qual é a relação entre a UC e a ULA durante a execução de uma instrução?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** A UC decodifica a instrução e envia o opcode (código da operação) para a ULA através do sinal ALU_OP. A ULA executa a operação especificada. A UC também controla a leitura dos operandos dos registradores e a escrita do resultado, através dos sinais REG_READ e REG_WRITE.
+
+</details>
+</details>
+
+
+## 8. Resumo
+
+> **"A Unidade de Controle (UC) é o cérebro da CPU — ela decodifica as instruções e orquestra todas as operações do sistema. A UC opera em um ciclo contínuo de busca (fetch), decodificação (decode) e execução (execute), gerando sinais de controle que ativam a ULA, os registradores, a memória e os barramentos. Ela pode ser implementada como circuito rígido (rápida, difícil de modificar) ou como microprograma armazenado em ROM (flexível, mais lenta). A UC também controla o fluxo do programa, gerenciando saltos (jumps), chamadas de função (CALL) e retornos (RET). Sem a UC, a CPU não saberia o que fazer — seria apenas um amontoado de circuitos sem direção."**

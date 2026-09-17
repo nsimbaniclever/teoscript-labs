@@ -1,0 +1,397 @@
+# INSTRUÇÕES LÓGICAS
+
+## 1. INTRODUÇÃO
+
+Na aula anterior, estudamos as instruções aritméticas — como a CPU soma, subtrai, multiplica e divide. Vimos que essas operações trabalham com números como um todo. Mas há um outro tipo de operação igualmente fundamental: as **instruções lógicas**.<br><br>
+
+Enquanto as instruções aritméticas tratam números como valores inteiros, as instruções lógicas trabalham **bit a bit**. Elas permitem que a CPU manipule bits individuais de um número, realizando operações como AND, OR, XOR e deslocamentos. Essas operações são essenciais para: definir e limpar flags (bits de controle), trabalhar com periféricos (cada bit controla uma função), compactar dados, criptografia, e muito mais.<br><br>
+
+Imagine que você tem um quadro com várias luzes (bits). As instruções aritméticas são como operações que afetam todo o quadro de uma vez (somar, subtrair). As instruções lógicas são como interruptores individuais para cada luz — você pode ligar, desligar ou inverter cada luz separadamente.<br><br>
+
+Nesta aula, vamos estudar as instruções lógicas em Assembly: AND, OR, XOR, NOT e os deslocamentos (shift left, shift right). Vamos entender como cada uma funciona, quando são usadas, e por que são tão importantes na computação.
+
+## 2. O QUE SÃO INSTRUÇÕES LÓGICAS?
+
+### 2.1 Definição
+
+> "Instruções lógicas são operações que manipulam bits individualmente em um valor binário, realizando operações booleanas como AND, OR, XOR, NOT e deslocamentos (shift), usadas para controle de bits, máscaras e manipulação de dados."
+
+### 2.2 Instruções lógicas básicas
+
+| Instrução | Operação | Exemplo | Significado |
+|---------|---------|---------|---------|
+| **AND** | E lógico bit a bit | `AND R1, R2, R3` | R1 = R2 & R3 |
+| **OR** | OU lógico bit a bit | `OR R1, R2, R3` | R1 = R2 \| R3 |
+| **XOR** | OU exclusivo bit a bit | `XOR R1, R2, R3` | R1 = R2 ⊕ R3 |
+| **NOT** | Inversão (complemento) | `NOT R1, R2` | R1 = ~R2 |
+| **LSL** | Deslocamento à esquerda | `LSL R1, R2, #3` | R1 = R2 << 3 |
+| **LSR** | Deslocamento à direita | `LSR R1, R2, #3` | R1 = R2 >> 3 |
+| **ROR** | Rotação à direita | `ROR R1, R2, #3` | Bits rotacionam à direita |
+
+### 2.3 Analogia
+
+Imagine que você tem um painel de 8 interruptores (bits). Cada operação lógica é como uma ação sobre esses interruptores:
+
+- **AND:** Só mantém um bit ligado se ambos os interruptores correspondentes estiverem ligados.
+- **OR:** Liga um bit se qualquer um dos interruptores correspondentes estiver ligado.
+- **XOR:** Liga um bit se os interruptores correspondentes forem diferentes (um ligado, outro desligado).
+- **NOT:** Inverte todos os interruptores (ligado vira desligado, e vice-versa).
+- **LSL:** Move todos os interruptores uma posição para a esquerda (dobra o valor).
+- **LSR:** Move todos os interruptores uma posição para a direita (divide o valor).
+
+## 3. OPERAÇÕES LÓGICAS BIT A BIT
+
+### 3.1 Tabelas verdade (bit a bit)
+
+| A | B | AND (A & B) | OR (A \| B) | XOR (A ⊕ B) | NOT (~A) |
+|---------|---------|---------|---------|---------|---------|
+| 0 | 0 | 0 | 0 | 0 | 1 |
+| 0 | 1 | 0 | 1 | 1 | 1 |
+| 1 | 0 | 0 | 1 | 1 | 0 |
+| 1 | 1 | 1 | 1 | 0 | 0 |
+
+### 3.2 AND — Máscara de bits
+
+A operação AND é usada para **limpar (zerar) bits específicos** enquanto mantém outros.
+
+**Exemplo:** Limpar os 4 bits superiores de um byte.
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+Valor original:   1010 1101
+Máscara:          0000 1111
+Resultado (AND):  0000 1101
+</pre>
+
+Os 4 bits superiores foram zerados. Os 4 bits inferiores foram mantidos.
+
+**Uso típico:** Extrair apenas uma parte de um número (como os 4 bits inferiores de um byte).
+
+### 3.3 OR — Ativação de bits
+
+A operação OR é usada para **ativar (ligar) bits específicos**.
+
+**Exemplo:** Ativar os 4 bits superiores de um byte.
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+Valor original:   0000 1101
+Máscara:          1111 0000
+Resultado (OR):   1111 1101
+</pre>
+
+Os 4 bits superiores foram ativados. Os 4 bits inferiores foram mantidos.
+
+**Uso típico:** Ativar flags ou configurações em registradores de controle.
+
+### 3.4 XOR — Inversão condicional
+
+A operação XOR é usada para **inverter bits específicos** quando a máscara tem 1.
+
+**Exemplo:** Inverter os 4 bits superiores de um byte.
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+Valor original:   1010 1101
+Máscara:          1111 0000
+Resultado (XOR):  0101 1101
+</pre>
+
+Os 4 bits superiores foram invertidos (1 virou 0, 0 virou 1). Os 4 bits inferiores foram mantidos.
+
+**Uso típico:** Alternar flags, criptografia simples, verificação de paridade.
+
+### 3.5 NOT — Inversão total
+
+A operação NOT inverte **todos** os bits.
+
+**Exemplo:** Complemento de um byte.
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+Valor original:   1010 1101
+Resultado (NOT):  0101 0010
+</pre>
+
+**Uso típico:** Complemento de 1 para aritmética, operações de lógica booleana.
+
+## 4. DESLOCAMENTOS (SHIFTS) E ROTAÇÕES (ROTATIONS)
+
+### 4.1 LSL — Deslocamento Lógico à Esquerda
+
+O deslocamento à esquerda move todos os bits para a esquerda. O bit mais à esquerda "cai" (vai para o carry), e o bit mais à direita é preenchido com 0.
+
+**Exemplo: LSL R1, R2, #2** (R1 = R2 << 2)
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+R2 = 0000 1101 (13 em decimal)
+
+Deslocar 2 posições para a esquerda:
+R2: 0000 1101
+       ↓ ↓
+R1: 0011 0100 (52 em decimal = 13 × 4) ✅
+</pre>
+
+**Efeito:** Multiplica por 2^n (n = número de deslocamentos).
+
+### 4.2 LSR — Deslocamento Lógico à Direita
+
+O deslocamento à direita move todos os bits para a direita. O bit mais à direita "cai" (vai para o carry), e o bit mais à esquerda é preenchido com 0.
+
+**Exemplo: LSR R1, R2, #2** (R1 = R2 >> 2)
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+R2 = 0011 0100 (52 em decimal)
+
+Deslocar 2 posições para a direita:
+R2: 0011 0100
+       ↓ ↓
+R1: 0000 1101 (13 em decimal = 52 ÷ 4) ✅
+</pre>
+
+**Efeito:** Divide por 2^n (n = número de deslocamentos), truncando o resto.
+
+### 4.3 ASR — Deslocamento Aritmético à Direita
+
+Diferente do LSR, o ASR (Arithmetic Shift Right) preserva o bit de sinal (o bit mais à esquerda).
+
+**Exemplo: ASR R1, R2, #2** (com números negativos)
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+R2 = 1111 0011 (-13 em complemento de 2)
+
+Deslocar 2 posições à direita (preservando sinal):
+R2: 1111 0011
+       ↓ ↓
+R1: 1111 1100 (-4 em complemento de 2) ✅
+</pre>
+
+**Efeito:** Divide por 2^n preservando o sinal (divisão aritmética).
+
+### 4.4 ROR — Rotação à Direita
+
+A rotação move os bits para a direita, mas o bit que "cai" do lado direito volta para o lado esquerdo.
+
+**Exemplo: ROR R1, R2, #2**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+R2 = 1010 1101
+
+Rotacionar 2 posições à direita:
+R2: 1010 1101
+       ↓ ↓ ↺
+R1: 0110 1011
+</pre>
+
+**Efeito:** Os bits se movem circularmente.
+
+### 4.5 Comparação: Shifts vs Rotations
+
+| Operação | Bits que saem | Bits que entram | Efeito |
+|---------|---------|---------|---------|
+| **LSL** | O mais à esquerda (vai para carry) | 0 | Multiplica por 2^n |
+| **LSR** | O mais à direita (vai para carry) | 0 | Divide por 2^n |
+| **ASR** | O mais à direita (vai para carry) | Mesmo que o bit de sinal | Divide por 2^n (com sinal) |
+| **ROR** | O mais à direita | Volta do lado esquerdo | Rotação circular |
+
+## 5. APLICAÇÕES PRÁTICAS DAS OPERAÇÕES LÓGICAS
+
+### 5.1 Máscaras de bits
+
+As máscaras são usadas para extrair ou modificar bits específicos.
+
+**Exemplo:** Extrair os 4 bits inferiores de um byte.
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+AND R1, R2, #0x0F
+</pre>
+
+Se R2 = 0xAB (1010 1011), R1 = 0x0B (0000 1011) — os 4 bits inferiores de R2.
+
+### 5.2 Configuração de periféricos
+
+Microcontroladores usam bits para controlar periféricos.
+
+**Exemplo:** Ligar o pino 3 de uma porta.
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+OR R1, R1, #0x08    ; Ativa o bit 3 (0x08 = 0000 1000)
+</pre>
+
+### 5.3 Criptografia e hashing
+
+XOR é usado extensivamente em criptografia.
+
+**Exemplo:** Cifra simples com XOR (aplicar uma chave).
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+XOR R1, R2, R3    ; R2 = dado original, R3 = chave
+</pre>
+
+Aplicar XOR novamente com a mesma chave restaura o dado original.
+
+### 5.4 Otimização: multiplicação por potências de 2
+
+Em vez de MUL, usar LSL é muito mais rápido.
+
+**Exemplo:** Multiplicar por 8.
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+LSL R1, R2, #3    ; R1 = R2 × 8 (em vez de MUL R1, R2, #8)
+</pre>
+
+## 6. APLICAÇÕES REAIS
+
+| Aplicação | Como usa operações lógicas |
+|---------|----------|
+| **Controle de periféricos** | Configurar bits em registradores de controle |
+| **Criptografia** | XOR como operação de cifra básica |
+| **Compressão de dados** | Manipulação de bits para compactar dados |
+| **Redes** | Cálculo de checksums e endereçamento IP |
+| **Gráficos** | Manipulação de cores e canais de pixel |
+| **Otimização de código** | Substituir multiplicação por shift |
+| **Jogos** | Colisão de bits, máscaras de sprite |
+
+**Exemplo prático:** Endereços IP. O endereço "192.168.1.100" é um número de 32 bits. Para extrair a parte de rede (192.168.1.0) e a parte de host (.100), usamos máscaras AND.
+
+## 7. EXERCÍCIOS
+
+<details>
+<summary>📗 Exercício 1 — AND (Fácil)</summary>
+
+**Enunciado:** Se R2 = 1010 1101 (0xAD) e R3 = 0000 1111 (0x0F), qual será o resultado de `AND R1, R2, R3`?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** R1 = 0000 1101 (0x0D)
+
+**Explicação:** 
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+AND: 1010 1101
+     0000 1111
+     0000 1101 ✅
+</pre>
+AND com 0x0F extrai os 4 bits inferiores.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — OR (Fácil)</summary>
+
+**Enunciado:** Se R2 = 0000 1101 (0x0D) e R3 = 1111 0000 (0xF0), qual será o resultado de `OR R1, R2, R3`?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** R1 = 1111 1101 (0xFD)
+
+**Explicação:** 
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+OR: 0000 1101
+    1111 0000
+    1111 1101 ✅
+</pre>
+OR ativa todos os bits da máscara.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — XOR (Fácil)</summary>
+
+**Enunciado:** Se R2 = 1010 1101 (0xAD) e R3 = 1111 0000 (0xF0), qual será o resultado de `XOR R1, R2, R3`?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** R1 = 0101 1101 (0x5D)
+
+**Explicação:** 
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+XOR: 1010 1101
+     1111 0000
+     0101 1101 ✅
+</pre>
+XOR com 0xF0 inverte os 4 bits superiores.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — NOT (Fácil)</summary>
+
+**Enunciado:** Se R2 = 1010 1101 (0xAD), qual será o resultado de `NOT R1, R2`?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** R1 = 0101 0010 (0x52)
+
+**Explicação:** NOT inverte todos os bits.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — LSL (Médio)</summary>
+
+**Enunciado:** Se R2 = 0000 0011 (3 em decimal), qual será o valor de R1 após `LSL R1, R2, #3`?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** R1 = 0001 1000 (24 em decimal)
+
+**Explicação:** 3 × 2³ = 3 × 8 = 24. LSL multiplica por potências de 2.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — LSR (Médio)</summary>
+
+**Enunciado:** Se R2 = 0011 1000 (56 em decimal), qual será o valor de R1 após `LSR R1, R2, #3`?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** R1 = 0000 0111 (7 em decimal)
+
+**Explicação:** 56 ÷ 2³ = 56 ÷ 8 = 7. LSR divide por potências de 2.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — Máscara de bits (Difícil)</summary>
+
+**Enunciado:** Você tem um byte que representa um status: os bits 0-3 são a cor e os bits 4-7 são a intensidade. Escreva instruções Assembly para extrair a intensidade (bits 4-7) e colocá-la no registrador R1.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+; R2 contém o byte de status
+LSR R1, R2, #4     ; Move os bits 4-7 para a posição 0-3
+; Agora R1 = (bits 4-7) nas posições 0-3
+</pre>
+
+**Explicação:** Se R2 = 1010 1101 (intensidade = 1010, cor = 1101), após LSR R1, R2, #4, R1 = 0000 1010 (intensidade).
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — Verificação de bit (Desafio)</summary>
+
+**Enunciado:** Escreva uma sequência de instruções Assembly para verificar se o bit 2 (valor 4) de R2 está ligado. O bit 2 é o terceiro bit da direita.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+; Primeiro extrai apenas o bit 2
+AND R1, R2, #0x04    ; Máscara com bit 2 (0000 0100)
+
+; Se R1 for diferente de zero, o bit está ligado
+; Os flags são atualizados automaticamente
+</pre>
+
+**Explicação:** Se R2 = 1010 1101, o bit 2 (valor 4) é 0 (1010 1101 & 0000 0100 = 0000 0100, que é diferente de zero). Se o bit 2 estiver desligado, o resultado seria zero, e a flag Z (zero) seria ativada.
+</details>
+</details>
+
+> As instruções lógicas — AND, OR, XOR, NOT e deslocamentos — são as ferramentas da CPU para manipular bits individuais. Enquanto as instruções aritméticas trabalham com números inteiros, as instruções lógicas permitem controle fino de cada bit, essencial para configuração de hardware, máscaras, otimização e criptografia. Operações lógicas são fundamentais em todos os níveis da computação. Do controle de pinos em um microcontrolador à criptografia em servidores, passando por otimização de código e manipulação de cores em gráficos, as instruções lógicas estão em todo lugar. Dominá-las é essencial para qualquer programador que queira entender como o computador realmente funciona no nível mais baixo.

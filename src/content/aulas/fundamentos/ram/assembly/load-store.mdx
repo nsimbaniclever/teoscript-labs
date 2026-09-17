@@ -1,0 +1,365 @@
+# INSTRUÇÕES DE TRANSFERÊNCIA
+
+## 1. INTRODUÇÃO
+
+Nas duas aulas anteriores, estudamos as instruções aritméticas e lógicas — o que a CPU faz com os dados. Vimos que a CPU soma, subtrai, multiplica, divide, faz AND, OR, XOR, NOT e desloca bits. Mas há uma pergunta fundamental: **de onde vêm os dados que a CPU processa?** E para onde vão os resultados?<br><br>
+
+A resposta está nas **instruções de transferência**. Elas são a ponte entre a CPU e a memória — o mecanismo que permite que a CPU busque dados da RAM e armazene resultados de volta na RAM. Sem elas, a CPU seria uma ilha isolada, capaz de processar dados mas sem acesso a eles.<br><br>
+
+Imagine que a CPU é um chef de cozinha e a RAM é a despensa. O chef pode ser o melhor cozinheiro do mundo, mas se não tiver ingredientes para trabalhar, não adianta nada. As instruções de transferência são os "mensageiros" que buscam ingredientes na despensa (load) e levam os pratos prontos de volta (store).<br><br>
+
+Nesta aula, vamos estudar as instruções de transferência em Assembly: **LDR (Load)** e **STR (Store)**. Vamos entender como a CPU lê da memória, como escreve na memória, os diferentes modos de endereçamento envolvidos, e por que essas instruções são tão importantes.
+
+## 2. O QUE SÃO INSTRUÇÕES DE TRANSFERÊNCIA?
+
+### 2.1 Definição
+
+> "Instruções de transferência são operações que movem dados entre a CPU (registradores) e a memória (RAM), permitindo que a CPU leia dados para processar (load) e escreva resultados de volta (store)."
+
+### 2.2 As duas instruções fundamentais
+
+| Instrução | Operação | Exemplo | Significado |
+|---------|---------|---------|---------|
+| **LDR** | Load (carregar) | `LDR R1, [R2]` | R1 = valor apontado por R2 |
+| **STR** | Store (armazenar) | `STR R1, [R2]` | valor de R1 → endereço em R2 |
+
+### 2.3 Analogia
+
+As instruções de transferência são como **mensageiros** em um escritório:
+
+- **LDR (Load):** O mensageiro vai até o arquivo (memória), pega um documento (dado) e traz para a mesa do chefe (registrador).
+- **STR (Store):** O mensageiro pega um documento da mesa do chefe (registrador) e leva para o arquivo (memória).
+
+## 3. COMO FUNCIONA O LOAD (LDR)?
+
+### 3.1 Sintaxe básica
+
+A instrução LDR carrega um valor da memória para um registrador.
+
+**Sintaxe:** `LDR destino, [endereço]`
+
+**Exemplo:** `LDR R1, [R2]`
+- R1 é o registrador de destino.
+- R2 contém o endereço de memória a ser lido.
+- O valor na posição de memória apontada por R2 é carregado em R1.
+
+### 3.2 Diagrama: Load (LDR)
+
+<details>
+<summary> **Fluxo da instrução LDR**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+┌─────────────────────────────────────────────────────────────┐
+│                                                             │
+│   ┌─────────┐     ┌─────────────┐     ┌─────────────────┐ │
+│   │  R2     │ ──► │ Endereço    │ ──► │  Memória (RAM)  │ │
+│   │ (0x1000)│     │ 0x1000      │     │  0x1000: 42     │ │
+│   └─────────┘     └─────────────┘     │  0x1001: 30     │ │
+│         ↑                             │  0x1002: 15     │ │
+│         │                             └─────────────────┘ │
+│         │                                      │          │
+│         └──────────────────────────────────────│──────────┘
+│                                                │
+│                                                ▼
+│   ┌─────────┐                                                   │
+│   │  R1     │  ←── Carrega o valor 42 da memória               │
+│   │  (42)   │                                                   │
+│   └─────────┘                                                   │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+    </pre>
+</details>
+
+### 3.3 Exemplo prático
+
+**Cenário:** A posição de memória 0x1000 contém o valor 42.
+
+**Instrução:** `LDR R1, [R2]` (onde R2 = 0x1000)
+
+**Resultado:** R1 = 42
+
+O computador leu o valor da posição 0x1000 e colocou em R1.
+
+## 4. COMO FUNCIONA O STORE (STR)?
+
+### 4.1 Sintaxe básica
+
+A instrução STR armazena um valor de um registrador para a memória.
+
+**Sintaxe:** `STR fonte, [endereço]`
+
+**Exemplo:** `STR R1, [R2]`
+- R1 contém o valor a ser armazenado.
+- R2 contém o endereço de memória onde o valor será escrito.
+- O valor em R1 é armazenado na posição de memória apontada por R2.
+
+### 4.2 Diagrama: Store (STR)
+
+<details>
+<summary> **Fluxo da instrução STR**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+┌─────────────────────────────────────────────────────────────┐
+│                                                             │
+│   ┌─────────┐     ┌─────────────┐     ┌─────────────────┐ │
+│   │  R1     │ ──► │ Valor: 42   │ ──► │  Memória (RAM)  │ │
+│   │  (42)   │     │             │     │  0x1000: 42 ✅  │ │
+│   └─────────┘     └─────────────┘     │  0x1001: 30     │ │
+│         ↑                             │  0x1002: 15     │ │
+│         │                             └─────────────────┘ │
+│         │                                      │          │
+│   ┌─────────┐                             │          │
+│   │  R2     │ ──► Endereço: 0x1000 ──────│──────────┘
+│   │ (0x1000)│                                          │
+│   └─────────┘                                          │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+    </pre>
+</details>
+
+### 4.3 Exemplo prático
+
+**Cenário:** R1 = 99, R2 = 0x2000
+
+**Instrução:** `STR R1, [R2]`
+
+**Resultado:** A posição de memória 0x2000 agora contém o valor 99.
+
+## 5. MODOS DE ENDEREÇAMENTO EM LOAD E STORE
+
+### 5.1 Endereçamento por registrador
+
+O endereço está em um registrador.
+
+**Exemplo:** `LDR R1, [R2]`
+- R2 contém o endereço.
+- Carrega de R2 para R1.
+
+### 5.2 Endereçamento imediato (constante)
+
+O endereço é um valor literal.
+
+**Exemplo:** `LDR R1, =0x1000`
+- Carrega o valor 0x1000 em R1 (não o valor da memória).
+
+### 5.3 Endereçamento base + deslocamento
+
+O endereço é a soma de um registrador (base) e um valor (deslocamento).
+
+**Exemplo:** `LDR R1, [R2, #4]`
+- R2 = 0x1000
+- R1 = valor em (0x1000 + 4) = 0x1004
+
+**Uso típico:** Acessar arrays e structs.
+
+### 5.4 Endereçamento por índice
+
+O endereço é a soma de dois registradores.
+
+**Exemplo:** `LDR R1, [R2, R3]`
+- R2 = 0x1000
+- R3 = 0x0004
+- R1 = valor em (0x1000 + 0x0004) = 0x1004
+
+**Uso típico:** Acessar arrays com índice variável.
+
+## 6. O CICLO DE UMA INSTRUÇÃO DE TRANSFERÊNCIA
+
+### 6.1 Como a CPU executa um LDR
+
+1. A CPU busca a instrução `LDR R1, [R2]` da memória.
+2. A CPU decodifica a instrução.
+3. A CPU lê o valor de R2 (que contém o endereço).
+4. A CPU acessa a memória na posição apontada por R2.
+5. A CPU carrega o valor lido para R1.
+
+### 6.2 Como a CPU executa um STR
+
+1. A CPU busca a instrução `STR R1, [R2]` da memória.
+2. A CPU decodifica a instrução.
+3. A CPU lê o valor de R1 (que será armazenado).
+4. A CPU lê o valor de R2 (que contém o endereço).
+5. A CPU acessa a memória na posição apontada por R2.
+6. A CPU escreve o valor de R1 na memória.
+
+### 6.3 Diferença de tempo
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+LDR (Load):    Busca → Decodifica → Lê endereço → Acessa memória → Carrega
+STR (Store):   Busca → Decodifica → Lê valor → Lê endereço → Acessa memória → Escreve
+
+Tempo de acesso à memória: ~50-100 ns
+Tempo de acesso a registradores: ~1 ns
+</pre>
+
+**Observação:** Acessar a memória é muito mais lento que acessar registradores. É por isso que a hierarquia de memória (cache) é tão importante.
+
+## 7. APLICAÇÕES REAIS
+
+| Aplicação | Como usa Load e Store |
+|---------|----------|
+| **Acesso a arrays** | Carregar elementos do array para processar |
+| **Acesso a estruturas** | Carregar campos de structs |
+| **Ponteiros** | Desreferenciar ponteiros para acessar dados |
+| **Periféricos** | Ler e escrever em registradores de hardware |
+| **Pilha (stack)** | Push (STR) e Pop (LDR) de valores |
+| **Variáveis globais** | Acessar variáveis na memória |
+
+**Exemplo prático:** Um programa em C faz `x = 5;` Isso se traduz em uma instrução STR que armazena o valor 5 na posição de memória da variável x. Depois, quando o programa faz `y = x;`, isso se traduz em uma instrução LDR que carrega o valor da memória para um registrador.
+
+## 8. EXERCÍCIOS
+
+<details>
+<summary>📗 Exercício 1 — LDR (Fácil)</summary>
+
+**Enunciado:** Se R2 = 0x1000 e a posição 0x1000 contém o valor 45, qual será o valor de R1 após `LDR R1, [R2]`?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** R1 = 45
+
+**Explicação:** LDR carrega para R1 o valor da memória na posição apontada por R2.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — STR (Fácil)</summary>
+
+**Enunciado:** Se R1 = 77 e R2 = 0x2000, o que acontece após `STR R1, [R2]`?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** A posição de memória 0x2000 passa a conter o valor 77.
+
+**Explicação:** STR armazena o valor de R1 na posição de memória apontada por R2.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Base + Deslocamento (Médio)</summary>
+
+**Enunciado:** Se R2 = 0x1000, e a posição 0x1004 contém o valor 99, qual será o valor de R1 após `LDR R1, [R2, #4]`?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** R1 = 99
+
+**Explicação:** O endereço acessado é R2 + 4 = 0x1000 + 4 = 0x1004. O valor em 0x1004 é 99, que é carregado para R1.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Acesso a array (Médio)</summary>
+
+**Enunciado:** Um array começa em 0x3000. Escreva uma sequência de instruções para carregar o terceiro elemento (índice 2) para R1. Cada elemento tem 4 bytes.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** 
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+LDR R2, =0x3000    ; Base do array
+LDR R1, [R2, #8]   ; Índice 2 × 4 bytes = deslocamento 8
+</pre>
+
+**Explicação:** O terceiro elemento (índice 2) está em 0x3000 + 2 × 4 = 0x3008. Load com base + deslocamento de 8.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Copiar dados (Médio)</summary>
+
+**Enunciado:** Escreva uma sequência de instruções Assembly para copiar o valor da posição 0x4000 para a posição 0x5000.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** 
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+LDR R1, =0x4000    ; Endereço fonte
+LDR R2, =0x5000    ; Endereço destino
+LDR R3, [R1]       ; Carrega da fonte para R3
+STR R3, [R2]       ; Armazena R3 no destino
+</pre>
+
+**Explicação:** 
+1. Coloca os endereços em registradores.
+2. Load do valor da fonte.
+3. Store do valor no destino.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Incrementar valor em memória (Difícil)</summary>
+
+**Enunciado:** Escreva uma sequência de instruções Assembly para incrementar em 1 o valor armazenado na posição de memória 0x6000.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** 
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+LDR R1, =0x6000    ; Endereço do valor
+LDR R2, [R1]       ; Carrega o valor para R2
+ADD R2, R2, #1     ; Incrementa R2 em 1
+STR R2, [R1]       ; Armazena de volta na memória
+</pre>
+
+**Explicação:** A CPU não pode incrementar diretamente um valor na memória. Precisa carregar, processar e armazenar de volta.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — Soma de vetor (Difícil)</summary>
+
+**Enunciado:** Escreva uma sequência de instruções Assembly para somar os elementos de um vetor de 3 elementos (cada elemento de 4 bytes) começando em 0x7000. Coloque o resultado em R4.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** 
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+; Inicializa somador
+LDR R4, =0         ; R4 = 0
+
+; Carrega primeiro elemento (índice 0)
+LDR R1, =0x7000    ; Base do vetor
+LDR R2, [R1]       ; Elemento 0
+ADD R4, R4, R2     ; Soma
+
+; Carrega segundo elemento (índice 1)
+LDR R2, [R1, #4]   ; Elemento 1 (offset 4)
+ADD R4, R4, R2     ; Soma
+
+; Carrega terceiro elemento (índice 2)
+LDR R2, [R1, #8]   ; Elemento 2 (offset 8)
+ADD R4, R4, R2     ; Soma
+</pre>
+
+**Explicação:** Cada elemento tem 4 bytes. O índice 1 está em 0x7004, o índice 2 em 0x7008.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — Ponteiro (Desafio)</summary>
+
+**Enunciado:** R2 contém o endereço de uma variável. R3 contém o endereço de um ponteiro que aponta para essa variável. Escreva instruções para: 1) Carregar o valor do ponteiro (endereço da variável) em R1. 2) Carregar o valor da variável apontada em R4.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** 
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+; R3 contém o endereço do ponteiro
+LDR R1, [R3]       ; R1 = valor do ponteiro (endereço da variável)
+LDR R4, [R1]       ; R4 = valor da variável apontada
+</pre>
+
+**Explicação:** 
+1. LDR R1, [R3] → R1 carrega o conteúdo de R3 (que é o endereço da variável).
+2. LDR R4, [R1] → R4 carrega o conteúdo da memória apontada por R1 (o valor da variável).
+</details>
+</details>
+
+> Instruções de transferência — LDR e STR — são a ponte entre a CPU e a memória. Sem elas, a CPU seria incapaz de ler dados para processar ou escrever resultados de volta. Elas são a base de todo acesso à memória: arrays, structs, ponteiros, variáveis, pilha e periféricos. Load e Store são as instruções mais executadas em qualquer programa. A cada operação aritmética, lógica ou de desvio, há múltiplas instruções de transferência buscando dados da memória e armazenando resultados. Entender como elas funcionam é essencial para compreender o desempenho do computador, a hierarquia de memória e a importância da cache.

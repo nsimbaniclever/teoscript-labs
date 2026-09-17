@@ -1,0 +1,416 @@
+
+# Complemento de 2
+
+## 1. Introdução
+
+Nas duas aulas anteriores, vimos duas tentativas de representar números negativos em binário:
+
+1. **Sinal-Magnitude:** Intuitivo, mas com dois zeros e subtração complexa.
+2. **Complemento de 1:** Subtração vira soma, mas ainda com dois zeros e *end-around carry*.
+
+Faltava uma solução que eliminasse **todos** os problemas de uma vez:
+
+- **Sem dois zeros** — apenas uma representação para o zero.
+- **Subtração como soma** — sem *end-around carry*.
+- **Faixa máxima** — usar todas as combinações possíveis.
+- **Simples e rápida** — para implementar em hardware.
+
+A solução veio com o **Complemento de 2**. A ideia é simples: para negativar um número, invertemos todos os bits **e somamos 1**. Esse pequeno detalhe faz toda a diferença.
+
+Nesta aula, vamos estudar o **Complemento de 2** — o sistema usado em **todos os processadores modernos** (Intel, AMD, ARM, etc.). Vamos entender o que ele é, como funciona, por que ele é tão superior, e por que ele se tornou o padrão universal.
+
+
+## 2. O Que é o Complemento de 2?
+
+**Complemento de 2** (em inglês: *Two's Complement*) é o sistema de representação de números negativos usado em **todos os computadores modernos**.
+
+A regra é simples:
+
+> **Para negativar um número, invertemos todos os seus bits (0 → 1, 1 → 0) e somamos 1.**
+
+### 2.1 Como funciona?
+
+**Regra do Complemento de 2:**
+- **Números positivos:** Representados da mesma forma que no binário normal.
+- **Números negativos:** Obtidos invertendo todos os bits do número positivo correspondente **e somando 1**.
+
+**Exemplo com 4 bits:**
+
+| Número Positivo | Inversão | +1 | Negativo |
+|-----------------|----------|----|----------|
+| `0000` (+0) | `1111` | `+1` | `0000` (-0 **não existe!**) |
+| `0001` (+1) | `1110` | `+1` | `1111` (-1) |
+| `0010` (+2) | `1101` | `+1` | `1110` (-2) |
+| `0011` (+3) | `1100` | `+1` | `1101` (-3) |
+| `0100` (+4) | `1011` | `+1` | `1100` (-4) |
+| `0101` (+5) | `1010` | `+1` | `1011` (-5) |
+| `0110` (+6) | `1001` | `+1` | `1010` (-6) |
+| `0111` (+7) | `1000` | `+1` | `1001` (-7) |
+| *(não existe)* | *(não existe)* | *(não existe)* | `1000` (-8) |
+
+**Observação importante:** O bit mais à esquerda (MSB) continua sendo o bit de sinal:
+- MSB = 0 → positivo
+- MSB = 1 → negativo
+
+**Mas agora, o negativo de `0000` (zero) é `0000` novamente!** O zero é único.
+
+### 2.2 Como converter um número para Complemento de 2?
+
+**Para números positivos:**
+1. Converta o número para binário normal.
+2. Preencha com zeros à esquerda até completar o número de bits desejado.
+
+**Exemplo: +5 em 4 bits**
+- 5 em binário = `101` (3 bits)
+- Preencha com zero à esquerda → `0101`
+- **Resposta:** `0101`
+
+**Para números negativos:**
+1. Converta o valor absoluto para binário.
+2. Preencha com zeros à esquerda até completar o número de bits.
+3. **Inverta todos os bits** (0 → 1, 1 → 0).
+4. **Some 1** ao resultado.
+
+**Exemplo: -5 em 4 bits**
+- 5 em binário = `101` (3 bits)
+- Preencha com zero à esquerda → `0101`
+- Inverta todos os bits: `0101` → `1010`
+- Some 1: `1010 + 0001` = `1011`
+- **Resposta:** `1011`
+
+### 2.3 Faixa de valores no Complemento de 2
+
+Com **n bits**, o Complemento de 2 pode representar:
+
+- **Maior positivo:** `0` seguido de `(n-1)` uns = `2^(n-1) - 1`
+- **Menor negativo:** `1` seguido de `(n-1)` zeros = `-2^(n-1)`
+
+| Bits | Faixa de valores |
+|------|------------------|
+| 4 bits | -8 a +7 |
+| 8 bits | -128 a +127 |
+| 16 bits | -32.768 a +32.767 |
+| 32 bits | -2.147.483.648 a +2.147.483.647 |
+
+**Atenção:** O Complemento de 2 **representa um valor negativo a mais** que os outros sistemas. Com 4 bits, representa -8 (que não existia no Sinal-Magnitude nem no Complemento de 1).
+
+
+## 3. As Grandes Vantagens do Complemento de 2
+
+### 3.1 Zero único (a grande vitória)
+
+No Complemento de 2, o zero tem **uma única representação**: `0000`.
+
+| Sistema | Zero positivo | Zero negativo |
+|---------|---------------|---------------|
+| Sinal-Magnitude | `0000` | `1000` |
+| Complemento de 1 | `0000` | `1111` |
+| **Complemento de 2** | **`0000`** | **Não existe!** |
+
+**Por que isso é importante?**
+- O computador só precisa comparar com `0000` para verificar se um número é zero.
+- Nenhuma combinação é desperdiçada.
+- Todas as 16 combinações (em 4 bits) são usadas: -8 a +7.
+
+### 3.2 Subtração = Soma (sem end-around carry)
+
+No Complemento de 2, a subtração é **exatamente igual a uma soma**. Não há *end-around carry*.
+
+**Exemplo: 3 - 2 = 1**
+
+**Passo 1:** +3 = `0011`
+**Passo 2:** -2 = inverso de `0010` = `1101` + 1 = `1110`
+**Passo 3:** Some `0011` + `1110`:
+
+<pre>
+  0 0 1 1  (+3)
++ 1 1 1 0  (-2)
+-----------
+1 0 0 0 1  (carry descartado)
+</pre>
+
+**Resultado:** `0001` = +1 ✅
+
+**Observação:** O carry (1) é simplesmente **descartado**. Não há necessidade de *end-around carry*!
+
+### 3.3 Faixa estendida (um valor a mais)
+
+O Complemento de 2 representa **um valor negativo a mais** que os outros sistemas.
+
+| Sistema | Faixa (4 bits) | Total de valores |
+|---------|----------------|------------------|
+| Sinal-Magnitude | -7 a +7 | 15 |
+| Complemento de 1 | -7 a +7 | 15 |
+| **Complemento de 2** | **-8 a +7** | **16** |
+
+**Por que isso é importante?**
+- Aproveita todas as combinações possíveis.
+- O valor extra (como -8 em 4 bits) pode ser muito útil em muitas aplicações.
+
+
+## 4. Tabela Completa (4 Bits)
+
+| Representação | Complemento de 2 | Sinal-Magnitude | Complemento de 1 |
+|---------------|------------------|-----------------|------------------|
+| `0111` | +7 | +7 | +7 |
+| `0110` | +6 | +6 | +6 |
+| `0101` | +5 | +5 | +5 |
+| `0100` | +4 | +4 | +4 |
+| `0011` | +3 | +3 | +3 |
+| `0010` | +2 | +2 | +2 |
+| `0001` | +1 | +1 | +1 |
+| `0000` | **0** | +0 | +0 |
+| `1111` | -1 | -7 | -0 |
+| `1110` | -2 | -6 | -1 |
+| `1101` | -3 | -5 | -2 |
+| `1100` | -4 | -4 | -3 |
+| `1011` | -5 | -3 | -4 |
+| `1010` | -6 | -2 | -5 |
+| `1001` | -7 | -1 | -6 |
+| `1000` | **-8** | -0 | -7 |
+
+
+## 5. Por Que o Complemento de 2 É o Padrão?
+
+### 5.1 Razões técnicas
+
+1. **Zero único:** Comparações com zero são mais simples e rápidas.
+2. **Subtração = Soma:** A lógica de subtração é idêntica à de soma (sem *end-around carry*).
+3. **Faixa estendida:** Um valor negativo extra é representado (ex: -128 em 8 bits).
+4. **Hardware mais simples:** O circuito para soma e subtração é o mesmo.
+5. **Eficiência:** Operações matemáticas são executadas mais rápido.
+
+### 5.2 Comparação com os outros sistemas
+
+| Característica | Sinal-Magnitude | Complemento de 1 | Complemento de 2 |
+|----------------|-----------------|------------------|------------------|
+| Zero único? | ❌ Não | ❌ Não | ✅ **Sim** |
+| Subtração = Soma? | ❌ Não | ⚠️ Sim (com end-around) | ✅ **Sim** |
+| Faixa estendida? | ❌ Não | ❌ Não | ✅ **Sim** |
+| Hardware simples? | ❌ Não | ⚠️ Médio | ✅ **Sim** |
+| Usado hoje? | ❌ Não | ❌ Não | ✅ **Sim** |
+
+### 5.3 Onde o Complemento de 2 é usado?
+
+| Processador | Arquitetura | Ano | Sistema |
+|-------------|-------------|-----|---------|
+| **Intel 8086** | x86 | 1978 | Complemento de 2 |
+| **Intel 80386** | x86-32 | 1985 | Complemento de 2 |
+| **Intel Core** | x86-64 | 2006 | Complemento de 2 |
+| **AMD Ryzen** | x86-64 | 2017 | Complemento de 2 |
+| **ARM** | ARM | 1985 | Complemento de 2 |
+| **Apple M1/M2/M3** | ARM | 2020 | Complemento de 2 |
+| **RISC-V** | RISC-V | 2010 | Complemento de 2 |
+
+**Conclusão:** **Todos os processadores modernos usam Complemento de 2.** É o padrão universal.
+
+
+## 6. Overflow no Complemento de 2
+
+### 6.1 O que é overflow?
+
+**Overflow** ocorre quando o resultado de uma operação não cabe no número de bits disponíveis.
+
+### 6.2 Como detectar overflow?
+
+No Complemento de 2, o overflow pode ser detectado quando:
+
+1. **Soma de dois números positivos** resulta em um número negativo.
+2. **Soma de dois números negativos** resulta em um número positivo.
+
+**Exemplo (4 bits, faixa: -8 a +7):**
+
+| Operação | Representação | Resultado | Overflow? |
+|----------|---------------|-----------|-----------|
+| 5 + 3 | `0101 + 0011` | `1000` (-8) | ✅ Sim (deveria ser +8) |
+| -5 + -4 | `1011 + 1100` | `0111` (+7) | ✅ Sim (deveria ser -9) |
+| 4 + 2 | `0100 + 0010` | `0110` (+6) | ❌ Não |
+| -3 + -2 | `1101 + 1110` | `1011` (-5) | ❌ Não |
+
+### 6.3 Regra de ouro para overflow
+
+> **Overflow ocorre quando o bit de sinal do resultado é diferente do bit de sinal esperado (baseado nos operandos).**
+
+**Exemplo:** `5 + 3` em 4 bits
+- 5 = `0101` (positivo)
+- 3 = `0011` (positivo)
+- Esperado: positivo (MSB = 0)
+- Resultado: `1000` (MSB = 1, negativo) → **Overflow!**
+
+
+## 7. Exercícios
+
+<details>
+<summary>📗 Exercício 1 — Converter +4 para Complemento de 2 (fácil)</summary>
+
+**Enunciado:** Converta o número **+4** para Complemento de 2 usando 4 bits.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Passo 1:** 4 em binário = `100` (3 bits)
+
+**Passo 2:** Preencha com zero → `0100`
+
+**Resposta:** `0100`
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Converter -4 para Complemento de 2 (fácil)</summary>
+
+**Enunciado:** Converta o número **-4** para Complemento de 2 usando 4 bits.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Passo 1:** 4 em binário = `0100`
+
+**Passo 2:** Inverta todos os bits → `1011`
+
+**Passo 3:** Some 1 → `1011 + 0001 = 1100`
+
+**Resposta:** `1100`
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Decodificar `1101` (fácil)</summary>
+
+**Enunciado:** Qual é o valor decimal da representação `1101` em Complemento de 2 (4 bits)?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Passo 1:** MSB = 1 → número negativo.
+
+**Passo 2:** Inverta os bits: `1101` → `0010`
+
+**Passo 3:** Some 1: `0010 + 0001 = 0011`
+
+**Passo 4:** `0011` = 3
+
+**Resposta:** -3
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Faixa com 6 bits (médio)</summary>
+
+**Enunciado:** Qual é a faixa de valores em Complemento de 2 com 6 bits?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Passo 1:** n = 6 bits
+
+**Passo 2:** Maior positivo = `0 11111` = +31
+
+**Passo 3:** Menor negativo = `1 00000` = -32
+
+**Resposta:** -32 a +31
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Complemento de 2 de `0000` (conceitual)</summary>
+
+**Enunciado:** Qual é o Complemento de 2 de `0000` (em 4 bits)?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Passo 1:** `0000`
+
+**Passo 2:** Inverta todos os bits → `1111`
+
+**Passo 3:** Some 1 → `1111 + 0001 = 0000` (descartando o carry)
+
+**Resposta:** `0000`
+
+**Explicação:** O zero é único! O negativo de zero é o próprio zero.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Subtração com Complemento de 2 (médio)</summary>
+
+**Enunciado:** Calcule `6 - 4` usando Complemento de 2 com 4 bits. Mostre o passo a passo.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Passo 1:** +6 = `0110`
+
+**Passo 2:** -4: 4 = `0100` → inverta = `1011` → +1 = `1100`
+
+**Passo 3:** Some `0110 + 1100`:
+
+<pre>
+  0 1 1 0  (+6)
++ 1 1 0 0  (-4)
+-----------
+1 0 0 1 0  (carry descartado)
+</pre>
+
+**Resultado:** `0010` = +2 ✅
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — Detecção de Overflow (médio)</summary>
+
+**Enunciado:** A operação `5 + 4` em Complemento de 2 com 4 bits causa overflow? Justifique.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Passo 1:** +5 = `0101`, +4 = `0100`
+
+**Passo 2:** Some: `0101 + 0100 = 1001`
+
+**Passo 3:** `1001` = -7 (em Complemento de 2)
+
+**Passo 4:** Dois números positivos (MSB = 0) deram resultado negativo (MSB = 1) → **Overflow!**
+
+**Resposta:** Sim, ocorre overflow. A faixa de 4 bits é -8 a +7, e 5 + 4 = 9, que não cabe nessa faixa.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — Complemento de 2 vs Complemento de 1 (conceitual)</summary>
+
+**Enunciado:** Qual a principal vantagem do Complemento de 2 sobre o Complemento de 1?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** O Complemento de 2 tem **zero único** e **elimina o end-around carry**, tornando as operações aritméticas mais simples e rápidas.
+
+**Explicação:** No Complemento de 1, o zero tem duas representações (+0 e -0), e a soma exige um passo extra (end-around carry). O Complemento de 2 resolve ambos os problemas com a simples adição de 1 após a inversão dos bits.
+
+</details>
+</details>
+
+## 8. Resumo Comparativo dos Três Sistemas
+
+| Característica | Sinal-Magnitude | Complemento de 1 | Complemento de 2 |
+|----------------|-----------------|------------------|------------------|
+| **Como obter negativo** | Inverter o bit de sinal | Inverter todos os bits | Inverter bits + somar 1 |
+| **Zero único?** | ❌ Não | ❌ Não | ✅ **Sim** |
+| **Subtração = Soma?** | ❌ Não | ⚠️ Sim (end-around) | ✅ **Sim** |
+| **Faixa (4 bits)** | -7 a +7 | -7 a +7 | **-8 a +7** |
+| **Total de valores** | 15 | 15 | **16** |
+| **Hardware** | Complexo | Médio | **Simples** |
+| **Usado hoje?** | ❌ Não | ❌ Não | ✅ **Sim** |
+
+
+
+> **"O Complemento de 2 é o sistema de representação de números negativos usado em todos os processadores modernos. Ele resolveu os dois problemas principais dos sistemas anteriores: o zero único, que simplifica comparações, e a subtração como soma sem end-around carry, que torna as operações aritméticas mais simples e rápidas. Com uma faixa estendida (-2^(n-1) a +2^(n-1)-1) e hardware mais simples, o Complemento de 2 se tornou o padrão universal, usado por Intel, AMD, ARM e todos os outros fabricantes de processadores. É a base de toda a aritmética computacional moderna."**

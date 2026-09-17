@@ -1,0 +1,214 @@
+# INTRODUÇÃO ÀS SÉRIES
+
+## AULA 1 – DEFINIÇÃO DE SÉRIE E SÉRIE GEOMÉTRICA
+
+## 1. O que é uma Série?
+
+Uma **série** é a soma dos termos de uma **sequência infinita**.
+
+Enquanto uma sequência é uma **lista** de números (ex: $1, 2, 3, 4, \dots$), uma série é a **soma** desses números (ex: $1 + 2 + 3 + 4 + \dots$).
+
+**Notação:**
+$$
+\sum_{n=1}^{\infty} a_n = a_1 + a_2 + a_3 + \cdots
+$$
+
+**Exemplo:** A série dos inversos dos quadrados:
+$$
+\sum_{n=1}^{\infty} \frac{1}{n^2} = 1 + \frac{1}{4} + \frac{1}{9} + \frac{1}{16} + \cdots
+$$
+
+## 2. Soma Parcial
+
+Como não podemos somar infinitos termos diretamente, definimos a **soma parcial** $S_N$ como a soma dos primeiros $N$ termos:
+
+$$
+S_N = \sum_{n=1}^{N} a_n = a_1 + a_2 + \cdots + a_N
+$$
+
+**Exemplo:** Para a série $\sum \frac{1}{n^2}$:
+- $S_1 = 1$
+- $S_2 = 1 + \frac{1}{4} = 1.25$
+- $S_3 = 1 + \frac{1}{4} + \frac{1}{9} \approx 1.361$
+- $S_{10} \approx 1.549$
+
+**Interpretação:** À medida que $N$ aumenta, a soma parcial se aproxima de um valor. Se esse valor existe, a série **converge**.
+
+## 3. Série Geométrica (A Mais Importante!)
+
+### 3.1 Definição
+
+Uma **série geométrica** é uma série onde **cada termo** é obtido multiplicando o anterior por uma constante $r$ (a **razão**):
+
+$$
+\sum_{n=0}^{\infty} r^n = 1 + r + r^2 + r^3 + r^4 + \cdots
+$$
+
+**Exemplos:**
+- $r = \frac{1}{2}$: $1 + \frac{1}{2} + \frac{1}{4} + \frac{1}{8} + \cdots$
+- $r = 2$: $1 + 2 + 4 + 8 + 16 + \cdots$
+- $r = -\frac{1}{3}$: $1 - \frac{1}{3} + \frac{1}{9} - \frac{1}{27} + \cdots$
+
+### 3.2 Soma da Série Geométrica Finita
+
+A soma dos primeiros $N$ termos é:
+
+$$
+S_N = \sum_{n=0}^{N-1} r^n = \frac{1 - r^N}{1 - r} \quad (r \neq 1)
+$$
+
+**Exemplo:** $r = \frac{1}{2}, N = 5$:
+$$
+S_5 = 1 + \frac{1}{2} + \frac{1}{4} + \frac{1}{8} + \frac{1}{16} = \frac{1 - (1/2)^5}{1 - 1/2} = \frac{1 - 1/32}{1/2} = \frac{31}{16} = 1.9375
+$$
+
+### 3.3 Soma da Série Geométrica Infinita
+
+Se $|r| < 1$, a série **converge** para:
+
+$$
+\sum_{n=0}^{\infty} r^n = \frac{1}{1 - r}
+$$
+
+**Exemplo:** $r = \frac{1}{2}$:
+$$
+1 + \frac{1}{2} + \frac{1}{4} + \frac{1}{8} + \cdots = \frac{1}{1 - 1/2} = 2
+$$
+
+**Exemplo:** $r = -\frac{1}{3}$:
+$$
+1 - \frac{1}{3} + \frac{1}{9} - \frac{1}{27} + \cdots = \frac{1}{1 - (-1/3)} = \frac{1}{4/3} = \frac{3}{4}
+$$
+
+### 3.4 Condição de Convergência da Série Geométrica
+
+| $r$ | Comportamento |
+|---------|---------------|
+| $|r| < 1$ | **Converge** para $\frac{1}{1-r}$ |
+| $|r| \geq 1$ | **Diverge** |
+
+**Exemplos:**
+- $r = 0.5$ → converge (soma = 2)
+- $r = -0.5$ → converge (soma = $\frac{2}{3}$)
+- $r = 1$ → diverge ($1 + 1 + 1 + \cdots = \infty$)
+- $r = -1$ → diverge (oscila entre 0 e 1)
+- $r = 2$ → diverge (cresce infinitamente)
+
+## 4. Por que isso é importante para projetos/ML?
+
+### 4.1 Soma de Erros Acumulados
+
+Em Machine Learning, durante o treinamento, o erro diminui ao longo do tempo. O **erro total acumulado** é a soma de todos os erros:
+
+$$
+E_{\text{total}} = \sum_{t=1}^{\infty} e_t
+$$
+
+Se o erro decai como uma série geométrica ($e_t = r^t$ com $|r| < 1$), o erro total é **finito** — o que indica que o modelo **converge**.
+
+**Exemplo:** Se o erro em cada época é $e_t = \frac{1}{2^t}$, o erro total é:
+$$
+\sum_{t=1}^{\infty} \frac{1}{2^t} = 1
+$$
+
+### 4.2 Taxa de Aprendizado Decrescente
+
+Em otimização, a taxa de aprendizado $\eta_t$ frequentemente decai conforme:
+$$
+\eta_t = \eta_0 \cdot r^t
+$$
+
+Se $|r| < 1$, a soma total das atualizações é finita, o que garante **estabilidade** do algoritmo.
+
+### 4.3 Séries Geométricas em Finanças e Economia
+
+Em projetos de finanças, séries geométricas são usadas para calcular:
+- **Valor presente líquido** (VPL) de fluxos de caixa futuros.
+- **Juros compostos** e amortizações.
+
+## 5. Exemplo Lúdico – A Lanchonete
+
+A lanchonete tem vendas que diminuem pela metade a cada semana:
+
+$$
+100 + 50 + 25 + 12.5 + 6.25 + \cdots
+$$
+
+**Esta é uma série geométrica com $r = 0.5$ e primeiro termo 100:**
+
+$$
+\sum_{n=0}^{\infty} 100 \cdot (0.5)^n = \frac{100}{1 - 0.5} = 200
+$$
+
+**Interpretação:** O total de vendas ao longo de todas as semanas é **200 unidades**. Mesmo que as vendas continuem para sempre, o total é finito — uma propriedade surpreendente e muito útil.
+
+## 6. Exercícios Propostos
+
+<details>
+<summary>📗 Exercício 1</summary>
+
+**Enunciado:** Calcule a soma das séries geométricas:
+
+a) $\sum_{n=0}^{\infty} \left( \frac{1}{3} \right)^n$
+
+b) $\sum_{n=0}^{\infty} \left( \frac{2}{3} \right)^n$
+
+c) $\sum_{n=0}^{\infty} 2^n$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\frac{1}{1 - 1/3} = \frac{3}{2}$
+
+b) $\frac{1}{1 - 2/3} = 3$
+
+c) Diverge ($|r| = 2 > 1$)
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2</summary>
+
+**Enunciado:** Calcule a soma parcial $S_5$ para:
+
+a) $r = \frac{1}{2}$
+
+b) $r = 2$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $S_5 = \frac{1 - (1/2)^5}{1 - 1/2} = \frac{31}{16} = 1.9375$
+
+b) $S_5 = \frac{1 - 2^5}{1 - 2} = 31$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 (Aplicação)</summary>
+
+**Enunciado:** O erro de um modelo decai como $e_t = \frac{1}{3^t}$.
+
+a) Qual é o erro total acumulado $\sum_{t=1}^{\infty} e_t$?
+
+b) O modelo converge?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\sum_{t=1}^{\infty} \frac{1}{3^t} = \frac{1/3}{1 - 1/3} = \frac{1/3}{2/3} = \frac{1}{2}$
+
+b) Sim! A série converge para $\frac{1}{2}$.
+
+</details>
+</details>
+
+> *Uma série é a soma infinita dos termos de uma sequência. A **série geométrica** $\sum r^n$ é a mais importante: ela converge para $\frac{1}{1-r}$ quando $|r| < 1$, e diverge quando $|r| \geq 1$. A soma parcial $S_N$ permite aproximar o valor total. Em Machine Learning, séries geométricas aparecem na análise de erro acumulado (que indica se o modelo converge) e na taxa de aprendizado decrescente (que garante estabilidade do algoritmo). Compreender séries geométricas é essencial para projetar algoritmos de otimização eficientes e garantir que o treinamento de modelos não acumule erro indefinidamente.*

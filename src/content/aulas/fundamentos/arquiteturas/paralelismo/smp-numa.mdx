@@ -1,0 +1,402 @@
+# MULTIPROCESSAMENTO — SMP E NUMA
+
+## 1. INTRODUÇÃO
+
+Nas duas últimas aulas, estudamos o SIMD e o MIMD — os paradigmas de paralelismo em nível de dados e de tarefas. Vimos que o MIMD é o coração dos sistemas modernos: processadores multicore, servidores, clusters e supercomputadores.<br><br>
+
+Mas como esses múltiplos processadores se comunicam? Como eles compartilham dados entre si? A resposta está na **arquitetura de memória**. Existem duas abordagens principais para organizar a memória em sistemas multiprocessados: **SMP (Symmetric Multiprocessing)** e **NUMA (Non-Uniform Memory Access)**.<br><br>
+
+Imagine um grande escritório com várias mesas de trabalho:
+
+- **SMP:** Todas as mesas estão em uma única sala, com um único arquivo central. Todos têm acesso igual ao arquivo, mas a sala fica congestionada se houver muitas pessoas.
+- **NUMA:** Cada mesa tem seu próprio arquivo pequeno (memória local). Para acessar arquivos de outras mesas, é preciso caminhar até lá (acesso mais lento). Mas a sala não fica tão congestionada.<br><br>
+
+Nesta aula, vamos estudar o multiprocessamento: as arquiteturas SMP e NUMA, como funcionam, quais são suas vantagens e desvantagens, e onde cada uma é usada.
+
+## 2. O QUE É MULTIPROCESSAMENTO?
+
+### 2.1 Definição
+
+> "Multiprocessamento é o uso de múltiplos processadores (ou núcleos) em um único sistema, compartilhando recursos como memória, barramentos e periféricos, para executar tarefas em paralelo."
+
+### 2.2 Características principais
+
+| Característica | Descrição |
+|---------|----------|
+| **O que faz** | Múltiplos processadores executam tarefas em paralelo |
+| **Recursos compartilhados** | Memória, barramentos, E/S, cache |
+| **Comunicação** | Via memória compartilhada ou troca de mensagens |
+| **Vantagem** | Maior throughput, escalabilidade |
+| **Desafio** | Coerência de cache, sincronização, contenção |
+
+## 3. SMP — SYMMETRIC MULTIPROCESSING
+
+### 3.1 Definição
+
+> "SMP (Symmetric Multiprocessing) é uma arquitetura onde múltiplos processadores idênticos compartilham uma única memória principal e um único barramento, com acesso simétrico a todos os recursos."
+
+### 3.2 Características principais
+
+| Característica | Descrição |
+|---------|----------|
+| **Processadores** | Todos idênticos (simétricos) |
+| **Memória** | Única, compartilhada por todos |
+| **Barramento** | Único, compartilhado |
+| **Acesso à memória** | Uniforme (tempo igual para todos) |
+| **Escalabilidade** | Limitada (8-16 CPUs típicas) |
+| **Exemplos** | Computadores pessoais (2-8 núcleos), servidores de pequeno porte |
+
+### 3.3 Diagrama: SMP
+
+<details>
+<summary> **Arquitetura SMP**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+┌─────────────────────────────────────────────────────────────┐
+│                                                             │
+│   ┌─────────┐  ┌─────────┐  ┌─────────┐  ┌─────────┐    │
+│   │  CPU 1  │  │  CPU 2  │  │  CPU 3  │  │  CPU 4  │    │
+│   │ Cache L1│  │ Cache L1│  │ Cache L1│  │ Cache L1│    │
+│   │ Cache L2│  │ Cache L2│  │ Cache L2│  │ Cache L2│    │
+│   └─────────┘  └─────────┘  └─────────┘  └─────────┘    │
+│        │             │             │             │         │
+│        └─────────────┴─────────────┴─────────────┘         │
+│                          │                                  │
+│                   ┌──────┴──────┐                         │
+│                   │  Barramento  │                         │
+│                   │  Compartilhado│                         │
+│                   └──────┬──────┘                         │
+│                          │                                  │
+│                   ┌──────┴──────┐                         │
+│                   │  Memória   │                          │
+│                   │  Principal │                          │
+│                   │  (DRAM)    │                          │
+│                   └─────────────┘                         │
+│                                                             │
+│   Todos os processadores têm acesso igual à memória       │
+│   Barramento único pode ser gargalo                       │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+    </pre>
+</details>
+
+### 3.4 Vantagens do SMP
+
+| Vantagem | Explicação |
+|---------|----------|
+| **Simplicidade** | Modelo de programação simples (memória compartilhada) |
+| **Balanceamento de carga** | Qualquer processador pode executar qualquer tarefa |
+| **Transparência** | O sistema operacional gerencia os processadores |
+| **Custo-benefício** | Bom para 2-8 núcleos |
+
+### 3.5 Desvantagens do SMP
+
+| Desvantagem | Explicação |
+|---------|----------|
+| **Barramento compartilhado** | Gargalo à medida que mais CPUs são adicionadas |
+| **Coerência de cache** | Manter caches sincronizadas é complexo |
+| **Escalabilidade limitada** | Não escala bem além de 8-16 CPUs |
+| **Contenção de memória** | Múltiplas CPUs competindo pela memória |
+
+### 3.6 Protocolo MESI (Coerência de Cache)
+
+O **protocolo MESI** é usado em sistemas SMP para manter a coerência de cache:
+
+| Estado | Descrição |
+|---------|----------|
+| **M (Modified)** | Dado modificado (escrito), somente nesta cache |
+| **E (Exclusive)** | Dado exclusivo, não modificado |
+| **S (Shared)** | Dado compartilhado com outras caches |
+| **I (Invalid)** | Dado inválido (não está nesta cache) |
+
+**Funcionamento:**
+1. Uma CPU quer escrever em um dado.
+2. Se o dado está em M ou E, a CPU escreve diretamente.
+3. Se o dado está em S, a CPU invalida as outras caches.
+4. Se o dado está em I, a CPU busca o dado da memória.
+
+## 4. NUMA — NON-UNIFORM MEMORY ACCESS
+
+### 4.1 Definição
+
+> "NUMA (Non-Uniform Memory Access) é uma arquitetura onde cada processador tem sua própria memória local (acesso rápido) e pode acessar a memória de outros processadores (acesso mais lento), resultando em tempos de acesso não uniformes."
+
+### 4.2 Características principais
+
+| Característica | Descrição |
+|---------|----------|
+| **Processadores** | Agrupados em nós |
+| **Memória** | Cada nó tem sua memória local |
+| **Acesso à memória local** | Rápido |
+| **Acesso à memória remota** | Mais lento (não uniforme) |
+| **Escalabilidade** | Alta (centenas de CPUs) |
+| **Exemplos** | Servidores de grande porte, supercomputadores |
+
+### 4.3 Diagrama: NUMA
+
+<details>
+<summary> **Arquitetura NUMA**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+┌─────────────────────────────────────────────────────────────┐
+│                                                             │
+│   ┌───────────────┐        ┌───────────────┐              │
+│   │   Nó 1        │        │   Nó 2        │              │
+│   │               │        │               │              │
+│   │  ┌─────────┐  │        │  ┌─────────┐  │              │
+│   │  │ CPU 1.1 │  │        │  │ CPU 2.1 │  │              │
+│   │  │ CPU 1.2 │  │        │  │ CPU 2.2 │  │              │
+│   │  └─────────┘  │        │  └─────────┘  │              │
+│   │  ┌─────────┐  │        │  ┌─────────┐  │              │
+│   │  │ Memória │  │        │  │ Memória │  │              │
+│   │  │  Local   │  │        │  │  Local   │  │              │
+│   │  └─────────┘  │        │  └─────────┘  │              │
+│   └───────────────┘        └───────────────┘              │
+│          │                          │                       │
+│          └──────────┬───────────────┘                       │
+│                     │                                       │
+│              ┌──────┴──────┐                               │
+│              │  Interconnect │                              │
+│              │  (Rede de    │                              │
+│              │   alta velocidade)│                         │
+│              └─────────────┘                               │
+│                                                             │
+│   Acesso à memória local: rápido (ex: 50ns)              │
+│   Acesso à memória remota: lento (ex: 100ns)             │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+    </pre>
+</details>
+
+### 4.4 Vantagens do NUMA
+
+| Vantagem | Explicação |
+|---------|----------|
+| **Escalabilidade** | Centenas de CPUs podem ser conectadas |
+| **Menos contenção** | Cada nó tem seu próprio barramento de memória |
+| **Localidade** | Dados podem ser mantidos próximos à CPU que os usa |
+| **Eficiência energética** | Menos energia por CPU que SMP |
+
+### 4.5 Desvantagens do NUMA
+
+| Desvantagem | Explicação |
+|---------|----------|
+| **Complexidade** | Programação mais difícil (consciência de localidade) |
+| **Acesso remoto lento** | Acessar memória de outro nó é mais lento |
+| **Balanceamento** | Difícil balancear carga entre nós |
+| **Migração de processos** | Processos migrados perdem localidade |
+
+### 4.6 Estratégias NUMA
+
+| Estratégia | Descrição |
+|---------|----------|
+| **Fixo (First-touch)** | Processo fica no nó onde é criado |
+| **Migração dinâmica** | Processo migra para o nó onde estão seus dados |
+| **Page replication** | Páginas são replicadas em múltiplos nós |
+| **Interleave** | Páginas são distribuídas uniformemente pelos nós |
+
+## 5. SMP VS NUMA — COMPARAÇÃO
+
+| Característica | SMP | NUMA |
+|---------|---------|---------|
+| **Memória** | Única, compartilhada | Distribuída por nós |
+| **Acesso** | Uniforme | Não uniforme |
+| **Escalabilidade** | Baixa (8-16 CPUs) | Alta (centenas de CPUs) |
+| **Barramento** | Único, compartilhado | Múltiplos barramentos |
+| **Complexidade** | Baixa | Alta |
+| **Coerência de cache** | Protocolo MESI | Protocolos mais complexos |
+| **Custo** | Baixo | Alto |
+| **Exemplos** | PCs, servidores pequenos | Servidores grandes, supercomputadores |
+
+### 5.1 Exemplo: Servidores modernos
+
+| Tipo de servidor | Arquitetura | Número de CPUs |
+|---------|---------|---------|
+| **Servidor de pequeno porte** | SMP | 2-8 núcleos |
+| **Servidor de médio porte** | SMP | 8-16 núcleos |
+| **Servidor de grande porte** | NUMA | 32-256 núcleos |
+| **Supercomputador** | NUMA + Cluster | Milhares de núcleos |
+
+## 6. COMO O SISTEMA OPERACIONAL GERENCIA SMP E NUMA
+
+### 6.1 SMP
+
+- **Escalonamento:** Processos podem ser alocados a qualquer CPU.
+- **Balanceamento:** SO tenta manter todas as CPUs ocupadas.
+- **Sincronização:** Usa locks e semáforos para acesso a dados compartilhados.
+
+### 6.2 NUMA
+
+- **Escalonamento:** Processos são alocados preferencialmente no nó onde estão seus dados.
+- **Política:** "First-touch" — aloca memória no nó onde o processo acessa pela primeira vez.
+- **Migração:** Processos podem migrar de nó para melhorar localidade.
+- **Page migration:** Páginas podem ser movidas para o nó onde são mais acessadas.
+
+### 6.3 Comandos para visualizar NUMA (Linux)
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+# Ver topologia NUMA
+numactl --hardware
+
+# Ver uso de memória por nó
+numastat
+
+# Rodar programa com política NUMA
+numactl --cpubind=0 --membind=0 ./programa
+</pre>
+
+## 7. APLICAÇÕES REAIS
+
+| Aplicação | Arquitetura | Detalhes |
+|---------|---------|---------|
+| **Computador pessoal** | SMP | 4-8 núcleos, memória compartilhada |
+| **Servidor web** | SMP/NUMA | 8-64 núcleos, dependendo do porte |
+| **Servidor de banco de dados** | NUMA | 64-256 núcleos, alta escalabilidade |
+| **Supercomputador** | NUMA + Cluster | Milhares de nós, cada nó com NUMA |
+| **Data center** | NUMA + Cluster | Centenas de servidores NUMA |
+
+**Exemplo prático:** O processador AMD EPYC tem até 96 núcleos organizados em 12 chiplets (CCD), cada um com sua própria memória L3. O acesso à memória de outro chiplet é mais lento — é uma arquitetura NUMA dentro de um único processador!
+
+## 8. EXERCÍCIOS
+
+<details>
+<summary>📗 Exercício 1 — O que é SMP? (Fácil)</summary>
+
+**Enunciado:** Defina o que é SMP e qual sua principal característica.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** SMP (Symmetric Multiprocessing) é uma arquitetura onde múltiplos processadores idênticos compartilham uma única memória principal e um único barramento.
+
+**Característica principal:** Acesso simétrico e uniforme à memória para todos os processadores.
+
+**Explicação:** Todos os processadores têm o mesmo tempo de acesso à memória.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — O que é NUMA? (Fácil)</summary>
+
+**Enunciado:** Defina o que é NUMA e qual sua principal característica.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** NUMA (Non-Uniform Memory Access) é uma arquitetura onde cada processador tem sua própria memória local (acesso rápido) e pode acessar a memória de outros processadores (acesso mais lento).
+
+**Característica principal:** Tempos de acesso à memória não uniformes.
+
+**Explicação:** Acesso à memória local é mais rápido que acesso à memória remota.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — SMP vs NUMA (Médio)</summary>
+
+**Enunciado:** Qual a principal diferença entre SMP e NUMA em termos de escalabilidade?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+- **SMP:** Escalabilidade limitada (8-16 CPUs) devido ao barramento compartilhado.
+- **NUMA:** Alta escalabilidade (centenas de CPUs) porque cada nó tem seu próprio barramento de memória.
+
+**Explicação:** NUMA reduz a contenção no barramento, permitindo mais processadores.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Protocolo MESI (Médio)</summary>
+
+**Enunciado:** O que é o protocolo MESI e para que serve?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** MESI é um protocolo de coerência de cache usado em sistemas SMP.
+
+**Estados:**
+- **M (Modified):** Dado modificado, somente nesta cache.
+- **E (Exclusive):** Dado exclusivo, não modificado.
+- **S (Shared):** Dado compartilhado com outras caches.
+- **I (Invalid):** Dado inválido.
+
+**Função:** Garantir que todas as caches vejam a mesma versão dos dados.
+
+**Explicação:** O protocolo MESI mantém as caches sincronizadas.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Localidade em NUMA (Médio)</summary>
+
+**Enunciado:** O que significa "localidade" em sistemas NUMA e por que é importante?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Localidade significa manter dados e processos no mesmo nó NUMA para minimizar acesso à memória remota.
+
+**Importância:** Acesso à memória local é mais rápido que à remota. Maximizar a localidade melhora o desempenho.
+
+**Explicação:** Sistemas NUMA usam políticas como "first-touch" para manter localidade.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Coerência de cache em NUMA (Difícil)</summary>
+
+**Enunciado:** Por que a coerência de cache é mais complexa em sistemas NUMA que em SMP?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Em NUMA, os processadores estão distribuídos em múltiplos nós com suas próprias caches e memórias.
+
+**Complexidade adicional:**
+1. A comunicação entre caches de diferentes nós é mais lenta.
+2. Os protocolos de coerência precisam gerenciar distâncias diferentes.
+3. Pode haver múltiplos níveis de coerência (dentro do nó, entre nós).
+
+**Explicação:** SMP tem um único barramento; NUMA tem múltiplos barramentos e interconexões.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — First-touch (Difícil)</summary>
+
+**Enunciado:** O que é a política "first-touch" em sistemas NUMA e qual sua vantagem?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** First-touch é uma política onde a memória é alocada no nó onde o processo a acessa pela primeira vez.
+
+**Vantagem:** Mantém os dados próximos à CPU que os usa, melhorando a localidade.
+
+**Explicação:** Se um processo em Nó 1 acessa uma página pela primeira vez, a página é alocada na memória do Nó 1.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — Escolhendo a arquitetura (Desafio)</summary>
+
+**Enunciado:** Você está projetando um servidor para um banco de dados de grande porte. Que arquitetura de multiprocessamento você escolheria e por quê?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** NUMA seria a escolha ideal.
+
+**Razões:**
+1. **Escalabilidade:** Bancos de dados grandes precisam de muitos núcleos (64+), que SMP não suporta bem.
+2. **Localidade:** Dados podem ser particionados por nó (ex: por tabela ou por cliente), mantendo a localidade.
+3. **Desempenho:** Acesso à memória local é rápido, e o banco de dados pode ser otimizado para localidade.
+
+**Alternativa:** Se o banco de dados for pequeno (< 16 núcleos), SMP pode ser suficiente e mais barato.
+
+**Explicação:** A escolha depende do tamanho e requisitos do sistema.
+</details>
+</details>
+
+> SMP e NUMA são duas formas de organizar a memória em sistemas multiprocessados. SMP é simples e barato, mas não escala bem. NUMA escala para centenas de processadores, mas exige programação consciente da localidade. A escolha entre eles é um equilíbrio entre custo, escalabilidade e complexidade. O multiprocessamento é a base da computação moderna. SMP é usado em computadores pessoais e servidores pequenos; NUMA em servidores grandes e supercomputadores. Ambos têm seu lugar, e entender suas diferenças é essencial para projetar sistemas eficientes e escaláveis.

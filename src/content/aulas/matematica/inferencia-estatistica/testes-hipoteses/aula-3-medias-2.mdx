@@ -1,0 +1,480 @@
+# Testes para Médias II
+
+## O que vamos aprender nesta aula?
+
+Dando continuidade aos testes para médias, agora vamos estudar:
+
+1. **Teste t para duas amostras pareadas** (dados emparelhados)
+2. **Teste para proporção (uma amostra)**
+3. **Teste para diferença de proporções (duas amostras)**
+
+## Teste t para Amostras Pareadas (Dependentes)
+
+O teste t pareado é usado quando os dados vêm de **duas medições feitas no mesmo sujeito** (ou em pares relacionados). Exemplos:
+
+- Medição de pressão arterial antes e depois de um tratamento
+- Desempenho de um aluno antes e depois de um treinamento
+- Peso de uma pessoa antes e depois de uma dieta
+- Tempo de reação com e sem estímulo
+
+**A ideia:** Em vez de comparar duas médias independentes, calculamos a **diferença** para cada par e testamos se a média dessas diferenças é zero.
+
+**Dados:** Para cada par $i$, temos $(X_{1i}, X_{2i})$. A diferença é:
+
+>> $$D_i = X_{1i} - X_{2i}$$
+
+**Hipóteses:**
+
+- Bicaudal: $H_0: \mu_D = 0$ vs $H_1: \mu_D \ne 0$
+- Unilateral superior: $H_0: \mu_D = 0$ vs $H_1: \mu_D > 0$
+- Unilateral inferior: $H_0: \mu_D = 0$ vs $H_1: \mu_D < 0$
+
+**Estatística de teste:**
+
+>> $$t = \frac{\bar{D}}{S_D/\sqrt{n}}$$
+
+onde:
+- $\bar{D}$ é a média das diferenças
+- $S_D$ é o desvio padrão das diferenças
+- $n$ é o número de pares
+
+**Graus de liberdade:** $\nu = n - 1$
+
+**Exemplo 1: Teste t pareado (bicaudal)**
+
+Um programa de treinamento foi aplicado a 10 funcionários. As notas antes e depois são:
+
+| Funcionário | Antes | Depois | Diferença ($D$) |
+| --- | --- | --- | --- |
+| 1 | 70 | 75 | 5 |
+| 2 | 65 | 70 | 5 |
+| 3 | 80 | 85 | 5 |
+| 4 | 75 | 78 | 3 |
+| 5 | 60 | 65 | 5 |
+| 6 | 85 | 88 | 3 |
+| 7 | 90 | 92 | 2 |
+| 8 | 55 | 58 | 3 |
+| 9 | 78 | 80 | 2 |
+| 10 | 82 | 85 | 3 |
+
+Teste se houve mudança significativa ($\alpha = 0,05$).
+
+**Resolução:**
+
+1. $H_0: \mu_D = 0$ (não houve mudança); $H_1: \mu_D \ne 0$ (houve mudança)
+
+2. Cálculo das diferenças:
+   $\sum D = 5+5+5+3+5+3+2+3+2+3 = 36$
+   $\bar{D} = 36/10 = 3,6$
+
+   $\sum (D - \bar{D})^2 = (5-3,6)^2 + (5-3,6)^2 + \dots + (3-3,6)^2 = 14,4$
+
+   $S_D = \sqrt{14,4/9} = \sqrt{1,6} = 1,265$
+
+3. $t = \frac{3,6}{1,265/\sqrt{10}} = \frac{3,6}{0,400} = 9,0$
+
+4. $\nu = 9$; $t_{0,025, 9} = 2,262$
+
+5. $|t| = 9,0 > 2,262 \to$ Rejeitar $H_0$
+
+6. Conclusão: Há evidência de que houve melhora significativa após o treinamento.
+
+**Exemplo 2: Teste t pareado (unilateral superior)**
+
+Os mesmos dados, mas agora queremos testar se houve **melhora** (depois > antes). $\alpha = 0,05$.
+
+**Resolução:**
+
+1. $H_0: \mu_D = 0$; $H_1: \mu_D > 0$
+
+2. $t = 9,0$ (mesmo cálculo)
+
+3. $\nu = 9$; $t_{0,05, 9} = 1,833$
+
+4. $t = 9,0 > 1,833 \to$ Rejeitar $H_0$
+
+5. Conclusão: Há evidência de melhora significativa após o treinamento.
+
+**Exemplo 3: Teste t pareado com p-valor**
+
+No exemplo 1, $t = 9,0$ com $\nu = 9$. Encontre o p-valor.
+
+**Resolução:**
+
+p-valor = $2 \cdot P(t > 9,0) \approx 2 \cdot 0,000006 = 0,000012$
+
+**Interpretação:** p-valor $\approx 0,000012 < 0,05 \to$ Forte evidência contra $H_0$.
+
+**Exemplo 4: Teste t pareado (sem efeito)**
+
+Uma amostra de 12 pares tem $\bar{D} = 0,5$ e $S_D = 2,0$. Teste se $\mu_D = 0$ ($\alpha = 0,05$, bicaudal).
+
+**Resolução:**
+
+$t = \frac{0,5}{2/\sqrt{12}} = \frac{0,5}{0,577} = 0,866$
+$\nu = 11$; $t_{0,025, 11} = 2,201$
+$|t| = 0,866 < 2,201 \to$ Não rejeitar $H_0$
+
+**Conclusão:** Não há evidência de diferença significativa.
+
+**Exemplo 5: Teste t pareado (amostra pequena)**
+
+Uma amostra de 6 pares tem $\bar{D} = 2,0$ e $S_D = 1,5$. Teste se $\mu_D > 0$ ($\alpha = 0,05$).
+
+**Resolução:**
+
+$t = \frac{2,0}{1,5/\sqrt{6}} = \frac{2,0}{0,612} = 3,266$
+$\nu = 5$; $t_{0,05, 5} = 2,015$
+$t = 3,266 > 2,015 \to$ Rejeitar $H_0$
+
+**Conclusão:** Há evidência de que a diferença é positiva.
+
+## Teste para Proporção (Uma Amostra)
+
+Para testar hipóteses sobre uma proporção populacional $p$, usamos a distribuição Normal (aproximação para $n$ grande).
+
+**Estatística de teste:**
+
+>> $$Z = \frac{\hat{p} - p_0}{\sqrt{\frac{p_0(1-p_0)}{n}}}$$
+
+onde:
+- $\hat{p}$ é a proporção amostral
+- $p_0$ é o valor testado (sob $H_0$)
+- $n$ é o tamanho da amostra
+
+**Condição de validade:** $n \cdot p_0 \ge 5$ e $n \cdot (1-p_0) \ge 5$
+
+**Exemplo 1: Teste para proporção (bicaudal)**
+
+Em uma pesquisa com 200 pessoas, 110 disseram preferir o produto A. Teste se a proporção populacional é 50% ($\alpha = 0,05$).
+
+**Resolução:**
+
+1. $H_0: p = 0,5$; $H_1: p \ne 0,5$
+
+2. $\hat{p} = 110/200 = 0,55$
+
+3. $Z = \frac{0,55 - 0,5}{\sqrt{0,5 \cdot 0,5 / 200}} = \frac{0,05}{0,03536} = 1,414$
+
+4. $Z_{0,025} = 1,96$
+
+5. $|Z| = 1,414 < 1,96 \to$ Não rejeitar $H_0$
+
+6. Conclusão: Não há evidência de que a proporção seja diferente de 50%.
+
+**Exemplo 2: Teste para proporção (unilateral superior)**
+
+Em uma pesquisa com 400 pessoas, 220 disseram preferir o produto B. Teste se a proporção é maior que 50% ($\alpha = 0,05$).
+
+**Resolução:**
+
+1. $H_0: p = 0,5$; $H_1: p > 0,5$
+
+2. $\hat{p} = 220/400 = 0,55$
+
+3. $Z = \frac{0,55 - 0,5}{\sqrt{0,5 \cdot 0,5 / 400}} = \frac{0,05}{0,025} = 2,0$
+
+4. $Z_{0,05} = 1,645$
+
+5. $Z = 2,0 > 1,645 \to$ Rejeitar $H_0$
+
+6. Conclusão: Há evidência de que a proporção é maior que 50%.
+
+**Exemplo 3: Teste para proporção (unilateral inferior)**
+
+Uma fábrica afirma que a proporção de defeitos é 2%. Uma amostra de 500 peças encontrou 6 defeituosas. Teste se a proporção é menor que 2% ($\alpha = 0,05$).
+
+**Resolução:**
+
+1. $H_0: p = 0,02$; $H_1: p < 0,02$
+
+2. $\hat{p} = 6/500 = 0,012$
+
+3. $Z = \frac{0,012 - 0,02}{\sqrt{0,02 \cdot 0,98 / 500}} = \frac{-0,008}{\sqrt{0,0196/500}} = \frac{-0,008}{0,00626} = -1,278$
+
+4. $Z_{0,05} = 1,645$; região: $Z < -1,645$
+
+5. $Z = -1,278 > -1,645 \to$ Não rejeitar $H_0$
+
+6. Conclusão: Não há evidência suficiente de que a proporção seja menor que 2%.
+
+**Exemplo 4: Teste para proporção com p-valor**
+
+No exemplo 2, $Z = 2,0$. Encontre o p-valor.
+
+**Resolução:**
+
+p-valor = $P(Z > 2,0) = 1 - \Phi(2,0) = 1 - 0,9772 = 0,0228$
+
+**Interpretação:** p-valor = 0,0228 $< 0,05 \to$ Rejeitar $H_0$.
+
+**Exemplo 5: Teste para proporção ($n$ pequeno)**
+
+Para $n$ pequeno, use o teste binomial exato. Exemplo: $n = 10$, 8 sucessos, teste se $p > 0,5$ ($\alpha = 0,05$).
+
+**Resolução:**
+
+$P(X \ge 8 | p = 0,5) = P(X=8) + P(X=9) + P(X=10)$
+$= \binom{10}{8} \cdot 0,5^{10} + \binom{10}{9} \cdot 0,5^{10} + \binom{10}{10} \cdot 0,5^{10}$
+$= 45 \cdot 0,0009766 + 10 \cdot 0,0009766 + 1 \cdot 0,0009766$
+$= 0,04395 + 0,00977 + 0,00098 = 0,0547$
+
+p-valor = 0,0547 $> 0,05 \to$ Não rejeitar $H_0$
+
+**Conclusão:** Não há evidência suficiente de que $p > 0,5$.
+
+## Teste para Diferença de Proporções (Duas Amostras)
+
+Para comparar duas proporções populacionais independentes:
+
+**Estatística de teste:**
+
+>> $$Z = \frac{\hat{p}_1 - \hat{p}_2}{\sqrt{\hat{p}(1-\hat{p})\left(\frac{1}{n_1} + \frac{1}{n_2}\right)}}$$
+
+onde $\hat{p}$ é a proporção combinada (pooled):
+
+>> $$\hat{p} = \frac{x_1 + x_2}{n_1 + n_2}$$
+
+**Exemplo 1: Teste para diferença de proporções (bicaudal)**
+
+Duas pesquisas:
+- Grupo 1: $n_1 = 200$, 120 preferem o produto A (60%)
+- Grupo 2: $n_2 = 300$, 150 preferem o produto A (50%)
+
+Teste se as proporções são diferentes ($\alpha = 0,05$).
+
+**Resolução:**
+
+1. $H_0: p_1 = p_2$; $H_1: p_1 \ne p_2$
+
+2. $\hat{p}_1 = 120/200 = 0,6$; $\hat{p}_2 = 150/300 = 0,5$
+   $\hat{p} = \frac{120 + 150}{200 + 300} = \frac{270}{500} = 0,54$
+
+3. $Z = \frac{0,6 - 0,5}{\sqrt{0,54 \cdot 0,46 \cdot (1/200 + 1/300)}} = \frac{0,1}{\sqrt{0,2484 \cdot 0,00833}} = \frac{0,1}{\sqrt{0,00207}} = \frac{0,1}{0,0455} = 2,198$
+
+4. $Z_{0,025} = 1,96$
+
+5. $|Z| = 2,198 > 1,96 \to$ Rejeitar $H_0$
+
+6. Conclusão: Há evidência de que as proporções são diferentes.
+
+**Exemplo 2: Teste para diferença de proporções (unilateral superior)**
+
+Os mesmos dados. Teste se $p_1 > p_2$ ($\alpha = 0,05$).
+
+**Resolução:**
+
+1. $H_0: p_1 = p_2$; $H_1: p_1 > p_2$
+
+2. $Z = 2,198$ (mesmo cálculo)
+
+3. $Z_{0,05} = 1,645$
+
+4. $Z = 2,198 > 1,645 \to$ Rejeitar $H_0$
+
+5. Conclusão: Há evidência de que $p_1 > p_2$.
+
+**Exemplo 3: Teste para diferença de proporções (unilateral inferior)**
+
+Em uma pesquisa:
+- Grupo 1: $n_1 = 150$, 45 sucessos (30%)
+- Grupo 2: $n_2 = 200$, 80 sucessos (40%)
+
+Teste se $p_1 < p_2$ ($\alpha = 0,05$).
+
+**Resolução:**
+
+1. $H_0: p_1 = p_2$; $H_1: p_1 < p_2$
+
+2. $\hat{p}_1 = 45/150 = 0,3$; $\hat{p}_2 = 80/200 = 0,4$
+   $\hat{p} = \frac{45 + 80}{150 + 200} = \frac{125}{350} = 0,3571$
+
+3. $Z = \frac{0,3 - 0,4}{\sqrt{0,3571 \cdot 0,6429 \cdot (1/150 + 1/200)}} = \frac{-0,1}{\sqrt{0,2296 \cdot 0,01167}} = \frac{-0,1}{\sqrt{0,00268}} = \frac{-0,1}{0,0518} = -1,932$
+
+4. $Z_{0,05} = 1,645$; região: $Z < -1,645$
+
+5. $Z = -1,932 < -1,645 \to$ Rejeitar $H_0$
+
+6. Conclusão: Há evidência de que $p_1 < p_2$.
+
+**Exemplo 4: Teste para diferença de proporções com p-valor**
+
+No exemplo 1, $Z = 2,198$. Encontre o p-valor.
+
+**Resolução:**
+
+p-valor = $2 \cdot P(Z > 2,198) = 2 \cdot (1 - \Phi(2,198)) = 2 \cdot (1 - 0,9860) = 2 \cdot 0,0140 = 0,0280$
+
+**Interpretação:** p-valor = 0,028 $< 0,05 \to$ Rejeitar $H_0$.
+
+**Exemplo 5: Teste para diferença de proporções (amostras pequenas)**
+
+Para amostras pequenas, use o teste exato de Fisher ou a aproximação com correção de continuidade:
+
+$$Z = \frac{|\hat{p}_1 - \hat{p}_2| - 0,5\left(\frac{1}{n_1} + \frac{1}{n_2}\right)}{\sqrt{\hat{p}(1-\hat{p})\left(\frac{1}{n_1} + \frac{1}{n_2}\right)}}$$
+
+## Resumo: Testes para Proporções
+
+| Situação | Estatística | Distribuição | Condição |
+| --- | --- | --- | --- |
+| Uma proporção | $Z = (\hat{p} - p_0)/\sqrt{p_0(1-p_0)/n}$ | Normal | $np_0 \ge 5$, $n(1-p_0) \ge 5$ |
+| Duas proporções | $Z = (\hat{p}_1-\hat{p}_2)/\sqrt{\hat{p}(1-\hat{p})(1/n_1+1/n_2)}$ | Normal | $n_1\hat{p}, n_1(1-\hat{p}), n_2\hat{p}, n_2(1-\hat{p}) \ge 5$ |
+
+## Analogias
+
+### Analogia 1: O teste pareado
+
+O teste pareado é como medir a altura de uma pessoa com dois métodos diferentes (ex: fita métrica e laser). Como as medições são feitas na mesma pessoa, a comparação é mais precisa.
+
+### Analogia 2: A proporção
+
+Testar uma proporção é como verificar se uma moeda é honesta: você joga muitas vezes e vê se a proporção de caras é 50%.
+
+### Analogia 3: A diferença de proporções
+
+Comparar duas proporções é como comparar a intenção de voto entre duas cidades para ver se o candidato é mais popular em uma delas.
+
+## Exercícios Resolvidos
+
+### Exercício 1 (Fácil)
+
+Uma amostra de 8 pares tem $\bar{D} = 2,5$ e $S_D = 1,8$. Teste se $\mu_D = 0$ ($\alpha = 0,05$, bicaudal).
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$t = \frac{2,5}{1,8/\sqrt{8}} = \frac{2,5}{0,636} = 3,93$
+$\nu = 7$; $t_{0,025, 7} = 2,365$
+$|t| = 3,93 > 2,365 \to$ Rejeitar $H_0$
+
+**Resposta:** Rejeitar $H_0$. Há evidência de diferença.
+
+</details>
+
+### Exercício 2 (Fácil/Médio)
+
+$n = 300$, 180 sucessos. Teste se $p > 0,5$ ($\alpha = 0,05$).
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$\hat{p} = 180/300 = 0,6$
+$Z = \frac{0,6 - 0,5}{\sqrt{0,5 \cdot 0,5 / 300}} = \frac{0,1}{0,0289} = 3,46$
+$Z_{0,05} = 1,645$
+$Z = 3,46 > 1,645 \to$ Rejeitar $H_0$
+
+**Resposta:** Rejeitar $H_0$. $p > 0,5$.
+
+</details>
+
+### Exercício 3 (Médio)
+
+$n_1 = 100$, $x_1 = 40$; $n_2 = 150$, $x_2 = 45$. Teste se $p_1 \ne p_2$ ($\alpha = 0,05$).
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$\hat{p}_1 = 0,4$; $\hat{p}_2 = 0,3$; $\hat{p} = 85/250 = 0,34$
+$Z = \frac{0,4 - 0,3}{\sqrt{0,34 \cdot 0,66 \cdot (1/100 + 1/150)}} = \frac{0,1}{\sqrt{0,2244 \cdot 0,01667}} = \frac{0,1}{0,0612} = 1,634$
+$Z_{0,025} = 1,96$
+$|Z| = 1,634 < 1,96 \to$ Não rejeitar $H_0$
+
+**Resposta:** Não rejeitar $H_0$. Não há evidência de diferença.
+
+</details>
+
+### Exercício 4 (Médio)
+
+Uma amostra de 10 pares tem $\bar{D} = -1,2$ e $S_D = 2,0$. Teste se $\mu_D < 0$ ($\alpha = 0,05$).
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$t = \frac{-1,2}{2/\sqrt{10}} = \frac{-1,2}{0,632} = -1,898$
+$\nu = 9$; $t_{0,05, 9} = 1,833$; região: $t < -1,833$
+$t = -1,898 < -1,833 \to$ Rejeitar $H_0$
+
+**Resposta:** Rejeitar $H_0$. $\mu_D < 0$.
+
+</details>
+
+### Exercício 5 (Difícil)
+
+$n_1 = 200$, $x_1 = 60$; $n_2 = 250$, $x_2 = 100$. Teste se $p_1 < p_2$ ($\alpha = 0,01$).
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$\hat{p}_1 = 0,3$; $\hat{p}_2 = 0,4$; $\hat{p} = 160/450 = 0,3556$
+$Z = \frac{0,3 - 0,4}{\sqrt{0,3556 \cdot 0,6444 \cdot (1/200 + 1/250)}} = \frac{-0,1}{\sqrt{0,2291 \cdot 0,009}} = \frac{-0,1}{\sqrt{0,00206}} = \frac{-0,1}{0,0454} = -2,203$
+$Z_{0,01} = 2,326$; região: $Z < -2,326$
+$Z = -2,203 > -2,326 \to$ Não rejeitar $H_0$
+
+**Resposta:** Não rejeitar $H_0$. Não há evidência suficiente.
+
+</details>
+
+## Desafio Final com Resolução Completa
+
+Uma clínica está testando um novo método para reduzir a pressão arterial. 15 pacientes tiveram sua pressão medida antes e depois do tratamento. Os resultados (em mmHg) são:
+
+| Paciente | Antes | Depois | Diferença |
+| --- | --- | --- | --- |
+| 1 | 150 | 140 | 10 |
+| 2 | 145 | 138 | 7 |
+| 3 | 155 | 142 | 13 |
+| 4 | 140 | 135 | 5 |
+| 5 | 148 | 139 | 9 |
+| 6 | 152 | 143 | 9 |
+| 7 | 138 | 132 | 6 |
+| 8 | 146 | 140 | 6 |
+| 9 | 150 | 141 | 9 |
+| 10 | 142 | 136 | 6 |
+| 11 | 149 | 138 | 11 |
+| 12 | 144 | 137 | 7 |
+| 13 | 151 | 142 | 9 |
+| 14 | 147 | 139 | 8 |
+| 15 | 143 | 135 | 8 |
+
+a) Calcule a média e o desvio padrão das diferenças.
+
+b) Teste se houve redução significativa ($\alpha = 0,05$, unilateral inferior).
+
+c) Qual o p-valor?
+
+d) Interprete os resultados.
+
+e) Se o teste fosse bicaudal, a conclusão mudaria?
+
+<details>
+<summary>💡 Ver resolução completa</summary>
+
+a) $\sum D = 10+7+13+5+9+9+6+6+9+6+11+7+9+8+8 = 123$
+   $\bar{D} = 123/15 = 8,2$
+
+   $\sum (D - \bar{D})^2 = (10-8,2)^2 + (7-8,2)^2 + \dots + (8-8,2)^2 = 64,4$
+
+   $S_D = \sqrt{64,4/14} = \sqrt{4,6} = 2,145$
+
+b) $H_0: \mu_D = 0$ (não houve redução); $H_1: \mu_D > 0$ (houve redução, pois $D =$ Antes $-$ Depois)
+   $t = \frac{8,2}{2,145/\sqrt{15}} = \frac{8,2}{0,554} = 14,80$
+   $\nu = 14$; $t_{0,05, 14} = 1,761$
+   $t = 14,80 > 1,761 \to$ Rejeitar $H_0$
+
+c) p-valor = $P(t > 14,80)$ com $\nu = 14 \approx 0,0000000005$ (praticamente zero)
+
+d) Há evidência fortíssima (p-valor $\approx 0$) de que o tratamento reduz significativamente a pressão arterial. A redução média foi de 8,2 mmHg.
+
+e) Teste bicaudal: $t_{0,025, 14} = 2,145$
+   $|t| = 14,80 > 2,145 \to$ Rejeitar $H_0$ (conclusão mais forte ainda)
+
+**Respostas:**
+a) $\bar{D} = 8,2$; $S_D = 2,145$
+b) Rejeitar $H_0$ (há evidência de redução)
+c) p-valor $\approx 0$
+d) Tratamento é eficaz (redução média de 8,2 mmHg)
+e) A conclusão seria a mesma (rejeitar $H_0$)
+
+</details>
+
+> *O teste pareado revela o que está escondido nas diferenças individuais — como uma lente que foca no efeito do tratamento sobre cada unidade, eliminando o ruído da variabilidade entre sujeitos.*

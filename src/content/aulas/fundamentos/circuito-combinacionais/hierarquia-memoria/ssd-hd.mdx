@@ -1,0 +1,376 @@
+# SSD vs HD
+
+## 1. Introdução
+
+Nas três últimas aulas, percorremos os níveis superiores da hierarquia de memória: os **Registradores** (1 ciclo), a **Cache** (2-40 ciclos) e a **RAM** (50-100 ns). Vimos que todos esses níveis são **voláteis** — perdem os dados quando o computador é desligado.<br><br>
+
+Agora descemos para o próximo nível: o **Armazenamento Secundário**. Este é o lugar onde os dados são guardados **permanentemente** — mesmo quando o computador é desligado, os dados permanecem.
+
+O armazenamento secundário é onde:
+
+- O sistema operacional é instalado.
+- Seus documentos, fotos, vídeos e músicas são guardados.
+- Programas e jogos são armazenados.
+- Todos os seus arquivos pessoais residem.
+
+Hoje, o armazenamento secundário é dominado por duas tecnologias:
+
+- **SSD** (Solid State Drive) — Rápido, silencioso, sem partes móveis.
+- **HD** (Hard Disk) — Mais barato, maior capacidade, com partes móveis.
+
+Nesta aula, vamos explorar as diferenças entre SSD e HD, como cada um funciona, suas vantagens e desvantagens, e como escolher entre eles.
+
+
+## 2. O Que é Armazenamento Secundário?
+
+### 2.1 Definição
+
+O **Armazenamento Secundário** é a memória não volátil do computador, onde dados e programas são armazenados permanentemente mesmo quando o sistema é desligado.
+
+### 2.2 Características
+
+| Característica | SSD | HD |
+|----------------|-----|----|
+| **Tecnologia** | Memória flash (NAND) | Discos magnéticos girando |
+| **Velocidade** | Muito rápida (~µs) | Lenta (~ms) |
+| **Capacidade** | 128 GB a 8 TB | 500 GB a 20 TB+ |
+| **Custo por GB** | Mais caro | Muito barato |
+| **Partes móveis** | Não | Sim (discos girando) |
+| **Ruído** | Silencioso | Faz barulho |
+| **Durabilidade** | Resistente a quedas | Sensível a quedas |
+| **Consumo** | Baixo | Moderado |
+
+### 2.3 Analogia
+
+Pense no armazenamento secundário como o **depósito de ferramentas do artesão**:
+
+<details>
+<summary>🔧 Ver Analogia do Armazenamento Secundário</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 450px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">ARMAZENAMENTO SECUNDÁRIO — O DEPÓSITO</div>
+
+  <pre style="color: #93c5fd; font-size: 0.6rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    ┌─────────────────────────────────────────────────────┐
+    │                                                     │
+    │   MESA (REGISTRADORES)                             │
+    │   Ferramentas usadas AGORA                         │
+    │                                                     │
+    │   GAVETA (CACHE)                                   │
+    │   Ferramentas usadas com FREQUÊNCIA                │
+    │                                                     │
+    │   ESTANTE (RAM)                                    │
+    │   Ferramentas em uso no MOMENTO                    │
+    │                                                     │
+    │   DEPÓSITO (SSD/HD)                                │
+    │   Todas as ferramentas GUARDADAS                   │
+    │   (µs - ms)                                        │
+    │                                                     │
+    └─────────────────────────────────────────────────────┘
+  </pre>
+
+</div>
+</details>
+
+### 2.4 Diagrama da Hierarquia com SSD/HD
+
+<details>
+<summary>🔧 Ver Diagrama da Hierarquia com Armazenamento Secundário</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 450px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">HIERARQUIA COM SSD/HD</div>
+
+  <pre style="color: #93c5fd; font-size: 0.55rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    ┌─────────────────────────────────────────────────────────────┐
+    │  REGISTRADORES     │ ~1 ciclo    │ ~1 KB    │ Muito caro │
+    └─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+    ┌─────────────────────────────────────────────────────────────┐
+    │  CACHE L1          │ ~2-4 ciclos │ ~64 KB   │ Muito caro │
+    └─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+    ┌─────────────────────────────────────────────────────────────┐
+    │  CACHE L2          │ ~10 ciclos  │ ~256 KB  │ Caro       │
+    └─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+    ┌─────────────────────────────────────────────────────────────┐
+    │  CACHE L3          │ ~30-40 ciclos│ ~8 MB   │ Moderado   │
+    └─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+    ┌─────────────────────────────────────────────────────────────┐
+    │  RAM (DRAM)        │ ~50-100 ns  │ ~16 GB  │ Barato      │
+    └─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+    ┌─────────────────────────────────────────────────────────────┐
+    │  SSD (NAND Flash)  │ ~µs         │ ~1 TB   │ Muito barato│
+    └─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+    ┌─────────────────────────────────────────────────────────────┐
+    │  HD (Magnético)    │ ~ms         │ ~4 TB   │ Muito barato│
+    └─────────────────────────────────────────────────────────────┘
+  </pre>
+
+</div>
+</details>
+
+
+## 3. SSD — Solid State Drive
+
+### 3.1 O que é SSD?
+
+**SSD** (Solid State Drive) é um dispositivo de armazenamento que usa **memória flash NAND** para guardar dados. Não tem partes móveis.
+
+### 3.2 Como funciona?
+
+O SSD usa células de memória flash que retêm carga elétrica mesmo sem energia:
+
+| Tipo de célula | Bits por célula | Durabilidade | Custo |
+|----------------|-----------------|--------------|-------|
+| **SLC** (Single-Level) | 1 bit | Mais durável | Mais caro |
+| **MLC** (Multi-Level) | 2 bits | Bom | Médio |
+| **TLC** (Triple-Level) | 3 bits | Menos durável | Barato |
+| **QLC** (Quad-Level) | 4 bits | Menos durável | Mais barato |
+
+### 3.3 Vantagens do SSD
+
+| Vantagem | Explicação |
+|----------|------------|
+| **Velocidade** | Acesso em microssegundos (µs) — 10-100x mais rápido que HD |
+| **Silêncio** | Sem partes móveis → sem barulho |
+| **Durabilidade** | Resistente a quedas e vibrações |
+| **Consumo** | Consome menos energia (2-3W vs 6-10W do HD) |
+| **Tamanho** | Menor e mais leve (M.2, 2.5") |
+
+### 3.4 Desvantagens do SSD
+
+| Desvantagem | Explicação |
+|-------------|------------|
+| **Custo** | Mais caro por GB que HD |
+| **Capacidade** | Menor capacidade máxima que HD |
+| **Durabilidade** | Número limitado de escritas (celulas desgastam) |
+
+### 3.5 Tipos de SSD
+
+| Tipo | Conexão | Velocidade máxima | Uso |
+|------|---------|-------------------|-----|
+| **SATA SSD** | SATA III | ~550 MB/s | PCs mais antigos |
+| **NVMe M.2** | PCIe | ~3500-7000 MB/s | PCs modernos |
+| **NVMe PCIe** | PCIe | ~7000 MB/s | PCs de alto desempenho |
+
+
+## 4. HD — Hard Disk (Disco Rígido)
+
+### 4.1 O que é HD?
+
+**HD** (Hard Disk) é um dispositivo de armazenamento que usa **discos magnéticos girando** para guardar dados.
+
+### 4.2 Como funciona?
+
+O HD tem:
+
+- **Discos (platters):** Discos de metal ou vidro revestidos com material magnético.
+- **Cabeça de leitura/escrita:** Um braço que se move sobre os discos.
+- **Motor:** Gira os discos a 5400 ou 7200 RPM (rotações por minuto).
+
+### 4.3 Vantagens do HD
+
+| Vantagem | Explicação |
+|----------|------------|
+| **Custo** | Muito barato por GB (ex: 4 TB por R$ 400) |
+| **Capacidade** | Disponível em capacidades muito grandes (20 TB+) |
+| **Durabilidade** | Bem cuidado, pode durar muitos anos |
+
+### 4.4 Desvantagens do HD
+
+| Desvantagem | Explicação |
+|-------------|------------|
+| **Velocidade** | Acesso em milissegundos (ms) — muito mais lento que SSD |
+| **Ruído** | Discos girando e braço se movendo fazem barulho |
+| **Fragilidade** | Sensível a quedas e choques (partes móveis) |
+| **Consumo** | Consome mais energia que SSD |
+
+### 4.5 Tipos de HD
+
+| Tipo | RPM | Velocidade | Uso |
+|------|-----|------------|-----|
+| **5400 RPM** | 5400 | Mais lento | Armazenamento de arquivos |
+| **7200 RPM** | 7200 | Mais rápido | PCs de desempenho |
+| **10.000 RPM** | 10000 | Muito rápido | Servidores (raros) |
+
+
+## 5. SSD vs HD: Comparativo Completo
+
+### 5.1 Tabela comparativa
+
+| Característica | SSD | HD |
+|----------------|-----|----|
+| **Tempo de acesso** | ~0.1 ms (µs) | ~10 ms (ms) |
+| **Leitura sequencial** | 500-7000 MB/s | 80-200 MB/s |
+| **Escrita sequencial** | 500-7000 MB/s | 80-200 MB/s |
+| **Latência** | Muito baixa | Alta |
+| **Partes móveis** | Não | Sim |
+| **Ruído** | Silencioso | Barulhento |
+| **Consumo** | 2-3W | 6-10W |
+| **Temperatura** | Mais baixa | Mais alta |
+| **Capacidade típica** | 256 GB - 2 TB | 1 TB - 8 TB |
+| **Custo por GB** | ~R$ 0.50/GB | ~R$ 0.10/GB |
+
+### 5.2 Analogia
+
+| SSD | HD |
+|-----|----|
+| **Armário de arquivos eletrônico** | **Biblioteca com bibliotecário** |
+| Pesquisa instantânea por palavra-chave | Bibliotecário caminha entre estantes |
+| Sem atraso | Leva alguns segundos para achar o livro |
+
+
+## 6. SSD vs HD: Na Prática
+
+### 6.1 Quando escolher SSD
+
+| Situação | Por que SSD |
+|----------|-------------|
+| **Sistema operacional** | Inicialização em segundos (vs minutos) |
+| **Jogos** | Carregamento rápido de níveis |
+| **Edição de vídeo/foto** | Transferência rápida de arquivos grandes |
+| **Laptop** | Resistente a quedas, silencioso, consome menos bateria |
+
+### 6.2 Quando escolher HD
+
+| Situação | Por que HD |
+|----------|------------|
+| **Arquivos grandes** | Fotos, vídeos, backups (muita capacidade por pouco dinheiro) |
+| **Servidor de arquivos** | Muita capacidade a baixo custo |
+| **Backup** | Armazenamento secundário de longo prazo |
+| **Orçamento limitado** | Mais capacidade por R$ |
+
+### 6.3 A solução ideal: SSD + HD
+
+A maioria dos computadores modernos usa **ambos**:
+
+- **SSD (sistema)** → SO, programas, jogos (rápido)
+- **HD (dados)** → Fotos, vídeos, documentos (grande capacidade)
+
+
+## 7. Exercícios
+
+<details>
+<summary>📗 Exercício 1 — Definição (fácil)</summary>
+
+**Enunciado:** O que é um SSD?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** SSD (Solid State Drive) é um dispositivo de armazenamento que usa memória flash NAND para guardar dados. Não tem partes móveis e é muito rápido.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Definição (fácil)</summary>
+
+**Enunciado:** O que é um HD?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** HD (Hard Disk) é um dispositivo de armazenamento que usa discos magnéticos girando para guardar dados. Tem partes móveis e é mais barato.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Velocidade (fácil)</summary>
+
+**Enunciado:** Qual é mais rápido: SSD ou HD?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** SSD é muito mais rápido — acesso em microssegundos (µs) vs milissegundos (ms) do HD.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Capacidade (fácil)</summary>
+
+**Enunciado:** Qual normalmente tem maior capacidade: SSD ou HD?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** HD normalmente tem maior capacidade (até 20 TB+) que SSD (até 8 TB).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Custo (médio)</summary>
+
+**Enunciado:** Qual é mais barato por GB: SSD ou HD?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** HD é muito mais barato por GB (~R$ 0.10/GB) que SSD (~R$ 0.50/GB).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Partes móveis (médio)</summary>
+
+**Enunciado:** Por que o SSD é mais resistente a quedas que o HD?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** O SSD não tem partes móveis (é todo eletrônico), enquanto o HD tem discos girando e braços de leitura que podem se danificar com impactos.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — Uso combinado (desafio)</summary>
+
+**Enunciado:** Por que muitos computadores usam SSD + HD em vez de apenas um?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** 
+- **SSD:** Para o sistema operacional e programas (máxima velocidade).
+- **HD:** Para armazenar arquivos grandes e dados (máxima capacidade por menor custo).
+
+Essa combinação oferece o melhor dos dois mundos.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — Upgrade (desafio)</summary>
+
+**Enunciado:** Seu computador está lento e usa HD. Qual upgrade traria maior melhoria de desempenho?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Trocar o HD por um SSD. Isso reduz o tempo de inicialização de minutos para segundos e torna o sistema muito mais responsivo.
+
+**Explicação:** O SSD é 10-100x mais rápido que o HD. Este é o upgrade com melhor custo-benefício para um computador lento.
+
+</details>
+</details>
+
+
+> **"O armazenamento secundário é onde os dados são guardados permanentemente — mesmo quando o computador é desligado. Duas tecnologias dominam: o SSD (Solid State Drive), rápido, silencioso e sem partes móveis, e o HD (Hard Disk), mais barato, com maior capacidade, mas mais lento e barulhento. O SSD usa memória flash NAND e acessa dados em microssegundos (µs), enquanto o HD usa discos magnéticos girando e acessa em milissegundos (ms). A combinação ideal é SSD para sistema operacional e programas, e HD para arquivos grandes e dados. O SSD é o maior avanço no armazenamento da última década — e a principal razão pela qual os computadores modernos são tão rápidos."**

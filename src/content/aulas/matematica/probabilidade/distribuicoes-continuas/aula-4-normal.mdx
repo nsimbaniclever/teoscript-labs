@@ -1,0 +1,581 @@
+# Distribuição Normal (Gaussiana)
+
+## O que é a Distribuição Normal?
+
+A Distribuição Normal é a distribuição contínua mais importante e mais utilizada em toda a estatística. Ela tem o formato de um sino, sendo simétrica em torno da média, e descreve uma enorme variedade de fenômenos naturais, sociais e econômicos.
+
+Pense na altura das pessoas, no QI de uma população, no peso de recém-nascidos, no erro de medição de instrumentos, ou nos retornos de ações financeiras. Todos esses fenômenos, sob certas condições, podem ser modelados pela distribuição Normal.
+
+A distribuição Normal é denotada por $X \sim N(\mu, \sigma^2)$, onde:
+- $\mu$ (mu) é a média, que indica onde está o centro da distribuição.
+- $\sigma^2$ (sigma ao quadrado) é a variância, que indica o quão espalhada está a distribuição.
+- $\sigma$ é o desvio padrão.
+
+A importância da Normal vai além de sua aplicação direta. O **Teorema Central do Limite** (que veremos mais adiante) diz que, para amostras grandes, a média de qualquer distribuição (mesmo que não seja Normal) se aproxima de uma distribuição Normal. Por isso, a Normal é a base de grande parte da inferência estatística.
+
+## Função Densidade de Probabilidade
+
+A função densidade da Normal é:
+
+>> $$f(x) = \frac{1}{\sigma\sqrt{2\pi}} \exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right) \quad \text{para } -\infty < x < \infty$$
+
+Essa fórmula parece complicada, mas vamos entender cada parte:
+- O termo $\frac{1}{\sigma\sqrt{2\pi}}$ é uma constante que garante que a área total sob a curva seja 1.
+- O termo $\exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)$ é o que dá o formato de sino. Ele é máximo quando $x = \mu$ (pois o expoente é zero) e diminui à medida que $x$ se afasta de $\mu$.
+
+A curva é simétrica em torno de $\mu$, e seus pontos de inflexão (onde a curva muda de concavidade) estão exatamente em $\mu - \sigma$ e $\mu + \sigma$.
+
+**Exemplo 1:** Seja $X \sim N(0, 1)$ (Normal padrão). Calcule $f(0)$, $f(1)$ e $f(2)$.
+
+**Resolução:**
+
+Para $\mu = 0$ e $\sigma = 1$, a densidade é $f(x) = \frac{1}{\sqrt{2\pi}} \cdot e^{-x^2/2}$.
+
+- $f(0) = \frac{1}{\sqrt{2\pi}} \cdot e^0 = \frac{1}{2,5066} \cdot 1 = 0,3989$
+- $f(1) = \frac{1}{\sqrt{2\pi}} \cdot e^{-1/2} = 0,3989 \cdot e^{-0,5} = 0,3989 \cdot 0,6065 = 0,2420$
+- $f(2) = \frac{1}{\sqrt{2\pi}} \cdot e^{-4/2} = 0,3989 \cdot e^{-2} = 0,3989 \cdot 0,1353 = 0,0540$
+
+**Interpretação:** A densidade é máxima em $x = 0$ (centro) e diminui à medida que nos afastamos. Em $x = 2$, a densidade já é bem pequena (0,0540), o que significa que valores muito distantes da média são raros.
+
+**Exemplo 2:** Seja $X \sim N(10, 4^2)$. Calcule $f(10)$, $f(14)$ e $f(6)$.
+
+**Resolução:**
+
+Agora $\mu = 10$ e $\sigma = 4$. A densidade é $f(x) = \frac{1}{4\sqrt{2\pi}} \cdot e^{-(x-10)^2/(2 \cdot 16)} = \frac{1}{4\sqrt{2\pi}} \cdot e^{-(x-10)^2/32}$.
+
+- $f(10) = \frac{1}{4\sqrt{2\pi}} \cdot e^0 = \frac{1}{4 \cdot 2,5066} = \frac{1}{10,0264} = 0,0997$
+- $f(14) = 0,0997 \cdot e^{-(14-10)^2/32} = 0,0997 \cdot e^{-16/32} = 0,0997 \cdot e^{-0,5} = 0,0997 \cdot 0,6065 = 0,0605$
+- $f(6) = 0,0997 \cdot e^{-(6-10)^2/32} = 0,0997 \cdot e^{-16/32} = 0,0997 \cdot e^{-0,5} = 0,0605$
+
+**Interpretação:** A densidade é máxima em $x = 10$ (a média) e simétrica: $f(6) = f(14)$, pois 6 e 14 estão à mesma distância da média (4 unidades para cada lado).
+
+**Exemplo 3:** Compare as densidades para duas Normais diferentes: $N(0, 1)$ e $N(0, 4)$ no ponto $x = 0$.
+
+**Resolução:**
+
+- Para $N(0, 1)$: $f(0) = \frac{1}{1 \cdot \sqrt{2\pi}} \cdot e^0 = 0,3989$
+- Para $N(0, 4)$ ($\sigma = 2$): $f(0) = \frac{1}{2 \cdot \sqrt{2\pi}} \cdot e^0 = \frac{1}{5,0133} = 0,1995$
+
+**Interpretação:** Com maior variância ($\sigma = 2$), a densidade no centro é menor, porque a distribuição está mais espalhada.
+
+**Exemplo 4:** Verifique que a área total sob a curva da Normal é 1.
+
+**Resolução:**
+
+Sabemos que $\int_{-\infty}^{\infty} \frac{1}{\sqrt{2\pi}} e^{-x^2/2} dx = 1$ (esta é uma integral famosa). Para uma Normal qualquer, a constante $\frac{1}{\sigma\sqrt{2\pi}}$ garante que a área total seja 1. Isso é uma propriedade fundamental.
+
+**Exemplo 5:** Para $X \sim N(0, 1)$, calcule a densidade em $x = -1$ e compare com $f(1)$.
+
+**Resolução:**
+
+$f(-1) = \frac{1}{\sqrt{2\pi}} \cdot e^{-(-1)^2/2} = \frac{1}{\sqrt{2\pi}} \cdot e^{-1/2} = f(1)$.
+
+**Interpretação:** A densidade é simétrica: $f(-1) = f(1)$. Isso é verdade para qualquer distribuição Normal: $f(\mu + a) = f(\mu - a)$.
+
+## A Distribuição Normal Padrão
+
+A distribuição Normal padrão é um caso especial da Normal onde $\mu = 0$ e $\sigma = 1$. Ela é denotada por $Z \sim N(0, 1)$.
+
+A densidade da Normal padrão é:
+
+>> $$f(z) = \frac{1}{\sqrt{2\pi}} \exp\left(-\frac{z^2}{2}\right)$$
+
+A grande vantagem da Normal padrão é que seus valores estão tabelados. Podemos transformar **qualquer** Normal em uma Normal padrão usando a padronização:
+
+>> $$Z = \frac{X - \mu}{\sigma}$$
+
+Esta transformação é fundamental porque nos permite calcular probabilidades para qualquer distribuição Normal usando uma única tabela (ou software).
+
+**Exemplo 1:** Seja $X \sim N(100, 15^2)$. Como transformar $X$ em uma Normal padrão?
+
+**Resolução:**
+
+$Z = \frac{X - 100}{15}$. Então $Z \sim N(0, 1)$.
+
+**Interpretação:** Qualquer valor de $X$ pode ser transformado em um valor de $Z$. Por exemplo, se $X = 115$, $Z = \frac{115 - 100}{15} = 1,0$. Se $X = 85$, $Z = \frac{85 - 100}{15} = -1,0$.
+
+**Exemplo 2:** Seja $X \sim N(50, 4^2)$. Como transformar $X$ em uma Normal padrão?
+
+**Resolução:**
+
+$Z = \frac{X - 50}{4}$. Então $Z \sim N(0, 1)$.
+
+**Exemplo 3:** Seja $X \sim N(10, 9)$. Encontre a Normal padrão correspondente.
+
+**Resolução:**
+
+$Z = \frac{X - 10}{3}$ (pois $\sigma = \sqrt{9} = 3$). $Z \sim N(0, 1)$.
+
+**Exemplo 4:** Por que a padronização é útil? Suponha que você queira calcular $P(X \le 115)$ para $X \sim N(100, 15^2)$. Usando a padronização:
+
+**Resolução:**
+
+$P(X \le 115) = P\left(Z \le \frac{115 - 100}{15}\right) = P(Z \le 1,0)$.
+
+Agora você pode usar a tabela da Normal padrão para encontrar $\Phi(1,0) = 0,8413$.
+
+**Interpretação:** Sem a padronização, você teria que calcular uma integral complicada para cada valor de $\mu$ e $\sigma$ diferentes. A padronização reduz todos os problemas a um único caso: a Normal padrão.
+
+**Exemplo 5:** Encontre o valor de $X$ que corresponde a $Z = 1,5$ para $X \sim N(50, 10^2)$.
+
+**Resolução:**
+
+$Z = \frac{X - 50}{10} = 1,5 \to X - 50 = 15 \to X = 65$.
+
+**Interpretação:** O valor 65 está 1,5 desvios padrão acima da média.
+
+**Exemplo 6:** Encontre o valor de $X$ que corresponde a $Z = -2,0$ para $X \sim N(30, 4^2)$.
+
+**Resolução:**
+
+$Z = \frac{X - 30}{4} = -2,0 \to X - 30 = -8 \to X = 22$.
+
+**Interpretação:** O valor 22 está 2 desvios padrão abaixo da média.
+
+## Função de Distribuição Acumulada (FDA)
+
+A FDA da Normal não tem uma forma fechada simples (não pode ser expressa com funções elementares). Ela é definida como:
+
+>> $$F(x) = P(X \le x) = \int_{-\infty}^{x} \frac{1}{\sigma\sqrt{2\pi}} \exp\left(-\frac{(t-\mu)^2}{2\sigma^2}\right) dt$$
+
+Para a Normal padrão, a FDA é denotada por $\Phi(z)$:
+
+>> $$\Phi(z) = P(Z \le z) = \int_{-\infty}^{z} \frac{1}{\sqrt{2\pi}} e^{-t^2/2} dt$$
+
+Os valores de $\Phi(z)$ estão tabelados em livros de estatística e disponíveis em softwares.
+
+**Exemplo 1:** Seja $Z \sim N(0, 1)$. Calcule $P(Z \le 1,5)$.
+
+**Resolução:**
+
+Procuramos na tabela da Normal padrão o valor para $z = 1,5$. $\Phi(1,5) = 0,9332$.
+
+**Interpretação:** 93,32% dos valores da Normal padrão são menores ou iguais a 1,5.
+
+**Exemplo 2:** Seja $Z \sim N(0, 1)$. Calcule $P(Z \le -1,2)$.
+
+**Resolução:**
+
+Usamos a simetria da Normal: $\Phi(-1,2) = 1 - \Phi(1,2)$. $\Phi(1,2) = 0,8849$. $\Phi(-1,2) = 1 - 0,8849 = 0,1151$.
+
+**Interpretação:** 11,51% dos valores são menores ou iguais a -1,2.
+
+**Exemplo 3:** Seja $Z \sim N(0, 1)$. Calcule $P(-1,5 \le Z \le 2,0)$.
+
+**Resolução:**
+
+$P(-1,5 \le Z \le 2,0) = \Phi(2,0) - \Phi(-1,5)$. $\Phi(2,0) = 0,9772$. $\Phi(-1,5) = 1 - \Phi(1,5) = 1 - 0,9332 = 0,0668$. $0,9772 - 0,0668 = 0,9104$.
+
+**Interpretação:** 91,04% dos valores estão entre -1,5 e 2,0.
+
+**Exemplo 4:** Seja $X \sim N(50, 100)$, ou seja, $\mu = 50$ e $\sigma = 10$. Calcule $P(X \le 65)$.
+
+**Resolução:**
+
+Padronizamos: $Z = \frac{65 - 50}{10} = 1,5$. $P(X \le 65) = P(Z \le 1,5) = \Phi(1,5) = 0,9332$.
+
+**Exemplo 5:** Seja $X \sim N(100, 225)$, ou seja, $\mu = 100$ e $\sigma = 15$. Calcule $P(X \le 85)$.
+
+**Resolução:**
+
+Padronizamos: $Z = \frac{85 - 100}{15} = -1,0$. $P(X \le 85) = P(Z \le -1,0) = \Phi(-1,0) = 1 - \Phi(1,0) = 1 - 0,8413 = 0,1587$.
+
+**Exemplo 6:** Seja $X \sim N(100, 225)$. Calcule $P(85 \le X \le 115)$.
+
+**Resolução:**
+
+Padronizamos os dois limites:
+- Para $x = 85$: $Z_1 = \frac{85 - 100}{15} = -1,0$
+- Para $x = 115$: $Z_2 = \frac{115 - 100}{15} = 1,0$
+
+$P(85 \le X \le 115) = P(-1,0 \le Z \le 1,0) = \Phi(1,0) - \Phi(-1,0)$. $\Phi(1,0) = 0,8413$; $\Phi(-1,0) = 1 - 0,8413 = 0,1587$. $0,8413 - 0,1587 = 0,6826$.
+
+**Interpretação:** 68,26% dos valores estão entre 85 e 115. Esta é a famosa regra dos 68%.
+
+**Exemplo 7:** Seja $X \sim N(20, 3^2)$. Calcule $P(X \le 23)$.
+
+**Resolução:**
+
+$Z = \frac{23 - 20}{3} = 1,0$. $P(X \le 23) = \Phi(1,0) = 0,8413$.
+
+**Exemplo 8:** Seja $X \sim N(20, 3^2)$. Calcule $P(X \ge 17)$.
+
+**Resolução:**
+
+$Z = \frac{17 - 20}{3} = -1,0$. $P(X \ge 17) = 1 - P(X \le 17) = 1 - \Phi(-1,0) = 1 - 0,1587 = 0,8413$.
+
+**Interpretação:** $P(X \ge 17) = 84,13\%$. Observe a simetria: $P(X \le 23) = 0,8413$ e $P(X \ge 17) = 0,8413$.
+
+## Esperança (média) e Variância
+
+Para a distribuição Normal, a esperança e a variância são exatamente os parâmetros da distribuição:
+
+>> $$E[X] = \mu$$\
+>> $$Var(X) = \sigma^2$$
+
+O desvio padrão é $\sigma$.
+
+**Exemplo 1:** Seja $X \sim N(100, 15^2)$. Qual é a média e a variância?
+
+**Resolução:**
+
+- $E[X] = \mu = 100$
+- $Var(X) = \sigma^2 = 225$
+- Desvio padrão = $\sigma = 15$
+
+**Exemplo 2:** Seja $X \sim N(-5, 4)$. Qual é a média e a variância?
+
+**Resolução:**
+
+- $E[X] = \mu = -5$
+- $Var(X) = \sigma^2 = 4$
+- Desvio padrão = $\sigma = 2$
+
+**Exemplo 3:** Suponha que $X \sim N(\mu, \sigma^2)$ com $E[X] = 10$ e $Var(X) = 25$. Encontre $\mu$ e $\sigma$.
+
+**Resolução:**
+
+- $\mu = E[X] = 10$
+- $\sigma^2 = Var(X) = 25 \to \sigma = 5$
+
+**Exemplo 4:** Suponha que as notas de uma prova sigam uma distribuição Normal com média 70 e desvio padrão 10. Qual a probabilidade de um aluno tirar mais de 85?
+
+**Resolução:**
+
+$X \sim N(70, 10^2)$. $P(X > 85) = 1 - P(X \le 85)$. $Z = \frac{85 - 70}{10} = 1,5$. $P(X > 85) = 1 - \Phi(1,5) = 1 - 0,9332 = 0,0668$.
+
+**Interpretação:** Apenas 6,68% dos alunos tiram mais de 85.
+
+**Exemplo 5:** A altura de uma população segue uma distribuição Normal com média 170 cm e desvio padrão 8 cm. Qual a probabilidade de uma pessoa ter altura entre 160 cm e 180 cm?
+
+**Resolução:**
+
+$X \sim N(170, 8^2)$. Padronizando:
+- Para $x = 160$: $Z_1 = \frac{160 - 170}{8} = -1,25$
+- Para $x = 180$: $Z_2 = \frac{180 - 170}{8} = 1,25$
+
+$P(160 \le X \le 180) = P(-1,25 \le Z \le 1,25) = \Phi(1,25) - \Phi(-1,25)$. $\Phi(1,25) = 0,8944$; $\Phi(-1,25) = 1 - 0,8944 = 0,1056$. $0,8944 - 0,1056 = 0,7888$.
+
+**Interpretação:** 78,88% da população tem altura entre 160 cm e 180 cm.
+
+**Exemplo 6:** O QI de uma população tem média 100 e desvio padrão 15. Encontre a média e a variância do QI.
+
+**Resolução:**
+
+- $\mu = 100$
+- $\sigma = 15$
+- $\sigma^2 = 225$
+- $E[X] = 100$
+- $Var(X) = 225$
+
+## A Regra Empírica (68-95-99,7)
+
+Esta é uma regra prática muito útil para distribuições Normais:
+
+- **68%** dos dados estão a menos de 1 desvio padrão da média: $P(\mu - \sigma \le X \le \mu + \sigma) \approx 0,6826$
+- **95%** dos dados estão a menos de 2 desvios padrão da média: $P(\mu - 2\sigma \le X \le \mu + 2\sigma) \approx 0,9544$
+- **99,7%** dos dados estão a menos de 3 desvios padrão da média: $P(\mu - 3\sigma \le X \le \mu + 3\sigma) \approx 0,9974$
+
+**Exemplo 1:** Se as notas de uma prova seguem uma Normal com média 70 e desvio padrão 10:
+
+**Resolução:**
+
+- 68% dos alunos têm nota entre 60 e 80 ($70 - 10 = 60$; $70 + 10 = 80$)
+- 95% dos alunos têm nota entre 50 e 90 ($70 - 20 = 50$; $70 + 20 = 90$)
+- 99,7% dos alunos têm nota entre 40 e 100 ($70 - 30 = 40$; $70 + 30 = 100$)
+
+**Exemplo 2:** A altura de uma população tem média 170 cm e desvio padrão 8 cm. Use a regra empírica para estimar:
+
+**Resolução:**
+
+- 68% das pessoas têm altura entre 162 cm e 178 cm ($170 - 8 = 162$; $170 + 8 = 178$)
+- 95% das pessoas têm altura entre 154 cm e 186 cm ($170 - 16 = 154$; $170 + 16 = 186$)
+- 99,7% das pessoas têm altura entre 146 cm e 194 cm ($170 - 24 = 146$; $170 + 24 = 194$)
+
+**Exemplo 3:** O peso de recém-nascidos tem média 3,2 kg e desvio padrão 0,5 kg. Use a regra empírica:
+
+**Resolução:**
+
+- 68% dos recém-nascidos pesam entre 2,7 kg e 3,7 kg
+- 95% dos recém-nascidos pesam entre 2,2 kg e 4,2 kg
+- 99,7% dos recém-nascidos pesam entre 1,7 kg e 4,7 kg
+
+**Exemplo 4:** O tempo de entrega de um produto tem média 5 dias e desvio padrão 1 dia. Use a regra empírica:
+
+**Resolução:**
+
+- 68% das entregas demoram entre 4 e 6 dias
+- 95% das entregas demoram entre 3 e 7 dias
+- 99,7% das entregas demoram entre 2 e 8 dias
+
+**Exemplo 5:** Verificando a regra dos 68% com cálculos exatos para $X \sim N(0, 1)$:
+
+**Resolução:**
+
+$P(-1 \le Z \le 1) = \Phi(1) - \Phi(-1) = 0,8413 - 0,1587 = 0,6826$ ($\approx$ 68%)
+
+$P(-2 \le Z \le 2) = \Phi(2) - \Phi(-2) = 0,9772 - 0,0228 = 0,9544$ ($\approx$ 95%)
+
+$P(-3 \le Z \le 3) = \Phi(3) - \Phi(-3) = 0,9987 - 0,0013 = 0,9974$ ($\approx$ 99,7%)
+
+## Quando usar a Distribuição Normal?
+
+A Normal é apropriada quando:
+
+1. O fenômeno é resultado da soma de muitos fatores independentes (pelo Teorema Central do Limite).
+2. A distribuição é simétrica em torno da média.
+3. Valores extremos são raros.
+4. Você está modelando erros de medição, características físicas (altura, peso), ou fenômenos naturais.
+
+**Exemplos de aplicações:**
+
+- Altura, peso, QI de uma população.
+- Erros de medição em experimentos.
+- Médias amostrais (pelo Teorema Central do Limite).
+- Retornos de ações (embora muitas vezes com caudas mais pesadas que a Normal).
+- Qualquer fenômeno que seja simétrico e onde valores extremos sejam improváveis.
+
+## Limitações e quando NÃO usar
+
+A Normal **NÃO deve ser usada** quando:
+
+1. A distribuição é assimétrica (enviesada). Por exemplo, renda familiar, tempo de vida de equipamentos, ou números de ocorrências.
+2. A variável é sempre positiva e a média é pequena comparada ao desvio padrão (pois a Normal atribui probabilidade a valores negativos).
+3. Há muitas observações extremas (caudas pesadas).
+4. A variável é discreta ou contável.
+
+Em geral, a Normal é uma boa aproximação para muitos fenômenos, mas é importante verificar se a suposição de normalidade é razoável antes de aplicá-la.
+
+## Analogias do dia a dia
+
+### Analogia 1: A altura das pessoas
+
+Suponha que a altura de uma população adulta masculina siga uma distribuição Normal com média 175 cm e desvio padrão 7 cm.
+
+**Pergunta:** Qual a probabilidade de um homem ter altura entre 168 cm e 182 cm?
+
+**Resolução passo a passo:**
+
+1. $X \sim N(175, 7^2)$
+2. Padronizando:
+   - Para $x = 168$: $Z_1 = \frac{168 - 175}{7} = -1,0$
+   - Para $x = 182$: $Z_2 = \frac{182 - 175}{7} = 1,0$
+3. $P(168 \le X \le 182) = P(-1,0 \le Z \le 1,0) = \Phi(1,0) - \Phi(-1,0)$
+4. $\Phi(1,0) = 0,8413$; $\Phi(-1,0) = 1 - 0,8413 = 0,1587$
+5. $0,8413 - 0,1587 = 0,6826$
+
+**Resposta:** 68,26% dos homens têm altura entre 168 cm e 182 cm.
+
+### Analogia 2: O QI de uma população
+
+O QI médio de uma população é 100, com desvio padrão 15. O QI segue uma distribuição Normal.
+
+**Pergunta:** Qual a probabilidade de uma pessoa ter QI superior a 130?
+
+**Resolução passo a passo:**
+
+1. $X \sim N(100, 15^2)$
+2. $P(X > 130) = 1 - P(X \le 130)$
+3. $Z = \frac{130 - 100}{15} = 2,0$
+4. $P(X > 130) = 1 - \Phi(2,0) = 1 - 0,9772 = 0,0228$
+
+**Resposta:** Apenas 2,28% da população tem QI superior a 130.
+
+### Analogia 3: O peso de recém-nascidos
+
+O peso de recém-nascidos em um hospital segue uma distribuição Normal com média 3,2 kg e desvio padrão 0,5 kg.
+
+**Pergunta:** Qual a probabilidade de um recém-nascido pesar menos de 2,5 kg?
+
+**Resolução passo a passo:**
+
+1. $X \sim N(3,2; 0,5^2)$
+2. $P(X < 2,5) = P\left(Z < \frac{2,5 - 3,2}{0,5}\right) = P(Z < -1,4)$
+3. $\Phi(-1,4) = 1 - \Phi(1,4) = 1 - 0,9192 = 0,0808$
+
+**Resposta:** 8,08% dos recém-nascidos pesam menos de 2,5 kg.
+
+### Analogia 4: O tempo de entrega de um produto
+
+Uma empresa de entregas diz que o tempo de entrega de um produto segue uma distribuição Normal com média 5 dias e desvio padrão 1 dia.
+
+**Pergunta:** Qual a probabilidade de a entrega demorar entre 3 e 7 dias?
+
+**Resolução passo a passo:**
+
+1. $X \sim N(5, 1^2)$
+2. Padronizando:
+   - Para $x = 3$: $Z_1 = \frac{3 - 5}{1} = -2,0$
+   - Para $x = 7$: $Z_2 = \frac{7 - 5}{1} = 2,0$
+3. $P(3 \le X \le 7) = P(-2,0 \le Z \le 2,0) = \Phi(2,0) - \Phi(-2,0)$
+4. $\Phi(2,0) = 0,9772$; $\Phi(-2,0) = 1 - 0,9772 = 0,0228$
+5. $0,9772 - 0,0228 = 0,9544$
+
+**Resposta:** 95,44% das entregas demoram entre 3 e 7 dias.
+
+## Exemplos práticos com cálculos passo a passo
+
+### Exemplo 1: Probabilidade básica com a Normal padrão
+
+Seja $Z \sim N(0, 1)$. Calcule $P(Z \le 2,1)$.
+
+**Resolução:**
+
+Procuramos na tabela da Normal: $\Phi(2,1) = 0,9821$.
+
+**Resposta:** 98,21%.
+
+### Exemplo 2: Probabilidade de ser maior que um valor
+
+Seja $Z \sim N(0, 1)$. Calcule $P(Z > 1,8)$.
+
+**Resolução:**
+
+$P(Z > 1,8) = 1 - \Phi(1,8) = 1 - 0,9641 = 0,0359$.
+
+**Resposta:** 3,59%.
+
+### Exemplo 3: Probabilidade entre dois valores
+
+Seja $Z \sim N(0, 1)$. Calcule $P(-0,5 \le Z \le 1,5)$.
+
+**Resolução:**
+
+$P(-0,5 \le Z \le 1,5) = \Phi(1,5) - \Phi(-0,5)$. $\Phi(1,5) = 0,9332$; $\Phi(-0,5) = 1 - \Phi(0,5) = 1 - 0,6915 = 0,3085$. $0,9332 - 0,3085 = 0,6247$.
+
+**Resposta:** 62,47%.
+
+### Exemplo 4: Aplicação com uma Normal qualquer
+
+Seja $X \sim N(25, 4^2)$. Calcule $P(X \le 30)$.
+
+**Resolução:**
+
+$Z = \frac{30 - 25}{4} = 1,25$. $P(X \le 30) = P(Z \le 1,25) = \Phi(1,25) = 0,8944$.
+
+**Resposta:** 89,44%.
+
+### Exemplo 5: Encontrando um valor a partir da probabilidade
+
+Seja $Z \sim N(0, 1)$. Encontre o valor $k$ tal que $P(Z \le k) = 0,95$.
+
+**Resolução:**
+
+Procuramos na tabela o valor de $k$ tal que $\Phi(k) = 0,95$. $k = 1,645$.
+
+**Resposta:** $k = 1,645$.
+
+### Exemplo 6: Usando a regra empírica para estimar probabilidades
+
+Seja $X \sim N(50, 5^2)$. Estime $P(45 \le X \le 55)$ e $P(40 \le X \le 60)$.
+
+**Resolução:**
+
+- $45 = 50 - 5 = \mu - \sigma$; $55 = 50 + 5 = \mu + \sigma$. Portanto, $P(45 \le X \le 55) \approx 68\%$.
+- $40 = 50 - 10 = \mu - 2\sigma$; $60 = 50 + 10 = \mu + 2\sigma$. Portanto, $P(40 \le X \le 60) \approx 95\%$.
+
+## Exercícios resolvidos (níveis crescentes de dificuldade)
+
+### Exercício 1 (Fácil)
+
+Seja $Z \sim N(0, 1)$. Calcule $P(Z \le 1,2)$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+Procuramos na tabela da Normal: $\Phi(1,2) = 0,8849$.
+
+**Resposta:** 88,49%.
+
+</details>
+
+### Exercício 2 (Fácil/Médio)
+
+Seja $Z \sim N(0, 1)$. Calcule $P(Z > -0,8)$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$P(Z > -0,8) = 1 - \Phi(-0,8)$. $\Phi(-0,8) = 1 - \Phi(0,8) = 1 - 0,7881 = 0,2119$. $P(Z > -0,8) = 1 - 0,2119 = 0,7881$.
+
+**Resposta:** 78,81%.
+
+</details>
+
+### Exercício 3 (Médio)
+
+Seja $X \sim N(50, 10^2)$. Calcule $P(X \le 60)$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$Z = \frac{60 - 50}{10} = 1,0$. $P(X \le 60) = P(Z \le 1,0) = \Phi(1,0) = 0,8413$.
+
+**Resposta:** 84,13%.
+
+</details>
+
+### Exercício 4 (Médio)
+
+Seja $X \sim N(100, 15^2)$. Calcule $P(85 \le X \le 115)$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+Padronizando:
+- Para $x = 85$: $Z_1 = \frac{85 - 100}{15} = -1,0$
+- Para $x = 115$: $Z_2 = \frac{115 - 100}{15} = 1,0$
+
+$P(85 \le X \le 115) = P(-1,0 \le Z \le 1,0) = \Phi(1,0) - \Phi(-1,0)$. $\Phi(1,0) = 0,8413$; $\Phi(-1,0) = 1 - 0,8413 = 0,1587$. $0,8413 - 0,1587 = 0,6826$.
+
+**Resposta:** 68,26%.
+
+</details>
+
+### Exercício 5 (Difícil)
+
+Seja $X \sim N(\mu, \sigma^2)$. Sabendo que $P(X \le 80) = 0,1587$ e $P(X \le 90) = 0,8413$, encontre $\mu$ e $\sigma$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$P(X \le 80) = 0,1587 \to \Phi\left(\frac{80 - \mu}{\sigma}\right) = 0,1587$. $\Phi(-1,0) = 0,1587$, então $\frac{80 - \mu}{\sigma} = -1,0 \to 80 - \mu = -\sigma \to \mu - 80 = \sigma$. (Equação 1)
+
+$P(X \le 90) = 0,8413 \to \Phi\left(\frac{90 - \mu}{\sigma}\right) = 0,8413$. $\Phi(1,0) = 0,8413$, então $\frac{90 - \mu}{\sigma} = 1,0 \to 90 - \mu = \sigma$. (Equação 2)
+
+Igualando as duas equações: $\mu - 80 = 90 - \mu \to 2\mu = 170 \to \mu = 85$. Substituindo: $85 - 80 = \sigma \to \sigma = 5$.
+
+**Resposta:** $\mu = 85$ e $\sigma = 5$.
+
+</details>
+
+## Desafio final com resolução completa
+
+Os pesos de uma população de adultos seguem uma distribuição Normal com média 70 kg e desvio padrão 10 kg.
+
+a) Qual a probabilidade de uma pessoa pesar mais de 85 kg?
+b) Qual a probabilidade de uma pessoa pesar entre 60 kg e 75 kg?
+c) Qual o peso $k$ tal que 90% da população pesa menos que $k$?
+d) Se você selecionar uma pessoa ao acaso, qual a probabilidade de ela pesar menos de 50 kg?
+
+<details>
+<summary>💡 Ver resolução completa</summary>
+
+a) $X \sim N(70, 10^2)$. $Z = \frac{85 - 70}{10} = 1,5$. $P(X > 85) = 1 - P(X \le 85) = 1 - \Phi(1,5) = 1 - 0,9332 = 0,0668$.
+
+b) $P(60 \le X \le 75)$. $Z_1 = \frac{60 - 70}{10} = -1,0$. $Z_2 = \frac{75 - 70}{10} = 0,5$. $P(-1,0 \le Z \le 0,5) = \Phi(0,5) - \Phi(-1,0)$. $\Phi(0,5) = 0,6915$; $\Phi(-1,0) = 1 - \Phi(1,0) = 1 - 0,8413 = 0,1587$. $0,6915 - 0,1587 = 0,5328$.
+
+c) Queremos $k$ tal que $P(X \le k) = 0,90$. $P\left(Z \le \frac{k - 70}{10}\right) = 0,90 \to \frac{k - 70}{10} = 1,28$. $k - 70 = 12,8 \to k = 82,8$ kg.
+
+d) $P(X < 50)$. $Z = \frac{50 - 70}{10} = -2,0$. $P(X < 50) = \Phi(-2,0) = 1 - \Phi(2,0) = 1 - 0,9772 = 0,0228$.
+
+**Respostas:**
+a) 6,68%
+b) 53,28%
+c) $k = 82,8$ kg
+d) 2,28%
+
+</details>
+
+
+> *A Distribuição Normal nos ensina que, na natureza, os extremos são raros e a maioria dos fenômenos se concentra em torno da média — uma lição de equilíbrio que se aplica tanto à estatística quanto à vida.*

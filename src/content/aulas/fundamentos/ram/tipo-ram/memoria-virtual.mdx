@@ -1,0 +1,375 @@
+# MEMÓRIA VIRTUAL
+
+## 1. INTRODUÇÃO
+
+Nas três aulas anteriores, estudamos a hierarquia da memória: da SRAM ultrarrápida (cache) à DRAM (memória principal), e sua evolução através das gerações SDRAM e DDR. Vimos que a DRAM é onde os programas em execução ficam armazenados, e que quanto mais RAM, mais programas podemos executar simultaneamente.<br><br>
+
+Mas há um problema: a RAM é cara. Um computador com 64 GB de RAM custa muito mais que um com 8 GB. E mesmo que você tenha 64 GB, ainda pode querer executar programas que exigem mais que isso. Como o computador resolve esse dilema?<br><br>
+
+A resposta é a **memória virtual**. É uma técnica que engana o computador — e os programas — fazendo-os acreditar que têm mais RAM do que realmente existe. Ela usa o HD/SSD (armazenamento secundário) como uma extensão da RAM, permitindo que o computador execute programas maiores que a memória física disponível.<br><br>
+
+Imagine que você está lendo um livro de 1000 páginas, mas só tem espaço na mesa para 50 páginas (RAM). Você coloca as páginas 1-50 na mesa e as outras 950 na estante (HD/SSD). Quando precisa ler a página 75, você guarda a página 1 na estante e pega a página 75. O livro inteiro está acessível, mesmo que você só tenha espaço para 50 páginas por vez. É exatamente isso que a memória virtual faz.<br><br>
+
+Nesta aula, vamos estudar a memória virtual: o que ela é, como funciona, o que são páginas e tabelas de páginas, o que é um page fault, e quais são suas vantagens e desvantagens.
+
+## 2. O QUE É MEMÓRIA VIRTUAL?
+
+### 2.1 Definição
+
+> "Memória virtual é uma técnica de gerenciamento de memória que permite que um computador execute programas maiores que a memória RAM física disponível, utilizando o armazenamento secundário (HD/SSD) como uma extensão da memória principal."
+
+### 2.2 Características principais
+
+| Característica | Descrição |
+|---------|----------|
+| **O que faz** | Estende a RAM usando HD/SSD como memória secundária |
+| **Unidade de gerenciamento** | Páginas (geralmente 4KB) |
+| **Mapeamento** | Tabela de páginas: endereço virtual → endereço físico ou disco |
+| **Quando é usada** | Quando a RAM física está cheia ou o programa é maior que a RAM |
+| **Quem gerencia** | Sistema operacional (SO) + MMU (Memory Management Unit) |
+
+### 2.3 Analogia
+
+A memória virtual é como um **escritório com uma mesa de trabalho**. A mesa é a RAM — você só pode colocar alguns documentos sobre ela. Os documentos que você não está usando agora ficam no arquivo (HD/SSD). Quando você precisa de um documento que está no arquivo, você guarda um da mesa e pega o do arquivo. Para você, todos os documentos estão "acessíveis" — você só precisa esperar um pouco mais para pegar os que estão no arquivo.
+
+## 3. COMO A MEMÓRIA VIRTUAL FUNCIONA?
+
+### 3.1 O conceito de páginas
+
+O sistema operacional divide a memória virtual e a memória física em blocos de tamanho fixo chamados **páginas**.
+
+- **Página virtual:** Bloco no espaço de endereços do programa (endereço virtual).
+- **Frame (quadro) de página:** Bloco na RAM física (endereço físico).
+
+**Tamanho típico:** 4 KB (4096 bytes).
+
+### 3.2 A tabela de páginas
+
+O sistema operacional mantém uma **tabela de páginas** para cada programa. Essa tabela mapeia páginas virtuais para frames físicos (RAM) ou para o local no HD/SSD (disco).
+
+**Tabela de páginas simplificada:**
+
+| Página Virtual | Localização | Endereço Físico |
+|---------|---------|---------|
+| 0 | RAM | 0x1000 |
+| 1 | RAM | 0x2000 |
+| 2 | Disco | — |
+| 3 | RAM | 0x3000 |
+| 4 | Disco | — |
+| 5 | Disco | — |
+
+### 3.3 Como a CPU acessa a memória
+
+1. O programa tenta acessar um endereço virtual.
+2. A **MMU (Memory Management Unit)** consulta a tabela de páginas.
+3. Se a página está na RAM → o acesso é feito diretamente.
+4. Se a página **não está** na RAM → ocorre um **page fault**.
+
+### 3.4 Diagrama: Acesso à memória virtual
+
+<details>
+<summary> **Fluxo de acesso à memória virtual**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+Programa (CPU)
+    │
+    │ Tenta acessar endereço virtual
+    ▼
+MMU (Memory Management Unit)
+    │
+    │ Consulta tabela de páginas
+    ▼
+┌─────────────────────────────────────────┐
+│          Tabela de Páginas              │
+│                                         │
+│  Virtual 0  →  RAM (0x1000)            │
+│  Virtual 1  →  RAM (0x2000)            │
+│  Virtual 2  →  DISCO (setor 1234)      │
+│  Virtual 3  →  RAM (0x3000)            │
+│  Virtual 4  →  DISCO (setor 5678)      │
+│                                         │
+└─────────────────────────────────────────┘
+    │
+    ├── Página na RAM → Acesso direto ✅
+    │
+    └── Página no DISCO → Page Fault ⚠️
+              │
+              ▼
+    Sistema Operacional
+              │
+              ├── Localiza página no disco
+              ├── Se RAM cheia, escolhe página para remover
+              ├── Carrega página do disco para RAM
+              ├── Atualiza tabela de páginas
+              └── Retoma execução do programa
+    </pre>
+</details>
+
+## 4. O PAGE FAULT — QUANDO A PÁGINA NÃO ESTÁ NA RAM
+
+### 4.1 O que é um page fault?
+
+Um **page fault** ocorre quando a CPU tenta acessar uma página que não está na RAM física, mas está no HD/SSD (memória virtual).
+
+### 4.2 O que acontece durante um page fault?
+
+1. A CPU tenta acessar o endereço virtual.
+2. A MMU verifica a tabela de páginas e descobre que a página não está na RAM.
+3. Ocorre uma **interrupção** (o programa é pausado).
+4. O sistema operacional assume o controle.
+5. O SO localiza a página no HD/SSD.
+6. Se a RAM estiver cheia, o SO escolhe uma página para remover (algoritmo de substituição).
+7. O SO carrega a página do disco para a RAM.
+8. O SO atualiza a tabela de páginas.
+9. A execução do programa é retomada.
+
+### 4.3 Algoritmos de substituição de páginas
+
+Quando a RAM está cheia e uma nova página precisa ser carregada, o sistema operacional precisa escolher qual página remover. Alguns algoritmos:
+
+| Algoritmo | Como funciona | Vantagem | Desvantagem |
+|---------|---------|---------|---------|
+| **FIFO (First In, First Out)** | Remove a página mais antiga | Simples | Pode remover páginas importantes |
+| **LRU (Least Recently Used)** | Remove a página menos usada recentemente | Bom desempenho | Complexo de implementar |
+| **NRU (Not Recently Used)** | Remove uma página que não foi usada recentemente | Balanceado | Não é ótimo |
+| **Clock (Second Chance)** | Dá uma segunda chance antes de remover | Eficiente | Mais complexo que FIFO |
+
+### 4.4 Thrashing — o pesadelo da memória virtual
+
+**Thrashing** ocorre quando o sistema operacional passa mais tempo trocando páginas entre RAM e disco do que executando programas.
+
+**Sintomas:**
+- Computador extremamente lento
+- Disco em atividade constante (led piscando)
+- Programas travam ou param de responder
+
+**Causas:**
+- Pouca RAM para os programas em execução
+- Muitos programas abertos simultaneamente
+- Programas que exigem mais RAM que o disponível
+
+**Solução:** Adicionar mais RAM física.
+
+## 5. VANTAGENS DA MEMÓRIA VIRTUAL
+
+### 5.1 Permite executar programas maiores que a RAM
+
+**Exemplo:** Você tem um computador com 8 GB de RAM. Um jogo exige 12 GB para rodar. Com memória virtual, o jogo pode ser executado — parte dele fica na RAM e parte no SSD.
+
+### 5.2 Isolamento entre programas (proteção)
+
+Cada programa tem seu próprio espaço de endereços virtuais. Um programa não pode acessar a memória de outro programa, aumentando a segurança e estabilidade do sistema.
+
+**Exemplo:** Se o Programa A tentar acessar o endereço 0x1234, e o Programa B também tentar acessar o mesmo endereço, eles estão acessando **endereços virtuais diferentes** — a MMU mapeia cada um para uma posição física diferente.
+
+### 5.3 Compartilhamento de memória
+
+Vários programas podem usar a mesma página de memória física. Isso é útil para bibliotecas compartilhadas.
+
+**Exemplo:** O Windows tem uma biblioteca DLL que vários programas usam. Em vez de carregar a DLL na RAM para cada programa, ela é carregada **uma vez** e todos os programas compartilham a mesma página física.
+
+### 5.4 Memória infinita (conceitual)
+
+Para o programa, parece que há memória infinita disponível. O programa não precisa saber quanta RAM física existe.
+
+## 6. DESVANTAGENS DA MEMÓRIA VIRTUAL
+
+### 6.1 Lentidão extrema
+
+O HD/SSD é milhares de vezes mais lento que a RAM.
+
+| Tipo | Tempo de acesso | Comparação |
+|---------|---------|---------|
+| **RAM (DRAM)** | 50-100 ns | 1x |
+| **SSD** | 50-100 µs | 1.000x mais lento |
+| **HD** | 5-10 ms | 100.000x mais lento |
+
+**Consequência:** Quando o sistema usa memória virtual, o desempenho cai drasticamente.
+
+### 6.2 Desgaste do SSD
+
+SSDs têm um número limitado de ciclos de escrita. O uso intenso de memória virtual (muitas trocas de páginas) pode reduzir a vida útil do SSD.
+
+### 6.3 Complexidade
+
+Gerenciar memória virtual adiciona complexidade ao sistema operacional e à MMU.
+
+### 6.4 Thrashing
+
+O fenômeno de thrashing pode tornar o sistema inutilizável.
+
+## 7. QUANDO A MEMÓRIA VIRTUAL É USADA NA PRÁTICA?
+
+### 7.1 Configuração típica
+
+- **Windows:** Arquivo de paginação (pagefile.sys) no HD/SSD
+- **Linux:** Partição swap ou arquivo swap
+- **macOS:** Arquivo de swap no SSD
+
+### 7.2 Tamanho típico do swap
+
+| Tipo | Tamanho do swap |
+|---------|---------|
+| **Recomendado** | 1.5x a 2x a quantidade de RAM |
+| **Windows padrão** | Gerenciado automaticamente pelo sistema |
+| **Linux** | Geralmente uma partição separada |
+
+### 7.3 Memória virtual em servidores
+
+Servidores usam memória virtual de forma diferente:
+- **Datacenters:** Minimizam o uso de swap para manter desempenho
+- **Máquinas virtuais:** Cada VM tem sua própria memória virtual
+- **Cloud:** Serviços como AWS usam memória virtual para isolar instâncias
+
+## 8. APLICAÇÕES REAIS
+
+| Aplicação | Como usa memória virtual |
+|---------|----------|
+| **Sistemas operacionais** | Todos os SOs modernos usam memória virtual |
+| **Máquinas virtuais** | Cada VM tem seu próprio espaço de endereços virtuais |
+| **Jogos** | Jogos grandes usam memória virtual para carregar texturas e níveis |
+| **Editores de vídeo** | Usam memória virtual para arquivos de projeto grandes |
+| **Navegadores** | Cada aba tem seu próprio espaço de memória virtual |
+| **Servidores web** | Usam memória virtual para isolar diferentes sites |
+
+**Exemplo prático:** O Google Chrome usa memória virtual para **isolar cada aba**. Se uma aba trava, as outras continuam funcionando. Cada aba tem seu próprio espaço de endereços virtuais.
+
+## 9. EXERCÍCIOS
+
+<details>
+<summary>📗 Exercício 1 — O que é memória virtual? (Fácil)</summary>
+
+**Enunciado:** Defina o que é memória virtual.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Memória virtual é uma técnica que usa o HD/SSD como uma extensão da RAM, permitindo que o computador execute programas maiores que a memória física disponível.
+
+**Explicação:** O sistema operacional gerencia a memória virtual, movendo páginas de dados entre a RAM e o disco conforme necessário.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — O que é uma página? (Fácil)</summary>
+
+**Enunciado:** O que é uma página no contexto da memória virtual e qual é seu tamanho típico?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Uma página é um bloco de memória de tamanho fixo usado pelo sistema operacional para gerenciar a memória virtual.
+
+**Explicação:** O tamanho típico é 4 KB (4096 bytes). Tanto a memória virtual quanto a RAM física são divididas em páginas (ou frames).
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — O que é um page fault? (Fácil)</summary>
+
+**Enunciado:** Explique o que é um page fault e o que acontece quando ele ocorre.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Um page fault ocorre quando a CPU tenta acessar uma página que não está na RAM física, mas está no HD/SSD (memória virtual).
+
+**O que acontece:**
+1. A CPU tenta acessar a página.
+2. A MMU percebe que a página não está na RAM.
+3. O sistema operacional é interrompido.
+4. O SO carrega a página do disco para a RAM.
+5. A execução do programa é retomada.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Tabela de páginas (Médio)</summary>
+
+**Enunciado:** O que é uma tabela de páginas e para que ela serve?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** A tabela de páginas é uma estrutura de dados mantida pelo sistema operacional que mapeia endereços virtuais (usados pelo programa) para endereços físicos (na RAM) ou para a localização no HD/SSD.
+
+**Explicação:** Cada programa tem sua própria tabela de páginas, o que garante isolamento entre programas.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Thrashing (Médio)</summary>
+
+**Enunciado:** O que é thrashing e quais são seus sintomas?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Thrashing ocorre quando o sistema operacional passa mais tempo trocando páginas entre RAM e disco do que executando programas.
+
+**Sintomas:**
+- Computador extremamente lento
+- Disco em atividade constante
+- Programas travam ou param de responder
+
+**Causa:** Pouca RAM física para os programas em execução.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Vantagens da memória virtual (Difícil)</summary>
+
+**Enunciado:** Liste três vantagens da memória virtual.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+1. **Permite executar programas maiores que a RAM** — programas podem ser executados mesmo que exijam mais memória que a física disponível.
+2. **Isolamento entre programas** — cada programa tem seu próprio espaço de endereços, aumentando segurança e estabilidade.
+3. **Compartilhamento de memória** — vários programas podem compartilhar a mesma página física (ex: bibliotecas).
+
+**Explicação:** Essas vantagens tornam a memória virtual essencial para sistemas operacionais modernos.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — Desvantagens da memória virtual (Difícil)</summary>
+
+**Enunciado:** Liste duas desvantagens da memória virtual.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+1. **Lentidão extrema** — o HD/SSD é milhares de vezes mais lento que a RAM, reduzindo drasticamente o desempenho.
+2. **Desgaste do SSD** — o uso intenso de memória virtual pode reduzir a vida útil do SSD.
+
+**Explicação:** A memória virtual resolve o problema de capacidade, mas cria problemas de desempenho e durabilidade.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — Memória virtual no dia a dia (Desafio)</summary>
+
+**Enunciado:** Você tem um computador com 4 GB de RAM e um jogo exige 8 GB. Como a memória virtual permite que você jogue? Quais seriam as consequências?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** A memória virtual permite que o jogo seja executado usando o SSD como extensão da RAM.
+
+**Como funciona:**
+- O jogo é carregado parcialmente na RAM.
+- As partes não usadas ficam no SSD.
+- Conforme o jogo avança, páginas são trocadas entre RAM e SSD.
+
+**Consequências:**
+- O jogo pode rodar, mas será mais lento devido ao acesso ao SSD.
+- Pode ocorrer thrashing se o jogo exigir muitas trocas de página.
+- O SSD pode ter sua vida útil reduzida.
+
+**Explicação:** A memória virtual permite que o jogo seja executado, mas com comprometimento de desempenho.
+</details>
+</details>
+
+> A memória virtual é uma das técnicas mais importantes da computação moderna. Ela permite que sistemas operacionais executem múltiplos programas simultaneamente, que jogos e aplicações pesadas rodem em computadores com pouca RAM, e que cada programa tenha seu próprio espaço de memória isolado e seguro. No entanto, é importante entender que a memória virtual não substitui a RAM física — ela é um complemento que, se usado em excesso, pode comprometer o desempenho. A melhor solução para evitar problemas de memória virtual é sempre ter RAM física suficiente para as aplicações que você usa.

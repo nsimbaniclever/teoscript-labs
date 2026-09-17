@@ -1,0 +1,475 @@
+# Subtrator
+
+## 1. Introdução
+
+Na aula anterior, aprendemos a construir somadores — circuitos que realizam a operação de soma binária. Vimos o meio-somador, o somador completo e como encadeá-los para somar números de múltiplos bits. Entretanto, um computador precisa fazer  apenas a soma. Ele precisa **subtrair**, **multiplicar**, **dividir** e realizar outras operações aritméticas.<br><br>
+
+A boa notícia é que, com o que já aprendemos, podemos construir um **subtrator** de forma muito simples. A chave está no **Complemento de 2**, que vimos no módulo sobre representação de inteiros.
+
+Lembre-se:
+
+> **A - B = A + (~B + 1)**
+
+Ou seja, para subtrair B de A, basta:
+1. Inverter todos os bits de B (Complemento de 1).
+2. Somar 1 ao resultado (Complemento de 2).
+3. Somar A com o resultado.
+
+Isso significa que o **mesmo circuito que soma também pode subtrair**! Basta adicionar algumas portas lógicas para inverter os bits de B e um "seletor" que escolhe se queremos somar ou subtrair.
+
+Nesta aula, vamos aprender a construir um subtrator usando o somador que já conhecemos, entender o papel do bit de *overflow* e do bit de *borrow*, e ver como criar um circuito que pode alternar entre soma e subtração (o famoso **somador/subtrator**).
+
+
+## 2. Revisão: Complemento de 2
+
+### 2.1 Como obter o Complemento de 2
+
+Para negativar um número em binário usando Complemento de 2:
+
+> **Passo 1:** Inverta todos os bits (Complemento de 1).  
+> **Passo 2:** Some 1 ao resultado.
+
+**Exemplo com 4 bits:** Obter -3
+
+| Passo | Operação | Resultado |
+|-------|----------|-----------|
+| 1 | 3 em binário | `0011` |
+| 2 | Complemento de 1 (inverter bits) | `1100` |
+| 3 | Somar 1 | `1101` |
+
+**Resposta:** -3 = `1101` em Complemento de 2 ✅
+
+### 2.2 Por que o Complemento de 2 funciona para subtração?
+
+A soma no Complemento de 2 funciona naturalmente:
+
+<pre>
+  0101  (+5)
++ 1101  (-3)
+--------
+  0010  (+2)  (descartando o carry final)
+</pre>
+
+**Resultado:** 5 - 3 = 2 ✅
+
+
+## 3. Construindo um Subtrator
+
+### 3.1 A ideia básica
+
+Para subtrair B de A, precisamos:
+
+1. **Inverter todos os bits de B** (usando portas NOT).
+2. **Somar 1** ao resultado (para obter o Complemento de 2).
+3. **Somar A com o Complemento de 2 de B**.
+
+### 3.2 Diagrama do Subtrator
+
+<details>
+<summary>🔧 Ver Diagrama do Subtrator</summary>
+<div style="font-family: monospace; background: #111; padding: 2rem; border-radius: 12px; max-width: 500px; margin: auto; display: flex; align-items: center; justify-content: center; gap: 0;">
+
+  <div style="display: flex; flex-direction: column; gap: 1.4rem; text-align: right;">
+    <span style="color: #60a5fa; font-weight: bold;">A ──</span>
+    <span style="color: #f87171; font-weight: bold;">B ── NOT ──</span>
+    <span style="color: #60a5fa; font-weight: bold;">1 ───</span>
+  </div>
+
+  <div style="border: 2px solid #7c3aed; background: #2d1b69; padding: 1.2rem 1.5rem; text-align: center; border-radius: 4px;">
+    <div style="color: #a78bfa; font-weight: bold;">SOMADOR</div>
+    <div style="color: #a78bfa; font-weight: bold;">COMPLETO</div>
+    <div style="color: #8b5cf6; font-size: 0.7rem;">(Cin = 1)</div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 1.4rem;">
+    <span style="color: #34d399; font-weight: bold;">── S</span>
+    <span style="color: #fcd34d; font-weight: bold;">── Cout</span>
+  </div>
+
+</div>
+</details>
+
+### 3.3 Subtrator usando Somador Completo
+
+Podemos usar o mesmo somador completo que já conhecemos, com uma pequena modificação:
+
+- **Entrada A:** Os bits do minuendo (A)
+- **Entrada B:** Os bits do subtraendo (B) **invertidos**
+- **Cin:** 1 (para somar 1 e obter o Complemento de 2)
+
+**Expressão:** `A - B = A + (~B + 1)`
+
+### 3.4 Exemplo prático: 5 - 3 = 2
+
+**Passo 1:** A = 5 = `0101`, B = 3 = `0011`
+**Passo 2:** ~B = `1100` (Complemento de 1)
+**Passo 3:** Cin = 1 (para somar 1 e obter Complemento de 2)
+**Passo 4:** Some A + (~B + 1) = `0101 + 1101`
+
+| Posição | A | ~B | Cin | S | Cout |
+|---------|---|---|-----|---|------|
+| 0 (LSB) | 1 | 0 | 1 | 0 | 1 |
+| 1 | 0 | 0 | 1 | 1 | 0 |
+| 2 | 1 | 1 | 0 | 0 | 1 |
+| 3 | 0 | 1 | 1 | 0 | 1 |
+
+**Resultado:** S = `0010` = 2, Cout = 1 (descartado) ✅
+
+
+## 4. Detecção de Overflow e Borrow
+
+### 4.1 O que acontece quando o resultado não cabe?
+
+Quando subtraímos dois números, dois problemas podem ocorrer:
+
+| Problema | Descrição | Exemplo (4 bits) |
+|----------|-----------|------------------|
+| **Overflow** | O resultado é muito grande (positivo) para caber | 7 - (-1) = 8 (não cabe em -8 a +7) |
+| **Borrow** | O resultado é negativo (o que é normal em Complemento de 2) | 3 - 5 = -2 (cabe em Complemento de 2) |
+
+### 4.2 Overflow na subtração
+
+No Complemento de 2, o overflow ocorre quando:
+
+1. **Subtrair um número negativo de um positivo** → resultado muito grande.
+2. **Subtrair um número positivo de um negativo** → resultado muito pequeno.
+
+**Regra de ouro:** Overflow ocorre quando o bit de sinal do resultado é diferente do esperado.
+
+**Exemplo:** 5 - (-3) = 8 (em 4 bits, overflow!)
+- 5 = `0101`
+- -3 = `1101`
+- 5 - (-3) = 5 + 3 = `0101 + 0011` = `1000` (-8)
+
+**Resultado:** `1000` = -8 (não é 8!) → **Overflow!**
+
+### 4.3 O bit de Borrow vs Carry
+
+| Operação | Bit final | Significado |
+|----------|-----------|-------------|
+| **Soma** | Cout = 1 | Carry (vai-um) — pode indicar overflow |
+| **Subtração** | Cout = 1 | **Borrow** (pede emprestado) — significa que o resultado é negativo |
+
+**Exemplo:** 3 - 5 = -2
+
+| Posição | A | ~B | Cin | S | Cout |
+|---------|---|----|-----|---|------|
+| 0 (LSB) | 1 | 0 | 1 | 0 | 1 |
+| 1 | 1 | 0 | 1 | 0 | 1 |
+| 2 | 0 | 0 | 1 | 1 | 0 |
+| 3 | 0 | 1 | 0 | 1 | 0 |
+
+**Resultado:** S = `1110` = -2, Cout = 0 (sem borrow) ✅
+
+**Exemplo:** 5 - 3 = 2
+
+| Posição | A | ~B | Cin | S | Cout |
+|---------|---|----|-----|---|------|
+| 0 (LSB) | 1 | 0 | 1 | 0 | 1 |
+| 1 | 0 | 0 | 1 | 1 | 0 |
+| 2 | 1 | 1 | 0 | 0 | 1 |
+| 3 | 0 | 1 | 1 | 0 | 1 |
+
+**Resultado:** S = `0010` = 2, Cout = 1 (borrow? não, carry descartado) ✅
+
+
+## 5. Somador/Subtrator (Circuito Universal)
+
+### 5.1 A ideia
+
+Podemos criar um único circuito que faça **soma e subtração**, escolhendo a operação com um sinal de controle:
+
+- **Controle = 0** → Soma (A + B)
+- **Controle = 1** → Subtração (A - B)
+
+### 5.2 Como funciona?
+
+| Controle | Operação | O que o circuito faz |
+|----------|----------|---------------------|
+| 0 | Soma | B passa direto (sem inversão), Cin = 0 |
+| 1 | Subtração | B é invertido (XOR com 1), Cin = 1 |
+
+### 5.3 Diagrama do Somador/Subtrator
+
+<details>
+<summary>🔧 Ver Diagrama do Somador/Subtrator</summary>
+<div style="font-family: monospace; background: #0d1b2a; padding: 3rem 2rem; border-radius: 12px; max-width: 620px; margin: auto; position: relative; height: 320px;">
+
+  <!-- Linhas horizontais -->
+  <!-- A -->
+  <div style="position: absolute; top: 80px; left: 130px; width: 170px; height: 2px; background: #fff;"></div>
+  <!-- B -->
+  <div style="position: absolute; top: 150px; left: 130px; width: 170px; height: 2px; background: #fff;"></div>
+  <!-- Ctrl -->
+  <div style="position: absolute; top: 220px; left: 130px; width: 170px; height: 2px; background: #fff;"></div>
+  <!-- S -->
+  <div style="position: absolute; top: 80px; left: 420px; width: 100px; height: 2px; background: #fff;"></div>
+  <!-- Cin -->
+  <div style="position: absolute; top: 220px; left: 420px; width: 100px; height: 2px; background: #fff;"></div>
+
+  <!-- Derivação B descendo até Ctrl -->
+  <div style="position: absolute; top: 150px; left: 230px; width: 2px; height: 70px; background: #fff;"></div>
+
+  <!-- Pontos de junção -->
+  <div style="position: absolute; top: 77px; left: 296px; width: 8px; height: 8px; background: #fff; border-radius: 50%;"></div>
+  <div style="position: absolute; top: 147px; left: 296px; width: 8px; height: 8px; background: #fff; border-radius: 50%;"></div>
+  <div style="position: absolute; top: 147px; left: 227px; width: 8px; height: 8px; background: #fff; border-radius: 50%;"></div>
+  <div style="position: absolute; top: 217px; left: 227px; width: 8px; height: 8px; background: #fff; border-radius: 50%;"></div>
+  <div style="position: absolute; top: 217px; left: 296px; width: 8px; height: 8px; background: #fff; border-radius: 50%;"></div>
+
+  <!-- Labels esquerda -->
+  <span style="position: absolute; top: 65px; left: 60px; color: #4da6ff; font-size: 1.5rem; font-weight: bold;">A</span>
+  <span style="position: absolute; top: 135px; left: 60px; color: #ff6b6b; font-size: 1.5rem; font-weight: bold;">B</span>
+  <span style="position: absolute; top: 205px; left: 30px; color: #ffd93d; font-size: 1.5rem; font-weight: bold;">Ctrl</span>
+
+  <!-- Labels direita -->
+  <span style="position: absolute; top: 65px; left: 530px; color: #6bcb77; font-size: 1.5rem; font-weight: bold;">S</span>
+  <span style="position: absolute; top: 205px; left: 520px; color: #fff; font-size: 1.5rem; font-weight: bold;">Cin</span>
+
+  <!-- Bloco X -->
+  <div style="position: absolute; top: 40px; left: 300px; width: 120px; height: 140px; border: 3px solid #fff; border-radius: 4px; display: flex; align-items: center; justify-content: center;">
+    <span style="color: #fff; font-size: 2.2rem; font-weight: bold;">X</span>
+  </div>
+
+  <!-- Bloco XOR -->
+  <div style="position: absolute; top: 200px; left: 300px; width: 120px; height: 40px; border: 3px solid #fff; border-radius: 4px; display: flex; align-items: center; justify-content: center;">
+    <span style="color: #ff9500; font-size: 1.3rem; font-weight: bold;">XOR</span>
+  </div>
+
+</div>
+</details>
+
+### 5.4 Tabela verdade do controle
+
+| Ctrl | Entrada B | Cin | Operação |
+|------|-----------|-----|----------|
+| 0 | B (sem inversão) | 0 | A + B |
+| 1 | ¬B (invertido) | 1 | A + ¬B + 1 = A - B |
+
+### 5.5 Exemplo prático
+
+**Exemplo 1: Soma (Ctrl = 0)**
+- A = `0101` (5), B = `0011` (3), Ctrl = 0
+- B passa direto: `0011`
+- Cin = 0
+- Soma: `0101 + 0011` = `1000` (8) ✅
+
+**Exemplo 2: Subtração (Ctrl = 1)**
+- A = `0101` (5), B = `0011` (3), Ctrl = 1
+- B invertido: `1100`
+- Cin = 1
+- Soma: `0101 + 1101` = `0010` (2) ✅
+
+
+## 6. Subtrator de 4 Bits
+
+### 6.1 Diagrama completo
+
+<details>
+<summary>🔧 Ver Diagrama do Subtrator de 4 Bits</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 600px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">SUBTRATOR DE 4 BITS</div>
+
+  <pre style="color: #93c5fd; font-size: 0.8rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+   Ctrl ───────────────────────────────────────┐
+                                               │
+                                               ▼
+A₃ ──┤FA3├── S₃    A₂ ──┤FA2├── S₂    A₁ ──┤FA1├── S₁    A₀ ──┤FA0├── S₀
+B₃ ──┤XOR├──┤   │    B₂ ──┤XOR├──┤   │    B₁ ──┤XOR├──┤   │    B₀ ──┤XOR├──┤   │
+     └───┘  │   │         └───┘  │   │         └───┘  │   │         └───┘  │   │
+            │   │                │   │                │   │                │   │
+            └─┬─┘                └─┬─┘                └─┬─┘                └─┬─┘
+              │ Cout               │ Cout               │ Cout               │ Cout
+              └────────────────────┼────────────────────┼────────────────────┘
+                                   │                    │
+                                  Cin ──────────────────┘
+                                   │
+                            ┌──────┴──────┐
+                      Ctrl ─┤ Cin inicial │ = Ctrl
+                            └─────────────┘
+  </pre>
+
+  <div style="margin-top: 0.8rem; padding-top: 0.8rem; border-top: 1px solid rgba(255,255,255,0.05); display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap;">
+    <span style="background: #2d1b69; color: #c4b5fd; padding: 0.15rem 0.6rem; border-radius: 12px; font-size: 0.55rem;">FA = Full Adder</span>
+    <span style="background: #1a3a5c; color: #93c5fd; padding: 0.15rem 0.6rem; border-radius: 12px; font-size: 0.55rem;">XOR = Inversor controlado</span>
+    <span style="background: #5c3a1a; color: #fde68a; padding: 0.15rem 0.6rem; border-radius: 12px; font-size: 0.55rem;">Cin = Ctrl</span>
+  </div>
+
+</div>
+</details>
+
+### 6.2 Exemplo completo: 5 - 3 = 2
+
+| Posição | A | B | Ctrl | B_inv | Cin | S | Cout |
+|---------|---|---|------|-------|-----|---|------|
+| 0 | 1 | 1 | 1 | 0 | 1 | 0 | 1 |
+| 1 | 0 | 1 | 1 | 0 | 1 | 1 | 0 |
+| 2 | 1 | 0 | 1 | 1 | 0 | 0 | 1 |
+| 3 | 0 | 0 | 1 | 1 | 1 | 0 | 1 |
+
+**Resultado:** S = `0010` = 2 ✅
+
+
+## 7. Aplicações Reais
+
+| Aplicação | Como usa o subtrator |
+|-----------|---------------------|
+| **ULA da CPU** | Operação de subtração |
+| **Comparadores** | Verificar se A > B, A < B, A = B |
+| **Controle de estoque** | Subtrair itens vendidos |
+| **Contadores regressivos** | Decremento de valores |
+| **Cálculo de diferenças** | Distância entre dois valores |
+| **Processamento de sinais** | Filtros e operações diferenciais |
+
+
+## 8. Exercícios
+
+<details>
+<summary>📗 Exercício 1 — Complemento de 2 (fácil)</summary>
+
+**Enunciado:** Calcule o Complemento de 2 de `0010` (2) em 4 bits.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Passo 1:** Complemento de 1: inverter bits → `1101`
+
+**Passo 2:** Somar 1 → `1101 + 0001 = 1110`
+
+**Resposta:** `1110` (-2)
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Subtração via soma (fácil)</summary>
+
+**Enunciado:** Calcule 6 - 2 usando Complemento de 2.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Passo 1:** 6 = `0110`, 2 = `0010`
+
+**Passo 2:** Complemento de 2 de 2 → `1110`
+
+**Passo 3:** Some: `0110 + 1110 = 0100` (descartando o carry)
+
+**Resposta:** `0100` = 4 ✅
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Subtrator (médio)</summary>
+
+**Enunciado:** Calcule 7 - 4 usando o método do subtrator (A + ~B + 1).
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Passo 1:** 7 = `0111`, 4 = `0100`
+
+**Passo 2:** ~4 = `1011`
+
+**Passo 3:** ~4 + 1 = `1100` (-4 em Complemento de 2)
+
+**Passo 4:** `0111 + 1100 = 0011` (descartando o carry)
+
+**Resposta:** `0011` = 3 ✅
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Overflow na subtração (médio)</summary>
+
+**Enunciado:** Calcule 4 - (-4) em 4 bits. Ocorre overflow?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Passo 1:** 4 = `0100`, -4 = `1100`
+
+**Passo 2:** Complemento de 2 de -4? Isso é 4: `0100`
+
+**Passo 3:** 4 - (-4) = 4 + 4 = `0100 + 0100 = 1000`
+
+**Passo 4:** `1000` = -8 em Complemento de 2 (não é 8!)
+
+**Resposta:** Ocorre overflow! (4 - (-4) = 8, mas a faixa de 4 bits é -8 a +7)
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Somador/Subtrator (médio)</summary>
+
+**Enunciado:** Em um somador/subtrator, qual deve ser o valor do controle (Ctrl) para realizar subtração?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Ctrl = 1
+
+**Explicação:** Quando Ctrl = 1, os bits de B são invertidos (XOR com 1) e Cin = 1, realizando A - B = A + (~B + 1).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Subtração com borrow (desafio)</summary>
+
+**Enunciado:** Calcule 3 - 5 em 4 bits. Qual é o borrow final?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Passo 1:** 3 = `0011`, 5 = `0101`
+
+**Passo 2:** ~5 = `1010`
+
+**Passo 3:** ~5 + 1 = `1011` (-5)
+
+**Passo 4:** `0011 + 1011 = 1110` (sem carry final)
+
+**Resultado:** S = `1110` = -2, Cout = 0 (borrow = 1, pois resultado é negativo)
+
+**Resposta:** Resultado = -2, Borrow = 1
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — Subtrator completo (desafio)</summary>
+
+**Enunciado:** Projete um subtrator de 4 bits usando 4 somadores completos e portas XOR.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Passo 1:** Conecte os bits A₀ a A₃ às entradas A dos somadores completos.
+
+**Passo 2:** Conecte os bits B₀ a B₃ a portas XOR com o sinal de controle Ctrl = 1.
+
+**Passo 3:** Conecte a saída das portas XOR (B invertido) às entradas B dos somadores completos.
+
+**Passo 4:** Conecte Cin = 1 ao primeiro somador.
+
+**Passo 5:** Conecte o Cout de cada somador ao Cin do próximo.
+
+**Passo 6:** As saídas S₀ a S₃ são o resultado da subtração.
+
+**Resposta:** O circuito é igual ao somador de 4 bits, mas com portas XOR para inverter B e Cin = 1.
+
+</details>
+</details>
+
+
+
+> **"O subtrator é construído a partir do somador usando o Complemento de 2: A - B = A + (~B + 1). Para subtrair, invertemos os bits de B e somamos 1. O mesmo circuito pode ser adaptado para fazer soma e subtração com um sinal de controle: Ctrl = 0 para soma, Ctrl = 1 para subtração. O bit final (Cout) indica borrow quando o resultado é negativo. Esta é a base da ULA (Unidade Lógica e Aritmética) e de toda a aritmética computacional."**
+
+
+**Próxima aula:** Multiplexador (MUX) — Selecionando Dados em Circuitos Digitais

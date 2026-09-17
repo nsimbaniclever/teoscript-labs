@@ -1,0 +1,690 @@
+# SUBESPAÇOS FUNDAMENTAIS (I)
+
+## 1. Definição Formal de Subespaço Vetorial
+
+### 1.1 O que é um Subespaço?
+
+Um **subespaço vetorial** de um espaço vetorial $V$ é um subconjunto não vazio $W \subset V$ que é **fechado** sob as operações de soma e multiplicação por escalar.
+
+Formalmente, $W$ é um subespaço de $V$ se:
+
+1. $\vec{0} \in W$ (contém o vetor nulo)
+2. Para quaisquer $\vec{u}, \vec{v} \in W$, tem-se $\vec{u} + \vec{v} \in W$ (fechado sob soma)
+3. Para qualquer $\vec{u} \in W$ e $c \in \mathbb{R}$, tem-se $c\vec{u} \in W$ (fechado sob multiplicação por escalar)
+
+### 1.2 Exemplos de Subespaços
+
+| Subespaço | Descrição | Exemplo em $\mathbb{R}^3$ |
+|-----------|-----------|----------------------------|
+| **Subespaço trivial** | Apenas o vetor nulo | $W = \{(0,0,0)\}$ |
+| **Subespaço próprio** | Retas ou planos que passam pela origem | $W = \{(x,y,0) \mid x,y \in \mathbb{R}\}$ (plano XY) |
+| **O próprio espaço** | Todo o espaço $V$ | $W = \mathbb{R}^3$ |
+
+### 1.3 Subespaço Gerado (Span)
+
+Dados vetores $\vec{v}_1, \vec{v}_2, \ldots, \vec{v}_k \in V$, o **subespaço gerado** por eles é:
+
+$$
+\text{span}\{\vec{v}_1, \vec{v}_2, \ldots, \vec{v}_k\} = \left\{ \sum_{i=1}^k c_i \vec{v}_i \mid c_i \in \mathbb{R} \right\}
+$$
+
+**Interpretação:** É o menor subespaço que contém todos os vetores $\vec{v}_i$.
+
+## 2. Os Quatro Subespaços Fundamentais de uma Matriz
+
+Para uma matriz $A \in \mathbb{R}^{m \times n}$ (m linhas, n colunas), existem **quatro subespaços fundamentais**:
+
+| Subespaço | Definição | Notação | Dimensão |
+|-----------|-----------|---------|----------|
+| **Espaço Coluna** | Gerado pelas colunas de $A$ | $\text{Col}(A) \subset \mathbb{R}^m$ | $\text{posto}(A)$ |
+| **Espaço Linha** | Gerado pelas linhas de $A$ | $\text{Lin}(A) \subset \mathbb{R}^n$ | $\text{posto}(A)$ |
+| **Espaço Nulo** | Soluções de $A\vec{x} = \vec{0}$ | $\text{Nul}(A) \subset \mathbb{R}^n$ | $n - \text{posto}(A)$ |
+| **Espaço Nulo Esquerdo** | Soluções de $A^T\vec{y} = \vec{0}$ | $\text{Nul}(A^T) \subset \mathbb{R}^m$ | $m - \text{posto}(A)$ |
+
+### 2.1 Espaço Coluna (Col)
+
+O **espaço coluna** de $A$ é o conjunto de todas as combinações lineares das colunas de $A$.
+
+$$
+\text{Col}(A) = \{ A\vec{x} \mid \vec{x} \in \mathbb{R}^n \} \subset \mathbb{R}^m
+$$
+
+**Interpretação:** São todos os vetores que podem ser obtidos multiplicando $A$ por algum vetor $\vec{x}$.
+
+### 2.2 Espaço Linha (Lin)
+
+O **espaço linha** de $A$ é o conjunto de todas as combinações lineares das linhas de $A$.
+
+$$
+\text{Lin}(A) = \{ A^T\vec{y} \mid \vec{y} \in \mathbb{R}^m \} \subset \mathbb{R}^n
+$$
+
+**Interpretação:** São todos os vetores que podem ser obtidos multiplicando $A^T$ por algum vetor $\vec{y}$.
+
+### 2.3 Espaço Nulo (Nul)
+
+O **espaço nulo** de $A$ é o conjunto de todas as soluções do sistema homogêneo $A\vec{x} = \vec{0}$.
+
+$$
+\text{Nul}(A) = \{ \vec{x} \in \mathbb{R}^n \mid A\vec{x} = \vec{0} \} \subset \mathbb{R}^n
+$$
+
+**Interpretação:** São todos os vetores que são "aniquilados" por $A$ (levados ao zero).
+
+### 2.4 Espaço Nulo Esquerdo (Nul Esquerdo)
+
+O **espaço nulo esquerdo** de $A$ é o conjunto de todas as soluções de $A^T\vec{y} = \vec{0}$.
+
+$$
+\text{Nul}(A^T) = \{ \vec{y} \in \mathbb{R}^m \mid A^T\vec{y} = \vec{0} \} \subset \mathbb{R}^m
+$$
+
+**Interpretação:** São os vetores que são "aniquilados" por $A^T$.
+
+## 3. Exemplos Acadêmicos Passo a Passo
+
+### 3.1 Exemplo em $\mathbb{R}^2$ (Matriz $2 \times 2$)
+
+Seja:
+$$
+A = \begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix}
+$$
+
+**Passo 1: Espaço Coluna**
+
+Colunas de $A$:
+$$
+\vec{c}_1 = (1, 3), \quad \vec{c}_2 = (2, 4)
+$$
+
+$\text{Col}(A) = \text{span}\{(1,3), (2,4)\}$
+
+Como os dois são LI (determinante = $1\cdot4 - 2\cdot3 = -2 \neq 0$), eles geram todo o $\mathbb{R}^2$.
+
+**Dimensão:** $\dim(\text{Col}(A)) = 2$.
+
+**Passo 2: Espaço Linha**
+
+Linhas de $A$:
+$$
+\vec{l}_1 = (1, 2), \quad \vec{l}_2 = (3, 4)
+$$
+
+$\text{Lin}(A) = \text{span}\{(1,2), (3,4)\}$
+
+Como os dois são LI, eles geram todo o $\mathbb{R}^2$.
+
+**Dimensão:** $\dim(\text{Lin}(A)) = 2$.
+
+**Passo 3: Espaço Nulo**
+
+Queremos $A\vec{x} = \vec{0}$:
+$$
+\begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix} \begin{bmatrix} x_1 \\ x_2 \end{bmatrix} = \begin{bmatrix} 0 \\ 0 \end{bmatrix}
+$$
+
+Sistema:
+$$
+\begin{cases}
+x_1 + 2x_2 = 0 \\
+3x_1 + 4x_2 = 0
+\end{cases}
+$$
+
+Da primeira: $x_1 = -2x_2$  
+Substituindo na segunda: $3(-2x_2) + 4x_2 = 0 \Rightarrow -6x_2 + 4x_2 = 0 \Rightarrow -2x_2 = 0 \Rightarrow x_2 = 0$  
+Então $x_1 = 0$
+
+**Solução:** $(0,0)$ → apenas o vetor nulo.
+
+**Dimensão:** $\dim(\text{Nul}(A)) = 0$.
+
+**Passo 4: Espaço Nulo Esquerdo**
+
+Queremos $A^T\vec{y} = \vec{0}$:
+$$
+A^T = \begin{bmatrix} 1 & 3 \\ 2 & 4 \end{bmatrix}
+$$
+
+Sistema:
+$$
+\begin{cases}
+y_1 + 3y_2 = 0 \\
+2y_1 + 4y_2 = 0
+\end{cases}
+$$
+
+Da primeira: $y_1 = -3y_2$  
+Substituindo: $2(-3y_2) + 4y_2 = 0 \Rightarrow -6y_2 + 4y_2 = 0 \Rightarrow -2y_2 = 0 \Rightarrow y_2 = 0$  
+Então $y_1 = 0$
+
+**Solução:** $(0,0)$ → apenas o vetor nulo.
+
+**Dimensão:** $\dim(\text{Nul}(A^T)) = 0$.
+
+**Resumo:**
+
+| Subespaço | Dimensão |
+|-----------|----------|
+| Espaço Coluna | 2 |
+| Espaço Linha | 2 |
+| Espaço Nulo | 0 |
+| Espaço Nulo Esquerdo | 0 |
+
+**Observação:** A soma das dimensões do espaço coluna e do espaço nulo é $2 + 0 = 2 = n$ (número de colunas). Isso é o **Teorema do Posto-Nulidade**!
+
+### 3.2 Exemplo com Matriz Singular ($2 \times 2$)
+
+Seja:
+$$
+A = \begin{bmatrix} 1 & 2 \\ 2 & 4 \end{bmatrix}
+$$
+
+**Passo 1: Espaço Coluna**
+
+Colunas de $A$:
+$$
+\vec{c}_1 = (1, 2), \quad \vec{c}_2 = (2, 4) = 2\vec{c}_1
+$$
+
+$\text{Col}(A) = \text{span}\{(1,2)\}$ → uma reta.
+
+**Dimensão:** $\dim(\text{Col}(A)) = 1$.
+
+**Passo 2: Espaço Linha**
+
+Linhas de $A$:
+$$
+\vec{l}_1 = (1, 2), \quad \vec{l}_2 = (2, 4) = 2\vec{l}_1
+$$
+
+$\text{Lin}(A) = \text{span}\{(1,2)\}$ → uma reta.
+
+**Dimensão:** $\dim(\text{Lin}(A)) = 1$.
+
+**Passo 3: Espaço Nulo**
+
+Queremos $A\vec{x} = \vec{0}$:
+$$
+\begin{bmatrix} 1 & 2 \\ 2 & 4 \end{bmatrix} \begin{bmatrix} x_1 \\ x_2 \end{bmatrix} = \begin{bmatrix} 0 \\ 0 \end{bmatrix}
+$$
+
+Sistema:
+$$
+\begin{cases}
+x_1 + 2x_2 = 0 \\
+2x_1 + 4x_2 = 0
+\end{cases}
+$$
+
+Ambas são a mesma equação: $x_1 + 2x_2 = 0 \Rightarrow x_1 = -2x_2$
+
+**Solução:** $(x_1, x_2) = (-2t, t)$ para $t \in \mathbb{R}$.
+
+**Dimensão:** $\dim(\text{Nul}(A)) = 1$.
+
+**Passo 4: Espaço Nulo Esquerdo**
+
+Queremos $A^T\vec{y} = \vec{0}$:
+$$
+A^T = \begin{bmatrix} 1 & 2 \\ 2 & 4 \end{bmatrix}
+$$
+
+Sistema:
+$$
+\begin{cases}
+y_1 + 2y_2 = 0 \\
+2y_1 + 4y_2 = 0
+\end{cases}
+$$
+
+Ambas são a mesma: $y_1 = -2y_2$
+
+**Solução:** $(y_1, y_2) = (-2t, t)$ para $t \in \mathbb{R}$.
+
+**Dimensão:** $\dim(\text{Nul}(A^T)) = 1$.
+
+**Resumo:**
+
+| Subespaço | Dimensão |
+|-----------|----------|
+| Espaço Coluna | 1 |
+| Espaço Linha | 1 |
+| Espaço Nulo | 1 |
+| Espaço Nulo Esquerdo | 1 |
+
+**Observação:** $\dim(\text{Col}(A)) + \dim(\text{Nul}(A)) = 1 + 1 = 2 = n$ (Teorema do Posto-Nulidade).
+
+## 4. O Teorema do Posto-Nulidade
+
+Para uma matriz $A \in \mathbb{R}^{m \times n}$:
+
+$$
+\dim(\text{Col}(A)) + \dim(\text{Nul}(A)) = n
+$$
+
+Ou seja:
+
+$$
+\text{posto}(A) + \text{nulidade}(A) = n
+$$
+
+Onde:
+- **Posto**: dimensão do espaço coluna (ou espaço linha)
+- **Nulidade**: dimensão do espaço nulo
+
+### 4.1 Interpretação Geométrica
+
+| Posto | Nulidade | Interpretação |
+|-------|----------|---------------|
+| $n$ | 0 | A matriz é **injetora** (núcleo só com o zero) |
+| $< n$ | $> 0$ | A matriz tem **direções aniquiladas** (perda de informação) |
+
+## 5. Exemplos Lúdicos Aprimorados
+
+### 🍔 EXEMPLO 1 – A LANCHONETE (SUBESPAÇOS)
+
+#### 1.1 Matriz da Lanchonete
+
+A lanchonete tem três sanduíches:
+- Hambúrguer: $(1,1,0)$ → (pão, carne, queijo)
+- Queijo: $(0,0,1)$
+- Combo: $(1,1,1)$
+
+Matriz (sanduíches como colunas):
+$$
+A = \begin{bmatrix}
+1 & 0 & 1 \\
+1 & 0 & 1 \\
+0 & 1 & 1
+\end{bmatrix}
+$$
+
+#### 1.2 Espaço Coluna (Receitas Possíveis)
+
+$\text{Col}(A)$ são todas as combinações de sanduíches que a lanchonete pode fazer.
+
+Como as colunas são LD ($(1,1,1) = (1,1,0) + (0,0,1)$), o espaço coluna tem dimensão 2.
+
+**Interpretação:** A lanchonete só pode gerar receitas em um **plano** (dimensão 2), não no espaço todo. Algumas combinações de ingredientes são impossíveis com esses sanduíches.
+
+#### 1.3 Espaço Nulo (Combinações que não alteram o pedido)
+
+$\text{Nul}(A)$ são os vetores $\vec{x}$ tais que $A\vec{x} = \vec{0}$.
+
+Isso significa combinações de sanduíches que **não alteram** o pedido total.
+
+**Exemplo:** Pedir 1 hambúrguer + 1 queijo - 1 combo:
+$$
+1(1,1,0) + 1(0,0,1) - 1(1,1,1) = (0,0,0)
+$$
+
+**Interpretação:** Você pode adicionar ou remover essas combinações sem mudar o pedido. O espaço nulo captura a **redundância** do cardápio.
+
+### 🧃 EXEMPLO 2 – A CANTINA (SUBESPAÇOS)
+
+#### 2.1 Matriz Nutricional
+
+A cantina vende:
+- Suco: $(10, 0, 50)$ → (açúcar, cálcio, vitamina C)
+- Leite: $(5, 20, 0)$
+- Bolo: $(30, 0, 0)$
+
+Matriz (alimentos como colunas):
+$$
+A = \begin{bmatrix}
+10 & 5 & 30 \\
+0 & 20 & 0 \\
+50 & 0 & 0
+\end{bmatrix}
+$$
+
+#### 2.2 Espaço Coluna (Dietas Possíveis)
+
+Como a matriz tem determinante ≠ 0, as colunas são LI e geram todo o $\mathbb{R}^3$.
+
+**Dimensão:** 3.
+
+**Interpretação:** Com suco, leite e bolo, você pode atingir **qualquer combinação** de açúcar, cálcio e vitamina C.
+
+#### 2.3 Espaço Nulo (Combinações que não alteram a dieta)
+
+$\text{Nul}(A)$ são combinações de alimentos que **não alteram** os nutrientes totais.
+
+Como as colunas são LI, o espaço nulo tem dimensão 0.
+
+**Interpretação:** Não há redundância — cada alimento é essencial.
+
+### 📚 EXEMPLO 3 – A BIBLIOTECA (SUBESPAÇOS)
+
+#### 3.1 Matriz de Conteúdo
+
+A biblioteca tem:
+- Matemática: $(10, 5, 0)$ → (teoria, exercícios, figuras)
+- História: $(8, 0, 12)$
+- Ciências: $(6, 8, 4)$
+
+Matriz:
+$$
+A = \begin{bmatrix}
+10 & 8 & 6 \\
+5 & 0 & 8 \\
+0 & 12 & 4
+\end{bmatrix}
+$$
+
+#### 3.2 Espaço Coluna (Planos de Estudo Possíveis)
+
+Como $\det(A) \neq 0$, as colunas geram todo o $\mathbb{R}^3$.
+
+**Dimensão:** 3.
+
+**Interpretação:** Com esses três livros, você pode montar qualquer plano de estudo (qualquer combinação de teoria, exercícios e figuras).
+
+#### 3.3 Espaço Nulo (Combinações de livros que não alteram o estudo)
+
+$\text{Nul}(A)$ tem dimensão 0 (colunas LI).
+
+**Interpretação:** Não há redundância — cada livro é essencial. Nenhuma combinação de livros "se cancela" para dar zero conteúdo.
+
+### 🎨 EXEMPLO 4 – AS CORES (SUBESPAÇOS)
+
+#### 4.1 Matriz RGB
+
+As cores primárias RGB formam a matriz identidade:
+$$
+A = \begin{bmatrix}
+1 & 0 & 0 \\
+0 & 1 & 0 \\
+0 & 0 & 1
+\end{bmatrix}
+$$
+
+#### 4.2 Espaço Coluna (Todas as Cores)
+
+$\text{Col}(A) = \mathbb{R}^3$ → todas as cores possíveis.
+
+**Dimensão:** 3.
+
+#### 4.3 Espaço Nulo (Combinações de cores que se cancelam)
+
+$\text{Nul}(A) = \{\vec{0}\}$ → dimensão 0.
+
+**Interpretação:** Não há combinação não trivial de vermelho, verde e azul que dê preto (zero).
+
+#### 4.4 Subespaço de Cores (Apenas Vermelho e Verde)
+
+Agora, considere apenas:
+- Vermelho: $(1,0,0)$
+- Verde: $(0,1,0)$
+
+Matriz:
+$$
+A = \begin{bmatrix}
+1 & 0 \\
+0 & 1 \\
+0 & 0
+\end{bmatrix}
+$$
+
+**Espaço Coluna:** $\text{Col}(A) = \{(x,y,0) \mid x,y \in \mathbb{R}\}$ → plano XY.
+
+**Dimensão:** 2.
+
+**Interpretação:** Com apenas vermelho e verde, você só pode gerar cores no plano XY (sem azul).
+
+## 6. Relações entre os Subespaços
+
+### 6.1 Ortogonalidade dos Subespaços
+
+Para uma matriz $A \in \mathbb{R}^{m \times n}$:
+
+1. $\text{Lin}(A) \perp \text{Nul}(A)$ (são ortogonais)
+2. $\text{Col}(A) \perp \text{Nul}(A^T)$ (são ortogonais)
+
+**Interpretação:** Os espaços linha e nulo são "perpendiculares" entre si. Isso significa que todo vetor no espaço linha é perpendicular a todo vetor no espaço nulo.
+
+### 6.2 Decomposição do Espaço
+
+$$
+\mathbb{R}^n = \text{Lin}(A) \oplus \text{Nul}(A)
+$$
+
+$$
+\mathbb{R}^m = \text{Col}(A) \oplus \text{Nul}(A^T)
+$$
+
+**Interpretação:** Qualquer vetor em $\mathbb{R}^n$ pode ser decomposto de maneira única como soma de um vetor no espaço linha e um no espaço nulo.
+
+### 6.3 Resumo das Relações
+
+| Relação | Descrição |
+|---------|-----------|
+| $\dim(\text{Col}(A)) = \dim(\text{Lin}(A)) = \text{posto}(A)$ | Posto é único |
+| $\dim(\text{Col}(A)) + \dim(\text{Nul}(A)) = n$ | Teorema do Posto-Nulidade |
+| $\dim(\text{Lin}(A)) + \dim(\text{Nul}(A^T)) = m$ | Teorema do Posto-Nulidade para $A^T$ |
+| $\text{Lin}(A) \perp \text{Nul}(A)$ | Ortogonais |
+| $\text{Col}(A) \perp \text{Nul}(A^T)$ | Ortogonais |
+
+## 7. Aplicação Direta na Tese
+
+### 7.1 Sistemas Lineares e Existência de Solução
+
+O sistema $A\vec{x} = \vec{b}$ tem solução se, e somente se:
+
+$$
+\vec{b} \in \text{Col}(A)
+$$
+
+**Interpretação:** O vetor $\vec{b}$ deve estar no espaço coluna de $A$.
+
+### 7.2 PCA (Análise de Componentes Principais)
+
+No PCA, trabalhamos com o **espaço coluna** da matriz de dados.
+
+- Os componentes principais são uma base ortonormal para o espaço coluna.
+- A projeção dos dados no espaço coluna captura a maior parte da variância.
+
+### 7.3 Regularização e Subespaços
+
+A regularização L2 (Ridge) restringe a solução ao **espaço linha** da matriz de dados.
+
+**Interpretação:** A solução regularizada é a projeção da solução não regularizada no espaço linha.
+
+### 7.4 Federação de Aprendizado (Diversidade de Dados)
+
+Em FL, a diversidade dos dados está relacionada ao **posto** da matriz de dados agregada.
+
+- Posto alto → dados diversos, muitas direções independentes.
+- Posto baixo → dados redundantes, pouca diversidade.
+
+**Interpretação:** O posto mede a "riqueza" informacional dos dados.
+
+### 7.5 Detecção de Dados Anômalos
+
+Em sistemas de recomendação, dados anômalos tendem a ter uma componente no **espaço nulo** da matriz de dados.
+
+**Interpretação:** Se um dado não está no espaço coluna dos dados normais, ele é anômalo.
+
+## 8. Resumo Estruturado
+
+| Subespaço | Definição | Dimensão |
+|-----------|-----------|----------|
+| **Espaço Coluna** | Gerado pelas colunas de $A$ | posto(A) |
+| **Espaço Linha** | Gerado pelas linhas de $A$ | posto(A) |
+| **Espaço Nulo** | Soluções de $A\vec{x} = \vec{0}$ | n - posto(A) |
+| **Espaço Nulo Esquerdo** | Soluções de $A^T\vec{y} = \vec{0}$ | m - posto(A) |
+
+## 9. Exercícios Propostos
+
+<details>
+<summary>📗 Exercício 1 (Subespaços de uma Matriz)</summary>
+
+**Enunciado:** Seja:
+$$
+A = \begin{bmatrix}
+1 & 2 & 3 \\
+2 & 4 & 6 \\
+3 & 6 & 9
+\end{bmatrix}
+$$
+
+a) Determine o espaço coluna de $A$. Qual é a sua dimensão?  
+b) Determine o espaço nulo de $A$. Qual é a sua dimensão?  
+c) Verifique o Teorema do Posto-Nulidade.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) As colunas são $(1,2,3)$, $(2,4,6)$, $(3,6,9)$. Todas são múltiplas de $(1,2,3)$.  
+$\text{Col}(A) = \text{span}\{(1,2,3)\}$ → **dimensão = 1**.
+
+b) Queremos $A\vec{x} = \vec{0}$:
+$$
+\begin{cases}
+x_1 + 2x_2 + 3x_3 = 0 \\
+2x_1 + 4x_2 + 6x_3 = 0 \\
+3x_1 + 6x_2 + 9x_3 = 0
+\end{cases}
+$$
+Todas são a mesma equação: $x_1 + 2x_2 + 3x_3 = 0$  
+Solução: $x_1 = -2x_2 - 3x_3$  
+**Dimensão = 2** (variáveis livres: $x_2, x_3$).
+
+c) $\text{posto} = 1$, $\text{nulidade} = 2$.  
+$1 + 2 = 3 = n$ ✓ Teorema verificado.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 (Sistemas Lineares)</summary>
+
+**Enunciado:** O sistema $A\vec{x} = \vec{b}$ tem solução se $\vec{b} \in \text{Col}(A)$. Verifique se $\vec{b} = (1, 2, 3)$ está no espaço coluna da matriz do Exercício 1.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+$\vec{b} = (1, 2, 3)$ está no espaço coluna?  
+Precisamos ver se $(1,2,3) = c(1,2,3)$ para algum $c$.  
+Isso exige $c = 1$ (da primeira coordenada), e também $c = 1$ das outras.  
+**Sim!** $\vec{b} = 1(1,2,3)$ → está no espaço coluna.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 (Subespaços de $\mathbb{R}^2$)</summary>
+
+**Enunciado:** Quais dos seguintes conjuntos são subespaços do $\mathbb{R}^2$?
+
+a) $\{(x, y) \mid x \geq 0, y \geq 0\}$  
+b) $\{(x, y) \mid x + y = 0\}$  
+c) $\{(x, y) \mid x^2 + y^2 = 1\}$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) **Não** é subespaço: não é fechado sob multiplicação por escalar (ex: (1,1) vezes -1 dá (-1,-1), que não está no conjunto).
+
+b) **É subespaço**: é uma reta passando pela origem (fechado sob soma e escalar).
+
+c) **Não** é subespaço: é uma circunferência, não contém o vetor nulo.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 (Subespaços de $\mathbb{R}^3$)</summary>
+
+**Enunciado:** Quais dos seguintes conjuntos são subespaços do $\mathbb{R}^3$?
+
+a) $\{(x, y, z) \mid x = 0\}$  
+b) $\{(x, y, z) \mid x + y + z = 1\}$  
+c) $\{(x, y, z) \mid x = 2y\}$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) **É subespaço**: é o plano YZ (passa pela origem).
+
+b) **Não** é subespaço: não contém o vetor nulo (0+0+0=0 ≠ 1).
+
+c) **É subespaço**: é uma reta passando pela origem.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 (Aplicação – Lanchonete)</summary>
+
+**Enunciado:** Uma lanchonete vende:
+- Hambúrguer: $(1,1,0)$
+- Queijo: $(0,0,1)$
+- Combo: $(1,1,1)$
+
+a) Qual é a dimensão do espaço coluna da matriz dos sanduíches?  
+b) Qual é a dimensão do espaço nulo?  
+c) O que isso significa para o cardápio?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+Matriz:
+$$
+A = \begin{bmatrix}
+1 & 0 & 1 \\
+1 & 0 & 1 \\
+0 & 1 & 1
+\end{bmatrix}
+$$
+Colunas: $(1,1,0)$, $(0,0,1)$, $(1,1,1)$.
+
+Observação: $(1,1,1) = (1,1,0) + (0,0,1)$.
+
+a) Posto = 2 → **dimensão do espaço coluna = 2**.
+
+b) Nulidade = $3 - 2 = 1$.
+
+c) O cardápio tem redundância: o combo é combinação dos outros dois. A lanchonete pode eliminar um item sem perder opções.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 (Aplicação – Dados)</summary>
+
+**Enunciado:** Você tem um dataset com 100 amostras e 10 características. O posto da matriz de dados é 7.
+
+a) Qual é a dimensão do espaço coluna?  
+b) Qual é a dimensão do espaço nulo?  
+c) Quantas combinações lineares das características são redundantes?  
+d) O que você faria para reduzir a dimensionalidade?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) Espaço coluna = posto = **7**.
+
+b) Espaço nulo = $10 - 7 = 3$.
+
+c) $10 - 7 = 3$ características redundantes.
+
+d) Usar PCA para reduzir para 7 dimensões, ou eliminar as 3 características redundantes.
+
+</details>
+</details>
+
+> *Os quatro subespaços fundamentais (coluna, linha, nulo e nulo esquerdo) revelam a estrutura completa de uma matriz linear. Eles estão na base de sistemas lineares, PCA, regularização e análise de dados. O Teorema do Posto-Nulidade conecta suas dimensões e é uma ferramenta essencial para entender a "capacidade informacional" de uma matriz.*

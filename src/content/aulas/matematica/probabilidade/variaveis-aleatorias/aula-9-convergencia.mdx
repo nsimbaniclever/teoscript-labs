@@ -1,0 +1,276 @@
+# Convergência de Variáveis Aleatórias
+
+### 1. Por que estudar convergência de variáveis aleatórias?
+
+Na prática, frequentemente trabalhamos com **sequências** de variáveis aleatórias $X_1, X_2, X_3, ...$ que dependem do tamanho da amostra $n$. Por exemplo:
+- A média amostral $\bar{X}_n = \frac{1}{n} \sum_{i=1}^n X_i$.
+- Estimadores estatísticos que melhoram com mais dados.
+- Aproximações de distribuições para $n \to \infty$.
+
+> **O problema:** O que significa uma sequência de variáveis aleatórias "convergir" para um limite? Existem diferentes tipos de convergência, cada um com sua própria definição e aplicação.
+
+### 2. Os 4 Tipos Fundamentais de Convergência
+
+#### 2.1. Convergência em Distribuição (Fraca)
+
+> **Definição:** Dizemos que $X_n$ **converge em distribuição** para $X$ (denotado $X_n \xrightarrow{d} X$) se:
+> $$ \lim_{n \to \infty} F_{X_n}(x) = F_X(x) $$
+> para todo ponto $x$ onde $F_X$ é contínua.
+
+**Interpretação:** As funções de distribuição acumuladas de $X_n$ se aproximam da FDA de $X$. É o tipo mais fraco de convergência.
+
+**Exemplo:** Teorema Central do Limite (TCL):
+$$ \frac{\bar{X}_n - \mu}{\sigma/\sqrt{n}} \xrightarrow{d} Z \sim N(0,1) $$
+
+**Propriedade:** É a convergência usada para aproximar probabilidades de intervalos.
+
+#### 2.2. Convergência em Probabilidade
+
+> **Definição:** Dizemos que $X_n$ **converge em probabilidade** para $X$ (denotado $X_n \xrightarrow{P} X$) se, para todo $\varepsilon > 0$:
+> $$ \lim_{n \to \infty} P(|X_n - X| \geq \varepsilon) = 0 $$
+
+**Interpretação:** A probabilidade de $X_n$ estar longe de $X$ (por mais de $\varepsilon$) tende a zero quando $n \to \infty$.
+
+**Exemplo:** Lei Fraca dos Grandes Números (LGN):
+$$ \bar{X}_n \xrightarrow{P} \mu $$
+
+**Relação:** Convergência em probabilidade é **mais forte** que convergência em distribuição:
+$$ X_n \xrightarrow{P} X \Rightarrow X_n \xrightarrow{d} X $$
+
+#### 2.3. Convergência em Média Quadrática (L²)
+
+> **Definição:** Dizemos que $X_n$ **converge em média quadrática** para $X$ (denotado $X_n \xrightarrow{L^2} X$) se:
+> $$ \lim_{n \to \infty} E[(X_n - X)^2] = 0 $$
+
+**Interpretação:** O erro quadrático médio entre $X_n$ e $X$ tende a zero.
+
+**Exemplo:** Estimadores consistentes em mínimos quadrados.
+
+**Relação:**
+$$ X_n \xrightarrow{L^2} X \Rightarrow X_n \xrightarrow{P} X $$
+
+#### 2.4. Convergência Quase Certa (q.c.)
+
+> **Definição:** Dizemos que $X_n$ **converge quase certamente** para $X$ (denotado $X_n \xrightarrow{q.c.} X$) se:
+> $$ P\left(\lim_{n \to \infty} X_n = X\right) = 1 $$
+
+**Interpretação:** Com probabilidade 1, a sequência $X_n$ converge para $X$ ponto a ponto. É a convergência **mais forte** das quatro.
+
+**Exemplo:** Lei Forte dos Grandes Números (LFGN):
+$$ \bar{X}_n \xrightarrow{q.c.} \mu $$
+
+**Relação:**
+$$ X_n \xrightarrow{q.c.} X \Rightarrow X_n \xrightarrow{P} X $$
+
+### 3. Relações entre os Tipos de Convergência
+
+O diagrama abaixo resume as relações de implicação entre os quatro tipos:
+
+```text
+Convergência Quase Certa (q.c.)
+            │
+            ▼
+Convergência em Probabilidade (P)
+            │
+            ├───────────────────┐
+            ▼                   ▼
+Convergência em L²      Convergência em Distribuição (d)
+(ou Média Quadrática)
+```
+
+**Implicações:**
+- $q.c. \Rightarrow P$
+- $L^2 \Rightarrow P$
+- $P \Rightarrow d$
+
+**Importante:** As recíprocas são **falsas**! Existem contraexemplos para cada uma delas.
+
+**Exemplo 1 — Convergência em probabilidade, mas não quase certa:**
+
+Seja $X_n$ uma sequência onde:
+- $P(X_n = 1) = 1/n$
+- $P(X_n = 0) = 1 - 1/n$
+
+Então $X_n \xrightarrow{P} 0$, mas **não** $X_n \xrightarrow{q.c.} 0$, porque a probabilidade de $X_n = 1$ ocorre infinitas vezes com probabilidade 1 (pelo Lema de Borel-Cantelli).
+
+**Exemplo 2 — Convergência em distribuição, mas não em probabilidade:**
+
+Seja $X_n$ e $X$ definidas como:
+- $X_n = X$ para todo $n$ (ou seja, a sequência é constante igual a $X$).
+- Mas se $X_n = -X$, então $X_n \xrightarrow{d} X$ porque $F_{X_n}(x) = P(-X \leq x) = P(X \geq -x)$, que pode ser igual a $F_X(x)$ se $X$ for simétrica. No entanto, $X_n$ não converge em probabilidade para $X$ (pois $X_n = -X \neq X$).
+
+### 4. Teoremas Fundamentais
+
+#### 4.1. Lei dos Grandes Números (LGN)
+
+| Versão | Convergência | Condição |
+| --- | --- | --- |
+| **Fraca** | $\bar{X}_n \xrightarrow{P} \mu$ | $E[X_i] = \mu$, $Var(X_i) < \infty$ |
+| **Forte** | $\bar{X}_n \xrightarrow{q.c.} \mu$ | $E[X_i] = \mu$, $Var(X_i) < \infty$ (ou condições mais gerais) |
+
+**Interpretação:** A média amostral converge para a média populacional.
+
+#### 4.2. Teorema Central do Limite (TCL)
+
+$$ \frac{\bar{X}_n - \mu}{\sigma/\sqrt{n}} \xrightarrow{d} Z \sim N(0,1) $$
+
+**Interpretação:** A média amostral padronizada converge em distribuição para uma Normal padrão, independentemente da distribuição original (desde que a variância seja finita).
+
+#### 4.3. Teorema da Convergência Dominada (Lebesgue)
+
+Se $X_n \xrightarrow{q.c.} X$ e existe $Y$ com $E[Y] < \infty$ tal que $|X_n| \leq Y$, então:
+$$ E[X_n] \to E[X] $$
+
+**Interpretação:** Permite trocar limite e esperança sob condições de dominância.
+
+#### 4.4. Lema de Fatou
+
+Se $X_n \geq 0$, então:
+$$ E[\liminf_{n \to \infty} X_n] \leq \liminf_{n \to \infty} E[X_n] $$
+
+**Interpretação:** A esperança do limite inferior é menor ou igual ao limite inferior das esperanças.
+
+### 5. Quando Usar Cada Tipo de Convergência
+
+| Tipo de Convergência | Quando usar | Exemplo típico |
+| --- | --- | --- |
+| **Em Distribuição** | Para aproximar probabilidades de intervalos quando $n$ é grande. | TCL, aproximações assintóticas. |
+| **Em Probabilidade** | Para mostrar que estimadores são consistentes (se aproximam do valor verdadeiro). | Lei Fraca dos Grandes Números. |
+| **Quase Certa** | Para garantir convergência "ponto a ponto" com probabilidade 1. | Lei Forte dos Grandes Números. |
+| **Em Média Quadrática** | Para mostrar que o erro quadrático médio tende a zero. | Estimadores de mínimos quadrados. |
+
+### 6. Resumo — Convergência de Variáveis Aleatórias
+
+| Tipo | Notação | Definição | Exemplo |
+| --- | --- | --- | --- |
+| **Em Distribuição** | $X_n \xrightarrow{d} X$ | $F_{X_n}(x) \to F_X(x)$ | TCL |
+| **Em Probabilidade** | $X_n \xrightarrow{P} X$ | $P(|X_n - X| \geq \varepsilon) \to 0$ | LGN Fraca |
+| **Quase Certa** | $X_n \xrightarrow{q.c.} X$ | $P(\lim X_n = X) = 1$ | LGN Forte |
+| **Em L²** | $X_n \xrightarrow{L^2} X$ | $E[(X_n - X)^2] \to 0$ | Convergência de estimadores |
+
+**Relações:** $q.c. \Rightarrow P \Rightarrow d$ e $L^2 \Rightarrow P$.
+
+## 📝 EXERCÍCIOS RESOLVIDOS
+
+<details>
+<summary>📗 Exercício 1 — Identificação de Convergência</summary>
+
+**Enunciado:** Considere a sequência $X_n$ com $P(X_n = 0) = 1 - 1/n$ e $P(X_n = n) = 1/n$. Identifique o limite em probabilidade e em distribuição.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**a) Convergência em probabilidade:** Para qualquer $\varepsilon > 0$:
+$$ P(|X_n - 0| \geq \varepsilon) = P(X_n \geq \varepsilon) = \frac{1}{n} \to 0 $$
+
+**Conclusão:** $X_n \xrightarrow{P} 0$.
+
+**b) Convergência em distribuição:** A FDA de $X_n$:
+$$ F_{X_n}(x) = \begin{cases} 0, & x < 0 \\ 1 - 1/n, & 0 \leq x < n \\ 1, & x \geq n \end{cases} $$
+
+Para $x > 0$, $F_{X_n}(x) \to 1$. Para $x = 0$, $F_{X_n}(0) = 1 - 1/n \to 1$. Portanto, $F_{X_n}(x) \to F_X(x)$ onde $F_X(x) = 1$ para $x \geq 0$ e $0$ para $x < 0$. Isso é a FDA de uma variável degenerada em 0.
+
+**Conclusão:** $X_n \xrightarrow{d} 0$.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Convergência em L²</summary>
+
+**Enunciado:** Seja $X_n = \bar{X}_n = \frac{1}{n} \sum_{i=1}^n X_i$, onde $X_i$ são i.i.d. com média $\mu$ e variância $\sigma^2$. Mostre que $X_n \xrightarrow{L^2} \mu$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$$ E[(X_n - \mu)^2] = Var(X_n) = \frac{\sigma^2}{n} \to 0 $$
+
+Portanto, $X_n \xrightarrow{L^2} \mu$.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — TCL (Convergência em Distribuição)</summary>
+
+**Enunciado:** Seja $X_1, ..., X_n$ uma amostra de Bernoulli com $p = 0,3$. Aproxime $P(\bar{X}_n \leq 0,35)$ para $n = 100$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**Passo 1 — Parâmetros:**
+- $\mu = p = 0,3$
+- $\sigma^2 = p(1-p) = 0,3 \cdot 0,7 = 0,21$
+- $\sigma = \sqrt{0,21} \approx 0,458$
+
+**Passo 2 — Padronização:**
+$$ P(\bar{X}_n \leq 0,35) = P\left( \frac{\bar{X}_n - \mu}{\sigma/\sqrt{n}} \leq \frac{0,35 - 0,3}{0,458/\sqrt{100}} \right) $$
+$$ = P\left( Z \leq \frac{0,05}{0,0458} \right) = P(Z \leq 1,09) \approx 0,8621 $$
+
+**Resposta:** Aproximadamente 86,2%.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Relação entre Convergências</summary>
+
+**Enunciado:** Prove que $X_n \xrightarrow{L^2} X \Rightarrow X_n \xrightarrow{P} X$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+Pela desigualdade de Chebyshev:
+$$ P(|X_n - X| \geq \varepsilon) \leq \frac{E[(X_n - X)^2]}{\varepsilon^2} \to 0 $$
+
+Portanto, $X_n \xrightarrow{P} X$.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Contraexemplo</summary>
+
+**Enunciado:** Dê um exemplo de uma sequência que converge em probabilidade, mas não converge em L².
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+Seja:
+$$ X_n = \begin{cases} n, & \text{com probabilidade } 1/n \\ 0, & \text{com probabilidade } 1 - 1/n \end{cases} $$
+
+**Convergência em probabilidade:** $X_n \xrightarrow{P} 0$.
+
+**Convergência em L²:**
+$$ E[X_n^2] = n^2 \cdot \frac{1}{n} + 0 \cdot \left(1 - \frac{1}{n}\right) = n \to \infty \neq 0 $$
+
+Portanto, $X_n$ **não** converge em L² para 0.
+
+</details>
+</details>
+
+## 🎯 DESAFIO FINAL
+
+**Enunciado:** Seja $X_1, X_2, ..., X_n$ i.i.d. com $E[X_i] = \mu$ e $Var(X_i) = \sigma^2$.
+
+a) Aplicando a LGN, qual é o limite (em probabilidade) de $\bar{X}_n^2$?
+b) Aplicando o TCL, qual é a distribuição limite de $\sqrt{n}(\bar{X}_n^2 - \mu^2)$?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**a) LGN:**
+- Pela LGN, $\bar{X}_n \xrightarrow{P} \mu$.
+- Pelo Teorema da Aplicação Contínua (ou Slutsky), $g(\bar{X}_n) \xrightarrow{P} g(\mu)$ para funções contínuas $g$.
+- Portanto, $\bar{X}_n^2 \xrightarrow{P} \mu^2$.
+
+**b) TCL (Método Delta):**
+- Pelo TCL, $\sqrt{n}(\bar{X}_n - \mu) \xrightarrow{d} N(0, \sigma^2)$.
+- Pelo Método Delta, para $g(x) = x^2$, $g'(x) = 2x$:
+$$ \sqrt{n}(\bar{X}_n^2 - \mu^2) \xrightarrow{d} N(0, (2\mu)^2 \sigma^2) = N(0, 4\mu^2\sigma^2) $$
+
+**Respostas:** a) $\mu^2$; b) $N(0, 4\mu^2\sigma^2)$.
+
+</details>
+
+> *Convergência de variáveis aleatórias é a base para justificar a validade de métodos estatísticos assintóticos. Entender os diferentes tipos de convergência e suas relações é essencial para ler e produzir artigos científicos em probabilidade e estatística.*

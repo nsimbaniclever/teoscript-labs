@@ -1,0 +1,434 @@
+# 📘 DISTRIBUIÇÃO GEOMÉTRICA 
+
+Definição, Analogias com Resolução Detalhada, Dedução da Fórmula, Função de Probabilidade, Função de Distribuição, Valor Esperado, Variância, FGM, Propriedade da Falta de Memória, Aplicações Práticas, Exercícios Resolvidos Passo a Passo e Desafio Final
+
+### 1. O QUE É A DISTRIBUIÇÃO GEOMÉTRICA?
+
+A distribuição Geométrica descreve o **número de tentativas** (ou o número de falhas) até a ocorrência do **primeiro sucesso** em uma sequência de ensaios de Bernoulli independentes, cada um com probabilidade de sucesso $p$.
+
+> **Definição (Versão 1 — Número de tentativas até o 1º sucesso):**
+>> $$ P(X = k) = (1-p)^{k-1} p, \quad k = 1, 2, 3, ... $$
+
+**Notação:** $X \sim \text{Geométrica}(p)$
+
+**Versão 2 (Número de falhas antes do 1º sucesso):**
+$$ P(Y = k) = (1-p)^k p, \quad k = 0, 1, 2, 3, ... $$
+
+**Observação:** Vamos adotar a **Versão 1** (número de tentativas) como padrão, pois é a mais comum em livros de estatística. A Versão 2 é simplesmente $Y = X - 1$.
+
+### 2. ANALOGIAS DO DIA A DIA COM RESOLUÇÃO DETALHADA
+
+---
+
+**Analogia 1 — "Lançamento de Moeda até sair Cara"**
+
+Uma moeda honesta é lançada até sair cara. Qual a probabilidade de que o primeiro cara saia no 3º lançamento?
+
+**Resolução Passo a Passo:**
+
+- **Identificar o que queremos:** $P(X = 3)$
+- **Identificar o parâmetro:** $p = 0,5$
+- **Escrever a fórmula geral:**
+  $$ P(X = k) = (1-p)^{k-1} p $$
+- **Substituir $k = 3$ e $p = 0,5$:**
+  $$ P(X = 3) = (1-0,5)^{3-1} \cdot 0,5 = (0,5)^2 \cdot 0,5 $$
+- **Calcular:**
+  $$ P(X = 3) = 0,25 \cdot 0,5 = 0,125 $$
+- **Converter para porcentagem:** $0,125 \times 100 = 12,5\%$
+
+**Verificação:** A sequência é C C K (coroa, coroa, cara). Cada lançamento tem probabilidade $0,5$. Portanto: $0,5 \cdot 0,5 \cdot 0,5 = 0,125$. ✅
+
+**Resposta:** A probabilidade de que o primeiro cara saia no 3º lançamento é de **12,5%**.
+
+---
+
+**Analogia 2 — "Inspeção de Qualidade"**
+
+Uma máquina produz peças com taxa de defeito de 5% ($p = 0,05$). Qual a probabilidade de encontrar a primeira peça defeituosa na 10ª inspeção?
+
+**Resolução Passo a Passo:**
+
+- **Identificar:** $P(X = 10)$, $p = 0,05$
+- **Fórmula:** $P(X = k) = (1-p)^{k-1} p$
+- **Substituir:**
+  $$ P(X = 10) = (0,95)^{9} \cdot 0,05 $$
+- **Calcular:**
+  - $(0,95)^9 \approx 0,6302$
+  - $0,6302 \cdot 0,05 = 0,03151$
+- **Converter para porcentagem:** $0,03151 \times 100 = 3,15\%$
+
+**Resposta:** A probabilidade de encontrar a primeira peça defeituosa na 10ª inspeção é de aproximadamente **3,15%**.
+
+---
+
+**Analogia 3 — "O Jogador de Dardos"**
+
+Um jogador de dardos acerta o alvo com probabilidade 0,2 a cada arremesso. Quantos arremessos ele precisará até acertar o alvo pela primeira vez?
+
+**Situação A: Probabilidade de acertar no 5º arremesso**
+
+**Resolução:**
+- $p = 0,2$, $k = 5$
+$$ P(X = 5) = (0,8)^{4} \cdot 0,2 = 0,4096 \cdot 0,2 = 0,08192 \approx 8,19\% $$
+
+**Situação B: Probabilidade de acertar em até 3 arremessos**
+
+**Resolução:**
+- $P(X \leq 3) = P(X=1) + P(X=2) + P(X=3)$
+- $P(X=1) = 0,2$
+- $P(X=2) = 0,8 \cdot 0,2 = 0,16$
+- $P(X=3) = (0,8)^2 \cdot 0,2 = 0,64 \cdot 0,2 = 0,128$
+- $P(X \leq 3) = 0,2 + 0,16 + 0,128 = 0,488 = 48,8\%$
+
+---
+
+**Analogia 4 — "O Atendente do Call Center"**
+
+Em um call center, a probabilidade de um atendente estar disponível em uma ligação é de 30% ($p = 0,3$).
+
+**Situação A: Probabilidade de encontrar atendente na 4ª ligação**
+
+**Resolução:**
+$$ P(X = 4) = (0,7)^{3} \cdot 0,3 = 0,343 \cdot 0,3 = 0,1029 \approx 10,29\% $$
+
+**Situação B: Probabilidade de precisar de mais de 4 ligações**
+
+**Resolução:**
+- $P(X > 4) = (1-p)^4 = (0,7)^4 = 0,2401 \approx 24,01\% $
+
+---
+
+### 3. DE ONDE VEM A FÓRMULA DA GEOMÉTRICA? (DEDUÇÃO)
+
+Para que o primeiro sucesso ocorra exatamente na $k$-ésima tentativa, é necessário que:
+
+1. As **$k-1$** primeiras tentativas sejam **falhas** (probabilidade $1-p$ cada).
+2. A **$k$-ésima** tentativa seja um **sucesso** (probabilidade $p$).
+
+Como as tentativas são independentes, multiplicamos as probabilidades:
+
+$$ P(X = k) = \underbrace{(1-p)(1-p)...(1-p)}_{k-1 \text{ vezes}} \cdot p = (1-p)^{k-1} p $$
+
+**Exemplo Ilustrativo — Moeda Honesta:**
+
+Qual a probabilidade de que o primeiro cara saia no 3º lançamento?
+
+- Sequência: Coroa, Coroa, Cara (CCK)
+- Probabilidade: $(0,5)(0,5)(0,5) = 0,125$
+- Pela fórmula: $P(X = 3) = (0,5)^{2} \cdot 0,5 = 0,125$ ✅
+
+### 4. FUNÇÃO DE PROBABILIDADE (FP)
+
+$$ P(X = k) = (1-p)^{k-1} p, \quad k = 1, 2, 3, ... $$
+
+**Propriedades da FP:**
+
+1. **$0 \leq P(X = k) \leq 1$:** Como $0 \leq p \leq 1$, o termo está entre 0 e 1 ✅
+2. **$\sum_{k=1}^{\infty} P(X = k) = 1$:** Soma de uma série geométrica:
+   $$ \sum_{k=1}^{\infty} (1-p)^{k-1} p = p \sum_{j=0}^{\infty} (1-p)^j = p \cdot \frac{1}{1-(1-p)} = p \cdot \frac{1}{p} = 1 $$
+
+**Exemplo Ilustrativo — Moeda Honesta ($p = 0,5$):**
+
+| $k$ | $P(X = k)$ | Cálculo | Probabilidade |
+| --- | --- | --- | --- |
+| 1 | $(0,5)^{0} \cdot 0,5$ | $1 \cdot 0,5$ | 50,0% |
+| 2 | $(0,5)^{1} \cdot 0,5$ | $0,5 \cdot 0,5$ | 25,0% |
+| 3 | $(0,5)^{2} \cdot 0,5$ | $0,25 \cdot 0,5$ | 12,5% |
+| 4 | $(0,5)^{3} \cdot 0,5$ | $0,125 \cdot 0,5$ | 6,25% |
+| 5 | $(0,5)^{4} \cdot 0,5$ | $0,0625 \cdot 0,5$ | 3,125% |
+
+**Verificação da soma:** $0,5 + 0,25 + 0,125 + 0,0625 + 0,03125 + ... = 1$ ✅
+
+**Exemplo Ilustrativo 2 — Teste de Qualidade ($p = 0,05$):**
+
+Qual a probabilidade de encontrar a primeira peça defeituosa exatamente na 3ª inspeção?
+
+$$ P(X = 3) = (0,95)^{2} \cdot 0,05 = 0,9025 \cdot 0,05 = 0,045125 \approx 4,51\% $$
+
+### 5. FUNÇÃO DE DISTRIBUIÇÃO (FD) — $F(x) = P(X \leq x)$
+
+A FD acumula as probabilidades da FP:
+
+$$ F(x) = P(X \leq x) = \sum_{k=1}^{\lfloor x \rfloor} (1-p)^{k-1} p $$
+
+**Cálculo da soma (série geométrica finita):**
+
+$$ F(x) = 1 - (1-p)^{\lfloor x \rfloor} $$
+
+**Exemplo Ilustrativo — Moeda Honesta ($p = 0,5$):**
+
+| $x$ | $F(x) = P(X \leq x)$ | Cálculo |
+| --- | --- | --- |
+| $x < 1$ | 0 | — |
+| $1 \leq x < 2$ | $1 - (0,5)^1 = 0,5$ | 50% |
+| $2 \leq x < 3$ | $1 - (0,5)^2 = 0,75$ | 75% |
+| $3 \leq x < 4$ | $1 - (0,5)^3 = 0,875$ | 87,5% |
+| $4 \leq x < 5$ | $1 - (0,5)^4 = 0,9375$ | 93,75% |
+
+**Exemplo Ilustrativo 2 — Teste de Qualidade ($p = 0,05$):**
+
+Qual a probabilidade de encontrar a primeira peça defeituosa em até 10 inspeções?
+
+$$ F(10) = 1 - (0,95)^{10} = 1 - 0,5987 = 0,4013 \approx 40,13\% $$
+
+### 6. VALOR ESPERADO (MÉDIA) — $E[X]$
+
+$$ E[X] = \sum_{k=1}^{\infty} k \cdot (1-p)^{k-1} p $$
+
+**Cálculo:**
+
+$$ E[X] = p \sum_{k=1}^{\infty} k (1-p)^{k-1} $$
+
+Usamos a identidade:
+$$ \sum_{k=1}^{\infty} k r^{k-1} = \frac{1}{(1-r)^2}, \quad |r| < 1 $$
+
+Fazendo $r = 1-p$:
+$$ E[X] = p \cdot \frac{1}{(1-(1-p))^2} = p \cdot \frac{1}{p^2} = \frac{1}{p} $$
+
+**Exemplo Ilustrativo — Moeda Honesta ($p = 0,5$):**
+- $E[X] = 1/0,5 = 2$. Em média, são necessários 2 lançamentos para sair a primeira cara.
+
+**Exemplo Ilustrativo — Teste de Qualidade ($p = 0,05$):**
+- $E[X] = 1/0,05 = 20$. Em média, são necessárias 20 inspeções para encontrar a primeira peça defeituosa.
+
+### 7. VARIÂNCIA — $Var(X)$
+
+$$ Var(X) = E[X^2] - (E[X])^2 $$
+
+**Cálculo de $E[X^2]$:**
+
+Sabemos que $E[X(X-1)] = E[X^2] - E[X]$. Então, $E[X^2] = E[X(X-1)] + E[X]$.
+
+$$ E[X(X-1)] = \sum_{k=1}^{\infty} k(k-1) (1-p)^{k-1} p $$
+
+Usamos a identidade:
+$$ \sum_{k=1}^{\infty} k(k-1) r^{k-1} = \frac{2r}{(1-r)^3}, \quad |r| < 1 $$
+
+Fazendo $r = 1-p$:
+$$ E[X(X-1)] = p \cdot \frac{2(1-p)}{(1-(1-p))^3} = p \cdot \frac{2(1-p)}{p^3} = \frac{2(1-p)}{p^2} $$
+
+**Portanto:**
+$$ E[X^2] = \frac{2(1-p)}{p^2} + \frac{1}{p} = \frac{2(1-p) + p}{p^2} = \frac{2 - p}{p^2} $$
+
+**Variância:**
+$$ Var(X) = E[X^2] - [E[X]]^2 = \frac{2 - p}{p^2} - \frac{1}{p^2} = \frac{1 - p}{p^2} $$
+
+**Desvio Padrão:**
+$$ \sigma = \sqrt{\frac{1-p}{p^2}} = \frac{\sqrt{1-p}}{p} $$
+
+**Exemplo Ilustrativo — Moeda Honesta ($p = 0,5$):**
+- $Var(X) = 0,5/0,25 = 2$, $\sigma = \sqrt{2} \approx 1,41$
+
+**Exemplo Ilustrativo — Teste de Qualidade ($p = 0,05$):**
+- $Var(X) = 0,95/0,0025 = 380$, $\sigma = \sqrt{380} \approx 19,49$
+
+### 8. FUNÇÃO GERATRIZ DE MOMENTOS (FGM) — $M_X(t)$
+
+$$ M_X(t) = E[e^{tX}] = \sum_{k=1}^{\infty} e^{tk} (1-p)^{k-1} p $$
+
+$$ M_X(t) = p e^t \sum_{k=1}^{\infty} \left( (1-p) e^t \right)^{k-1} = \frac{p e^t}{1 - (1-p) e^t}, \quad t < -\ln(1-p) $$
+
+**Exemplo Ilustrativo — Moeda Honesta ($p = 0,5$):**
+$$ M_X(t) = \frac{0,5 e^t}{1 - 0,5 e^t} $$
+
+**Verificação — Geração dos momentos:**
+
+- $E[X] = M_X'(0) = \frac{1}{p}$ ✅
+- $Var(X) = M_X''(0) - [M_X'(0)]^2 = \frac{1-p}{p^2}$ ✅
+
+### 9. PROPRIEDADE DA FALTA DE MEMÓRIA
+
+Esta é a propriedade **mais importante** da distribuição Geométrica (e também da Exponencial, no caso contínuo).
+
+> **Definição:** A Geométrica tem a propriedade da **falta de memória**:
+> $$ P(X > s + t \mid X > s) = P(X > t), \quad s, t \geq 1 $$
+
+**Interpretação:** Se você já tentou $s$ vezes sem sucesso, a probabilidade de precisar de mais $t$ tentativas adicionais é a **mesma** que a probabilidade de precisar de $t$ tentativas a partir do início. O processo "não se lembra" do que aconteceu antes.
+
+**Demonstração:**
+
+$$ P(X > k) = P(\text{as primeiras } k \text{ tentativas são falhas}) = (1-p)^k $$
+
+Então:
+$$ P(X > s + t \mid X > s) = \frac{P(X > s + t)}{P(X > s)} = \frac{(1-p)^{s+t}}{(1-p)^s} = (1-p)^t = P(X > t) $$
+
+**Exemplo Ilustrativo:**
+
+Em uma moeda honesta ($p = 0,5$), a probabilidade de precisar de mais de 2 lançamentos para sair cara é:
+$$ P(X > 2) = (0,5)^2 = 0,25 $$
+
+Se você já lançou 2 vezes e saiu coroa, a probabilidade de precisar de mais de 2 lançamentos adicionais (ou seja, mais de 4 no total) é:
+$$ P(X > 4 \mid X > 2) = P(X > 2) = 0,25 $$
+
+O processo "não se lembra" dos 2 lançamentos fracassados.
+
+### 10. COMPARAÇÃO ENTRE AS VERSÕES DA GEOMÉTRICA
+
+| Característica | **Versão 1 (Tentativas)** | **Versão 2 (Falhas)** |
+| --- | --- | --- |
+| **Suporte** | $k = 1, 2, 3, ...$ | $k = 0, 1, 2, ...$ |
+| **FP** | $(1-p)^{k-1} p$ | $(1-p)^k p$ |
+| **FD** | $1 - (1-p)^k$ | $1 - (1-p)^{k+1}$ |
+| **E[X]** | $1/p$ | $(1-p)/p$ |
+| **Var(X)** | $(1-p)/p^2$ | $(1-p)/p^2$ |
+| **Falta de Memória** | Sim | Sim |
+
+### 11. QUADRO RESUMO — GEOMÉTRICA
+
+| Conceito | Fórmula (Versão 1) |
+| --- | --- |
+| **Suporte** | $\{1, 2, 3, ...\}$ |
+| **FP** | $P(X = k) = (1-p)^{k-1} p$ |
+| **FD** | $F(x) = 1 - (1-p)^{\lfloor x \rfloor}$ |
+| **Valor Esperado** | $E[X] = \frac{1}{p}$ |
+| **Variância** | $Var(X) = \frac{1-p}{p^2}$ |
+| **FGM** | $M_X(t) = \frac{p e^t}{1 - (1-p) e^t}$ |
+| **Falta de Memória** | $P(X > s + t \mid X > s) = P(X > t)$ |
+| **Moda** | Sempre 1 |
+
+### 12. APLICAÇÕES PRÁTICAS DA GEOMÉTRICA
+
+| Área | Exemplo | $p$ |
+| --- | --- | --- |
+| **Controle de Qualidade** | Número de inspeções até encontrar a 1ª peça defeituosa. | Taxa de defeito |
+| **Jogos** | Número de arremessos até o 1º acerto. | Probabilidade de acerto |
+| **Marketing** | Número de abordagens até a 1ª venda. | Taxa de conversão |
+| **Telecomunicações** | Número de tentativas de conexão até o 1º sucesso. | Probabilidade de conexão |
+| **Biologia** | Número de tentativas até a 1ª mutação bem-sucedida. | Taxa de mutação |
+| **Finanças** | Número de meses até o 1º mês com lucro. | Probabilidade de lucro mensal |
+
+## 📝 EXERCÍCIOS RESOLVIDOS PASSO A PASSO
+
+<details>
+<summary>📗 Exercício 1 — Geométrica Básica</summary>
+
+**Enunciado:** Seja $X \sim \text{Geométrica}(p = 0,4)$.
+
+a) Calcule $P(X = 3)$.
+b) Calcule $P(X \leq 3)$.
+c) Calcule $E[X]$.
+d) Calcule $Var(X)$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**a) $P(X = 3)$:**
+$$ P(X = 3) = (1-0,4)^{2} \cdot 0,4 = (0,6)^2 \cdot 0,4 = 0,36 \cdot 0,4 = 0,144 \approx 14,4\% $$
+
+**b) $P(X \leq 3) = 1 - (1-p)^3 = 1 - (0,6)^3 = 1 - 0,216 = 0,784 \approx 78,4\%$**
+
+**c) $E[X] = 1/p = 1/0,4 = 2,5$**
+
+**d) $Var(X) = (1-p)/p^2 = (0,6)/(0,16) = 3,75$**
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Controle de Qualidade</summary>
+
+**Enunciado:** Uma máquina produz peças com taxa de defeito de 10% ($p = 0,1$). Um inspetor testa peças uma a uma até encontrar a primeira defeituosa.
+
+a) Qual a probabilidade de ele encontrar a primeira defeituosa na 5ª inspeção?
+b) Qual a probabilidade de ele precisar de mais de 5 inspeções?
+c) Qual o número esperado de inspeções?
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**a) $P(X = 5)$:**
+$$ P(X = 5) = (0,9)^4 \cdot 0,1 = 0,6561 \cdot 0,1 = 0,06561 \approx 6,56\% $$
+
+**b) $P(X > 5) = (1-p)^5 = (0,9)^5 = 0,59049 \approx 59,05\%$**
+
+**c) $E[X] = 1/p = 1/0,1 = 10$ inspeções em média.**
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Falta de Memória</summary>
+
+**Enunciado:** Em uma moeda com $p = 0,3$ de dar cara, você já lançou a moeda 5 vezes e todas deram coroa. Qual a probabilidade de que você precise de mais de 3 lançamentos adicionais para sair a primeira cara?
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+Pela propriedade da falta de memória:
+$$ P(X > 5 + 3 \mid X > 5) = P(X > 3) $$
+
+$$ P(X > 3) = (1-p)^3 = (0,7)^3 = 0,343 \approx 34,3\% $$
+
+**Interpretação:** Mesmo após 5 falhas, a probabilidade de precisar de mais de 3 lançamentos adicionais é a mesma que a probabilidade inicial de precisar de mais de 3 lançamentos.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — FGM</summary>
+
+**Enunciado:** Seja $X \sim \text{Geométrica}(p)$. Use a FGM para mostrar que $E[X] = 1/p$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+A FGM da Geométrica (Versão 1) é:
+$$ M_X(t) = \frac{p e^t}{1 - (1-p) e^t} $$
+
+Derivando:
+$$ M_X'(t) = \frac{p e^t [1 - (1-p)e^t] - p e^t [-(1-p)e^t]}{[1 - (1-p)e^t]^2} $$
+$$ M_X'(t) = \frac{p e^t}{[1 - (1-p)e^t]^2} $$
+
+Avaliando em $t = 0$:
+$$ E[X] = M_X'(0) = \frac{p}{[1 - (1-p)]^2} = \frac{p}{p^2} = \frac{1}{p} $$ ✅
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Versão 2 da Geométrica</summary>
+
+**Enunciado:** Seja $Y$ o número de **falhas** antes do 1º sucesso, com $P(Y = k) = (1-p)^k p$.
+
+a) Calcule $P(Y = 2)$ para $p = 0,3$.
+b) Calcule $E[Y]$.
+c) Calcule $Var(Y)$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**a) $P(Y = 2)$:**
+$$ P(Y = 2) = (0,7)^2 \cdot 0,3 = 0,49 \cdot 0,3 = 0,147 \approx 14,7\% $$
+
+**b) $E[Y] = \frac{1-p}{p} = \frac{0,7}{0,3} \approx 2,33$ falhas esperadas.**
+
+**c) $Var(Y) = \frac{1-p}{p^2} = \frac{0,7}{0,09} \approx 7,78$**
+
+</details>
+</details>
+
+## 🎯 DESAFIO FINAL
+
+**Enunciado:** Seja $X \sim \text{Geométrica}(p)$. Prove que:
+
+a) A moda da Geométrica é sempre $1$.
+b) A função de distribuição é $F(x) = 1 - (1-p)^{\lfloor x \rfloor}$.
+c) A Geométrica satisfaz a propriedade da falta de memória.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**a) Moda:**
+$$ P(X = k) = (1-p)^{k-1} p $$
+Como $(1-p) < 1$, a probabilidade é **máxima** em $k = 1$ (pois $(1-p)^{0} = 1$ é o maior valor possível). Portanto, a moda é sempre 1.
+
+**b) FD:**
+$$ F(x) = \sum_{k=1}^{\lfloor x \rfloor} (1-p)^{k-1} p = p \sum_{j=0}^{\lfloor x \rfloor - 1} (1-p)^j = p \cdot \frac{1 - (1-p)^{\lfloor x \rfloor}}{1 - (1-p)} = 1 - (1-p)^{\lfloor x \rfloor} $$
+
+**c) Falta de Memória:**
+$$ P(X > s + t \mid X > s) = \frac{P(X > s + t)}{P(X > s)} $$
+$$ = \frac{(1-p)^{s+t}}{(1-p)^s} = (1-p)^t = P(X > t) $$
+
+</details>
+
+> *A distribuição Geométrica é a ferramenta ideal para modelar o tempo de espera até o primeiro sucesso. Sua propriedade da falta de memória a torna única e extremamente útil em áreas como confiabilidade, controle de qualidade e teoria das filas.*

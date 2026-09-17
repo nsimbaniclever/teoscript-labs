@@ -1,0 +1,580 @@
+# Variáveis Categóricas
+
+## 1. INTRODUÇÃO
+
+&emsp;&emsp;&emsp;Nas aulas anteriores estudámos exaustivamente as **variáveis quantitativas** — aquelas que podem ser medidas numericamente (altura, peso, salário, notas). Estudámos medidas de tendência central, dispersão, forma e correlação. Mas há um tipo de variável que **não pode ser tratada com estas ferramentas**: as **variáveis categóricas**.<br>
+
+&emsp;&emsp;&emsp;Considera o seguinte problema prático:
+
+> **Um investigador quer saber se o género está relacionado com a preferência por um produto. Recolheu dados de 200 pessoas:**
+>
+> | Género | Prefere Produto A | Prefere Produto B |
+> |---------|---------|---------|
+> | Masculino | 60 | 40 |
+> | Feminino | 30 | 70 |
+
+**Pergunta:** Existe relação entre género e preferência?
+
+&emsp;&emsp;&emsp;As medidas que estudámos até agora **não funcionam** aqui:
+
+- **Média do género?** Impossível — "Masculino" e "Feminino" não são números.
+- **Desvio-padrão do género?** Impossível — não há distância numérica entre categorias.
+- **Correlação de Pearson?** Impossível — não há valores quantitativos para calcular.
+
+&emsp;&emsp;&emsp;As variáveis categóricas **exigem tratamento descritivo próprio**. Não podemos calcular médias nem desvios-padrão, mas podemos calcular **frequências**, **proporções** e **percentagens**. E podemos analisar a **associação** entre duas variáveis categóricas.<br>
+
+&emsp;&emsp;&emsp;É precisamente aqui que entram as **tabelas de contingência** e a **análise de dados categóricos** — as ferramentas que nos permitem descrever e analisar variáveis que não são numéricas.
+
+<details>
+<summary>📊 Ver a família das variáveis estatísticas</summary>
+<style>
+.r{font:14px system-ui;text-align:center}
+.r b{display:inline-block;padding:4px 10px;background:#333;color:#fff;border-radius:6px}
+.r i{display:block;width:2px;height:18px;background:#333;margin:0 auto}
+.r em{display:flex;gap:8px;justify-content:center;position:relative;padding-top:18px}
+.r em::before{content:'';position:absolute;top:0;left:16.6%;right:16.6%;height:2px;background:#333}
+.r em span{flex:1;padding:8px;border:2px solid #333;border-radius:8px;max-width:120px}
+.r em span::before{content:'';position:absolute;top:-18px;left:50%;width:2px;height:18px;background:#333}
+.r em span{position:relative}
+</style>
+<div class="r">
+  <b>Variáveis</b>
+  <i></i>
+  <em>
+    <span>Quantitativas<br>(numéricas)</span>
+    <span>Qualitativas<br>(categóricas)</span>
+  </em>
+</div>
+</details>
+
+> **💡 Dica de Ouro:** As variáveis categóricas não têm "média" nem "desvio-padrão". O que têm é **frequência** — quantas vezes cada categoria aparece. É a partir da frequência que construímos toda a análise.
+
+
+## 2. O QUE SÃO VARIÁVEIS CATEGÓRICAS?
+
+&emsp;&emsp;&emsp;As **variáveis categóricas** (ou **qualitativas**) são variáveis que descrevem **qualidades** ou **categorias**, não quantidades numéricas. Os seus valores são **rótulos** ou **nomes**, não números.
+
+**📌 Definição formal:**
+
+> Uma variável é **categórica** se os seus valores representam **categorias** ou **grupos**, e não quantidades mensuráveis.
+
+**📌 Exemplos:**
+
+| Variável | Tipo | Valores possíveis |
+|---------|---------|---------|
+| **Género** | Categórica | Masculino, Feminino, Outro |
+| **Estado civil** | Categórica | Solteiro, Casado, Divorciado, Viúvo |
+| **Cor dos olhos** | Categórica | Castanho, Azul, Verde, Preto |
+| **Nível de escolaridade** | Categórica | Básico, Secundário, Licenciatura, Mestrado, Doutoramento |
+| **Satisfação** | Categórica | Muito insatisfeito, Insatisfeito, Neutro, Satisfeito, Muito satisfeito |
+| **Altura** | **Quantitativa** | 1,70 m, 1,85 m, ... |
+| **Salário** | **Quantitativa** | 1000, 2000, 3000, ... |
+
+**📌 Diferença fundamental:**
+
+| Aspeto | Variável Quantitativa | Variável Categórica |
+|---------|---------|---------|
+| **Valores** | Números | Categorias/rótulos |
+| **Operações** | Soma, subtração, média | Contagem, frequência |
+| **Medidas** | Média, desvio-padrão | Frequência, proporção |
+| **Gráficos** | Histograma, boxplot, scatterplot | Barras, pizza, heatmap |
+| **Correlação** | Pearson, Spearman | Qui-quadrado, V de Cramér |
+
+## 3. TIPOS DE VARIÁVEIS CATEGÓRICAS
+
+### 3.1 Variáveis Nominais
+
+&emsp;&emsp;&emsp;As **variáveis nominais** são categorias **sem ordem natural**. Não há hierarquia entre as categorias — são apenas **nomes**.
+
+**📌 Características:**
+
+| Característica | Descrição |
+|---------|----------|
+| **Ordem** | ❌ Não há ordem natural |
+| **Operações** | Apenas contagem e frequência |
+| **Exemplos** | Género, cor dos olhos, estado civil, religião |
+
+<center><details>
+<summary>**📌 Exemplo**</summary>
+
+| Categoria | Frequência |
+|---------|----------|
+| Masculino | 100 |
+| Feminino | 95 |
+| Outro | 5 |
+| **Total** | **200** |
+
+> **🔍 Interpretação:** Não faz sentido dizer que "Masculino é maior que Feminino" — são apenas categorias diferentes. A única análise possível é a **frequência** de cada categoria.
+</details></center>
+
+### 3.2 Variáveis Ordinais
+
+&emsp;&emsp;&emsp;As **variáveis ordinais** são categorias **com ordem natural**. Há uma hierarquia entre as categorias, mas **não há distância numérica definida** entre elas.
+
+**📌 Características:**
+
+| Característica | Descrição |
+|---------|----------|
+| **Ordem** | ✅ Há ordem natural |
+| **Distância** | ❌ Não há distância numérica definida |
+| **Operações** | Contagem, frequência, mediana |
+| **Exemplos** | Nível de escolaridade, satisfação, classe social |
+
+<center><details>
+<summary>**📌 Exemplo**</summary>
+
+| Categoria | Frequência |
+|---------|----------|
+| Muito insatisfeito | 20 |
+| Insatisfeito | 30 |
+| Neutro | 40 |
+| Satisfeito | 60 |
+| Muito satisfeito | 50 |
+| **Total** | **200** |
+
+> **🔍 Interpretação:** Podemos dizer que "Muito satisfeito" é **maior** que "Satisfeito" (há ordem), mas **não podemos dizer quanto maior** (não há distância definida). Podemos calcular a **mediana** (categoria central), mas não a média.
+</details></center>
+
+### 3.3 Variáveis Dicotómicas (Binárias)
+
+&emsp;&emsp;&emsp;As **variáveis dicotómicas** são um caso especial de variáveis categóricas com apenas **duas categorias**.
+
+**📌 Características:**
+
+| Característica | Descrição |
+|---------|----------|
+| **Categorias** | Apenas 2 |
+| **Exemplos** | Sim/Não, Vivo/Morto, Aprovado/Reprovado, Masculino/Feminino |
+
+<center><details>
+<summary>**📌 Exemplo**</summary>
+
+| Categoria | Frequência |
+|---------|----------|
+| Sim | 120 |
+| Não | 80 |
+| **Total** | **200** |
+
+> **🔍 Interpretação:** As variáveis dicotómicas são frequentemente codificadas como 0 e 1 para análise estatística. São muito usadas em ML (classificação binária).
+</details></center>
+
+## 4. RESUMO DOS TIPOS
+
+| Tipo | Ordem | Distância | Exemplos | Medidas |
+|---------|---------|---------|---------|---------|
+| **Nominal** | ❌ | ❌ | Género, cor, religião | Frequência, moda |
+| **Ordinal** | ✅ | ❌ | Escolaridade, satisfação | Frequência, mediana |
+| **Dicotómica** | (depende) | ❌ | Sim/Não, Vivo/Morto | Frequência, proporção |
+| **Quantitativa** | ✅ | ✅ | Altura, peso, salário | Média, desvio-padrão |
+
+## 5. VARIÁVEIS CATEGÓRICAS VS QUANTITATIVAS
+
+| Aspeto | Categórica | Quantitativa |
+|---------|---------|---------|
+| **Valores** | Rótulos | Números |
+| **Média** | ❌ Não faz sentido | ✅ Faz sentido |
+| **Desvio-padrão** | ❌ Não faz sentido | ✅ Faz sentido |
+| **Frequência** | ✅ Única medida | ✅ Também possível |
+| **Proporção** | ✅ Única medida | ✅ Também possível |
+| **Mediana** | ✅ Para ordinais | ✅ Para todas |
+| **Moda** | ✅ Para todas | ✅ Para todas |
+| **Correlação** | Qui-quadrado | Pearson/Spearman |
+| **Gráficos** | Barras, pizza | Histograma, boxplot |
+
+**📌 Porque é importante esta distinção?**
+
+&emsp;&emsp;&emsp;Usar a medida errada para o tipo de variável leva a **conclusões erradas**. Por exemplo:
+
+- Calcular a **média do género** (Masculino = 1, Feminino = 2) → **não faz sentido**.
+- Calcular a **média da satisfação** (Muito insatisfeito = 1, ..., Muito satisfeito = 5) → **pode fazer sentido** se assumirmos distâncias iguais (mas é discutível).
+- Calcular a **média do salário** → **faz todo o sentido**.
+
+## 6. COMO DESCREVER VARIÁVEIS CATEGÓRICAS
+
+### 6.1 Tabela de Frequências
+
+&emsp;&emsp;&emsp;A forma mais básica de descrever uma variável categórica é a **tabela de frequências**.
+
+<center><details>
+<summary>**📌 Exemplo**</summary>
+
+| Categoria | Frequência absoluta (fi) | Frequência relativa (fr) | Percentagem (%) |
+|---------|---------|---------|---------|
+| Masculino | 100 | 0,50 | 50% |
+| Feminino | 95 | 0,475 | 47,5% |
+| Outro | 5 | 0,025 | 2,5% |
+| **Total** | **200** | **1,00** | **100%** |
+
+**📐 Fórmulas:**
+
+$$
+f_r = \frac{f_i}{n}, \quad \text{Percentagem} = f_r \times 100\%
+$$
+
+Onde:
+- **fi** = frequência absoluta da categoria
+- **n** = total de observações
+- **fr** = frequência relativa
+
+> **🔍 Interpretação:** A tabela mostra que 50% da amostra é masculina, 47,5% é feminina e 2,5% é "Outro". As percentagens somam 100%.
+</details></center>
+
+### 6.2 Gráfico de Barras
+
+&emsp;&emsp;&emsp;O **gráfico de barras** é a representação visual mais comum para variáveis categóricas.
+
+<center><details>
+<summary>**📌 Exemplo**</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); max-width: 500px; margin: 1rem auto; font-family: 'Segoe UI', system-ui, sans-serif;">
+
+  <div style="color: #fbbf24; font-weight: 700; font-size: 0.85rem; text-align: center; margin-bottom: 1rem;">
+    DISTRIBUIÇÃO DE GÉNERO
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 0.6rem;">
+
+    <div>
+      <div style="display: flex; justify-content: space-between; color: #93c5fd; font-size: 0.7rem; margin-bottom: 0.15rem;">
+        <span>Masculino</span>
+        <span>100</span>
+      </div>
+      <div style="width: 100%; height: 18px; background: #1a1a2e; border-radius: 8px; overflow: hidden;">
+        <div style="width: 100%; height: 100%; background: linear-gradient(90deg, #3b82f6, #1d4ed8); border-radius: 8px;"></div>
+      </div>
+    </div>
+
+    <div>
+      <div style="display: flex; justify-content: space-between; color: #93c5fd; font-size: 0.7rem; margin-bottom: 0.15rem;">
+        <span>Feminino</span>
+        <span>95</span>
+      </div>
+      <div style="width: 100%; height: 18px; background: #1a1a2e; border-radius: 8px; overflow: hidden;">
+        <div style="width: 95%; height: 100%; background: linear-gradient(90deg, #8b5cf6, #6d28d9); border-radius: 8px;"></div>
+      </div>
+    </div>
+
+    <div>
+      <div style="display: flex; justify-content: space-between; color: #93c5fd; font-size: 0.7rem; margin-bottom: 0.15rem;">
+        <span>Outro</span>
+        <span>5</span>
+      </div>
+      <div style="width: 100%; height: 18px; background: #1a1a2e; border-radius: 8px; overflow: hidden;">
+        <div style="width: 5%; height: 100%; background: linear-gradient(90deg, #34d399, #059669); border-radius: 8px;"></div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+> **🔍 Interpretação:** O gráfico de barras mostra visualmente a frequência de cada categoria. É fácil comparar as alturas das barras.
+</details></center>
+
+### 6.3 Gráfico de Pizza (Setores)
+
+&emsp;&emsp;&emsp;O **gráfico de pizza** mostra a **proporção** de cada categoria em relação ao total.
+
+<center><details>
+<summary>**📌 Exemplo**</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); max-width: 400px; margin: 1rem auto; font-family: 'Segoe UI', system-ui, sans-serif; text-align: center;">
+
+  <div style="color: #fbbf24; font-weight: 700; font-size: 0.85rem; margin-bottom: 1rem;">
+    DISTRIBUIÇÃO DE GÉNERO
+  </div>
+
+  <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+
+    <div style="display: flex; flex-direction: column; align-items: center;">
+      <div style="width: 80px; height: 80px; border-radius: 50%; background: conic-gradient(#3b82f6 0deg 180deg, #8b5cf6 180deg 351deg, #34d399 351deg 360deg); border: 2px solid #1a1a2e;"></div>
+      <div style="color: #6b7280; font-size: 0.55rem; margin-top: 0.3rem;">50% / 47,5% / 2,5%</div>
+    </div>
+
+  </div>
+
+  <div style="display: flex; justify-content: center; gap: 0.8rem; margin-top: 0.8rem;">
+    <span style="color: #3b82f6; font-size: 0.6rem;">■ Masculino 50%</span>
+    <span style="color: #8b5cf6; font-size: 0.6rem;">■ Feminino 47,5%</span>
+    <span style="color: #34d399; font-size: 0.6rem;">■ Outro 2,5%</span>
+  </div>
+
+</div>
+
+> **🔍 Interpretação:** O gráfico de pizza mostra que metade da amostra é masculina, quase metade é feminina e uma pequena parte é "Outro".
+
+> **⚠️ Nota:** O gráfico de pizza é criticado por dificultar a comparação de proporções próximas. O gráfico de barras é geralmente preferível.
+</details></center>
+
+## 7. VARIÁVEIS CATEGÓRICAS EM PYTHON E R
+
+<details>
+<summary>🐍 Código Python — Análise de Variáveis Categóricas</summary>
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Dados de exemplo
+dados = {
+    'genero': ['Masculino', 'Feminino', 'Masculino', 'Feminino', 'Outro',
+               'Masculino', 'Feminino', 'Masculino', 'Feminino', 'Masculino'],
+    'satisfacao': ['Satisfeito', 'Muito satisfeito', 'Neutro', 'Insatisfeito',
+                   'Satisfeito', 'Muito satisfeito', 'Satisfeito', 'Neutro',
+                   'Insatisfeito', 'Muito satisfeito']
+}
+
+df = pd.DataFrame(dados)
+
+# 1. TABELA DE FREQUÊNCIAS
+print("--- FREQUÊNCIAS: GÉNERO ---")
+freq_genero = df['genero'].value_counts()
+print(freq_genero)
+print()
+
+print("--- FREQUÊNCIAS RELATIVAS: GÉNERO ---")
+freq_rel = df['genero'].value_counts(normalize=True) * 100
+print(freq_rel.round(2))
+print()
+
+# 2. TABELA DE FREQUÊNCIAS COMPLETA
+print("--- TABELA COMPLETA ---")
+tabela = pd.DataFrame({
+    'Frequência': df['genero'].value_counts(),
+    'Percentagem': df['genero'].value_counts(normalize=True) * 100
+})
+print(tabela.round(2))
+print()
+
+# 3. GRÁFICO DE BARRAS
+plt.figure(figsize=(8, 5))
+df['genero'].value_counts().plot(kind='bar', color='steelblue')
+plt.title('Distribuição de Género')
+plt.xlabel('Género')
+plt.ylabel('Frequência')
+plt.xticks(rotation=0)
+plt.show()
+
+# 4. GRÁFICO DE PIZZA
+plt.figure(figsize=(8, 8))
+df['genero'].value_counts().plot(kind='pie', autopct='%1.1f%%', startangle=90)
+plt.title('Distribuição de Género')
+plt.ylabel('')
+plt.show()
+
+# 5. GRÁFICO DE BARRAS COM SEABORN
+plt.figure(figsize=(8, 5))
+sns.countplot(data=df, x='genero', palette='viridis')
+plt.title('Distribuição de Género')
+plt.xlabel('Género')
+plt.ylabel('Frequência')
+plt.show()
+
+# 6. TABELA DE CONTINGÊNCIA (prévia)
+print("--- TABELA DE CONTINGÊNCIA: GÉNERO vs SATISFAÇÃO ---")
+tabela_contingencia = pd.crosstab(df['genero'], df['satisfacao'])
+print(tabela_contingencia)
+</pre>
+
+</details>
+
+<details>
+<summary>📊 Código R — Análise de Variáveis Categóricas</summary>
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+# Dados de exemplo
+dados <- data.frame(
+  genero = c("Masculino", "Feminino", "Masculino", "Feminino", "Outro",
+             "Masculino", "Feminino", "Masculino", "Feminino", "Masculino"),
+  satisfacao = c("Satisfeito", "Muito satisfeito", "Neutro", "Insatisfeito",
+                 "Satisfeito", "Muito satisfeito", "Satisfeito", "Neutro",
+                 "Insatisfeito", "Muito satisfeito")
+)
+
+# 1. TABELA DE FREQUÊNCIAS
+cat("--- FREQUÊNCIAS: GÉNERO ---\n")
+freq_genero <- table(dados$genero)
+print(freq_genero)
+
+cat("\n--- FREQUÊNCIAS RELATIVAS: GÉNERO ---\n")
+freq_rel <- prop.table(freq_genero) * 100
+print(round(freq_rel, 2))
+
+# 2. GRÁFICO DE BARRAS
+barplot(freq_genero, main = "Distribuição de Género",
+        xlab = "Género", ylab = "Frequência", col = "steelblue")
+
+# 3. GRÁFICO DE PIZZA
+pie(freq_genero, main = "Distribuição de Género",
+    col = c("lightblue", "lightgreen", "lightcoral"))
+
+# 4. GRÁFICO DE BARRAS COM GGPLOT2
+library(ggplot2)
+ggplot(dados, aes(x = genero)) +
+  geom_bar(fill = "steelblue") +
+  labs(title = "Distribuição de Género",
+       x = "Género", y = "Frequência") +
+  theme_minimal()
+
+# 5. TABELA DE CONTINGÊNCIA (prévia)
+cat("\n--- TABELA DE CONTINGÊNCIA: GÉNERO vs SATISFAÇÃO ---\n")
+tabela_contingencia <- table(dados$genero, dados$satisfacao)
+print(tabela_contingencia)
+</pre>
+
+</details>
+
+## 8. VANTAGENS E DESVANTAGENS
+
+| Vantagens | Desvantagens |
+|---------|----------|
+| ✅ **Únicas medidas para dados nominais** | ❌ **Não permitem cálculo de média** |
+| ✅ **Fáceis de calcular e interpretar** | ❌ **Não permitem desvio-padrão** |
+| ✅ **Base para tabelas de contingência** | ❌ **Menos informação que variáveis quantitativas** |
+| ✅ **Fundamentais em ML (classificação)** | ❌ **Requerem codificação para análise** |
+| ✅ **Aplicáveis a qualquer tipo de dados** | ❌ **Podem ter muitas categorias (dimensionalidade)** |
+
+## 9. QUANDO USAR VARIÁVEIS CATEGÓRICAS
+
+| Critério | Variável Categórica |
+|---------|----------|
+| **Dados nominais** | ✅ Único |
+| **Dados ordinais** | ✅ Único |
+| **Classificação** | ✅ Único |
+| **Análise de frequências** | ✅ Único |
+| **Cálculo de médias** | ❌ Usar variáveis quantitativas |
+| **Correlação de Pearson** | ❌ Usar qui-quadrado |
+
+**Fluxo de Decisão:**
+
+1. Os dados são **rótulos** ou **categorias**? → **Variável categórica**
+2. Queres calcular **frequências**? → **Variável categórica**
+3. Queres calcular **médias**? → **Variável quantitativa**
+4. Queres analisar **associação** entre duas categóricas? → **Tabela de contingência** (próxima aula)
+5. Queres analisar **correlação**? → **Pearson/Spearman** (se quantitativas) ou **qui-quadrado** (se categóricas)
+
+## 10. EXERCÍCIOS
+
+<details>
+<summary>📗 Exercício 1 — Classificar variáveis</summary>
+
+**Enunciado:** Classifica cada variável como nominal, ordinal, dicotómica ou quantitativa:
+
+a) Cor dos olhos
+
+b) Nível de escolaridade
+
+c) Número de filhos
+
+d) Estado civil
+
+e) Aprovado/Reprovado
+
+f) Altura
+
+g) Grau de satisfação (Muito insatisfeito a Muito satisfeito)
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) **Nominal** — categorias sem ordem
+
+b) **Ordinal** — categorias com ordem
+
+c) **Quantitativa** — número mensurável
+
+d) **Nominal** — categorias sem ordem
+
+e) **Dicotómica** — apenas 2 categorias
+
+f) **Quantitativa** — número mensurável
+
+g) **Ordinal** — categorias com ordem
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Tabela de frequências</summary>
+
+**Enunciado:** Constrói a tabela de frequências (absoluta, relativa e percentagem) para os dados:
+
+`Masculino, Feminino, Masculino, Masculino, Feminino, Outro, Feminino, Masculino, Feminino, Masculino`
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+| Categoria | fi | fr | % |
+|---------|---------|---------|---------|
+| Masculino | 5 | 0,50 | 50% |
+| Feminino | 4 | 0,40 | 40% |
+| Outro | 1 | 0,10 | 10% |
+| **Total** | **10** | **1,00** | **100%** |
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Interpretação de gráfico</summary>
+
+**Enunciado:** Um gráfico de barras mostra as seguintes frequências: A = 30, B = 50, C = 20. Qual é a categoria mais frequente? Qual é a percentagem da categoria B?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+**Categoria mais frequente:** B (50)
+
+**Total:** 30 + 50 + 20 = 100
+
+**Percentagem de B:** 50/100 × 100% = 50%
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Variáveis nominais vs ordinais</summary>
+
+**Enunciado:** Explica a diferença entre variáveis nominais e ordinais, dando um exemplo de cada.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+**Nominais:** Categorias **sem ordem natural**. Exemplo: cor dos olhos (castanho, azul, verde) — não faz sentido dizer que uma cor é "maior" que outra.
+
+**Ordinais:** Categorias **com ordem natural**. Exemplo: nível de escolaridade (básico, secundário, licenciatura, mestrado, doutoramento) — faz sentido dizer que um nível é "maior" que outro.
+
+**Diferença-chave:** Nas ordinais, podemos calcular a mediana; nas nominais, apenas a moda.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Porque não calcular a média?</summary>
+
+**Enunciado:** Porque não faz sentido calcular a média de uma variável nominal como "género"?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+Não faz sentido calcular a média de "género" porque:
+1. **As categorias não são números** — "Masculino" e "Feminino" são rótulos, não quantidades.
+2. **Não há distância definida** — não podemos dizer que "Feminino" está a 2 unidades de "Masculino".
+3. **A média não tem interpretação** — se codificarmos Masculino = 1 e Feminino = 2, a média seria 1,5 — o que isso significa? Nada.
+
+**Alternativa:** Usar **frequências** e **proporções** para descrever a distribuição.
+
+</details>
+</details>
+
+> Nem tudo na estatística é número. As variáveis categóricas lembram-nos que a qualidade também se mede — não com médias, mas com frequências. E é essa frequência que conta a história das categorias.

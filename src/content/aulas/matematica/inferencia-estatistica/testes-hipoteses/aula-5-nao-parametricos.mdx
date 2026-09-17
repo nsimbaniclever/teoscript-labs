@@ -1,0 +1,502 @@
+# Testes Não Paramétricos
+
+## O que são Testes Não Paramétricos?
+
+Os testes não paramétricos são alternativas aos testes paramétricos (como os testes $t$ e ANOVA) que **não exigem pressupostos sobre a distribuição dos dados**. Eles são úteis quando:
+
+- Os dados não seguem uma distribuição Normal.
+- As variâncias não são homogêneas.
+- Os dados são ordinais (categorias ordenadas).
+- A amostra é pequena.
+- Há outliers que distorcem os testes paramétricos.
+
+**Vantagens dos testes não paramétricos:**
+- Não exigem normalidade.
+- São robustos a outliers.
+- Podem ser usados com dados ordinais.
+
+**Desvantagens:**
+- Menos poderosos que os testes paramétricos (quando os pressupostos são satisfeitos).
+- Perdem informação ao usar ranks (postos) em vez dos valores originais.
+
+**Analogia:** Um teste paramétrico é como usar uma régua de precisão. Um teste não paramétrico é como usar uma fita métrica — menos preciso, mas funciona em mais situações.
+
+Nesta aula, vamos estudar:
+
+1. **Teste de Wilcoxon** (para amostras pareadas)
+2. **Teste de Mann-Whitney** (para duas amostras independentes)
+
+## Teste de Wilcoxon para Amostras Pareadas
+
+O teste de Wilcoxon (também chamado de teste de Wilcoxon para postos sinalizados) é a alternativa não paramétrica ao teste $t$ pareado. Em vez de testar a média das diferenças, ele testa se a **mediana** das diferenças é zero.
+
+**Quando usar:**
+- Dados pareados (antes/depois, dois tratamentos no mesmo sujeito).
+- As diferenças não são Normais.
+- A amostra é pequena.
+
+**Procedimento:**
+
+1. Calcular as diferenças $D_i = X_{1i} - X_{2i}$ para cada par.
+2. Descartar as diferenças iguais a zero.
+3. Ordenar os valores absolutos das diferenças e atribuir postos (ranks).
+4. Somar os postos correspondentes a diferenças positivas ($W_+$) e negativas ($W_-$).
+5. A estatística de teste é $W = \min(W_+, W_-)$ (ou $W_+$ para testes unilaterais).
+6. Comparar com o valor crítico da distribuição de Wilcoxon.
+
+**Para amostras grandes ($n > 20$), usamos a aproximação Normal:**
+
+>> $$Z = \frac{W_+ - \frac{n(n+1)}{4}}{\sqrt{\frac{n(n+1)(2n+1)}{24}}}$$
+
+**Exemplo 1: Teste de Wilcoxon ($n$ pequeno)**
+
+Um programa de treinamento foi aplicado a 8 funcionários. As notas antes e depois são:
+
+| Funcionário | Antes | Depois | $D =$ Depois $-$ Antes | $|D|$ | Posto | Sinal |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | 70 | 75 | 5 | 5 | 6 | + |
+| 2 | 65 | 70 | 5 | 5 | 6 | + |
+| 3 | 80 | 82 | 2 | 2 | 2.5 | + |
+| 4 | 75 | 76 | 1 | 1 | 1 | + |
+| 6 | 60 | 65 | 5 | 5 | 6 | + |
+| 7 | 85 | 86 | 1 | 1 | 1 | + |
+| 8 | 90 | 91 | 1 | 1 | 1 | + |
+| 9 | 55 | 58 | 3 | 3 | 4 | + |
+
+Teste se houve melhora significativa ($\alpha = 0,05$, unilateral).
+
+**Resolução:**
+
+1. $H_0$: Mediana das diferenças = 0; $H_1$: Mediana > 0
+
+2. $W_+ = 6+6+2,5+1+6+1+1+4 = 27,5$
+
+3. $n = 8$. Valor crítico para Wilcoxon (unilateral, $\alpha = 0,05$, $n=8$): $W_{crítico} = 6$
+
+4. $W_+ = 27,5 > 6 \to$ Rejeitar $H_0$
+
+5. Conclusão: Há evidência de melhora significativa.
+
+**Exemplo 2: Teste de Wilcoxon (com diferenças negativas)**
+
+Os mesmos dados, mas agora com alguns resultados negativos:
+
+| $D =$ Depois $-$ Antes | $|D|$ | Posto | Sinal |
+| --- | --- | --- | --- |
+| 5 | 5 | 7 | + |
+| 3 | 3 | 4 | + |
+| 2 | 2 | 2.5 | + |
+| -4 | 4 | 5.5 | - |
+| 5 | 5 | 7 | + |
+| 1 | 1 | 1 | + |
+| -4 | 4 | 5.5 | - |
+| 3 | 3 | 4 | + |
+
+**Resolução:**
+
+$W_+ = 7+4+2,5+7+1+4 = 25,5$
+$W_- = 5,5+5,5 = 11,0$
+$W = \min(25,5, 11,0) = 11,0$
+
+$n = 8$, $\alpha = 0,05$ bicaudal. $W_{crítico} = 3$
+$W = 11,0 > 3 \to$ Não rejeitar $H_0$
+
+**Conclusão:** Não há evidência de diferença significativa.
+
+**Exemplo 3: Teste de Wilcoxon com aproximação Normal ($n$ grande)**
+
+Uma amostra de 25 pares tem $W_+ = 180$. Teste se a mediana das diferenças é zero ($\alpha = 0,05$, bicaudal).
+
+**Resolução:**
+
+$n = 25$, $W_+ = 180$
+$E[W_+] = \frac{n(n+1)}{4} = \frac{25 \cdot 26}{4} = 162,5$
+$Var(W_+) = \frac{n(n+1)(2n+1)}{24} = \frac{25 \cdot 26 \cdot 51}{24} = \frac{33150}{24} = 1381,25$
+$Z = \frac{180 - 162,5}{\sqrt{1381,25}} = \frac{17,5}{37,17} = 0,471$
+p-valor = $2 \cdot P(Z > 0,471) = 2 \cdot 0,319 = 0,638$
+
+**Conclusão:** Não rejeitar $H_0$. p-valor = 0,638 $> 0,05$.
+
+**Exemplo 4: Teste de Wilcoxon ($n$ pequeno, bicaudal)**
+
+$n = 10$, $W_+ = 15$. Teste se a mediana das diferenças é zero ($\alpha = 0,05$).
+
+**Resolução:**
+
+$W = \min(W_+, W_-) = \min(15, 10 \cdot 11/2 - 15) = \min(15, 55-15=40) = 15$
+$n = 10$, $\alpha = 0,05$ bicaudal. $W_{crítico} = 8$
+$W = 15 > 8 \to$ Não rejeitar $H_0$
+
+**Conclusão:** Não há evidência de diferença significativa.
+
+**Exemplo 5: Teste de Wilcoxon com p-valor**
+
+No exemplo 3, $Z = 0,471$. Encontre o p-valor para um teste bicaudal.
+
+**Resolução:**
+
+p-valor = $2 \cdot P(Z > 0,471) = 2 \cdot (1 - \Phi(0,471)) = 2 \cdot (1 - 0,681) = 2 \cdot 0,319 = 0,638$
+
+**Interpretação:** p-valor = 0,638 $> 0,05 \to$ Não rejeitar $H_0$.
+
+## Teste de Mann-Whitney (Wilcoxon-Mann-Whitney) para Duas Amostras Independentes
+
+O teste de Mann-Whitney (também chamado de teste de Wilcoxon para duas amostras) é a alternativa não paramétrica ao teste $t$ para duas amostras independentes. Ele testa se duas populações têm a mesma distribuição (ou mediana).
+
+**Quando usar:**
+- Duas amostras independentes.
+- Os dados não são Normais.
+- As variâncias não são homogêneas.
+- Os dados são ordinais.
+
+**Procedimento:**
+
+1. Combinar as duas amostras.
+2. Ordenar todos os valores e atribuir postos (em caso de empate, usar a média dos postos).
+3. Somar os postos de cada grupo ($R_1$ e $R_2$).
+4. Calcular as estatísticas $U_1$ e $U_2$:
+   - $U_1 = R_1 - \frac{n_1(n_1+1)}{2}$
+   - $U_2 = R_2 - \frac{n_2(n_2+1)}{2}$
+5. A estatística de teste é $U = \min(U_1, U_2)$.
+6. Comparar com o valor crítico da distribuição de Mann-Whitney.
+
+**Para amostras grandes ($n_1 + n_2 > 30$), usamos a aproximação Normal:**
+
+>> $$Z = \frac{U - \frac{n_1 n_2}{2}}{\sqrt{\frac{n_1 n_2 (n_1 + n_2 + 1)}{12}}}$$
+
+**Exemplo 1: Teste de Mann-Whitney ($n$ pequeno)**
+
+Duas amostras:
+- Grupo A: 12, 14, 16, 18, 20
+- Grupo B: 10, 11, 13, 15, 17
+
+Teste se as medianas são diferentes ($\alpha = 0,05$, bicaudal).
+
+**Resolução:**
+
+1. Ordenar todos os valores e atribuir postos:
+
+| Valor | Grupo | Posto |
+| --- | --- | --- |
+| 10 | B | 1 |
+| 11 | B | 2 |
+| 12 | A | 3 |
+| 13 | B | 4 |
+| 14 | A | 5 |
+| 15 | B | 6 |
+| 16 | A | 7 |
+| 17 | B | 8 |
+| 18 | A | 9 |
+| 20 | A | 10 |
+
+2. Soma dos postos: $R_A = 3+5+7+9+10 = 34$; $R_B = 1+2+4+6+8 = 21$
+
+3. $U_A = 34 - \frac{5 \cdot 6}{2} = 34 - 15 = 19$
+   $U_B = 21 - \frac{5 \cdot 6}{2} = 21 - 15 = 6$
+   $U = \min(19, 6) = 6$
+
+4. $n_1 = 5$, $n_2 = 5$. Valor crítico (bicaudal, $\alpha = 0,05$): $U_{crítico} = 2$
+
+5. $U = 6 > 2 \to$ Não rejeitar $H_0$
+
+6. Conclusão: Não há evidência de diferença significativa entre os grupos.
+
+**Exemplo 2: Teste de Mann-Whitney (com diferença clara)**
+
+Grupo A: 15, 18, 20, 22, 25
+Grupo B: 5, 8, 10, 12, 14
+
+**Resolução:**
+
+Valores ordenados: 5(B), 8(B), 10(B), 12(B), 14(B), 15(A), 18(A), 20(A), 22(A), 25(A)
+$R_A = 6+7+8+9+10 = 40$; $R_B = 1+2+3+4+5 = 15$
+$U_A = 40 - 15 = 25$; $U_B = 15 - 15 = 0$; $U = 0$
+
+$U = 0 < 2 \to$ Rejeitar $H_0$
+
+**Conclusão:** Há evidência de que os grupos são diferentes.
+
+**Exemplo 3: Teste de Mann-Whitney com aproximação Normal ($n$ grande)**
+
+Duas amostras:
+- $n_1 = 20$, $R_1 = 350$
+- $n_2 = 25$, $R_2 = 730$
+
+Teste se os grupos são diferentes ($\alpha = 0,05$, bicaudal).
+
+**Resolução:**
+
+$U_1 = 350 - \frac{20 \cdot 21}{2} = 350 - 210 = 140$
+$U_2 = 730 - \frac{25 \cdot 26}{2} = 730 - 325 = 405$
+$U = \min(140, 405) = 140$
+
+$E[U] = \frac{n_1 n_2}{2} = \frac{20 \cdot 25}{2} = 250$
+$Var(U) = \frac{n_1 n_2 (n_1 + n_2 + 1)}{12} = \frac{20 \cdot 25 \cdot 46}{12} = \frac{23000}{12} = 1916,67$
+$Z = \frac{140 - 250}{\sqrt{1916,67}} = \frac{-110}{43,78} = -2,512$
+
+p-valor = $2 \cdot P(Z < -2,512) = 2 \cdot 0,0060 = 0,0120$
+
+**Conclusão:** Rejeitar $H_0$. p-valor = 0,012 $< 0,05$.
+
+**Exemplo 4: Teste de Mann-Whitney com empates**
+
+Grupo A: 10, 12, 12, 14, 16
+Grupo B: 8, 10, 11, 13, 15
+
+**Resolução:**
+
+| Valor | Grupo | Posto |
+| --- | --- | --- |
+| 8 | B | 1 |
+| 10 | A/B | 2.5 (empate: (2+3)/2) |
+| 10 | A/B | 2.5 |
+| 11 | B | 4 |
+| 12 | A | 5.5 (empate) |
+| 12 | A | 5.5 |
+| 13 | B | 7 |
+| 14 | A | 8 |
+| 15 | B | 9 |
+| 16 | A | 10 |
+
+$R_A = 2,5+5,5+5,5+8+10 = 31,5$
+$R_B = 1+2,5+4+7+9 = 23,5$
+$U_A = 31,5 - 15 = 16,5$
+$U_B = 23,5 - 15 = 8,5$
+$U = \min(16,5, 8,5) = 8,5$
+
+Com empates, a aproximação Normal é ajustada.
+
+**Exemplo 5: Teste de Mann-Whitney com p-valor**
+
+No exemplo 3, $Z = -2,512$. Encontre o p-valor.
+
+**Resolução:**
+
+p-valor = $2 \cdot P(Z < -2,512) = 2 \cdot 0,0060 = 0,0120$
+
+**Interpretação:** p-valor = 0,012 $< 0,05 \to$ Rejeitar $H_0$.
+
+## Comparação: Testes Paramétricos vs Não Paramétricos
+
+| Situação | Teste Paramétrico | Teste Não Paramétrico |
+| --- | --- | --- |
+| 1 amostra (média) | Teste $t$ | Teste de Wilcoxon (1 amostra) |
+| 2 amostras pareadas | Teste $t$ pareado | Teste de Wilcoxon pareado |
+| 2 amostras independentes | Teste $t$ | Teste de Mann-Whitney |
+| Várias amostras | ANOVA | Teste de Kruskal-Wallis |
+| Correlação | Correlação de Pearson | Correlação de Spearman |
+
+## Quando Usar Testes Não Paramétricos
+
+**Use testes não paramétricos quando:**
+
+1. Os dados não são Normais (teste de Shapiro-Wilk, Kolmogorov-Smirnov).
+2. A amostra é pequena ($n < 30$).
+3. Há outliers que distorcem a média.
+4. Os dados são ordinais (ex: classificação, satisfação em escala).
+5. As variâncias são muito diferentes entre os grupos.
+
+**Use testes paramétricos quando:**
+
+1. Os dados são Normais (ou aproximadamente).
+2. A amostra é grande ($n \ge 30$) e o TCL se aplica.
+3. Os dados são intervalares ou de razão.
+4. As variâncias são homogêneas.
+
+## Analogias
+
+### Analogia 1: O juiz de competição
+
+O teste de Wilcoxon é como um juiz que avalia se um atleta melhorou comparando suas posições no ranking (postos) em vez de comparar os tempos exatos.
+
+### Analogia 2: A prova de corrida
+
+O teste de Mann-Whitney é como comparar dois grupos de corredores sem usar o cronômetro, apenas olhando quem chega na frente de quem (postos).
+
+### Analogia 3: O teste cego
+
+Testes não paramétricos são como testes cegos — eles ignoram a magnitude exata dos dados e se concentram apenas na ordem relativa.
+
+## Resumo: Testes Não Paramétricos
+
+| Teste | Para | Estatística | Distribuição |
+| --- | --- | --- | --- |
+| Wilcoxon (pareado) | Amostras pareadas | $W_+$ ou $W_-$ | Wilcoxon ou Normal |
+| Mann-Whitney | 2 amostras independentes | $U = \min(U_1, U_2)$ | Mann-Whitney ou Normal |
+
+## Exercícios Resolvidos
+
+### Exercício 1 (Fácil)
+
+Em um teste de Wilcoxon com $n = 6$, $W_+ = 18$. Teste se a mediana $> 0$ ($\alpha = 0,05$, unilateral).
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$n = 6$, $\alpha = 0,05$ unilateral. $W_{crítico} = 2$
+$W_+ = 18 > 2 \to$ Rejeitar $H_0$
+
+**Resposta:** Rejeitar $H_0$. Há evidência de que a mediana $> 0$.
+
+</details>
+
+### Exercício 2 (Fácil/Médio)
+
+Em um teste de Mann-Whitney com $n_1 = 6$, $n_2 = 8$, $R_1 = 45$. Calcule $U_1$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$U_1 = R_1 - \frac{n_1(n_1+1)}{2} = 45 - \frac{6 \cdot 7}{2} = 45 - 21 = 24$
+
+**Resposta:** $U_1 = 24$.
+
+</details>
+
+### Exercício 3 (Médio)
+
+Um teste de Wilcoxon com $n = 15$ tem $W_+ = 70$. Teste se a mediana $\ne 0$ ($\alpha = 0,05$, bicaudal).
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$n = 15$, $E[W_+] = \frac{15 \cdot 16}{4} = 60$
+$Var(W_+) = \frac{15 \cdot 16 \cdot 31}{24} = \frac{7440}{24} = 310$
+$Z = \frac{70 - 60}{\sqrt{310}} = \frac{10}{17,61} = 0,568$
+p-valor = $2 \cdot P(Z > 0,568) = 2 \cdot 0,285 = 0,570$
+p-valor $> 0,05 \to$ Não rejeitar $H_0$
+
+**Resposta:** Não rejeitar $H_0$.
+
+</details>
+
+### Exercício 4 (Médio)
+
+Um teste de Mann-Whitney com $n_1 = 12$, $n_2 = 15$ tem $U = 50$. Teste se os grupos são diferentes ($\alpha = 0,05$, bicaudal).
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$E[U] = \frac{12 \cdot 15}{2} = 90$
+$Var(U) = \frac{12 \cdot 15 \cdot 28}{12} = \frac{5040}{12} = 420$
+$Z = \frac{50 - 90}{\sqrt{420}} = \frac{-40}{20,49} = -1,952$
+p-valor = $2 \cdot P(Z < -1,952) = 2 \cdot 0,0255 = 0,0510$
+p-valor $> 0,05 \to$ Não rejeitar $H_0$ (marginal)
+
+**Resposta:** Não rejeitar $H_0$ (p-valor $\approx 0,051$).
+
+</details>
+
+### Exercício 5 (Difícil)
+
+Uma amostra de 8 pares tem diferenças: 2, 3, -1, 4, -2, 5, 1, -3. Teste se a mediana das diferenças é zero ($\alpha = 0,05$, bicaudal).
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+Ordenando $|D|$ e atribuindo postos:
+
+| $D$ | $|D|$ | Posto | Sinal |
+| --- | --- | --- | --- |
+| -3 | 3 | 7 | - |
+| -2 | 2 | 5 | - |
+| -1 | 1 | 2.5 | - |
+| 1 | 1 | 2.5 | + |
+| 2 | 2 | 5 | + |
+| 3 | 3 | 7 | + |
+| 4 | 4 | 8 | + |
+| 5 | 5 | 9 | + |
+
+$W_+ = 2,5+5+7+8+9 = 31,5$
+$W_- = 7+5+2,5 = 14,5$
+$W = \min(31,5, 14,5) = 14,5$
+
+$n = 8$, $\alpha = 0,05$ bicaudal. $W_{crítico} = 3$
+$W = 14,5 > 3 \to$ Não rejeitar $H_0$
+
+**Resposta:** Não rejeitar $H_0$. Não há evidência de diferença.
+
+</details>
+
+## Desafio Final com Resolução Completa
+
+Uma empresa quer comparar a satisfação dos clientes entre duas lojas. A satisfação é medida em uma escala de 1 a 10. Os dados:
+
+Loja A: 7, 8, 9, 6, 8, 7, 9, 8, 6, 7
+Loja B: 5, 6, 4, 7, 5, 6, 8, 5, 6, 4
+
+a) Teste se a satisfação da loja A é maior que a da loja B ($\alpha = 0,05$) usando Mann-Whitney.
+
+b) Qual o p-valor?
+
+c) Compare com o resultado do teste $t$ para duas amostras.
+
+d) Qual teste é mais apropriado para estes dados?
+
+e) Interprete os resultados.
+
+<details>
+<summary>💡 Ver resolução completa</summary>
+
+a) Dados combinados e ordenados:
+
+| Valor | Grupo | Posto |
+| --- | --- | --- |
+| 4 | B | 1 |
+| 4 | B | 2 |
+| 5 | B | 3.5 (empate: 4 e 3) |
+| 5 | B | 3.5 |
+| 5 | B | 3.5 |
+| 6 | A | 7.5 (empate: 6,6,7,8) |
+| 6 | B | 7.5 |
+| 6 | A | 7.5 |
+| 6 | B | 7.5 |
+| 7 | A | 11.5 (empate) |
+| 7 | A | 11.5 |
+| 7 | A | 11.5 |
+| 8 | A | 14.5 (empate) |
+| 8 | A | 14.5 |
+| 8 | A | 14.5 |
+| 8 | B | 14.5 |
+| 9 | A | 17.5 (empate) |
+| 9 | A | 17.5 |
+| 9 | A | 17.5 |
+| 9 | A | 17.5 |
+
+$R_A = 7,5+7,5+11,5+11,5+11,5+14,5+14,5+14,5+17,5+17,5 = 128$
+$R_B = 1+2+3,5+3,5+3,5+7,5+7,5+14,5 = 43$
+
+$U_A = 128 - \frac{10 \cdot 11}{2} = 128 - 55 = 73$
+$U_B = 100 - 73 = 27$
+$U = \min(73, 27) = 27$
+
+Valor crítico para $n_1=10$, $n_2=10$, $\alpha=0,05$ unilateral: $U_{crítico} = 23$
+$U = 27 > 23 \to$ Não rejeitar $H_0$
+
+b) Com aproximação Normal:
+$E[U] = \frac{10 \cdot 10}{2} = 50$
+$Var(U) = \frac{10 \cdot 10 \cdot 21}{12} = \frac{2100}{12} = 175$
+$Z = \frac{27 - 50}{\sqrt{175}} = \frac{-23}{13,23} = -1,738$
+p-valor = $P(Z < -1,738) = 0,041$ (unilateral superior, pois $H_1: A > B$)
+
+c) Teste $t$:
+$\bar{X}_A = 7,5$, $S_A = 1,08$; $\bar{X}_B = 5,6$, $S_B = 1,35$
+$S_p = \sqrt{\frac{9 \cdot 1,17 + 9 \cdot 1,82}{18}} = \sqrt{\frac{2,99}{18}} = \sqrt{0,166} = 1,225$
+$t = \frac{7,5 - 5,6}{1,225 \cdot \sqrt{1/10+1/10}} = \frac{1,9}{1,225 \cdot 0,447} = \frac{1,9}{0,548} = 3,467$
+$\nu = 18$, $t_{0,05, 18} = 1,734$
+$t = 3,467 > 1,734 \to$ Rejeitar $H_0$
+
+d) O teste não paramétrico não rejeitou $H_0$ (p-valor = 0,041 $> 0,05$), mas o teste paramétrico rejeitou (p-valor $< 0,05$). Como os dados são ordinais (escala de 1 a 10) e não necessariamente Normais, o teste de Mann-Whitney é mais apropriado.
+
+e) Apesar da loja A ter maior satisfação média (7,5 vs 5,6), o teste não paramétrico não encontrou evidência suficiente ao nível de 5% para afirmar que a loja A é superior. O resultado é marginal (p-valor = 0,041, muito próximo de 0,05). Recomenda-se aumentar a amostra para obter mais poder.
+
+**Respostas:**
+a) Não rejeitar $H_0$ ($U = 27 > 23$)
+b) p-valor $\approx 0,041$ (marginal)
+c) Teste $t$: rejeita $H_0$ ($t = 3,467$)
+d) Teste de Mann-Whitney (dados ordinais)
+e) Resultado marginal; recomenda-se aumentar a amostra
+
+</details>
+
+> *Os testes não paramétricos nos ensinam que, quando a normalidade falha, a ordem dos dados ainda guarda a verdade — como um mapa que prescinde das coordenadas exatas e se guia pelas direções relativas.*

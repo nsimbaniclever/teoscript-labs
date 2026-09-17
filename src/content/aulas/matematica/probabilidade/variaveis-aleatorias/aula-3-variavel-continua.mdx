@@ -1,0 +1,411 @@
+# Variáveis Aleatórias Contínuas
+
+### 1. O que é uma Variável Aleatória Contínua?
+
+Uma variável aleatória é **contínua** se assume **qualquer valor** em um intervalo (ou união de intervalos) da reta real. Os valores possíveis são **não contáveis** — ou seja, entre dois valores quaisquer, existem infinitos valores possíveis.
+
+**Exemplos:**
+- Altura de uma pessoa: 1,70 m, 1,705 m, 1,7053 m, ...
+- Tempo de vida de uma lâmpada: 1.000 h, 1.000,5 h, 1.000,53 h, ...
+- Temperatura de um motor: 80°C, 80,2°C, 80,25°C, ...
+- Peso de um recém-nascido: 3,2 kg, 3,25 kg, 3,251 kg, ...
+
+> **Característica fundamental:** Para uma variável contínua, a probabilidade de um valor **exato** é **zero**:
+> $$ P(X = a) = 0 \quad \text{para qualquer } a \in \mathbb{R} $$
+
+Isso significa que a probabilidade sempre é calculada sobre **intervalos** (ex: $ P(1,70 < X < 1,75) $), e não sobre pontos específicos.
+
+### 2. Função Densidade de Probabilidade (fdp) — $ f(x) $
+
+A **Função Densidade de Probabilidade** (fdp) de uma variável aleatória contínua $ X $ é uma função $ f(x) $ que descreve a **densidade** da probabilidade em cada ponto do eixo real.
+
+**Propriedades da fdp:**
+
+| Propriedade | O que significa |
+| --- | --- |
+| **1. $ f(x) \geq 0 $** | A densidade nunca é negativa. |
+| **2. $ \int_{-\infty}^{\infty} f(x) \, dx = 1 $** | A área total sob a curva da fdp é 1 (certeza). |
+| **3. $ P(a \leq X \leq b) = \int_{a}^{b} f(x) \, dx $** | A probabilidade de $ X $ estar em um intervalo é a área sob a curva nesse intervalo. |
+
+> **Interpretação:** $ f(x) $ **não** é uma probabilidade! Ela é uma densidade. A probabilidade real é a **área** sob a curva $ f(x) $. Por isso, para qualquer ponto específico $ a $, temos $ P(X = a) = 0 $.
+
+**Exemplo 1 — fdp válida:**
+
+Uma variável aleatória contínua $ X $ tem fdp dada por:
+
+$$ f(x) = \begin{cases} k, & 0 \leq x \leq 2 \\ 0, & \text{caso contrário} \end{cases} $$
+
+**Pergunta:** Qual o valor de $ k $ para que $ f(x) $ seja uma fdp válida?
+
+**Resolução:**
+- A área total sob a curva deve ser 1:
+$$ \int_{-\infty}^{\infty} f(x) \, dx = \int_{0}^{2} k \, dx = k \cdot (2 - 0) = 2k = 1 $$
+- $ k = 1/2 $
+
+**Resposta:** $ f(x) = 1/2 $ para $ 0 \leq x \leq 2 $.
+
+**Exemplo 2 — fdp com $ x $ (Gama):**
+
+Uma variável aleatória contínua $ X $ tem fdp dada por:
+
+$$ f(x) = \begin{cases} c x, & 0 \leq x \leq 2 \\ 0, & \text{caso contrário} \end{cases} $$
+
+**Pergunta:** Qual o valor de $ c $ para que $ f(x) $ seja uma fdp válida?
+
+**Resolução:**
+- A área total deve ser 1:
+$$ \int_{0}^{2} c x \, dx = c \cdot \left[ \frac{x^2}{2} \right]_{0}^{2} = c \cdot \frac{4}{2} = 2c = 1 $$
+- $ c = 1/2 $
+
+**Resposta:** $ f(x) = x/2 $ para $ 0 \leq x \leq 2 $.
+
+**Exemplo 3 — Cálculo de probabilidade com fdp:**
+
+Usando a fdp do Exemplo 2 ($ f(x) = x/2 $ para $ 0 \leq x \leq 2 $), calcule $ P(0,5 < X < 1,5) $.
+
+**Resolução:**
+
+$$ P(0,5 < X < 1,5) = \int_{0,5}^{1,5} \frac{x}{2} \, dx = \frac{1}{2} \cdot \left[ \frac{x^2}{2} \right]_{0,5}^{1,5} = \frac{1}{4} \left( (1,5)^2 - (0,5)^2 \right) $$
+
+$$ = \frac{1}{4} \left( 2,25 - 0,25 \right) = \frac{1}{4} \cdot 2 = 0,5 = 50\% $$
+
+**Resposta:** $ P(0,5 < X < 1,5) = 0,5 $.
+
+### 3. Função de Distribuição (FD) — $ F(x) $
+
+A **Função de Distribuição** (também chamada de **Função de Distribuição Acumulada — FDA**) para variáveis contínuas é definida como:
+
+$$ F(x) = P(X \leq x) = \int_{-\infty}^{x} f(t) \, dt $$
+
+**Propriedades da FD para contínuas:**
+
+| Propriedade | O que significa |
+| --- | --- |
+| **1. $ F(x) $ é contínua** | Não há saltos (diferente das discretas). |
+| **2. $ F(x) $ é não decrescente** | Se $ a \leq b $, então $ F(a) \leq F(b) $. |
+| **3. $ \lim_{x \to -\infty} F(x) = 0 $** | — |
+| **4. $ \lim_{x \to +\infty} F(x) = 1 $** | — |
+| **5. Relação com a fdp** | $ f(x) = F'(x) $ (derivada da FD). |
+
+**Exemplo 4 — FD a partir da fdp:**
+
+Usando a fdp do Exemplo 2 ($ f(x) = x/2 $ para $ 0 \leq x \leq 2 $), encontre $ F(x) $.
+
+**Resolução:**
+
+Para $ x < 0 $: $ F(x) = 0 $.
+
+Para $ 0 \leq x \leq 2 $:
+$$ F(x) = \int_{0}^{x} \frac{t}{2} \, dt = \frac{1}{2} \cdot \left[ \frac{t^2}{2} \right]_{0}^{x} = \frac{x^2}{4} $$
+
+Para $ x > 2 $: $ F(x) = 1 $.
+
+**Resposta:**
+$$ F(x) = \begin{cases} 0, & x < 0 \\ x^2/4, & 0 \leq x \leq 2 \\ 1, & x > 2 \end{cases} $$
+
+**Exemplo 5 — Cálculo de probabilidade com a FD:**
+
+Usando a FD do Exemplo 4, calcule:
+- a) $ P(X \leq 1) $
+- b) $ P(0,5 < X \leq 1,5) $
+- c) $ P(X > 1,5) $
+
+**Resolução:**
+
+a) $ P(X \leq 1) = F(1) = 1^2/4 = 1/4 = 0,25 $
+
+b) $ P(0,5 < X \leq 1,5) = F(1,5) - F(0,5) = (1,5)^2/4 - (0,5)^2/4 = 2,25/4 - 0,25/4 = 2/4 = 0,5 $
+
+c) $ P(X > 1,5) = 1 - P(X \leq 1,5) = 1 - F(1,5) = 1 - 2,25/4 = 1 - 0,5625 = 0,4375 $
+
+### 4. Relação entre fdp e FD
+
+| Direção | Fórmula |
+| --- | --- |
+| **Da fdp para a FD** | $ F(x) = \int_{-\infty}^{x} f(t) \, dt $ |
+| **Da FD para a fdp** | $ f(x) = F'(x) $ (derivada da FD) |
+
+**Exemplo 6 — Recuperando a fdp a partir da FD:**
+
+Dada a FD:
+
+$$ F(x) = \begin{cases} 0, & x < 0 \\ 1 - e^{-2x}, & x \geq 0 \end{cases} $$
+
+Encontre $ f(x) $.
+
+**Resolução:**
+
+Para $ x < 0 $: $ f(x) = F'(x) = 0 $.
+
+Para $ x \geq 0 $: $ f(x) = \frac{d}{dx} (1 - e^{-2x}) = 2e^{-2x} $.
+
+**Resposta:**
+$$ f(x) = \begin{cases} 0, & x < 0 \\ 2e^{-2x}, & x \geq 0 \end{cases} $$
+
+### 5. Valor Esperado (Média) — $ E[X] $
+
+O **Valor Esperado** (ou esperança) de uma variável aleatória contínua é definido como:
+
+$$ E[X] = \int_{-\infty}^{\infty} x \cdot f(x) \, dx $$
+
+**Interpretação:** É o "centro de massa" da distribuição, análogo à média ponderada das variáveis discretas, mas com integrais no lugar de somas.
+
+**Propriedades do Valor Esperado (mesmas das discretas):**
+
+| Propriedade | Fórmula |
+| --- | --- |
+| **Linearidade** | $ E[aX + b] = aE[X] + b $ |
+| **Soma de variáveis** | $ E[X + Y] = E[X] + E[Y] $ |
+| **Constante** | $ E[c] = c $ |
+
+**Exemplo 7 — Valor Esperado:**
+
+Usando a fdp do Exemplo 2 ($ f(x) = x/2 $ para $ 0 \leq x \leq 2 $), calcule $ E[X] $.
+
+**Resolução:**
+$$ E[X] = \int_{0}^{2} x \cdot \frac{x}{2} \, dx = \frac{1}{2} \int_{0}^{2} x^2 \, dx = \frac{1}{2} \cdot \left[ \frac{x^3}{3} \right]_{0}^{2} = \frac{1}{2} \cdot \frac{8}{3} = \frac{4}{3} \approx 1,33 $$
+
+**Interpretação:** O valor médio de $ X $ é $ 4/3 \approx 1,33 $.
+
+### 6. Variância — $ Var(X) $
+
+A **Variância** para variáveis contínuas é definida como:
+
+$$ Var(X) = E[(X - \mu)^2] = \int_{-\infty}^{\infty} (x - \mu)^2 \cdot f(x) \, dx $$
+
+**Fórmula alternativa:**
+$$ Var(X) = E[X^2] - (E[X])^2 $$
+
+onde:
+$$ E[X^2] = \int_{-\infty}^{\infty} x^2 \cdot f(x) \, dx $$
+
+**Desvio Padrão:** $ \sigma = \sqrt{Var(X)} $.
+
+**Propriedades da Variância (mesmas das discretas):**
+
+| Propriedade | Fórmula |
+| --- | --- |
+| **Mudança de escala e translação** | $ Var(aX + b) = a^2 Var(X) $ |
+| **Soma de variáveis independentes** | $ Var(X + Y) = Var(X) + Var(Y) $ |
+
+**Exemplo 8 — Variância:**
+
+Usando a fdp do Exemplo 2 ($ f(x) = x/2 $ para $ 0 \leq x \leq 2 $), calcule $ Var(X) $.
+
+**Passo 1 — Já temos $ E[X] = 4/3 $:**
+- $ [E[X]]^2 = (4/3)^2 = 16/9 $
+
+**Passo 2 — Calcular $ E[X^2] $:**
+$$ E[X^2] = \int_{0}^{2} x^2 \cdot \frac{x}{2} \, dx = \frac{1}{2} \int_{0}^{2} x^3 \, dx = \frac{1}{2} \cdot \left[ \frac{x^4}{4} \right]_{0}^{2} = \frac{1}{2} \cdot \frac{16}{4} = \frac{1}{2} \cdot 4 = 2 $$
+
+**Passo 3 — Calcular a variância:**
+$$ Var(X) = E[X^2] - [E[X]]^2 = 2 - \frac{16}{9} = \frac{18}{9} - \frac{16}{9} = \frac{2}{9} \approx 0,222 $$
+
+**Desvio Padrão:**
+$$ \sigma = \sqrt{2/9} \approx 0,471 $$
+
+### 7. Quadro Resumo — Variável Aleatória Contínua
+
+| Conceito | Fórmula |
+| --- | --- |
+| **Função Densidade (fdp)** | $ f(x) \geq 0 $, $ \int_{-\infty}^{\infty} f(x) dx = 1 $ |
+| **Função de Distribuição (FD)** | $ F(x) = P(X \leq x) = \int_{-\infty}^{x} f(t) dt $ |
+| **Recuperar fdp da FD** | $ f(x) = F'(x) $ |
+| **Probabilidade de intervalo** | $ P(a \leq X \leq b) = \int_{a}^{b} f(x) dx = F(b) - F(a) $ |
+| **Valor Esperado** | $ E[X] = \int_{-\infty}^{\infty} x \cdot f(x) dx $ |
+| **Valor Esperado de $ g(X) $** | $ E[g(X)] = \int_{-\infty}^{\infty} g(x) \cdot f(x) dx $ |
+| **Variância** | $ Var(X) = \int (x-\mu)^2 f(x) dx = E[X^2] - [E[X]]^2 $ |
+| **Desvio Padrão** | $ \sigma = \sqrt{Var(X)} $ |
+
+## 📝 EXERCÍCIOS RESOLVIDOS
+
+<details>
+<summary>📗 Exercício 1 — fdp Válida</summary>
+
+**Enunciado:** Verifique se a função abaixo é uma fdp válida:
+
+$$ f(x) = \begin{cases} 3x^2, & 0 \leq x \leq 1 \\ 0, & \text{caso contrário} \end{cases} $$
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**Verificação das propriedades:**
+
+1. **$ f(x) \geq 0 $:** Para $ 0 \leq x \leq 1 $, $ 3x^2 \geq 0 $ ✅
+
+2. **Área total = 1:**
+$$ \int_{-\infty}^{\infty} f(x) dx = \int_{0}^{1} 3x^2 dx = 3 \cdot \left[ \frac{x^3}{3} \right]_{0}^{1} = 3 \cdot \frac{1}{3} = 1 $$ ✅
+
+**Conclusão:** $ f(x) $ é uma fdp válida.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Cálculo de Probabilidade</summary>
+
+**Enunciado:** Usando a fdp do Exercício 1, calcule $ P(0,25 < X < 0,75) $.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$$ P(0,25 < X < 0,75) = \int_{0,25}^{0,75} 3x^2 dx = 3 \cdot \left[ \frac{x^3}{3} \right]_{0,25}^{0,75} = \left[ x^3 \right]_{0,25}^{0,75} $$
+
+$$ = (0,75)^3 - (0,25)^3 = 0,421875 - 0,015625 = 0,40625 $$
+
+**Resposta:** $ P(0,25 < X < 0,75) = 0,40625 \approx 40,6\% $.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — FD</summary>
+
+**Enunciado:** Encontre a Função de Distribuição $ F(x) $ para a fdp do Exercício 1.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+Para $ x < 0 $: $ F(x) = 0 $.
+
+Para $ 0 \leq x \leq 1 $:
+$$ F(x) = \int_{0}^{x} 3t^2 dt = 3 \cdot \left[ \frac{t^3}{3} \right]_{0}^{x} = x^3 $$
+
+Para $ x > 1 $: $ F(x) = 1 $.
+
+**Resposta:**
+$$ F(x) = \begin{cases} 0, & x < 0 \\ x^3, & 0 \leq x \leq 1 \\ 1, & x > 1 \end{cases} $$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Valor Esperado e Variância</summary>
+
+**Enunciado:** Usando a fdp do Exercício 1, calcule $ E[X] $ e $ Var(X) $.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**a) $ E[X] $:**
+$$ E[X] = \int_{0}^{1} x \cdot 3x^2 dx = \int_{0}^{1} 3x^3 dx = 3 \cdot \left[ \frac{x^4}{4} \right]_{0}^{1} = \frac{3}{4} = 0,75 $$
+
+**b) $ E[X^2] $:**
+$$ E[X^2] = \int_{0}^{1} x^2 \cdot 3x^2 dx = \int_{0}^{1} 3x^4 dx = 3 \cdot \left[ \frac{x^5}{5} \right]_{0}^{1} = \frac{3}{5} = 0,6 $$
+
+**c) $ Var(X) $:**
+$$ Var(X) = E[X^2] - [E[X]]^2 = \frac{3}{5} - \left( \frac{3}{4} \right)^2 = \frac{3}{5} - \frac{9}{16} $$
+
+$$ Var(X) = \frac{48}{80} - \frac{45}{80} = \frac{3}{80} = 0,0375 $$
+
+**Desvio Padrão:** $ \sigma = \sqrt{0,0375} \approx 0,1936 $.
+
+**Respostas:** $ E[X] = 0,75 $; $ Var(X) = 3/80 \approx 0,0375 $.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — fdp Exponencial</summary>
+
+**Enunciado:** Uma variável aleatória contínua $ T $ (tempo de vida) tem fdp exponencial:
+
+$$ f(t) = \lambda e^{-\lambda t}, \quad t \geq 0 $$
+
+com $ \lambda = 0,5 $.
+
+a) Verifique que é uma fdp válida.
+b) Calcule $ P(T \leq 3) $.
+c) Calcule $ E[T] $.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**a) Verificação:**
+- $ f(t) \geq 0 $ para $ t \geq 0 $ ✅
+- Área total:
+$$ \int_{0}^{\infty} 0,5 e^{-0,5t} dt = \left[ -e^{-0,5t} \right]_{0}^{\infty} = 0 - (-1) = 1 $$ ✅
+
+**b) $ P(T \leq 3) $:**
+$$ P(T \leq 3) = \int_{0}^{3} 0,5 e^{-0,5t} dt = \left[ -e^{-0,5t} \right]_{0}^{3} = -e^{-1,5} + 1 \approx 1 - 0,223 = 0,777 $$
+
+**c) $ E[T] $:**
+- Para a Exponencial, $ E[T] = 1/\lambda = 1/0,5 = 2 $.
+
+**Respostas:** a) válida; b) $ \approx 77,7\% $; c) 2.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — FD com variável contínua</summary>
+
+**Enunciado:** Dada a FD:
+
+$$ F(x) = \begin{cases} 0, & x < 0 \\ x^2/9, & 0 \leq x \leq 3 \\ 1, & x > 3 \end{cases} $$
+
+Calcule:
+a) $ f(x) $
+b) $ P(1 < X \leq 2) $
+c) $ E[X] $
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**a) $ f(x) = F'(x) $:**
+- Para $ x < 0 $ ou $ x > 3 $: $ f(x) = 0 $.
+- Para $ 0 \leq x \leq 3 $: $ f(x) = \frac{d}{dx} (x^2/9) = 2x/9 $.
+
+**b) $ P(1 < X \leq 2) = F(2) - F(1) $:**
+- $ F(2) = 4/9 $
+- $ F(1) = 1/9 $
+- $ P(1 < X \leq 2) = 4/9 - 1/9 = 3/9 = 1/3 $
+
+**c) $ E[X] $:**
+$$ E[X] = \int_{0}^{3} x \cdot \frac{2x}{9} dx = \frac{2}{9} \int_{0}^{3} x^2 dx = \frac{2}{9} \cdot \left[ \frac{x^3}{3} \right]_{0}^{3} = \frac{2}{9} \cdot \frac{27}{3} = \frac{2}{9} \cdot 9 = 2 $$
+
+**Respostas:** a) $ f(x) = 2x/9 $ para $ 0 \leq x \leq 3 $; b) $ 1/3 $; c) 2.
+
+</details>
+</details>
+
+## 🎯 DESAFIO FINAL
+
+**Enunciado:** Uma variável aleatória contínua $ X $ tem fdp:
+
+$$ f(x) = \begin{cases} c(1 - x^2), & -1 \leq x \leq 1 \\ 0, & \text{caso contrário} \end{cases} $$
+
+a) Encontre $ c $.
+b) Calcule $ P(X > 0) $.
+c) Calcule $ E[X] $.
+d) Calcule $ Var(X) $.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**a) Encontrar $ c $:**
+$$ \int_{-1}^{1} c(1 - x^2) dx = c \left[ x - \frac{x^3}{3} \right]_{-1}^{1} = c \left( \left(1 - \frac{1}{3}\right) - \left(-1 + \frac{1}{3}\right) \right) $$
+
+$$ = c \left( \frac{2}{3} - \left( -\frac{2}{3} \right) \right) = c \cdot \frac{4}{3} = 1 \Rightarrow c = \frac{3}{4} $$
+
+**b) $ P(X > 0) $:**
+$$ P(X > 0) = \int_{0}^{1} \frac{3}{4}(1 - x^2) dx = \frac{3}{4} \left[ x - \frac{x^3}{3} \right]_{0}^{1} = \frac{3}{4} \left( 1 - \frac{1}{3} \right) = \frac{3}{4} \cdot \frac{2}{3} = \frac{1}{2} $$
+
+**c) $ E[X] $:**
+- A fdp é simétrica em torno de 0 (par), portanto:
+$$ E[X] = 0 $$
+
+**d) $ Var(X) $:**
+$$ E[X^2] = \int_{-1}^{1} x^2 \cdot \frac{3}{4}(1 - x^2) dx = \frac{3}{4} \int_{-1}^{1} (x^2 - x^4) dx $$
+
+$$ = \frac{3}{4} \left[ \frac{x^3}{3} - \frac{x^5}{5} \right]_{-1}^{1} = \frac{3}{4} \cdot \left( \frac{1}{3} - \frac{1}{5} - \left( -\frac{1}{3} + \frac{1}{5} \right) \right) $$
+
+$$ = \frac{3}{4} \cdot \left( \frac{2}{15} + \frac{2}{15} \right) = \frac{3}{4} \cdot \frac{4}{15} = \frac{1}{5} $$
+
+$$ Var(X) = E[X^2] - [E[X]]^2 = \frac{1}{5} - 0 = \frac{1}{5} $$
+
+**Respostas:** a) $ 3/4 $; b) $ 1/2 $; c) 0; d) $ 1/5 $.
+
+</details>
+
+> *As variáveis aleatórias contínuas são essenciais para modelar fenômenos físicos e naturais. Entender a fdp, a FD, o valor esperado e a variância é a base para todas as distribuições contínuas que virão (Normal, Exponencial, Gama, etc.).*

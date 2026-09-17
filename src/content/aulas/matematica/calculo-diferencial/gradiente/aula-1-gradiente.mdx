@@ -1,0 +1,314 @@
+# GRADIENTE
+
+## 1. Definição Formal
+
+### 1.1 O que é o Gradiente?
+
+O **gradiente** de uma função escalar $f: \mathbb{R}^n \to \mathbb{R}$ é o vetor de **derivadas parciais**:
+
+$$
+\nabla f(\vec{x}) = \begin{bmatrix} \frac{\partial f}{\partial x_1} \\ \frac{\partial f}{\partial x_2} \\ \vdots \\ \frac{\partial f}{\partial x_n} \end{bmatrix}
+$$
+
+**Onde:**
+- $\nabla$ (nabla) é o operador gradiente.
+- $\vec{x} = (x_1, x_2, \ldots, x_n)$.
+
+### 1.2 Interpretação Geométrica
+
+O gradiente tem duas propriedades fundamentais:
+
+1. **Direção de maior crescimento:** O gradiente aponta para a direção em que a função $f$ **cresce mais rapidamente**.
+
+2. **Magnitude:** A norma do gradiente $\|\nabla f\|$ é a **taxa máxima de crescimento**.
+
+**Consequência:** A direção **oposta** ao gradiente ($-\nabla f$) é a direção de **maior decrescimento** — exatamente o que usamos no **Gradiente Descendente**.
+
+### 1.3 Exemplo Acadêmico Passo a Passo
+
+Seja:
+$$
+f(x, y) = x^2 + y^2
+$$
+
+**Gradiente:**
+$$
+\nabla f = \begin{bmatrix} \frac{\partial f}{\partial x} \\ \frac{\partial f}{\partial y} \end{bmatrix} = \begin{bmatrix} 2x \\ 2y \end{bmatrix}
+$$
+
+**Interpretação:**
+- No ponto $(1, 1)$, $\nabla f(1, 1) = (2, 2)$.
+- A direção de maior crescimento é $(2, 2)$ (nordeste).
+- A direção de maior decrescimento é $(-2, -2)$ (sudoeste).
+
+## 2. Propriedades do Gradiente
+
+| Propriedade | Fórmula |
+|-------------|---------|
+| **Linearidade** | $\nabla(c_1 f + c_2 g) = c_1 \nabla f + c_2 \nabla g$ |
+| **Produto** | $\nabla(fg) = f \nabla g + g \nabla f$ |
+| **Quociente** | $\nabla(f/g) = \frac{g \nabla f - f \nabla g}{g^2}$ |
+| **Regra da Cadeia** | $\nabla(f(g(\vec{x}))) = f'(g(\vec{x})) \cdot \nabla g(\vec{x})$ |
+
+## 3. Gradiente em Funções de Várias Variáveis
+
+### 3.1 Função Quadrática
+
+$$
+f(\vec{x}) = \vec{x}^T A \vec{x}
+$$
+onde $A$ é simétrica.
+
+**Gradiente:**
+$$
+\nabla f = 2A\vec{x}
+$$
+
+**Exemplo:** $f(x, y) = 2x^2 + 3xy + 2y^2$
+
+Matriz $A = \begin{bmatrix} 2 & 1.5 \\ 1.5 & 2 \end{bmatrix}$
+
+$$
+\nabla f = 2 \begin{bmatrix} 2 & 1.5 \\ 1.5 & 2 \end{bmatrix} \begin{bmatrix} x \\ y \end{bmatrix} = \begin{bmatrix} 4x + 3y \\ 3x + 4y \end{bmatrix}
+$$
+
+### 3.2 Função de Perda (Regressão Linear)
+
+$$
+L(\vec{w}) = \frac{1}{2} \| X\vec{w} - \vec{y} \|^2
+$$
+
+**Gradiente:**
+$$
+\nabla L(\vec{w}) = X^T (X\vec{w} - \vec{y})
+$$
+
+**Interpretação:** O gradiente da perda é proporcional ao erro $X\vec{w} - \vec{y}$.
+
+## 4. Exemplos Lúdicos Aprimorados
+
+### 🍔 EXEMPLO 1 – A LANCHONETE (GRADIENTE DO LUCRO)
+
+A lanchonete tem lucro:
+$$
+L(x, y) = -2x^2 - 3y^2 + 12x + 18y + 10
+$$
+
+**Gradiente:**
+$$
+\nabla L = \begin{bmatrix} -4x + 12 \\ -6y + 18 \end{bmatrix}
+$$
+
+**Interpretação:**
+- Se $x < 3$, $L_x > 0$ → aumentar $x$ aumenta o lucro.
+- Se $y < 3$, $L_y > 0$ → aumentar $y$ aumenta o lucro.
+
+**Ponto crítico:** $\nabla L = \vec{0} \Rightarrow x = 3, y = 3$.
+
+### 🧃 EXEMPLO 2 – A CANTINA (GRADIENTE DA PERDA)
+
+A cantina tem perda:
+$$
+L(w_1, w_2) = (w_1 - 2)^2 + (w_2 - 3)^2
+$$
+
+**Gradiente:**
+$$
+\nabla L = \begin{bmatrix} 2(w_1 - 2) \\ 2(w_2 - 3) \end{bmatrix}
+$$
+
+**Interpretação:** O gradiente aponta para o ponto $(2, 3)$ — o mínimo da perda.
+
+### 🎮 EXEMPLO 3 – O JOGO (GRADIENTE DO TERRENO)
+
+Imagine um jogo onde o personagem está em um terreno $f(x, y) = x^2 + y^2$.
+
+- O gradiente $\nabla f = (2x, 2y)$ aponta para o pico (maior altitude).
+- A direção oposta $-\nabla f$ aponta para o vale (menor altitude).
+
+## 5. Aplicação na Tese: Gradiente Descendente no FL
+
+### 5.1 O Algoritmo do Gradiente Descendente
+
+Para minimizar $L(\vec{w})$:
+
+$$
+\vec{w}_{t+1} = \vec{w}_t - \eta \nabla L(\vec{w}_t)
+$$
+
+Onde:
+- $\eta$ é a **taxa de aprendizado** (passo).
+- $\nabla L(\vec{w}_t)$ é o gradiente da perda.
+
+### 5.2 Gradiente Descendente Estocástico (SGD)
+
+Em FL, usamos **SGD** (Stochastic Gradient Descent):
+
+$$
+\vec{w}_{t+1} = \vec{w}_t - \eta \nabla L_i(\vec{w}_t)
+$$
+
+Onde $L_i$ é a perda de um **único cliente** ou **mini-batch**.
+
+### 5.3 Gradiente Descendente Federado (FedAvg)
+
+No FedAvg, cada cliente calcula o gradiente local e o servidor agrega:
+
+$$
+\vec{w}_{t+1} = \vec{w}_t - \eta \sum_{i=1}^N \alpha_i \nabla L_i(\vec{w}_t)
+$$
+
+**Interpretação:** O gradiente global é uma combinação linear dos gradientes locais.
+
+## 6. Exercícios Propostos (Manuais)
+
+<details>
+<summary>📗 Exercício 1 (Gradiente de Funções Simples)</summary>
+
+**Enunciado:** Calcule o gradiente de:
+
+a) $f(x, y) = x^2 y + 3xy^2$
+
+b) $f(x, y, z) = x^2 + y^2 + z^2$
+
+c) $f(x, y) = e^{xy}$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\nabla f = \begin{bmatrix} 2xy + 3y^2 \\ x^2 + 6xy \end{bmatrix}$
+
+b) $\nabla f = \begin{bmatrix} 2x \\ 2y \\ 2z \end{bmatrix}$
+
+c) $\nabla f = \begin{bmatrix} y e^{xy} \\ x e^{xy} \end{bmatrix}$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 (Gradiente e Ponto Crítico)</summary>
+
+**Enunciado:** Para $f(x, y) = x^2 + y^2 - 4x - 6y + 13$:
+
+a) Calcule o gradiente.
+
+b) Encontre o ponto crítico ($\nabla f = \vec{0}$).
+
+c) Qual é o valor mínimo da função?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\nabla f = \begin{bmatrix} 2x - 4 \\ 2y - 6 \end{bmatrix}$
+
+b) $\nabla f = \vec{0} \Rightarrow x = 2, y = 3$
+
+c) $f(2, 3) = 4 + 9 - 8 - 18 + 13 = 0$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 (Gradiente Descendente)</summary>
+
+**Enunciado:** A função de perda é $L(w) = (w - 2)^2$.
+
+a) Calcule $L'(w)$.
+
+b) Se $w_0 = 0$ e $\eta = 0.2$, calcule $w_1, w_2, w_3$.
+
+c) O que acontece com $w$ ao longo do tempo?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $L'(w) = 2(w - 2)$
+
+b) $w_{t+1} = w_t - 0.2 \cdot 2(w_t - 2) = w_t - 0.4(w_t - 2)$
+
+$w_0 = 0$
+
+$w_1 = 0 - 0.4(0 - 2) = 0.8$
+
+$w_2 = 0.8 - 0.4(0.8 - 2) = 0.8 + 0.48 = 1.28$
+
+$w_3 = 1.28 - 0.4(1.28 - 2) = 1.28 + 0.288 = 1.568$
+
+c) $w$ converge para 2 (mínimo da perda).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 (Aplicação – FL)</summary>
+
+**Enunciado:** Em FL, a perda global é $L(\vec{w}) = \frac{1}{N} \sum_{i=1}^N L_i(\vec{w})$.
+
+a) Mostre que $\nabla L(\vec{w}) = \frac{1}{N} \sum_{i=1}^N \nabla L_i(\vec{w})$.
+
+b) Se $N = 3$ e os gradientes locais são $(1, 2)$, $(3, 4)$, $(5, 6)$, qual é o gradiente global?
+
+c) Se $\eta = 0.1$ e $\vec{w}_t = (10, 10)$, qual é $\vec{w}_{t+1}$?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\nabla L(\vec{w}) = \nabla \left( \frac{1}{N} \sum L_i(\vec{w}) \right) = \frac{1}{N} \sum \nabla L_i(\vec{w})$
+
+b) $\nabla L = \frac{1}{3}((1,2) + (3,4) + (5,6)) = \frac{1}{3}(9, 12) = (3, 4)$
+
+c) $\vec{w}_{t+1} = (10, 10) - 0.1 \cdot (3, 4) = (10 - 0.3, 10 - 0.4) = (9.7, 9.6)$
+
+</details>
+</details>
+
+## 7. 💻 EXERCÍCIO COMPUTACIONAL
+
+<details>
+<summary>🐍 Ver código (Python/NumPy)</summary>
+
+```python
+import numpy as np
+
+# Função: f(x, y) = x^2 + y^2
+def f(x):
+    return x[0]**2 + x[1]**2
+
+# Gradiente numérico
+def gradiente_numerico(f, x, h=1e-5):
+    grad = np.zeros_like(x)
+    for i in range(len(x)):
+        x_plus = x.copy()
+        x_minus = x.copy()
+        x_plus[i] += h
+        x_minus[i] -= h
+        grad[i] = (f(x_plus) - f(x_minus)) / (2*h)
+    return grad
+
+# Gradiente descendente
+def gradiente_descendente(f, x0, eta=0.1, iteracoes=10):
+    x = x0.copy()
+    trajetoria = [x.copy()]
+    for i in range(iteracoes):
+        grad = gradiente_numerico(f, x)
+        x = x - eta * grad
+        trajetoria.append(x.copy())
+    return np.array(trajetoria)
+
+x0 = np.array([5.0, 5.0])
+trajetoria = gradiente_descendente(f, x0, eta=0.1, iteracoes=10)
+
+print("Trajetória:\n", trajetoria)
+```
+
+</details>
+
+> *O gradiente é a ferramenta central da otimização em Machine Learning. Ele aponta na direção de maior crescimento, e seu oposto é a direção de maior decrescimento. O **Gradiente Descendente** usa essa propriedade para minimizar funções de perda, e no **Federated Learning**, os gradientes locais são agregados para atualizar o modelo global.*

@@ -1,0 +1,486 @@
+# Organização dos dados 
+
+&emsp;&emsp;&emsp;Em estatística, o processo de organização dos dados passa por diferentes etapas. Inicialmente, temos os dados brutos, que são valores sem qualquer ordenação. Em seguida, organizam-se esses dados num Rol, colocando-os em ordem crescente ou decrescente. No entanto, quando o conjunto de dados é extenso, o Rol torna-se longo e pouco funcional. Nesse momento, recorre-se aos dados agrupados, que sintetizam a informação em intervalos de classe, acompanhados das respetivas frequências.
+
+## II. Dados Agrupados
+
+&emsp;&emsp;&emsp;Os dados agrupados podem ser organizados de duas formas distintas, conforme a natureza da variável em estudo: agrupamento por lista (ou por valores discretos) e agrupamento por intervalo (ou por classes). 
+
+<center><details>
+<summary>Classificação dos Dados Agrupados</summary>
+<style>
+.r{font:14px system-ui;text-align:center}
+.r b{display:inline-block;padding:4px 10px;background:#333;color:#fff;border-radius:6px}
+.r i{display:block;width:2px;height:18px;background:#333;margin:0 auto}
+.r em{display:flex;gap:8px;justify-content:center;position:relative;padding-top:18px}
+.r em::before{content:'';position:absolute;top:0;left:25%;right:25%;height:2px;background:#333}
+.r em span{flex:1;padding:8px;border:2px solid #333;border-radius:8px;max-width:140px}
+.r em span::before{content:'';position:absolute;top:-18px;left:50%;width:2px;height:18px;background:#333}
+.r em span{position:relative}
+</style>
+<div class="r">
+  <b>DADOS AGRUPADOS</b>
+  <i></i>
+  <em>
+    <span>📈 Dados<br>Por lista</span>
+    <span>🔮 Dados<br>Por intervalo</span>
+  </em>
+</div>
+</details></center>
+
+## 1. Dados Agrupados por Lista
+
+&emsp;&emsp;&emsp;**Agrupar dados por lista** é o processo de pegar um monte de dados brutos espalhados — letras ou números soltos, identificar quais são os valores ou categorias únicos e contar quantas vezes cada um se repetiu. Imagine um saco cheio de feijões de cores diferentes. Agrupar por lista é separar os feijões por cor e contar quantos feijões de cada cor existem no saco. Não é uma análise profunda — é apenas uma **contagem organizada**.
+
+### 1.2 Agrupamento por Lista com Variáveis Qualitativas
+
+&emsp;&emsp;&emsp;Aqui estamos contando **palavras ou categorias**. O processo é o mesmo para nominal e ordinal, mas a **ordem de apresentação** muda.
+
+**#### 1.2.1 🏷️ Nominal (Sem ordem natural)**
+
+&emsp;&emsp;&emsp;Quando estamos perante variáveis qualitativas nominais (por exemplo, cores, marcas ou estados civis), não existe uma 'ordem crescente' a aplicar, uma vez que estas categorias não têm uma sequência lógica. Assim, em vez do Rol, utiliza-se a Tabela de Frequência Simples, ou seja, uma contagem de quantas vezes cada categoria aparece.
+
+<details>
+<summary>📝 Exemplo na Mão</summary>
+
+Como fazer? Pegamos uma folha, listamos as categorias únicas e vamos contando uma por uma, fazendo **riscos ou traços** ao lado de cada categoria. <br>
+
+Dados brutos: `a, b, c, D, w, w, w, F, d, s, d, f, a, a, a, b, b, b, b, c, c, D, D, w`
+
+**Contagea Mão:**
+- a: IIII = 4
+- b: IIIIII = 6
+- c: III = 3
+- D: III = 3
+- w: IIII = 4
+- F: I = 1
+- d: II = 2
+- s: I = 1
+- f: I = 1
+
+**Total:** 25 ocorrências
+
+**📊 A Tabela Resultante**
+
+| Letra | Quantas vezes se repetiu |
+|-------|--------------------------|
+| a | 4 |
+| b | 6 |
+| c | 3 |
+| D | 3 |
+| w | 4 |
+| F | 1 |
+| d | 2 |
+| s | 1 |
+| f | 1 |
+| **Total** | **25** |
+
+</details>
+
+<details>
+<summary>📊 Exemplo no Excel</summary>
+```text
+ =CONT.SE(A:A; "a") 
+ =CONT.SE(A:A; B12)
+```
+|Letra	| Fórmula	| Resultado|
+|-------|----------|----------------|
+| a	| =CONT.SE(A:A; "a") | 4 |
+| b	| =CONT.SE(A:A; "b") | 6 |
+| c	| =CONT.SE(A:A; "c") | 3 |
+| D	| =CONT.SE(A:A; "D") | 3 |
+| w	| =CONT.SE(A:A; "w") | 4 |
+| F	| =CONT.SE(A:A; "F") | 1 |
+| d	| =CONT.SE(A:A; "d") | 2 |
+| s	| =CONT.SE(A:A; "s") | 1 |
+| f	| =CONT.SE(A:A; "f") | 1 |
+| **Total** | - | **25** |
+
+
+</details>
+
+<details>
+
+<summary>📊 Exemplo no R</summary>
+```R
+#### Criar o vetor com os dados
+dados <- c("a", "b", "c", "D", "w", "w", "w", "F", "d", "s", "d", "f",
+           "a", "a", "a", "b", "b", "b", "b", "c", "c", "D", "D", "w")
+
+sum(dados == "w")
+-----------------------------
+
+library(dplyr)
+
+dados <- data.frame(letra = c("a", "b", "c", "D", "w", "w", "w", "F",
+                              "d", "s", "d", "f", "a", "a", "a", "b",
+                              "b", "b", "b", "c", "c", "D", "D", "w"))
+
+dados %>%
+  count(letra)
+```
+</details>
+
+<details>
+<summary>🐍 Exemplo no Python</summary>
+```python
+dados = ["a", "b", "c", "D", "w", "w", "w", "F", "d", "s", "d", "f",
+         "a", "a", "a", "b", "b", "b", "b", "c", "c", "D", "D", "w"]
+
+print(dados.count("w"))
+```
+</details>
+
+
+
+#### 1.2.2 📊 Ordinal (Com ordem lógica/hierárquica)
+
+&emsp;&emsp;&emsp;Variáveis ordinais, como escolaridade ou satisfação, têm uma ordem natural. Nesse caso, podemos fazer um Rol segundo essa hierarquia, listando manualmente as categorias do 'pior' para o 'melhor' (ou ao contrário).
+
+/Exemplo: Nível de satisfação (Ruim, Regular, Bom, Ótimo), escolaridade.
+
+<details>
+<summary>📝 Exemplo na Mão</summary>
+
+O processo de contagem é o mesmo, mas na hora de montar a lista, **respeitamos a ordem hierárquica** — listamos do "pior" para o "melhor". <br><br>
+
+Dados brutos: `Bom, Ruim, Ótimo, Regular, Bom, Ruim, Ótimo, Bom, Regular, Regular`
+
+**Hierarquia: Ruim < Regular < Bom < Ótimo**
+- Ruim: II = 2
+- Regular: III = 3
+- Bom: III = 3
+- Ótimo: II = 2
+
+**Total:** 10 ocorrências<br><br>
+
+**📊 A Tabela Resultante**
+
+| Hierarquia | Quantas vezes se repetiu |
+|-------|--------------------------|
+| Ruim | 2 |
+| Regular | 3 |
+| Bom | 3 |
+| Ótimo | 2|
+| **Total** | **10** |
+</details>
+
+<details>
+<summary>📊 Exemplo no Excel</summary>
+```text
+A (Nível)
+Bom
+Ruim
+Ótimo
+Regular
+Bom
+Ruim
+Ótimo
+Bom
+Regular
+Regular
+
+=PROCV(A2; {"Ruim"\1; "Regular"\2; "Bom"\3; "Ótimo"\4}; 2; FALSO)
+```
+</details>
+
+<details>
+<summary>📊 Exemplo no R</summary>
+```R
+  library(dplyr)
+
+  dados <- data.frame(
+    nivel = c("Bom", "Ruim", "Ótimo", "Regular", "Bom",
+              "Ruim", "Ótimo", "Bom", "Regular", "Regular")
+  )
+
+  ordem <- c("Ruim", "Regular", "Bom", "Ótimo")
+
+  dados <- dados %>%
+    mutate(nivel = factor(nivel, levels = ordem, ordered = TRUE))
+
+  dados <- dados %>% arrange(nivel)
+  print(dados)
+```
+
+</details>
+
+<details>
+<summary>🐍 Exemplo no Python</summary>
+
+```python
+  import pandas as pd
+
+  dados = pd.DataFrame({
+      "nivel": ["Bom", "Ruim", "Ótimo", "Regular", "Bom",
+                "Ruim", "Ótimo", "Bom", "Regular", "Regular"]
+  })
+
+  ordem = ["Ruim", "Regular", "Bom", "Ótimo"]
+
+  dados["nivel"] = pd.Categorical(dados["nivel"], categories=ordem, ordered=True)
+
+  dados = dados.sort_values("nivel")
+
+  print(dados)
+```
+
+</details>
+
+### 1.3. Agrupamento por Lista com  Variáveis Quantitativas
+
+&emsp;&emsp;&emsp;Quando as variáveis são quantitativas, ou seja, representam quantidades numéricas, o Rol consiste simplesmente em colocar os valores em ordem crescente ou decrescente. Isto funciona tanto para variáveis discretas (ex.: número de irmãos: 0, 1, 2, 3…) como para variáveis contínuas (ex.: alturas: 1,55 m, 1,60 m, 1,68 m…). É o método mais direto de organizar dados numéricos antes de os agrupar em intervalos.
+
+#### 1.3.1 🔢 Discreta (Números inteiros, contagens)
+
+&emsp;&emsp;&emsp;Variáveis quantitativas discretas são aquelas que só podem assumir valores específicos, normalmente números inteiros, como o número de filhos, o número de irmãos ou o número de faltas. Aqui, o Rol consiste em colocar esses valores em ordem crescente ou decrescente, tornando a análise muito mais simples.
+
+
+<details>
+<summary>📝 Exemplo na Mão</summary>
+Dados brutos: `5, 2, 8, 5, 3, 2, 2, 5, 9, 8, 5, 3, 2, 8, 5, 2, 5, 9, 3, 8`
+
+**Números únicos:** 2, 3, 5, 8, 9
+- 2: aparece 5 vezes
+- 3: aparece 3 vezes
+- 5: aparece 7 vezes
+- 8: aparece 4 vezes
+- 9: aparece 2 vezes
+
+| Números | Quantas vezes se repetiu |
+|-------|--------------------------|
+| 2 | 5 |
+| 3 | 3 |
+| 5 | 7 |
+| 8 | 4 |
+| 9 | 2 |
+| **Total** | **21** |
+
+**Total:** 21 ocorrências
+</details>
+
+<details>
+<summary>📊 Exemplo no Excel</summary>
+
+Ordenar os dados e contar os blocos iguais, ou usar:
+```text
+=CONT.SE(A:A; 2)
+=CONT.SE(A:A; B12)
+```
+
+|Letra	| Fórmula	| Resultado|
+|-------|----------|---------|
+| 2	| =CONT.SE(A:A; "2") | 5 |
+| 3	| =CONT.SE(A:A; "3") | 3 |
+| 5	| =CONT.SE(A:A; "5") | 7 |
+| 8	| =CONT.SE(A:A; "8") | 4 |
+| 9	| =CONT.SE(A:A; "9") | 2 |
+| **Total** | - | **21** |
+
+</details>
+
+<details>
+<summary>📊 Exemplo no R</summary>
+```R
+# Criar o vetor com os dados
+dados <- c(5, 2, 8, 5, 3, 2, 2, 5, 9, 8, 5, 3, 2, 8, 5, 2, 5, 9, 3, 8)
+
+sum(dados == "2")
+
+------------------------------------
+library(dplyr)
+
+dados <- data.frame(numero = c(5, 2, 8, 5, 3, 2, 2, 5, 9, 8, 5, 3, 2, 8, 5, 2, 5, 9, 3, 8))
+
+dados %>%
+  count(numero)
+```
+</details>
+
+<details>
+<summary>🐍 Exemplo no Python</summary>
+```python
+#### Criar a lista com os dados
+dados = [5, 2, 8, 5, 3, 2, 2, 5, 9, 8, 5, 3, 2, 8, 5, 2, 5, 9, 3, 8]
+
+print(dados.count("2"))
+```
+</details>
+
+### 3.2 📏 Contínua (Números decimais, medições)
+
+&emsp;&emsp;&emsp;Nas variáveis quantitativas contínuas, os dados podem assumir qualquer valor dentro de um intervalo real, resultando geralmente de medições. O Rol é construído ordenando esses valores de forma crescente ou decrescente, o que permite visualizar a distribuição, identificar os valores mínimo e máximo e preparar os dados para posterior agrupamento em classes
+<details>
+<summary>📝 Exemplo na Mão</summary>
+
+Dados brutos: 1,58; 1,62; 1,70; 1,58; 1,75; 1,62; 1,80; 1,58; 1,62 <br>
+Números únicos:** 1,58; 1,62; 1,70; 1,75; 1,80
+
+**Contagem:**
+- 1,58: aparece 3 vezes
+- 1,62: aparece 3 vezes
+- 1,70: aparece 1 vez
+- 1,75: aparece 1 vez
+- 1,80: aparece 1 vez
+
+**📊 A Tabela Resultante**
+
+| Número | Quantas vezes se repetiu |
+|--------|--------------------------|
+| 1,58 | 3 |
+| 1,62 | 3 |
+| 1,70 | 1 |
+| 1,75 | 1 |
+| 1,80 | 1 |
+| **Total** | **9** |
+</details>
+
+<details>
+<summary>📊 Exemplo no Excel</summary>
+
+Ordenar e contar. **Limitação:** Para muitos dados, a contagem exata se torna inútil.
+
+</details>
+
+<details>
+<summary>📊 Exemplo no R</summary>
+```R
+# Criar o vetor com os dados
+dados <- c(1,58; 1,62; 1,70; 1,58; 1,75; 1,62; 1,80; 1,58; 1,62)
+
+sum(dados == "1.58")
+
+-----------------------------------
+library(dplyr)
+
+dados <- data.frame(numero = c(1,58; 1,62; 1,70; 1,58; 1,75; 1,62; 1,80; 1,58; 1,62))
+
+dados %>%
+  count(numero)
+```
+</details>
+
+<details>
+<summary>🐍 Exemplo no Python</summary>
+```python
+dados = [1,58; 1,62; 1,70; 1,58; 1,75; 1,62; 1,80; 1,58; 1,62]
+
+print(dados.count("1.58"))
+```
+</details>
+
+> **💡 Gancho para a próxima aula:** Para dados contínuos com muitas repetições únicas, precisamos de **Intervalos de Classe** — em vez de contar 1,58; 1,59; 1,60..., agrupamos em faixas como [1,50 - 1,60[ e contamos quantos valores caem em cada faixa.
+
+## 📝 Resumo — Quadro Comparativo
+
+A tabela abaixo resume as diferentes abordagens para agrupar dados por lista, dependendo do tipo de variável.
+
+| Tipo de Variável | O que contamos | Exemplo | Ordem na lista | Limitação |
+|------------------|----------------|---------|----------------|-----------|
+| **Qualitativa Nominal** | Categorias sem ordem | Cor dos olhos | Alfabética (opcional) | Nenhuma — contagem simples |
+| **Qualitativa Ordinal** | Categorias com hierarquia | Satisfação (Ruim → Ótimo) | Hierárquica (Ruim < Bom) | Nenhuma — contagem simples |
+| **Quantitativa Discreta** | Números inteiros | Número de filhos | Crescente (0, 1, 2, 3...) | Nenhuma — contagem simples |
+| **Quantitativa Contínua** | Números decimais | Altura (1,58; 1,62...) | Crescente (1,58; 1,62...) | ⚠️ Contagem exata é inútil com muitos dados |
+
+> **📌 Conclusão:** Agrupar por lista é o **primeiro passo** para entender dados. Contar quantas vezes cada valor se repete transforma o caos em informação imediata. Para dados contínuos com muitas variações, este método mostra sua limitação — e é aí que entram os **Intervalos de Classe**, tema da próxima aula.
+
+## 📝 Exercícios
+
+<details>
+<summary>📗 Exercício 1</summary>
+
+**Enunciado:** Agrupe por lista os seguintes dados e conte quantas vezes cada valor aparece:
+
+2, 4, 2, 6, 4, 2, 8, 4, 2, 6, 4, 2
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+| Valor | Frequência |
+|-------|------------|
+| 2 | 5 |
+| 4 | 4 |
+| 6 | 2 |
+| 8 | 1 |
+| **Total** | **12** |
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2</summary>
+
+**Enunciado:** Classifique a variável "Número de irmãos" e explique como você faria o agrupamento por lista.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+A variável é **Quantitativa Discreta** (resultado de contagem). O agrupamento por lista seria feito listando os valores únicos (0, 1, 2, 3, 4...) em ordem crescente e contando quantas vezes cada um aparece.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3</summary>
+
+**Enunciado:** Você recebeu uma planilha com 100.000 respostas de uma pesquisa sobre a altura dos brasileiros. Por que o agrupamento por lista não é a melhor abordagem para esses dados?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+Porque altura é uma variável **Quantitativa Contínua**, e é muito raro um valor decimal se repetir exatamente. Com 100.000 dados, quase todos os valores terão frequência 1, tornando a lista tão grande quanto os dados originais — perdendo o propósito do agrupamento. Para esses dados, o ideal é usar **Intervalos de Classe**.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4</summary>
+
+**Enunciado:** Uma pesquisa de satisfação usou a escala: Péssimo, Ruim, Regular, Bom, Ótimo. Os dados coletados foram: Bom, Péssimo, Ótimo, Regular, Bom, Ruim, Ótimo, Bom, Regular, Bom, Péssimo, Regular. Monte a tabela de frequências respeitando a hierarquia.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+**Hierarquia:** Péssimo < Ruim < Regular < Bom < Ótimo
+
+| Nível | Frequência |
+|-------|------------|
+| Péssimo | 2 |
+| Ruim | 1 |
+| Regular | 3 |
+| Bom | 4 |
+| Ótimo | 2 |
+| **Total** | **12** |
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5</summary>
+
+**Enunciado:** Por que "contar repetições" é o primeiro passo para entender um conjunto de dados?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+Contar repetições é o primeiro passo porque:
+
+1. **Transforma o caos em ordem** — dados brutos são difíceis de interpretar, a contagem organizada revela padrões.
+2. **Revela a frequência** — sabemos quais valores são mais comuns e quais são raros.
+3. **Prepara para análises mais profundas** — a tabela de frequências é a base para gráficos, médias, desvios e outras análises.
+4. **É simples e universal** — o conceito de "contar quantas vezes algo aparece" é intuitivo para qualquer pessoa.
+
+</details>
+</details>
+
+> *Contar repetições é o primeiro passo para transformar dados em informação. Sem essa contagem, os dados permanecem apenas números soltos. Com ela, começamos a ver a história que os dados querem contar.*

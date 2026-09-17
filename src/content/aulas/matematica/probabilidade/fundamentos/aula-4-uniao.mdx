@@ -1,0 +1,497 @@
+# União (∪)
+
+## 1. 🎯 O que é União?
+
+> **União (A ∪ B)** é o evento que ocorre quando **pelo menos um** dos eventos A ou B acontece.
+
+**Palavra-chave:** **"OU"** (inclusivo — permite que ambos ocorram juntos).
+
+### Explicação
+
+Imagine que você tem dois eventos:
+- **A** = "hoje é domingo"
+- **B** = "está chovendo"
+
+A união **A ∪ B** = "hoje é domingo **OU** está chovendo" — basta que **uma** das condições seja verdade (ou ambas).
+
+### Notação
+- **A ∪ B** (lê-se "A união B")
+- **P(A ∪ B)** = probabilidade de A ou B acontecerem (ou ambos)
+
+### Representação Visual (Diagrama de Venn)
+
+```text
+                    █████████████████████            █████████████████████
+                 ████                   ████     ████                     ████
+               ███                         ███  █                             ███
+             ██                               ██                                 ██
+            █                               █   █                                  █
+           █                               █     █                                  █
+          █                               █       █                                  █
+          █                              █          █                                 █
+          █             B               █    A∩B     █                A               █     
+          █                            █            █                                 █
+          █                              █         █                                  █
+           █                              █      █                                   █
+            █                              █    █                                   █
+             ██                              ███                                 ██
+               ███                         ███ █                              ███
+                 ████                   ████     ████                     ████
+                    █████████████████████            █████████████████████
+                  
+```
+
+>> **A ∪ B** = toda a área de B e A menos área da interseção (A + B − interseção).
+
+## 2. 📐 A Fórmula Fundamental da União
+
+### Fórmula Geral (sempre válida)
+> **$P(A \cup B) = P(A) + P(B) - P(A \cap B)$**
+
+### Explicação da Fórmula
+- **$P(A) + P(B)$** = soma das probabilidades individuais.
+- **$- P(A \cap B)$** = subtraímos a interseção para **não contar duas vezes** os elementos que estão em ambos.
+
+### Por que subtrair?
+
+Imagine que você tem 10 pessoas:
+- 6 gostam de café (A)
+- 5 gostam de chá (B)
+- 3 gostam de ambos ($A \cap B$)
+
+Se você somar $6 + 5 = 11$, você contou as 3 pessoas que gostam de ambos **DUAS VEZES**.
+Por isso subtraímos 3 → $6 + 5 - 3 = 8$ pessoas gostam de café OU chá.
+
+## 3. 📋 Casos Especiais da União
+
+| Situação | O que significa | Fórmula simplificada |
+|----------|-----------------|---------------------|
+| **Eventos Mutuamente Exclusivos** | Não podem ocorrer juntos ($A \cap B = \emptyset$) | $P(A \cup B) = P(A) + P(B)$ |
+| **Eventos Independentes** | Um não afeta o outro | $P(A \cup B) = P(A) + P(B) - P(A) \times P(B)$ |
+
+## 4. 📊 Caso 1 — União com Mutuamente Exclusivos
+
+### Definição
+> Se A e B são **mutuamente exclusivos**, eles **não podem ocorrer juntos**. Portanto, $P(A \cap B) = 0$.
+
+### Fórmula Simplificada
+> **$P(A \cup B) = P(A) + P(B)$**
+
+### Exemplo 1.1 — Moeda
+
+**Enunciado:** Lança-se uma moeda. Qual a probabilidade de sair **cara OU coroa**?
+
+**Passo 1 — Identificar os eventos:**
+- A = sair **cara** → $P(A) = 1/2$
+- B = sair **coroa** → $P(B) = 1/2$
+
+**Passo 2 — Verificar se são mutuamente exclusivos:**
+- Uma moeda não pode dar cara e coroa ao mesmo tempo.
+- **$A \cap B = \emptyset$** → **Mutuamente Exclusivos!** ✅
+
+**Passo 3 — Aplicar a fórmula:**
+> $P(A \cup B) = 1/2 + 1/2 = 1 = 100\%$
+
+**Resposta:** A probabilidade é **100%** (certeza — sempre sai cara ou coroa).
+
+### Exemplo 1.2 — Dado (par ou ímpar)
+
+**Enunciado:** Lança-se um dado. Qual a probabilidade de sair **número par OU número ímpar**?
+
+**Passo 1 — Identificar os eventos:**
+- A = sair **par** = {2,4,6} → $P(A) = 3/6 = 1/2$
+- B = sair **ímpar** = {1,3,5} → $P(B) = 3/6 = 1/2$
+
+**Passo 2 — Verificar se são mutuamente exclusivos:**
+- Não há número que seja par e ímpar ao mesmo tempo.
+- **$A \cap B = \emptyset$** → **Mutuamente Exclusivos!** ✅
+
+**Passo 3 — Aplicar a fórmula:**
+> $P(A \cup B) = 1/2 + 1/2 = 1 = 100\%$
+
+**Resposta:** A probabilidade é **100%** (certeza — todo número é par ou ímpar).
+
+### Exemplo 1.3 — Urna com bolas de cores diferentes
+
+**Enunciado:** Uma urna tem 3 bolas vermelhas, 2 azuis e 5 verdes. Sorteia-se uma bola. Qual a probabilidade de sair **vermelha OU azul**?
+
+**Passo 1 — Identificar os eventos:**
+- A = sair **vermelha** → $P(A) = 3/10$
+- B = sair **azul** → $P(B) = 2/10$
+
+**Passo 2 — Verificar se são mutuamente exclusivos:**
+- Uma bola não pode ser vermelha e azul ao mesmo tempo.
+- **$A \cap B = \emptyset$** → **Mutuamente Exclusivos!** ✅
+
+**Passo 3 — Aplicar a fórmula:**
+> $P(A \cup B) = 3/10 + 2/10 = 5/10 = 1/2 = 50\%$
+
+**Resposta:** A probabilidade é **50%**.
+
+## 5. 📊 Caso 2 — União com Eventos Independentes
+
+### Definição
+> Se A e B são **independentes**, $P(A \cap B) = P(A) \times P(B)$.
+
+### Fórmula
+> **$P(A \cup B) = P(A) + P(B) - P(A) \times P(B)$**
+
+### Exemplo 2.1 — Dois dados
+
+**Enunciado:** Lançam-se um dado vermelho e um dado azul. Qual a probabilidade de sair **número par no vermelho OU número 5 no azul**?
+
+**Passo 1 — Identificar os eventos:**
+- A = dado vermelho dá **par** → $P(A) = 3/6 = 1/2$
+- B = dado azul dá **5** → $P(B) = 1/6$
+
+**Passo 2 — Calcular a interseção (independentes):**
+- $P(A \cap B) = 1/2 \times 1/6 = 1/12$
+
+**Passo 3 — Aplicar a fórmula:**
+> $P(A \cup B) = 1/2 + 1/6 - 1/12 = 6/12 + 2/12 - 1/12 = 7/12 \approx 58,33\%$
+
+**Resposta:** A probabilidade é **7/12** (cerca de 58,33%).
+
+### Exemplo 2.2 — Moeda e dado
+
+**Enunciado:** Lança-se uma moeda e um dado. Qual a probabilidade de sair **coroa OU número maior que 4**?
+
+**Passo 1 — Identificar os eventos:**
+- A = moeda dá **coroa** → $P(A) = 1/2$
+- B = dado dá **número > 4** = {5,6} → $P(B) = 2/6 = 1/3$
+
+**Passo 2 — Calcular a interseção (independentes):**
+- $P(A \cap B) = 1/2 \times 1/3 = 1/6$
+
+**Passo 3 — Aplicar a fórmula:**
+> $P(A \cup B) = 1/2 + 1/3 - 1/6 = 3/6 + 2/6 - 1/6 = 4/6 = 2/3 \approx 66,67\%$
+
+**Resposta:** A probabilidade é **2/3** (cerca de 66,67%).
+
+## 6. 📊 Caso 3 — União com Eventos Dependentes
+
+### Definição
+> Se A e B são **dependentes**, $P(A \cap B) = P(A) \times P(B|A)$.
+
+### Fórmula
+> **$P(A \cup B) = P(A) + P(B) - P(A) \times P(B|A)$**
+
+### Exemplo 3.1 — Cartas sem reposição
+
+**Enunciado:** Retiram-se 2 cartas **sem reposição** de um baralho de 52. Qual a probabilidade de **a 1ª carta ser um Ás OU a 2ª carta ser um Rei**?
+
+**Passo 1 — Identificar os eventos:**
+- A = 1ª carta é **Ás** → $P(A) = 4/52 = 1/13$
+- B = 2ª carta é **Rei** → $P(B) = 4/52 = 1/13$ (probabilidade **incondicional**)
+
+**Passo 2 — Calcular a interseção (dependentes):**
+- $P(A \cap B) = 4/52 \times 4/51 = 16/2652 = 4/663$
+
+**Passo 3 — Aplicar a fórmula:**
+> $P(A \cup B) = 1/13 + 1/13 - 4/663 = 51/663 + 51/663 - 4/663 = 98/663 \approx 14,78\%$
+
+**Resposta:** A probabilidade é **98/663** (cerca de 14,78%).
+
+### Exemplo 3.2 — Urna sem reposição
+
+**Enunciado:** Uma urna tem 4 bolas vermelhas e 6 azuis. Retiram-se **2 bolas sem reposição**. Qual a probabilidade de **a 1ª ser vermelha OU a 2ª ser azul**?
+
+**Passo 1 — Identificar os eventos:**
+- A = 1ª bola é **vermelha** → $P(A) = 4/10 = 2/5$
+- B = 2ª bola é **azul** → $P(B) = 6/10 = 3/5$ (probabilidade **incondicional**)
+
+**Passo 2 — Calcular a interseção (dependentes):**
+- $P(A \cap B) = P(1ª vermelha E 2ª azul) = 4/10 \times 6/9 = 24/90 = 4/15$
+
+**Passo 3 — Aplicar a fórmula:**
+> $P(A \cup B) = 2/5 + 3/5 - 4/15 = 6/15 + 9/15 - 4/15 = 11/15 \approx 73,33\%$
+
+**Resposta:** A probabilidade é **11/15** (cerca de 73,33%).
+
+## 7. 📊 União para Múltiplos Eventos (3, 4, 5, ..., n)
+
+### Fórmula Geral (Princípio da Inclusão-Exclusão)
+
+> **Para 3 eventos:**
+> $P(A \cup B \cup C) = P(A) + P(B) + P(C) - P(A \cap B) - P(A \cap C) - P(B \cap C) + P(A \cap B \cap C)$
+
+### Para n eventos:
+> Soma das probabilidades individuais
+> **−** soma das interseções de 2 eventos
+> **+** soma das interseções de 3 eventos
+> **−** soma das interseções de 4 eventos
+> **+** ... (alternando sinais)
+
+### Exemplo 7.1 — 3 eventos independentes
+
+**Enunciado:** Lançam-se 3 moedas. Qual a probabilidade de sair **pelo menos uma cara**?
+
+**Passo 1 — Resolver pelo complementar (mais fácil):**
+- E = sair **pelo menos uma cara**
+- $E^c$ = sair **nenhuma cara** = todas coroas
+- $P(E^c) = (1/2)^3 = 1/8$
+
+**Passo 2 — Calcular P(E):**
+> $P(E) = 1 - 1/8 = 7/8 = 87,5\%$
+
+**Resposta:** A probabilidade é **7/8** (87,5%).
+
+### Exemplo 7.2 — 3 eventos quaisquer (fórmula geral)
+
+**Enunciado:** Em uma turma de 30 alunos:
+- 18 gostam de Matemática (M)
+- 12 gostam de Português (P)
+- 10 gostam de História (H)
+- 6 gostam de M e P
+- 5 gostam de M e H
+- 4 gostam de P e H
+- 3 gostam dos 3
+
+**Pergunta:** Qual a probabilidade de sortear um aluno que goste de **Matemática OU Português OU História**?
+
+**Passo 1 — Aplicar a fórmula:**
+> $P(M \cup P \cup H) = P(M) + P(P) + P(H) - P(M \cap P) - P(M \cap H) - P(P \cap H) + P(M \cap P \cap H)$
+
+**Passo 2 — Substituir:**
+> $= 18/30 + 12/30 + 10/30 - 6/30 - 5/30 - 4/30 + 3/30$
+> $= (18 + 12 + 10 - 6 - 5 - 4 + 3) / 30$
+> $= 28/30 = 14/15 \approx 93,33\%$
+
+**Resposta:** A probabilidade é **14/15** (93,33%).
+
+## 8. 🧠 Estratégia: Usar o Complementar para União
+
+### Regra de Ouro
+> **Muitas vezes é mais fácil calcular a probabilidade de NENHUM evento acontecer e subtrair de 1.**
+
+**Fórmula:**
+> **$P(A \cup B) = 1 - P(A^c \cap B^c)$**
+
+**Explicação:** "A ou B acontecem" é o complementar de "nem A nem B acontecem".
+
+### Exemplo 8.1 — Dois dados (usando complementar)
+
+**Enunciado:** Lançam-se dois dados. Qual a probabilidade de sair **pelo menos um 6**?
+
+**Passo 1 — Identificar os eventos:**
+- A = dado1 dá **6**
+- B = dado2 dá **6**
+- Queremos $P(A \cup B)$
+
+**Passo 2 — Usar o complementar:**
+- $P(A \cup B) = 1 - P(A^c \cap B^c)$
+- $A^c$ = dado1 NÃO dá 6 → $P(A^c) = 5/6$
+- $B^c$ = dado2 NÃO dá 6 → $P(B^c) = 5/6$
+
+**Passo 3 — Calcular:**
+- $P(A^c \cap B^c) = 5/6 \times 5/6 = 25/36$
+- $P(A \cup B) = 1 - 25/36 = 11/36 \approx 30,56\%$
+
+**Resposta:** A probabilidade é **11/36** (cerca de 30,56%).
+
+### Exemplo 8.2 — 3 moedas (usando complementar)
+
+**Enunciado:** Lançam-se 3 moedas. Qual a probabilidade de sair **pelo menos uma cara**?
+
+**Passo 1 — Usar o complementar:**
+- $P(\text{pelo menos 1 cara}) = 1 - P(\text{nenhuma cara})$
+- $P(\text{nenhuma cara}) = P(\text{todas coroas}) = (1/2)^3 = 1/8$
+
+**Passo 2 — Calcular:**
+> $P = 1 - 1/8 = 7/8 = 87,5\%$
+
+**Resposta:** A probabilidade é **7/8** (87,5%).
+
+## 9. 📋 Quadro Resumo Completo — União (∪)
+
+| Situação | Fórmula | Quando usar | Exemplo |
+|----------|---------|-------------|---------|
+| **Fórmula Geral** | $P(A)+P(B)-P(A \cap B)$ | Sempre | Qualquer caso |
+| **Mutuamente Exclusivos** | $P(A)+P(B)$ | $A \cap B = \emptyset$ | Cara ou coroa |
+| **Independentes** | $P(A)+P(B)-P(A) \times P(B)$ | Um não afeta o outro | Dados, moedas |
+| **Dependentes** | $P(A)+P(B)-P(A) \times P(B\|A)$ | Um afeta o outro | Cartas sem reposição |
+| **Complementar (2 eventos)** | $1 - P(A^c \cap B^c)$ | Quando é mais fácil | Pelo menos um 6 |
+| **Complementar (n eventos)** | $1 - P(E_1^c \cap ... \cap E_n^c)$ | Múltiplos eventos | Pelo menos uma cara |
+
+## 10. 🧠 Macete de Ouro — União
+
+| Pergunta | Resposta |
+|----------|----------|
+| **Quer "pelo menos um" dos eventos?** | Use UNIÃO (∪) |
+| **Quer "ambos" os eventos juntos?** | Use INTERSEÇÃO (∩) |
+| **Os eventos podem ocorrer juntos?** | Subtraia a interseção |
+| **Os eventos são mutuamente exclusivos?** | Só some (interseção = 0) |
+| **Está difícil calcular a união?** | Use o complementar: $1 - P(\text{nenhum})$ |
+
+## 11. 🗺️ Mapa Mental da União
+
+```text
+UNIÃO (∪) — "OU"
+│
+├── 1. DEFINIÇÃO
+│   └── Pelo menos um dos eventos acontece
+│
+├── 2. FÓRMULA GERAL
+│   └── P(A∪B) = P(A) + P(B) − P(A∩B)
+│
+├── 3. CASOS ESPECIAIS
+│   ├── Mutuamente Exclusivos → P(A) + P(B)
+│   ├── Independentes → P(A) + P(B) − P(A)×P(B)
+│   └── Dependentes → P(A) + P(B) − P(A)×P(B|A)
+│
+├── 4. ESTRATÉGIA DO COMPLEMENTAR
+│   └── P(A∪B) = 1 − P(Aᶜ∩Bᶜ)
+│
+├── 5. GENERALIZAÇÃO PARA n EVENTOS
+│   └── Princípio da Inclusão-Exclusão
+│
+└── 6. EXEMPLOS PRÁTICOS
+    ├── Dados, moedas, cartas
+    ├── Urnas, baralhos
+    └── Situações do dia a dia
+```
+
+## 📝 Exercícios
+
+<details>
+<summary>📗 Exercício 1 — União com mutuamente exclusivos</summary>
+
+**Enunciado:** Uma urna tem 5 bolas vermelhas, 3 azuis e 2 verdes. Sorteia-se uma bola. Qual a probabilidade de sair **vermelha OU verde**?
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**Passo 1 — Identificar os eventos:**
+- A = sair **vermelha** → $P(A) = 5/10 = 1/2$
+- B = sair **verde** → $P(B) = 2/10 = 1/5$
+
+**Passo 2 — Verificar se são mutuamente exclusivos:**
+- Uma bola não pode ser vermelha e verde ao mesmo tempo.
+- **$A \cap B = \emptyset$** → **Mutuamente Exclusivos!** ✅
+
+**Passo 3 — Aplicar a fórmula:**
+> $P(A \cup B) = 1/2 + 1/5 = 5/10 + 2/10 = 7/10 = 70\%$
+
+**Resposta:** A probabilidade é **70%**.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — União com independentes</summary>
+
+**Enunciado:** Lança-se uma moeda e um dado. Qual a probabilidade de sair **cara OU número 6**?
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**Passo 1 — Identificar os eventos:**
+- A = moeda dá **cara** → $P(A) = 1/2$
+- B = dado dá **6** → $P(B) = 1/6$
+
+**Passo 2 — Calcular a interseção (independentes):**
+- $P(A \cap B) = 1/2 \times 1/6 = 1/12$
+
+**Passo 3 — Aplicar a fórmula:**
+> $P(A \cup B) = 1/2 + 1/6 - 1/12 = 6/12 + 2/12 - 1/12 = 7/12 \approx 58,33\%$
+
+**Resposta:** A probabilidade é **7/12** (58,33%).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — União com dependentes</summary>
+
+**Enunciado:** Retiram-se 2 cartas **sem reposição** de um baralho de 52. Qual a probabilidade de **a 1ª ser um Ás OU a 2ª ser um Ás**?
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**Passo 1 — Identificar os eventos:**
+- A = 1ª carta é **Ás** → $P(A) = 4/52 = 1/13$
+- B = 2ª carta é **Ás** → $P(B) = 4/52 = 1/13$
+
+**Passo 2 — Calcular a interseção (dependentes):**
+- $P(A \cap B) = 4/52 \times 3/51 = 12/2652 = 1/221$
+
+**Passo 3 — Aplicar a fórmula:**
+> $P(A \cup B) = 1/13 + 1/13 - 1/221 = 17/221 + 17/221 - 1/221 = 33/221 \approx 14,93\%$
+
+**Resposta:** A probabilidade é **33/221** (cerca de 14,93%).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Usando o complementar</summary>
+
+**Enunciado:** Lançam-se 3 dados. Qual a probabilidade de sair **pelo menos um 6**?
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**Passo 1 — Usar o complementar:**
+- $P(\text{pelo menos 1 seis}) = 1 - P(\text{nenhum seis})$
+
+**Passo 2 — Calcular $P(\text{nenhum seis})$:**
+- Em cada dado, a probabilidade de NÃO sair 6 é $5/6$
+- $P(\text{nenhum 6}) = (5/6)^3 = 125/216$
+
+**Passo 3 — Calcular:**
+> $P(\text{pelo menos 1 seis}) = 1 - 125/216 = 91/216 \approx 42,13\%$
+
+**Resposta:** A probabilidade é **91/216** (cerca de 42,13%).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — 3 eventos (fórmula geral)</summary>
+
+**Enunciado:** Em uma turma de 40 alunos:
+- 20 gostam de Matemática (M)
+- 18 gostam de Português (P)
+- 14 gostam de História (H)
+- 8 gostam de M e P
+- 6 gostam de M e H
+- 5 gostam de P e H
+- 3 gostam dos 3
+
+**Pergunta:** Qual a probabilidade de sortear um aluno que goste de **Matemática OU Português OU História**?
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**Passo 1 — Aplicar a fórmula:**
+> $P(M \cup P \cup H) = P(M) + P(P) + P(H) - P(M \cap P) - P(M \cap H) - P(P \cap H) + P(M \cap P \cap H)$
+
+**Passo 2 — Substituir:**
+> $= 20/40 + 18/40 + 14/40 - 8/40 - 6/40 - 5/40 + 3/40$
+> $= (20 + 18 + 14 - 8 - 6 - 5 + 3) / 40$
+> $= 36/40 = 9/10 = 90\%$
+
+**Resposta:** A probabilidade é **90%**.
+
+</details>
+</details>
+
+## 🎯 Desafio Final
+
+**Enunciado:** Lançam-se 4 moedas. Qual a probabilidade de sair **pelo menos uma coroa**?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Passo 1 — Usar o complementar:**
+- $P(\text{pelo menos 1 coroa}) = 1 - P(\text{nenhuma coroa})$
+- $P(\text{nenhuma coroa}) = P(\text{todas caras}) = (1/2)^4 = 1/16$
+
+**Passo 2 — Calcular:**
+> $P = 1 - 1/16 = 15/16 = 93,75\%$
+
+**Resposta:** A probabilidade é **15/16** (93,75%).
+
+</details>
+
+> *A união é a arte de calcular o "pelo menos um" — dominar o "OU" é essencial para entender eventos alternativos e somar possibilidades.*

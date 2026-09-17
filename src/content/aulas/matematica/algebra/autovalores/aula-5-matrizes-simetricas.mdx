@@ -1,0 +1,324 @@
+# AUTOVALORES EM MATRIZES SIMÉTRICAS
+
+## 1. Definição Formal: Matriz Simétrica
+
+### 1.1 O que é uma Matriz Simétrica?
+
+Uma matriz $A \in \mathbb{R}^{n \times n}$ é **simétrica** se:
+
+$$
+A = A^T
+$$
+
+Ou seja, $a_{ij} = a_{ji}$ para todos $i, j$.
+
+**Exemplo:**
+$$
+A = \begin{bmatrix}
+1 & 2 & 3 \\
+2 & 4 & 5 \\
+3 & 5 & 6
+\end{bmatrix}
+$$
+
+### 1.2 Teorema Espectral (Para Matrizes Simétricas)
+
+O **Teorema Espectral** afirma que:
+
+1. Todos os autovalores de uma matriz simétrica são **reais**.
+2. Autovetores correspondentes a autovalores **distintos** são **ortogonais**.
+3. A matriz pode ser **diagonalizada** por uma matriz ortogonal:
+$$
+A = Q \Lambda Q^T
+$$
+onde:
+- $Q$ é uma matriz ortogonal ($Q^T = Q^{-1}$) cujas colunas são os autovetores normalizados.
+- $\Lambda$ é uma matriz diagonal com os autovalores.
+
+## 2. Propriedades Fundamentais de Matrizes Simétricas
+
+| Propriedade | Descrição |
+|-------------|-----------|
+| **Autovalores reais** | $\lambda_i \in \mathbb{R}$ |
+| **Autovetores ortogonais** | $\vec{v}_i \cdot \vec{v}_j = 0$ para $i \neq j$ |
+| **Diagonalização ortogonal** | $A = Q \Lambda Q^T$, com $Q^T = Q^{-1}$ |
+| **Forma quadrática** | $\vec{x}^T A \vec{x}$ é sempre real |
+| **Definida positiva** | Se todos $\lambda_i > 0$, $A$ é definida positiva |
+| **Semidefinida positiva** | Se todos $\lambda_i \geq 0$, $A$ é semidefinida positiva |
+
+## 3. Decomposição Espectral ($A = Q \Lambda Q^T$)
+
+### 3.1 O que é a Decomposição Espectral?
+
+Toda matriz simétrica $A$ pode ser escrita como:
+
+$$
+A = Q \Lambda Q^T
+$$
+
+Onde:
+- $Q$ é a matriz ortogonal com os **autovetores normalizados** como colunas.
+- $\Lambda$ é a matriz diagonal com os **autovalores**.
+
+### 3.2 Exemplo Acadêmico Passo a Passo
+
+Seja:
+$$
+A = \begin{bmatrix} 2 & 1 \\ 1 & 2 \end{bmatrix}
+$$
+
+**Passo 1:** Calcular autovalores e autovetores (já feitos):
+$$
+\lambda_1 = 3, \quad \lambda_2 = 1
+$$
+$$
+\vec{v}_1 = \begin{bmatrix} 1 \\ 1 \end{bmatrix}, \quad \vec{v}_2 = \begin{bmatrix} 1 \\ -1 \end{bmatrix}
+$$
+
+**Passo 2:** Normalizar os autovetores:
+$$
+\|\vec{v}_1\| = \sqrt{1^2 + 1^2} = \sqrt{2} \Rightarrow \vec{u}_1 = \frac{1}{\sqrt{2}} \begin{bmatrix} 1 \\ 1 \end{bmatrix}
+$$
+$$
+\|\vec{v}_2\| = \sqrt{1^2 + (-1)^2} = \sqrt{2} \Rightarrow \vec{u}_2 = \frac{1}{\sqrt{2}} \begin{bmatrix} 1 \\ -1 \end{bmatrix}
+$$
+
+**Passo 3:** Montar $Q$ e $\Lambda$:
+$$
+Q = \begin{bmatrix} \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}} & -\frac{1}{\sqrt{2}} \end{bmatrix}, \quad \Lambda = \begin{bmatrix} 3 & 0 \\ 0 & 1 \end{bmatrix}
+$$
+
+**Passo 4:** Verificar $Q^T Q = I$:
+$$
+Q^T Q = \begin{bmatrix} \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}} & -\frac{1}{\sqrt{2}} \end{bmatrix} \begin{bmatrix} \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}} & -\frac{1}{\sqrt{2}} \end{bmatrix} = I
+$$
+
+**Passo 5:** Verificar $A = Q \Lambda Q^T$:
+$$
+Q \Lambda Q^T = \begin{bmatrix} \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}} & -\frac{1}{\sqrt{2}} \end{bmatrix} \begin{bmatrix} 3 & 0 \\ 0 & 1 \end{bmatrix} \begin{bmatrix} \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}} & -\frac{1}{\sqrt{2}} \end{bmatrix} = \begin{bmatrix} 2 & 1 \\ 1 & 2 \end{bmatrix} ✓
+$$
+
+## 4. Aplicação: Matriz de Covariância
+
+### 4.1 Propriedades da Matriz de Covariância
+
+A matriz de covariância $\Sigma$ de um dataset é:
+
+- **Simétrica:** $\Sigma = \Sigma^T$
+- **Semidefinida positiva:** todos os autovalores são $\geq 0$
+
+### 4.2 PCA (Análise de Componentes Principais)
+
+No PCA, a matriz de covariância é decomposta como:
+$$
+\Sigma = Q \Lambda Q^T
+$$
+
+**Interpretação:**
+- $Q$ contém os **componentes principais** (autovetores).
+- $\Lambda$ contém a **variância** explicada por cada componente (autovalores).
+
+## 5. Exemplos Lúdicos Aprimorados
+
+### 🍔 EXEMPLO 1 – A LANCHONETE (DECOMPOSIÇÃO ESPECTRAL)
+
+A lanchonete tem a matriz simétrica:
+$$
+A = \begin{bmatrix} 2 & 1 \\ 1 & 2 \end{bmatrix}
+$$
+
+**Decomposição espectral:** $A = Q \Lambda Q^T$
+
+**Interpretação:** A matriz $A$ pode ser decomposta em uma rotação ($Q$), uma escala ($\Lambda$) e uma rotação inversa ($Q^T$).
+
+### 🧃 EXEMPLO 2 – A CANTINA (MATRIZ DE COVARIÂNCIA)
+
+A cantina tem uma matriz de covariância:
+$$
+\Sigma = \begin{bmatrix} 4 & 2 \\ 2 & 3 \end{bmatrix}
+$$
+
+**Autovalores:** $\lambda_1 \approx 5.56, \lambda_2 \approx 1.44$
+
+**Autovetores normalizados:**
+$$
+\vec{u}_1 \approx \begin{bmatrix} 0.79 \\ 0.61 \end{bmatrix}, \quad \vec{u}_2 \approx \begin{bmatrix} -0.61 \\ 0.79 \end{bmatrix}
+$$
+
+**Interpretação:** O primeiro componente principal (direção $\vec{u}_1$) explica $\frac{5.56}{5.56 + 1.44} \approx 79.4\%$ da variância.
+
+## 6. Positividade e Definitude
+
+| Tipo | Condição | Exemplo |
+|------|----------|---------|
+| **Definida positiva** | $\lambda_i > 0$ para todos | $\Sigma = \begin{bmatrix} 4 & 2 \\ 2 & 3 \end{bmatrix}$ |
+| **Semidefinida positiva** | $\lambda_i \geq 0$ para todos | Matriz de covariância |
+| **Definida negativa** | $\lambda_i < 0$ para todos | $-I$ |
+| **Indefinida** | Autovalores com sinais mistos | $\begin{bmatrix} 1 & 0 \\ 0 & -1 \end{bmatrix}$ |
+
+## 7. Exercícios Propostos (Manuais)
+
+<details>
+<summary>📗 Exercício 1 (Decomposição Espectral)</summary>
+
+**Enunciado:** Para a matriz simétrica:
+$$
+A = \begin{bmatrix} 3 & 2 \\ 2 & 3 \end{bmatrix}
+$$
+
+a) Calcule os autovalores.  
+b) Calcule os autovetores normalizados.  
+c) Monte a matriz $Q$ e $\Lambda$.  
+d) Verifique que $A = Q \Lambda Q^T$.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\lambda_1 = 5, \lambda_2 = 1$
+
+b) $\vec{u}_1 = \frac{1}{\sqrt{2}} \begin{bmatrix} 1 \\ 1 \end{bmatrix}, \vec{u}_2 = \frac{1}{\sqrt{2}} \begin{bmatrix} 1 \\ -1 \end{bmatrix}$
+
+c) $Q = \begin{bmatrix} \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}} & -\frac{1}{\sqrt{2}} \end{bmatrix}, \Lambda = \begin{bmatrix} 5 & 0 \\ 0 & 1 \end{bmatrix}$
+
+d) Verificação: $Q \Lambda Q^T = \begin{bmatrix} 3 & 2 \\ 2 & 3 \end{bmatrix}$ ✓
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 (Matriz de Covariância)</summary>
+
+**Enunciado:** A matriz de covariância de um dataset é:
+$$
+\Sigma = \begin{bmatrix} 2 & 1 \\ 1 & 2 \end{bmatrix}
+$$
+
+a) Calcule os autovalores.  
+b) Calcule os autovetores.  
+c) Qual é a direção de maior variância?  
+d) Qual a porcentagem da variância explicada pelo primeiro componente?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\lambda_1 = 3, \lambda_2 = 1$
+
+b) $\vec{v}_1 = \begin{bmatrix} 1 \\ 1 \end{bmatrix}, \vec{v}_2 = \begin{bmatrix} 1 \\ -1 \end{bmatrix}$
+
+c) $\vec{v}_1 = \begin{bmatrix} 1 \\ 1 \end{bmatrix}$
+
+d) $\frac{3}{3+1} = 75\%$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 (Simetria e Autovalores)</summary>
+
+**Enunciado:** A matriz:
+$$
+A = \begin{bmatrix} 1 & 2 & 3 \\ 2 & 4 & 5 \\ 3 & 5 & 6 \end{bmatrix}
+$$
+
+a) É simétrica?  
+b) O que isso garante sobre seus autovalores?  
+c) O que isso garante sobre seus autovetores?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) Sim! $A = A^T$.
+
+b) Todos os autovalores são **reais**.
+
+c) Autovetores de autovalores distintos são **ortogonais**.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 (Positividade)</summary>
+
+**Enunciado:** Classifique as seguintes matrizes como definida positiva, semidefinida positiva ou indefinida:
+
+a) $A = \begin{bmatrix} 2 & 0 \\ 0 & 3 \end{bmatrix}$
+
+b) $B = \begin{bmatrix} 1 & 0 \\ 0 & 0 \end{bmatrix}$
+
+c) $C = \begin{bmatrix} 1 & 0 \\ 0 & -1 \end{bmatrix}$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\lambda_1 = 2, \lambda_2 = 3 > 0$ → **definida positiva**
+
+b) $\lambda_1 = 1, \lambda_2 = 0$ → **semidefinida positiva**
+
+c) $\lambda_1 = 1, \lambda_2 = -1$ → **indefinida**
+
+</details>
+</details>
+
+## 8. EXERCÍCIO COMPUTACIONAL
+
+<details>
+<summary>🐍 Ver código (Python/NumPy)</summary>
+
+```python
+import numpy as np
+
+# Decomposição espectral
+A = np.array([[2, 1], [1, 2]])
+
+autovalores, autovetores = np.linalg.eig(A)
+print("Autovalores:", autovalores)
+print("Autovetores (colunas normalizadas):\n", autovetores)
+
+# Reconstruir A = Q @ Lambda @ Q^T
+Lambda = np.diag(autovalores)
+A_reconstruida = autovetores @ Lambda @ autovetores.T
+print("A reconstruída:\n", A_reconstruida)
+
+# Matriz de covariância
+Sigma = np.array([[4, 2], [2, 3]])
+autovalores_Sigma, autovetores_Sigma = np.linalg.eig(Sigma)
+print("Autovalores da covariância:", autovalores_Sigma)
+print("Variância explicada pelo primeiro componente:", autovalores_Sigma[0] / np.sum(autovalores_Sigma))
+```
+
+</details>
+
+<details>
+<summary>📝 Ver código (R)</summary>
+
+```r
+# Decomposição espectral
+A <- matrix(c(2, 1, 1, 2), nrow=2)
+eig <- eigen(A)
+
+print(eig$values)
+print(eig$vectors)
+
+# Reconstruir A = Q %*% Lambda %*% t(Q)
+Lambda <- diag(eig$values)
+A_reconstruida <- eig$vectors %*% Lambda %*% t(eig$vectors)
+print(A_reconstruida)
+
+# Matriz de covariância
+Sigma <- matrix(c(4, 2, 2, 3), nrow=2)
+eig_Sigma <- eigen(Sigma)
+print(eig_Sigma$values)
+print(eig_Sigma$values[1] / sum(eig_Sigma$values))
+```
+
+</details>
+
+> *Matrizes simétricas têm propriedades especiais que as tornam fundamentais em Machine Learning. A decomposição espectral $A = Q \Lambda Q^T$ permite entender a estrutura da matriz em termos de direções (autovetores) e intensidades (autovalores). Em PCA, a matriz de covariância é simétrica e seus autovetores são os componentes principais.*

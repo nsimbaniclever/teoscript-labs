@@ -1,0 +1,318 @@
+# INTEGRAIS PRIMITIVAS 
+
+## 1. Definição 
+
+### 1.1 O que é uma Primitiva?
+
+Uma **primitiva** (ou **antiderivada**) de uma função $f(x)$ é uma função $F(x)$ tal que:
+
+$$
+F'(x) = f(x)
+$$
+
+**Interpretação:** A primitiva é a "operação inversa" da derivada. Se derivarmos $F$, obtemos $f$.
+
+### 1.2 Integral Indefinida
+
+A **integral indefinida** de $f(x)$ é o conjunto de todas as primitivas de $f$:
+
+$$
+\int f(x) \, dx = F(x) + C
+$$
+
+Onde:
+- $F(x)$ é uma primitiva específica.
+- $C$ é a **constante de integração** (pois a derivada de uma constante é zero).
+
+**Observação:** A integral indefinida **não** tem limites de integração. Ela representa uma **família de funções**.
+
+### 1.3 Diferença entre Integral Definida e Indefinida
+
+| Tipo | Notação | Resultado | Interpretação |
+|------|---------|-----------|---------------|
+| **Definida** | $\int_a^b f(x) \, dx$ | **Número** (área) | Área sob a curva de $a$ a $b$ |
+| **Indefinida** | $\int f(x) \, dx$ | **Função** + $C$ | Família de primitivas |
+
+## 2. Primitivas de Funções Elementares
+
+### 2.1 Tabela de Primitivas
+
+| Função $f(x)$ | Primitiva $F(x)$ |
+|-------------------|----------------------|
+| $x^n$ (para $n \neq -1$) | $\frac{x^{n+1}}{n+1} + C$ |
+| $\frac{1}{x}$ | $\ln|x| + C$ |
+| $e^x$ | $e^x + C$ |
+| $a^x$ | $\frac{a^x}{\ln(a)} + C$ |
+| $\sin(x)$ | $-\cos(x) + C$ |
+| $\cos(x)$ | $\sin(x) + C$ |
+| $\sec^2(x)$ | $\tan(x) + C$ |
+| $\frac{1}{\sqrt{1 - x^2}}$ | $\arcsin(x) + C$ |
+| $\frac{1}{1 + x^2}$ | $\arctan(x) + C$ |
+
+### 2.2 Exemplos Acadêmicos Passo a Passo
+
+#### Exemplo 1: $f(x) = x^3$
+
+$$
+\int x^3 \, dx = \frac{x^{4}}{4} + C
+$$
+
+**Verificação:** $\frac{d}{dx} \left( \frac{x^4}{4} + C \right) = x^3$ ✓
+
+#### Exemplo 2: $f(x) = \frac{1}{x}$
+
+$$
+\int \frac{1}{x} \, dx = \ln|x| + C
+$$
+
+**Verificação:** $\frac{d}{dx} \ln|x| = \frac{1}{x}$ ✓
+
+#### Exemplo 3: $f(x) = e^{2x}$
+
+$$
+\int e^{2x} \, dx = \frac{e^{2x}}{2} + C
+$$
+
+**Verificação:** $\frac{d}{dx} \left( \frac{e^{2x}}{2} + C \right) = e^{2x}$ ✓
+
+#### Exemplo 4: $f(x) = \sin(3x)$
+
+$$
+\int \sin(3x) \, dx = -\frac{\cos(3x)}{3} + C
+$$
+
+**Verificação:** $\frac{d}{dx} \left( -\frac{\cos(3x)}{3} + C \right) = \sin(3x)$ ✓
+
+## 3. Propriedades da Integral Indefinida
+
+### 3.1 Linearidade
+
+$$
+\int (a f(x) + b g(x)) \, dx = a \int f(x) \, dx + b \int g(x) \, dx
+$$
+
+**Exemplo:**
+$$
+\int (3x^2 + 2\sin(x)) \, dx = 3 \cdot \frac{x^3}{3} + 2 \cdot (-\cos(x)) + C = x^3 - 2\cos(x) + C
+$$
+
+### 3.2 Constante Multiplicativa
+
+$$
+\int c \cdot f(x) \, dx = c \int f(x) \, dx
+$$
+
+## 4. Exemplos Lúdicos Aprimorados
+
+### 🍔 EXEMPLO 1 – A LANCHONETE (CUSTO MARGINAL → CUSTO TOTAL)
+
+A lanchonete sabe que o **custo marginal** (derivada do custo total) é:
+$$
+C'(x) = 2x + 5
+$$
+
+**Qual é o custo total $C(x)$?**
+
+**Solução:** Achar a primitiva:
+$$
+C(x) = \int (2x + 5) \, dx = x^2 + 5x + K
+$$
+
+Onde $K$ é o custo fixo (quando $x = 0$).
+
+**Interpretação:** Se o custo fixo for $K = 100$, então:
+$$
+C(x) = x^2 + 5x + 100
+$$
+
+### 🧃 EXEMPLO 2 – A CANTINA (TAXA DE CRESCIMENTO → ESTOQUE)
+
+A cantina sabe que a **taxa de crescimento do estoque** é:
+$$
+E'(t) = 100e^{-0.1t}
+$$
+
+**Qual é o estoque $E(t)$?**
+
+**Solução:**
+$$
+E(t) = \int 100e^{-0.1t} \, dt = 100 \cdot \frac{e^{-0.1t}}{-0.1} + C = -1000e^{-0.1t} + C
+$$
+
+**Interpretação:** Se o estoque inicial for $E(0) = 500$:
+$$
+500 = -1000e^{0} + C \Rightarrow C = 1500
+$$
+$$
+E(t) = 1500 - 1000e^{-0.1t}
+$$
+
+## 5. Aplicação na Tese: Primitivas no FL
+
+### 5.1 Taxa de Aprendizado Variável
+
+Em FL, a taxa de aprendizado $\eta(t)$ pode variar com o tempo. A **posição** do modelo é a integral da taxa de atualização:
+
+$$
+\vec{w}(t) = \int \eta(t) \nabla L(\vec{w}(t)) \, dt
+$$
+
+### 5.2 Análise de Convergência
+
+A análise de convergência frequentemente envolve integrais de funções de erro. A primitiva permite:
+- Calcular o **erro total** acumulado.
+- Determinar a **taxa de convergência** assintótica.
+
+## 6. Exercícios Propostos (Manuais)
+
+<details>
+<summary>📗 Exercício 1 (Primitivas Básicas)</summary>
+
+**Enunciado:** Calcule as integrais indefinidas:
+
+a) $\int x^5 \, dx$
+
+b) $\int \frac{1}{x^3} \, dx$
+
+c) $\int e^{3x} \, dx$
+
+d) $\int \cos(2x) \, dx$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\frac{x^6}{6} + C$
+
+b) $\int x^{-3} \, dx = \frac{x^{-2}}{-2} + C = -\frac{1}{2x^2} + C$
+
+c) $\frac{e^{3x}}{3} + C$
+
+d) $\frac{\sin(2x)}{2} + C$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 (Combinação de Regras)</summary>
+
+**Enunciado:** Calcule as integrais indefinidas:
+
+a) $\int (3x^4 - 2x^2 + 5) \, dx$
+
+b) $\int (e^x + \sin(x) - \frac{1}{x}) \, dx$
+
+c) $\int (2\sin(x) + 3\cos(x)) \, dx$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $3 \cdot \frac{x^5}{5} - 2 \cdot \frac{x^3}{3} + 5x + C = \frac{3x^5}{5} - \frac{2x^3}{3} + 5x + C$
+
+b) $e^x - \cos(x) - \ln|x| + C$
+
+c) $-2\cos(x) + 3\sin(x) + C$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 (Aplicação – Custo)</summary>
+
+**Enunciado:** O custo marginal de uma empresa é:
+$$
+C'(x) = 0.01x^2 - 0.5x + 10
+$$
+
+a) Encontre o custo total $C(x)$.
+
+b) Se o custo fixo é $C(0) = 200$, determine a constante de integração.
+
+c) Calcule o custo total para produzir $x = 10$ unidades.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $C(x) = \int (0.01x^2 - 0.5x + 10) \, dx = \frac{0.01x^3}{3} - \frac{0.5x^2}{2} + 10x + K$
+
+$C(x) = \frac{0.01x^3}{3} - 0.25x^2 + 10x + K$
+
+b) $C(0) = K = 200$
+
+c) $C(10) = \frac{0.01(1000)}{3} - 0.25(100) + 100 + 200 = \frac{10}{3} - 25 + 100 + 200$
+
+$C(10) \approx 3.33 - 25 + 300 = 278.33$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 (Aplicação – Crescimento)</summary>
+
+**Enunciado:** A taxa de crescimento de uma população é:
+$$
+P'(t) = 1000e^{0.05t}
+$$
+
+a) Encontre $P(t)$.
+
+b) Se a população inicial é $P(0) = 5000$, determine a constante de integração.
+
+c) Qual é a população em $t = 10$?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $P(t) = \int 1000e^{0.05t} \, dt = 1000 \cdot \frac{e^{0.05t}}{0.05} + K = 20000e^{0.05t} + K$
+
+b) $P(0) = 20000 + K = 5000 \Rightarrow K = -15000$
+
+$P(t) = 20000e^{0.05t} - 15000$
+
+c) $P(10) = 20000e^{0.5} - 15000 \approx 20000 \cdot 1.6487 - 15000 = 32974 - 15000 = 17974$
+
+</details>
+</details>
+
+## 7. 💻 EXERCÍCIO COMPUTACIONAL
+
+<details>
+<summary>🐍 Ver código (Python/SymPy)</summary>
+
+```python
+import sympy as sp
+
+x = sp.Symbol('x')
+
+# Primitivas básicas
+f1 = x**5
+print(f"∫{f1} dx = {sp.integrate(f1, x)}")
+
+f2 = 1/x**3
+print(f"∫{f2} dx = {sp.integrate(f2, x)}")
+
+f3 = sp.exp(3*x)
+print(f"∫{f3} dx = {sp.integrate(f3, x)}")
+
+f4 = sp.cos(2*x)
+print(f"∫{f4} dx = {sp.integrate(f4, x)}")
+
+# Combinação
+f5 = 3*x**4 - 2*x**2 + 5
+print(f"∫{f5} dx = {sp.integrate(f5, x)}")
+
+# Verificação
+F = sp.integrate(f5, x)
+print(f"Derivada da primitiva: {sp.diff(F, x)}")
+```
+
+</details>
+
+> *A integral indefinida (ou primitiva) é a operação inversa da derivada. Ela representa uma família de funções que diferem por uma constante. O cálculo de primitivas é essencial para resolver integrais definidas e para modelar fenômenos onde conhecemos a taxa de variação e queremos encontrar a quantidade acumulada.*

@@ -1,0 +1,476 @@
+# Álgebra Booleana e Leis de De Morgan
+
+## 1. Introdução
+
+Nas duas aulas anteriores, aprendemos os operadores lógicos fundamentais e como construir tabelas verdade para analisar funções lógicas. Vimos que uma função lógica pode ser representada por uma expressão e por sua tabela verdade correspondente.
+Mas existe um problema: muitas vezes, a expressão lógica que descreve um circuito é **mais complexa do que o necessário**. Expressões mais complexas significam:
+
+- **Mais portas lógicas** → circuito maior
+- **Mais consumo de energia** → menos eficiente
+- **Mais atraso** → circuito mais lento
+- **Mais caro** → maior custo de fabricação
+
+A solução é **simplificar** a expressão lógica, mantendo o mesmo comportamento (mesma tabela verdade), mas com menos operadores e portas.
+
+É aqui que entra a **Álgebra Booleana** — um conjunto de regras e leis que nos permitem manipular e simplificar expressões lógicas. E no centro da álgebra booleana estão as **Leis de De Morgan**, duas regras poderosas que permitem transformar expressões complexas em formas mais simples.
+
+Nesta aula, vamos estudar a álgebra booleana, suas leis fundamentais, e em especial as Leis de De Morgan. Vamos aprender como simplificar expressões lógicas passo a passo, tornando os circuitos mais eficientes e econômicos.
+
+
+## 2. O Que é Álgebra Booleana?
+
+### 2.1 Definição
+
+A **Álgebra Booleana** (ou *Boolean Algebra*) é um sistema matemático criado por **George Boole** em 1854. Ela lida com variáveis que só podem assumir dois valores: **verdadeiro (1)** ou **falso (0)**.
+
+### 2.2 Por que ela é importante?
+
+| Área | Aplicação |
+|------|-----------|
+| **Eletrônica digital** | Projeto de circuitos e processadores |
+| **Programação** | Condicionais, loops, expressões lógicas |
+| **Bancos de dados** | Consultas com WHERE |
+| **Inteligência Artificial** | Regras e inferência lógica |
+| **Criptografia** | Algoritmos de cifra |
+| **Teoria da Computação** | Autômatos e linguagens formais |
+
+### 2.3 Analogia: A álgebra que você conhece vs. Álgebra Booleana
+
+| Álgebra Tradicional | Álgebra Booleana |
+|---------------------|------------------|
+| Variáveis podem ter qualquer valor numérico | Variáveis são apenas 0 ou 1 |
+| Operadores: +, -, ×, ÷ | Operadores: AND, OR, NOT |
+| Leis: comutativa, associativa, distributiva | As mesmas leis se aplicam! |
+| Simplificação: 2x + 3x = 5x | Simplificação: A OR A = A |
+
+
+## 3. Leis Fundamentais da Álgebra Booleana
+
+### 3.1 Leis Básicas
+
+| Lei | Expressão AND | Expressão OR |
+|-----|---------------|--------------|
+| **Comutativa** | A ∧ B = B ∧ A | A ∨ B = B ∨ A |
+| **Associativa** | (A ∧ B) ∧ C = A ∧ (B ∧ C) | (A ∨ B) ∨ C = A ∨ (B ∨ C) |
+| **Distributiva** | A ∧ (B ∨ C) = (A ∧ B) ∨ (A ∧ C) | A ∨ (B ∧ C) = (A ∨ B) ∧ (A ∨ C) |
+| **Identidade** | A ∧ 1 = A | A ∨ 0 = A |
+| **Elemento Nulo** | A ∧ 0 = 0 | A ∨ 1 = 1 |
+| **Idempotência** | A ∧ A = A | A ∨ A = A |
+| **Complemento** | A ∧ ¬A = 0 | A ∨ ¬A = 1 |
+| **Involução** | ¬(¬A) = A | ¬(¬A) = A |
+| **Absorção** | A ∧ (A ∨ B) = A | A ∨ (A ∧ B) = A |
+
+### 3.2 Explicação de cada lei
+
+**Comutativa:** A ordem não importa.
+- `A AND B` é igual a `B AND A`
+- `A OR B` é igual a `B OR A`
+
+**Associativa:** O agrupamento não importa.
+- `(A AND B) AND C` é igual a `A AND (B AND C)`
+- `(A OR B) OR C` é igual a `A OR (B OR C)`
+
+**Distributiva:** O AND distribui sobre o OR, e vice-versa.
+- `A AND (B OR C) = (A AND B) OR (A AND C)`
+- `A OR (B AND C) = (A OR B) AND (A OR C)`
+
+**Identidade:**
+- `A AND 1 = A` (qualquer coisa E verdadeiro = aquela coisa)
+- `A OR 0 = A` (qualquer coisa OU falso = aquela coisa)
+
+**Elemento Nulo:**
+- `A AND 0 = 0` (qualquer coisa E falso = falso)
+- `A OR 1 = 1` (qualquer coisa OU verdadeiro = verdadeiro)
+
+**Idempotência:**
+- `A AND A = A` (A e A é A)
+- `A OR A = A` (A ou A é A)
+
+**Complemento:**
+- `A AND NOT A = 0` (A e não A = falso)
+- `A OR NOT A = 1` (A ou não A = verdadeiro)
+
+**Involução:**
+- `NOT(NOT A) = A` (duas negações se cancelam)
+
+**Absorção:**
+- `A AND (A OR B) = A`
+- `A OR (A AND B) = A`
+
+### 3.3 Exemplos de simplificação
+
+**Exemplo 1:** Simplificar `F = (A AND B) OR (A AND NOT B)`
+
+**Passo 1:** Identificar o fator comum `A`
+- `F = A AND (B OR NOT B)`
+
+**Passo 2:** Aplicar complemento: `B OR NOT B = 1`
+- `F = A AND 1`
+
+**Passo 3:** Aplicar identidade: `A AND 1 = A`
+- **Resposta:** `F = A`
+
+**Exemplo 2:** Simplificar `F = A OR (A AND B)`
+
+**Passo 1:** Aplicar absorção: `A OR (A AND B) = A`
+- **Resposta:** `F = A`
+
+**Exemplo 3:** Simplificar `F = (A AND B) OR (A AND B AND C)`
+
+**Passo 1:** Identificar fator comum `(A AND B)`
+- `F = (A AND B) OR ((A AND B) AND C)`
+
+**Passo 2:** Aplicar absorção: `X OR (X AND C) = X`
+- **Resposta:** `F = A AND B`
+
+
+## 4. As Leis de De Morgan
+
+### 4.1 O que são as Leis de De Morgan?
+
+As **Leis de De Morgan** são duas regras fundamentais da álgebra booleana que relacionam AND, OR e NOT. Elas foram formuladas pelo matemático britânico **Augustus De Morgan** (1806-1871).
+
+### 4.2 As duas leis
+
+> **Lei 1:** `¬(A ∧ B) = ¬A ∨ ¬B`
+> *"A negação de um AND é o OR das negações."*
+
+> **Lei 2:** `¬(A ∨ B) = ¬A ∧ ¬B`
+> *"A negação de um OR é o AND das negações."*
+
+### 4.3 Verificando com tabelas verdade
+
+**Lei 1:** `¬(A ∧ B) = ¬A ∨ ¬B`
+
+| A | B | A ∧ B | ¬(A ∧ B) | ¬A | ¬B | ¬A ∨ ¬B | Equivalente? |
+|---|---|-------|----------|----|----|---------|--------------|
+| 0 | 0 | 0 | **1** | 1 | 1 | **1** | ✅ |
+| 0 | 1 | 0 | **1** | 1 | 0 | **1** | ✅ |
+| 1 | 0 | 0 | **1** | 0 | 1 | **1** | ✅ |
+| 1 | 1 | 1 | **0** | 0 | 0 | **0** | ✅ |
+
+**Lei 2:** `¬(A ∨ B) = ¬A ∧ ¬B`
+
+| A | B | A ∨ B | ¬(A ∨ B) | ¬A | ¬B | ¬A ∧ ¬B | Equivalente? |
+|---|---|-------|----------|----|----|---------|--------------|
+| 0 | 0 | 0 | **1** | 1 | 1 | **1** | ✅ |
+| 0 | 1 | 1 | **0** | 1 | 0 | **0** | ✅ |
+| 1 | 0 | 1 | **0** | 0 | 1 | **0** | ✅ |
+| 1 | 1 | 1 | **0** | 0 | 0 | **0** | ✅ |
+
+### 4.4 Analogias para entender De Morgan
+
+**Lei 1 (`¬(A ∧ B) = ¬A ∨ ¬B`):**
+- "Não é verdade que está chovendo **E** está frio"
+- É o mesmo que dizer:
+- "Não está chovendo **OU** não está frio"
+
+**Lei 2 (`¬(A ∨ B) = ¬A ∧ ¬B`):**
+- "Não é verdade que está chovendo **OU** está frio"
+- É o mesmo que dizer:
+- "Não está chovendo **E** não está frio"
+
+### 4.5 Por que De Morgan é importante?
+
+| Aplicação | Por que é importante |
+|-----------|---------------------|
+| **Simplificação** | Transforma expressões complexas em mais simples |
+| **Circuitos** | Permite substituir portas AND+NOT por OR, ou vice-versa |
+| **Eficiência** | Circuitos ficam menores, mais rápidos e consomem menos energia |
+| **Portas universais** | Ajuda a provar que NAND e NOR são universais |
+
+
+## 5. Exemplos de Simplificação com De Morgan
+
+### 5.1 Exemplo 1: Simplificar `F = ¬(A ∧ B)`
+
+**Aplicando De Morgan diretamente:**
+- `F = ¬A ∨ ¬B`
+
+**Resposta:** `F = ¬A ∨ ¬B`
+
+### 5.2 Exemplo 2: Simplificar `F = ¬(A ∨ B)`
+
+**Aplicando De Morgan diretamente:**
+- `F = ¬A ∧ ¬B`
+
+**Resposta:** `F = ¬A ∧ ¬B`
+
+### 5.3 Exemplo 3: Simplificar `F = ¬(A ∧ B) ∨ ¬(A ∨ B)`
+
+**Passo 1:** Aplicar De Morgan nas duas partes
+- `¬(A ∧ B) = ¬A ∨ ¬B`
+- `¬(A ∨ B) = ¬A ∧ ¬B`
+
+**Passo 2:** Substituir
+- `F = (¬A ∨ ¬B) ∨ (¬A ∧ ¬B)`
+
+**Passo 3:** Aplicar absorção: `X ∨ (X ∧ Y) = X`
+- `F = ¬A ∨ ¬B`
+
+**Resposta:** `F = ¬A ∨ ¬B`
+
+### 5.4 Exemplo 4: Simplificar `F = ¬(¬A ∧ B)`
+
+**Passo 1:** Aplicar De Morgan
+- `F = ¬(¬A) ∨ ¬B`
+
+**Passo 2:** Aplicar involução: `¬(¬A) = A`
+- `F = A ∨ ¬B`
+
+**Resposta:** `F = A ∨ ¬B`
+
+### 5.5 Exemplo 5: Simplificar `F = ¬(A ∧ ¬B) ∨ ¬(¬A ∧ B)`
+
+**Passo 1:** Aplicar De Morgan nas duas partes
+- `¬(A ∧ ¬B) = ¬A ∨ ¬(¬B) = ¬A ∨ B`
+- `¬(¬A ∧ B) = ¬(¬A) ∨ ¬B = A ∨ ¬B`
+
+**Passo 2:** Substituir
+- `F = (¬A ∨ B) ∨ (A ∨ ¬B)`
+
+**Passo 3:** Reorganizar
+- `F = (¬A ∨ A) ∨ (B ∨ ¬B)`
+
+**Passo 4:** Aplicar complemento: `¬A ∨ A = 1` e `B ∨ ¬B = 1`
+- `F = 1 ∨ 1 = 1`
+
+**Resposta:** `F = 1` (sempre verdadeiro)
+
+
+## 6. Aplicação Prática: Projetando Circuitos Mais Eficientes
+
+### 6.1 Problema: Circuito com muitas portas
+
+**Expressão original:** `F = ¬(A ∧ B) ∨ ¬(A ∧ C)`
+
+**Circuito original:**
+- 2 portas AND
+- 2 portas NOT
+- 1 porta OR
+- **Total: 5 portas**
+
+**Simplificação com De Morgan:**
+
+**Passo 1:** Aplicar De Morgan
+- `F = (¬A ∨ ¬B) ∨ (¬A ∨ ¬C)`
+
+**Passo 2:** Reorganizar
+- `F = ¬A ∨ ¬A ∨ ¬B ∨ ¬C`
+
+**Passo 3:** Aplicar idempotência: `¬A ∨ ¬A = ¬A`
+- `F = ¬A ∨ ¬B ∨ ¬C`
+
+**Circuito simplificado:**
+- 3 portas NOT
+- 1 porta OR (3 entradas)
+- **Total: 4 portas**
+
+**Economia:** 1 porta a menos! (20% de economia)
+
+### 6.2 Exemplo: NAND como porta universal
+
+**Problema:** Construir um NOT usando apenas NAND
+
+**Solução:** `NOT(A) = NAND(A, A)`
+
+| A | NAND(A, A) | Resultado |
+|---|------------|-----------|
+| 0 | NAND(0,0) = 1 | ✅ |
+| 1 | NAND(1,1) = 0 | ✅ |
+
+**Problema:** Construir um AND usando apenas NAND
+
+**Solução:** `AND(A, B) = NOT(NAND(A, B)) = NAND(NAND(A, B), NAND(A, B))`
+
+| A | B | NAND(A,B) | NAND(NAND(A,B), NAND(A,B)) | AND esperado |
+|---|---|-----------|----------------------------|--------------|
+| 0 | 0 | 1 | 0 | 0 |
+| 0 | 1 | 1 | 0 | 0 |
+| 1 | 0 | 1 | 0 | 0 |
+| 1 | 1 | 0 | 1 | 1 |
+
+**Problema:** Construir um OR usando apenas NAND
+
+**Solução:** `OR(A, B) = NAND(NOT(A), NOT(B)) = NAND(NAND(A, A), NAND(B, B))`
+
+
+## 7. Exercícios
+
+<details>
+<summary>📗 Exercício 1 — Aplicar De Morgan (fácil)</summary>
+
+**Enunciado:** Simplifique `¬(A ∧ B)` usando De Morgan.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** `¬A ∨ ¬B`
+
+**Explicação:** A negação de um AND é o OR das negações.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Aplicar De Morgan (fácil)</summary>
+
+**Enunciado:** Simplifique `¬(A ∨ B)` usando De Morgan.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** `¬A ∧ ¬B`
+
+**Explicação:** A negação de um OR é o AND das negações.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Simplificação com De Morgan (médio)</summary>
+
+**Enunciado:** Simplifique `F = ¬(A ∧ B ∧ C)`.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Passo 1:** Aplicar De Morgan (generalizando para 3 entradas)
+- `¬(A ∧ B ∧ C) = ¬A ∨ ¬B ∨ ¬C`
+
+**Resposta:** `F = ¬A ∨ ¬B ∨ ¬C`
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Simplificação com De Morgan (médio)</summary>
+
+**Enunciado:** Simplifique `F = ¬(A ∧ ¬B)`.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Passo 1:** Aplicar De Morgan
+- `F = ¬A ∨ ¬(¬B)`
+
+**Passo 2:** Aplicar involução: `¬(¬B) = B`
+- `F = ¬A ∨ B`
+
+**Resposta:** `F = ¬A ∨ B`
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Simplificação completa (médio)</summary>
+
+**Enunciado:** Simplifique `F = ¬(A ∧ B) ∨ ¬(A ∧ C)`.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Passo 1:** Aplicar De Morgan nas duas partes
+- `¬(A ∧ B) = ¬A ∨ ¬B`
+- `¬(A ∧ C) = ¬A ∨ ¬C`
+
+**Passo 2:** Substituir
+- `F = (¬A ∨ ¬B) ∨ (¬A ∨ ¬C)`
+
+**Passo 3:** Reorganizar
+- `F = ¬A ∨ ¬A ∨ ¬B ∨ ¬C`
+
+**Passo 4:** Aplicar idempotência: `¬A ∨ ¬A = ¬A`
+- `F = ¬A ∨ ¬B ∨ ¬C`
+
+**Resposta:** `F = ¬A ∨ ¬B ∨ ¬C`
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Provar equivalência (difícil)</summary>
+
+**Enunciado:** Prove que `A ∧ (B ∨ C) = (A ∧ B) ∨ (A ∧ C)` usando tabela verdade.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+| A | B | C | B ∨ C | A ∧ (B ∨ C) | A ∧ B | A ∧ C | (A ∧ B) ∨ (A ∧ C) | Equivalente? |
+|---|---|---|-------|-------------|-------|-------|-------------------|--------------|
+| 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | ✅ |
+| 0 | 0 | 1 | 1 | 0 | 0 | 0 | 0 | ✅ |
+| 0 | 1 | 0 | 1 | 0 | 0 | 0 | 0 | ✅ |
+| 0 | 1 | 1 | 1 | 0 | 0 | 0 | 0 | ✅ |
+| 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | ✅ |
+| 1 | 0 | 1 | 1 | 1 | 0 | 1 | 1 | ✅ |
+| 1 | 1 | 0 | 1 | 1 | 1 | 0 | 1 | ✅ |
+| 1 | 1 | 1 | 1 | 1 | 1 | 1 | 1 | ✅ |
+
+**Resposta:** As colunas são idênticas, portanto as expressões são equivalentes. (Lei distributiva)
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — Construir OR com NAND (desafio)</summary>
+
+**Enunciado:** Mostre como construir `OR(A, B)` usando apenas portas NAND.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Passo 1:** NOT(A) = NAND(A, A)
+**Passo 2:** NOT(B) = NAND(B, B)
+**Passo 3:** OR(A, B) = NAND(NOT(A), NOT(B)) = NAND(NAND(A, A), NAND(B, B))
+
+**Verificação:**
+
+| A | B | NAND(A,A) = ¬A | NAND(B,B) = ¬B | NAND(¬A, ¬B) = OR(A,B) |
+|---|---|----------------|----------------|------------------------|
+| 0 | 0 | 1 | 1 | 0 |
+| 0 | 1 | 1 | 0 | 1 |
+| 1 | 0 | 0 | 1 | 1 |
+| 1 | 1 | 0 | 0 | 1 |
+
+**Resposta:** `OR(A, B) = NAND(NAND(A, A), NAND(B, B))`
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — Simplificação de expressão (desafio)</summary>
+
+**Enunciado:** Simplifique `F = (A ∧ B) ∨ (¬A ∧ B)`.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Passo 1:** Identificar fator comum `B`
+- `F = B ∧ (A ∨ ¬A)`
+
+**Passo 2:** Aplicar complemento: `A ∨ ¬A = 1`
+- `F = B ∧ 1`
+
+**Passo 3:** Aplicar identidade: `B ∧ 1 = B`
+- **Resposta:** `F = B`
+
+</details>
+</details>
+
+
+
+## 9. Resumo Comparativo dos Três Sistemas
+
+| Característica | Operadores | Tabelas Verdade | Álgebra Booleana |
+|----------------|------------|-----------------|------------------|
+| **O que é** | Ferramentas básicas | Análise de funções | Simplificação de expressões |
+| **Foco** | Como funcionam os operadores | Como analisar funções | Como otimizar circuitos |
+| **Ferramenta** | Tabelas individuais | Tabelas completas | Leis e regras |
+| **Resultado** | Entender cada operador | Ver todas as combinações | Expressões mais simples |
+| **Aplicação** | Projetar portas lógicas | Validar circuitos | Reduzir custos e consumo |
+
+
+
+
+> **"A Álgebra Booleana é o conjunto de regras que permite simplificar expressões lógicas, tornando circuitos mais eficientes, rápidos e baratos. As Leis de De Morgan são as ferramentas mais poderosas desse arsenal: elas permitem transformar AND em OR e vice-versa, abrindo caminho para simplificações que seriam impossíveis de outra forma. Com a álgebra booleana, podemos reduzir expressões complexas a formas mínimas, economizando portas lógicas, energia e tempo de processamento. Este é o coração do projeto de circuitos digitais modernos."**

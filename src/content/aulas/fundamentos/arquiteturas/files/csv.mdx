@@ -1,0 +1,451 @@
+# FORMATO CSV
+
+## 1. INTRODUÇÃO
+
+Na aula anterior, estudamos a leitura e escrita de arquivos — como programas interagem com o sistema de arquivos para persistir dados. Vimos que arquivos podem ser de texto ou binários, e que existem diferentes modos de abertura.<br><br>
+
+Mas há um tipo específico de arquivo de texto que é extremamente importante: o **CSV (Comma-Separated Values)**. O CSV é o formato mais comum para dados tabulares — tabelas onde os dados são organizados em linhas e colunas. É usado para exportar dados de planilhas, bancos de dados, sistemas de análise e praticamente qualquer aplicação que trabalhe com dados estruturados.<br><br>
+
+Imagine que você tem uma tabela de clientes com nome, idade e cidade. Em um arquivo CSV, isso seria representado como:
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+Nome,Idade,Cidade
+João,30,São Paulo
+Maria,25,Rio de Janeiro
+Carlos,40,Belo Horizonte
+</pre>
+
+Cada linha é um registro, e cada valor é separado por uma vírgula. Simples, direto e legível por humanos e máquinas.<br><br>
+
+Nesta aula, vamos estudar o formato CSV: sua estrutura, como ler e escrever arquivos CSV, os diferentes delimitadores, e como lidar com casos especiais como vírgulas dentro dos dados.
+
+## 2. O QUE É O FORMATO CSV?
+
+### 2.1 Definição
+
+> "CSV (Comma-Separated Values) é um formato de arquivo de texto que armazena dados tabulares (tabelas) onde cada linha representa um registro e os valores são separados por um delimitador, geralmente uma vírgula."
+
+### 2.2 Características principais
+
+| Característica | Descrição |
+|---------|----------|
+| **Formato** | Arquivo de texto simples |
+| **Estrutura** | Linhas (registros) e colunas (campos) |
+| **Delimitador** | Vírgula (padrão), ponto e vírgula, tabulação, etc. |
+| **Cabeçalho** | Opcional (primeira linha com nomes das colunas) |
+| **Vantagem** | Simples, legível, suportado por todas as ferramentas |
+| **Uso** | Planilhas, bancos de dados, análise de dados |
+
+### 2.3 Analogia
+
+O CSV é como uma **tabela de dados em papel**:
+
+- Cada linha é uma linha da tabela.
+- Cada coluna é separada por um traço vertical (vírgula).
+- A primeira linha pode ser o cabeçalho (nomes das colunas).
+- Qualquer pessoa pode ler e entender a tabela.
+
+## 3. ESTRUTURA DO CSV
+
+### 3.1 Formato básico
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+Coluna1,Coluna2,Coluna3
+Valor1,Valor2,Valor3
+Valor4,Valor5,Valor6
+Valor7,Valor8,Valor9
+</pre>
+
+### 3.2 Exemplo: Dados de clientes
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+id,nome,idade,cidade
+1,Ana Souza,28,São Paulo
+2,João Silva,35,Rio de Janeiro
+3,Maria Oliveira,42,Belo Horizonte
+4,Pedro Santos,31,Curitiba
+</pre>
+
+### 3.3 Variações de delimitador
+
+| Delimitador | Extensão | Uso comum |
+|---------|---------|---------|
+| **Vírgula** | .csv | Padrão internacional |
+| **Ponto e vírgula** | .csv | Europa (onde vírgula é separador decimal) |
+| **Tabulação** | .tsv, .tab | Arquivos TSV (Tab-Separated Values) |
+| **Pipe** | .csv, .psv | `barra` quando dados contêm vírgulas |
+
+## 4. CASOS ESPECIAIS NO CSV
+
+### 4.1 Valores com vírgulas
+
+Se um valor contém vírgula, ele deve ser **colocado entre aspas**.
+
+**Exemplo:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+nome,cidade
+João,"São Paulo, SP"
+Maria,"Rio de Janeiro, RJ"
+</pre>
+
+### 4.2 Valores com aspas
+
+Se um valor contém aspas, elas devem ser **duplicadas** (escapadas).
+
+**Exemplo:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+nome,descricao
+João,"Ele disse: ""Olá mundo"""
+Maria,"Texto com ""aspas"" internas"
+</pre>
+
+### 4.3 Valores com quebra de linha
+
+Se um valor contém quebra de linha, todo o campo deve estar entre aspas.
+
+**Exemplo:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+nome,descricao
+João,"Linha 1
+Linha 2
+Linha 3"
+</pre>
+
+### 4.4 Cabeçalho opcional
+
+Nem todo arquivo CSV tem cabeçalho. O cabeçalho é a primeira linha com os nomes das colunas.
+
+**Sem cabeçalho:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+1,Ana Souza,28,São Paulo
+2,João Silva,35,Rio de Janeiro
+</pre>
+
+**Com cabeçalho:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+id,nome,idade,cidade
+1,Ana Souza,28,São Paulo
+2,João Silva,35,Rio de Janeiro
+</pre>
+
+## 5. LENDO E ESCREVENDO CSV EM PYTHON
+
+### 5.1 O módulo `csv`
+
+Python tem um módulo embutido para trabalhar com CSV: o `csv`.
+
+### 5.2 Lendo um arquivo CSV
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+import csv
+
+# Lendo com cabeçalho (DictReader)
+print("\n📌 LENDO CSV COM DICTREADER")
+with open("clientes.csv", "r", encoding="utf-8") as arquivo:
+    leitor = csv.DictReader(arquivo)
+    for linha in leitor:
+        print(f"ID: {linha['id']}, Nome: {linha['nome']}, Cidade: {linha['cidade']}")
+
+# Lendo sem cabeçalho (reader)
+print("\n📌 LENDO CSV SEM CABEÇALHO")
+with open("clientes.csv", "r", encoding="utf-8") as arquivo:
+    leitor = csv.reader(arquivo)
+    for linha in leitor:
+        print(linha)  # Lista de valores
+</pre>
+
+### 5.3 Escrevendo um arquivo CSV
+<details>
+<summary> </summary>
+    
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+import csv
+
+// Dados para escrever
+dados = [
+    ["id", "nome", "idade", "cidade"],
+    [1, "Ana Souza", 28, "São Paulo"],
+    [2, "João Silva", 35, "Rio de Janeiro"],
+    [3, "Maria Oliveira", 42, "Belo Horizonte"],
+]
+
+// Escrevendo com DictWriter (com cabeçalho)
+print("\n📌 ESCREVENDO CSV COM DICTWRITER")
+with open("clientes_saida.csv", "w", encoding="utf-8", newline="") as arquivo:
+    campos = ["id", "nome", "idade", "cidade"]
+    escritor = csv.DictWriter(arquivo, fieldnames=campos)
+    escritor.writeheader()
+    for linha in dados[1:]:  # Pula o cabeçalho
+        escritor.writerow({
+            "id": linha[0],
+            "nome": linha[1],
+            "idade": linha[2],
+            "cidade": linha[3],
+        })
+
+// Escrevendo com writer (sem cabeçalho)
+print("\n📌 ESCREVENDO CSV COM WRITER")
+with open("clientes_saida2.csv", "w", encoding="utf-8", newline="") as arquivo:
+    escritor = csv.writer(arquivo)
+    for linha in dados:
+        escritor.writerow(linha)
+</pre>
+
+</details>
+### 5.4 Lendo com delimitador personalizado
+
+<details>
+<summary> </summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+    // CSV com ponto e vírgula (ex: Excel europeu)
+with open("dados_europeu.csv", "r", encoding="utf-8") as arquivo:
+    leitor = csv.reader(arquivo, delimiter=";")
+    for linha in leitor:
+        print(linha)
+
+    // TSV (Tab-Separated Values)
+with open("dados.tsv", "r", encoding="utf-8") as arquivo:
+    leitor = csv.reader(arquivo, delimiter="\t")
+    for linha in leitor:
+        print(linha)
+</pre>
+</details>
+
+## 6. CSV EM OUTRAS LINGUAGENS
+
+### 6.1 JavaScript (Node.js)
+
+<details>
+<summary> </summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+const fs = require('fs');
+
+// Ler CSV
+const dados = fs.readFileSync('clientes.csv', 'utf-8');
+const linhas = dados.split('\n');
+for (const linha of linhas) {
+    const valores = linha.split(',');
+    console.log(valores);
+}
+
+// Escrever CSV
+const saida = [
+    ['id', 'nome', 'idade'],
+    ['1', 'Ana', '28'],
+    ['2', 'João', '35']
+];
+const csv = saida.map(linha => linha.join(',')).join('\n');
+fs.writeFileSync('saida.csv', csv);
+</pre>
+
+</details>
+### 6.2 R
+<details>
+<summary> </summary>
+    
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+// Ler CSV
+dados <- read.csv("clientes.csv", header=TRUE, sep=",")
+print(dados)
+
+// Escrever CSV
+write.csv(dados, "saida.csv", row.names=FALSE)
+</pre>
+</details>
+
+## 7. APLICAÇÕES REAIS
+
+| Aplicação | Como usa CSV |
+|---------|----------|
+| **Microsoft Excel** | Importa e exporta dados em CSV |
+| **Google Sheets** | Importa e exporta CSV |
+| **Bancos de dados** | Exporta consultas para CSV |
+| **Análise de dados (Python/Pandas)** | Lê CSV para dataframes |
+| **Sistemas de e-commerce** | Exporta catálogos de produtos |
+| **Ferramentas de BI** | Importa dados de CSV |
+| **Machine Learning** | Conjuntos de dados em CSV |
+
+**Exemplo prático:** O site Kaggle (plataforma de dados para machine learning) usa CSV como formato principal para datasets. Milhões de datasets estão disponíveis em CSV para análise e treinamento de modelos.
+
+## 8. EXERCÍCIOS
+
+<details>
+<summary>📗 Exercício 1 — O que é CSV? (Fácil)</summary>
+
+**Enunciado:** O que significa CSV e qual sua principal característica?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** CSV significa Comma-Separated Values (Valores Separados por Vírgula).
+
+**Principal característica:** É um formato de arquivo de texto simples para dados tabulares, onde cada linha é um registro e os valores são separados por vírgula.
+
+**Explicação:** É o formato mais comum para troca de dados tabulares entre sistemas.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Estrutura do CSV (Fácil)</summary>
+
+**Enunciado:** Qual a estrutura básica de um arquivo CSV?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Um arquivo CSV é composto por linhas (registros) e colunas (campos). Cada linha é separada por quebra de linha, e cada coluna é separada por um delimitador (vírgula por padrão). A primeira linha pode ser o cabeçalho.
+
+**Exemplo:**
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+Nome,Idade,Cidade
+João,30,São Paulo
+Maria,25,Rio de Janeiro
+</pre>
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Cabeçalho (Fácil)</summary>
+
+**Enunciado:** Qual a função do cabeçalho em um arquivo CSV?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** O cabeçalho é a primeira linha do arquivo e contém os **nomes das colunas**. Ele é opcional e ajuda a identificar o significado de cada campo.
+
+**Explicação:** Com cabeçalho, é mais fácil entender os dados. Sem cabeçalho, os valores são interpretados pela posição.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Valores com vírgula (Médio)</summary>
+
+**Enunciado:** Como você representa um valor que contém vírgula em um arquivo CSV?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Colocando o valor entre aspas.
+
+**Exemplo:**
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+nome,cidade
+João,"São Paulo, SP"
+Maria,"Rio de Janeiro, RJ"
+</pre>
+**Explicação:** As aspas indicam que todo o conteúdo entre elas é um único campo, mesmo que contenha vírgulas.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Ler CSV em Python (Médio)</summary>
+
+**Enunciado:** Escreva um trecho de código Python para ler um arquivo CSV com cabeçalho e imprimir os dados.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+import csv
+
+with open("dados.csv", "r", encoding="utf-8") as arquivo:
+    leitor = csv.DictReader(arquivo)
+    for linha in leitor:
+        print(linha)
+</pre>
+**Explicação:** `DictReader` usa o cabeçalho como chaves do dicionário.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Escrever CSV em Python (Médio)</summary>
+
+**Enunciado:** Escreva um trecho de código Python para criar um arquivo CSV com os dados: [Nome, Idade, Cidade] = [Ana, 28, SP], [João, 35, RJ].
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+import csv
+
+dados = [
+    ["Nome", "Idade", "Cidade"],
+    ["Ana", 28, "SP"],
+    ["João", 35, "RJ"],
+]
+
+with open("pessoas.csv", "w", encoding="utf-8", newline="") as arquivo:
+    escritor = csv.writer(arquivo)
+    for linha in dados:
+        escritor.writerow(linha)
+</pre>
+**Explicação:** `writerow` escreve cada linha do arquivo.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — Delimitador personalizado (Difícil)</summary>
+
+**Enunciado:** Escreva um trecho de código Python para ler um arquivo CSV com delimitador de ponto e vírgula.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+import csv
+
+with open("dados_europeu.csv", "r", encoding="utf-8") as arquivo:
+    leitor = csv.reader(arquivo, delimiter=";")
+    for linha in leitor:
+        print(linha)
+</pre>
+**Explicação:** O parâmetro `delimiter` define o separador usado no arquivo.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — Processamento de CSV (Desafio)</summary>
+
+**Enunciado:** Escreva um programa que leia um arquivo CSV de vendas (produto, quantidade, preço), calcule o total de vendas (quantidade × preço) e escreva um novo CSV com produto e total.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+import csv
+
+# Ler vendas
+vendas = []
+with open("vendas.csv", "r", encoding="utf-8") as arquivo:
+    leitor = csv.DictReader(arquivo)
+    for linha in leitor:
+        produto = linha["produto"]
+        quantidade = int(linha["quantidade"])
+        preco = float(linha["preco"])
+        total = quantidade * preco
+        vendas.append({"produto": produto, "total": total})
+
+# Escrever resultado
+with open("totais.csv", "w", encoding="utf-8", newline="") as arquivo:
+    campos = ["produto", "total"]
+    escritor = csv.DictWriter(arquivo, fieldnames=campos)
+    escritor.writeheader()
+    for venda in vendas:
+        escritor.writerow(venda)
+print("Arquivo 'totais.csv' criado com sucesso!")
+</pre>
+**Explicação:** O programa lê cada linha, calcula o total e escreve um novo CSV com os resultados.
+</details>
+</details>
+
+> O CSV é o formato mais simples e universal para dados tabulares. Cada linha é um registro, cada coluna é um campo, e a vírgula é o elo que os une. É o formato que conecta planilhas, bancos de dados, sistemas de análise e ferramentas de machine learning — a língua franca dos dados estruturados. O CSV é onipresente no mundo dos dados. Sua simplicidade o torna o formato de escolha para exportar e importar dados entre sistemas diferentes. Embora tenha limitações (não suporta hierarquias, tipos de dados complexos), sua universalidade e legibilidade o mantêm como um dos formatos mais importantes da computação.

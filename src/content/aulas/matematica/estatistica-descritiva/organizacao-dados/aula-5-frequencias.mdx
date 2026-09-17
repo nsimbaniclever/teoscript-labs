@@ -1,0 +1,361 @@
+# Frequências
+
+## 🎯 Introdução
+
+&emsp;&emsp;&emsp;Na aula anterior, aprendemos a contar quantas vezes cada valor se repete num conjunto de dados — procedimento que designámos por agrupamento por lista ou por intervalo. Chegou o momento de atribuir a essa contagem a sua designação formal: frequência absoluta.
+
+O Universo das Frequências tem quatro habitantes principais:
+
+- **Frequência Absoluta** — a contagem bruta (o "quantas vezes se repetiu")
+- **Frequência Relativa** — a proporção em relação ao todo
+- **Frequência Acumulada** — a soma progressiva das contagens
+- **Frequência Relativa Acumulada** — a soma progressiva das proporções
+
+### 1. 📊 Frequência Absoluta 
+
+&emsp;&emsp;&emsp;A Frequência Absoluta é o nome científico para **"quantas vezes aquele valor ou categoria se repetiu"**. É a contagem bruta, o número que você obtém quando conta diretamente os dados.<br><br>
+
+**📐 Fórmula Frequência Absoluta**
+$$
+\color{blue} \LARGE \Sigma f_i = n
+$$
+**Onde:**
+- **n** --> número total de elementos da amostra.
+- **fᵢ** (Frequência Absoluta da classe i) é a quantidade de vezes que o valor da classe i aparece no conjunto de dados, a soma de **todas** as Frequências Absolutas deve ser **obrigatoriamente** igual ao número total de elementos da amostra (**n**).
+
+<details>
+<summary>Exemplo Frequência Absoluta</summary>
+
+**Dados:** Pesquisamos a cor de 30 carros em um estacionamento. Os resultados foram:
+
+- Vermelho: 10 carros
+- Branco: 8 carros
+- Preto: 7 carros
+- Azul: 5 carros
+
+**Frequências Absolutas:**
+- fᵥₑᵣₘₑₗₕₒ = **10**
+- fₐzᵤₗ = **5**
+- fₚᵣₑₜₒ = **7**
+- fₐzᵤₗ = **5**
+
+**Verificando a Regra de Ouro:** 10 + 8 + 7 + 5 = **30 = n** ✅
+</details>
+
+> **💡 Percepção:** A Frequência Absoluta é a **base** de tudo. É a partir dela que calculamos todas as outras frequências. Sem a contagem, não há análise.
+
+### 2. 📊 Frequência Relativa
+
+&emsp;&emsp;&emsp;A Frequência Relativa responde à pergunta: "Qual a parte** do todo que esta categoria representa?" Ela é calculada dividindo a Frequência Absoluta pelo total de elementos.<br><br>
+
+**📐 Fórmula da Frequência Relativa**
+$$
+\Large \color{blue}{f_rᵢ = \frac{f_i}{n}}
+$$
+
+Onde: 
+- **frᵢ** = Frequência Relativa da classe i
+- **fᵢ** = Frequência Absoluta
+- **n** = total de elementos
+
+<details>
+<summary>Exemplo Frequência Relativa</summary>
+
+<center>**📐 Regra de Ouro** </center>
+
+&emsp;&emsp;&emsp;A soma de **todas** as Frequências Relativas deve ser **obrigatoriamente** igual a **1** (ou 100%, se multiplicarmos por 100). Σ frᵢ = 1
+
+| Cor | fᵢ | Cálculo da Relativa | frᵢ | % |
+|-----|-----|---------------------|-----|---|
+| Vermelho | 10 | 10 / 30 | 0,333... | 33,33% |
+| Branco | 8 | 8 / 30 | 0,266... | 26,67% |
+| Preto | 7 | 7 / 30 | 0,233... | 23,33% |
+| Azul | 5 | 5 / 30 | 0,166... | 16,67% |
+| **Total** | 30 | 30/30 | **1,000** | **100%** |
+
+**Interpretação:** 33,33% dos carros são vermelhos. A soma das porcentagens = **100%** ✅
+</details>
+
+
+> **💡 A Frequência Relativa é importante porque ela permite comparar conjuntos de tamanhos diferentes**.
+
+
+&emsp;&emsp;&emsp;**Exemplo:** 10 clientes insatisfeitos é pouco se a loja atendeu 10.000 (Frequência Relativa = 10/10.000 = 0,1%), mas é **gravíssimo** se a loja atendeu apenas 12 (Frequência Relativa = 10/12 = 83,3%).
+
+
+### 3. 📊 Frequência Acumulada
+
+&emsp;&emsp;&emsp;A Frequência Acumulada é a soma "progressiva" ou "em cascata" das Frequências Absolutas. Ela responde à pergunta: "Quantos elementos existem até esta classe (somando todas as anteriores)?"<br><br>
+
+**📐 Fórmula da Frequência Acumulada**
+
+$$
+\Large \color{blue}Fᵢ = f₁ + f₂ + ... + fᵢ
+$$
+A Frequência Acumulada da linha i é a soma de **todas** as Frequências Absolutas da linha 1 até a linha i.
+
+<details>
+<summary>Exemplo Frequência Absoluta</summary>
+
+<center> 📐 Regra de Ouro </center>
+
+&emsp;&emsp;&emsp;A **última linha** da Frequência Acumulada deve ser **obrigatoriamente** igual a **n** (o total de elementos). **$F_{\text{última}} = n$**
+
+**Exemplo (continuando os carros)**
+
+| Cor | fᵢ | Cálculo da Acumulada | Fᵢ |
+|-----|-----|----------------------|-----|
+| Vermelho | 10 | 10 | 10 |
+| Branco | 8 | 10 + 8 | 18 |
+| Preto | 7 | 18 + 7 | 25 |
+| Azul | 5 | 25 + 5 | 30 |
+| **Total** | **30** | - | **30** |
+
+**Interpretação:** Até a cor Branca (somando Vermelho + Branco), temos **18** carros. A última linha = **30 = n** ✅
+</details>
+
+
+### 4. 📊 A Tabela Mestra — Passo a Passo
+
+Agora que conhecemos cada tipo de frequência, vamos construir uma **tabela completa** com todos os tipos, usando um novo exemplo.
+
+### Dados de Exemplo
+
+**Dados:** Número de filhos de 20 famílias de um bairro:
+
+0, 1, 2, 1, 3, 2, 1, 0, 2, 1, 1, 2, 3, 1, 0, 2, 1, 2, 1, 3
+
+### Passo 1: Identificar os valores únicos e contar (Frequência Absoluta)
+
+| Nº de Filhos | Contagem | fᵢ |
+|--------------|----------|-----|
+| 0 | III | 3 |
+| 1 | IIIIIIII | 8 |
+| 2 | IIIIII | 6 |
+| 3 | III | 3 |
+| **Total** | **IIIIIIIIIIIIIIIIIIII**| **20** |
+
+### Passo 2: Calcular a Frequência Relativa
+
+A fórmula é **frᵢ = fᵢ / n**.
+
+| Nº de Filhos | fᵢ | Cálculo | frᵢ | % |
+|--------------|-----|---------|-----|---|
+| 0 | 3 | 3/20 | 0,15 | 15% |
+| 1 | 8 | 8/20 | 0,40 | 40% |
+| 2 | 6 | 6/20 | 0,30 | 30% |
+| 3 | 3 | 3/20 | 0,15 | 15% |
+| **Total** | **20** | **20** | **1,00** | **100%** |
+
+### Passo 3: Calcular a Frequência Acumulada
+
+A fórmula é **Fᵢ = f₁ + f₂ + ... + fᵢ**.
+
+| Nº de Filhos | fᵢ | Cálculo | Fᵢ |
+|--------------|-----|---------|-----|
+| 0 | 3 | 3 | 3 |
+| 1 | 8 | 3 + 8 | 11 |
+| 2 | 6 | 11 + 6 | 17 |
+| 3 | 3 | 17 + 3 | 20 |
+| **Total** | **20** | **20** | **20** |
+
+### Passo 4: Calcular a Frequência Relativa Acumulada
+
+A fórmula é a soma progressiva das Frequências Relativas.
+
+| Nº de Filhos | frᵢ | Cálculo | Frᵢ | % Acum. |
+|--------------|-----|---------|-----|---------|
+| 0 | 0,15 | 0,15 | 0,15 | 15% |
+| 1 | 0,40 | 0,15 + 0,40 | 0,55 | 55% |
+| 2 | 0,30 | 0,55 + 0,30 | 0,85 | 85% |
+| 3 | 0,15 | 0,85 + 0,15 | 1,00 | 100% |
+| **Total** | **1,00** | **1** | **1,00** | **100%** |
+
+### 📋 Tabela Mestra Completa
+
+| Nº de Filhos | fᵢ | frᵢ | % | Fᵢ | Frᵢ | % Acum. |
+|--------------|-----|-----|---|-----|-----|---------|
+| 0 | 3 | 0,15 | 15% | 3 | 0,15 | 15% |
+| 1 | 8 | 0,40 | 40% | 11 | 0,55 | 55% |
+| 2 | 6 | 0,30 | 30% | 17 | 0,85 | 85% |
+| 3 | 3 | 0,15 | 15% | 20 | 1,00 | 100% |
+| **Total** | **20** | **1,00** | **100%** | **20** | **1,00** | **100%** |
+
+**Interpretação:**
+- 📌 55% das famílias têm **até 1** filho
+- 📌 85% das famílias têm **até 2** filhos
+- 📌 Apenas 15% têm **3** filhos
+
+## 📝 Resumo — As Regras de Ouro
+
+| Tipo de Frequência | O que representa | Fórmula | Regra de Ouro |
+|-------------------|------------------|---------|---------------|
+| **Frequência Absoluta (fᵢ)** | Contagem bruta de cada valor | — | Σ fᵢ = n |
+| **Frequência Relativa (frᵢ)** | Proporção em relação ao todo | frᵢ = fᵢ / n | Σ frᵢ = 1 |
+| **Frequência Percentual (%)** | Proporção em porcentagem | % = frᵢ × 100 | Σ % = 100% |
+| **Frequência Acumulada (Fᵢ)** | Soma progressiva das absolutas | Fᵢ = f₁ + ... + fᵢ | Fúltima = n |
+| **Frequência Relativa Acumulada (Frᵢ)** | Soma progressiva das relativas | Frᵢ = fr₁ + ... + frᵢ | Frúltima = 1 |
+
+> **📌 Conclusão:** As frequências são a **linguagem** que transforma contagens em compreensão. A **Absoluta** nos dá os números brutos, a **Relativa** nos dá a proporção, e a **Acumulada** nos dá a visão progressiva dos dados. Juntas, elas formam a **base** para qualquer análise estatística — seja uma tabela simples ou um modelo preditivo complexo.
+
+
+<details>
+<summary>📊 Exemplo no R</summary>
+### Passo 1: Criar os dados
+
+```R
+cores <- c("Azul", "Verde", "Azul", "Preto", "Azul")
+- _Frequência Absoluta_
+freq_abs <- table(cores)
+freq_abs
+
+- _Frequência Relativa_
+freq_rel <- prop.table(freq_abs)
+freq_rel
+
+- _Frequência Acumulada_
+freq_acum <- cumsum(freq_abs)
+freq_acum
+
+- _Frequência Relativa Acumulada_
+freq_rel_acum <- cumsum(freq_rel)
+freq_rel_acum
+
+- Tabela Completa
+
+tabela <- cbind(freq_abs, freq_rel, freq_acum, freq_rel_acum)
+tabela
+```
+</details>
+
+<details>
+<summary>🐍 Exemplo no Python</summary>
+
+```python
+import pandas as pd
+
+dados = pd.Series(["Azul", "Verde", "Azul", "Preto", "Azul"])
+
+- _Frequência Absoluta_
+freq_abs = dados.value_counts()
+print(freq_abs)
+
+- _Frequência Relativa_
+freq_rel = dados.value_counts(normalize=True)
+print(freq_rel)
+
+- _Frequência Acumulada_
+freq_acum = freq_abs.sort_index().cumsum()
+print(freq_acum)
+
+- _Frequência Relativa Acumulada_
+freq_rel_acum = freq_rel.sort_index().cumsum()
+print(freq_rel_acum)
+```
+</details>
+
+## Tabela Comparativa dos Três Ferramentas
+
+| Operação | Excel | R | Python |
+|----------|-------|---|--------|
+| **Frequência Absoluta** | `=CONT.SE(intervalo; valor)` | `table(x)` | `x.value_counts()` |
+| **Frequência Relativa** | `=freq_abs/SOMA(freq_abs)` | `prop.table(table(x))` | `x.value_counts(normalize=True)` |
+| **Frequência Acumulada** | Soma manual ou `=SUM()` | `cumsum(table(x))` | `.cumsum()` |
+| **Frequência Relativa Acumulada** | Soma manual | `cumsum(prop.table(table(x)))` | `.value_counts(normalize=True).cumsum()` |
+| **Tabela Completa** | Construção manual | `cbind()` ou `summarytools::freq()` | `pd.DataFrame()` ou `pd.crosstab()` |
+
+## 📝 Exercícios
+
+<details>
+<summary>📗 Exercício 1</summary>
+
+**Enunciado:** Por que a Frequência Relativa é mais útil que a Absoluta para comparar conjuntos de tamanhos diferentes?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+A Frequência Relativa coloca os números em **perspectiva**. Por exemplo, 10 clientes insatisfeitos é pouco se a loja atendeu 10.000 (0,1%), mas é **gravíssimo** se a loja atendeu apenas 12 (83,3%). A Frequência Relativa permite comparar proporções independentemente do tamanho do conjunto.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2</summary>
+
+**Enunciado:** O que significa uma Frequência Acumulada de 75% em uma tabela de notas de alunos?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+Uma Frequência Acumulada de 75% significa que **75% dos alunos têm nota menor ou igual ao valor daquela classe**. Em outras palavras, 25% dos alunos têm nota acima daquele valor.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3</summary>
+
+**Enunciado:** Se a soma das Frequências Relativas deu 0,98, o que isso significa? O que pode ter acontecido?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+Isso significa que a soma de todas as proporções não chega a 1 (100%). Pode ter acontecido:
+- Um erro de cálculo em alguma das Frequências Relativas
+- Alguma categoria foi esquecida na contagem
+- Arredondamentos acumulados (embora isso normalmente resulte em 0,99 ou 1,01, não 0,98)
+
+A Regra de Ouro exige que Σ frᵢ = 1 (100%).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4</summary>
+
+**Enunciado:** Em uma pesquisa com 50 pessoas sobre o time de futebol preferido, obtivemos: 20 torcem para o time A, 15 para o time B, 10 para o time C e 5 para o time D. Calcule a Frequência Relativa e a Frequência Percentual de cada time.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+| Time | fᵢ | frᵢ = fᵢ/50 | % = frᵢ × 100 |
+|------|-----|-------------|---------------|
+| A | 20 | 0,40 | 40% |
+| B | 15 | 0,30 | 30% |
+| C | 10 | 0,20 | 20% |
+| D | 5 | 0,10 | 10% |
+| **Total** | **50** | **1,00** | **100%** |
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5</summary>
+
+**Enunciado:** Com os dados do exercício anterior, calcule a Frequência Acumulada e a Frequência Relativa Acumulada.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+| Time | fᵢ | Fᵢ | frᵢ | Frᵢ |
+|------|-----|-----|-----|-----|
+| A | 20 | 20 | 0,40 | 0,40 |
+| B | 15 | 35 | 0,30 | 0,70 |
+| C | 10 | 45 | 0,20 | 0,90 |
+| D | 5 | 50 | 0,10 | 1,00 |
+| **Total** | **50** | **50** | **1,00** | **1,00** |
+
+</details>
+</details>
+
+> *As frequências são a linguagem que transforma contagens em compreensão. A Absoluta nos dá os números brutos, a Relativa nos dá a proporção, e a Acumulada nos dá a visão progressiva dos dados. Juntas, elas formam a base para qualquer análise estatística.*

@@ -1,0 +1,459 @@
+# TÉCNICAS DE MITIGAÇÃO
+
+## 1. INTRODUÇÃO
+
+Nas últimas três aulas, estudamos os três tipos de conflitos que podem parar o pipeline: **data hazards** (dependência de dados), **structural hazards** (concorrência por recursos) e **control hazards** (saltos condicionais). Vimos que cada um deles pode causar stalls — pausas que reduzem o desempenho do processador.<br><br>
+
+Mas o pipeline não precisa sofrer passivamente com esses conflitos. Existem técnicas poderosas para **mitigar** (reduzir ou eliminar) esses problemas. As três principais são: **forwarding**, **stalls** e **branch prediction**.<br><br>
+
+- **Forwarding** (encaminhamento) resolve a maioria dos data hazards enviando dados diretamente entre estágios.
+- **Stalls** (pausas) são usados quando forwarding não é possível (ex: após um load).
+- **Branch prediction** (predição de saltos) resolve control hazards, prevendo o comportamento de branches.<br><br>
+
+Juntas, essas técnicas mantêm o pipeline o mais cheio possível, maximizando o throughput e o desempenho do processador.<br><br>
+
+Imagine que você é um maestro regendo uma orquestra. Quando um músico erra uma nota (data hazard), você não para a orquestra inteira — você redireciona o som (forwarding) para que ele seja corrigido rapidamente. Quando um músico precisa trocar de partitura (structural hazard), você dá um pequeno intervalo (stall). Quando o maestro precisa decidir qual música tocar em seguida (control hazard), ele faz uma previsão baseada no repertório anterior (branch prediction). O resultado é uma apresentação fluida e contínua.<br><br>
+
+Nesta aula, vamos estudar essas três técnicas de mitigação: como funcionam, quando são usadas, e como juntas mantêm o pipeline em alta performance.
+
+## 2. FORWARDING (ENCAMINHAMENTO) — A SOLUÇÃO PARA DATA HAZARDS
+
+### 2.1 Definição
+
+> "Forwarding (ou bypass) é uma técnica onde o resultado de uma operação é enviado diretamente da saída de um estágio do pipeline para a entrada de outro, sem esperar a escrita no registrador, eliminando ou reduzindo stalls causados por data hazards."
+
+### 2.2 Como funciona o forwarding
+
+O forwarding funciona criando **caminhos diretos** entre estágios do pipeline:
+
+<details>
+<summary> **Pipeline com forwarding**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+┌─────────────────────────────────────────────────────────────┐
+│                                                             │
+│   Pipeline com forwarding:                                  │
+│                                                             │
+│   ┌──┐    ┌──┐    ┌──┐    ┌──┐    ┌──┐                  │
+│   │IF│ →  │ID│ →  │EX│ →  │MEM│ →  │WB│                  │
+│   └──┘    └──┘    └──┘    └──┘    └──┘                  │
+│                    ││               │                      │
+│                    ││               │                      │
+│                    └───────────────┘                      │
+│                           │                               │
+│                           ▼                               │
+│                    Caminho de Forwarding                   │
+│                    (EX → ID / EX → EX)                    │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+    </pre>
+</details>
+
+**Caminhos de forwarding típicos:**
+- **EX → EX:** Resultado da ULA vai direto para a ULA da próxima instrução.
+- **MEM → EX:** Dado da memória vai direto para a ULA.
+- **WB → ID:** Resultado vai direto para o banco de registradores.
+
+### 2.3 Exemplo: Forwarding em ação
+
+**Código:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+ADD R1, R2, R3    ; I1: R1 = R2 + R3
+SUB R4, R1, R5    ; I2: R4 = R1 - R5 (depende de R1)
+</pre>
+
+**Sem forwarding:**
+
+<details>
+<summary> **Sem forwarding — stall necessário**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+Ciclo:  1    2    3    4    5    6    7    8
+I1:    [IF] [ID] [EX] [MEM] [WB]
+I2:         [IF] [ID] [STALL] [STALL] [ID] [EX] [MEM] [WB]
+                     ↑            ↑
+               I2 precisa de R1   I2 espera 2 ciclos
+    </pre>
+</details>
+
+**Com forwarding:**
+
+<details>
+<summary> **Com forwarding — sem stall**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+Ciclo:  1    2    3    4    5    6
+I1:    [IF] [ID] [EX] [MEM] [WB]
+I2:         [IF] [ID] [EX] [MEM] [WB]
+                     ↑
+               Forwarding: R1 vai direto do EX de I1 para EX de I2
+    </pre>
+</details>
+
+### 2.4 Quando o forwarding NÃO funciona
+
+O forwarding não funciona em todas as situações. O caso mais comum é o **load-use hazard**:
+
+**Código:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+LDR R1, [R2]      ; I1: R1 = valor em R2 (vem da memória)
+ADD R3, R1, R4    ; I2: R3 = R1 + R4 (depende de R1)
+</pre>
+
+**Problema:** O valor de R1 só está disponível após o estágio **MEM** de I1. O forwarding tradicional envia dados do estágio **EX**, mas o dado do load vem da memória.
+
+**Solução:** Stall + forwarding:
+
+<details>
+<summary> **Load-use hazard — stall necessário**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+Ciclo:  1    2    3    4    5    6    7
+I1:    [IF] [ID] [EX] [MEM] [WB]
+I2:         [IF] [ID] [STALL] [ID] [EX] [MEM] [WB]
+                     ↑
+               Espera 1 ciclo até MEM de I1, depois forwarding
+    </pre>
+</details>
+
+## 3. STALLS (PAUSAS) — QUANDO O PIPELINE PRECISA ESPERAR
+
+### 3.1 Definição
+
+> "Stall (ou bubble) é uma técnica onde o pipeline é temporariamente pausado, inserindo ciclos vazios (bolhas) para resolver conflitos que não podem ser resolvidos por forwarding."
+
+### 3.2 Quando os stalls são usados?
+
+| Situação | Por que stall é necessário |
+|---------|----------|
+| **Load-use hazard** | O dado do load só está disponível após MEM |
+| **Conflito estrutural** | Dois estágios precisam do mesmo recurso |
+| **Conflito de controle** | Branch sem predição (ou previsão errada) |
+| **Operações complexas** | Divisão pode levar vários ciclos |
+
+### 3.3 Como um stall funciona
+
+1. A CPU detecta que um conflito não pode ser resolvido por forwarding.
+2. A CPU congela (stall) os estágios anteriores ao estágio afetado.
+3. A CPU insere uma "bolha" (bubble) no pipeline — um estágio vazio que não faz nada.
+4. Quando o conflito é resolvido, o pipeline prossegue.
+
+**Diagrama: Stall com bolha**
+
+<details>
+<summary> **Stall com bolha**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+Ciclo:  1    2    3    4    5    6    7
+I1:    [IF] [ID] [EX] [MEM] [WB]
+I2:         [IF] [ID] [STALL] [ID] [EX] [MEM] [WB]
+I3:              [IF] [STALL] [STALL] [IF] [ID] [EX]
+                                         ↑
+                              Bolha (ciclo vazio) entre I2 e I3
+    </pre>
+</details>
+
+### 3.4 O custo dos stalls
+
+| Tipo de stall | Ciclos perdidos |
+|---------|----------|
+| **Load-use hazard** | 1 ciclo |
+| **Structural hazard** | 1-2 ciclos |
+| **Control hazard (sem predição)** | 2-3 ciclos |
+| **Control hazard (previsão errada)** | 2-3 ciclos |
+| **Divisão (operação complexa)** | Vários ciclos |
+
+## 4. BRANCH PREDICTION — A SOLUÇÃO PARA CONTROL HAZARDS
+
+### 4.1 Definição
+
+> "Branch prediction é uma técnica onde a CPU tenta prever o resultado de um salto condicional antes de avaliar a condição, permitindo que o pipeline continue buscando instruções sem stalls."
+
+### 4.2 Tipos de branch prediction
+
+| Tipo | Como funciona | Acurácia |
+|---------|---------|---------|
+| **Estática** | Sempre assume o mesmo comportamento | ~50-70% |
+| **Dinâmica (1-bit)** | Lembra o último resultado do salto | ~80-85% |
+| **Dinâmica (2-bit)** | Lembra o histórico com estados de confiança | ~90-95% |
+| **Tournament** | Combina múltiplos preditores | ~95-98% |
+| **Neural** | Usa redes neurais | ~98-99% |
+
+### 4.3 Branch predictor de 2 bits — O padrão moderno
+
+O preditor de 2 bits é o coração da branch prediction moderna.
+
+**Estados:**
+
+<details>
+<summary> **Preditor de 2 bits**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+┌─────────────────────────────────────────────────────────────┐
+│                                                             │
+│   ┌─────────────┐     ┌─────────────┐                     │
+│   │  Fortemente │     │  Fortemente │                     │
+│   │  Não Tomado │     │   Tomado    │                     │
+│   │  (00)       │     │   (11)      │                     │
+│   └─────────────┘     └─────────────┘                     │
+│          ▲                     ▲                            │
+│          │                     │                            │
+│   ┌─────────────┐     ┌─────────────┐                     │
+│   │  Fracamente │     │  Fracamente │                     │
+│   │  Não Tomado │     │   Tomado    │                     │
+│   │  (01)       │     │   (10)      │                     │
+│   └─────────────┘     └─────────────┘                     │
+│                                                             │
+│   Transição: 00 → 01 → 10 → 11 (se tomado)                │
+│             11 → 10 → 01 → 00 (se não tomado)             │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+    </pre>
+</details>
+
+**Exemplo de evolução do estado:**
+
+<details>
+<summary> **Evolução do estado do preditor de 2 bits**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+Salto 1: T  → 00 → 01 (previsão errada, enfraquece)
+Salto 2: T  → 01 → 10 (previsão errada, enfraquece)
+Salto 3: T  → 10 → 11 (previsão errada, enfraquece) ← última vez que erra
+Salto 4: T  → 11 → 11 (previsão certa, mantém)
+Salto 5: T  → 11 → 11 (previsão certa, mantém)
+    </pre>
+</details>
+
+**Observação:** O preditor de 2 bits se estabiliza no estado correto após alguns ciclos.
+
+### 4.4 Branch Target Buffer (BTB)
+
+O **BTB** armazena o endereço alvo de cada salto, permitindo que a CPU busque a instrução correta imediatamente.
+
+**Estrutura do BTB:**
+
+<details>
+<summary> **Branch Target Buffer (BTB)**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+┌─────────────────────────────────────────────────────────────┐
+│   Endereço do Salto  │  Endereço Alvo  │  Histórico       │
+│   (PC)               │  (Target)       │  (2 bits)        │
+├─────────────────────────────────────────────────────────────┤
+│   0x1000             │  0x2000         │  11 (Tomado)     │
+│   0x2004             │  0x3000         │  00 (Não Tomado) │
+│   0x3008             │  0x1000         │  10 (Tomado)     │
+└─────────────────────────────────────────────────────────────┘
+    </pre>
+</details>
+
+**Como funciona:**
+1. A CPU consulta o BTB com o PC da instrução atual.
+2. Se houver um salto, a CPU obtém o endereço alvo e a previsão.
+3. A CPU busca a instrução no endereço alvo (se previsto tomado).
+4. Se a previsão estiver errada, a CPU descarta as instruções e atualiza o BTB.
+
+## 5. COMO AS TRÊS TÉCNICAS TRABALHAM JUNTAS
+
+### 5.1 O pipeline moderno com todas as técnicas
+
+<details>
+<summary> **Pipeline com todas as técnicas de mitigação**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+┌─────────────────────────────────────────────────────────────┐
+│                                                             │
+│   ┌──────┐   ┌──────┐   ┌──────┐   ┌──────┐   ┌──────┐  │
+│   │  IF  │ → │  ID  │ → │  EX  │ → │  MEM │ → │  WB  │  │
+│   └──────┘   └──────┘   └──────┘   └──────┘   └──────┘  │
+│       ↑           ↑          │           │                 │
+│       │           │          │           │                 │
+│   ┌───────┐   ┌───────┐   ┌──┴───────────┴──┐            │
+│   │ Branch │   │ Data  │   │  Forwarding    │            │
+│   │Predctor│   │Hazard │   │  (EX→EX, MEM→EX)│            │
+│   └───────┘   └───────┘   └─────────────────┘            │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+    </pre>
+</details>
+
+### 5.2 Decisões do pipeline
+
+| Situação | Técnica usada |
+|---------|----------|
+| Data hazard (ADD → SUB) | Forwarding |
+| Data hazard (LDR → ADD) | Stall + Forwarding |
+| Structural hazard | Stall |
+| Control hazard (branch) | Branch Prediction |
+| Control hazard (previsão errada) | Flush (descartar) + Stall |
+
+### 5.3 O fluxo de decisão
+
+<details>
+<summary> **Fluxo de decisão do pipeline**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+1. Busca instrução (IF)
+   ↓
+2. Decodifica (ID)
+   ↓
+3. Detecta hazard?
+   ├── Data hazard (RAW)? → Forwarding ou Stall
+   ├── Structural hazard? → Stall
+   └── Control hazard (branch)? → Branch Prediction
+   ↓
+4. Executa (EX)
+   ↓
+5. Acessa memória (MEM)
+   ↓
+6. Escreve resultado (WB)
+   ↓
+7. Se branch mal previsto → Flush e busca instrução correta
+    </pre>
+</details>
+
+## 6. APLICAÇÕES REAIS
+
+| Técnica | Usada em | Exemplo |
+|---------|---------|---------|
+| **Forwarding** | Todos os processadores modernos | Intel Core, AMD Ryzen, ARM |
+| **Stalls** | Todos os processadores | Quando forwarding não é possível |
+| **Branch Prediction** | Processadores de alto desempenho | Intel Core, AMD Ryzen |
+| **BTB** | Processadores de alto desempenho | Intel Core, AMD Ryzen |
+| **Delayed Branch** | Processadores RISC antigos | SPARC, MIPS (mais antigos) |
+
+**Exemplo prático:** Um processador Intel Core i9 usa forwarding para resolver ~80% dos data hazards, stalls para ~10% (load-use), e branch prediction para ~95% dos control hazards.
+
+## 7. EXERCÍCIOS
+
+<details>
+<summary>📗 Exercício 1 — O que é forwarding? (Fácil)</summary>
+
+**Enunciado:** Defina o que é forwarding e qual problema ele resolve.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Forwarding é uma técnica onde o resultado de uma operação é enviado diretamente da saída de um estágio do pipeline para a entrada de outro, sem esperar a escrita no registrador.
+
+**Problema resolvido:** Data hazards (dependência de dados entre instruções).
+
+**Explicação:** Forwarding elimina a necessidade de stalls em muitos casos, mantendo o pipeline ocupado.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Quando forwarding não funciona? (Fácil)</summary>
+
+**Enunciado:** Cite uma situação onde forwarding não funciona e é necessário usar stall.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Load-use hazard — quando uma instrução LDR (load) é seguida imediatamente por uma instrução que usa o valor carregado.
+
+**Explicação:** O valor do load só está disponível após o estágio MEM, enquanto o forwarding tradicional envia dados do estágio EX. É necessário stall por 1 ciclo.
+
+**Exemplo:** `LDR R1, [R2]` / `ADD R3, R1, R4`
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — O que é um stall? (Fácil)</summary>
+
+**Enunciado:** Defina o que é um stall no pipeline.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Stall é uma técnica onde o pipeline é temporariamente pausado, inserindo ciclos vazios (bolhas) para resolver conflitos que não podem ser resolvidos por forwarding.
+
+**Explicação:** O stall congela os estágios anteriores e insere uma bolha, que não faz nada, até que o conflito seja resolvido.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Branch prediction de 2 bits (Médio)</summary>
+
+**Enunciado:** Explique como funciona um branch predictor de 2 bits. Qual é sua principal vantagem sobre um predictor de 1 bit?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** O branch predictor de 2 bits mantém um estado de 2 bits para cada salto, representando a "confiança" na previsão.
+
+**Estados:** 00 (fortemente não tomado), 01 (fracamente não tomado), 10 (fracamente tomado), 11 (fortemente tomado).
+
+**Vantagem sobre 1 bit:** O preditor de 2 bits é mais resistente a padrões temporários. Ele não muda de previsão após um único resultado diferente, reduzindo erros em padrões alternados.
+
+**Exemplo:** Se um salto é tomado 99% das vezes, o preditor de 2 bits se estabiliza em 11 e não é afetado pelo 1% de exceções.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — BTB (Médio)</summary>
+
+**Enunciado:** O que é um Branch Target Buffer (BTB) e qual sua função?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** BTB é uma tabela que armazena o endereço alvo de cada salto.
+
+**Função:** Permite que a CPU busque a instrução correta imediatamente após um salto previsto, sem precisar calcular o endereço alvo.
+
+**Explicação:** O BTB armazena o endereço alvo associado ao PC do salto. Quando o salto é previsto como tomado, a CPU busca a instrução no endereço alvo armazenado no BTB.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Forwarding vs Stall (Médio)</summary>
+
+**Enunciado:** Compare forwarding e stalls em termos de desempenho e uso.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+- **Forwarding:** Envia dados diretamente entre estágios. Zero ciclos perdidos. Usado para a maioria dos data hazards.
+- **Stalls:** Pausa o pipeline. Perde ciclos. Usado quando forwarding não é possível (load-use hazards, structural hazards, control hazards sem predição).
+
+**Conclusão:** Forwarding é preferível por manter o pipeline ocupado. Stalls são usados apenas quando necessário.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — Custo de previsão errada (Difícil)</summary>
+
+**Enunciado:** Em um pipeline de 15 estágios, um branch predictor tem acurácia de 95%. Em média, quantos ciclos são perdidos por branch?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+- Ciclos perdidos por erro: ~12 (estágios entre IF e EX)
+- Taxa de erro: 5% = 0.05
+- Custo médio por branch: 12 × 0.05 = **0.6 ciclos**
+
+**Explicação:** Embora cada erro custe 12 ciclos, apenas 5% dos branches erram. O custo médio é baixo, e a predição vale a pena.
+
+**Comparação com stall:** Sem predição, cada branch custaria 3 ciclos (stall). Com predição (95%), o custo médio é 0.6 ciclos — **5x melhor**.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — Combinando técnicas (Desafio)</summary>
+
+**Enunciado:** Para cada situação abaixo, indique qual técnica de mitigação é mais adequada:
+1. `ADD R1, R2, R3` / `SUB R4, R1, R5`
+2. `LDR R1, [R2]` / `ADD R3, R1, R4`
+3. `BEQ R1, R2, label`
+4. Dois estágios precisam da mesma unidade de divisão
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+1. **Forwarding** — Data hazard (RAW) com ADD → SUB. O resultado de R1 está disponível no EX de I1 e pode ser encaminhado para EX de I2.
+2. **Stall + Forwarding** — Load-use hazard. O valor de R1 do load só está disponível após MEM. É necessário stall por 1 ciclo + forwarding.
+3. **Branch Prediction** — Control hazard. O preditor de 2 bits prevê se o salto será tomado, permitindo que o pipeline continue.
+4. **Stall** — Structural hazard. Dois estágios precisam da mesma unidade. Um deles precisa esperar (stall).
+
+**Explicação:** Cada situação requer uma técnica diferente baseada no tipo de conflito.
+</details>
+</details>
+
+> Forwarding, stalls e branch prediction são as três ferramentas que mantêm o pipeline funcionando apesar dos conflitos. Forwarding resolve a maioria dos data hazards enviando dados diretamente entre estágios. Stalls são usados quando forwarding não é possível. Branch prediction resolve control hazards, prevendo o comportamento de saltos com alta acurácia. Juntas, essas técnicas permitem que o pipeline opere próximo ao seu máximo teórico, entregando o desempenho que esperamos dos processadores modernos. As três técnicas de mitigação — forwarding, stalls e branch prediction — são a base do pipeline moderno. Elas trabalham juntas para manter o pipeline ocupado, minimizando stalls e maximizando o throughput. Forwarding resolve data hazards com zero custo, stalls resolvem o que forwarding não pode, e branch prediction resolve control hazards com alta acurácia. Sem essas técnicas, os processadores modernos seriam muito mais lentos e menos eficientes.

@@ -1,0 +1,468 @@
+# FORMATO JSON
+
+## 1. INTRODUÇÃO
+
+Nas últimas duas aulas, estudamos arquivos de texto e o formato CSV. Vimos que o CSV é excelente para dados tabulares simples — tabelas com linhas e colunas. Mas há uma limitação: o CSV não suporta estruturas hierárquicas ou aninhadas.<br><br>
+
+E quando precisamos representar dados mais complexos? Dados com objetos aninhados, listas dentro de objetos, ou estruturas que não cabem em uma tabela plana? É aí que entra o **JSON (JavaScript Object Notation)**.<br><br>
+
+JSON é o formato de dados da internet moderna. Quando você usa um aplicativo de celular, está trocando dados JSON com servidores. Quando você chama uma API (Application Programming Interface), a resposta vem em JSON. Quando você configura serviços em nuvem, usa JSON.<br><br>
+
+Imagine que o CSV é uma tabela de dados em uma planilha. O JSON é um **documento com capítulos, seções, parágrafos e notas de rodapé** — uma estrutura hierárquica que pode representar dados complexos de forma natural.<br><br>
+
+Nesta aula, vamos estudar o JSON: sua estrutura, tipos de dados suportados, como ler e escrever em várias linguagens, e por que ele se tornou o padrão para APIs e comunicação entre sistemas.
+
+## 2. O QUE É JSON?
+
+### 2.1 Definição
+
+> "JSON (JavaScript Object Notation) é um formato leve de intercâmbio de dados, baseado em texto, que utiliza uma sintaxe legível por humanos para representar estruturas de dados compostas por pares chave-valor e listas ordenadas."
+
+### 2.2 Características principais
+
+| Característica | Descrição |
+|---------|----------|
+| **Formato** | Texto simples (UTF-8) |
+| **Estrutura** | Objetos (chave-valor) e arrays (listas ordenadas) |
+| **Tipos suportados** | String, Number, Boolean, Null, Object, Array |
+| **Vantagens** | Legível, leve, suportado por todas as linguagens |
+| **Uso principal** | APIs, configurações, troca de dados entre sistemas |
+
+### 2.3 Analogia
+
+JSON é como um **formulário de cadastro**:
+
+- **Objeto:** O formulário inteiro (um "documento").
+- **Chave:** O nome de cada campo (ex: "nome", "idade", "cidade").
+- **Valor:** O preenchimento de cada campo (ex: "João", 30, "São Paulo").
+- **Array:** Uma lista de itens (ex: lista de telefones).
+
+## 3. ESTRUTURA DO JSON
+
+### 3.1 Tipos de dados JSON
+
+| Tipo | Descrição | Exemplo |
+|---------|---------|---------|
+| **String** | Texto entre aspas duplas | `"João Silva"` |
+| **Number** | Número inteiro ou decimal | `30`, `3.14`, `-5` |
+| **Boolean** | Verdadeiro ou falso | `true`, `false` |
+| **Null** | Valor vazio | `null` |
+| **Object** | Coleção de pares chave-valor | `{"nome": "João", "idade": 30}` |
+| **Array** | Lista ordenada de valores | `[1, 2, 3]`, `["a", "b"]` |
+
+### 3.2 Exemplo: Pessoa em JSON
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+{
+  "nome": "Ana Souza",
+  "idade": 28,
+  "cidade": "São Paulo",
+  "ativo": true,
+  "salario": 4500.50,
+  "telefones": [
+    "(11) 99999-9999",
+    "(11) 88888-8888"
+  ],
+  "endereco": {
+    "rua": "Rua das Flores",
+    "numero": 123,
+    "bairro": "Centro",
+    "cep": "01000-000"
+  }
+}
+</pre>
+
+### 3.3 Exemplo: Lista de pessoas em JSON
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+[
+  {
+    "nome": "Ana Souza",
+    "idade": 28,
+    "cidade": "São Paulo"
+  },
+  {
+    "nome": "João Silva",
+    "idade": 35,
+    "cidade": "Rio de Janeiro"
+  },
+  {
+    "nome": "Maria Oliveira",
+    "idade": 42,
+    "cidade": "Belo Horizonte"
+  }
+]
+</pre>
+
+### 3.4 Regras de sintaxe JSON
+
+| Regra | Descrição | Correto | Incorreto |
+|---------|---------|---------|---------|
+| **Aspas duplas** | Chaves e strings usam aspas duplas | `{"nome": "João"}` | `{'nome': 'João'}` |
+| **Vírgulas** | Separar elementos | `{"a":1, "b":2}` | `{"a":1 "b":2}` |
+| **Último elemento** | Sem vírgula no final | `[1, 2, 3]` | `[1, 2, 3,]` |
+| **Objetos** | Entre chaves `{}` | `{"nome": "João"}` | `("nome": "João")` |
+| **Arrays** | Entre colchetes `[]` | `[1, 2, 3]` | `(1, 2, 3)` |
+
+## 4. JSON VS CSV — COMPARAÇÃO
+
+| Característica | CSV | JSON |
+|---------|---------|---------|
+| **Estrutura** | Tabela plana | Hierárquica (aninhada) |
+| **Tipos de dados** | Todos texto (tudo é string) | Tipos nativos (string, number, bool, null) |
+| **Hierarquia** | Não suporta | Suporta objetos aninhados |
+| **Listas** | Colunas separadas | Arrays nativos |
+| **Legibilidade** | Excelente para tabelas | Excelente para estruturas complexas |
+| **Tamanho** | Compacto | Maior (mais caracteres) |
+| **Uso** | Dados tabulares, planilhas | APIs, configurações, dados complexos |
+
+## 5. LENDO E ESCREVENDO JSON EM PYTHON
+
+### 5.1 O módulo `json`
+
+Python tem um módulo embutido para trabalhar com JSON: o `json`.
+
+### 5.2 Lendo um arquivo JSON
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+import json
+
+# Lendo arquivo JSON
+print("\n📌 LENDO ARQUIVO JSON")
+with open("pessoa.json", "r", encoding="utf-8") as arquivo:
+    dados = json.load(arquivo)
+    print(f"Nome: {dados['nome']}")
+    print(f"Idade: {dados['idade']}")
+    print(f"Telefones: {dados['telefones']}")
+    print(f"Endereço: {dados['endereco']['rua']}")
+
+# Lendo string JSON (ex: resposta de API)
+print("\n📌 LENDO STRING JSON")
+json_string = '{"nome": "João", "idade": 30}'
+dados = json.loads(json_string)
+print(f"Nome: {dados['nome']}")
+</pre>
+
+### 5.3 Escrevendo um arquivo JSON
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+import json
+
+# Dados para escrever
+dados = {
+    "nome": "Ana Souza",
+    "idade": 28,
+    "cidade": "São Paulo",
+    "ativo": True,
+    "salario": 4500.50,
+    "telefones": ["(11) 99999-9999", "(11) 88888-8888"],
+    "endereco": {
+        "rua": "Rua das Flores",
+        "numero": 123,
+        "bairro": "Centro",
+        "cep": "01000-000"
+    }
+}
+
+# Escrevendo JSON formatado
+print("\n📌 ESCREVENDO JSON FORMATADO")
+with open("saida.json", "w", encoding="utf-8") as arquivo:
+    json.dump(dados, arquivo, indent=2, ensure_ascii=False)
+print("Arquivo JSON criado!")
+
+# Escrevendo JSON compacto (minificado)
+with open("saida_min.json", "w", encoding="utf-8") as arquivo:
+    json.dump(dados, arquivo, separators=(",", ":"))
+print("Arquivo JSON minificado criado!")
+
+# Convertendo para string JSON
+json_string = json.dumps(dados, indent=2, ensure_ascii=False)
+print(f"\nJSON como string:\n{json_string}")
+</pre>
+
+### 5.4 Parâmetros importantes do `json.dump`
+
+| Parâmetro | Descrição | Exemplo |
+|---------|---------|---------|
+| `indent` | Identação para legibilidade | `indent=2` |
+| `ensure_ascii` | Mantém caracteres não-ASCII | `ensure_ascii=False` |
+| `sort_keys` | Ordena as chaves | `sort_keys=True` |
+| `separators` | Separadores compactos | `separators=(",", ":")` |
+
+## 6. JSON EM OUTRAS LINGUAGENS
+
+### 6.1 JavaScript (Node.js)
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+const fs = require('fs');
+
+// Ler JSON
+const dados = JSON.parse(fs.readFileSync('pessoa.json', 'utf-8'));
+console.log(dados.nome);
+
+// Escrever JSON
+const pessoa = { nome: "Ana", idade: 28 };
+fs.writeFileSync('saida.json', JSON.stringify(pessoa, null, 2));
+</pre>
+
+### 6.2 Java (Jackson)
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+ObjectMapper mapper = new ObjectMapper();
+
+// Ler JSON
+Pessoa pessoa = mapper.readValue(new File("pessoa.json"), Pessoa.class);
+
+// Escrever JSON
+mapper.writeValue(new File("saida.json"), pessoa);
+</pre>
+
+### 6.3 PHP
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+// Ler JSON
+$dados = json_decode(file_get_contents('pessoa.json'), true);
+echo $dados['nome'];
+
+// Escrever JSON
+$pessoa = ['nome' => 'Ana', 'idade' => 28];
+file_put_contents('saida.json', json_encode($pessoa, JSON_PRETTY_PRINT));
+</pre>
+
+## 7. JSON EM APIS
+
+### 7.1 Exemplo de requisição API
+
+**Requisição (HTTP POST):**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+POST /api/usuarios HTTP/1.1
+Host: exemplo.com
+Content-Type: application/json
+
+{
+  "nome": "Ana Souza",
+  "email": "ana@email.com",
+  "senha": "123456"
+}
+</pre>
+
+**Resposta (HTTP 200):**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+HTTP/1.1 200 OK
+Content-Type: application/json
+
+{
+  "id": 12345,
+  "nome": "Ana Souza",
+  "email": "ana@email.com",
+  "criado_em": "2024-01-15T10:30:00Z"
+}
+</pre>
+
+### 7.2 Exemplo em Python (requests)
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+import requests
+import json
+
+# Fazer requisição POST com JSON
+url = "https://api.exemplo.com/usuarios"
+dados = {
+    "nome": "Ana Souza",
+    "email": "ana@email.com",
+    "senha": "123456"
+}
+
+response = requests.post(url, json=dados)
+
+if response.status_code == 200:
+    resultado = response.json()
+    print(f"Usuário criado! ID: {resultado['id']}")
+else:
+    print(f"Erro: {response.status_code}")
+</pre>
+
+## 8. APLICAÇÕES REAIS
+
+| Aplicação | Como usa JSON |
+|---------|----------|
+| **APIs REST** | Formato padrão para requisições e respostas |
+| **Configurações** | Arquivos de configuração (ex: package.json) |
+| **Bancos de dados NoSQL** | MongoDB, CouchDB usam JSON/BSON |
+| **Web applications** | Comunicação frontend-backend (AJAX) |
+| **Mobile apps** | Comunicação com servidores (iOS, Android) |
+| **Ferramentas de CI/CD** | Configurações (ex: GitHub Actions) |
+| **Analytics** | Coleta e envio de dados de eventos |
+
+**Exemplo prático:** Quando você usa o aplicativo do Uber, ele envia sua localização em JSON para o servidor, e o servidor retorna os motoristas próximos em JSON.
+
+## 9. EXERCÍCIOS
+
+<details>
+<summary>📗 Exercício 1 — O que é JSON? (Fácil)</summary>
+
+**Enunciado:** O que significa JSON e qual seu principal uso?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** JSON significa JavaScript Object Notation.
+
+**Principal uso:** É o formato padrão para troca de dados entre sistemas, especialmente em APIs web.
+
+**Explicação:** JSON é leve, legível e suportado por todas as linguagens de programação.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Tipos JSON (Fácil)</summary>
+
+**Enunciado:** Quais são os tipos de dados suportados pelo JSON?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** String, Number, Boolean, Null, Object, Array
+
+**Explicação:** JSON suporta os tipos básicos de dados e estruturas aninhadas (objetos e arrays).
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — JSON válido (Fácil)</summary>
+
+**Enunciado:** O seguinte JSON é válido? `{nome: "João", idade: 30}`
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Não, é inválido.
+
+**Explicação:** As chaves em JSON **devem** estar entre aspas duplas. O correto é `{"nome": "João", "idade": 30}`.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Criando JSON (Médio)</summary>
+
+**Enunciado:** Crie um JSON que represente um livro com título, autor, ano e lista de capítulos.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+{
+  "titulo": "O Senhor dos Anéis",
+  "autor": "J.R.R. Tolkien",
+  "ano": 1954,
+  "capitulos": [
+    "O Condado",
+    "A Floresta Velha",
+    "O Conselho de Elrond"
+  ]
+}
+</pre>
+**Explicação:** O JSON tem um objeto com strings, números e um array.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Ler JSON em Python (Médio)</summary>
+
+**Enunciado:** Escreva um trecho de código Python para ler um arquivo JSON chamado `dados.json`.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+import json
+
+with open("dados.json", "r", encoding="utf-8") as arquivo:
+    dados = json.load(arquivo)
+    print(dados)
+</pre>
+**Explicação:** `json.load()` lê um arquivo JSON e retorna um objeto Python (dict, list, etc.).
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Escrever JSON em Python (Médio)</summary>
+
+**Enunciado:** Escreva um trecho de código Python para salvar um dicionário em um arquivo JSON com indentação de 4 espaços.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+import json
+
+dados = {"nome": "Ana", "idade": 28}
+
+with open("saida.json", "w", encoding="utf-8") as arquivo:
+    json.dump(dados, arquivo, indent=4)
+</pre>
+**Explicação:** `json.dump()` escreve um objeto Python em um arquivo JSON. `indent=4` formata o JSON para ser legível.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — JSON vs CSV (Difícil)</summary>
+
+**Enunciado:** Qual a principal vantagem do JSON sobre o CSV para representar dados aninhados?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** JSON suporta **estruturas hierárquicas e aninhadas** (objetos dentro de objetos, arrays de objetos), enquanto CSV é plano (tabela com linhas e colunas).
+
+**Exemplo:** Em JSON, um objeto "pessoa" pode ter um objeto "endereco" aninhado, com ruas, cidade, cep. Em CSV, isso precisaria ser "achatado" com colunas como `endereco_rua`, `endereco_cidade`, etc.
+
+**Explicação:** JSON representa dados complexos de forma natural, enquanto CSV é melhor para tabelas simples.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — Processando JSON (Desafio)</summary>
+
+**Enunciado:** Escreva um programa que leia um arquivo JSON com uma lista de alunos (nome, notas), calcule a média de cada aluno, e escreva um novo JSON com nome e média.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+import json
+
+# Ler dados
+with open("alunos.json", "r", encoding="utf-8") as arquivo:
+    alunos = json.load(arquivo)
+
+# Calcular médias
+resultados = []
+for aluno in alunos:
+    nome = aluno["nome"]
+    notas = aluno["notas"]
+    media = sum(notas) / len(notas)
+    resultados.append({
+        "nome": nome,
+        "media": round(media, 2)
+    })
+
+# Escrever resultado
+with open("medias.json", "w", encoding="utf-8") as arquivo:
+    json.dump(resultados, arquivo, indent=2, ensure_ascii=False)
+
+print("Médias calculadas!")
+</pre>
+**Explicação:** O programa lê uma lista de alunos, calcula a média de notas de cada um e escreve um novo JSON com os resultados.
+</details>
+</details>
+
+> JSON é a linguagem dos dados na internet moderna. Objetos e arrays, strings e números, booleanos e null — com esses blocos simples, o JSON constrói estruturas complexas que viajam entre servidores e clientes, alimentando APIs, aplicativos móveis e sistemas web. O JSON se tornou o formato padrão para comunicação entre sistemas porque é ao mesmo tempo legível por humanos e fácil de processar por máquinas. Sua estrutura hierárquica permite representar dados complexos de forma natural, e seu suporte universal em todas as linguagens de programação o torna a escolha óbvia para APIs e troca de dados.

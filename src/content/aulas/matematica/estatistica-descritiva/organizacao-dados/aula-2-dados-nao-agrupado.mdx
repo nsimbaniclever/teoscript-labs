@@ -1,0 +1,308 @@
+# Organização dos dados 
+
+&emsp;&emsp;&emsp;Na aula anterior, aprendemos a classificar as variáveis: umas expressam atributos ou qualidades; outras expressam números, resultantes de contagem ou mensuração. Aprendemos também que essas variáveis descrevem populações ou amostras, e que os seus valores podem ser sintetizados por parâmetros ou estatísticas. Mas há uma etapa anterior a qualquer cálculo — uma etapa que, embora pareça trivial, determina a qualidade de toda a análise que se segue: a organização dos dados.<br><br>
+
+&emsp;&emsp;&emsp;Imaginemos que acabámos de recolher as respostas de um questionário: 500 alturas, 300 idades, 200 preferências partidárias. Os dados estão ali, brutos, exatamente como foram recolhidos. Olhamos para eles e… não vemos nada. Não há padrão, não há tendência, não há história. São apenas números e categorias soltos, à espera de serem ordenados. É precisamente aqui que começa o trabalho do estatístico.<br><br>
+
+&emsp;&emsp;&emsp;Nesta aula, vamos aprender a organizar os dados em dois grandes grupos: ***os dados não agrupados*** — também designados por ***dados brutos***, tal como foram recolhidos, sem qualquer transformação — e ***os dados organizados***, que resultam de um primeiro tratamento: o Rol (ordenação), a contagem de frequências e, quando o volume de dados o exige, o agrupamento em classes.<br><br>
+
+
+
+<details>
+<summary>Veja a classificação</summary>
+<style>
+.r{font:14px system-ui;text-align:center}
+.r b{display:inline-block;padding:4px 10px;background:#333;color:#fff;border-radius:6px}
+.r i{display:block;width:2px;height:18px;background:#333;margin:0 auto}
+.r em{display:flex;gap:8px;justify-content:center;position:relative;padding-top:18px}
+.r em::before{content:'';position:absolute;top:0;left:25%;right:25%;height:2px;background:#333}
+.r em span{flex:1;padding:8px;border:2px solid #333;border-radius:8px;max-width:140px}
+.r em span::before{content:'';position:absolute;top:-18px;left:50%;width:2px;height:18px;background:#333}
+.r em span{position:relative}
+</style>
+<div class="r">
+  <b>ORGANIZAÇÃO DOS DADOS</b>
+  <i></i>
+  <em>
+    <span> Dados<br>não agrupados</span>
+    <span> Dados<br>agrupados</span>
+  </em>
+</div>
+</details>
+
+## I. Dados Não Agrupados
+
+&emsp;&emsp;&emsp;Os **Dados não agrupados** são os dados **brutos** — exatamente como foram coletados, **sem intervalos de classe**. É a matéria-prima, doutra maneira podemos dizer que os dados não agrupados é quando se aplica um questionário e recebe todas as respostas, essas respostas são os dados não agrupados.
+
+**Exemplo**
+
+- Dados não agrupados (brutos): 1,58; 1,62; 1,70; 1,58; 1,75; 1,62; 1,80; 1,58
+
+&emsp;&emsp;&emsp;Antes de qualquer cálculo — média, desvio padrão, tabela de frequência — precisamos **entender a natureza dos dados** e **organizá-los**. É o primeiro passo da Estatística Descritiva. 
+
+### 1. Rol com Dados Não Agrupados
+
+&emsp;&emsp;&emsp;Rol é a forma mais simples de organizar um conjunto de dados. Consiste em colocar os dados em ordem **crescente ou decrescente**, sem agrupá-los em classes ou intervalos. 
+
+#### 1.1. Rol com as Variáveis Qualitativas
+
+&emsp;&emsp;&emsp;Para variáveis qualitativas, o conceito de "Rol" (ordem numérica) se adapta. O foco não é de colocar em ordem crescente ou descrente, mas é de **Contagem/Organização por Categorias**. Não há números para ordenar — há **categorias** para organizar.
+
+#### **1.1.1 🏷️ Nominal (Sem ordem natural)**
+
+&emsp;&emsp;&emsp;Nas variáveis qualitativas nominais,  não existe "ordem crescente" para variáveis nominais (ex: cores, marcas, estados civis). O "Rol" aqui é, na verdade, a **Tabela de Frequência Simples** — uma contagem de quantas vezes cada categoria aparece.
+
+<details>
+<summary>📝 Ver no Manual</summary>
+Dados brutos: Azul, Verde, Azul, Preto, Azul, Verde, Preto, Preto, Azul, Castanho
+- Azul: IIII = 4
+- Verde: II = 2
+- Preto: III = 3
+- Castanho: I = 1
+
+</details>
+
+
+<details>
+<summary>📊 Ver no Excel</summary>
+=CONT.SE(A:A; "Azul")
+
+Conta quantas vezes "Azul" aparece na coluna A.
+
+</details>
+
+<details>
+<summary>📊 Ver no R</summary>
+```R
+library(dplyr)
+df %>%
+  count(cor_olhos)
+```
+</details>
+
+<details>
+<summary>🐍 Ver no Python</summary>
+```python
+import pandas as pd
+df['cor_olhos'].value_counts()
+
+Retorna a contagem de cada categoria.
+```
+</details>
+
+#### **1.1.2 📊 Ordinal (Com ordem lógica/hierárquica)**
+
+emsp;&emsp;&emsp;Nas variáveis qualitativas ordinais, existe uma ordem natural (ex: Escolaridade, Satisfação). Aqui sim fazemos um **"Rol" respeitando a hierarquia**.Listar manualmente do "pior" para o "melhor" (ou vice-versa), respeitando a hierarquia definida.
+
+<details>
+<summary>📝 Ver no Manual</summary>
+- Dados brutos: Bom, Ruim, Ótimo, Regular, Bom, Ruim, Ótimo, Bom
+- Hierarquia: Ruim < Regular < Bom < Ótimo
+- Rol ordenado:* Ruim, Ruim, Regular, Bom, Bom, Bom, Ótimo, Ótimo
+</details>
+
+
+<details>
+<summary>📊 Ver no Excel</summary>
+
+Criar coluna auxiliar com valores numéricos (1=Ruim, 2=Regular, 3=Bom, 4=Ótimo) e ordenar por essa coluna.
+
+</details>
+
+<details>
+<summary>📊 Ver no R</summary>
+```R
+library(dplyr)
+ordem <- c('Ruim', 'Regular', 'Bom', 'Ótimo')
+df %>%
+  mutate(nivel = factor(nivel, levels = ordem, ordered = TRUE)) %>%
+  count(nivel)
+```
+</details>
+
+<details>
+<summary>🐍 Ver no Python</summary>
+```python
+import pandas as pd
+ordem = ['Ruim', 'Regular', 'Bom', 'Ótimo']
+df['nivel'] = pd.Categorical(df['nivel'], 
+                              categories=ordem, 
+                              ordered=True)
+df['nivel'].value_counts().sort_index()
+```
+</details>
+
+### 1.2. Rol com Variáveis Quantitativas
+
+emsp;&emsp;&emsp;Nas variáveis quantitativas o Rol é a clássica **ordenação numérica** (crescente ou decrescente). O princípio é o mesmo para discretas e contínuas, mas com particularidades importantes.
+
+#### **1.2.1 🔢 Discreta (Números inteiros, contagens)**
+
+emsp;&emsp;&emsp;As variáveis quantitativas Ordenar números inteiros (ex: número de filhos, número de carros, quantidade de acidentes).
+
+<details>
+<summary>📝 Ver no Manual</summary>
+- Dados brutos: 3, 1, 4, 2, 3, 1, 5, 2, 3, 2
+- Rol crescente: 1, 1, 2, 2, 2, 3, 3, 3, 4, 5
+</details>
+
+
+<details>
+<summary>📊 Ver no Excel</summary>
+usa-se a função `=ORDEM(intervalo; 1)`
+</details>
+
+<details>
+<summary>📊 Ver no R</summary>
+```R
+df %>%
+  arrange(num_filhos)
+```
+</details>
+
+<details>
+<summary>🐍 Ver no Python</summary>
+```python
+import pandas as pd
+df['num_filhos'].sort_values()
+```
+</details>
+
+#### **1.2.2 📏 Contínua (Números decimais, medições)**
+
+&emsp;&emsp;&emsp;As variáveis quantitativas Contínua números com casas decimais (ex: altura, peso, salário, temperatura).
+
+<details>
+<summary>📝 Ver no Manual</summary>
+
+- Dados brutos: 1,70; 1,58; 1,62; 1,75; 1,58; 1,80; 1,62
+- Rol crescente: 1,58; 1,58; 1,62; 1,62; 1,70; 1,75; 1,80
+
+</details>
+
+
+<details>
+<summary>📊 Ver no Excel</summary>
+
+Selecionar a coluna e usar **"Classificar Crescente"**
+
+</details>
+
+<details>
+<summary>📊 Ver no R</summary>
+```R
+df %>%
+  arrange(altura)
+```
+</details>
+
+<details>
+<summary>🐍 Ver no Python</summary>
+```python
+import pandas as pd
+df['altura'].sort_values()
+```
+</details>
+
+
+
+## 📝 Resumo — Quadro Comparativo
+
+A tabela abaixo resume as diferentes abordagens para construir o Rol com dados não agrupados, dependendo do tipo de variável e do volume de dados.
+
+| Tipo de Variável | Conceito | Exemplo | Manual (poucos dados) | Ferramentas (muitos dados) |
+|------------------|----------|---------|----------------------|----------------------------|
+| **Qualitativa Nominal** | Sem ordem natural | Cor dos olhos | Contar com "X" ao lado de cada categoria | `CONT.SE()` / `value_counts()` |
+| **Qualitativa Ordinal** | Com ordem hierárquica | Nível de satisfação | Listar do "pior" para o "melhor" | Coluna auxiliar / `pd.Categorical` |
+| **Quantitativa Discreta** | Números inteiros (contagem) | Número de filhos | Ordenar riscando o menor | `ORDER BY ASC` / `sort_values()` |
+| **Quantitativa Contínua** | Números decimais (medição) | Altura | Ordenar com atenção às casas decimais | `ORDER BY ASC` / `sort_values()` |
+
+> **📌 Conclusão:** O **Rol** é a primeira organização dos dados. A forma de fazê-lo depende do **tipo de variável** e do **volume de dados**. Para poucos dados, o método manual é suficiente. Para muitos dados, as ferramentas (Excel, R, Python) são indispensáveis.
+
+## 📝 Exercícios
+
+<details>
+<summary>📗 Exercício 1</summary>
+
+**Enunciado:** Organize os dados abaixo em um Rol crescente:
+
+15, 8, 12, 15, 9, 11, 8, 13, 10, 14
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+8, 8, 9, 10, 11, 12, 13, 14, 15, 15
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2</summary>
+
+**Enunciado:** Classifique a variável "Tipo de sangue" (A, B, AB, O) e explique como você faria o Rol.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+A variável é **Qualitativa Nominal** (não há ordem natural entre os tipos sanguíneos). O "Rol" seria uma contagem de frequências: contar quantas pessoas têm cada tipo sanguíneo.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3</summary>
+
+**Enunciado:** Uma pesquisa de satisfação usou a escala: Péssimo, Ruim, Regular, Bom, Ótimo. Recebemos os dados: Bom, Péssimo, Ótimo, Regular, Bom, Ruim, Ótimo, Bom, Regular, Bom. Organize esses dados em um Rol respeitando a hierarquia.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+**Hierarquia:** Péssimo < Ruim < Regular < Bom < Ótimo
+
+**Rol ordenado:** Péssimo, Ruim, Regular, Regular, Bom, Bom, Bom, Bom, Ótimo, Ótimo
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4</summary>
+
+**Enunciado:** Você recebeu uma planilha com 10.000 respostas de uma pesquisa sobre a renda mensal (em reais) de famílias brasileiras. Qual ferramenta você usaria para organizar esses dados e por quê?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+Para 10.000 dados, o método manual é inviável. Usaria uma ferramenta como **Excel**, **R** ou **Python**. No Excel, usaria "Classificar Crescente" na coluna de renda. No R, usaria `arrange(renda)`. No Python, usaria `df['renda'].sort_values()`. A escolha depende da familiaridade com a ferramenta, mas todas são capazes de lidar com esse volume de dados.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5</summary>
+
+**Enunciado:** Por que é importante organizar os dados antes de fazer qualquer análise estatística?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+Organizar os dados é importante porque:
+
+1. Permite **entender a natureza dos dados** — que tipo de variável estamos lidando.
+2. Ajuda a **identificar erros** óbvios (dados inconsistentes, valores extremos por erro de digitação).
+3. **Prepara o terreno** para análises mais complexas (médias, desvios, tabelas de frequência, gráficos).
+4. Os dados brutos, em sua forma original, não permitem enxergar padrões ou tendências — a organização é o primeiro passo para extrair significado.
+
+</details>
+</details>
+
+> *A organização dos dados é o alicerce de toda a análise estatística. Sem ela, os dados permanecem apenas números. Com ela, eles começam a contar sua história.*

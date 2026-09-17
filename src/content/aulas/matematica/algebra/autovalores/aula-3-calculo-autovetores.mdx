@@ -1,0 +1,388 @@
+
+# CÁLCULO DE AUTOVETORES
+
+## 1. Definição Formal: Sistema Homogêneo
+
+### 1.1 Como Encontrar os Autovetores?
+
+Dado um autovalor $\lambda$ de uma matriz $A$, o autovetor correspondente $\vec{v} \neq \vec{0}$ é a solução do sistema homogêneo:
+
+$$
+(A - \lambda I) \vec{v} = \vec{0}
+$$
+
+**Interpretação:** O autovetor está no **espaço nulo** da matriz $A - \lambda I$.
+
+**Observação:** Como $\lambda$ é autovalor, $\det(A - \lambda I) = 0$, então o sistema tem **soluções não triviais** (infinitas).
+
+### 1.2 Passo a Passo para Encontrar Autovetores
+
+**Passo 1:** Calcular os autovalores $\lambda$ de $A$ (já feito na Aula 2).
+
+**Passo 2:** Para cada autovalor $\lambda$, montar a matriz $A - \lambda I$.
+
+**Passo 3:** Resolver o sistema $(A - \lambda I) \vec{v} = \vec{0}$.
+
+**Passo 4:** Escrever a solução geral (espaço nulo).
+
+## 2. Exemplos Acadêmicos Passo a Passo
+
+### 2.1 Exemplo 1: Matriz $2 \times 2$ com Autovalores Distintos
+
+Seja:
+$$
+A = \begin{bmatrix} 2 & 1 \\ 1 & 2 \end{bmatrix}
+$$
+
+**Já sabemos:** $\lambda_1 = 3, \lambda_2 = 1$
+
+#### Passo: Encontrar autovetor para $\lambda_1 = 3$
+
+**Passo 1:** $A - 3I = \begin{bmatrix} 2-3 & 1 \\ 1 & 2-3 \end{bmatrix} = \begin{bmatrix} -1 & 1 \\ 1 & -1 \end{bmatrix}$
+
+**Passo 2:** Resolver $(A - 3I) \vec{v} = \vec{0}$:
+$$
+\begin{bmatrix} -1 & 1 \\ 1 & -1 \end{bmatrix} \begin{bmatrix} x \\ y \end{bmatrix} = \begin{bmatrix} 0 \\ 0 \end{bmatrix}
+$$
+
+**Passo 3:** Sistema:
+$$
+\begin{cases}
+-x + y = 0 \\
+x - y = 0
+\end{cases}
+$$
+
+Ambas as equações são $y = x$.
+
+**Solução:** $\vec{v} = \begin{bmatrix} t \\ t \end{bmatrix}$ para $t \in \mathbb{R}$.
+
+**Escolha:** $\vec{v}_1 = \begin{bmatrix} 1 \\ 1 \end{bmatrix}$
+
+#### Passo: Encontrar autovetor para $\lambda_2 = 1$
+
+**Passo 1:** $A - 1I = \begin{bmatrix} 2-1 & 1 \\ 1 & 2-1 \end{bmatrix} = \begin{bmatrix} 1 & 1 \\ 1 & 1 \end{bmatrix}$
+
+**Passo 2:** Resolver $(A - 1I) \vec{v} = \vec{0}$:
+$$
+\begin{bmatrix} 1 & 1 \\ 1 & 1 \end{bmatrix} \begin{bmatrix} x \\ y \end{bmatrix} = \begin{bmatrix} 0 \\ 0 \end{bmatrix}
+$$
+
+**Passo 3:** Sistema:
+$$
+x + y = 0 \Rightarrow y = -x
+$$
+
+**Solução:** $\vec{v} = \begin{bmatrix} t \\ -t \end{bmatrix}$ para $t \in \mathbb{R}$.
+
+**Escolha:** $\vec{v}_2 = \begin{bmatrix} 1 \\ -1 \end{bmatrix}$
+
+**Resumo:**
+$$
+\lambda_1 = 3 \Rightarrow \vec{v}_1 = \begin{bmatrix} 1 \\ 1 \end{bmatrix}, \quad \lambda_2 = 1 \Rightarrow \vec{v}_2 = \begin{bmatrix} 1 \\ -1 \end{bmatrix}
+$$
+
+### 2.2 Exemplo 2: Matriz $2 \times 2$ com Autovalor Repetido
+
+Seja:
+$$
+A = \begin{bmatrix} 2 & 0 \\ 0 & 2 \end{bmatrix}
+$$
+
+**Passo 1:** $\lambda_1 = \lambda_2 = 2$ (autovalor repetido).
+
+**Passo 2:** $A - 2I = \begin{bmatrix} 0 & 0 \\ 0 & 0 \end{bmatrix}$
+
+**Passo 3:** Qualquer vetor $\vec{v} \neq \vec{0}$ é autovetor.
+
+**Observação:** Quando o autovalor é repetido, pode haver um ou mais autovetores independentes. Neste caso, há **dois** autovetores independentes.
+
+**Exemplo de autovetores:** $\vec{v}_1 = \begin{bmatrix} 1 \\ 0 \end{bmatrix}, \vec{v}_2 = \begin{bmatrix} 0 \\ 1 \end{bmatrix}$
+
+### 2.3 Exemplo 3: Matriz $3 \times 3$
+
+Seja:
+$$
+A = \begin{bmatrix}
+1 & 2 & 3 \\
+2 & 3 & 1 \\
+3 & 1 & 2
+\end{bmatrix}
+$$
+
+**Já sabemos:** $\lambda_1 = 6, \lambda_2 = \sqrt{3}, \lambda_3 = -\sqrt{3}$
+
+#### Passo: Encontrar autovetor para $\lambda_1 = 6$
+
+**Passo 1:** $A - 6I = \begin{bmatrix}
+1-6 & 2 & 3 \\
+2 & 3-6 & 1 \\
+3 & 1 & 2-6
+\end{bmatrix} = \begin{bmatrix}
+-5 & 2 & 3 \\
+2 & -3 & 1 \\
+3 & 1 & -4
+\end{bmatrix}$
+
+**Passo 2:** Resolver $(A - 6I) \vec{v} = \vec{0}$:
+$$
+\begin{cases}
+-5x + 2y + 3z = 0 \\
+2x - 3y + 1z = 0 \\
+3x + 1y - 4z = 0
+\end{cases}
+$$
+
+**Passo 3:** Resolver por eliminação:
+
+Da segunda: $z = -2x + 3y$
+
+Substituindo na primeira: $-5x + 2y + 3(-2x + 3y) = 0$
+$$
+-5x + 2y - 6x + 9y = 0 \Rightarrow -11x + 11y = 0 \Rightarrow y = x
+$$
+
+Substituindo na terceira: $3x + y - 4z = 0 \Rightarrow 3x + x - 4z = 0 \Rightarrow 4x = 4z \Rightarrow z = x$
+
+**Solução:** $\vec{v} = \begin{bmatrix} t \\ t \\ t \end{bmatrix}$ para $t \in \mathbb{R}$.
+
+**Escolha:** $\vec{v}_1 = \begin{bmatrix} 1 \\ 1 \\ 1 \end{bmatrix}$
+
+#### Passo: Encontrar autovetor para $\lambda_2 = \sqrt{3}$
+
+O processo é semelhante, mas envolve números irracionais. Por simplicidade, vamos pular os detalhes.
+
+## 3. Interpretação Geométrica dos Autovetores
+
+| Caso | Interpretação |
+|------|---------------|
+| **Autovetores ortogonais** | A transformação preserva ângulos (ex: rotação + escala) |
+| **Autovetores não ortogonais** | A transformação distorce ângulos |
+| **Autovalor positivo** | O vetor é esticado/comprimido na mesma direção |
+| **Autovalor negativo** | O vetor é invertido (muda de sentido) |
+| **Autovalor complexo** | A transformação envolve rotação |
+
+## 4. Exemplos Lúdicos Aprimorados
+
+### 🍔 EXEMPLO 1 – A LANCHONETE (DIREÇÕES DE CRESCIMENTO)
+
+A lanchonete tem a matriz:
+$$
+A = \begin{bmatrix} 2 & 1 \\ 1 & 2 \end{bmatrix}
+$$
+
+**Autovetores:**
+- $\vec{v}_1 = (1,1)$ com $\lambda_1 = 3$ → direção de crescimento rápido.
+- $\vec{v}_2 = (1,-1)$ com $\lambda_2 = 1$ → direção estável.
+
+**Interpretação:** Se a lanchonete tiver ingredientes na proporção $(1,1)$, o estoque cresce 3 vezes a cada passo. Se estiver na proporção $(1,-1)$, o estoque se mantém.
+
+### 🧃 EXEMPLO 2 – A CANTINA (DECAIMENTO DE NUTRIENTES)
+
+A cantina tem a matriz:
+$$
+A = \begin{bmatrix} 0.8 & 0 \\ 0 & 1.1 \end{bmatrix}
+$$
+
+**Autovetores:**
+- $\vec{v}_1 = (1,0)$ com $\lambda_1 = 0.8$ → direção de decaimento.
+- $\vec{v}_2 = (0,1)$ com $\lambda_2 = 1.1$ → direção de crescimento.
+
+**Interpretação:** O cálcio (direção $(1,0)$) diminui, enquanto o açúcar (direção $(0,1)$) cresce.
+
+## 5. Propriedades dos Autovetores
+
+| Propriedade | Descrição |
+|-------------|-----------|
+| **Autovetores de autovalores distintos** | São **linearmente independentes** |
+| **Matriz simétrica** | Autovetores correspondentes a autovalores distintos são **ortogonais** |
+| **Autovetor pode ser multiplicado por escalar** | Se $\vec{v}$ é autovetor, $c\vec{v}$ também é (para $c \neq 0$) |
+| **Autovetor não é único** | Há infinitos autovetores para cada autovalor |
+
+## 6. Aplicação na Tese: PCA
+
+No PCA, os **autovetores** da matriz de covariância são os **componentes principais**.
+
+$$
+\Sigma \vec{v}_i = \lambda_i \vec{v}_i
+$$
+
+**Interpretação:** Os autovetores são as direções de máxima variância nos dados.
+
+## 7. Exercícios Propostos (Manuais)
+
+<details>
+<summary>📗 Exercício 1 (Autovetores $2 \times 2$)</summary>
+
+**Enunciado:** Para a matriz:
+$$
+A = \begin{bmatrix} 3 & 2 \\ 2 & 3 \end{bmatrix}
+$$
+
+a) Calcule os autovalores.  
+b) Encontre os autovetores correspondentes.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\lambda_1 = 5, \lambda_2 = 1$
+
+b) Para $\lambda_1 = 5$: $A - 5I = \begin{bmatrix} -2 & 2 \\ 2 & -2 \end{bmatrix}$ → $-2x + 2y = 0 \Rightarrow y = x$ → $\vec{v}_1 = \begin{bmatrix} 1 \\ 1 \end{bmatrix}$
+
+Para $\lambda_2 = 1$: $A - 1I = \begin{bmatrix} 2 & 2 \\ 2 & 2 \end{bmatrix}$ → $2x + 2y = 0 \Rightarrow y = -x$ → $\vec{v}_2 = \begin{bmatrix} 1 \\ -1 \end{bmatrix}$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 (Autovetores com Autovalor Repetido)</summary>
+
+**Enunciado:** Para a matriz:
+$$
+A = \begin{bmatrix} 2 & 1 \\ 0 & 2 \end{bmatrix}
+$$
+
+a) Calcule os autovalores.  
+b) Encontre os autovetores.  
+c) Há dois autovetores independentes?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\det(A - \lambda I) = (2-\lambda)^2 = 0 \Rightarrow \lambda = 2$ (repetido)
+
+b) $A - 2I = \begin{bmatrix} 0 & 1 \\ 0 & 0 \end{bmatrix}$ → $y = 0$, $x$ livre → $\vec{v} = \begin{bmatrix} t \\ 0 \end{bmatrix}$
+
+c) **Não!** Apenas um autovetor independente (multiplicidade geométrica = 1).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 (Autovetores de Matriz Diagonal)</summary>
+
+**Enunciado:** Para a matriz:
+$$
+A = \begin{bmatrix} 2 & 0 & 0 \\ 0 & 3 & 0 \\ 0 & 0 & 4 \end{bmatrix}
+$$
+
+a) Quais são os autovalores?  
+b) Quais são os autovetores correspondentes?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\lambda_1 = 2, \lambda_2 = 3, \lambda_3 = 4$
+
+b) $\vec{v}_1 = \begin{bmatrix} 1 \\ 0 \\ 0 \end{bmatrix}, \vec{v}_2 = \begin{bmatrix} 0 \\ 1 \\ 0 \end{bmatrix}, \vec{v}_3 = \begin{bmatrix} 0 \\ 0 \\ 1 \end{bmatrix}$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 (Verificação de Autovetor)</summary>
+
+**Enunciado:** Verifique se $\vec{v} = \begin{bmatrix} 1 \\ 1 \\ 1 \end{bmatrix}$ é autovetor de:
+$$
+A = \begin{bmatrix}
+1 & 2 & 3 \\
+2 & 3 & 1 \\
+3 & 1 & 2
+\end{bmatrix}
+$$
+
+Se sim, qual é o autovalor?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+$A\vec{v} = \begin{bmatrix} 1 & 2 & 3 \\ 2 & 3 & 1 \\ 3 & 1 & 2 \end{bmatrix} \begin{bmatrix} 1 \\ 1 \\ 1 \end{bmatrix} = \begin{bmatrix} 1+2+3 \\ 2+3+1 \\ 3+1+2 \end{bmatrix} = \begin{bmatrix} 6 \\ 6 \\ 6 \end{bmatrix} = 6 \begin{bmatrix} 1 \\ 1 \\ 1 \end{bmatrix}$
+
+**Sim!** Autovalor $\lambda = 6$.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 (Aplicação – PCA)</summary>
+
+**Enunciado:** Suponha que a matriz de covariância de um dataset seja:
+$$
+\Sigma = \begin{bmatrix} 4 & 2 \\ 2 & 3 \end{bmatrix}
+$$
+
+a) Calcule os autovalores.  
+b) Calcule os autovetores.  
+c) Qual é a direção de maior variância?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\text{tr}(\Sigma) = 7, \det(\Sigma) = 12 - 4 = 8$  
+$\lambda^2 - 7\lambda + 8 = 0 \Rightarrow \lambda = \frac{7 \pm \sqrt{49 - 32}}{2} = \frac{7 \pm \sqrt{17}}{2}$  
+$\lambda_1 \approx 5.56, \lambda_2 \approx 1.44$
+
+b) Para $\lambda_1$: $\Sigma - \lambda_1 I = \begin{bmatrix} 4-5.56 & 2 \\ 2 & 3-5.56 \end{bmatrix} = \begin{bmatrix} -1.56 & 2 \\ 2 & -2.56 \end{bmatrix}$
+
+Resolvendo: $-1.56x + 2y = 0 \Rightarrow y \approx 0.78x$ → $\vec{v}_1 \approx \begin{bmatrix} 0.79 \\ 0.61 \end{bmatrix}$
+
+c) Direção de maior variância: $\vec{v}_1 \approx \begin{bmatrix} 0.79 \\ 0.61 \end{bmatrix}$ (associada a $\lambda_1 \approx 5.56$).
+
+</details>
+</details>
+
+## 8. EXERCÍCIO COMPUTACIONAL
+
+<details>
+<summary>🐍 Ver código (Python/NumPy)</summary>
+
+```python
+import numpy as np
+
+A = np.array([[2, 1], [1, 2]])
+
+# Autovalores e autovetores
+autovalores, autovetores = np.linalg.eig(A)
+
+print("Autovalores:", autovalores)
+print("Autovetores (colunas):\n", autovetores)
+
+# Verificação
+for i in range(len(autovalores)):
+    v = autovetores[:, i]
+    lam = autovalores[i]
+    print(f"lambda={lam:.2f}: A @ v =", A @ v)
+    print(f"lambda * v =", lam * v)
+```
+
+</details>
+
+<details>
+<summary>📝 Ver código (R)</summary>
+
+```r
+A <- matrix(c(2, 1, 1, 2), nrow=2)
+eig <- eigen(A)
+
+print(eig$values)
+print(eig$vectors)
+
+# Verificação
+for (i in 1:length(eig$values)) {
+    print(A %*% eig$vectors[, i] - eig$values[i] * eig$vectors[, i])
+}
+```
+
+</details>
+
+> *Os autovetores são encontrados resolvendo o sistema homogêneo $(A - \lambda I)\vec{v} = \vec{0}$. Eles são as **direções invariantes** da transformação. Autovetores de autovalores distintos são linearmente independentes, e, no caso de matrizes simétricas, são ortogonais. Em ML, os autovetores da matriz de covariância são os componentes principais do PCA.*

@@ -1,0 +1,340 @@
+# APLICAÇÕES DA SVD
+
+## 1. Visão Geral das Aplicações da SVD
+
+A SVD é a decomposição mais versátil da Álgebra Linear. Suas aplicações incluem:
+
+| Aplicação | Descrição |
+|-----------|-----------|
+| **PCA (Análise de Componentes Principais)** | Redução de dimensionalidade |
+| **Compressão de imagens** | Reduzir o tamanho de imagens mantendo qualidade |
+| **Sistemas de recomendação** | Fatoração de matrizes (Netflix, Amazon) |
+| **Detecção de outliers** | Identificar pontos anômalos |
+| **Pseudo-inversa** | Resolver sistemas lineares mal condicionados |
+| **Análise de robustez** | Medir a sensibilidade de um sistema |
+| **Processamento de linguagem natural (NLP)** | LSA (Latent Semantic Analysis) |
+
+## 2. PCA via SVD
+
+### 2.1 O que é PCA?
+
+A **Análise de Componentes Principais (PCA)** é uma técnica de redução de dimensionalidade que transforma um conjunto de dados em um novo sistema de coordenadas onde as direções de maior variância são os **componentes principais**.
+
+**Conexão com SVD:**
+
+Dada uma matriz de dados $X \in \mathbb{R}^{m \times n}$ (m amostras, n características), centralizada (média zero):
+
+$$
+X = U \Sigma V^T
+$$
+
+- **$V$:** contém os **componentes principais** (autovetores da covariância).
+- **$\Sigma^2 / (m-1)$:** contém as **variâncias** explicadas por cada componente.
+- **Projeção dos dados nos componentes:** $Z = X V = U \Sigma$
+
+### 2.2 Exemplo Acadêmico Passo a Passo
+
+Seja a matriz de dados centralizada:
+$$
+X = \begin{bmatrix} -1 & -1 \\ 0 & 0 \\ 1 & 1 \end{bmatrix}
+$$
+
+**Passo 1:** Calcular a SVD de $X$:
+$$
+X = U \Sigma V^T
+$$
+
+**Passo 2:** Os componentes principais são as colunas de $V$:
+$$
+V = \begin{bmatrix} \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}} & -\frac{1}{\sqrt{2}} \end{bmatrix}
+$$
+
+**Passo 3:** Projeção dos dados:
+$$
+Z = X V = \begin{bmatrix} -1 & -1 \\ 0 & 0 \\ 1 & 1 \end{bmatrix} \begin{bmatrix} \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}} & -\frac{1}{\sqrt{2}} \end{bmatrix} = \begin{bmatrix} -\sqrt{2} & 0 \\ 0 & 0 \\ \sqrt{2} & 0 \end{bmatrix}
+$$
+
+**Interpretação:** O primeiro componente (coluna 1 de $Z$) captura toda a variância dos dados. O segundo componente é zero (não há variância nessa direção).
+
+## 3. Compressão de Imagens com SVD
+
+### 3.1 Como Funciona?
+
+Uma imagem em escala de cinza é uma matriz $A \in \mathbb{R}^{m \times n}$, onde cada elemento é a intensidade de um pixel.
+
+A SVD comprime a imagem mantendo apenas os primeiros $k$ valores singulares:
+
+$$
+A \approx U_k \Sigma_k V_k^T
+$$
+
+**Taxa de compressão:**
+$$
+\text{Taxa} = \frac{m \times n}{m \times k + k + k \times n}
+$$
+
+### 3.2 Exemplo
+
+Uma imagem $100 \times 100$ tem 10.000 pixels.
+
+Mantendo $k = 10$ valores singulares:
+
+$$
+\text{Tamanho comprimido} = 100 \times 10 + 10 + 10 \times 100 = 1000 + 10 + 1000 = 2010
+$$
+
+**Taxa de compressão:** $10000 / 2010 \approx 5x$
+
+## 4. Sistemas de Recomendação
+
+### 4.1 Fatoração de Matrizes
+
+Em sistemas de recomendação, temos uma matriz $R \in \mathbb{R}^{m \times n}$ de avaliações (usuários × itens).
+
+A SVD fatora $R$:
+$$
+R \approx U \Sigma V^T
+$$
+
+**Interpretação:**
+- $U \Sigma$: representação dos usuários no espaço latente.
+- $\Sigma V^T$: representação dos itens no espaço latente.
+
+### 4.2 Exemplo
+
+Suponha que 3 usuários avaliaram 4 filmes:
+
+$$
+R = \begin{bmatrix}
+5 & 3 & 0 & 1 \\
+4 & 0 & 0 & 1 \\
+1 & 1 & 0 & 5
+\end{bmatrix}
+$$
+
+**SVD:** $R = U \Sigma V^T$
+
+**Previsão para o filme 3:** $\hat{r}_{13} = \vec{u}_1^T \Sigma \vec{v}_3$
+
+## 5. Detecção de Outliers
+
+### 5.1 Como Funciona?
+
+1. Calcular a SVD da matriz de dados $X = U \Sigma V^T$.
+2. Projetar os dados nos primeiros $k$ componentes principais: $Z = U \Sigma$.
+3. Calcular a distância de cada ponto à origem (ou ao centro).
+4. Pontos com distância anômala são **outliers**.
+
+### 5.2 Exemplo
+
+Dados normais estão no círculo unitário. Um ponto fora do círculo (distância > 3σ) é um outlier.
+
+## 6. Pseudo-inversa de Moore-Penrose
+
+### 6.1 Definição
+
+Para uma matriz $A \in \mathbb{R}^{m \times n}$ com SVD $A = U \Sigma V^T$, a **pseudo-inversa** é:
+
+$$
+A^+ = V \Sigma^+ U^T
+$$
+
+Onde $\Sigma^+$ é a transposta de $\Sigma$ com os inversos dos valores singulares não nulos.
+
+### 6.2 Aplicação: Sistemas Lineares
+
+Para $A\vec{x} = \vec{b}$:
+- Se $A$ é **mal condicionada**, a solução de mínimos quadrados é $\vec{x} = A^+ \vec{b}$.
+- Se $A$ tem **mais colunas que linhas** ($m < n$), $A^+$ dá a solução de norma mínima.
+
+## 7. Exemplos Lúdicos Aprimorados
+
+### 🍔 EXEMPLO 1 – A LANCHONETE (COMPRESSÃO DE RECEITAS)
+
+A lanchonete tem uma matriz de receitas $100 \times 50$. Com SVD, pode comprimir para $k = 10$ valores singulares.
+
+**Interpretação:** As receitas podem ser representadas por apenas 10 "sabores fundamentais", reduzindo o espaço de armazenamento.
+
+### 🧃 EXEMPLO 2 – A CANTINA (SISTEMA DE RECOMENDAÇÃO)
+
+A cantina quer recomendar alimentos para clientes com base em avaliações anteriores.
+
+**SVD:** Fatorar a matriz de avaliações e prever notas para novos alimentos.
+
+**Interpretação:** Clientes com gostos semelhantes têm representações próximas no espaço latente.
+
+## 8. Aplicação na Tese: SVD no FL
+
+### 8.1 Compressão de Gradientes
+
+Clientes comprimem gradientes usando SVD:
+$$
+G_i \approx U_k \Sigma_k V_k^T
+$$
+
+**Interpretação:** Reduz a comunicação, mantendo a informação essencial.
+
+### 8.2 Detecção de Clientes Maliciosos
+
+Calcular a SVD das atualizações dos clientes. Outliers no espaço latente podem ser clientes maliciosos.
+
+### 8.3 Análise de Heterogeneidade
+
+A SVD revela as direções de maior variância entre os clientes, ajudando a identificar subpopulações.
+
+## 9. Exercícios Propostos (Manuais)
+
+<details>
+<summary>📗 Exercício 1 (PCA via SVD)</summary>
+
+**Enunciado:** Dados:
+$$
+X = \begin{bmatrix} 1 & 2 \\ 2 & 4 \\ 3 & 6 \end{bmatrix}
+$$
+
+a) Centralize os dados.  
+b) Calcule a SVD da matriz centralizada.  
+c) Qual é o primeiro componente principal?  
+d) Qual é a variância explicada por ele?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) Média: $\bar{x}_1 = 2, \bar{x}_2 = 4$
+
+Matriz centralizada:
+$$
+X_c = \begin{bmatrix} -1 & -2 \\ 0 & 0 \\ 1 & 2 \end{bmatrix}
+$$
+
+b) SVD: $U = \begin{bmatrix} -0.707 & 0 & -0.707 \\ 0 & 1 & 0 \\ 0.707 & 0 & -0.707 \end{bmatrix}, \Sigma = \begin{bmatrix} 3.16 & 0 \\ 0 & 0 \\ 0 & 0 \end{bmatrix}, V = \begin{bmatrix} -0.447 & -0.894 \\ -0.894 & 0.447 \end{bmatrix}$
+
+c) Primeiro componente principal: $\vec{v}_1 = \begin{bmatrix} -0.447 \\ -0.894 \end{bmatrix}$ (direção $(1,2)$)
+
+d) Variância explicada: $\frac{3.16^2}{2} = 5$ (100% da variância)
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 (Compressão de Imagem)</summary>
+
+**Enunciado:** Uma imagem $200 \times 200$ é comprimida com SVD mantendo $k = 20$ valores singulares.
+
+a) Qual é o tamanho da imagem original?  
+b) Qual é o tamanho da imagem comprimida?  
+c) Qual é a taxa de compressão?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $200 \times 200 = 40000$ pixels
+
+b) $200 \times 20 + 20 + 20 \times 200 = 4000 + 20 + 4000 = 8020$
+
+c) $\frac{40000}{8020} \approx 4.99 \approx 5x$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 (Pseudo-inversa)</summary>
+
+**Enunciado:** Calcule a pseudo-inversa de:
+$$
+A = \begin{bmatrix} 1 & 1 \\ 1 & 1 \end{bmatrix}
+$$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+$A = \begin{bmatrix} 1 & 1 \\ 1 & 1 \end{bmatrix}$
+
+SVD: $U = \begin{bmatrix} \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}} & -\frac{1}{\sqrt{2}} \end{bmatrix}, \Sigma = \begin{bmatrix} 2 & 0 \\ 0 & 0 \end{bmatrix}, V = \begin{bmatrix} \frac{1}{\sqrt{2}} & \frac{1}{\sqrt{2}} \\ \frac{1}{\sqrt{2}} & -\frac{1}{\sqrt{2}} \end{bmatrix}$
+
+$A^+ = V \Sigma^+ U^T = \begin{bmatrix} \frac{1}{4} & \frac{1}{4} \\ \frac{1}{4} & \frac{1}{4} \end{bmatrix}$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 (Sistemas de Recomendação)</summary>
+
+**Enunciado:** Uma matriz de avaliações $R$ é fatorada como $R = U \Sigma V^T$. O que as colunas de $V$ representam?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+As colunas de $V$ são os **fatores latentes dos itens**. Cada filme tem uma representação nesse espaço latente.
+
+</details>
+</details>
+
+## 10. 💻 EXERCÍCIO COMPUTACIONAL
+
+<details>
+<summary>🐍 Ver código (Python/NumPy)</summary>
+
+```python
+import numpy as np
+
+# PCA via SVD
+X = np.array([[1, 2], [2, 4], [3, 6]])
+
+# Centralizar
+X_mean = np.mean(X, axis=0)
+X_centered = X - X_mean
+
+# SVD
+U, S, Vt = np.linalg.svd(X_centered, full_matrices=False)
+
+print("Componentes principais (V):\n", Vt.T)
+print("Variâncias (S^2 / (n-1)):", S**2 / (X.shape[0] - 1))
+
+# Projeção
+Z = X_centered @ Vt.T
+print("Projeção dos dados:\n", Z)
+
+# Compressão de imagem (simulada)
+m, n = 200, 200
+k = 20
+tamanho_original = m * n
+tamanho_comprimido = m * k + k + k * n
+taxa = tamanho_original / tamanho_comprimido
+print(f"Taxa de compressão: {taxa:.2f}x")
+```
+
+</details>
+
+<details>
+<summary>📝 Ver código (R)</summary>
+
+```r
+# PCA via SVD
+X <- matrix(c(1, 2, 2, 4, 3, 6), nrow=3, ncol=2)
+
+# Centralizar
+X_centered <- scale(X, center=TRUE, scale=FALSE)
+
+# SVD
+svd_X <- svd(X_centered)
+
+print(svd_X$v)  # Componentes principais
+print(svd_X$d^2 / (nrow(X) - 1))  # Variâncias
+
+# Projeção
+Z <- X_centered %*% svd_X$v
+print(Z)
+```
+
+</details>
+
+> *A SVD é uma ferramenta versátil com aplicações em diversas áreas: PCA para redução de dimensionalidade, compressão de imagens e dados, sistemas de recomendação (fatoração de matrizes), detecção de outliers e análise de robustez, pseudo-inversa para resolver sistemas mal condicionados, e NLP (LSA para análise semântica latente). Em FL, a SVD é usada para compressão de gradientes, detecção de clientes maliciosos e análise de heterogeneidade.*

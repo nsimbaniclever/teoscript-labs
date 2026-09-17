@@ -1,0 +1,402 @@
+# Registrador de Instrução (IR)
+
+## 1. Introdução
+
+Nas duas últimas aulas, exploramos o coração da CPU: a **ULA**, que executa as operações, e a **Unidade de Controle (UC)**, que orquestra tudo. Vimos como a UC busca instruções da memória, as decodifica e gera os sinais de controle que fazem o computador funcionar.<br><br>
+
+Mas há um componente pequeno, porém essencial, que está no centro de todo esse processo — um registrador que guarda a instrução que está sendo executada **naquele exato momento**. Esse componente é o **Registrador de Instrução**, ou **IR** (*Instruction Register*).<br><br>
+
+O IR é o "post-it" da CPU. Enquanto a memória guarda bilhões de instruções, o IR guarda apenas **uma**: a instrução que está sendo executada agora. É como se a CPU lesse um livro, mas tivesse apenas uma página aberta por vez — o IR é essa página.<br><br>
+
+Nesta aula, vamos entender o que é o IR, como ele funciona, qual sua relação com o Contador de Programa (PC) e a Unidade de Controle, e por que ele é fundamental para o ciclo de execução de instruções.<br><br>
+
+
+## 2. O Que é o Registrador de Instrução?
+
+### 2.1 Definição
+
+O **Registrador de Instrução** (IR, do inglês *Instruction Register*) é um registrador especial da CPU que:
+
+> **Armazena a instrução atualmente em execução, enquanto ela está sendo decodificada e executada.**
+
+### 2.2 Características principais
+
+| Característica | Descrição |
+|----------------|-----------|
+| **Tamanho** | Geralmente igual ao tamanho da instrução (16, 32, 64 bits) |
+| **Função** | Armazenar a instrução durante a decodificação e execução |
+| **Localização** | Dentro da CPU, próximo à Unidade de Controle |
+| **Tempo** | Contém a instrução apenas durante o ciclo atual |
+
+### 2.3 Analogia
+
+Pense no IR como o **visor de um caixa de supermercado**:
+
+- O caixa lê o código de barras de um produto (busca a instrução).
+- O código aparece no visor (IR guarda a instrução).
+- O caixa consulta o sistema (UC decodifica).
+- O caixa registra o preço (executa a instrução).
+- O próximo produto substitui o anterior no visor.
+
+### 2.4 Diagrama
+
+<details>
+<summary>🔧 Ver Diagrama do Registrador de Instrução</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 500px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">REGISTRADOR DE INSTRUÇÃO (IR)</div>
+
+  <pre style="color: #93c5fd; font-size: 0.6rem; line-height: 1.6; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    ┌─────────────────────────────────────────────────────────────────┐
+    │                         CPU                                     │
+    │                                                                 │
+    │  ┌─────────────┐    ┌─────────────────────────────────────┐    │
+    │  │   MEMÓRIA   │    │           UNIDADE DE CONTROLE       │    │
+    │  │             │    │                                     │    │
+    │  │  Instrução  │───►│  ┌─────────────┐  ┌─────────────┐  │    │
+    │  │  0x8A       │    │  │      IR     │  │   SIGAIS    │  │    │
+    │  │             │    │  │  (0x8A)     │  │  DE CONTROLE│  │    │
+    │  │             │    │  └─────────────┘  └─────────────┘  │    │
+    │  │             │    │         │              │           │    │
+    │  └─────────────┘    │         ▼              ▼           │    │
+    │                     │   ┌─────────────┐  ┌─────────────┐│    │
+    │                     │   │   OPCODE    │  │   ULA,      ││    │
+    │                     │   │   (0x8)     │  │   REGS, MEM ││    │
+    │                     │   └─────────────┘  └─────────────┘│    │
+    │                     └─────────────────────────────────────┘    │
+    │                                                                 │
+    └─────────────────────────────────────────────────────────────────┘
+  </pre>
+
+</div>
+</details>
+
+
+## 3. Estrutura do Registrador de Instrução
+
+### 3.1 Campos de uma instrução típica
+
+Uma instrução geralmente tem dois campos principais:
+
+| Campo | Função | Exemplo |
+|-------|--------|---------|
+| **Opcode** | Código da operação a ser executada | 0x8 = Soma |
+| **Operandos** | Dados ou endereços sobre os quais a operação atua | Registrador A, Registrador B |
+
+**Exemplo de instrução de 16 bits:**
+
+<details>
+<summary>🔧 Ver Estrutura da Instrução</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 500px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">INSTRUÇÃO DE 16 BITS</div>
+
+  <pre style="color: #93c5fd; font-size: 0.65rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    ┌────────────┬────────────┬────────────┬────────────┐
+    │   Opcode   │  Destino   │  Operando  │  Operando  │
+    │   (4 bits) │  (4 bits)  │  1 (4 bits)│  2 (4 bits)│
+    └────────────┴────────────┴────────────┴────────────┘
+
+    Exemplo: 0x8A3B
+    0x8 = Opcode (soma)
+    0xA = Destino (registrador R0)
+    0x3 = Operando 1 (registrador R1)
+    0xB = Operando 2 (registrador R2)
+  </pre>
+
+</div>
+</details>
+
+### 3.2 Divisão do IR
+
+A UC divide o IR em partes menores para interpretar a instrução:
+
+IR = 0x8A3B
+    
+Opcode = 0x8  → UC: "É uma soma!"
+Destino = 0xA → UC: "Resultado vai para R0"
+Op1 = 0x3     → UC: "Leia R1"
+Op2 = 0xB     → UC: "Leia R2"
+
+
+## 4. O IR no Ciclo de Instrução
+
+### 4.1 O ciclo completo com IR
+
+<details>
+<summary>🔧 Ver Ciclo Completo com IR</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 450px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">CICLO COMPLETO COM IR</div>
+
+  <pre style="color: #93c5fd; font-size: 0.65rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    ┌──────────────────────────────────────────────────────────────┐
+    │                                                              │
+    │  1. BUSCA (FETCH)                                           │
+    │     Memória[PC] → IR                                        │
+    │     PC = PC + 1                                             │
+    │                                                              │
+    │                    ▼                                        │
+    │                                                              │
+    │  2. DECODIFICAÇÃO (DECODE)                                  │
+    │     IR → Opcode + Operandos                                 │
+    │     UC determina o que fazer                                │
+    │                                                              │
+    │                    ▼                                        │
+    │                                                              │
+    │  3. EXECUÇÃO (EXECUTE)                                      │
+    │     UC gera sinais de controle                              │
+    │     ULA executa operação                                    │
+    │     Resultado é armazenado                                  │
+    │                                                              │
+    │                    ▼                                        │
+    │                                                              │
+    │  4. VOLTA PARA O PASSO 1                                    │
+    │                                                              │
+    └──────────────────────────────────────────────────────────────┘
+  </pre>
+
+</div>
+</details>
+
+### 4.2 Exemplo detalhado
+
+**Instrução:** `ADD R0, R1, R2` (R0 = R1 + R2)
+
+
+PASSOS:
+
+BUSCA:
+   - PC = 0x1000
+   - Memória[0x1000] = 0x8A3B
+   - IR = 0x8A3B
+   - PC = 0x1001
+
+DECODIFICAÇÃO:
+   - Opcode = 0x8 → "SOMA"
+   - Destino = 0xA → "R0"
+   - Operando 1 = 0x3 → "R1"
+   - Operando 2 = 0xB → "R2"
+
+EXECUÇÃO:
+   - UC: REG_READ(R1) e REG_READ(R2)
+   - ULA: Soma(R1, R2)
+   - UC: REG_WRITE(R0, resultado)
+
+PRÓXIMO CICLO:
+   - Buscar instrução em PC = 0x1001
+
+
+
+## 5. IR e o Contador de Programa (PC)
+
+### 5.1 A relação entre IR e PC
+
+| Componente | Função | Quando muda |
+|------------|--------|-------------|
+| **PC** | Aponta para a **próxima** instrução | Durante a busca, é incrementado ou alterado |
+| **IR** | Armazena a **instrução atual** | Na busca, recebe o valor da memória |
+
+### 5.2 O fluxo
+
+<details>
+<summary>🔧 Ver Fluxo IR e PC</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 350px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">FLUXO IR E PC</div>
+
+  <pre style="color: #93c5fd; font-size: 0.65rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    ┌─────────┐
+    │   PC    │─── Endereço ──► Memória
+    └─────────┘
+         │
+         │ (próximo ciclo)
+         ▼
+    ┌─────────┐
+    │   IR    │◄─── Instrução ◄── Memória
+    └─────────┘
+         │
+         │ (decodificação)
+         ▼
+    ┌─────────┐
+    │   UC    │─── Sinais de controle
+    └─────────┘
+  </pre>
+
+</div>
+</details>
+
+### 5.3 Saltos e o IR
+
+Quando uma instrução de salto (JMP) é executada:
+
+
+Instrução: JMP 0x2000
+
+BUSCA:
+   - IR = JMP 0x2000
+   - PC = PC + 1 (mas isso será sobrescrito)
+
+DECODIFICAÇÃO:
+   - Opcode = JMP → "Salto"
+   - Operando = 0x2000 → "Endereço de destino"
+
+EXECUÇÃO:
+   - UC: PC = 0x2000  (sobrescreve o incremento)
+   - IR mantém a instrução JMP até o próximo ciclo
+
+
+
+## 6. Tamanho do IR e Arquitetura
+
+### 6.1 IR e a largura da instrução
+
+| Arquitetura | Tamanho do IR | Tamanho da instrução |
+|-------------|---------------|---------------------|
+| 8 bits | 8 bits | 8 bits |
+| 16 bits | 16 bits | 16 bits |
+| 32 bits | 32 bits | 32 bits (ou variável) |
+| 64 bits | 64 bits | 64 bits (ou variável) |
+
+### 6.2 Instruções de tamanho variável
+
+Em algumas arquiteturas (ex: x86), as instruções têm tamanho variável:
+
+
+x86 (Intel):
+- ADD AL, BL  → 2 bytes
+- ADD AX, BX  → 3 bytes
+- ADD EAX, EBX → 4 bytes
+
+
+O IR precisa ser grande o suficiente para armazenar a maior instrução possível.
+
+
+## 7. Exercícios
+
+<details>
+<summary>📗 Exercício 1 — Definição (fácil)</summary>
+
+**Enunciado:** O que é o Registrador de Instrução (IR)?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** O IR é um registrador especial da CPU que armazena a instrução atualmente em execução, enquanto ela está sendo decodificada e executada.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Função (fácil)</summary>
+
+**Enunciado:** Qual é a função do IR durante o ciclo de instrução?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** O IR guarda a instrução que foi buscada da memória durante a etapa de fetch, para que a UC possa decodificá-la e executá-la.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — IR vs PC (médio)</summary>
+
+**Enunciado:** Qual a diferença entre o IR e o PC?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** O PC (Contador de Programa) armazena o endereço da **próxima** instrução a ser executada. O IR (Registrador de Instrução) armazena a **instrução atual** que está sendo executada.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Campos da instrução (médio)</summary>
+
+**Enunciado:** Quais são os principais campos de uma instrução típica?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Opcode (código da operação) e Operandos (dados ou endereços sobre os quais a operação atua).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Fluxo com IR (médio)</summary>
+
+**Enunciado:** Descreva o fluxo de uma instrução desde a memória até a execução, incluindo o IR.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** 
+1. O PC envia o endereço para a memória.
+2. A memória retorna a instrução.
+3. A instrução é armazenada no IR.
+4. A UC decodifica o IR (opcode e operandos).
+5. A UC gera sinais de controle.
+6. A ULA executa a operação.
+7. O resultado é armazenado.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Tamanho do IR (médio)</summary>
+
+**Enunciado:** Qual é a relação entre o tamanho do IR e a arquitetura do processador?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** O IR geralmente tem o mesmo tamanho da maior instrução que o processador pode executar. Em processadores de 32 bits, o IR tem 32 bits. Em alguns processadores (x86), as instruções têm tamanho variável, então o IR precisa ser grande o suficiente para armazenar a maior instrução.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — Instrução de salto (desafio)</summary>
+
+**Enunciado:** O que acontece com o PC e o IR durante uma instrução JMP (salto)?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Durante a execução de um JMP:
+1. A instrução é buscada e armazenada no IR.
+2. A UC decodifica o opcode (JMP) e o operando (endereço de destino).
+3. A UC carrega o endereço de destino no PC (sobrescrevendo o valor que seria PC+1).
+4. O IR mantém a instrução JMP até o próximo ciclo de busca.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — Decodificação (desafio)</summary>
+
+**Enunciado:** Se o IR = 0x4C2A e o opcode é de 4 bits, qual é o opcode?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Passo 1:** 0x4C2A em binário = 0100 1100 0010 1010
+**Passo 2:** Os 4 primeiros bits = 0100 = 0x4
+
+**Resposta:** Opcode = 0x4
+
+</details>
+</details>
+
+
+## 8. Resumo
+
+> **"O Registrador de Instrução (IR) é o 'post-it' da CPU — ele guarda a instrução que está sendo executada naquele exato momento. Durante a etapa de busca, a instrução é carregada da memória para o IR. Durante a decodificação, a UC lê o IR para determinar o opcode e os operandos. Durante a execução, o IR mantém a instrução enquanto os sinais de controle são gerados. O IR trabalha em conjunto com o PC: enquanto o PC aponta para a próxima instrução, o IR segura a instrução atual. Sem o IR, a CPU não teria como 'lembrar' o que está executando enquanto busca a próxima instrução."**

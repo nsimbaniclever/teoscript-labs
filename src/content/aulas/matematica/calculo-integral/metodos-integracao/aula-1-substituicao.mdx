@@ -1,0 +1,444 @@
+# MÉTODO DE SUBSTITUIÇÃO
+
+## 1. Definição Formal
+
+### 1.1 O que é o Método de Substituição?
+
+O **método de substituição** é a **regra da cadeia ao contrário**. Ele simplifica integrais compostas transformando-as em integrais mais simples.
+
+**Fórmula:**
+$$
+\int f(g(x)) \cdot g'(x) \, dx = \int f(u) \, du
+$$
+
+Onde:
+- $u = g(x)$
+- $du = g'(x) \, dx$
+
+**Estratégia:**
+1. Identificar uma função $u = g(x)$ que torna a integral mais simples.
+2. Calcular $du = g'(x) \, dx$.
+3. Substituir $g(x)$ por $u$ e $g'(x) dx$ por $du$.
+4. Integrar em relação a $u$.
+5. Voltar para a variável original $x$.
+
+### 1.2 Analogia
+
+**Analogia:** A substituição é como **trocar a embalagem** de um presente. O presente (a integral) é o mesmo, mas a embalagem (a variável) é diferente para facilitar o manuseio.
+
+## 2. Exemplos Acadêmicos Passo a Passo
+
+### 2.1 Exemplo 1: Substituição Simples
+
+$$
+\int 2x \cos(x^2) \, dx
+$$
+
+**Passo 1:** Identificar $u = g(x)$:
+$$
+u = x^2
+$$
+
+**Passo 2:** Calcular $du$:
+$$
+du = 2x \, dx
+$$
+
+**Passo 3:** Substituir:
+$$
+\int 2x \cos(x^2) \, dx = \int \cos(u) \, du
+$$
+
+**Passo 4:** Integrar:
+$$
+\int \cos(u) \, du = \sin(u) + C
+$$
+
+**Passo 5:** Voltar para $x$:
+$$
+\sin(x^2) + C
+$$
+
+**Resultado:** $\int 2x \cos(x^2) \, dx = \sin(x^2) + C$
+
+### 2.2 Exemplo 2: Substituição com Potência
+
+$$
+\int 3x^2 (x^3 + 1)^5 \, dx
+$$
+
+**Passo 1:** Identificar $u = g(x)$:
+$$
+u = x^3 + 1
+$$
+
+**Passo 2:** Calcular $du$:
+$$
+du = 3x^2 \, dx
+$$
+
+**Passo 3:** Substituir:
+$$
+\int 3x^2 (x^3 + 1)^5 \, dx = \int u^5 \, du
+$$
+
+**Passo 4:** Integrar:
+$$
+\int u^5 \, du = \frac{u^6}{6} + C
+$$
+
+**Passo 5:** Voltar para $x$:
+$$
+\frac{(x^3 + 1)^6}{6} + C
+$$
+
+**Resultado:** $\int 3x^2 (x^3 + 1)^5 \, dx = \frac{(x^3 + 1)^6}{6} + C$
+
+### 2.3 Exemplo 3: Substituição com Fração
+
+$$
+\int \frac{x}{x^2 + 1} \, dx
+$$
+
+**Passo 1:** Identificar $u = g(x)$:
+$$
+u = x^2 + 1
+$$
+
+**Passo 2:** Calcular $du$:
+$$
+du = 2x \, dx \Rightarrow x \, dx = \frac{du}{2}
+$$
+
+**Passo 3:** Substituir:
+$$
+\int \frac{x}{x^2 + 1} \, dx = \int \frac{1}{u} \cdot \frac{du}{2} = \frac{1}{2} \int \frac{1}{u} \, du
+$$
+
+**Passo 4:** Integrar:
+$$
+\frac{1}{2} \ln|u| + C
+$$
+
+**Passo 5:** Voltar para $x$:
+$$
+\frac{1}{2} \ln|x^2 + 1| + C
+$$
+
+**Resultado:** $\int \frac{x}{x^2 + 1} \, dx = \frac{1}{2} \ln(x^2 + 1) + C$
+
+### 2.4 Exemplo 4: Substituição com Exponencial
+
+$$
+\int e^{3x} \, dx
+$$
+
+**Passo 1:** Identificar $u = g(x)$:
+$$
+u = 3x
+$$
+
+**Passo 2:** Calcular $du$:
+$$
+du = 3 \, dx \Rightarrow dx = \frac{du}{3}
+$$
+
+**Passo 3:** Substituir:
+$$
+\int e^{3x} \, dx = \int e^u \cdot \frac{du}{3} = \frac{1}{3} \int e^u \, du
+$$
+
+**Passo 4:** Integrar:
+$$
+\frac{e^u}{3} + C
+$$
+
+**Passo 5:** Voltar para $x$:
+$$
+\frac{e^{3x}}{3} + C
+$$
+
+**Resultado:** $\int e^{3x} \, dx = \frac{e^{3x}}{3} + C$
+
+### 2.5 Exemplo 5: Substituição com Seno e Cosseno
+
+$$
+\int \sin(x) \cos(x) \, dx
+$$
+
+**Passo 1:** Identificar $u = g(x)$:
+$$
+u = \sin(x)
+$$
+
+**Passo 2:** Calcular $du$:
+$$
+du = \cos(x) \, dx
+$$
+
+**Passo 3:** Substituir:
+$$
+\int \sin(x) \cos(x) \, dx = \int u \, du
+$$
+
+**Passo 4:** Integrar:
+$$
+\frac{u^2}{2} + C
+$$
+
+**Passo 5:** Voltar para $x$:
+$$
+\frac{\sin^2(x)}{2} + C
+$$
+
+**Resultado:** $\int \sin(x) \cos(x) \, dx = \frac{\sin^2(x)}{2} + C$
+
+## 3. Substituição em Integrais Definidas
+
+Quando usamos substituição em integrais definidas, **trocamos os limites de integração**.
+
+### 3.1 Exemplo
+
+$$
+\int_0^1 2x \cos(x^2) \, dx
+$$
+
+**Passo 1:** $u = x^2$
+
+**Passo 2:** $du = 2x \, dx$
+
+**Passo 3:** Trocar os limites:
+- $x = 0 \Rightarrow u = 0$
+- $x = 1 \Rightarrow u = 1$
+
+**Passo 4:** Substituir:
+$$
+\int_0^1 2x \cos(x^2) \, dx = \int_0^1 \cos(u) \, du
+$$
+
+**Passo 5:** Integrar:
+$$
+\left[ \sin(u) \right]_0^1 = \sin(1) - \sin(0) = \sin(1)
+$$
+
+**Resultado:** $\sin(1)$
+
+## 4. Exemplos Lúdicos Aprimorados
+
+### 🍔 EXEMPLO 1 – A LANCHONETE (CUSTO COMPOSTO)
+
+A lanchonete tem um custo marginal:
+$$
+C'(x) = \frac{x}{x^2 + 1}
+$$
+
+**Custo total $C(x)$:**
+
+Usando substituição $u = x^2 + 1$, $du = 2x \, dx$:
+$$
+C(x) = \int \frac{x}{x^2 + 1} dx = \frac{1}{2} \int \frac{1}{u} du = \frac{1}{2} \ln(u) + K = \frac{1}{2} \ln(x^2 + 1) + K
+$$
+
+**Interpretação:** O custo total cresce logaritmicamente com a quantidade produzida.
+
+### 🧃 EXEMPLO 2 – A CANTINA (DECAIMENTO EXPONENCIAL COMPOSTO)
+
+A cantina tem um fluxo de estoque:
+$$
+E'(t) = 2t e^{t^2}
+$$
+
+**Estoque total $E(t)$:**
+
+Usando substituição $u = t^2$, $du = 2t \, dt$:
+$$
+E(t) = \int 2t e^{t^2} dt = \int e^u du = e^u + C = e^{t^2} + C
+$$
+
+**Interpretação:** O estoque cresce exponencialmente ao quadrado.
+
+### 📚 EXEMPLO 3 – A BIBLIOTECA (LEITURA ACUMULADA)
+
+A biblioteca tem uma taxa de leitura:
+$$
+R'(t) = \frac{\ln(t)}{t}
+$$
+
+**Leitura total acumulada $R(t)$:**
+
+Usando substituição $u = \ln(t)$, $du = \frac{1}{t} dt$:
+$$
+R(t) = \int \frac{\ln(t)}{t} dt = \int u \, du = \frac{u^2}{2} + C = \frac{(\ln(t))^2}{2} + C
+$$
+
+## 5. Aplicação na Tese: Substituição em FL
+
+### 5.1 Análise de Erro Acumulado
+
+Em FL, o erro acumulado pode envolver funções compostas. A substituição simplifica expressões como:
+$$
+E(T) = \int_0^T \frac{2t}{t^2 + 1} \, dt
+$$
+
+**Substituição:** $u = t^2 + 1$, $du = 2t \, dt$
+
+$$
+E(T) = \int_1^{T^2 + 1} \frac{1}{u} \, du = \left[ \ln(u) \right]_1^{T^2 + 1} = \ln(T^2 + 1)
+$$
+
+### 5.2 Mudança de Variável em Otimização
+
+Em otimização, mudanças de variável frequentemente simplificam funções de perda, permitindo uma análise mais clara da convergência.
+
+## 6. Exercícios Propostos (Manuais)
+
+<details>
+<summary>📗 Exercício 1 (Substituição Básica)</summary>
+
+**Enunciado:** Calcule as integrais:
+
+a) $\int 4x (x^2 + 1)^3 \, dx$
+
+b) $\int \frac{e^x}{e^x + 1} \, dx$
+
+c) $\int \frac{2x}{\sqrt{x^2 + 1}} \, dx$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $u = x^2 + 1, du = 2x dx \Rightarrow \int 4x (x^2 + 1)^3 dx = 2 \int u^3 du = \frac{u^4}{2} + C = \frac{(x^2 + 1)^4}{2} + C$
+
+b) $u = e^x + 1, du = e^x dx \Rightarrow \int \frac{1}{u} du = \ln|u| + C = \ln(e^x + 1) + C$
+
+c) $u = x^2 + 1, du = 2x dx \Rightarrow \int \frac{1}{\sqrt{u}} du = 2\sqrt{u} + C = 2\sqrt{x^2 + 1} + C$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 (Substituição com Frações)</summary>
+
+**Enunciado:** Calcule as integrais:
+
+a) $\int \frac{1}{x \ln(x)} \, dx$
+
+b) $\int \frac{x}{(x^2 + 2)^2} \, dx$
+
+c) $\int \frac{\sin(x)}{\cos(x)} \, dx$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $u = \ln(x), du = \frac{1}{x} dx \Rightarrow \int \frac{1}{u} du = \ln|\ln(x)| + C$
+
+b) $u = x^2 + 2, du = 2x dx \Rightarrow \frac{1}{2} \int \frac{1}{u^2} du = -\frac{1}{2u} + C = -\frac{1}{2(x^2 + 2)} + C$
+
+c) $u = \cos(x), du = -\sin(x) dx \Rightarrow -\int \frac{1}{u} du = -\ln|\cos(x)| + C = \ln|\sec(x)| + C$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 (Integrais Definidas)</summary>
+
+**Enunciado:** Calcule as integrais definidas:
+
+a) $\int_0^1 x (x^2 + 1)^2 \, dx$
+
+b) $\int_0^{\pi/2} \sin(x) \cos(x) \, dx$
+
+c) $\int_0^1 \frac{x}{(x^2 + 1)^2} \, dx$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $u = x^2 + 1, du = 2x dx$
+$x = 0 \Rightarrow u = 1, x = 1 \Rightarrow u = 2$
+$$
+\int_0^1 x (x^2 + 1)^2 dx = \frac{1}{2} \int_1^2 u^2 du = \frac{1}{2} \left[ \frac{u^3}{3} \right]_1^2 = \frac{1}{6}(8 - 1) = \frac{7}{6}
+$$
+
+b) $u = \sin(x), du = \cos(x) dx$
+$x = 0 \Rightarrow u = 0, x = \pi/2 \Rightarrow u = 1$
+$$
+\int_0^{\pi/2} \sin(x) \cos(x) dx = \int_0^1 u \, du = \left[ \frac{u^2}{2} \right]_0^1 = \frac{1}{2}
+$$
+
+c) $u = x^2 + 1, du = 2x dx$
+$x = 0 \Rightarrow u = 1, x = 1 \Rightarrow u = 2$
+$$
+\int_0^1 \frac{x}{(x^2 + 1)^2} dx = \frac{1}{2} \int_1^2 \frac{1}{u^2} du = \frac{1}{2} \left[ -\frac{1}{u} \right]_1^2 = \frac{1}{2} \left( -\frac{1}{2} + 1 \right) = \frac{1}{4}
+$$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 (Aplicação – FL)</summary>
+
+**Enunciado:** Em FL, o erro acumulado é:
+$$
+E(T) = \int_0^T \frac{t}{t^2 + 1} \, dt
+$$
+
+a) Calcule $E(T)$ usando substituição.
+
+b) Qual é $\lim_{T \to \infty} E(T)$?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $u = t^2 + 1, du = 2t dt$
+$$
+E(T) = \int_0^T \frac{t}{t^2 + 1} dt = \frac{1}{2} \int_1^{T^2 + 1} \frac{1}{u} du = \frac{1}{2} \left[ \ln(u) \right]_1^{T^2 + 1} = \frac{1}{2} \ln(T^2 + 1)
+$$
+
+b) $\lim_{T \to \infty} E(T) = \infty$ (diverge)
+
+</details>
+</details>
+
+## 7. 💻 EXERCÍCIO COMPUTACIONAL
+
+<details>
+<summary>🐍 Ver código (Python/SymPy)</summary>
+
+```python
+import sympy as sp
+
+x = sp.Symbol('x')
+
+# Substituição básica
+f1 = 4*x * (x**2 + 1)**3
+print(f"∫4x(x²+1)³ dx = {sp.integrate(f1, x)}")
+
+f2 = sp.exp(x) / (sp.exp(x) + 1)
+print(f"∫e^x/(e^x+1) dx = {sp.integrate(f2, x)}")
+
+f3 = 2*x / sp.sqrt(x**2 + 1)
+print(f"∫2x/√(x²+1) dx = {sp.integrate(f3, x)}")
+
+# Substituição com frações
+f4 = 1 / (x * sp.log(x))
+print(f"∫1/(x ln(x)) dx = {sp.integrate(f4, x)}")
+
+f5 = x / (x**2 + 2)**2
+print(f"∫x/(x²+2)² dx = {sp.integrate(f5, x)}")
+
+# Integral definida
+f6 = x * (x**2 + 1)**2
+integral_definida = sp.integrate(f6, (x, 0, 1))
+print(f"∫₀¹ x(x²+1)² dx = {integral_definida}")
+```
+
+</details>
+
+> *O método de substituição é a ferramenta mais fundamental da integração. Ele simplifica integrais compostas transformando-as em integrais mais simples. A chave para o sucesso é identificar corretamente a substituição $u = g(x)$ e calcular $du = g'(x) dx$. Este método é amplamente utilizado em análise de sistemas, processamento de sinais e problemas de otimização.*

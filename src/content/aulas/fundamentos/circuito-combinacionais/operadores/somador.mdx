@@ -1,0 +1,549 @@
+# Somador
+
+## 1. Introdução
+
+Até agora, aprendemos os operadores lógicos fundamentais (AND, OR, NOT, XOR, NAND, NOR), como construir tabelas verdade e como simplificar expressões usando álgebra booleana. Mas como tudo isso se aplica na prática?<br><br>
+
+A aplicação mais fundamental da lógica digital é a **aritmética**. Um computador precisa somar, subtrair, multiplicar e dividir números. E a operação mais básica de todas é a **soma**. Nesta aula, vamos aprender como construir circuitos que realizam **soma binária** — a operação aritmética mais fundamental de um computador. 
+
+> Este é o primeiro passo para entender como a **ULA** (Unidade Lógica e Aritmética) — o coração computacional da CPU — funciona.
+
+
+## 2. O Problema: Somando Dois Bits
+
+### 2.1 O que precisamos?
+
+Quando somamos dois bits (A e B), precisamos de duas saídas:
+
+1. **S** — a soma propriamente dita (0 ou 1)
+2. **Cout** — o "vai-um" (*carry*) para a próxima posição
+
+**Exemplo no sistema decimal:** 5 + 7 = 12
+- 5 + 7 = 12 → escrevemos 2 e "vai 1" para a próxima casa
+
+**Exemplo no sistema binário:** 1 + 1 = 10
+- 1 + 1 = 2 → escrevemos 0 e "vai 1" para a próxima casa
+
+### 2.2 Tabela verdade da soma de dois bits
+
+| A | B | Soma (S) | Vai-um (Cout) |
+|---|---|----------|---------------|
+| 0 | 0 | 0 | 0 |
+| 0 | 1 | 1 | 0 |
+| 1 | 0 | 1 | 0 |
+| 1 | 1 | 0 | 1 |
+
+**Observação:** Esta é a tabela verdade do **meio-somador**.
+
+
+## 3. Meio-Somador (*Half Adder*)
+
+### 3.1 Definição
+
+O **meio-somador** é um circuito que soma **dois bits** (A e B) e produz:
+
+- **S (Soma)** = A ⊕ B (XOR)
+- **Cout (Vai-um)** = A ∧ B (AND)
+
+### 3.2 Diagrama do Meio-Somador
+
+<details>
+<summary>🔧 Ver Diagrama do Meio-Somador</summary>
+
+<div style="background: #0a0f1e; padding: 2rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 600px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 1rem; font-weight: 700; margin-bottom: 1.5rem; letter-spacing: 1px; text-align: center;">
+    🔧 MEIO-SOMADOR (HALF ADDER)
+  </div>
+
+  <div style="display: flex; align-items: center; justify-content: center; gap: 0;">
+    
+    <!-- Entradas à esquerda -->
+    <div style="display: flex; flex-direction: column; gap: 1.5rem; align-items: flex-end;">
+      <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <span style="color: #60a5fa; font-weight: 700; font-size: 1.2rem;">A</span>
+        <span style="color: #4b5563;">──</span>
+      </div>
+      <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <span style="color: #60a5fa; font-weight: 700; font-size: 1.2rem;">B</span>
+        <span style="color: #4b5563;">──</span>
+      </div>
+    </div>
+
+    <!-- Bloco Half Adder -->
+    <div style="background: #2d1b69; padding: 1.5rem 2rem; border-radius: 8px; border: 2px solid #7c3aed; min-width: 180px; position: relative;">
+      <div style="color: #a78bfa; font-weight: 700; font-size: 1.1rem; text-align: center; letter-spacing: 0.5px;">HALF</div>
+      <div style="color: #a78bfa; font-weight: 700; font-size: 1.1rem; text-align: center; letter-spacing: 0.5px;">ADDER</div>
+    </div>
+
+    <!-- Saídas à direita -->
+    <div style="display: flex; flex-direction: column; gap: 1.5rem; align-items: flex-start;">
+      <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <span style="color: #4b5563;">──</span>
+        <div>
+          <span style="color: #34d399; font-weight: 700; font-size: 1.2rem;">S</span>
+          <span style="color: #6ee7b7; font-size: 0.9rem;"> = A ⊕ B</span>
+        </div>
+      </div>
+      <div style="display: flex; align-items: center; gap: 0.5rem;">
+        <span style="color: #4b5563;">──</span>
+        <div>
+          <span style="color: #fcd34d; font-weight: 700; font-size: 1.2rem;">Cout</span>
+          <span style="color: #fde68a; font-size: 0.9rem;"> = A ∧ B</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Legenda -->
+  <div style="margin-top: 1.5rem; padding-top: 1rem; border-top: 1px solid rgba(255,255,255,0.06); text-align: center;">
+    <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+      <span style="background: #1a3a5c; color: #93c5fd; padding: 0.2rem 0.8rem; border-radius: 12px; font-size: 0.7rem;">Entradas</span>
+      <span style="background: #2d1b69; color: #c4b5fd; padding: 0.2rem 0.8rem; border-radius: 12px; font-size: 0.7rem;">Circuito</span>
+      <span style="background: #1a5c3a; color: #6ee7b7; padding: 0.2rem 0.8rem; border-radius: 12px; font-size: 0.7rem;">Soma (XOR)</span>
+      <span style="background: #5c3a1a; color: #fde68a; padding: 0.2rem 0.8rem; border-radius: 12px; font-size: 0.7rem;">Carry (AND)</span>
+    </div>
+  </div>
+
+</div>
+</details>
+
+### 3.3 Expressões lógicas
+
+| Saída | Expressão | Porta lógica |
+|-------|-----------|--------------|
+| **S** | A ⊕ B | XOR |
+| **Cout** | A ∧ B | AND |
+
+### 3.4 Tabela verdade do Meio-Somador
+
+| A | B | S = A⊕B | Cout = A∧B |
+|---|---|---------|------------|
+| 0 | 0 | 0 | 0 |
+| 0 | 1 | 1 | 0 |
+| 1 | 0 | 1 | 0 |
+| 1 | 1 | 0 | 1 |
+
+### 3.5 Exemplo prático
+
+**Calcule: 1 + 1 = ?**
+
+**Passo 1:** A = 1, B = 1
+**Passo 2:** S = 1 ⊕ 1 = **0**
+**Passo 3:** Cout = 1 ∧ 1 = **1**
+
+**Resultado:** S = 0, Cout = 1 → `10` = 2 em binário ✅
+
+### 3.6 Construindo o Meio-Somador com portas lógicas
+
+<details>
+<summary>🔧 Ver Circuito do Meio-Somador</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 500px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">CIRCUITO DO MEIO-SOMADOR</div>
+
+  <pre style="color: #93c5fd; font-size: 0.7rem; line-height: 1.6; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    A ──┬─────── XOR ── S (A ⊕ B)
+        │
+    B ──┼─────── XOR ──
+        │
+        └─────── AND ── Cout (A ∧ B)
+  </pre>
+
+  <div style="margin-top: 0.8rem; padding-top: 0.8rem; border-top: 1px solid rgba(255,255,255,0.05); display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap;">
+    <span style="background: #2d1b69; color: #c4b5fd; padding: 0.15rem 0.6rem; border-radius: 12px; font-size: 0.55rem;">XOR → S</span>
+    <span style="background: #1a5c3a; color: #6ee7b7; padding: 0.15rem 0.6rem; border-radius: 12px; font-size: 0.55rem;">AND → Cout</span>
+  </div>
+
+</div>
+</details>
+
+
+## 4. Somador Completo (*Full Adder*)
+
+### 4.1 Por que precisamos de um somador completo?
+
+O meio-somador só soma dois bits. Mas quando somamos números com múltiplos bits, precisamos somar **três bits**:
+
+- O bit A da posição atual
+- O bit B da posição atual
+- O **Cout (vai-um)** da posição anterior
+
+### 4.2 Definição
+
+O **somador completo** é um circuito que soma **três bits** (A, B, Cin) e produz:
+
+- **S (Soma)** = A ⊕ B ⊕ Cin
+- **Cout (Vai-um)** = (A ∧ B) ∨ (Cin ∧ (A ⊕ B))
+
+### 4.3 Diagrama do Somador Completo
+
+<details>
+<summary>🔧 Ver Diagrama do Somador Completo</summary>
+
+<div style="font-family: monospace; background: #111; padding: 2rem; border-radius: 12px; max-width: 400px; margin: auto; display: flex; align-items: center; justify-content: center; gap: 0;">
+
+  <div style="display: flex; flex-direction: column; gap: 1.4rem; text-align: right;">
+    <span style="color: #60a5fa; font-weight: bold;">A ──</span>
+    <span style="color: #60a5fa; font-weight: bold;">B ──</span>
+    <span style="color: #60a5fa; font-weight: bold;">Cin ─</span>
+  </div>
+
+  <div style="border: 2px solid #7c3aed; background: #2d1b69; padding: 1.2rem 1.5rem; text-align: center; border-radius: 4px;">
+    <div style="color: #a78bfa; font-weight: bold;">FULL</div>
+    <div style="color: #a78bfa; font-weight: bold;">ADDER</div>
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 1.4rem;">
+    <span style="color: #34d399; font-weight: bold;">── S</span>
+    <span style="color: #fcd34d; font-weight: bold;">── Cout</span>
+  </div>
+
+</div>
+</details>
+
+### 4.4 Expressões lógicas
+
+| Saída | Expressão | Portas lógicas |
+|-------|-----------|----------------|
+| **S** | A ⊕ B ⊕ Cin | XOR (2 portas) |
+| **Cout** | (A ∧ B) ∨ (Cin ∧ (A ⊕ B)) | AND, OR, XOR |
+
+### 4.5 Tabela verdade do Somador Completo
+
+| A | B | Cin | S = A⊕B⊕Cin | Cout = (A∧B) ∨ (Cin∧(A⊕B)) |
+|---|---|-----|-------------|-----------------------------|
+| 0 | 0 | 0 | 0 | 0 |
+| 0 | 0 | 1 | 1 | 0 |
+| 0 | 1 | 0 | 1 | 0 |
+| 0 | 1 | 1 | 0 | 1 |
+| 1 | 0 | 0 | 1 | 0 |
+| 1 | 0 | 1 | 0 | 1 |
+| 1 | 1 | 0 | 0 | 1 |
+| 1 | 1 | 1 | 1 | 1 |
+
+### 4.6 Exemplo prático
+
+**Calcule: 1 + 1 + 1 = ?**
+
+**Passo 1:** A = 1, B = 1, Cin = 1
+**Passo 2:** S = 1 ⊕ 1 ⊕ 1 = (1⊕1=0) ⊕ 1 = **1**
+**Passo 3:** Cout = (1∧1) ∨ (1∧(1⊕1)) = 1 ∨ (1∧0) = 1 ∨ 0 = **1**
+
+**Resultado:** S = 1, Cout = 1 → `11` = 3 em binário ✅
+
+### 4.7 Construindo o Somador Completo com portas lógicas
+
+<details>
+<summary>🔧 Ver Circuito do Somador Completo</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 600px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">CIRCUITO DO SOMADOR COMPLETO</div>
+
+  <pre style="color: #93c5fd; font-size: 0.65rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+                    ┌─────── XOR ────── S (A⊕B⊕Cin)
+    A ──┬───────────┤
+        │           │
+    B ──┼───── XOR ─┼─────── XOR ──────
+        │     │     │
+        │     └─────┼─────── AND ─┬──── OR ── Cout
+        │           │             │
+        └───────────┼─────── AND ─┘
+                    │
+   Cin ─────────────┼─────── AND ────────
+                    │
+                    └─────── AND ────────
+  </pre>
+
+  <div style="margin-top: 0.8rem; padding-top: 0.8rem; border-top: 1px solid rgba(255,255,255,0.05); display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap;">
+    <span style="background: #2d1b69; color: #c4b5fd; padding: 0.15rem 0.6rem; border-radius: 12px; font-size: 0.55rem;">XOR → S</span>
+    <span style="background: #1a5c3a; color: #6ee7b7; padding: 0.15rem 0.6rem; border-radius: 12px; font-size: 0.55rem;">AND</span>
+    <span style="background: #5c3a1a; color: #fde68a; padding: 0.15rem 0.6rem; border-radius: 12px; font-size: 0.55rem;">OR → Cout</span>
+  </div>
+
+</div>
+</details>
+
+
+## 5. Somador de 4 Bits (*Ripple Carry Adder*)
+
+### 5.1 Como construir um somador de múltiplos bits?
+
+Para somar números de 4 bits (A₃A₂A₁A₀ + B₃B₂B₁B₀), usamos **4 somadores completos em cascata**:
+
+- O **Cout** de cada somador vira o **Cin** do próximo.
+
+### 5.2 Diagrama do Somador de 4 bits
+
+<details>
+<summary>🔧 Ver Diagrama do Somador de 4 Bits</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 500px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">SOMADOR DE 4 BITS (RIPPLE CARRY)</div>
+
+  <pre style="color: #93c5fd; font-size: 0.65rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    A₀ ──┤FA0├── S₀
+    B₀ ──┤   ├── Cout → Cin do FA1
+         └───┘
+
+    A₁ ──┤FA1├── S₁
+    B₁ ──┤   ├── Cout → Cin do FA2
+         └───┘
+
+    A₂ ──┤FA2├── S₂
+    B₂ ──┤   ├── Cout → Cin do FA3
+         └───┘
+
+    A₃ ──┤FA3├── S₃
+    B₃ ──┤   ├── Cout final
+         └───┘
+  </pre>
+
+  <div style="margin-top: 0.8rem; padding-top: 0.8rem; border-top: 1px solid rgba(255,255,255,0.05); display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap;">
+    <span style="background: #2d1b69; color: #c4b5fd; padding: 0.15rem 0.6rem; border-radius: 12px; font-size: 0.55rem;">FA = Full Adder</span>
+    <span style="background: #5c3a1a; color: #fde68a; padding: 0.15rem 0.6rem; border-radius: 12px; font-size: 0.55rem;">Carry propaga (ripple)</span>
+  </div>
+
+</div>
+</details>
+
+### 5.3 Exemplo prático: 5 + 3 = 8
+
+**Entradas:**
+- A = 5 = `0101`
+- B = 3 = `0011`
+
+| Posição | A | B | Cin | S | Cout |
+|---------|---|---|-----|---|------|
+| 0 (LSB) | 1 | 1 | 0 | 0 | 1 |
+| 1 | 0 | 1 | 1 | 0 | 1 |
+| 2 | 1 | 0 | 1 | 0 | 1 |
+| 3 | 0 | 0 | 1 | 1 | 0 |
+
+**Resultado:** S₃S₂S₁S₀ = `1000` = 8 ✅
+
+### 5.4 Limitação: O problema do *ripple carry*
+
+O somador *ripple carry* tem uma limitação: o carry "propaga" (ripple) de um estágio para o próximo. Isso significa que o resultado final só fica pronto depois que o carry percorreu todos os estágios.
+
+- **Soma de 4 bits:** 4 atrasos de carry
+- **Soma de 32 bits:** 32 atrasos de carry
+- **Soma de 64 bits:** 64 atrasos de carry
+
+**Solução:** *Carry Look-Ahead Adder* — um somador mais rápido que calcula os carries em paralelo. (Será visto em aulas mais avançadas.)
+
+
+## 6. A Subtração e a Relação com o Somador
+
+A subtração pode ser realizada usando o mesmo circuito do somador, graças ao **Complemento de 2**:
+
+> **A - B = A + (~B + 1)**
+
+Ou seja, para subtrair B de A:
+1. Invertemos todos os bits de B (Complemento de 1).
+2. Somamos 1 (para obter o Complemento de 2).
+3. Somamos A com o resultado.
+
+**Exemplo:** 5 - 3 = 2
+- 5 = `0101`
+- 3 = `0011`
+- ~3 = `1100` (Complemento de 1)
+- ~3 + 1 = `1101` (Complemento de 2)
+- 5 + (-3) = `0101 + 1101` = `0010` (2) ✅
+
+**Veremos isso com mais detalhes na aula sobre Subtrator!**
+
+
+## 7. Aplicações Reais
+
+| Aplicação | Como usa o somador |
+|-----------|-------------------|
+| **ULA da CPU** | Realiza operações aritméticas básicas |
+| **Calculadoras** | Soma números decimais (convertidos para binário) |
+| **Sistemas de áudio** | Soma sinais digitais |
+| **Processamento de imagem** | Operações aritméticas em pixels |
+| **Criptografia** | Soma em algoritmos de cifra |
+| **Contadores** | Incremento/decremento de valores |
+| **Endereçamento de memória** | Cálculo de endereços |
+
+
+## 8. Exercícios
+
+<details>
+<summary>📗 Exercício 1 — Meio-somador (fácil)</summary>
+
+**Enunciado:** Calcule a saída de um meio-somador para A = 0, B = 1.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Passo 1:** S = A ⊕ B = 0 ⊕ 1 = 1
+
+**Passo 2:** Cout = A ∧ B = 0 ∧ 1 = 0
+
+**Resposta:** S = 1, Cout = 0
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Meio-somador (fácil)</summary>
+
+**Enunciado:** Calcule a saída de um meio-somador para A = 1, B = 1.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Passo 1:** S = 1 ⊕ 1 = 0
+
+**Passo 2:** Cout = 1 ∧ 1 = 1
+
+**Resposta:** S = 0, Cout = 1
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Somador completo (fácil)</summary>
+
+**Enunciado:** Calcule a saída de um somador completo para A = 1, B = 0, Cin = 1.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Passo 1:** S = 1 ⊕ 0 ⊕ 1 = 0
+
+**Passo 2:** Cout = (1∧0) ∨ (1∧(1⊕0)) = 0 ∨ (1∧1) = 0 ∨ 1 = 1
+
+**Resposta:** S = 0, Cout = 1
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Somador completo (fácil)</summary>
+
+**Enunciado:** Calcule a saída de um somador completo para A = 0, B = 1, Cin = 1.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Passo 1:** S = 0 ⊕ 1 ⊕ 1 = 0
+
+**Passo 2:** Cout = (0∧1) ∨ (1∧(0⊕1)) = 0 ∨ (1∧1) = 0 ∨ 1 = 1
+
+**Resposta:** S = 0, Cout = 1
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Meio-somador (tabela verdade) (médio)</summary>
+
+**Enunciado:** Complete a tabela verdade do meio-somador:
+
+| A | B | S | Cout |
+|---|---|---|------|
+| 0 | 0 | ? | ? |
+| 0 | 1 | ? | ? |
+| 1 | 0 | ? | ? |
+| 1 | 1 | ? | ? |
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+| A | B | S | Cout |
+|---|---|---|------|
+| 0 | 0 | 0 | 0 |
+| 0 | 1 | 1 | 0 |
+| 1 | 0 | 1 | 0 |
+| 1 | 1 | 0 | 1 |
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Somador completo (tabela verdade) (médio)</summary>
+
+**Enunciado:** Complete a tabela verdade do somador completo:
+
+| A | B | Cin | S | Cout |
+|---|---|-----|---|------|
+| 0 | 0 | 0 | ? | ? |
+| 0 | 0 | 1 | ? | ? |
+| 0 | 1 | 0 | ? | ? |
+| 0 | 1 | 1 | ? | ? |
+| 1 | 0 | 0 | ? | ? |
+| 1 | 0 | 1 | ? | ? |
+| 1 | 1 | 0 | ? | ? |
+| 1 | 1 | 1 | ? | ? |
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+| A | B | Cin | S | Cout |
+|---|---|-----|---|------|
+| 0 | 0 | 0 | 0 | 0 |
+| 0 | 0 | 1 | 1 | 0 |
+| 0 | 1 | 0 | 1 | 0 |
+| 0 | 1 | 1 | 0 | 1 |
+| 1 | 0 | 0 | 1 | 0 |
+| 1 | 0 | 1 | 0 | 1 |
+| 1 | 1 | 0 | 0 | 1 |
+| 1 | 1 | 1 | 1 | 1 |
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — Somador de 4 bits (desafio)</summary>
+
+**Enunciado:** Calcule a soma de A = `0110` (6) e B = `0011` (3) usando um somador de 4 bits. Mostre o passo a passo.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Passo 1:** A = 0, 1, 1, 0 | B = 0, 0, 1, 1
+
+| Posição | A | B | Cin | S | Cout |
+|---------|---|---|-----|---|------|
+| 0 (LSB) | 0 | 1 | 0 | 1 | 0 |
+| 1 | 1 | 1 | 0 | 0 | 1 |
+| 2 | 1 | 0 | 1 | 0 | 1 |
+| 3 | 0 | 0 | 1 | 1 | 0 |
+
+**Resultado:** S₃S₂S₁S₀ = `1001` = 9
+
+**Resposta:** 6 + 3 = 9 ✅
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — Subtração via Complemento de 2 (conceitual)</summary>
+
+**Enunciado:** Como o somador pode ser usado para realizar subtração?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** A subtração pode ser realizada usando o mesmo circuito do somador através do Complemento de 2:
+
+A - B = A + (~B + 1)
+
+**Exemplo:** 5 - 3 = 2
+- 5 = `0101`
+- 3 = `0011` → ~3 = `1100` → ~3 + 1 = `1101`
+- 5 + (-3) = `0101 + 1101` = `0010` = 2
+
+**Conclusão:** O mesmo circuito que soma pode subtrair se invertemos o subtraendo e somamos 1.
+
+</details>
+</details>
+
+
+> **"O somador é o circuito aritmético mais fundamental de um computador. O meio-somador soma dois bits (S = A⊕B, Cout = A∧B), enquanto o somador completo soma três bits (A, B, Cin) e é a base para construir somadores de múltiplos bits. Encadeando somadores completos em cascata (ripple carry), podemos somar números de qualquer tamanho. Além disso, usando o Complemento de 2, o mesmo circuito pode realizar subtração. Este é o primeiro passo para entender como a ULA — o coração computacional da CPU — funciona."**

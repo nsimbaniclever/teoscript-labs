@@ -1,0 +1,289 @@
+# Técnicas de Contagem
+ 
+
+## 1. 🎯 Por que Aprender Técnicas de Contagem?
+
+Até agora, calculávamos probabilidades contando "na mão" os casos favoráveis e totais. Mas e se o espaço amostral tiver **milhões** de elementos (como na Mega-Sena)? É impossível listar tudo.
+
+> **Técnicas de Contagem** são ferramentas matemáticas que permitem **contar** o número de elementos de um conjunto **sem precisar listá-los**.
+
+## 2. 📐 Princípio Fundamental da Contagem (PFC)
+
+### Definição
+> Se um experimento pode ser dividido em **etapas sucessivas e independentes**, e cada etapa tem um número fixo de possibilidades, o **total de resultados** é o **produto** das possibilidades de cada etapa.
+
+**Fórmula:**
+$$\text{Total} = k_1 \times k_2 \times k_3 \times \dots \times k_n$$
+
+### Exemplo 1.1 — Lançar 3 moedas
+- 1ª moeda: 2 possibilidades
+- 2ª moeda: 2 possibilidades
+- 3ª moeda: 2 possibilidades
+- **Total = 2 × 2 × 2 = 8** resultados possíveis.
+
+### Exemplo 1.2 — Placa de carro (antiga)
+- 3 letras (26 opções cada) → $26^3$
+- 4 dígitos (10 opções cada) → $10^4$
+- **Total = $26^3 \times 10^4 = 175.760.000$** placas.
+
+### Exemplo 1.3 — Cardápio
+- 3 entradas, 4 pratos principais, 2 sobremesas.
+- **Total = 3 × 4 × 2 = 24** combinações de refeição.
+
+## 3. 📊 Permutações
+
+### Definição
+> **Permutação** é um arranjo de **todos** os elementos de um conjunto, onde a **ordem importa**.
+
+### 3.1 Permutação Simples (sem repetição)
+> **Fórmula:**
+> $$P_n = n!$$
+> Onde $n! = n \times (n-1) \times (n-2) \times \dots \times 1$
+
+### Exemplo 3.1.1 — Anagramas
+**Enunciado:** Quantos anagramas (palavras com ou sem sentido) podem ser formados com as letras da palavra **"SOL"**?
+
+**Resolução:**
+- Temos 3 letras distintas.
+- $P_3 = 3! = 3 \times 2 \times 1 = 6$
+- Lista: SOL, SLO, OSL, OLS, LSO, LOS.
+
+**Resposta:** 6 anagramas.
+
+### Exemplo 3.1.2 — Fila
+**Enunciado:** De quantas maneiras 5 pessoas podem se sentar em uma fila?
+
+**Resolução:**
+- $P_5 = 5! = 5 \times 4 \times 3 \times 2 \times 1 = 120$
+
+**Resposta:** 120 maneiras.
+
+### 3.2 Permutação com Repetição (elementos repetidos)
+
+> **Fórmula:**
+> $$P_n^{n_1, n_2, \dots, n_k} = \frac{n!}{n_1! \times n_2! \times \dots \times n_k!}$$
+> Onde $n$ é o total de elementos, e $n_1, n_2, \dots$ são as repetições.
+
+### Exemplo 3.2.1 — Anagramas com repetição
+**Enunciado:** Quantos anagramas tem a palavra **"ARARA"**?
+
+**Resolução:**
+- Total: 5 letras.
+- A aparece 3 vezes, R aparece 2 vezes.
+- $P_5^{3,2} = \frac{5!}{3! \times 2!} = \frac{120}{6 \times 2} = \frac{120}{12} = 10$
+
+**Resposta:** 10 anagramas.
+
+## 4. 📊 Arranjos
+
+### Definição
+> **Arranjo** é um agrupamento de **parte** dos elementos de um conjunto, onde a **ordem importa**.
+
+### Fórmula:
+$$A_{n,p} = \frac{n!}{(n-p)!}$$
+
+Onde:
+- $n$ = total de elementos
+- $p$ = número de elementos escolhidos
+
+### Exemplo 4.1 — Pódio
+**Enunciado:** Em uma corrida com 10 cavalos, de quantas maneiras podem ser formados o **1º, 2º e 3º** colocados?
+
+**Resolução:**
+- Temos 10 cavalos (n=10) e queremos 3 posições (p=3).
+- $A_{10,3} = \frac{10!}{(10-3)!} = \frac{10!}{7!} = 10 \times 9 \times 8 = 720$
+
+**Resposta:** 720 pódios possíveis.
+
+### Exemplo 4.2 — Cargos
+**Enunciado:** Em uma empresa com 8 funcionários, de quantas maneiras podemos escolher um **presidente**, um **vice-presidente** e um **tesoureiro**?
+
+**Resolução:**
+- $A_{8,3} = 8 \times 7 \times 6 = 336$
+
+**Resposta:** 336 maneiras.
+
+## 5. 📊 Combinações
+
+### Definição
+> **Combinação** é um agrupamento de **parte** dos elementos de um conjunto, onde a **ordem NÃO importa**.
+
+### Fórmula:
+$$C_{n,p} = \binom{n}{p} = \frac{n!}{p! \times (n-p)!}$$
+
+### Exemplo 5.1 — Comitê
+**Enunciado:** De um grupo de 10 pessoas, quantos comitês de **3 pessoas** podem ser formados?
+
+**Resolução:**
+- $C_{10,3} = \frac{10!}{3! \times 7!} = \frac{10 \times 9 \times 8}{3 \times 2 \times 1} = \frac{720}{6} = 120$
+
+**Resposta:** 120 comitês.
+
+### Exemplo 5.2 — Mão de Cartas
+**Enunciado:** Quantas mãos de **5 cartas** podem ser formadas com um baralho de 52 cartas?
+
+**Resolução:**
+- $C_{52,5} = \frac{52!}{5! \times 47!} = 2.598.960$
+
+**Resposta:** 2.598.960 mãos.
+
+### Exemplo 5.3 — Mega-Sena
+**Enunciado:** Quantas apostas de 6 números podem ser feitas com 60 números?
+
+**Resolução:**
+- $C_{60,6} = \frac{60!}{6! \times 54!} = 50.063.860$
+
+**Resposta:** 50.063.860 apostas.
+
+## 6. 📋 Quadro Resumo — Técnicas de Contagem
+
+| Técnica | Ordem importa? | Usa todos os elementos? | Fórmula | Exemplo |
+|:---|:---:|:---:|:---|:---|
+| **Princípio Fundamental** | — | — | $k_1 \times k_2 \times \dots$ | Placa de carro |
+| **Permutação Simples** | ✅ | ✅ | $n!$ | Anagramas, filas |
+| **Permutação com Repetição** | ✅ | ✅ | $\frac{n!}{n_1! \times \dots}$ | Anagramas com letras repetidas |
+| **Arranjo** | ✅ | ❌ | $\frac{n!}{(n-p)!}$ | Pódio, cargos |
+| **Combinação** | ❌ | ❌ | $\frac{n!}{p!(n-p)!}$ | Comitê, mão de cartas |
+
+## 📝 Exercícios Resolvidos Passo a Passo
+
+<details>
+<summary>📗 Exercício 1 — PFC (Roupa)</summary>
+
+**Enunciado:** Uma pessoa tem 5 camisas, 3 calças e 2 pares de sapato. De quantas maneiras diferentes ela pode se vestir?
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**Passo 1 — Identificar as etapas:**
+- Camisa: 5 opções
+- Calça: 3 opções
+- Sapato: 2 opções
+
+**Passo 2 — Aplicar o PFC:**
+- Total = 5 × 3 × 2 = **30**
+
+**Resposta:** 30 maneiras.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Permutação Simples (Cores)</summary>
+
+**Enunciado:** Quantas maneiras diferentes podemos organizar 4 livros em uma prateleira?
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**Passo 1 — Identificar o tipo:**
+- 4 livros distintos, ordem importa, usa todos.
+
+**Passo 2 — Aplicar permutação simples:**
+- $P_4 = 4! = 4 \times 3 \times 2 \times 1 = 24$
+
+**Resposta:** 24 maneiras.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Permutação com Repetição (Anagramas)</summary>
+
+**Enunciado:** Quantos anagramas tem a palavra **"BANANA"**?
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**Passo 1 — Identificar:**
+- 6 letras, A aparece 3 vezes, N aparece 2 vezes.
+
+**Passo 2 — Aplicar permutação com repetição:**
+- $P_6^{3,2} = \frac{6!}{3! \times 2!} = \frac{720}{6 \times 2} = \frac{720}{12} = 60$
+
+**Resposta:** 60 anagramas.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Arranjo (Pódio)</summary>
+
+**Enunciado:** Em uma competição com 12 participantes, de quantas maneiras podemos escolher o **1º, 2º e 3º** colocados?
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**Passo 1 — Identificar:**
+- 12 participantes, escolher 3, ordem importa (1º ≠ 2º).
+
+**Passo 2 — Aplicar arranjo:**
+- $A_{12,3} = 12 \times 11 \times 10 = 1320$
+
+**Resposta:** 1320 maneiras.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Combinação (Comitê)</summary>
+
+**Enunciado:** De um grupo de 15 pessoas, quantos comitês de 4 pessoas podem ser formados?
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**Passo 1 — Identificar:**
+- 15 pessoas, escolher 4, ordem NÃO importa (comitê não tem cargo).
+
+**Passo 2 — Aplicar combinação:**
+- $C_{15,4} = \frac{15!}{4! \times 11!} = \frac{15 \times 14 \times 13 \times 12}{4 \times 3 \times 2 \times 1} = \frac{32760}{24} = 1365$
+
+**Resposta:** 1365 comitês.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Comparação (Arranjo vs Combinação)</summary>
+
+**Enunciado:** Em uma turma de 10 alunos:
+- a) Quantos pares (duplas) podem ser formados?
+- b) Quantas maneiras de escolher um **líder** e um **vice-líder**?
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**a) Duplas (ordem NÃO importa):**
+- $C_{10,2} = \frac{10!}{2! \times 8!} = \frac{10 \times 9}{2} = 45$
+
+**b) Líder e vice (ordem IMPORTA):**
+- $A_{10,2} = 10 \times 9 = 90$
+
+**Resposta:** a) 45 duplas; b) 90 maneiras.
+
+</details>
+</details>
+
+## 🎯 Desafio Final
+
+**Enunciado:** Uma urna tem 10 bolas (5 vermelhas, 3 azuis, 2 verdes). De quantas maneiras podemos retirar:
+- a) 3 bolas quaisquer (sem reposição)?
+- b) 3 bolas, sendo 1 de cada cor?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**a) 3 bolas quaisquer (ordem NÃO importa):**
+- Total = 10 bolas, escolher 3.
+- $C_{10,3} = \frac{10!}{3! \times 7!} = \frac{10 \times 9 \times 8}{6} = 120$
+
+**b) 1 de cada cor (ordem NÃO importa):**
+- Escolher 1 vermelha entre 5, 1 azul entre 3, 1 verde entre 2.
+- $5 \times 3 \times 2 = 30$ maneiras.
+
+**Respostas:** a) 120 maneiras; b) 30 maneiras.
+
+</details>
+
+> *Técnicas de Contagem são a ponte entre a intuição e os grandes números — elas permitem que você conte o que é grande demais para ser visto.*

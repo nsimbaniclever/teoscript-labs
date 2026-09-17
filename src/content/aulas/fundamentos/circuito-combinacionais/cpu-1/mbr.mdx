@@ -1,0 +1,433 @@
+# Registrador de Buffer de Memória (MBR)
+
+## 1. Introdução
+
+Na aula anterior, conhecemos o **Registrador de Endereço de Memória (MAR)** — o componente que guarda o endereço a ser acessado na memória. Vimos como ele é a ponte que conecta a CPU ao barramento de endereços, dizendo à memória *onde* os dados devem ser lidos ou escritos.<br><br>
+
+Mas há outra peça fundamental nessa comunicação: o dado em si. A CPU precisa não apenas saber *onde* está o dado, mas também *qual* é o dado que foi lido ou que deve ser escrito. É aí que entra o **Registrador de Buffer de Memória (MBR)** . <br><br>
+
+O MBR (em inglês, *Memory Buffer Register*) é o registrador que segura os dados que estão sendo transferidos entre a CPU e a memória. Ele é o "caminhão de carga" que acompanha o "carteiro" (MAR): enquanto o MAR leva o endereço, o MBR leva o dado.<br><br>
+
+Pense no MBR como o **entregador de pacotes**:
+
+- O MAR é o carteiro com o endereço (Rua das Flores, 123).
+- O MBR é o entregador com o pacote (o dado).
+- Na leitura, o entregador traz o pacote de volta para a CPU.
+- Na escrita, o entregador leva o pacote da CPU para a memória.
+
+Nesta aula, vamos explorar o Registrador de Buffer de Memória: como ele funciona, sua relação com o MAR e a memória, e por que ele é essencial para a comunicação entre a CPU e a memória.
+
+
+## 2. O Que é o Registrador de Buffer de Memória?
+
+### 2.1 Definição
+
+O **Registrador de Buffer de Memória** (MBR, do inglês *Memory Buffer Register*), também chamado de **Memory Data Register (MDR)** em algumas arquiteturas, é um registrador da CPU que:
+
+> **Armazena os dados que estão sendo lidos da memória ou que serão escritos na memória.**
+
+### 2.2 Características principais
+
+| Característica | Descrição |
+|----------------|-----------|
+| **Tamanho** | Igual ao barramento de dados (8, 16, 32, 64 bits) |
+| **Função** | Armazenar dados durante transferências com a memória |
+| **Localização** | Entre a CPU e a memória |
+| **Direção** | Bidirecional (dados vão e vêm da memória) |
+
+### 2.3 Analogia
+
+Pense no MBR como o **entregador de pacotes** que acompanha o carteiro:
+
+<details>
+<summary>🔧 Ver Analogia do MBR</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 450px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">MBR — O ENTREGADOR DE PACOTES</div>
+
+  <pre style="color: #93c5fd; font-size: 0.65rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    ┌─────────────────────────────────────────────────────┐
+    │                                                     │
+    │   CORREIO (CPU)                                    │
+    │                                                     │
+    │   ┌─────────────────────────────────────────────┐   │
+    │   │  CARTEIRO (MAR)                            │   │
+    │   │  Endereço: Rua das Flores, 123             │   │
+    │   └─────────────────────────────────────────────┘   │
+    │                                                     │
+    │   ┌─────────────────────────────────────────────┐   │
+    │   │  ENTREGADOR (MBR)                           │   │
+    │   │  Pacote: 0x5A                              │   │
+    │   │  (dado a ser escrito ou lido)              │   │
+    │   └─────────────────────────────────────────────┘   │
+    │                                                     │
+    │   ┌─────────────────────────────────────────────┐   │
+    │   │  CASA (MEMÓRIA)                            │   │
+    │   │  Rua das Flores, 123                       │   │
+    │   │  Conteúdo: 0x5A                           │   │
+    │   └─────────────────────────────────────────────┘   │
+    │                                                     │
+    └─────────────────────────────────────────────────────┘
+  </pre>
+
+</div>
+</details>
+
+### 2.4 Diagrama
+
+<details>
+<summary>🔧 Ver Diagrama do MBR</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 500px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">REGISTRADOR DE BUFFER DE MEMÓRIA (MBR)</div>
+
+  <pre style="color: #93c5fd; font-size: 0.55rem; line-height: 1.6; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    ┌─────────────────────────────────────────────────────────────────┐
+    │                         CPU                                     │
+    │                                                                 │
+    │  ┌─────────────┐    ┌─────────────────────────────────────┐    │
+    │  │   UNIDADE   │    │            REGISTRADORES            │    │
+    │  │  DE CONTROLE│    │                                     │    │
+    │  │             │    │  ┌─────────────┐  ┌─────────────┐  │    │
+    │  │             │───►│  │    MAR      │  │    MBR      │  │    │
+    │  │             │    │  │  (Endereço) │  │   (Dados)   │  │    │
+    │  │             │    │  └─────────────┘  └─────────────┘  │    │
+    │  │             │    │         │               │          │    │
+    │  └─────────────┘    │         ▼               ▼          │    │
+    │                     │  ┌─────────────────────────────┐   │    │
+    │                     │  │     BARRAMENTO EXTERNO      │   │    │
+    │                     │  └─────────────────────────────┘   │    │
+    │                     └─────────────────────────────────────┘    │
+    │                                                                 │
+    └─────────────────────────────────────────────────────────────────┘
+                              │                       │
+                              ▼                       ▼
+                    ┌─────────────────────────────────────────┐
+                    │               MEMÓRIA                   │
+                    │                                         │
+                    │  Endereço (MAR) → Dado (MBR)           │
+                    │                                         │
+                    └─────────────────────────────────────────┘
+  </pre>
+
+</div>
+</details>
+
+
+## 3. O MBR no Ciclo de Instrução
+
+### 3.1 Ciclo de leitura (memória → CPU)
+
+<details>
+<summary>🔧 Ver Ciclo de Leitura com MBR</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 450px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">CICLO DE LEITURA COM MBR</div>
+
+  <pre style="color: #93c5fd; font-size: 0.65rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    ┌─────────────────────────────────────────────────────────────┐
+    │                                                             │
+    │  1. MAR recebe o endereço (ex: 0x1000).                    │
+    │                                                             │
+    │  2. UC ativa o sinal de leitura (RD).                      │
+    │                                                             │
+    │  3. Memória coloca o dado no barramento de dados.          │
+    │                                                             │
+    │  4. MBR recebe o dado do barramento de dados.              │
+    │     (MBR = Memória[0x1000])                                │
+    │                                                             │
+    │  5. O dado é transferido do MBR para o destino            │
+    │     (IR, registrador, etc.).                               │
+    │                                                             │
+    └─────────────────────────────────────────────────────────────┘
+  </pre>
+
+</div>
+</details>
+
+**Exemplo:**
+<pre>
+MAR = 0x1000
+Memória[0x1000] = 0x8A3B
+MBR = 0x8A3B
+IR = MBR = 0x8A3B
+</pre>
+
+### 3.2 Ciclo de escrita (CPU → memória)
+
+<details>
+<summary>🔧 Ver Ciclo de Escrita com MBR</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 450px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">CICLO DE ESCRITA COM MBR</div>
+
+  <pre style="color: #93c5fd; font-size: 0.65rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    ┌─────────────────────────────────────────────────────────────┐
+    │                                                             │
+    │  1. MAR recebe o endereço (ex: 0x2000).                    │
+    │                                                             │
+    │  2. MBR recebe o dado a ser escrito (ex: 0x5A).            │
+    │                                                             │
+    │  3. UC ativa o sinal de escrita (WR).                      │
+    │                                                             │
+    │  4. MBR coloca o dado no barramento de dados.              │
+    │                                                             │
+    │  5. Memória armazena o dado no endereço especificado.      │
+    │     (Memória[0x2000] = MBR)                                │
+    │                                                             │
+    └─────────────────────────────────────────────────────────────┘
+  </pre>
+
+</div>
+</details>
+
+**Exemplo:**
+<pre>
+MAR = 0x2000
+MBR = 0x5A
+Memória[0x2000] = 0x5A
+</pre>
+
+
+## 4. MAR e MBR: A Dupla Dinâmica
+
+### 4.1 Como MAR e MBR trabalham juntos
+
+| Operação | MAR (endereço) | MBR (dado) |
+|----------|----------------|------------|
+| **Leitura** | Endereço a ser lido | Dado lido da memória |
+| **Escrita** | Endereço a ser escrito | Dado a ser escrito |
+
+### 4.2 O fluxo completo
+
+<details>
+<summary>🔧 Ver Fluxo Completo MAR e MBR</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 450px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">FLUXO MAR E MBR</div>
+
+  <pre style="color: #93c5fd; font-size: 0.65rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    ┌─────────────────────────────────────────────────────────────┐
+    │                                                             │
+    │  LEITURA:                                                   │
+    │  CPU → MAR → Barramento de Endereços → Memória             │
+    │  Memória → Barramento de Dados → MBR → CPU                 │
+    │                                                             │
+    │  ESCRITA:                                                   │
+    │  CPU → MAR → Barramento de Endereços → Memória             │
+    │  CPU → MBR → Barramento de Dados → Memória                 │
+    │                                                             │
+    └─────────────────────────────────────────────────────────────┘
+  </pre>
+
+</div>
+</details>
+
+### 4.3 A tabela completa
+
+| Etapa | Componente | Função |
+|-------|------------|--------|
+| 1 | PC | Contém o endereço da próxima instrução |
+| 2 | MAR | Copia o endereço do PC (ou de outro registrador) |
+| 3 | Barramento de Endereços | Transporta o endereço do MAR para a memória |
+| 4 | Memória | Lê ou escreve no endereço especificado |
+| 5 | Barramento de Dados | Transporta o dado entre a memória e o MBR |
+| 6 | MBR | Armazena o dado temporariamente |
+| 7 | IR / Registrador | Destino final do dado |
+
+
+## 5. O MBR na Hierarquia da CPU
+
+### 5.1 Os registradores de memória
+
+| Registrador | Função | Conexão |
+|-------------|--------|---------|
+| **MAR** | Endereço | Barramento de Endereços |
+| **MBR** | Dados | Barramento de Dados |
+| **PC** | Próxima instrução | MAR (durante fetch) |
+| **IR** | Instrução atual | MBR (durante fetch) |
+
+### 5.2 O ciclo fetch com MAR e MBR
+
+<details>
+<summary>🔧 Ver Ciclo Fetch Completo</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 400px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">CICLO FETCH COMPLETO</div>
+
+  <pre style="color: #93c5fd; font-size: 0.65rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    ┌─────────────────────────────────────────────────────────────┐
+    │                                                             │
+    │  1. PC → MAR                                               │
+    │     (PC = 0x1000 → MAR = 0x1000)                          │
+    │                                                             │
+    │  2. UC: RD (leitura)                                       │
+    │                                                             │
+    │  3. Memória → MBR                                          │
+    │     (Memória[0x1000] = 0x8A3B → MBR = 0x8A3B)            │
+    │                                                             │
+    │  4. MBR → IR                                               │
+    │     (IR = 0x8A3B)                                          │
+    │                                                             │
+    │  5. UC decodifica IR                                       │
+    │                                                             │
+    │  6. PC = PC + 1 (incrementa)                               │
+    │     (PC = 0x1001)                                          │
+    │                                                             │
+    └─────────────────────────────────────────────────────────────┘
+  </pre>
+
+</div>
+</details>
+
+
+## 6. Exemplos Práticos
+
+### 6.1 Exemplo: Lendo um dado da memória
+
+**Situação:** A CPU quer ler o dado no endereço 0x2000.
+
+<pre>
+Passo 1: UC → MAR = 0x2000
+Passo 2: UC → RD = 1
+Passo 3: Memória → Barramento de Dados = 0x5A
+Passo 4: Barramento de Dados → MBR = 0x5A
+Passo 5: UC → REG_WRITE(R0) = MBR
+Passo 6: R0 = 0x5A
+</pre>
+
+### 6.2 Exemplo: Escrevendo um dado na memória
+
+**Situação:** A CPU quer escrever 0xFF no endereço 0x2000.
+
+<pre>
+Passo 1: UC → MAR = 0x2000
+Passo 2: UC → MBR = 0xFF
+Passo 3: UC → WR = 1
+Passo 4: MAR → Barramento de Endereços = 0x2000
+Passo 5: MBR → Barramento de Dados = 0xFF
+Passo 6: Memória[0x2000] = 0xFF
+</pre>
+
+
+## 7. Exercícios
+
+<details>
+<summary>📗 Exercício 1 — Definição (fácil)</summary>
+
+**Enunciado:** O que é o Registrador de Buffer de Memória (MBR)?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** O MBR é um registrador que armazena os dados que estão sendo lidos da memória ou que serão escritos na memória.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Função (fácil)</summary>
+
+**Enunciado:** Qual é a função do MBR durante um ciclo de leitura?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** O MBR recebe o dado lido da memória e o mantém temporariamente antes de enviá-lo para o destino final (IR, registrador, etc.).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — MAR vs MBR (médio)</summary>
+
+**Enunciado:** Qual a diferença entre o MAR e o MBR?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** O MAR armazena o **endereço** a ser acessado na memória. O MBR armazena o **dado** que está sendo lido ou escrito. MAR = "onde", MBR = "o quê".
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — MBR e barramento (médio)</summary>
+
+**Enunciado:** O MBR está conectado a qual barramento?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** O MBR está conectado ao **barramento de dados**.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Ciclo de leitura (médio)</summary>
+
+**Enunciado:** Descreva o papel do MBR em um ciclo de leitura.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Durante a leitura, o MBR recebe o dado do barramento de dados (vindo da memória) e o mantém até que a UC o transfira para o destino final (IR, registrador, etc.).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Ciclo de escrita (médio)</summary>
+
+**Enunciado:** Descreva o papel do MBR em um ciclo de escrita.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Durante a escrita, o MBR recebe o dado da CPU e o coloca no barramento de dados para que a memória o armazene no endereço especificado pelo MAR.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — MBR e IR (conceitual)</summary>
+
+**Enunciado:** Qual é a relação entre o MBR e o IR durante a busca de uma instrução?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Durante a busca, a instrução é lida da memória e armazenada no MBR. Em seguida, o MBR transfere a instrução para o IR, onde será decodificada e executada.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — MAR, MBR, PC, IR (desafio)</summary>
+
+**Enunciado:** Ordene os registradores na sequência correta durante um ciclo de busca (fetch).
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** PC → MAR → Memória → MBR → IR
+
+**Explicação:**
+1. **PC:** Contém o endereço da próxima instrução.
+2. **MAR:** Copia o endereço do PC.
+3. **Memória:** Lê o dado no endereço especificado.
+4. **MBR:** Armazena o dado lido da memória.
+5. **IR:** Recebe o dado do MBR (instrução a ser executada).
+
+</details>
+</details>
+
+
+> **"O Registrador de Buffer de Memória (MBR) é o guardião dos dados que viajam entre a CPU e a memória. Enquanto o MAR segura o 'onde' (o endereço), o MBR segura o 'o quê' (o dado). Durante a leitura, o MBR recebe o dado da memória e o mantém até que seja transferido para seu destino (IR, registrador, etc.). Durante a escrita, o MBR recebe o dado da CPU e o coloca no barramento de dados para a memória. O MBR trabalha em conjunto com o MAR, o PC e o IR para garantir que as instruções e os dados fluam corretamente entre a CPU e a memória. Sem o MBR, a CPU não teria onde armazenar temporariamente os dados durante as transferências com a memória."**

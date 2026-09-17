@@ -1,0 +1,413 @@
+# Intervalos de Confiança II
+
+## O que vamos aprender nesta aula?
+
+Na aula anterior, aprendemos a construir intervalos de confiança para um único parâmetro: média (com $\sigma$ conhecido e desconhecido) e proporção. Agora vamos avançar para situações mais complexas:
+
+1. **Intervalo de confiança para variância** ($\sigma^2$)
+2. **Intervalo de confiança para razão de variâncias** ($\sigma_1^2/\sigma_2^2$)
+3. **Intervalo de confiança para diferença de médias** ($\mu_1 - \mu_2$)
+4. **Intervalo de confiança para diferença de proporções** ($p_1 - p_2$)
+
+Estes intervalos são essenciais quando queremos comparar dois grupos ou populações, ou quando precisamos entender a variabilidade de um processo.
+
+## Intervalo de Confiança para Variância ($\sigma^2$)
+
+Para estimar a variância populacional $\sigma^2$ a partir de uma amostra, usamos a distribuição Qui-Quadrado.
+
+**Fórmula:**
+
+>> $$IC_{1-\alpha}(\sigma^2) = \left[ \frac{(n-1)S^2}{\chi^2_{\alpha/2, n-1}}, \frac{(n-1)S^2}{\chi^2_{1-\alpha/2, n-1}} \right]$$
+
+onde:
+- $S^2$ é a variância amostral
+- $n-1$ são os graus de liberdade
+- $\chi^2_{\alpha/2, n-1}$ é o quantil inferior da Qui-Quadrado
+- $\chi^2_{1-\alpha/2, n-1}$ é o quantil superior da Qui-Quadrado
+
+**Exemplo 1: IC para variância**
+
+Uma amostra de 20 elementos tem variância 25. Construa um intervalo de confiança de 95% para $\sigma^2$.
+
+**Resolução:**
+
+$n = 20$, $S^2 = 25$, $\nu = 19$.
+$\chi^2_{0,025, 19} = 32,85$; $\chi^2_{0,975, 19} = 8,91$.
+
+Limite inferior = $19 \cdot 25 / 32,85 = 475/32,85 = 14,46$
+Limite superior = $19 \cdot 25 / 8,91 = 475/8,91 = 53,31$
+
+$IC = (14,46, 53,31)$
+
+**Interpretação:** Com 95% de confiança, a variância populacional está entre 14,46 e 53,31.
+
+**Exemplo 2: IC para variância (90%)**
+
+Uma amostra de 15 elementos tem variância 16. Construa um IC de 90% para $\sigma^2$.
+
+**Resolução:**
+
+$n = 15$, $S^2 = 16$, $\nu = 14$.
+$\chi^2_{0,05, 14} = 23,68$; $\chi^2_{0,95, 14} = 6,57$.
+
+Limite inferior = $14 \cdot 16 / 23,68 = 224/23,68 = 9,46$
+Limite superior = $14 \cdot 16 / 6,57 = 224/6,57 = 34,09$
+
+$IC = (9,46, 34,09)$
+
+**Interpretação:** Com 90% de confiança, a variância populacional está entre 9,46 e 34,09.
+
+**Exemplo 3: IC para desvio padrão**
+
+Para o exemplo 1, construa um IC de 95% para $\sigma$.
+
+**Resolução:**
+
+$IC$ para $\sigma = (\sqrt{14,46}, \sqrt{53,31}) = (3,80, 7,30)$
+
+**Interpretação:** Com 95% de confiança, o desvio padrão populacional está entre 3,80 e 7,30.
+
+## Intervalo de Confiança para Razão de Variâncias ($\sigma_1^2/\sigma_2^2$)
+
+Para comparar as variâncias de duas populações independentes, usamos a distribuição $F$.
+
+**Fórmula:**
+
+>> $$IC_{1-\alpha}\left(\frac{\sigma_1^2}{\sigma_2^2}\right) = \left[ \frac{S_1^2}{S_2^2} \cdot \frac{1}{F_{\alpha/2, n_1-1, n_2-1}}, \frac{S_1^2}{S_2^2} \cdot F_{\alpha/2, n_2-1, n_1-1} \right]$$
+
+**Exemplo 1: IC para razão de variâncias**
+
+Duas amostras independentes:
+- Amostra 1: $n_1 = 10$, $S_1^2 = 25$
+- Amostra 2: $n_2 = 12$, $S_2^2 = 16$
+
+Construa um IC de 95% para $\sigma_1^2/\sigma_2^2$.
+
+**Resolução:**
+
+$S_1^2/S_2^2 = 25/16 = 1,5625$
+$\nu_1 = 9$, $\nu_2 = 11$.
+$F_{0,025, 9, 11} = 3,59$; $F_{0,025, 11, 9} = 3,96$
+
+Limite inferior = $1,5625/3,59 = 0,435$
+Limite superior = $1,5625 \cdot 3,96 = 6,188$
+
+$IC = (0,435, 6,188)$
+
+**Interpretação:** Com 95% de confiança, a razão entre as variâncias populacionais está entre 0,435 e 6,188. Como o intervalo contém 1, não há evidência de que as variâncias sejam diferentes.
+
+**Exemplo 2: IC para razão de variâncias (90%)**
+
+Duas amostras:
+- $n_1 = 15$, $S_1^2 = 30$
+- $n_2 = 20$, $S_2^2 = 20$
+
+Construa um IC de 90%.
+
+**Resolução:**
+
+$S_1^2/S_2^2 = 30/20 = 1,5$
+$\nu_1 = 14$, $\nu_2 = 19$.
+$F_{0,05, 14, 19} = 2,23$; $F_{0,05, 19, 14} = 2,40$
+
+Limite inferior = $1,5/2,23 = 0,673$
+Limite superior = $1,5 \cdot 2,40 = 3,60$
+
+$IC = (0,673, 3,60)$
+
+**Interpretação:** Com 90% de confiança, a razão das variâncias está entre 0,673 e 3,60.
+
+## Intervalo de Confiança para Diferença de Médias ($\sigma$ conhecido)
+
+Quando as variâncias populacionais são conhecidas, usamos a distribuição Normal.
+
+**Fórmula:**
+
+>> $$IC_{1-\alpha}(\mu_1 - \mu_2) = (\bar{X}_1 - \bar{X}_2) \pm Z_{\alpha/2} \cdot \sqrt{\frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}}$$
+
+**Exemplo 1: IC para diferença de médias ($\sigma$ conhecido)**
+
+Duas populações:
+- População 1: $\sigma_1 = 5$, $n_1 = 30$, $\bar{X}_1 = 50$
+- População 2: $\sigma_2 = 6$, $n_2 = 40$, $\bar{X}_2 = 48$
+
+Construa um IC de 95% para $\mu_1 - \mu_2$.
+
+**Resolução:**
+
+$\bar{X}_1 - \bar{X}_2 = 50 - 48 = 2$
+$EP = \sqrt{25/30 + 36/40} = \sqrt{0,8333 + 0,9} = \sqrt{1,7333} = 1,3166$
+Margem = $1,96 \cdot 1,3166 = 2,581$
+$IC = 2 \pm 2,581 = (-0,581, 4,581)$
+
+**Interpretação:** Com 95% de confiança, a diferença entre as médias está entre -0,58 e 4,58. Como o intervalo contém 0, não há evidência de diferença significativa.
+
+**Exemplo 2: IC para diferença de médias ($\sigma$ conhecido, 99%)**
+
+Mesmos dados, mas com 99% de confiança.
+
+**Resolução:**
+
+$Z_{0,005} = 2,576$
+Margem = $2,576 \cdot 1,3166 = 3,391$
+$IC = 2 \pm 3,391 = (-1,391, 5,391)$
+
+**Interpretação:** Com 99% de confiança, a diferença está entre -1,39 e 5,39.
+
+## Intervalo de Confiança para Diferença de Médias ($\sigma$ desconhecido, variâncias iguais)
+
+Quando as variâncias são desconhecidas mas assumidas iguais, usamos a distribuição $t$ com um desvio padrão combinado.
+
+**Fórmula:**
+
+>> $$IC_{1-\alpha}(\mu_1 - \mu_2) = (\bar{X}_1 - \bar{X}_2) \pm t_{\alpha/2, n_1+n_2-2} \cdot S_p \cdot \sqrt{\frac{1}{n_1} + \frac{1}{n_2}}$$
+
+onde:
+
+>> $$S_p = \sqrt{\frac{(n_1-1)S_1^2 + (n_2-1)S_2^2}{n_1 + n_2 - 2}}$$
+
+**Exemplo 1: IC para diferença de médias (variâncias iguais)**
+
+Duas amostras:
+- $n_1 = 12$, $\bar{X}_1 = 50$, $S_1 = 4$
+- $n_2 = 15$, $\bar{X}_2 = 45$, $S_2 = 5$
+
+Construa um IC de 95% para $\mu_1 - \mu_2$ (assumindo variâncias iguais).
+
+**Resolução:**
+
+$S_p = \sqrt{\frac{11 \cdot 16 + 14 \cdot 25}{12+15-2}} = \sqrt{\frac{176 + 350}{25}} = \sqrt{526/25} = \sqrt{21,04} = 4,587$
+$\bar{X}_1 - \bar{X}_2 = 5$
+$EP = 4,587 \cdot \sqrt{1/12 + 1/15} = 4,587 \cdot \sqrt{0,0833 + 0,0667} = 4,587 \cdot \sqrt{0,15} = 4,587 \cdot 0,3873 = 1,777$
+$\nu = 25$, $t_{0,025, 25} = 2,060$
+Margem = $2,060 \cdot 1,777 = 3,660$
+$IC = 5 \pm 3,660 = (1,34, 8,66)$
+
+**Interpretação:** Com 95% de confiança, a diferença das médias está entre 1,34 e 8,66. O intervalo não contém 0, indicando diferença significativa.
+
+**Exemplo 2: IC para diferença de médias (variâncias iguais, 99%)**
+
+Mesmos dados, com 99% de confiança.
+
+**Resolução:**
+
+$t_{0,005, 25} = 2,787$
+Margem = $2,787 \cdot 1,777 = 4,953$
+$IC = 5 \pm 4,953 = (0,047, 9,953)$
+
+**Interpretação:** Com 99% de confiança, a diferença está entre 0,05 e 9,95.
+
+## Intervalo de Confiança para Diferença de Médias ($\sigma$ desconhecido, variâncias diferentes)
+
+Quando as variâncias são desconhecidas e não assumidas iguais, usamos a aproximação de Welch-Satterthwaite.
+
+**Fórmula:**
+
+>> $$IC_{1-\alpha}(\mu_1 - \mu_2) = (\bar{X}_1 - \bar{X}_2) \pm t_{\alpha/2, \nu} \cdot \sqrt{\frac{S_1^2}{n_1} + \frac{S_2^2}{n_2}}$$
+
+onde:
+
+>> $$\nu = \frac{\left(\frac{S_1^2}{n_1} + \frac{S_2^2}{n_2}\right)^2}{\frac{(S_1^2/n_1)^2}{n_1-1} + \frac{(S_2^2/n_2)^2}{n_2-1}}$$
+
+**Exemplo: IC para diferença de médias (variâncias diferentes)**
+
+Duas amostras:
+- $n_1 = 10$, $\bar{X}_1 = 30$, $S_1 = 6$
+- $n_2 = 15$, $\bar{X}_2 = 25$, $S_2 = 4$
+
+Construa um IC de 95%.
+
+**Resolução:**
+
+$EP = \sqrt{36/10 + 16/15} = \sqrt{3,6 + 1,0667} = \sqrt{4,6667} = 2,160$
+
+$\nu = \frac{(4,6667)^2}{(3,6)^2/9 + (1,0667)^2/14} = \frac{21,78}{12,96/9 + 1,1378/14} = \frac{21,78}{1,44 + 0,0813} = \frac{21,78}{1,5213} = 14,32 \approx 14$
+
+$t_{0,025, 14} = 2,145$
+Margem = $2,145 \cdot 2,160 = 4,633$
+$IC = 5 \pm 4,633 = (0,367, 9,633)$
+
+**Interpretação:** Com 95% de confiança, a diferença das médias está entre 0,37 e 9,63.
+
+## Intervalo de Confiança para Diferença de Proporções
+
+Para comparar duas proporções populacionais independentes.
+
+**Fórmula:**
+
+>> $$IC_{1-\alpha}(p_1 - p_2) = (\hat{p}_1 - \hat{p}_2) \pm Z_{\alpha/2} \cdot \sqrt{\frac{\hat{p}_1(1-\hat{p}_1)}{n_1} + \frac{\hat{p}_2(1-\hat{p}_2)}{n_2}}$$
+
+**Exemplo 1: IC para diferença de proporções**
+
+Duas pesquisas:
+- Grupo 1: $n_1 = 200$, 60% preferem o produto A
+- Grupo 2: $n_2 = 300$, 50% preferem o produto A
+
+Construa um IC de 95% para a diferença.
+
+**Resolução:**
+
+$\hat{p}_1 = 0,6$, $\hat{p}_2 = 0,5$
+$\hat{p}_1 - \hat{p}_2 = 0,1$
+$EP = \sqrt{0,6 \cdot 0,4/200 + 0,5 \cdot 0,5/300} = \sqrt{0,24/200 + 0,25/300} = \sqrt{0,0012 + 0,000833} = \sqrt{0,002033} = 0,0451$
+Margem = $1,96 \cdot 0,0451 = 0,0884$
+$IC = 0,1 \pm 0,0884 = (0,0116, 0,1884)$
+
+**Interpretação:** Com 95% de confiança, a diferença entre as proporções está entre 1,16% e 18,84%. Como o intervalo não contém 0, há diferença significativa.
+
+**Exemplo 2: IC para diferença de proporções (90%)**
+
+Mesmos dados, com 90% de confiança.
+
+**Resolução:**
+
+$Z_{0,05} = 1,645$
+Margem = $1,645 \cdot 0,0451 = 0,0742$
+$IC = 0,1 \pm 0,0742 = (0,0258, 0,1742)$
+
+**Interpretação:** Com 90% de confiança, a diferença está entre 2,58% e 17,42%.
+
+## Resumo: Quando Usar Cada Método
+
+| Parâmetro | Distribuição | Condições |
+| --- | --- | --- |
+| Média ($\sigma$ conhecido) | Normal | $\sigma$ conhecido |
+| Média ($\sigma$ desconhecido) | $t$-Student | $\sigma$ desconhecido |
+| Proporção | Normal | $n$ grande |
+| Variância | Qui-Quadrado | População Normal |
+| Razão de variâncias | $F$ | Duas populações Normais |
+| Diferença de médias ($\sigma$ conhecido) | Normal | $\sigma_1$, $\sigma_2$ conhecidos |
+| Diferença de médias ($\sigma$ iguais) | $t$-Student | Variâncias iguais |
+| Diferença de médias ($\sigma$ diferentes) | $t$-Student (Welch) | Variâncias diferentes |
+| Diferença de proporções | Normal | $n_1$, $n_2$ grandes |
+
+## Exercícios Resolvidos
+
+### Exercício 1 (Fácil)
+
+Uma amostra de 25 elementos tem variância 16. Construa um IC de 95% para $\sigma^2$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$\nu = 24$. $\chi^2_{0,025, 24} = 39,36$; $\chi^2_{0,975, 24} = 12,40$.
+$LI = 24 \cdot 16 / 39,36 = 384/39,36 = 9,76$
+$LS = 24 \cdot 16 / 12,40 = 384/12,40 = 30,97$
+$IC = (9,76, 30,97)$
+
+**Resposta:** (9,76, 30,97).
+
+</details>
+
+### Exercício 2 (Fácil/Médio)
+
+Duas amostras: $n_1 = 10$, $S_1^2 = 20$; $n_2 = 12$, $S_2^2 = 15$. Construa um IC de 95% para $\sigma_1^2/\sigma_2^2$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$S_1^2/S_2^2 = 20/15 = 1,333$
+$\nu_1 = 9$, $\nu_2 = 11$. $F_{0,025, 9, 11} = 3,59$; $F_{0,025, 11, 9} = 3,96$
+$LI = 1,333/3,59 = 0,371$
+$LS = 1,333 \cdot 3,96 = 5,279$
+$IC = (0,371, 5,279)$
+
+**Resposta:** (0,371, 5,279).
+
+</details>
+
+### Exercício 3 (Médio)
+
+Duas amostras: $n_1 = 20$, $\bar{X}_1 = 35$, $S_1 = 4$; $n_2 = 25$, $\bar{X}_2 = 32$, $S_2 = 5$. Construa um IC de 95% para $\mu_1 - \mu_2$ (variâncias iguais).
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$S_p = \sqrt{\frac{19 \cdot 16 + 24 \cdot 25}{20+25-2}} = \sqrt{\frac{304 + 600}{43}} = \sqrt{904/43} = \sqrt{21,02} = 4,585$
+$\bar{X}_1 - \bar{X}_2 = 3$
+$EP = 4,585 \cdot \sqrt{1/20 + 1/25} = 4,585 \cdot \sqrt{0,05 + 0,04} = 4,585 \cdot \sqrt{0,09} = 4,585 \cdot 0,3 = 1,376$
+$\nu = 43$, $t_{0,025, 43} = 2,017$
+Margem = $2,017 \cdot 1,376 = 2,776$
+$IC = 3 \pm 2,776 = (0,224, 5,776)$
+
+**Resposta:** (0,224, 5,776).
+
+</details>
+
+### Exercício 4 (Médio)
+
+Duas pesquisas: $n_1 = 150$, $\hat{p}_1 = 0,45$; $n_2 = 200$, $\hat{p}_2 = 0,35$. Construa um IC de 95% para $p_1 - p_2$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$\hat{p}_1 - \hat{p}_2 = 0,10$
+$EP = \sqrt{0,45 \cdot 0,55/150 + 0,35 \cdot 0,65/200} = \sqrt{0,2475/150 + 0,2275/200} = \sqrt{0,00165 + 0,0011375} = \sqrt{0,0027875} = 0,0528$
+Margem = $1,96 \cdot 0,0528 = 0,1035$
+$IC = 0,10 \pm 0,1035 = (-0,0035, 0,2035)$
+
+**Resposta:** (-0,0035, 0,2035).
+
+</details>
+
+### Exercício 5 (Difícil)
+
+Uma amostra de 16 elementos tem variância 12. Teste se $\sigma^2 = 8$ ($\alpha = 0,05$) usando o IC.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$\nu = 15$. $\chi^2_{0,025, 15} = 27,49$; $\chi^2_{0,975, 15} = 6,26$.
+$LI = 15 \cdot 12 / 27,49 = 180/27,49 = 6,55$
+$LS = 15 \cdot 12 / 6,26 = 180/6,26 = 28,75$
+$IC = (6,55, 28,75)$
+
+Como 8 está dentro do intervalo, não rejeitamos que $\sigma^2 = 8$.
+
+**Resposta:** Não rejeita $H_0$.
+
+</details>
+
+## Desafio Final com Resolução Completa
+
+Uma empresa quer comparar a eficiência de duas máquinas. A máquina A produziu 15 peças com tempo médio de 8 minutos e desvio padrão de 2 minutos. A máquina B produziu 20 peças com tempo médio de 7 minutos e desvio padrão de 1,5 minutos.
+
+a) Construa um IC de 95% para a diferença entre os tempos médios (assumindo variâncias iguais).
+
+b) Teste se as variâncias são iguais ($\alpha = 0,05$) usando IC para razão de variâncias.
+
+c) Se as variâncias forem diferentes, construa o IC de 95% para a diferença de médias.
+
+d) Interprete os resultados.
+
+<details>
+<summary>💡 Ver resolução completa</summary>
+
+a) $n_1 = 15$, $\bar{X}_1 = 8$, $S_1 = 2$; $n_2 = 20$, $\bar{X}_2 = 7$, $S_2 = 1,5$
+   $S_p = \sqrt{\frac{14 \cdot 4 + 19 \cdot 2,25}{15+20-2}} = \sqrt{\frac{56 + 42,75}{33}} = \sqrt{98,75/33} = \sqrt{2,992} = 1,730$
+   $\bar{X}_1 - \bar{X}_2 = 1$
+   $EP = 1,730 \cdot \sqrt{1/15 + 1/20} = 1,730 \cdot \sqrt{0,0667 + 0,05} = 1,730 \cdot \sqrt{0,1167} = 1,730 \cdot 0,3416 = 0,591$
+   $\nu = 33$, $t_{0,025, 33} = 2,035$
+   Margem = $2,035 \cdot 0,591 = 1,203$
+   $IC = 1 \pm 1,203 = (-0,203, 2,203)$
+
+b) $S_1^2/S_2^2 = 4/2,25 = 1,778$
+   $\nu_1 = 14$, $\nu_2 = 19$. $F_{0,025, 14, 19} = 2,62$; $F_{0,025, 19, 14} = 2,84$
+   $LI = 1,778/2,62 = 0,679$
+   $LS = 1,778 \cdot 2,84 = 5,050$
+   $IC = (0,679, 5,050)$
+   Como o intervalo contém 1, não há evidência de variâncias diferentes.
+
+c) Como as variâncias são iguais (não rejeitamos), usamos o IC do item (a).
+
+d) O intervalo para a diferença de médias contém 0. Portanto, com 95% de confiança, não há evidência de diferença significativa entre os tempos médios das duas máquinas. O intervalo para a razão de variâncias contém 1, indicando que as variâncias são homogêneas.
+
+**Respostas:**
+a) (-0,203, 2,203) minutos
+b) (0,679, 5,050) — contém 1, variâncias iguais
+c) (-0,203, 2,203) minutos
+d) Não há diferença significativa entre as máquinas; variâncias são homogêneas
+
+</details>
+
+> *Comparar é a essência da descoberta — e com intervalos de confiança para diferenças, transformamos a dúvida entre dois grupos em uma medida de certeza.*

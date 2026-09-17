@@ -1,0 +1,520 @@
+# Distribuição Qui-Quadrado (χ²)
+
+## O que é a Distribuição Qui-Quadrado?
+
+A Distribuição Qui-Quadrado (χ²) é uma das distribuições mais importantes em estatística inferencial. Ela surge naturalmente quando somamos os quadrados de variáveis aleatórias Normais padrão independentes.
+
+Pense assim: se você tem $k$ variáveis aleatórias independentes $Z_1, Z_2, ..., Z_k$, cada uma com distribuição Normal padrão $N(0, 1)$, então a soma dos seus quadrados:
+
+>> $$X = Z_1^2 + Z_2^2 + ... + Z_k^2$$
+
+segue uma distribuição Qui-Quadrado com $k$ graus de liberdade.
+
+A distribuição Qui-Quadrado é denotada por $X \sim \chi^2(\nu)$, onde $\nu$ (nu) é o número de **graus de liberdade**.
+
+**Por que ela é importante?**
+
+A distribuição Qui-Quadrado é usada em várias situações estatísticas fundamentais:
+
+1. **Teste de independência:** Para verificar se duas variáveis categóricas são independentes (tabelas de contingência).
+2. **Teste de aderência (bondade de ajuste):** Para verificar se uma amostra segue uma determinada distribuição teórica.
+3. **Teste de homogeneidade:** Para comparar proporções entre diferentes grupos.
+4. **Inferência sobre a variância:** Para construir intervalos de confiança e testar hipóteses sobre a variância de uma população Normal.
+5. **Modelos de regressão:** Para testar a significância global do modelo.
+
+A distribuição Qui-Quadrado tem uma característica importante: ela é definida apenas para valores não negativos ($x \ge 0$). Isso faz sentido, pois estamos somando quadrados, que são sempre positivos.
+
+## Função Densidade de Probabilidade
+
+A função densidade da Qui-Quadrado é:
+
+>> $$f(x) = \frac{1}{2^{\nu/2} \Gamma(\nu/2)} x^{\nu/2 - 1} e^{-x/2} \quad \text{para } x \ge 0$$\
+>> $$f(x) = 0 \quad \text{para } x < 0$$
+
+Observe que esta é a densidade da distribuição Gama com $\alpha = \nu/2$ e $\lambda = 1/2$. Ou seja:
+
+$$\chi^2(\nu) = \text{Gama}\left(\frac{\nu}{2}, \frac{1}{2}\right)$$
+
+Isso é útil porque muitas propriedades da Qui-Quadrado podem ser obtidas diretamente da distribuição Gama.
+
+**Exemplo 1:** Seja $X \sim \chi^2(\nu = 2)$. Calcule $f(x)$ e identifique a distribuição.
+
+**Resolução:**
+
+$\nu = 2 \to \nu/2 = 1$. $\Gamma(1) = 1$. $2^{\nu/2} = 2^1 = 2$.
+
+$f(x) = \frac{1}{2} \cdot x^{1-1} \cdot e^{-x/2} = 0,5 \cdot x^0 \cdot e^{-x/2} = 0,5 \cdot e^{-x/2}$.
+
+Esta é exatamente a densidade da Exponencial com $\lambda = 0,5$. Confirmando: $\chi^2(2) = \text{Exp}(1/2)$.
+
+**Exemplo 2:** Seja $X \sim \chi^2(\nu = 4)$. Calcule $f(1)$, $f(2)$, $f(4)$ e $f(6)$.
+
+**Resolução:**
+
+$\nu = 4 \to \nu/2 = 2$. $\Gamma(2) = 1$. $2^{\nu/2} = 2^2 = 4$.
+
+$f(x) = \frac{1}{4} \cdot x^{2-1} \cdot e^{-x/2} = 0,25 \cdot x \cdot e^{-x/2}$.
+
+- $f(1) = 0,25 \cdot 1 \cdot e^{-0,5} = 0,25 \cdot 0,6065 = 0,1516$
+- $f(2) = 0,25 \cdot 2 \cdot e^{-1} = 0,5 \cdot 0,3679 = 0,1839$
+- $f(4) = 0,25 \cdot 4 \cdot e^{-2} = 1 \cdot 0,1353 = 0,1353$
+- $f(6) = 0,25 \cdot 6 \cdot e^{-3} = 1,5 \cdot 0,0498 = 0,0747$
+
+**Interpretação:** A densidade é zero em $x = 0$ (pois $\nu > 2$), sobe até um pico e depois decai.
+
+**Exemplo 3:** Compare as densidades para diferentes graus de liberdade: $\nu = 2$, $\nu = 4$ e $\nu = 6$.
+
+**Resolução:**
+
+- $\nu = 2$: $f(x) = 0,5 \cdot e^{-x/2}$ (Exponencial, decrescente)
+- $\nu = 4$: $f(x) = 0,25 \cdot x \cdot e^{-x/2}$ (sobe e depois desce)
+- $\nu = 6$: $f(x) = \frac{1}{8} \cdot x^2 \cdot e^{-x/2}$ (sobe mais lentamente, pico mais à direita)
+
+**Interpretação:** Conforme $\nu$ aumenta, a distribuição se move para a direita e fica mais simétrica (aproximando-se da Normal).
+
+**Exemplo 4:** Seja $X \sim \chi^2(\nu = 10)$. Calcule $f(5)$ e $f(10)$.
+
+**Resolução:**
+
+$\nu = 10 \to \nu/2 = 5$. $\Gamma(5) = 24$. $2^{\nu/2} = 2^5 = 32$.
+
+$f(x) = \frac{1}{32 \cdot 24} \cdot x^{5-1} \cdot e^{-x/2} = \frac{1}{768} \cdot x^4 \cdot e^{-x/2}$.
+
+- $f(5) = \frac{1}{768} \cdot 625 \cdot e^{-2,5} = 0,8138 \cdot 0,0821 = 0,0668$
+- $f(10) = \frac{1}{768} \cdot 10000 \cdot e^{-5} = 13,0208 \cdot 0,0067 = 0,0872$
+
+**Exemplo 5:** Verifique que a área total sob a curva da Qui-Quadrado é 1.
+
+**Resolução:**
+
+A Qui-Quadrado é um caso particular da Gama com $\alpha = \nu/2$ e $\lambda = 1/2$. Já sabemos que a área total da Gama é 1. Portanto, a área total da Qui-Quadrado também é 1.
+
+## Função de Distribuição Acumulada (FDA)
+
+A FDA da Qui-Quadrado não tem uma forma fechada simples. Ela é definida como:
+
+>> $$F(x) = P(X \le x) = \int_0^x \frac{1}{2^{\nu/2} \Gamma(\nu/2)} t^{\nu/2 - 1} e^{-t/2} dt$$
+
+Para calcular probabilidades, usamos tabelas da distribuição Qui-Quadrado ou softwares estatísticos. As tabelas geralmente fornecem os quantis da Qui-Quadrado, ou seja, os valores $\chi^2_p$ tais que $P(X \le \chi^2_p) = p$.
+
+**Exemplo 1:** Seja $X \sim \chi^2(\nu = 5)$. Encontre o valor $\chi^2_{0,95}$ tal que $P(X \le \chi^2_{0,95}) = 0,95$.
+
+**Resolução:**
+
+Consultando uma tabela Qui-Quadrado com $\nu = 5$ e probabilidade 0,95, encontramos $\chi^2_{0,95} = 11,07$.
+
+**Interpretação:** 95% dos valores da $\chi^2(5)$ são menores que 11,07.
+
+**Exemplo 2:** Seja $X \sim \chi^2(\nu = 10)$. Encontre $P(X \le 18,31)$.
+
+**Resolução:**
+
+Para $\nu = 10$, o valor 18,31 corresponde a $\chi^2_{0,95}$. Portanto, $P(X \le 18,31) = 0,95$.
+
+**Exemplo 3:** Seja $X \sim \chi^2(\nu = 8)$. Calcule $P(X \le 2,73)$.
+
+**Resolução:**
+
+Para $\nu = 8$, 2,73 corresponde a $\chi^2_{0,05}$ (pois $\chi^2_{0,05, 8} = 2,73$). Portanto, $P(X \le 2,73) = 0,05$.
+
+**Exemplo 4:** Seja $X \sim \chi^2(\nu = 12)$. Calcule $P(5,23 \le X \le 21,03)$.
+
+**Resolução:**
+
+Para $\nu = 12$:
+- $\chi^2_{0,05} = 5,23 \to P(X \le 5,23) = 0,05$
+- $\chi^2_{0,95} = 21,03 \to P(X \le 21,03) = 0,95$
+
+$P(5,23 \le X \le 21,03) = P(X \le 21,03) - P(X \le 5,23) = 0,95 - 0,05 = 0,90$.
+
+**Interpretação:** 90% dos valores da $\chi^2(12)$ estão entre 5,23 e 21,03.
+
+**Exemplo 5:** Seja $X \sim \chi^2(\nu = 6)$. Encontre o valor $k$ tal que $P(X \le k) = 0,99$.
+
+**Resolução:**
+
+Para $\nu = 6$ e probabilidade 0,99, $\chi^2_{0,99} = 16,81$.
+
+**Interpretação:** 99% dos valores da $\chi^2(6)$ são menores que 16,81.
+
+## Esperança (média) e Variância
+
+Para a distribuição Qui-Quadrado:
+
+>> $$E[X] = \nu$$\
+>> $$Var(X) = 2\nu$$
+
+O desvio padrão é $\sigma = \sqrt{2\nu}$.
+
+**Exemplo 1:** Seja $X \sim \chi^2(\nu = 4)$. Calcule $E[X]$ e $Var(X)$.
+
+**Resolução:**
+
+- $E[X] = \nu = 4$
+- $Var(X) = 2\nu = 8$
+- Desvio padrão = $\sqrt{8} = 2,828$
+
+**Interpretação:** A média é 4, com variância 8.
+
+**Exemplo 2:** Seja $X \sim \chi^2(\nu = 10)$. Calcule $E[X]$ e $Var(X)$.
+
+**Resolução:**
+
+- $E[X] = 10$
+- $Var(X) = 20$
+- Desvio padrão = $\sqrt{20} = 4,472$
+
+**Exemplo 3:** Seja $X \sim \chi^2(\nu = 30)$. Calcule $E[X]$ e $Var(X)$.
+
+**Resolução:**
+
+- $E[X] = 30$
+- $Var(X) = 60$
+- Desvio padrão = $\sqrt{60} = 7,746$
+
+**Exemplo 4:** Suponha que $X \sim \chi^2(\nu)$ com $E[X] = 15$. Encontre $\nu$ e $Var(X)$.
+
+**Resolução:**
+
+$E[X] = \nu = 15 \to \nu = 15$.
+$Var(X) = 2\nu = 30$.
+
+**Resposta:** $\nu = 15$ e $Var(X) = 30$.
+
+**Exemplo 5:** Suponha que $X \sim \chi^2(\nu)$ com $Var(X) = 50$. Encontre $\nu$ e $E[X]$.
+
+**Resolução:**
+
+$Var(X) = 2\nu = 50 \to \nu = 25$.
+$E[X] = \nu = 25$.
+
+**Resposta:** $\nu = 25$ e $E[X] = 25$.
+
+## Relação entre a Qui-Quadrado, a Normal e a Gama
+
+**Relação com a Normal:**
+
+Se $Z \sim N(0, 1)$, então $Z^2 \sim \chi^2(1)$. Mais geralmente, se $Z_1, Z_2, ..., Z_k \sim N(0, 1)$ independentes, então:
+
+$$\sum_{i=1}^k Z_i^2 \sim \chi^2(k)$$
+
+**Relação com a Gama:**
+
+$$\chi^2(\nu) = \text{Gama}\left(\frac{\nu}{2}, \frac{1}{2}\right)$$
+
+**Propriedade de adição:**
+
+Se $X \sim \chi^2(\nu_1)$ e $Y \sim \chi^2(\nu_2)$ independentes, então $X + Y \sim \chi^2(\nu_1 + \nu_2)$.
+
+**Aproximação para $\nu$ grande:**
+
+Para $\nu$ grande ($\nu > 30$), a Qui-Quadrado pode ser aproximada por uma distribuição Normal:
+
+$$\sqrt{2X} \approx \sqrt{2\nu - 1} + Z$$
+
+onde $Z \sim N(0, 1)$. Ou ainda:
+
+$$X \approx N\left(\nu, \sqrt{2\nu}\right)$$
+
+## Quando usar a Distribuição Qui-Quadrado?
+
+A Qui-Quadrado é usada principalmente em:
+
+1. **Teste de independência:** Para verificar a associação entre duas variáveis categóricas.
+
+2. **Teste de aderência (bondade de ajuste):** Para verificar se uma amostra segue uma distribuição teórica.
+
+3. **Teste de homogeneidade:** Para comparar proporções entre diferentes populações.
+
+4. **Inferência sobre a variância:** Para testar hipóteses sobre a variância de uma população Normal.
+
+5. **Análise de variância (ANOVA):** Em alguns contextos.
+
+**Exemplos de aplicações:**
+
+- Verificar se há associação entre gênero e preferência por um produto.
+- Verificar se os dados de um dado são justos.
+- Verificar se a variância de um processo de fabricação está dentro dos limites.
+- Verificar se as proporções de votos em diferentes regiões são iguais.
+
+## Limitações e quando NÃO usar
+
+A Qui-Quadrado **NÃO deve ser usada** quando:
+
+1. As frequências esperadas são muito pequenas (geralmente < 5 em mais de 20% das células).
+2. Os dados não são categóricos.
+3. A variável pode assumir valores negativos.
+4. A amostra é muito pequena.
+
+### Analogia 1: O teste do dado
+
+Você quer verificar se um dado é justo. Você o joga 60 vezes e observa as frequências de cada face: 10, 8, 12, 9, 11, 10. Se o dado fosse justo, cada face apareceria 10 vezes.
+
+**Pergunta:** Há evidência de que o dado não é justo?
+
+**Resolução passo a passo:**
+
+1. Frequências esperadas: $E = 10$ para cada face.
+2. Qui-Quadrado calculado: $\chi^2 = \sum \frac{(O - E)^2}{E}$
+3. $\chi^2 = \frac{(10-10)^2}{10} + \frac{(8-10)^2}{10} + \frac{(12-10)^2}{10} + \frac{(9-10)^2}{10} + \frac{(11-10)^2}{10} + \frac{(10-10)^2}{10}$
+4. $\chi^2 = [0 + 4/10 + 4/10 + 1/10 + 1/10 + 0] = 10/10 = 1,0$
+5. $\nu = 6 - 1 = 5$. $\chi^2_{0,95, 5} = 11,07$.
+6. Como $1,0 < 11,07$, não rejeitamos a hipótese de que o dado é justo.
+
+**Resposta:** Não há evidência de que o dado não é justo.
+
+### Analogia 2: A independência entre gênero e preferência
+
+Uma pesquisa pergunta a 100 pessoas sobre sua preferência entre dois produtos. Os resultados são:
+
+|Sexo | Produto A | Produto B | Total |
+| --- | --- | --- | --- |
+| Homens | 30 | 20 | 50 |
+| Mulheres | 20 | 30 | 50 |
+| Total | 50 | 50 | 100 |
+
+**Pergunta:** Há associação entre gênero e preferência?
+
+**Resolução passo a passo:**
+
+1. Frequências esperadas: Para Homens/Produto A: $(50 \cdot 50)/100 = 25$
+2. Tabela de esperados:
+
+|Sexo | Produto A | Produto B | Total |
+| --- | --- | --- | --- |
+| Homens | 25 | 25 | 50 |
+| Mulheres | 25 | 25 | 50 |
+| Total | 50 | 50 | 100 |
+
+3. $\chi^2 = \frac{(30-25)^2}{25} + \frac{(20-25)^2}{25} + \frac{(20-25)^2}{25} + \frac{(30-25)^2}{25}$
+4. $\chi^2 = [25/25 + 25/25 + 25/25 + 25/25] = 4,0$
+5. $\nu = (2-1) \cdot (2-1) = 1$. $\chi^2_{0,95, 1} = 3,841$.
+6. Como $4,0 > 3,841$, rejeitamos a hipótese de independência.
+
+**Resposta:** Há evidência de associação entre gênero e preferência.
+
+### Analogia 3: O teste da variância
+
+Uma máquina deve produzir peças com variância máxima de 0,01 mm². Uma amostra de 20 peças tem variância de 0,015 mm². Teste se a variância excede o limite ($\alpha = 0,05$).
+
+**Pergunta:** A variância da máquina está acima do limite?
+
+**Resolução passo a passo:**
+
+1. $H_0: \sigma^2 \le 0,01$; $H_1: \sigma^2 > 0,01$
+2. Estatística de teste: $\chi^2 = \frac{(n-1) \cdot s^2}{\sigma_0^2} = \frac{19 \cdot 0,015}{0,01} = 28,5$
+3. $\nu = 19$. $\chi^2_{0,95, 19} = 30,14$.
+4. Como $28,5 < 30,14$, não rejeitamos $H_0$.
+
+**Resposta:** Não há evidência suficiente para dizer que a variância excede o limite.
+
+### Analogia 4: O teste de aderência para distribuição Uniforme
+
+Um restaurante quer saber se a distribuição de clientes ao longo da semana é uniforme. Eles observam 140 clientes em 7 dias e obtêm: 22, 18, 20, 19, 23, 20, 18.
+
+**Resolução passo a passo:**
+
+1. Frequências esperadas: $140/7 = 20$ para cada dia.
+2. $\chi^2 = \frac{(22-20)^2}{20} + \frac{(18-20)^2}{20} + ... = \frac{4+4+0+1+9+0+4}{20} = \frac{22}{20} = 1,1$
+3. $\nu = 7 - 1 = 6$. $\chi^2_{0,95, 6} = 12,59$.
+4. Como $1,1 < 12,59$, a distribuição é uniforme.
+
+**Resposta:** Não há evidência de que a distribuição não seja uniforme.
+
+## Exemplos práticos com cálculos passo a passo
+
+### Exemplo 1: Probabilidade básica
+
+Seja $X \sim \chi^2(\nu = 8)$. Encontre $P(X \le 15,51)$.
+
+**Resolução:**
+
+Para $\nu = 8$, $\chi^2_{0,95} = 15,51$. Portanto, $P(X \le 15,51) = 0,95$.
+
+**Resposta:** 95%.
+
+### Exemplo 2: Encontrando um quantil
+
+Seja $X \sim \chi^2(\nu = 12)$. Encontre o valor $k$ tal que $P(X > k) = 0,05$.
+
+**Resolução:**
+
+$P(X > k) = 0,05 \to P(X \le k) = 0,95$.
+
+Para $\nu = 12$, $\chi^2_{0,95} = 21,03$.
+
+**Resposta:** $k = 21,03$.
+
+### Exemplo 3: Probabilidade de um intervalo
+
+Seja $X \sim \chi^2(\nu = 6)$. Calcule $P(2,20 \le X \le 12,59)$.
+
+**Resolução:**
+
+Para $\nu = 6$:
+- $\chi^2_{0,05} = 2,20 \to P(X \le 2,20) = 0,05$
+- $\chi^2_{0,95} = 12,59 \to P(X \le 12,59) = 0,95$
+
+$P(2,20 \le X \le 12,59) = 0,95 - 0,05 = 0,90$.
+
+**Resposta:** 90%.
+
+### Exemplo 4: Cálculo da média
+
+Seja $X \sim \chi^2(\nu = 15)$. Calcule $E[X]$ e $Var(X)$.
+
+**Resolução:**
+
+$E[X] = 15$.
+$Var(X) = 30$.
+
+**Resposta:** $E[X] = 15$ e $Var(X) = 30$.
+
+### Exemplo 5: Teste de independência
+
+| | Categoria A | Categoria B | Total |
+| --- | --- | --- | --- |
+| Grupo 1 | 40 | 60 | 100 |
+| Grupo 2 | 30 | 70 | 100 |
+| Total | 70 | 130 | 200 |
+
+Calcule o $\chi^2$ e teste a independência ($\alpha = 0,05$).
+
+**Resolução:**
+
+Esperados:
+- Grupo 1, A: $(100 \cdot 70)/200 = 35$
+- Grupo 1, B: $(100 \cdot 130)/200 = 65$
+- Grupo 2, A: $(100 \cdot 70)/200 = 35$
+- Grupo 2, B: $(100 \cdot 130)/200 = 65$
+
+$\chi^2 = \frac{(40-35)^2}{35} + \frac{(60-65)^2}{65} + \frac{(30-35)^2}{35} + \frac{(70-65)^2}{65}$
+$= 25/35 + 25/65 + 25/35 + 25/65$
+$= 0,7143 + 0,3846 + 0,7143 + 0,3846 = 2,1978$
+
+$\nu = (2-1) \cdot (2-1) = 1$. $\chi^2_{0,95, 1} = 3,841$.
+
+Como $2,1978 < 3,841$, não rejeitamos a independência.
+
+**Resposta:** Não há evidência de associação.
+
+## Exercícios resolvidos (níveis crescentes de dificuldade)
+
+### Exercício 1 (Fácil)
+
+Seja $X \sim \chi^2(\nu = 5)$. Encontre $P(X \le 9,24)$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+Para $\nu = 5$, $\chi^2_{0,90} = 9,24$. Portanto, $P(X \le 9,24) = 0,90$.
+
+**Resposta:** 90%.
+
+</details>
+
+### Exercício 2 (Fácil/Médio)
+
+Seja $X \sim \chi^2(\nu = 10)$. Calcule $P(X > 18,31)$ e $P(X < 3,94)$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$P(X > 18,31) = 1 - P(X \le 18,31) = 1 - 0,95 = 0,05$.
+$P(X < 3,94) = P(X \le 3,94) = 0,05$.
+
+**Resposta:** 5% e 5%.
+
+</details>
+
+### Exercício 3 (Médio)
+
+Seja $X \sim \chi^2(\nu = 8)$. Encontre $k$ tal que $P(X \le k) = 0,95$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+Para $\nu = 8$ e probabilidade 0,95, $\chi^2_{0,95} = 15,51$.
+
+**Resposta:** $k = 15,51$.
+
+</details>
+
+### Exercício 4 (Médio)
+
+Uma amostra de 25 elementos tem variância 12. Teste se a variância populacional é 10 ($\alpha = 0,05$).
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$H_0: \sigma^2 = 10$; $H_1: \sigma^2 \ne 10$ (bicaudal).
+
+$\chi^2 = \frac{(n-1) \cdot s^2}{\sigma_0^2} = \frac{24 \cdot 12}{10} = 28,8$.
+
+$\nu = 24$. $\chi^2_{0,025, 24} = 12,40$; $\chi^2_{0,975, 24} = 39,36$.
+
+Como $12,40 < 28,8 < 39,36$, não rejeitamos $H_0$.
+
+**Resposta:** Não há evidência de que a variância seja diferente de 10.
+
+</details>
+
+### Exercício 5 (Difícil)
+
+Em uma pesquisa com 200 pessoas sobre 4 marcas, as frequências observadas são: 45, 55, 40, 60. Teste se as preferências são iguais ($\alpha = 0,05$).
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$H_0: p_1 = p_2 = p_3 = p_4 = 0,25$.
+
+Frequências esperadas: $200 \cdot 0,25 = 50$ para cada marca.
+
+$\chi^2 = \frac{(45-50)^2}{50} + \frac{(55-50)^2}{50} + \frac{(40-50)^2}{50} + \frac{(60-50)^2}{50}$
+$= 25/50 + 25/50 + 100/50 + 100/50 = 5,0$.
+
+$\nu = 4 - 1 = 3$. $\chi^2_{0,95, 3} = 7,815$.
+
+Como $5,0 < 7,815$, não rejeitamos $H_0$.
+
+**Resposta:** Não há evidência de diferença nas preferências.
+
+</details>
+
+## Desafio final com resolução completa
+
+Um fabricante de baterias quer saber se o tempo de vida de suas baterias tem variância de 100 horas². Ele coleta uma amostra de 15 baterias e obtém variância amostral de 150 horas².
+
+a) Qual distribuição deve ser usada para testar a variância?
+b) Teste se a variância é maior que 100 horas² ($\alpha = 0,05$).
+c) Encontre o intervalo de confiança de 90% para a variância populacional.
+d) Qual a probabilidade de a variância amostral ser maior que 150, assumindo que a variância populacional é 100?
+
+<details>
+<summary>💡 Ver resolução completa</summary>
+
+a) Para testar a variância de uma população Normal, usamos a distribuição Qui-Quadrado com $\nu = n - 1 = 14$.
+
+b) $H_0: \sigma^2 \le 100$; $H_1: \sigma^2 > 100$ (unilateral superior).
+   $\chi^2 = \frac{(n-1) \cdot s^2}{\sigma_0^2} = \frac{14 \cdot 150}{100} = 21,0$.
+   $\nu = 14$. $\chi^2_{0,95, 14} = 23,68$.
+   Como $21,0 < 23,68$, não rejeitamos $H_0$.
+
+c) Intervalo de confiança para $\sigma^2$:
+   $\left[ \frac{(n-1) \cdot s^2}{\chi^2_{0,95, 14}}, \frac{(n-1) \cdot s^2}{\chi^2_{0,05, 14}} \right]$
+   $= \left[ \frac{14 \cdot 150}{23,68}, \frac{14 \cdot 150}{6,57} \right]$
+   $= \left[ \frac{2100}{23,68}, \frac{2100}{6,57} \right] = [88,68, 319,63]$
+
+d) Queremos $P(S^2 > 150 | \sigma^2 = 100)$.
+   $P\left( \frac{(n-1) \cdot S^2}{\sigma^2} > \frac{(n-1) \cdot 150}{100} \right) = P(\chi^2 > 21,0)$
+   Para $\chi^2(14)$, $P(\chi^2 > 21,0) = 0,10$ (pois $\chi^2_{0,90, 14} = 21,06$).
+
+**Respostas:**
+a) $\chi^2(14)$
+b) Não rejeita $H_0$ (não há evidência de variância > 100)
+c) $(88,68, 319,63)$ horas²
+d) Aproximadamente 10%
+
+</details>
+
+> *A Distribuição Qui-Quadrado nos ensina que, ao quadrar o acaso e somar suas partes, revelamos padrões que o olhar isolado não vê — ela transforma incertezas em evidências e perguntas em respostas.*

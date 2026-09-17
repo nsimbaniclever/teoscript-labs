@@ -1,0 +1,251 @@
+# DECOMPOSIÇÕES MATRICIAIS
+
+## 1. Definição
+
+### 1.1 O que é uma Decomposição Matricial?
+
+Uma **decomposição matricial** (ou **fatoração**) é a representação de uma matriz $A$ como o **produto** de duas ou mais matrizes com estruturas especiais:
+
+$$
+A = A_1 \cdot A_2 \cdot \ldots \cdot A_k
+$$
+
+**Analogia:** Assim como um número pode ser decomposto em fatores primos ($12 = 2^2 \cdot 3$), uma matriz pode ser decomposta em fatores que revelam suas propriedades estruturais.
+
+### 1.2 Por que Decompor Matrizes?
+
+| Motivo | Descrição |
+|--------|-----------|
+| **Eficiência computacional** | Resolver sistemas lineares mais rápido ($O(n^3)$ vs $O(n^3)$ com constantes menores) |
+| **Estabilidade numérica** | Métodos mais estáveis que a inversão direta |
+| **Revelar estrutura** | Autovalores, posto, ortogonalidade, definitude |
+| **Compressão** | Representar a matriz com menos informação (SVD, PCA) |
+| **Reutilização** | Uma decomposição pode ser usada para múltiplos $\vec{b}$ em sistemas lineares |
+
+## 2. Visão Geral das Decomposições
+
+### 2.1 Tabela Comparativa
+
+| Decomposição | Fórmula | Condições | Aplicação Principal |
+|--------------|---------|-----------|---------------------|
+| **LU** | $A = LU$ | $A$ quadrada | Resolver sistemas, calcular inversa |
+| **QR** | $A = QR$ | Qualquer $A$ | Mínimos quadrados, autovalores |
+| **Cholesky** | $A = LL^T$ | Simétrica definida positiva | Regressão linear, simulação |
+| **Espectral** | $A = Q \Lambda Q^{-1}$ | Diagonalizável | Potências de matrizes, sistemas dinâmicos |
+| **SVD** | $A = U \Sigma V^T$ | Qualquer $A$ | PCA, compressão, robustez |
+
+## 3. Analogias Lúdicas
+
+### 🍔 EXEMPLO 1 – A LANCHONETE (DECOMPOSIÇÃO DE INGREDIENTES)
+
+A lanchonete tem uma matriz de receitas:
+$$
+A = \begin{bmatrix}
+1 & 1 & 0 \\
+0 & 0 & 1 \\
+1 & 1 & 1
+\end{bmatrix}
+$$
+
+**Analogia:** Decompor a matriz $A$ é como **desmontar** um sanduíche em seus ingredientes:
+- $L$ (triangular inferior): os ingredientes "base"
+- $U$ (triangular superior): como os ingredientes se combinam
+
+**Interpretação:** A decomposição revela a estrutura interna das receitas.
+
+### 🧃 EXEMPLO 2 – A CANTINA (DECOMPOSIÇÃO DE NUTRIENTES)
+
+A cantina tem a matriz nutricional:
+$$
+N = \begin{bmatrix}
+10 & 0 & 50 \\
+5 & 20 & 0 \\
+30 & 0 & 0
+\end{bmatrix}
+$$
+
+**Analogia:** Decompor $N$ é como separar os nutrientes em:
+- **Componentes principais** (autovalores)
+- **Direções** (autovetores)
+
+**Interpretação:** A decomposição revela quais nutrientes são mais importantes.
+
+### 📚 EXEMPLO 3 – A BIBLIOTECA (DECOMPOSIÇÃO DE CONTEÚDO)
+
+A biblioteca tem a matriz de conteúdo:
+$$
+C = \begin{bmatrix}
+10 & 5 & 0 \\
+8 & 0 & 12 \\
+6 & 8 & 4
+\end{bmatrix}
+$$
+
+**Analogia:** Decompor $C$ é como separar o conhecimento em:
+- **Temas fundamentais** (autovetores)
+- **Importância de cada tema** (autovalores)
+
+**Interpretação:** A decomposição revela a estrutura do conhecimento na biblioteca.
+
+## 4. Critérios para Escolher uma Decomposição
+
+| Situação | Decomposição Recomendada |
+|----------|--------------------------|
+| **Resolver sistemas lineares $A\vec{x} = \vec{b}$** | LU (para $A$ quadrada) ou QR (para $A$ retangular) |
+| **Mínimos quadrados** | QR ou SVD |
+| **Matriz simétrica definida positiva** | Cholesky (mais rápido que LU) |
+| **PCA / Redução de dimensionalidade** | SVD (ou decomposição espectral para covariância) |
+| **Compressão de dados** | SVD |
+| **Análise de estabilidade / convergência** | Decomposição espectral |
+| **Matriz mal condicionada** | SVD (mais robusta) |
+
+## 5. Aplicação na Tese
+
+### 5.1 Por que Decomposições são Importantes no FL?
+
+| Decomposição | Aplicação no FL |
+|--------------|-----------------|
+| **LU** | Resolver sistemas de equações normais |
+| **QR** | Mínimos quadrados para regressão local |
+| **Cholesky** | Matriz de covariância local (simétrica definida positiva) |
+| **SVD** | PCA local, detecção de outliers, compressão de gradientes |
+| **Espectral** | Análise de convergência do FedAvg |
+
+### 5.2 Exemplo: SVD para Compressão de Gradientes
+
+Em FL, clientes podem comprimir seus gradientes usando SVD:
+
+$$
+G = U \Sigma V^T \approx U_k \Sigma_k V_k^T
+$$
+
+**Interpretação:** Os primeiros $k$ componentes singulares capturam a maior parte da informação do gradiente, reduzindo a comunicação.
+
+## 6. Resumo Estruturado
+
+| Decomposição | Fórmula | Propriedade Principal |
+|--------------|---------|----------------------|
+| **LU** | $A = LU$ | Triangular (sistemas lineares) |
+| **QR** | $A = QR$ | Ortogonal × Triangular |
+| **Cholesky** | $A = LL^T$ | Simétrica definida positiva |
+| **Espectral** | $A = Q \Lambda Q^{-1}$ | Autovalores |
+| **SVD** | $A = U \Sigma V^T$ | Valores singulares |
+
+## 7. Exercícios Propostos (Manuais)
+
+<details>
+<summary>📗 Exercício 1 (Identificação de Decomposições)</summary>
+
+**Enunciado:** Para cada situação, indique qual decomposição seria mais adequada:
+
+a) Resolver um sistema $A\vec{x} = \vec{b}$ onde $A$ é $3 \times 3$ e não é simétrica.
+
+b) Encontrar os componentes principais de um dataset.
+
+c) Resolver um sistema onde $A$ é simétrica e definida positiva.
+
+d) Comprimir uma imagem.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) **LU** (mais eficiente para sistemas lineares)
+
+b) **SVD** (PCA é baseado na SVD)
+
+c) **Cholesky** (mais rápido que LU para matrizes simétricas definidas positivas)
+
+d) **SVD** (compressão de imagens com valores singulares)
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 (Analogia)</summary>
+
+**Enunciado:** Use a analogia da **lanchonete** para explicar o que é uma decomposição matricial.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+Assim como um sanduíche pode ser desmontado em pão, carne, queijo e salada, uma matriz pode ser decomposta em fatores que revelam sua estrutura. Cada fator tem um papel específico: um pode ser a "base" (triangular inferior), outro a "combinação" (triangular superior), e a decomposição mostra como eles se relacionam.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 (Aplicação no FL)</summary>
+
+**Enunciado:** Explique como a SVD pode ser usada para comprimir gradientes em FL.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+A SVD decompõe o gradiente $G = U \Sigma V^T$. Os primeiros $k$ valores singulares capturam a maior parte da informação. O cliente pode enviar $U_k, \Sigma_k, V_k$ em vez da matriz completa, reduzindo a comunicação.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 (Propriedades das Decomposições)</summary>
+
+**Enunciado:** Preencha a tabela com as propriedades de cada decomposição:
+
+| Decomposição | Matrizes Resultantes | Condição |
+|--------------|----------------------|----------|
+| **LU** | | |
+| **QR** | | |
+| **Cholesky** | | |
+| **Espectral** | | |
+| **SVD** | | |
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+| Decomposição | Matrizes Resultantes | Condição |
+|--------------|----------------------|----------|
+| **LU** | $L$ (triangular inferior), $U$ (triangular superior) | $A$ quadrada |
+| **QR** | $Q$ (ortogonal), $R$ (triangular superior) | Qualquer $A$ |
+| **Cholesky** | $L$ (triangular inferior), $L^T$ | Simétrica definida positiva |
+| **Espectral** | $Q$ (autovetores), $\Lambda$ (autovalores) | Diagonalizável |
+| **SVD** | $U$ (ortogonal), $\Sigma$ (diagonal), $V$ (ortogonal) | Qualquer $A$ |
+
+</details>
+</details>
+
+## 8. EXERCÍCIO COMPUTACIONAL
+
+<details>
+<summary>🐍 Ver código (Python/NumPy)</summary>
+
+```python
+import numpy as np
+
+# Exemplo de SVD para compressão
+A = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
+
+# Decomposição SVD
+U, S, Vt = np.linalg.svd(A)
+
+print("U (ortogonal):\n", U)
+print("S (valores singulares):", S)
+print("Vt (ortogonal):\n", Vt)
+
+# Reconstrução
+Sigma = np.zeros((U.shape[0], Vt.shape[0]))
+Sigma[:len(S), :len(S)] = np.diag(S)
+A_reconstruida = U @ Sigma @ Vt
+print("A reconstruída:\n", A_reconstruida)
+```
+
+</details>
+
+> *Decomposições matriciais são ferramentas fundamentais para simplificar, resolver e entender problemas com matrizes. Cada decomposição tem suas próprias vantagens e aplicações. A escolha da decomposição correta pode melhorar drasticamente a eficiência, estabilidade e interpretabilidade dos cálculos.*

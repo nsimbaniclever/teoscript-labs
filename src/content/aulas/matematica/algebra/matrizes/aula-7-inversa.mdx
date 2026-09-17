@@ -1,0 +1,470 @@
+#  MATRIZ INVERSA
+
+## 1. Definição
+
+### 1.1 O que é a Inversa?
+
+Dada uma matriz quadrada $A \in \mathbb{R}^{n \times n}$, a **inversa** de $A$, denotada por $A^{-1}$, é a matriz que satisfaz:
+
+$$
+A \cdot A^{-1} = A^{-1} \cdot A = I_n
+$$
+
+onde $I_n$ é a matriz identidade $n \times n$.
+
+**Observações:**
+- Nem toda matriz tem inversa.
+- Se $A$ tem inversa, dizemos que $A$ é **invertível** (ou **não singular**).
+- Se $A$ não tem inversa, dizemos que $A$ é **singular** (ou **não invertível**).
+- $\det(A) \neq 0 \iff A$ é invertível.
+
+### 1.2 Inversa de Matriz $2 \times 2$ (Fórmula Direta)
+
+Para:
+$$
+A = \begin{bmatrix} a & b \\ c & d \end{bmatrix}
+$$
+
+Se $\det(A) = ad - bc \neq 0$, então:
+$$
+A^{-1} = \frac{1}{\det(A)} \begin{bmatrix} d & -b \\ -c & a \end{bmatrix}
+$$
+
+**Exemplo:**
+$$
+A = \begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix}, \quad \det(A) = 1 \cdot 4 - 2 \cdot 3 = 4 - 6 = -2
+$$
+
+$$
+A^{-1} = \frac{1}{-2} \begin{bmatrix} 4 & -2 \\ -3 & 1 \end{bmatrix} = \begin{bmatrix} -2 & 1 \\ 1.5 & -0.5 \end{bmatrix}
+$$
+
+**Verificação:**
+$$
+A \cdot A^{-1} = \begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix} \begin{bmatrix} -2 & 1 \\ 1.5 & -0.5 \end{bmatrix} = \begin{bmatrix} 1\cdot(-2) + 2\cdot1.5 & 1\cdot1 + 2\cdot(-0.5) \\ 3\cdot(-2) + 4\cdot1.5 & 3\cdot1 + 4\cdot(-0.5) \end{bmatrix}
+$$
+
+$$
+ = \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix} ✓
+$$
+
+### 1.3 Inversa de Matriz $3 \times 3$ (Método de Gauss-Jordan)
+
+O método mais prático para calcular a inversa de matrizes $3 \times 3$ (ou maiores) é o **Gauss-Jordan**:
+
+**Passo 1:** Construir a matriz aumentada $[A \mid I]$.
+
+**Passo 2:** Aplicar operações elementares nas linhas para transformar $A$ em $I$.
+
+**Passo 3:** O lado direito da matriz aumentada será $A^{-1}$.
+
+### 1.4 Exemplo $3 \times 3$ pelo Método de Gauss-Jordan
+
+Seja:
+$$
+A = \begin{bmatrix}
+1 & 2 & 3 \\
+0 & 1 & 4 \\
+0 & 0 & 1
+\end{bmatrix}
+$$
+
+**Passo 1:** Matriz aumentada:
+$$
+\left[\begin{array}{ccc|ccc}
+1 & 2 & 3 & 1 & 0 & 0 \\
+0 & 1 & 4 & 0 & 1 & 0 \\
+0 & 0 & 1 & 0 & 0 & 1
+\end{array}\right]
+$$
+
+**Passo 2:** Eliminação para transformar $A$ em $I$:
+
+**Linha 3:** $L_3$ já tem $1$ na diagonal.
+
+**Linha 2:** $L_2 \leftarrow L_2 - 4L_3$:
+$$
+[0 \quad 1 \quad 0 \quad | \quad 0 \quad 1 \quad -4]
+$$
+
+**Linha 1:** $L_1 \leftarrow L_1 - 2L_2 - 3L_3$:
+- Primeiro, $L_1 \leftarrow L_1 - 2L_2$:
+$$
+[1 \quad 0 \quad -5 \quad | \quad 1 \quad -2 \quad 0]
+$$
+- Depois, $L_1 \leftarrow L_1 + 5L_3$:
+$$
+[1 \quad 0 \quad 0 \quad | \quad 1 \quad -2 \quad 5]
+$$
+
+**Matriz final:**
+$$
+\left[\begin{array}{ccc|ccc}
+1 & 0 & 0 & 1 & -2 & 5 \\
+0 & 1 & 0 & 0 & 1 & -4 \\
+0 & 0 & 1 & 0 & 0 & 1
+\end{array}\right]
+$$
+
+**Conclusão:**
+$$
+A^{-1} = \begin{bmatrix}
+1 & -2 & 5 \\
+0 & 1 & -4 \\
+0 & 0 & 1
+\end{bmatrix}
+$$
+
+**Verificação:** $A \cdot A^{-1} = I$ ✓
+
+## 2. Propriedades da Inversa
+
+| Propriedade | Fórmula | Observação |
+|-------------|---------|------------|
+| **Inversa da Inversa** | $(A^{-1})^{-1} = A$ | A inversa é involutiva |
+| **Inversa do Produto** | $(AB)^{-1} = B^{-1} A^{-1}$ | A ordem **inverte**! |
+| **Inversa da Transposta** | $(A^T)^{-1} = (A^{-1})^T$ | Transposição e inversão comutam |
+| **Determinante da Inversa** | $\det(A^{-1}) = 1/\det(A)$ | Se $A$ for invertível |
+| **Inversa da Identidade** | $I^{-1} = I$ | A identidade é sua própria inversa |
+| **Inversa da Diagonal** | $\text{diag}(d_1, \ldots, d_n)^{-1} = \text{diag}(1/d_1, \ldots, 1/d_n)$ | Se todos $d_i \neq 0$ |
+
+## 3. Exemplos Lúdicos Aprimorados
+
+### 🍔 EXEMPLO 1 – A LANCHONETE (INVERSA DE PEDIDOS)
+
+A lanchonete tem a matriz de ingredientes:
+$$
+A = \begin{bmatrix}
+1 & 1 & 0 \\
+0 & 0 & 1 \\
+1 & 1 & 1
+\end{bmatrix}, \quad \det(A) = 0
+$$
+
+**Como $\det(A) = 0$, a matriz NÃO tem inversa.**
+
+**Interpretação:** O cardápio tem redundância (combo é combinação dos outros). Não é possível "desfazer" um pedido de forma única — há múltiplas combinações de sanduíches que levam ao mesmo resultado.
+
+### 🧃 EXEMPLO 2 – A CANTINA (INVERSA NUTRICIONAL)
+
+A cantina tem a matriz nutricional:
+$$
+N = \begin{bmatrix}
+10 & 0 & 50 \\
+5 & 20 & 0 \\
+30 & 0 & 0
+\end{bmatrix}, \quad \det(N) = -30.000 \neq 0
+$$
+
+**Como $\det(N) \neq 0$, a matriz TEM inversa.**
+
+**Interpretação:** Dado um objetivo nutricional (açúcar, cálcio, vitamina C), é possível determinar **unicamente** as quantidades de cada alimento necessárias para atingi-lo.
+
+**Aplicação:** Se um nutricionista quer uma dieta com 40g de açúcar, 20mg de cálcio e 100mg de vitamina C, ele pode usar $N^{-1}$ para encontrar as quantidades exatas de suco, leite e bolo.
+
+### 📚 EXEMPLO 3 – A BIBLIOTECA (INVERSA DE CONTEÚDO)
+
+A biblioteca tem a matriz de conteúdo:
+$$
+C = \begin{bmatrix}
+10 & 5 & 0 \\
+8 & 0 & 12 \\
+6 & 8 & 4
+\end{bmatrix}, \quad \det(C) = -760 \neq 0
+$$
+
+**Interpretação:** Dado um objetivo de estudo (teoria, exercícios, figuras), é possível determinar **unicamente** as quantidades de cada livro necessárias para atingi-lo.
+
+## 4. Aplicação na Tese: Regressão Linear (Equações Normais)
+
+Em regressão linear, a solução dos pesos é dada por:
+
+$$
+\vec{w} = (X^T X)^{-1} X^T \vec{y}
+$$
+
+**Onde:**
+- $X$ é a matriz de dados ($n \times p$)
+- $\vec{y}$ é o vetor de alvos ($n \times 1$)
+- $\vec{w}$ é o vetor de pesos ($p \times 1$)
+
+**Interpretação:** A inversa da matriz $X^T X$ é necessária para encontrar os pesos que minimizam o erro quadrático.
+
+**Observação:** $X^T X$ é invertível se as colunas de $X$ forem linearmente independentes (posto máximo).
+
+## 5. Quando Fazer um Exercício Computacional?
+
+**Aqui faz MUITO sentido!** Porque:
+- Calcular inversas manualmente para $3 \times 3$ é trabalhoso.
+- Computacionalmente, é trivial.
+- Ajuda a verificar contas manuais.
+- É essencial para regressão linear.
+
+## 6. Exercícios Propostos (Manuais)
+
+<details>
+<summary>📗 Exercício 1 (Inversa $2 \times 2$)</summary>
+
+**Enunciado:** Calcule a inversa das seguintes matrizes:
+
+a) $A = \begin{bmatrix} 2 & 3 \\ 1 & 4 \end{bmatrix}$
+
+b) $B = \begin{bmatrix} 1 & 2 \\ 2 & 4 \end{bmatrix}$ (se possível)
+
+c) $C = \begin{bmatrix} 3 & 1 \\ 2 & 1 \end{bmatrix}$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\det(A) = 2 \cdot 4 - 3 \cdot 1 = 8 - 3 = 5$  
+$$
+A^{-1} = \frac{1}{5} \begin{bmatrix} 4 & -3 \\ -1 & 2 \end{bmatrix} = \begin{bmatrix} 0.8 & -0.6 \\ -0.2 & 0.4 \end{bmatrix}
+$$
+
+b) $\det(B) = 1 \cdot 4 - 2 \cdot 2 = 4 - 4 = 0$ → **Não tem inversa!**
+
+c) $\det(C) = 3 \cdot 1 - 1 \cdot 2 = 3 - 2 = 1$  
+$$
+C^{-1} = \frac{1}{1} \begin{bmatrix} 1 & -1 \\ -2 & 3 \end{bmatrix} = \begin{bmatrix} 1 & -1 \\ -2 & 3 \end{bmatrix}
+$$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 (Verificação de Inversa)</summary>
+
+**Enunciado:** Dada:
+$$
+A = \begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix}, \quad
+A^{-1} = \begin{bmatrix} -2 & 1 \\ 1.5 & -0.5 \end{bmatrix}
+$$
+
+Verifique que $A \cdot A^{-1} = I$ e $A^{-1} \cdot A = I$.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+$A \cdot A^{-1} = \begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix} \begin{bmatrix} -2 & 1 \\ 1.5 & -0.5 \end{bmatrix} = \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix}$ ✓  
+$A^{-1} \cdot A = \begin{bmatrix} -2 & 1 \\ 1.5 & -0.5 \end{bmatrix} \begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix} = \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix}$ ✓
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 (Inversa de Matriz Diagonal)</summary>
+
+**Enunciado:** Dada:
+$$
+A = \begin{bmatrix} 2 & 0 & 0 \\ 0 & 3 & 0 \\ 0 & 0 & 5 \end{bmatrix}
+$$
+
+a) Calcule $A^{-1}$.  
+b) Verifique que $A \cdot A^{-1} = I$.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $A^{-1} = \begin{bmatrix} 1/2 & 0 & 0 \\ 0 & 1/3 & 0 \\ 0 & 0 & 1/5 \end{bmatrix}$
+
+b) $A \cdot A^{-1} = \begin{bmatrix} 2\cdot(1/2) & 0 & 0 \\ 0 & 3\cdot(1/3) & 0 \\ 0 & 0 & 5\cdot(1/5) \end{bmatrix} = I$ ✓
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 (Inversa pelo Gauss-Jordan $3 \times 3$)</summary>
+
+**Enunciado:** Calcule a inversa de:
+$$
+A = \begin{bmatrix}
+1 & 0 & 2 \\
+0 & 1 & 1 \\
+1 & 1 & 1
+\end{bmatrix}
+$$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+Matriz aumentada:
+$$
+\left[\begin{array}{ccc|ccc}
+1 & 0 & 2 & 1 & 0 & 0 \\
+0 & 1 & 1 & 0 & 1 & 0 \\
+1 & 1 & 1 & 0 & 0 & 1
+\end{array}\right]
+$$
+
+**Passo 1:** $L_3 \leftarrow L_3 - L_1$:
+$$
+[0 \quad 1 \quad -1 \quad | \quad -1 \quad 0 \quad 1]
+$$
+
+**Passo 2:** $L_3 \leftarrow L_3 - L_2$:
+$$
+[0 \quad 0 \quad -2 \quad | \quad -1 \quad -1 \quad 1]
+$$
+
+**Passo 3:** $L_3 \leftarrow -\frac{1}{2} L_3$:
+$$
+[0 \quad 0 \quad 1 \quad | \quad 0.5 \quad 0.5 \quad -0.5]
+$$
+
+**Passo 4:** $L_2 \leftarrow L_2 - L_3$:
+$$
+[0 \quad 1 \quad 0 \quad | \quad -0.5 \quad 0.5 \quad 0.5]
+$$
+
+**Passo 5:** $L_1 \leftarrow L_1 - 2L_3$:
+$$
+[1 \quad 0 \quad 0 \quad | \quad 0 \quad -1 \quad 1]
+$$
+
+**Resultado:**
+$$
+A^{-1} = \begin{bmatrix}
+0 & -1 & 1 \\
+-0.5 & 0.5 & 0.5 \\
+0.5 & 0.5 & -0.5
+\end{bmatrix}
+$$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 (Propriedade do Produto)</summary>
+
+**Enunciado:** Dadas:
+$$
+A = \begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix}, \quad
+B = \begin{bmatrix} 2 & 0 \\ 1 & 3 \end{bmatrix}
+$$
+
+a) Calcule $A^{-1}$ e $B^{-1}$.  
+b) Calcule $(AB)^{-1}$.  
+c) Verifique que $(AB)^{-1} = B^{-1} A^{-1}$.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $A^{-1} = \begin{bmatrix} -2 & 1 \\ 1.5 & -0.5 \end{bmatrix}$  
+$\det(B) = 6$, $B^{-1} = \frac{1}{6} \begin{bmatrix} 3 & 0 \\ -1 & 2 \end{bmatrix} = \begin{bmatrix} 0.5 & 0 \\ -1/6 & 1/3 \end{bmatrix}$
+
+b) $AB = \begin{bmatrix} 4 & 6 \\ 10 & 12 \end{bmatrix}$, $\det(AB) = 4 \cdot 12 - 6 \cdot 10 = 48 - 60 = -12$  
+$$
+(AB)^{-1} = \frac{1}{-12} \begin{bmatrix} 12 & -6 \\ -10 & 4 \end{bmatrix} = \begin{bmatrix} -1 & 0.5 \\ 5/6 & -1/3 \end{bmatrix}
+$$
+
+c) $B^{-1} A^{-1} = \begin{bmatrix} 0.5 & 0 \\ -1/6 & 1/3 \end{bmatrix} \begin{bmatrix} -2 & 1 \\ 1.5 & -0.5 \end{bmatrix} = \begin{bmatrix} -1 & 0.5 \\ 5/6 & -1/3 \end{bmatrix}$ ✓
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 (Aplicação – Regressão Linear)</summary>
+
+**Enunciado:** Suponha que você tenha a matriz de dados:
+$$
+X = \begin{bmatrix}
+1 & 2 \\
+3 & 4 \\
+5 & 6
+\end{bmatrix}
+$$
+
+e o vetor de alvos:
+$$
+\vec{y} = \begin{bmatrix} 5 \\ 11 \\ 17 \end{bmatrix}
+$$
+
+a) Calcule $X^T X$.  
+b) Calcule $(X^T X)^{-1}$ (use a fórmula $2 \times 2$).  
+c) Calcule $X^T \vec{y}$.  
+d) Calcule $\vec{w} = (X^T X)^{-1} X^T \vec{y}$.  
+e) Verifique que $X\vec{w} \approx \vec{y}$.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $X^T X = \begin{bmatrix} 35 & 44 \\ 44 & 56 \end{bmatrix}$
+
+b) $\det(X^T X) = 35 \cdot 56 - 44 \cdot 44 = 1960 - 1936 = 24$  
+$$
+(X^T X)^{-1} = \frac{1}{24} \begin{bmatrix} 56 & -44 \\ -44 & 35 \end{bmatrix} = \begin{bmatrix} 2.333 & -1.833 \\ -1.833 & 1.458 \end{bmatrix}
+$$
+
+c) $X^T \vec{y} = \begin{bmatrix} 1 & 3 & 5 \\ 2 & 4 & 6 \end{bmatrix} \begin{bmatrix} 5 \\ 11 \\ 17 \end{bmatrix} = \begin{bmatrix} 5 + 33 + 85 \\ 10 + 44 + 102 \end{bmatrix} = \begin{bmatrix} 123 \\ 156 \end{bmatrix}$
+
+d) $\vec{w} = (X^T X)^{-1} X^T \vec{y} = \begin{bmatrix} 2.333 & -1.833 \\ -1.833 & 1.458 \end{bmatrix} \begin{bmatrix} 123 \\ 156 \end{bmatrix} = \begin{bmatrix} 287 - 286 \\ -225.5 + 227.5 \end{bmatrix} = \begin{bmatrix} 1 \\ 2 \end{bmatrix}$
+
+e) $X\vec{w} = \begin{bmatrix} 1 & 2 \\ 3 & 4 \\ 5 & 6 \end{bmatrix} \begin{bmatrix} 1 \\ 2 \end{bmatrix} = \begin{bmatrix} 5 \\ 11 \\ 17 \end{bmatrix} = \vec{y}$ ✓
+
+</details>
+</details>
+
+## 7. EXERCÍCIO COMPUTACIONAL
+
+<details>
+<summary>🐍 Ver código (Python/NumPy)</summary>
+
+```python
+import numpy as np
+
+A = np.array([[1, 2], [3, 4]])
+print("A:\n", A)
+print("A^{-1}:\n", np.linalg.inv(A))
+print("A @ A^{-1}:\n", A @ np.linalg.inv(A))
+
+# Exemplo de regressão linear
+X = np.array([[1, 2], [3, 4], [5, 6]])
+y = np.array([5, 11, 17])
+
+w = np.linalg.inv(X.T @ X) @ X.T @ y
+print("w:\n", w)
+print("X @ w:\n", X @ w)
+```
+
+</details>
+
+<details>
+<summary>📝 Ver código (R)</summary>
+
+```r
+A <- matrix(c(1, 2, 3, 4), nrow=2)
+print(solve(A))
+print(A %*% solve(A))
+
+# Exemplo de regressão linear
+X <- matrix(c(1, 2, 3, 4, 5, 6), nrow=3, ncol=2)
+y <- c(5, 11, 17)
+
+w <- solve(t(X) %*% X) %*% t(X) %*% y
+print(w)
+print(X %*% w)
+```
+
+</details>
+
+<details>
+<summary>📊 Ver instruções (Excel)</summary>
+
+- Use a função `MATRIZ.INVERSO` (MINVERSE) para calcular a inversa.
+- Selecione a área de saída, digite `=MATRIZ.INVERSO(A1:B2)` e pressione **Ctrl+Shift+Enter**.
+
+</details>
+
+> *A inversa de uma matriz é uma ferramenta fundamental para: resolver sistemas lineares ($\vec{x} = A^{-1} \vec{b}$), calcular pesos em regressão linear ($\vec{w} = (X^T X)^{-1} X^T \vec{y}$), entender transformações lineares (inverter uma transformação) e verificar se uma matriz é invertível ($\det \neq 0$).*

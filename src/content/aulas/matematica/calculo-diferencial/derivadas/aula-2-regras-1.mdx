@@ -1,0 +1,387 @@
+
+
+# REGRAS DE DERIVAÇÃO `parte I`
+
+## 1. Regras Básicas de Derivação
+
+### 1.1 Derivada da Função Constante
+
+Se $f(x) = c$ (constante), então:
+$$
+f'(x) = 0
+$$
+
+**Exemplo:** $f(x) = 5 \Rightarrow f'(x) = 0$
+
+**Interpretação:** A taxa de variação de uma constante é zero.
+
+### 1.2 Derivada da Função Identidade
+
+Se $f(x) = x$, então:
+$$
+f'(x) = 1
+$$
+
+### 1.3 Regra da Potência (Derivada de $x^n$)
+
+Para $f(x) = x^n$, com $n \in \mathbb{R}$:
+$$
+f'(x) = n \cdot x^{n-1}
+$$
+
+**Exemplos:**
+- $f(x) = x^3 \Rightarrow f'(x) = 3x^2$
+- $f(x) = x^{-2} \Rightarrow f'(x) = -2x^{-3}$
+- $f(x) = x^{1/2} = \sqrt{x} \Rightarrow f'(x) = \frac{1}{2}x^{-1/2} = \frac{1}{2\sqrt{x}}$
+
+### 1.4 Regra da Constante Multiplicativa
+
+Se $f(x) = c \cdot g(x)$, onde $c$ é uma constante:
+$$
+f'(x) = c \cdot g'(x)
+$$
+
+**Exemplo:** $f(x) = 3x^2 \Rightarrow f'(x) = 3 \cdot 2x = 6x$
+
+### 1.5 Regra da Soma/Diferença
+
+Se $f(x) = g(x) \pm h(x)$, então:
+$$
+f'(x) = g'(x) \pm h'(x)
+$$
+
+**Exemplo:** $f(x) = x^3 + 2x^2 - 5x + 1$
+$$
+f'(x) = 3x^2 + 4x - 5
+$$
+
+## 2. Derivadas de Funções Elementares
+
+### 2.1 Função Exponencial ($e^x$)
+
+$$
+\frac{d}{dx} e^x = e^x
+$$
+
+**Aplicação:** A função exponencial é sua própria derivada.
+
+**Exemplo:** $f(x) = 3e^x \Rightarrow f'(x) = 3e^x$
+
+### 2.2 Função Exponencial Geral ($a^x$)
+
+$$
+\frac{d}{dx} a^x = a^x \ln(a)
+$$
+
+**Exemplo:** $f(x) = 2^x \Rightarrow f'(x) = 2^x \ln(2)$
+
+### 2.3 Função Logarítmica Natural ($\ln(x)$)
+
+$$
+\frac{d}{dx} \ln(x) = \frac{1}{x}
+$$
+
+**Exemplo:** $f(x) = \ln(x) \Rightarrow f'(x) = \frac{1}{x}$
+
+**Domínio:** $x > 0$
+
+### 2.4 Função Logarítmica Geral ($\log_a(x)$)
+
+$$
+\frac{d}{dx} \log_a(x) = \frac{1}{x \ln(a)}
+$$
+
+### 2.5 Função Seno
+
+$$
+\frac{d}{dx} \sin(x) = \cos(x)
+$$
+
+### 2.6 Função Cosseno
+
+$$
+\frac{d}{dx} \cos(x) = -\sin(x)
+$$
+
+### 2.7 Função Tangente
+
+$$
+\frac{d}{dx} \tan(x) = \sec^2(x)
+$$
+
+## 3. Tabela de Derivadas Elementares
+
+| Função $f(x)$ | Derivada $f'(x)$ |
+|-------------------|----------------------|
+| $c$ (constante) | $0$ |
+| $x^n$ | $n \cdot x^{n-1}$ |
+| $e^x$ | $e^x$ |
+| $a^x$ | $a^x \ln(a)$ |
+| $\ln(x)$ | $\frac{1}{x}$ |
+| $\log_a(x)$ | $\frac{1}{x \ln(a)}$ |
+| $\sin(x)$ | $\cos(x)$ |
+| $\cos(x)$ | $-\sin(x)$ |
+| $\tan(x)$ | $\sec^2(x)$ |
+
+## 4. Exemplos Acadêmicos Passo a Passo
+
+### 4.1 Exemplo 1: Combinação de Regras
+
+$$
+f(x) = 5x^4 - 3x^2 + 2x - 7
+$$
+
+**Passo 1:** Aplicar a regra da potência a cada termo.
+
+$$
+f'(x) = 5 \cdot 4x^3 - 3 \cdot 2x + 2 \cdot 1 - 0
+$$
+
+**Passo 2:** Simplificar:
+$$
+f'(x) = 20x^3 - 6x + 2
+$$
+
+### 4.2 Exemplo 2: Função Exponencial e Logarítmica
+
+$$
+f(x) = e^x + \ln(x)
+$$
+
+**Passo 1:** Derivar cada termo:
+$$
+f'(x) = e^x + \frac{1}{x}
+$$
+
+### 4.3 Exemplo 3: Função Trigonométrica
+
+$$
+f(x) = 2\sin(x) - 3\cos(x)
+$$
+
+$$
+f'(x) = 2\cos(x) + 3\sin(x)
+$$
+
+## 5. Exemplos Lúdicos Aprimorados
+
+### 🍔 EXEMPLO 1 – A LANCHONETE (CUSTO QUADRÁTICO)
+
+A lanchonete tem um custo de produção:
+$$
+C(x) = 2x^3 - 5x^2 + 10x + 100
+$$
+
+**Derivada (custo marginal):**
+$$
+C'(x) = 6x^2 - 10x + 10
+$$
+
+**Interpretação:** O custo marginal varia com a quantidade produzida. Para $x = 3$:
+$$
+C'(3) = 6(9) - 10(3) + 10 = 54 - 30 + 10 = 34
+$$
+
+O custo aumenta R$ 34,00 ao produzir o 4º sanduíche.
+
+### 🧃 EXEMPLO 2 – A CANTINA (DECAIMENTO EXPONENCIAL)
+
+A cantina tem uma função de decaimento de estoque:
+$$
+E(t) = 100e^{-0.1t}
+$$
+
+**Derivada (taxa de decaimento):**
+$$
+E'(t) = -10e^{-0.1t}
+$$
+
+**Interpretação:** O estoque diminui a uma taxa de $10e^{-0.1t}$ unidades por mês. Para $t = 0$, $E'(0) = -10$.
+
+### 📚 EXEMPLO 3 – A BIBLIOTECA (CRESCIMENTO LOGARÍTMICO)
+
+A biblioteca tem uma função de aprendizado:
+$$
+A(t) = 10\ln(t + 1)
+$$
+
+**Derivada (taxa de aprendizado):**
+$$
+A'(t) = \frac{10}{t + 1}
+$$
+
+**Interpretação:** A taxa de aprendizado diminui com o tempo. Para $t = 0$, $A'(0) = 10$. Para $t = 9$, $A'(9) = 1$.
+
+## 6. Aplicação na Tese: Funções de Perda
+
+### 6.1 Perda Quadrática (MSE)
+
+$$
+L(w) = (w - y)^2
+$$
+
+**Derivada:**
+$$
+L'(w) = 2(w - y)
+$$
+
+**Interpretação:** O gradiente da perda é proporcional ao erro.
+
+### 6.2 Perda Logística (Cross-Entropy)
+
+Para classificação binária:
+$$
+L(w) = -\ln(\sigma(wx))
+$$
+
+Onde $\sigma(z) = \frac{1}{1 + e^{-z}}$ é a sigmoide.
+
+**Derivada:**
+$$
+L'(w) = -x(1 - \sigma(wx))
+$$
+
+## 7. Exercícios Propostos (Manuais)
+
+<details>
+<summary>📗 Exercício 1 (Derivadas Básicas)</summary>
+
+**Enunciado:** Calcule as derivadas:
+
+a) $f(x) = 5x^4 - 3x^2 + 7$
+
+b) $g(x) = \frac{1}{x^3}$
+
+c) $h(x) = \sqrt{x} + \frac{1}{\sqrt{x}}$
+
+d) $k(x) = 2e^x - 3\ln(x)$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $f'(x) = 20x^3 - 6x$
+
+b) $g(x) = x^{-3} \Rightarrow g'(x) = -3x^{-4} = -\frac{3}{x^4}$
+
+c) $h(x) = x^{1/2} + x^{-1/2} \Rightarrow h'(x) = \frac{1}{2}x^{-1/2} - \frac{1}{2}x^{-3/2} = \frac{1}{2\sqrt{x}} - \frac{1}{2x^{3/2}}$
+
+d) $k'(x) = 2e^x - \frac{3}{x}$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 (Funções Trigonométricas)</summary>
+
+**Enunciado:** Calcule as derivadas:
+
+a) $f(x) = 3\sin(x) - 2\cos(x)$
+
+b) $g(x) = \tan(x) + \cos(x)$
+
+c) $h(x) = x^2\sin(x)$ (dica: use a regra do produto, que veremos na Aula 3)
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $f'(x) = 3\cos(x) + 2\sin(x)$
+
+b) $g'(x) = \sec^2(x) - \sin(x)$
+
+c) $h'(x) = 2x\sin(x) + x^2\cos(x)$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 (Aplicação – Custo)</summary>
+
+**Enunciado:** Uma empresa tem custo:
+$$
+C(x) = 0.01x^3 - 0.5x^2 + 10x + 200
+$$
+
+a) Calcule o custo marginal $C'(x)$.
+
+b) Calcule o custo marginal para $x = 10$.
+
+c) Interprete o resultado.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $C'(x) = 0.03x^2 - x + 10$
+
+b) $C'(10) = 0.03(100) - 10 + 10 = 3$
+
+c) O custo marginal para produzir o 11º produto é R$ 3,00.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 (Aplicação – ML)</summary>
+
+**Enunciado:** Uma função de perda é:
+$$
+L(w) = (w - 2)^2 + 3\ln(w) \quad (w > 0)
+$$
+
+a) Calcule $L'(w)$.
+
+b) Em que ponto a derivada se anula?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $L'(w) = 2(w - 2) + \frac{3}{w}$
+
+b) $L'(w) = 0 \Rightarrow 2(w - 2) + \frac{3}{w} = 0 \Rightarrow 2w - 4 + \frac{3}{w} = 0$  
+Multiplicando por $w$: $2w^2 - 4w + 3 = 0$
+
+$\Delta = 16 - 24 = -8 < 0$ → **não há raiz real**. A derivada nunca se anula.
+
+</details>
+</details>
+
+## 8. 💻EXERCÍCIO COMPUTACIONAL
+
+<details>
+<summary>🐍 Ver código (Python/SymPy)</summary>
+
+```python
+import sympy as sp
+
+x = sp.Symbol('x')
+
+# Derivada de polinômio
+f1 = 5*x**4 - 3*x**2 + 7
+print(f"f'(x) = {sp.diff(f1, x)}")
+
+# Derivada de exponencial e log
+f2 = 2*sp.exp(x) - 3*sp.log(x)
+print(f"f'(x) = {sp.diff(f2, x)}")
+
+# Derivada de seno e cosseno
+f3 = 3*sp.sin(x) - 2*sp.cos(x)
+print(f"f'(x) = {sp.diff(f3, x)}")
+
+# Derivada numérica
+def derivada_numerica(f, a, h=1e-5):
+    return (f(a + h) - f(a)) / h
+
+f = lambda x: x**3 - 2*x + 1
+print(f"f'(2) numérica: {derivada_numerica(f, 2)}")
+```
+
+</details>
+
+> *As regras de derivação (potência, constante, soma, exponencial, logarítmica e trigonométrica) são ferramentas essenciais para calcular derivadas de forma rápida e eficiente. Em Machine Learning, elas são usadas para calcular gradientes de funções de perda e otimizar modelos.*

@@ -1,0 +1,555 @@
+# MULTIPLICAÇÃO DE MATRIZES
+
+## 1. Definição
+
+### 1.1 Produto de Matrizes
+
+Sejam $A \in \mathbb{R}^{m \times n}$ e $B \in \mathbb{R}^{n \times p}$. O **produto** $C = A \cdot B$ é uma matriz $C \in \mathbb{R}^{m \times p}$ definida por:
+
+$$
+c_{ij} = \sum_{k=1}^{n} a_{ik} \cdot b_{kj}
+$$
+
+Ou seja, o elemento $c_{ij}$ é o **produto escalar** da **linha i** de $A$ com a **coluna j** de $B$.
+
+**Condição de existência:** O número de **colunas de A** deve ser igual ao número de **linhas de B** ($n$).
+
+### 1.2 Interpretação Passo a Passo
+
+Para calcular $C = A \cdot B$:
+
+1. **Linha i** de $A$ × **Coluna j** de $B$
+2. Multiplica-se elemento a elemento
+3. Soma-se tudo
+
+**Exemplo visual:**
+
+$$
+A = \begin{bmatrix}
+a_{11} & a_{12} \\
+a_{21} & a_{22}
+\end{bmatrix}, \quad
+B = \begin{bmatrix}
+b_{11} & b_{12} \\
+b_{21} & b_{22}
+\end{bmatrix}
+$$
+
+$$
+C = A \cdot B = \begin{bmatrix}
+a_{11}b_{11} + a_{12}b_{21} & a_{11}b_{12} + a_{12}b_{22} \\
+a_{21}b_{11} + a_{22}b_{21} & a_{21}b_{12} + a_{22}b_{22}
+\end{bmatrix}
+$$
+
+### 1.3 Exemplo Acadêmico Passo a Passo
+
+Sejam:
+$$
+A = \begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix}, \quad
+B = \begin{bmatrix} 5 & 6 \\ 7 & 8 \end{bmatrix}
+$$
+
+**Cálculo de $C = A \cdot B$:**
+
+**Elemento $c_{11}$:** linha 1 de A × coluna 1 de B
+$$
+c_{11} = 1 \cdot 5 + 2 \cdot 7 = 5 + 14 = 19
+$$
+
+**Elemento $c_{12}$:** linha 1 de A × coluna 2 de B
+$$
+c_{12} = 1 \cdot 6 + 2 \cdot 8 = 6 + 16 = 22
+$$
+
+**Elemento $c_{21}$:** linha 2 de A × coluna 1 de B
+$$
+c_{21} = 3 \cdot 5 + 4 \cdot 7 = 15 + 28 = 43
+$$
+
+**Elemento $c_{22}$:** linha 2 de A × coluna 2 de B
+$$
+c_{22} = 3 \cdot 6 + 4 \cdot 8 = 18 + 32 = 50
+$$
+
+**Resultado:**
+$$
+C = A \cdot B = \begin{bmatrix} 19 & 22 \\ 43 & 50 \end{bmatrix}
+$$
+
+## 2. Propriedades da Multiplicação de Matrizes
+
+| Propriedade | Fórmula | Observação |
+|-------------|---------|------------|
+| **Associativa** | $(AB)C = A(BC)$ | ✓ Sempre vale |
+| **Distributiva** | $A(B + C) = AB + AC$ | ✓ Sempre vale |
+| **Elemento Neutro** | $A \cdot I = I \cdot A = A$ | ✓ Desde que dimensões compatíveis |
+| **Comutativa** | $AB \neq BA$ (em geral) | ✗ **NÃO VALE!** |
+
+### 2.1 A Não Comutatividade (Exemplo)
+
+Sejam:
+$$
+A = \begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix}, \quad
+B = \begin{bmatrix} 0 & 1 \\ 1 & 0 \end{bmatrix}
+$$
+
+**$AB$:**
+$$
+AB = \begin{bmatrix} 1\cdot0 + 2\cdot1 & 1\cdot1 + 2\cdot0 \\ 3\cdot0 + 4\cdot1 & 3\cdot1 + 4\cdot0 \end{bmatrix} = \begin{bmatrix} 2 & 1 \\ 4 & 3 \end{bmatrix}
+$$
+
+**$BA$:**
+$$
+BA = \begin{bmatrix} 0\cdot1 + 1\cdot3 & 0\cdot2 + 1\cdot4 \\ 1\cdot1 + 0\cdot3 & 1\cdot2 + 0\cdot4 \end{bmatrix} = \begin{bmatrix} 3 & 4 \\ 1 & 2 \end{bmatrix}
+$$
+
+**Conclusão:** $AB \neq BA$ → a ordem da multiplicação **importa**!
+
+## 3. Casos Especiais
+
+### 3.1 Produto de uma Matriz por um Vetor
+
+Se $A \in \mathbb{R}^{m \times n}$ e $\vec{x} \in \mathbb{R}^n$ (vetor coluna), então:
+
+$$
+A \cdot \vec{x} = \vec{y} \in \mathbb{R}^m
+$$
+
+**Exemplo:**
+$$
+A = \begin{bmatrix} 1 & 2 \\ 3 & 4 \\ 5 & 6 \end{bmatrix}, \quad
+\vec{x} = \begin{bmatrix} 2 \\ 3 \end{bmatrix}
+$$
+
+$$
+A\vec{x} = \begin{bmatrix}
+1\cdot2 + 2\cdot3 \\
+3\cdot2 + 4\cdot3 \\
+5\cdot2 + 6\cdot3
+\end{bmatrix} = \begin{bmatrix}
+2 + 6 \\
+6 + 12 \\
+10 + 18
+\end{bmatrix} = \begin{bmatrix}
+8 \\
+18 \\
+28
+\end{bmatrix}
+$$
+
+**Interpretação:** Multiplicar uma matriz por um vetor transforma o vetor em outro espaço (isso é uma **transformação linear**).
+
+### 3.2 Produto de um Vetor por uma Matriz (Vetor Linha)
+
+Se $\vec{x} \in \mathbb{R}^{1 \times m}$ (vetor linha) e $A \in \mathbb{R}^{m \times n}$, então:
+
+$$
+\vec{x} \cdot A = \vec{y} \in \mathbb{R}^{1 \times n}
+$$
+
+**Exemplo:**
+$$
+\vec{x} = \begin{bmatrix} 1 & 2 & 3 \end{bmatrix}, \quad
+A = \begin{bmatrix} 1 & 2 \\ 3 & 4 \\ 5 & 6 \end{bmatrix}
+$$
+
+$$
+\vec{x}A = \begin{bmatrix}
+1\cdot1 + 2\cdot3 + 3\cdot5 & 1\cdot2 + 2\cdot4 + 3\cdot6
+\end{bmatrix} = \begin{bmatrix}
+1 + 6 + 15 & 2 + 8 + 18
+\end{bmatrix} = \begin{bmatrix}
+22 & 28
+\end{bmatrix}
+$$
+
+## 4. Exemplos Lúdicos Aprimorados
+
+### 🍔 EXEMPLO 1 – A LANCHONETE (PEDIDO × PREÇOS)
+
+A lanchonete tem uma matriz de **quantidades** (pedidos) e uma matriz de **preços**.
+
+**Matriz de pedidos** (3 sanduíches × 3 ingredientes):
+$$
+P = \begin{bmatrix}
+1 & 1 & 0 \\
+0 & 0 & 1 \\
+2 & 2 & 2
+\end{bmatrix}
+$$
+
+**Matriz de preços** (3 ingredientes × 1 preço cada):
+$$
+\vec{p} = \begin{bmatrix} 2.00 \\ 5.00 \\ 3.00 \end{bmatrix}
+$$
+
+**Custo total de cada sanduíche:**
+$$
+P \cdot \vec{p} = \begin{bmatrix}
+1\cdot2 + 1\cdot5 + 0\cdot3 \\
+0\cdot2 + 0\cdot5 + 1\cdot3 \\
+2\cdot2 + 2\cdot5 + 2\cdot3
+\end{bmatrix} = \begin{bmatrix}
+2 + 5 + 0 \\
+0 + 0 + 3 \\
+4 + 10 + 6
+\end{bmatrix} = \begin{bmatrix}
+7 \\
+3 \\
+20
+\end{bmatrix}
+$$
+
+**Interpretação:**
+- Hambúrguer: R$ 7,00
+- Queijo: R$ 3,00
+- Combo: R$ 20,00
+
+### 🧃 EXEMPLO 2 – A CANTINA (QUANTIDADES × NUTRIENTES)
+
+Um aluno quer saber quantos nutrientes vai consumir com um pedido.
+
+**Matriz de quantidades** (1 pedido × 3 alimentos):
+$$
+\vec{q} = \begin{bmatrix} 2 & 1 & 0.5 \end{bmatrix}
+$$
+
+**Matriz nutricional** (3 alimentos × 3 nutrientes):
+$$
+N = \begin{bmatrix}
+10 & 0 & 50 \\
+5 & 20 & 0 \\
+30 & 0 & 0
+\end{bmatrix}
+$$
+
+**Nutrientes totais:**
+$$
+\vec{q} \cdot N = \begin{bmatrix}
+2\cdot10 + 1\cdot5 + 0.5\cdot30 & 2\cdot0 + 1\cdot20 + 0.5\cdot0 & 2\cdot50 + 1\cdot0 + 0.5\cdot0
+\end{bmatrix}
+$$
+
+$$
+= \begin{bmatrix}
+20 + 5 + 15 & 0 + 20 + 0 & 100 + 0 + 0
+\end{bmatrix} = \begin{bmatrix}
+40 & 20 & 100
+\end{bmatrix}
+$$
+
+**Interpretação:** O aluno consumirá 40g de açúcar, 20mg de cálcio e 100mg de vitamina C.
+
+### 📚 EXEMPLO 3 – A BIBLIOTECA (COMBINAÇÃO DE LIVROS)
+
+Um aluno quer combinar livros para obter um plano de estudo.
+
+**Matriz de livros** (3 livros × 3 conteúdos):
+$$
+L = \begin{bmatrix}
+10 & 5 & 0 \\
+8 & 0 & 12 \\
+6 & 8 & 4
+\end{bmatrix}
+$$
+
+**Quantidades de cada livro:**
+$$
+\vec{q} = \begin{bmatrix} 1 & 0.5 & 0.5 \end{bmatrix}
+$$
+
+**Conteúdo total estudado:**
+$$
+\vec{q} \cdot L = \begin{bmatrix}
+1\cdot10 + 0.5\cdot8 + 0.5\cdot6 & 1\cdot5 + 0.5\cdot0 + 0.5\cdot8 & 1\cdot0 + 0.5\cdot12 + 0.5\cdot4
+\end{bmatrix}
+$$
+
+$$
+= \begin{bmatrix}
+10 + 4 + 3 & 5 + 0 + 4 & 0 + 6 + 2
+\end{bmatrix} = \begin{bmatrix}
+17 & 9 & 8
+\end{bmatrix}
+$$
+
+**Interpretação:** O aluno estudará 17 páginas de teoria, 9 exercícios e 8 figuras.
+
+## 5. Propriedade Importante: Produto de Matrizes e Transposição
+
+$$
+(AB)^T = B^T A^T
+$$
+
+**Exemplo:**
+$$
+A = \begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix}, \quad
+B = \begin{bmatrix} 5 & 6 \\ 7 & 8 \end{bmatrix}
+$$
+
+$AB = \begin{bmatrix} 19 & 22 \\ 43 & 50 \end{bmatrix}$, $(AB)^T = \begin{bmatrix} 19 & 43 \\ 22 & 50 \end{bmatrix}$
+
+$B^T A^T = \begin{bmatrix} 5 & 7 \\ 6 & 8 \end{bmatrix} \begin{bmatrix} 1 & 3 \\ 2 & 4 \end{bmatrix} = \begin{bmatrix} 5\cdot1 + 7\cdot2 & 5\cdot3 + 7\cdot4 \\ 6\cdot1 + 8\cdot2 & 6\cdot3 + 8\cdot4 \end{bmatrix} = \begin{bmatrix} 19 & 43 \\ 22 & 50 \end{bmatrix}$ ✓
+
+## 6. Quando Fazer um Exercício Computacional?
+
+**Aqui faz MUITO sentido!** Porque:
+- Multiplicação de matrizes é a operação mais importante em ML.
+- Implementar ajuda a entender a não comutatividade e a condição de dimensões.
+- É a base de redes neurais.
+
+## 7. Exercícios Propostos (Manuais)
+
+<details>
+<summary>📗 Exercício 1 (Multiplicação 2×2)</summary>
+
+**Enunciado:** Dadas:
+$$
+A = \begin{bmatrix} 2 & 3 \\ 1 & 4 \end{bmatrix}, \quad
+B = \begin{bmatrix} 1 & 0 \\ 2 & 5 \end{bmatrix}
+$$
+
+Calcule $A \cdot B$.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+$$
+A \cdot B = \begin{bmatrix}
+2\cdot1 + 3\cdot2 & 2\cdot0 + 3\cdot5 \\
+1\cdot1 + 4\cdot2 & 1\cdot0 + 4\cdot5
+\end{bmatrix} = \begin{bmatrix}
+2+6 & 0+15 \\
+1+8 & 0+20
+\end{bmatrix} = \begin{bmatrix}
+8 & 15 \\
+9 & 20
+\end{bmatrix}
+$$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 (Multiplicação 2×3 × 3×2)</summary>
+
+**Enunciado:** Dadas:
+$$
+A = \begin{bmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \end{bmatrix}, \quad
+B = \begin{bmatrix} 7 & 8 \\ 9 & 10 \\ 11 & 12 \end{bmatrix}
+$$
+
+Calcule $A \cdot B$.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+$$
+A \cdot B = \begin{bmatrix}
+1\cdot7 + 2\cdot9 + 3\cdot11 & 1\cdot8 + 2\cdot10 + 3\cdot12 \\
+4\cdot7 + 5\cdot9 + 6\cdot11 & 4\cdot8 + 5\cdot10 + 6\cdot12
+\end{bmatrix} = \begin{bmatrix}
+7 + 18 + 33 & 8 + 20 + 36 \\
+28 + 45 + 66 & 32 + 50 + 72
+\end{bmatrix} = \begin{bmatrix}
+58 & 64 \\
+139 & 154
+\end{bmatrix}
+$$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 (Verificação da Não Comutatividade)</summary>
+
+**Enunciado:** Dadas:
+$$
+A = \begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix}, \quad
+B = \begin{bmatrix} 2 & 0 \\ 1 & 3 \end{bmatrix}
+$$
+
+Calcule $AB$ e $BA$. Eles são iguais?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+$$
+AB = \begin{bmatrix}
+1\cdot2 + 2\cdot1 & 1\cdot0 + 2\cdot3 \\
+3\cdot2 + 4\cdot1 & 3\cdot0 + 4\cdot3
+\end{bmatrix} = \begin{bmatrix}
+2+2 & 0+6 \\
+6+4 & 0+12
+\end{bmatrix} = \begin{bmatrix}
+4 & 6 \\
+10 & 12
+\end{bmatrix}
+$$
+
+$$
+BA = \begin{bmatrix}
+2\cdot1 + 0\cdot3 & 2\cdot2 + 0\cdot4 \\
+1\cdot1 + 3\cdot3 & 1\cdot2 + 3\cdot4
+\end{bmatrix} = \begin{bmatrix}
+2+0 & 4+0 \\
+1+9 & 2+12
+\end{bmatrix} = \begin{bmatrix}
+2 & 4 \\
+10 & 14
+\end{bmatrix}
+$$
+
+**Não são iguais!** $AB \neq BA$.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 (Multiplicação Matriz × Vetor)</summary>
+
+**Enunciado:** Dadas:
+$$
+A = \begin{bmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \end{bmatrix}, \quad
+\vec{x} = \begin{bmatrix} 2 \\ 1 \\ 3 \end{bmatrix}
+$$
+
+Calcule $A \cdot \vec{x}$.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+$$
+A\vec{x} = \begin{bmatrix}
+1\cdot2 + 2\cdot1 + 3\cdot3 \\
+4\cdot2 + 5\cdot1 + 6\cdot3
+\end{bmatrix} = \begin{bmatrix}
+2 + 2 + 9 \\
+8 + 5 + 18
+\end{bmatrix} = \begin{bmatrix}
+13 \\
+31
+\end{bmatrix}
+$$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 (Propriedade da Transposta)</summary>
+
+**Enunciado:** Dadas:
+$$
+A = \begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix}, \quad
+B = \begin{bmatrix} 2 & 0 \\ 1 & 3 \end{bmatrix}
+$$
+
+Verifique que $(AB)^T = B^T A^T$.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+$AB = \begin{bmatrix} 4 & 6 \\ 10 & 12 \end{bmatrix}$ (do exercício 3)  
+$(AB)^T = \begin{bmatrix} 4 & 10 \\ 6 & 12 \end{bmatrix}$
+
+$B^T = \begin{bmatrix} 2 & 1 \\ 0 & 3 \end{bmatrix}$, $A^T = \begin{bmatrix} 1 & 3 \\ 2 & 4 \end{bmatrix}$
+
+$B^T A^T = \begin{bmatrix}
+2\cdot1 + 1\cdot2 & 2\cdot3 + 1\cdot4 \\
+0\cdot1 + 3\cdot2 & 0\cdot3 + 3\cdot4
+\end{bmatrix} = \begin{bmatrix}
+2+2 & 6+4 \\
+0+6 & 0+12
+\end{bmatrix} = \begin{bmatrix}
+4 & 10 \\
+6 & 12
+\end{bmatrix}$ ✓
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 (Aplicação – Lanchonete)</summary>
+
+**Enunciado:** A lanchonete tem a matriz de pedidos:
+$$
+P = \begin{bmatrix}
+1 & 1 & 0 \\
+0 & 0 & 1 \\
+2 & 2 & 2
+\end{bmatrix}
+$$
+
+E a matriz de preços:
+$$
+\vec{p} = \begin{bmatrix} 2.00 \\ 5.00 \\ 3.00 \end{bmatrix}
+$$
+
+a) Calcule o custo de cada sanduíche.  
+b) Se o preço do queijo aumentar para R$ 4,00, qual será o novo custo de cada sanduíche?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $P\vec{p} = \begin{bmatrix} 1\cdot2 + 1\cdot5 + 0\cdot3 \\ 0\cdot2 + 0\cdot5 + 1\cdot3 \\ 2\cdot2 + 2\cdot5 + 2\cdot3 \end{bmatrix} = \begin{bmatrix} 7 \\ 3 \\ 20 \end{bmatrix}$
+
+b) Novo preço: $\vec{p}_{novo} = \begin{bmatrix} 2 \\ 5 \\ 4 \end{bmatrix}$  
+$P\vec{p}_{novo} = \begin{bmatrix} 1\cdot2 + 1\cdot5 + 0\cdot4 \\ 0\cdot2 + 0\cdot5 + 1\cdot4 \\ 2\cdot2 + 2\cdot5 + 2\cdot4 \end{bmatrix} = \begin{bmatrix} 7 \\ 4 \\ 22 \end{bmatrix}$
+
+</details>
+</details>
+
+## 8. EXERCÍCIO COMPUTACIONAL
+
+<details>
+<summary>🐍 Ver código (Python/NumPy)</summary>
+
+```python
+import numpy as np
+
+A = np.array([[1, 2], [3, 4]])
+B = np.array([[5, 6], [7, 8]])
+
+print("A @ B:\n", A @ B)
+print("B @ A:\n", B @ A)  # Mostra que não é igual
+print("A @ B == B @ A?", np.array_equal(A @ B, B @ A))  # False
+```
+
+</details>
+
+<details>
+<summary>📝 Ver código (R)</summary>
+
+```r
+A <- matrix(c(1, 2, 3, 4), nrow=2, ncol=2)
+B <- matrix(c(5, 6, 7, 8), nrow=2, ncol=2)
+
+print("A %*% B:")
+print(A %*% B)
+print("B %*% A:")
+print(B %*% A)
+```
+
+</details>
+
+<details>
+<summary>📊 Ver instruções (Excel)</summary>
+
+Para multiplicar matrizes no Excel, use a função `MATRIZ.MULT` (MMULT):
+1. Selecione a área de saída (mesmo número de linhas de A, colunas de B).
+2. Digite: `=MATRIZ.MULT(A1:B2; C1:D2)`
+3. Pressione **Ctrl+Shift+Enter** (fórmula matricial).
+
+</details>
+
+> *A multiplicação de matrizes é a operação mais importante em Machine Learning — ela está em redes neurais, regressão linear, transformações de dados e muito mais. A regra de ouro é: **linha × coluna, soma tudo**. E lembre-se: a ordem **importa** ($AB \neq BA$).*

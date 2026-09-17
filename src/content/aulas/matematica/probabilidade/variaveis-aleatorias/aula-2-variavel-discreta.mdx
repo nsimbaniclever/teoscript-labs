@@ -1,0 +1,480 @@
+# Variáveis Aleatórias Discretas
+
+### 1. O que é uma Variável Aleatória Discreta?
+
+Uma variável aleatória é **discreta** se assume um número **finito** ou **infinito contável** de valores. Esses valores podem ser listados, mesmo que a lista seja infinita (ex: 0, 1, 2, 3, ...).
+
+**Exemplos:**
+- Número de caras em 3 lançamentos de uma moeda → valores: 0, 1, 2, 3.
+- Número de clientes que chegam a uma loja em 1 hora → valores: 0, 1, 2, 3, ...
+- Número de peças defeituosas em um lote de 100 → valores: 0, 1, 2, ..., 100.
+- Número de chamadas recebidas por um call center em um minuto → valores: 0, 1, 2, 3, ...
+
+> **Característica fundamental:** Para uma variável discreta, a probabilidade de um valor **exato** pode ser **maior que zero** — $ P(X = x) > 0 $.
+
+### 2. Função de Probabilidade (FP) — $ P(X = x) $
+
+A **Função de Probabilidade** (FP) de uma variável aleatória discreta $ X $ é a função que associa a cada valor possível $ x $ a sua probabilidade:
+
+$$p(x) = P(X = x)$$
+
+**Propriedades da FP:**
+
+| Propriedade | O que significa |
+| --- | --- |
+| **1. $ 0 \leq p(x) \leq 1 $** | Cada probabilidade é um número entre 0 e 1. |
+| **2. $ \sum_{x} p(x) = 1 $** | A soma de todas as probabilidades é 1 (certeza). |
+
+Essas propriedades são fundamentais para verificar se uma função é, de fato, uma função de probabilidade válida.
+
+**Exemplo 1 — Lançamento de 3 moedas:**
+
+Seja $ X $ o número de caras em 3 lançamentos de uma moeda honesta.
+
+| $ x $ | $ P(X = x) $ | Cálculo |
+| --- | --- | --- |
+| 0 | $ 1/8 $ | KKK |
+| 1 | $ 3/8 $ | CKK, KCK, KKC |
+| 2 | $ 3/8 $ | CCK, CKC, KCC |
+| 3 | $ 1/8 $ | CCC |
+
+**Verificação:** $ 1/8 + 3/8 + 3/8 + 1/8 = 1 $ ✅
+
+**Exemplo 2 — Soma de dois dados:**
+
+Seja $ X $ a soma dos resultados de dois dados honestos.
+
+| $ x $ | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| $ P(X = x) $ | 1/36 | 2/36 | 3/36 | 4/36 | 5/36 | 6/36 | 5/36 | 4/36 | 3/36 | 2/36 | 1/36 |
+
+**Verificação:** A soma de todas as probabilidades é 1.
+
+**Exemplo 3 — Verificação de uma FP válida:**
+
+Uma função $ p(x) $ é dada por:
+
+| $ x $ | 0 | 1 | 2 | 3 |
+| --- | --- | --- | --- | --- |
+| $ p(x) $ | 0,1 | 0,2 | 0,3 | 0,4 |
+
+**Verificação:**
+- $ 0,1 + 0,2 + 0,3 + 0,4 = 1,0 $ ✅
+- Todos os valores estão entre 0 e 1 ✅
+
+Portanto, $ p(x) $ é uma FP válida.
+
+### 3. Função de Distribuição (FD) — $ F(x) $
+
+A **Função de Distribuição** (também chamada de **Função de Distribuição Acumulada — FDA**) para variáveis discretas é definida como:
+
+$$F(x) = P(X \leq x) = \sum_{t \leq x} P(X = t)$$
+
+Ou seja, $ F(x) $ acumula todas as probabilidades dos valores menores ou iguais a $ x $.
+
+**Propriedades da FD:**
+
+| Propriedade | O que significa |
+| --- | --- |
+| **1. $ 0 \leq F(x) \leq 1 $** | A probabilidade acumulada está sempre entre 0 e 1. |
+| **2. $ F(x) $ é não decrescente** | Se $ a \leq b $, então $ F(a) \leq F(b) $. |
+| **3. $ \lim_{x \to -\infty} F(x) = 0 $** | Antes do menor valor possível, a probabilidade acumulada é zero. |
+| **4. $ \lim_{x \to +\infty} F(x) = 1 $** | Após o maior valor possível, a probabilidade acumulada é 1. |
+| **5. $ F(x) $ é constante entre os valores possíveis** | Sobe apenas nos pontos onde há probabilidade positiva. |
+| **6. $ F(x) $ é contínua à direita** | $ F(x) = \lim_{t \to x^+} F(t) $. |
+
+**Exemplo 4 — FD para 3 moedas:**
+
+Usando a FP do Exemplo 1, construímos a FD:
+
+| $ x $ | $ F(x) = P(X \leq x) $ |
+| --- | --- |
+| $ x < 0 $ | 0 |
+| $ 0 \leq x < 1 $ | $ 1/8 $ |
+| $ 1 \leq x < 2 $ | $ 1/8 + 3/8 = 4/8 = 1/2 $ |
+| $ 2 \leq x < 3 $ | $ 4/8 + 3/8 = 7/8 $ |
+| $ x \geq 3 $ | $ 7/8 + 1/8 = 1 $ |
+
+**Exemplo 5 — Cálculo de probabilidades com a FD:**
+
+Dada a FD do Exemplo 4, calcule:
+- a) $ P(X \leq 1) $
+- b) $ P(X = 2) $
+- c) $ P(1 < X \leq 3) $
+
+**Resolução:**
+
+a) $ P(X \leq 1) = F(1) = 1/2 $
+
+b) $ P(X = 2) = F(2) - F(2^-) $
+- $ F(2) = 7/8 $
+- $ F(2^-) = \lim_{x \to 2^-} F(x) = 4/8 = 1/2 $
+- $ P(X = 2) = 7/8 - 1/2 = 7/8 - 4/8 = 3/8 $ ✅
+
+c) $ P(1 < X \leq 3) = F(3) - F(1) = 1 - 1/2 = 1/2 $
+
+### 4. Relação entre FP e FD
+
+A relação entre a Função de Probabilidade e a Função de Distribuição é bidirecional:
+
+| Direção | Fórmula |
+| --- | --- |
+| **Da FP para a FD** | $ F(x) = \sum_{t \leq x} P(X = t) $ |
+| **Da FD para a FP** | $ P(X = x) = F(x) - F(x^-) $, onde $ F(x^-) $ é o limite à esquerda de $ F $ em $ x $. |
+
+**Exemplo 6 — Recuperando a FP a partir da FD:**
+
+Dada a FD:
+
+| $ x $ | $ F(x) $ |
+| --- | --- |
+| $ x < 0 $ | 0 |
+| $ 0 \leq x < 1 $ | 0,2 |
+| $ 1 \leq x < 2 $ | 0,5 |
+| $ 2 \leq x < 3 $ | 0,8 |
+| $ x \geq 3 $ | 1 |
+
+Calcule $ P(X = 0) $, $ P(X = 1) $, $ P(X = 2) $, $ P(X = 3) $.
+
+**Resolução:**
+
+- $ P(X = 0) = F(0) - F(0^-) = 0,2 - 0 = 0,2 $
+- $ P(X = 1) = F(1) - F(1^-) = 0,5 - 0,2 = 0,3 $
+- $ P(X = 2) = F(2) - F(2^-) = 0,8 - 0,5 = 0,3 $
+- $ P(X = 3) = F(3) - F(3^-) = 1 - 0,8 = 0,2 $
+
+**Verificação:** $ 0,2 + 0,3 + 0,3 + 0,2 = 1 $ ✅
+
+### 5. Valor Esperado (Média) — $ E[X] $
+
+O **Valor Esperado** (ou esperança) de uma variável aleatória discreta é a **média ponderada** dos valores possíveis, onde os pesos são as probabilidades:
+
+$$E[X] = \sum_{x} x \cdot P(X = x)$$
+
+**Interpretação:** Se repetíssemos o experimento infinitas vezes, a **média** dos valores observados convergiria para $ E[X] $. É o "centro de massa" da distribuição de probabilidade.
+
+**Propriedades do Valor Esperado:**
+
+| Propriedade | Fórmula | Nome |
+| --- | --- | --- |
+| **Linearidade** | $ E[aX + b] = aE[X] + b $ | Translação e escala |
+| **Soma de variáveis** | $ E[X + Y] = E[X] + E[Y] $ | Aditividade |
+| **Constante** | $ E[c] = c $ | — |
+| **Produto de independentes** | $ E[XY] = E[X] \cdot E[Y] $ | Se $ X $ e $ Y $ são independentes |
+
+**Exemplo 7 — Lançamento de 3 moedas:**
+
+Calcule o número esperado de caras.
+
+$$E[X] = 0 \cdot \frac{1}{8} + 1 \cdot \frac{3}{8} + 2 \cdot \frac{3}{8} + 3 \cdot \frac{1}{8}$$
+
+$$E[X] = 0 + \frac{3}{8} + \frac{6}{8} + \frac{3}{8} = \frac{12}{8} = 1,5$$
+
+**Interpretação:** Em média, em 3 lançamentos de uma moeda honesta, espera-se 1,5 caras.
+
+**Exemplo 8 — Soma de dois dados:**
+
+Calcule o valor esperado da soma de dois dados.
+
+$$E[X] = 2 \cdot \frac{1}{36} + 3 \cdot \frac{2}{36} + 4 \cdot \frac{3}{36} + \dots + 12 \cdot \frac{1}{36}$$
+
+$$E[X] = \frac{2 + 6 + 12 + 20 + 30 + 42 + 40 + 36 + 30 + 22 + 12}{36} = \frac{252}{36} = 7$$
+
+**Interpretação:** Em média, a soma de dois dados é 7.
+
+**Exemplo 9 — Valor Esperado de uma função:**
+
+Se $ X $ tem FP:
+
+| $ x $ | 0 | 1 | 2 |
+| --- | --- | --- | --- |
+| $ P(X = x) $ | 0,2 | 0,5 | 0,3 |
+
+Calcule $ E[2X + 1] $.
+
+**Resolução:**
+$$E[2X + 1] = \sum (2x + 1) \cdot P(X = x)$$
+
+$$= (2 \cdot 0 + 1) \cdot 0,2 + (2 \cdot 1 + 1) \cdot 0,5 + (2 \cdot 2 + 1) \cdot 0,3$$
+
+$$= 1 \cdot 0,2 + 3 \cdot 0,5 + 5 \cdot 0,3 = 0,2 + 1,5 + 1,5 = 3,2$$
+
+**Resposta:** $ E[2X + 1] = 3,2 $.
+
+### 6. Variância — $ Var(X) $
+
+A **Variância** mede o **quanto os valores de uma variável aleatória se dispersam** em torno da média. Quanto maior a variância, mais espalhados estão os valores.
+
+**Definição:**
+$$Var(X) = E[(X - \mu)^2] = \sum_{x} (x - \mu)^2 \cdot P(X = x)$$
+
+**Fórmula alternativa (mais fácil para cálculos):**
+$$Var(X) = E[X^2] - (E[X])^2$$
+
+onde:
+$$E[X^2] = \sum_{x} x^2 \cdot P(X = x)$$
+
+**Desvio Padrão:**
+$$\sigma = \sqrt{Var(X)}$$
+
+O desvio padrão tem a mesma unidade da variável original, facilitando a interpretação.
+
+**Propriedades da Variância:**
+
+| Propriedade | Fórmula | Nome |
+| --- | --- | --- |
+| **Mudança de escala e translação** | $ Var(aX + b) = a^2 Var(X) $ | — |
+| **Soma de variáveis independentes** | $ Var(X + Y) = Var(X) + Var(Y) $ | Aditividade |
+| **Constante** | $ Var(c) = 0 $ | — |
+
+**Exemplo 10 — Lançamento de 3 moedas:**
+
+Calcule a variância do número de caras.
+
+**Passo 1 — Já temos $ E[X] = 1,5 $:**
+- $ [E[X]]^2 = (1,5)^2 = 2,25 $
+
+**Passo 2 — Calcular $ E[X^2] $:**
+$$E[X^2] = 0^2 \cdot \frac{1}{8} + 1^2 \cdot \frac{3}{8} + 2^2 \cdot \frac{3}{8} + 3^2 \cdot \frac{1}{8}$$
+
+$$E[X^2] = 0 + \frac{3}{8} + \frac{12}{8} + \frac{9}{8} = \frac{24}{8} = 3$$
+
+**Passo 3 — Calcular a variância:**
+$$Var(X) = E[X^2] - [E[X]]^2 = 3 - 2,25 = 0,75$$
+
+**Desvio Padrão:**
+$$\sigma = \sqrt{0,75} \approx 0,866$$
+
+**Interpretação:** Em média, o número de caras varia cerca de 0,866 caras em torno de 1,5.
+
+**Exemplo 11 — Variância com a FP do Exemplo 9:**
+
+Dada a FP:
+
+| $ x $ | 0 | 1 | 2 |
+| --- | --- | --- | --- |
+| $ P(X = x) $ | 0,2 | 0,5 | 0,3 |
+
+Calcule $ Var(X) $.
+
+**Passo 1 — Calcular $ E[X] $:**
+$$E[X] = 0 \cdot 0,2 + 1 \cdot 0,5 + 2 \cdot 0,3 = 0 + 0,5 + 0,6 = 1,1$$
+
+**Passo 2 — Calcular $ E[X^2] $:**
+$$E[X^2] = 0^2 \cdot 0,2 + 1^2 \cdot 0,5 + 2^2 \cdot 0,3 = 0 + 0,5 + 1,2 = 1,7$$
+
+**Passo 3 — Calcular a variância:**
+$$Var(X) = 1,7 - (1,1)^2 = 1,7 - 1,21 = 0,49$$
+
+**Desvio Padrão:**
+$$\sigma = \sqrt{0,49} = 0,7$$
+
+### 7. Quadro Resumo — Variável Aleatória Discreta
+
+| Conceito | Fórmula |
+| --- | --- |
+| **Função de Probabilidade** | $ P(X = x) = p(x) $, com $ \sum p(x) = 1 $ |
+| **Função de Distribuição** | $ F(x) = P(X \leq x) = \sum_{t \leq x} p(t) $ |
+| **Recuperar FP da FD** | $ P(X = x) = F(x) - F(x^-) $ |
+| **Valor Esperado** | $ E[X] = \sum x \cdot p(x) $ |
+| **Valor Esperado de $ g(X) $** | $ E[g(X)] = \sum g(x) \cdot p(x) $ |
+| **Variância** | $ Var(X) = \sum (x - \mu)^2 \cdot p(x) = E[X^2] - [E[X]]^2 $ |
+| **Desvio Padrão** | $ \sigma = \sqrt{Var(X)} $ |
+
+## 📝 EXERCÍCIOS RESOLVIDOS
+
+<details>
+<summary>📗 Exercício 1 — Função de Probabilidade</summary>
+
+**Enunciado:** Uma variável aleatória discreta $ X $ tem a seguinte função de probabilidade:
+
+| $ x $ | 0 | 1 | 2 | 3 | 4 |
+| --- | --- | --- | --- | --- | --- |
+| $ P(X = x) $ | 0,1 | 0,2 | 0,3 | 0,25 | 0,15 |
+
+a) Verifique se é uma FP válida.
+b) Calcule $ P(X \leq 2) $.
+c) Calcule $ P(X > 2) $.
+d) Calcule $ P(1 \leq X \leq 3) $.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**a) Verificação:**
+- $ 0,1 + 0,2 + 0,3 + 0,25 + 0,15 = 1,0 $ ✅
+- Todos os valores estão entre 0 e 1 ✅
+
+**b) $ P(X \leq 2) $:**
+$$P(X \leq 2) = P(X=0) + P(X=1) + P(X=2) = 0,1 + 0,2 + 0,3 = 0,6$$
+
+**c) $ P(X > 2) $:**
+$$P(X > 2) = P(X=3) + P(X=4) = 0,25 + 0,15 = 0,4$$
+**Alternativa:** $ P(X > 2) = 1 - P(X \leq 2) = 1 - 0,6 = 0,4 $ ✅
+
+**d) $ P(1 \leq X \leq 3) $:**
+$$P(1 \leq X \leq 3) = P(X=1) + P(X=2) + P(X=3) = 0,2 + 0,3 + 0,25 = 0,75$$
+
+**Respostas:** a) válida; b) 0,6; c) 0,4; d) 0,75.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Construção da FD</summary>
+
+**Enunciado:** Usando a FP do Exercício 1, construa a Função de Distribuição $ F(x) $.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+| $ x $ | $ F(x) = P(X \leq x) $ |
+| --- | --- |
+| $ x < 0 $ | 0 |
+| $ 0 \leq x < 1 $ | 0,1 |
+| $ 1 \leq x < 2 $ | 0,1 + 0,2 = 0,3 |
+| $ 2 \leq x < 3 $ | 0,3 + 0,3 = 0,6 |
+| $ 3 \leq x < 4 $ | 0,6 + 0,25 = 0,85 |
+| $ x \geq 4 $ | 0,85 + 0,15 = 1 |
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Valor Esperado</summary>
+
+**Enunciado:** Usando a FP do Exercício 1, calcule:
+
+a) $ E[X] $
+b) $ E[X^2] $
+c) $ Var(X) $
+d) $ E[3X + 2] $
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**a) $ E[X] $:**
+$$E[X] = 0 \cdot 0,1 + 1 \cdot 0,2 + 2 \cdot 0,3 + 3 \cdot 0,25 + 4 \cdot 0,15$$
+$$E[X] = 0 + 0,2 + 0,6 + 0,75 + 0,6 = 2,15$$
+
+**b) $ E[X^2] $:**
+$$E[X^2] = 0^2 \cdot 0,1 + 1^2 \cdot 0,2 + 2^2 \cdot 0,3 + 3^2 \cdot 0,25 + 4^2 \cdot 0,15$$
+$$E[X^2] = 0 + 0,2 + 1,2 + 2,25 + 2,4 = 6,05$$
+
+**c) $ Var(X) $:**
+$$Var(X) = E[X^2] - [E[X]]^2 = 6,05 - (2,15)^2 = 6,05 - 4,6225 = 1,4275$$
+
+**d) $ E[3X + 2] $:**
+$$E[3X + 2] = 3E[X] + 2 = 3(2,15) + 2 = 6,45 + 2 = 8,45$$
+
+**Respostas:** a) 2,15; b) 6,05; c) 1,4275; d) 8,45.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Dado Viciado</summary>
+
+**Enunciado:** Um dado é viciado de modo que a probabilidade de sair um número é proporcional ao quadrado do número da face. Ou seja, $ P(X = k) = c \cdot k^2 $.
+
+a) Encontre o valor de $ c $.
+b) Calcule $ P(X \geq 5) $.
+c) Calcule $ E[X] $.
+d) Calcule $ Var(X) $.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**a) Encontrar $ c $:**
+- $ \sum_{k=1}^{6} c \cdot k^2 = c \cdot \sum_{k=1}^{6} k^2 = c \cdot \frac{6 \cdot 7 \cdot 13}{6} = c \cdot 91 = 1 $
+- $ c = 1/91 $
+
+**b) $ P(X \geq 5) $:**
+$$P(X \geq 5) = P(X=5) + P(X=6) = \frac{25}{91} + \frac{36}{91} = \frac{61}{91} \approx 67,0\%$$
+
+**c) $ E[X] $:**
+$$E[X] = \sum_{k=1}^{6} k \cdot \frac{k^2}{91} = \frac{1}{91} \sum_{k=1}^{6} k^3 = \frac{1}{91} \cdot \left( \frac{6 \cdot 7}{2} \right)^2 = \frac{1}{91} \cdot 21^2 = \frac{441}{91} \approx 4,846$$
+
+**d) $ Var(X) $:**
+- $ E[X^2] = \frac{1}{91} \sum_{k=1}^{6} k^4 $
+- $ \sum_{k=1}^{6} k^4 = 1 + 16 + 81 + 256 + 625 + 1296 = 2275 $
+- $ E[X^2] = 2275/91 \approx 25,0 $
+- $ Var(X) = 25,0 - (4,846)^2 = 25,0 - 23,48 = 1,52 $
+
+**Respostas:** a) $ 1/91 $; b) $ 61/91 $; c) $ 441/91 \approx 4,846 $; d) $ \approx 1,52 $.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Urna sem Reposição</summary>
+
+**Enunciado:** Uma urna contém 3 bolas vermelhas e 2 azuis. Retiram-se **2 bolas sem reposição**. Seja $ X $ o número de bolas vermelhas sorteadas.
+
+a) Monte a FP de $ X $.
+b) Calcule $ E[X] $.
+c) Calcule $ Var(X) $.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**a) Função de Probabilidade:**
+
+Total de bolas = 5. Sem reposição.
+
+| $ x $ | Combinação | $ P(X = x) $ |
+| --- | --- | --- |
+| 0 | AA | $ \frac{2}{5} \cdot \frac{1}{4} = \frac{2}{20} = \frac{1}{10} $ |
+| 1 | VA ou AV | $ 2 \cdot \frac{3}{5} \cdot \frac{2}{4} = 2 \cdot \frac{6}{20} = \frac{12}{20} = \frac{3}{5} $ |
+| 2 | VV | $ \frac{3}{5} \cdot \frac{2}{4} = \frac{6}{20} = \frac{3}{10} $ |
+
+**Verificação:** $ 1/10 + 3/5 + 3/10 = 1/10 + 6/10 + 3/10 = 10/10 = 1 $ ✅
+
+**b) $ E[X] $:**
+$$E[X] = 0 \cdot \frac{1}{10} + 1 \cdot \frac{3}{5} + 2 \cdot \frac{3}{10} = 0 + \frac{3}{5} + \frac{6}{10} = 0,6 + 0,6 = 1,2$$
+
+**c) $ Var(X) $:**
+- $ E[X^2] = 0^2 \cdot \frac{1}{10} + 1^2 \cdot \frac{3}{5} + 2^2 \cdot \frac{3}{10} = 0 + \frac{3}{5} + \frac{12}{10} = 0,6 + 1,2 = 1,8 $
+- $ Var(X) = 1,8 - (1,2)^2 = 1,8 - 1,44 = 0,36 $
+
+**Respostas:** a) tabela acima; b) 1,2; c) 0,36.
+
+</details>
+</details>
+
+## 🎯 DESAFIO FINAL
+
+**Enunciado:** Um jogo consiste em lançar um dado. Se sair 6, você ganha R$ 20. Se sair 1 ou 2, você perde R$ 10. Se sair 3, 4 ou 5, você perde R$ 2.
+
+Seja $ X $ o ganho líquido (em reais) de uma jogada.
+
+a) Monte a FP de $ X $.
+b) Calcule $ E[X] $.
+c) Calcule $ Var(X) $.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**a) Função de Probabilidade:**
+
+| $ x $ | Ganho | $ P(X = x) $ |
+| --- | --- | --- |
+| 20 | R$ 20 (ganha) | $ 1/6 $ |
+| -10 | R$ -10 (perde) | $ 2/6 = 1/3 $ |
+| -2 | R$ -2 (perde) | $ 3/6 = 1/2 $ |
+
+**b) $ E[X] $:**
+$$E[X] = 20 \cdot \frac{1}{6} + (-10) \cdot \frac{2}{6} + (-2) \cdot \frac{3}{6}$$
+$$E[X] = \frac{20}{6} - \frac{20}{6} - \frac{6}{6} = -\frac{6}{6} = -1$$
+
+**Interpretação:** Em média, você perde R$ 1 por jogada.
+
+**c) $ Var(X) $:**
+- $ E[X^2] = 20^2 \cdot \frac{1}{6} + (-10)^2 \cdot \frac{2}{6} + (-2)^2 \cdot \frac{3}{6} $
+- $ E[X^2] = 400 \cdot \frac{1}{6} + 100 \cdot \frac{2}{6} + 4 \cdot \frac{3}{6} = \frac{400 + 200 + 12}{6} = \frac{612}{6} = 102 $
+- $ Var(X) = 102 - (-1)^2 = 102 - 1 = 101 $
+
+**Respostas:** a) tabela acima; b) -1; c) 101.
+
+</details>
+
+> *As variáveis aleatórias discretas são a base da probabilidade aplicada. Dominar a FP, a FD, o valor esperado e a variância é essencial para qualquer modelo estatístico que envolva contagens, sucessos ou eventos discretos.*

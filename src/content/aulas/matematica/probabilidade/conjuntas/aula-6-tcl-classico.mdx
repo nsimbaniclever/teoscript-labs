@@ -1,0 +1,477 @@
+# Teorema Central do Limite `(Versão Clássica)`
+
+## O que é o Teorema Central do Limite?
+
+O Teorema Central do Limite (TCL) é, sem dúvida, o resultado mais importante de toda a probabilidade e estatística. Enquanto a Lei dos Grandes Números nos diz que a média amostral converge para a média populacional, o TCL vai além: ele nos diz **como** essa convergência ocorre, especificando a **distribuição** da média amostral.
+
+Pense no TCL como uma "máquina de fazer Normais". Não importa a forma da distribuição original - seja ela assimétrica, discreta, contínua, com caudas pesadas ou leves - a média de muitas observações sempre se comporta como uma distribuição Normal.
+
+**O que o TCL diz, em palavras simples:**
+
+Se você pegar uma amostra suficientemente grande de qualquer população com média e variância finitas, a distribuição da média amostral será aproximadamente Normal, independentemente da forma da distribuição original. Quanto maior a amostra, melhor a aproximação.
+
+**Por que isso é tão importante?**
+
+1. **Não precisamos conhecer a distribuição original.** Podemos fazer inferência sobre a média usando a Normal, sem saber qual é a distribuição dos dados.
+
+2. **Base de toda a estatística inferencial.** Intervalos de confiança, testes de hipóteses, regressão - tudo depende do TCL.
+
+3. **Explica fenômenos naturais.** Muitas características (altura, peso, QI) são Normais porque são resultados da soma de muitos fatores independentes.
+
+4. **Justifica a aproximação Normal da Binomial.** O Teorema de Laplace-De Moivre é um caso particular do TCL.
+
+## Enunciado Formal do TCL (Lindeberg-Lévy)
+
+Se $X_1, X_2, \dots, X_n$ são variáveis aleatórias independentes e identicamente distribuídas (i.i.d.) com:
+
+>> $$E[X_i] = \mu$$
+$$Var(X_i) = \sigma^2 < \infty$$
+
+Então, definindo a média amostral:
+
+>> $$\bar{X}_n = \frac{1}{n}\sum_{i=1}^n X_i$$
+
+A variável padronizada:
+
+>> $$Z_n = \frac{\bar{X}_n - \mu}{\sigma/\sqrt{n}}$$
+
+converge em distribuição para uma Normal padrão $N(0, 1)$. Ou seja, para qualquer $z \in \mathbb{R}$:
+
+>> $$\lim_{n \to \infty} P(Z_n \le z) = \Phi(z)$$
+
+onde $\Phi(z)$ é a FDA da Normal padrão.
+
+**Interpretação dos componentes:**
+
+- $\bar{X}_n$ é a média amostral.
+- $\mu$ é a média populacional.
+- $\sigma/\sqrt{n}$ é o erro padrão da média.
+- $Z_n$ mede quantos erros padrão a média amostral está da média populacional.
+
+**Condições necessárias:**
+
+1. **Independência:** As variáveis devem ser independentes.
+2. **Identicamente distribuídas:** Todas devem ter a mesma distribuição.
+3. **Variância finita:** $\sigma^2 < \infty$. Esta é a condição de Lindeberg-Lévy.
+
+## O Teorema de Laplace-De Moivre
+
+O Teorema de Laplace-De Moivre é um caso particular do TCL para a distribuição Binomial. Ele diz que uma $\text{Binomial}(n, p)$ pode ser aproximada por uma Normal com média $np$ e variância $np(1-p)$.
+
+**Enunciado:**
+
+Se $X \sim \text{Binomial}(n, p)$, então para $n$ grande:
+
+$$Z = \frac{X - np}{\sqrt{np(1-p)}} \approx N(0,1)$$
+
+**Correção de continuidade:**
+
+Como a Binomial é discreta e a Normal é contínua, usamos a correção de continuidade:
+
+$$P(X \le k) \approx P\left(Z \le \frac{k + 0,5 - np}{\sqrt{np(1-p)}}\right)$$
+
+**Exemplo 1:** Lançamento de uma moeda 100 vezes. $X =$ número de caras. $X \sim \text{Binomial}(100, 0,5)$.
+
+**Resolução:**
+
+$\mu = np = 50$, $\sigma = \sqrt{np(1-p)} = \sqrt{100 \cdot 0,5 \cdot 0,5} = \sqrt{25} = 5$.
+
+$P(X \le 55) \approx P\left(Z \le \frac{55,5 - 50}{5}\right) = P(Z \le 1,1) \approx 0,8643$.
+
+**Interpretação:** A probabilidade de obter 55 caras ou menos é aproximadamente 86,43%.
+
+**Exemplo 2:** Uma moeda viciada tem $P(\text{cara}) = 0,6$. Lançada 200 vezes. Qual a probabilidade de obter mais de 130 caras?
+
+**Resolução:**
+
+$\mu = 200 \cdot 0,6 = 120$, $\sigma = \sqrt{200 \cdot 0,6 \cdot 0,4} = \sqrt{48} = 6,928$.
+
+$P(X > 130) \approx P\left(Z > \frac{130,5 - 120}{6,928}\right) = P(Z > 1,516) \approx 1 - 0,9350 = 0,0650$.
+
+**Resposta:** 6,5%.
+
+**Exemplo 3:** Um dado honesto é lançado 120 vezes. Qual a probabilidade de sair o número 6 mais de 25 vezes?
+
+**Resolução:**
+
+$p = 1/6 \approx 0,1667$, $n = 120$.
+$\mu = 120 \cdot 1/6 = 20$, $\sigma = \sqrt{120 \cdot 1/6 \cdot 5/6} = \sqrt{16,667} = 4,082$.
+
+$P(X > 25) \approx P\left(Z > \frac{25,5 - 20}{4,082}\right) = P(Z > 1,348) \approx 1 - 0,9110 = 0,0890$.
+
+**Resposta:** 8,9%.
+
+**Exemplo 4:** Em uma pesquisa com 1000 pessoas, 55% dizem preferir o produto A. Qual a probabilidade de a verdadeira proporção ser menor que 52%?
+
+**Resolução:**
+
+$p = 0,55$, $n = 1000$.
+$\sigma = \sqrt{0,55 \cdot 0,45 / 1000} = \sqrt{0,0002475} = 0,0157$.
+
+$P(\text{proporção} < 0,52) = P\left(Z < \frac{0,52 - 0,55}{0,0157}\right) = P(Z < -1,91) = 0,028$.
+
+**Resposta:** 2,8%.
+
+**Exemplo 5:** Uma fábrica produz peças com 2% de defeito. Em um lote de 500 peças, qual a probabilidade de encontrar menos de 5 peças defeituosas?
+
+**Resolução:**
+
+$p = 0,02$, $n = 500$.
+$\mu = 500 \cdot 0,02 = 10$, $\sigma = \sqrt{500 \cdot 0,02 \cdot 0,98} = \sqrt{9,8} = 3,130$.
+
+$P(X < 5) = P(X \le 4) \approx P\left(Z \le \frac{4,5 - 10}{3,130}\right) = P(Z \le -1,757) = 0,0394$.
+
+**Resposta:** 3,94%.
+
+## Por que o TCL é tão importante?
+
+O TCL é a base de praticamente toda a estatística moderna. Sem ele, não poderíamos:
+
+1. **Construir intervalos de confiança** para médias, proporções e outros parâmetros.
+
+2. **Realizar testes de hipóteses** sobre médias, diferenças entre médias, etc.
+
+3. **Fazer regressão linear** e entender a distribuição dos coeficientes.
+
+4. **Justificar o uso da Normal** em modelos estatísticos.
+
+5. **Explicar fenômenos naturais** que seguem a distribuição Normal (altura, peso, QI, erros de medição).
+
+**Aplicações práticas:**
+
+- Pesquisas eleitorais: a proporção de votos em um candidato segue aproximadamente uma Normal.
+- Controle de qualidade: a média de medidas de um processo segue uma Normal.
+- Finanças: os retornos de ativos (sob certas condições) seguem uma Normal.
+- Medicina: a média de medidas fisiológicas em uma população segue uma Normal.
+
+## O TCL na Prática: Simulações
+
+Uma das melhores formas de entender o TCL é através de simulações. Vamos ver como a distribuição da média amostral se aproxima da Normal à medida que $n$ aumenta.
+
+**Exemplo 1: Distribuição Exponencial**
+
+A Exponencial é altamente assimétrica (cauda longa à direita). Vamos ver o que acontece com a média de $n$ observações.
+
+**Simulação conceitual:**
+
+- $n = 1$: a distribuição é Exponencial (assimétrica)
+- $n = 5$: a distribuição já começa a ficar mais simétrica
+- $n = 30$: a distribuição já está muito próxima da Normal
+- $n = 100$: a distribuição é praticamente Normal
+
+**Interpretação:** Mesmo com uma distribuição original muito assimétrica, a média de 30 observações já é aproximadamente Normal.
+
+**Exemplo 2: Distribuição Uniforme**
+
+A Uniforme é simétrica, mas tem "caudas curtas" (termina abruptamente).
+
+**Simulação conceitual:**
+
+- $n = 1$: Uniforme (plana)
+- $n = 5$: já parece um sino
+- $n = 30$: praticamente Normal
+
+**Exemplo 3: Distribuição Bernoulli**
+
+A Bernoulli é discreta e assume apenas 0 e 1. Para $n$ pequeno, a distribuição é discreta.
+
+**Simulação conceitual:**
+
+- $n = 10$: ainda discreta, mas já com formato de sino
+- $n = 30$: muito próxima da Normal
+- $n = 100$: praticamente Normal
+
+**Exemplo 4: Mistura de distribuições**
+
+Suponha que os dados venham de uma mistura de duas Normais com médias diferentes.
+
+**Simulação conceitual:**
+
+- $n = 1$: bimodal (dois picos)
+- $n = 10$: ainda bimodal
+- $n = 30$: começa a se aproximar da Normal
+- $n = 100$: praticamente Normal
+
+**Exemplo 5: Distribuição com caudas pesadas**
+
+A distribuição $t$ com poucos graus de liberdade tem caudas pesadas.
+
+**Simulação conceitual:**
+
+- $n = 5$: ainda com caudas pesadas
+- $n = 30$: as caudas já estão mais leves
+- $n = 100$: praticamente Normal
+
+## Limitações do TCL
+
+O TCL é poderoso, mas tem limitações:
+
+1. **$n$ precisa ser suficientemente grande.** O que é "grande" depende da distribuição original. Para distribuições simétricas, $n = 30$ pode ser suficiente. Para distribuições muito assimétricas, pode precisar de $n = 100$ ou mais.
+
+2. **Variância finita.** Se a variância é infinita (como na distribuição de Cauchy), o TCL não se aplica.
+
+3. **Independência.** As observações devem ser independentes.
+
+4. **Identicamente distribuídas.** Na versão clássica, as observações devem ter a mesma distribuição.
+
+5. **Aproximação, não igualdade.** Para $n$ finito, a distribuição é apenas aproximada, não exata.
+
+## Analogias do dia a dia
+
+### Analogia 1: O lançamento do dado
+
+Imagine que você lança um dado e anota a média dos resultados.
+
+- 1 lançamento: a distribuição é Uniforme (cada face tem 1/6 de chance).
+- 2 lançamentos: a média pode ser 1, 1,5, 2, ..., 6. A distribuição já começa a ter formato de sino.
+- 3 lançamentos: o sino fica mais evidente.
+- 10 lançamentos: já está muito próximo de uma Normal.
+- 30 lançamentos: praticamente uma Normal.
+
+**Pergunta:** Qual a probabilidade de a média de 30 lançamentos estar entre 3 e 4?
+
+**Resolução:**
+
+$E[X] = 3,5$, $Var(X) = 35/12 \approx 2,9167$, $\sigma = \sqrt{2,9167} \approx 1,7078$.
+Erro padrão = $\sigma/\sqrt{30} \approx 0,3118$.
+
+$P(3 \le \bar{X} \le 4) = P\left(\frac{3 - 3,5}{0,3118} \le Z \le \frac{4 - 3,5}{0,3118}\right) = P(-1,603 \le Z \le 1,603) \approx 0,890$.
+
+**Resposta:** 89%.
+
+### Analogia 2: O peso dos sacos de arroz
+
+Um supermercado vende sacos de arroz de 5kg. Na verdade, o peso varia. Suponha que o peso médio seja 5kg com desvio padrão de 0,2kg.
+
+**Pergunta:** Se você comprar 50 sacos, qual a probabilidade de o peso total ser menor que 248kg?
+
+**Resolução:**
+
+Peso total $T = 50 \cdot \bar{X}$. $E[T] = 50 \cdot 5 = 250$kg.
+$\sigma_T = \sqrt{50} \cdot 0,2 = 1,414$kg.
+
+$P(T < 248) = P\left(Z < \frac{248 - 250}{1,414}\right) = P(Z < -1,414) = 0,0787$.
+
+**Resposta:** 7,87%.
+
+### Analogia 3: A média de notas
+
+As notas de uma prova têm média 70 e desvio padrão 15. Uma turma de 36 alunos tem média 75.
+
+**Pergunta:** Qual a probabilidade de uma turma de 36 alunos ter média $\ge 75$?
+
+**Resolução:**
+
+Erro padrão = $15/\sqrt{36} = 2,5$.
+$Z = (75 - 70)/2,5 = 2,0$.
+$P(Z \ge 2,0) = 0,0228$.
+
+**Resposta:** 2,28%. Esta turma teve um desempenho excepcional!
+
+### Analogia 4: A fábrica de parafusos
+
+Uma fábrica produz parafusos com diâmetro médio de 5mm e desvio padrão de 0,1mm. Um cliente recebe um lote de 100 parafusos.
+
+**Pergunta:** Qual a probabilidade de o diâmetro médio do lote estar entre 4,98mm e 5,02mm?
+
+**Resolução:**
+
+Erro padrão = $0,1/\sqrt{100} = 0,01$.
+$Z_1 = (4,98 - 5)/0,01 = -2,0$.
+$Z_2 = (5,02 - 5)/0,01 = 2,0$.
+$P(-2,0 \le Z \le 2,0) = 0,9544$.
+
+**Resposta:** 95,44%.
+
+### Analogia 5: A pesquisa de opinião
+
+Uma pesquisa com 1000 pessoas mostra que 52% apoiam o candidato A.
+
+**Pergunta:** Qual a probabilidade de o verdadeiro apoio ser menor que 50%?
+
+**Resolução:**
+
+$p = 0,52$, $n = 1000$.
+$\sigma = \sqrt{0,52 \cdot 0,48 / 1000} = \sqrt{0,0002496} = 0,0158$.
+$Z = (0,50 - 0,52)/0,0158 = -1,266$.
+$P(Z < -1,266) = 0,103$.
+
+**Resposta:** 10,3%.
+
+## Exemplos práticos com cálculos passo a passo
+
+### Exemplo 1: Probabilidade básica com TCL
+
+Seja $X \sim \text{Bernoulli}(0,4)$. Para $n = 100$, calcule $P(\bar{X} \le 0,35)$.
+
+**Resolução:**
+
+$\mu = 0,4$, $\sigma = \sqrt{0,4 \cdot 0,6} = \sqrt{0,24} = 0,4899$.
+Erro padrão = $0,4899/\sqrt{100} = 0,04899$.
+$Z = (0,35 - 0,4)/0,04899 = -1,021$.
+$P(Z \le -1,021) = 0,1537$.
+
+**Resposta:** 15,37%.
+
+### Exemplo 2: Intervalo de confiança
+
+Uma amostra de 64 elementos tem média 50 e desvio padrão 8. Construa um intervalo de confiança de 95% para a média.
+
+**Resolução:**
+
+Erro padrão = $8/\sqrt{64} = 1$.
+Intervalo: $50 \pm 1,96 \cdot 1 = 50 \pm 1,96 = (48,04, 51,96)$.
+
+**Resposta:** $(48,04, 51,96)$.
+
+### Exemplo 3: Teste de hipótese
+
+Uma amostra de 36 elementos tem média 105 e desvio padrão 12. Teste se a média populacional é 100 ($\alpha = 0,05$).
+
+**Resolução:**
+
+$Z = (105 - 100)/(12/\sqrt{36}) = 5/2 = 2,5$.
+$P(|Z| > 2,5) = 2 \cdot (1 - 0,9938) = 2 \cdot 0,0062 = 0,0124 < 0,05$.
+
+**Conclusão:** Rejeitamos $H_0$. A média é significativamente diferente de 100.
+
+### Exemplo 4: Tamanho da amostra
+
+Qual o tamanho da amostra necessário para estimar a média com erro máximo de 1 e 95% de confiança, sabendo que $\sigma = 5$?
+
+**Resolução:**
+
+$E = Z \cdot \sigma/\sqrt{n} \to 1 = 1,96 \cdot 5/\sqrt{n} \to \sqrt{n} = 9,8 \to n = 96,04$.
+
+**Resposta:** $n \ge 97$.
+
+### Exemplo 5: Aproximação Normal para Binomial
+
+Uma moeda honesta é lançada 200 vezes. Qual a probabilidade de sair entre 90 e 110 caras?
+
+**Resolução:**
+
+$\mu = 100$, $\sigma = \sqrt{200 \cdot 0,5 \cdot 0,5} = \sqrt{50} = 7,071$.
+$P(90 \le X \le 110) \approx P\left(\frac{89,5 - 100}{7,071} \le Z \le \frac{110,5 - 100}{7,071}\right) = P(-1,485 \le Z \le 1,485) = 0,862$.
+
+**Resposta:** 86,2%.
+
+## Exercícios resolvidos (níveis crescentes de dificuldade)
+
+### Exercício 1 (Fácil)
+
+Seja $X \sim \text{Uniforme}(0, 1)$. Para $n = 30$, calcule $P(\bar{X} \le 0,55)$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$\mu = 0,5$, $\sigma^2 = 1/12 \approx 0,0833$, $\sigma \approx 0,2887$.
+Erro padrão = $0,2887/\sqrt{30} = 0,0527$.
+$Z = (0,55 - 0,5)/0,0527 = 0,949$.
+$P(Z \le 0,949) = 0,8287$.
+
+**Resposta:** 82,87%.
+
+</details>
+
+### Exercício 2 (Fácil/Médio)
+
+Uma amostra de 100 elementos tem média 75 e desvio padrão 10. Encontre o intervalo de confiança de 90% para a média.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+Erro padrão = $10/\sqrt{100} = 1$.
+$Z_{0,05} = 1,645$.
+Intervalo: $75 \pm 1,645 \cdot 1 = 75 \pm 1,645 = (73,355, 76,645)$.
+
+**Resposta:** $(73,36, 76,64)$.
+
+</details>
+
+### Exercício 3 (Médio)
+
+Em uma pesquisa com 400 pessoas, 60% disseram preferir o produto A. Encontre o intervalo de confiança de 95% para a verdadeira proporção.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$p = 0,6$, $n = 400$.
+Erro padrão = $\sqrt{0,6 \cdot 0,4 / 400} = \sqrt{0,0006} = 0,0245$.
+Intervalo: $0,6 \pm 1,96 \cdot 0,0245 = 0,6 \pm 0,048 = (0,552, 0,648)$.
+
+**Resposta:** $(55,2\%, 64,8\%)$.
+
+</details>
+
+### Exercício 4 (Médio)
+
+Uma fábrica produz peças com vida média de 1000 horas e desvio padrão de 100 horas. Qual a probabilidade de uma amostra de 64 peças ter vida média entre 980 e 1020 horas?
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+Erro padrão = $100/\sqrt{64} = 12,5$.
+$Z_1 = (980 - 1000)/12,5 = -1,6$.
+$Z_2 = (1020 - 1000)/12,5 = 1,6$.
+$P(-1,6 \le Z \le 1,6) = 0,8904$.
+
+**Resposta:** 89,04%.
+
+</details>
+
+### Exercício 5 (Difícil)
+
+Seja $X \sim \text{Poisson}(\lambda = 5)$. Para $n = 50$, calcule $P(\bar{X} \le 5,5)$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$\mu = \lambda = 5$, $\sigma = \sqrt{\lambda} = \sqrt{5} \approx 2,236$.
+Erro padrão = $2,236/\sqrt{50} = 0,3162$.
+$Z = (5,5 - 5)/0,3162 = 1,581$.
+$P(Z \le 1,581) = 0,943$.
+
+**Resposta:** 94,3%.
+
+</details>
+
+## Desafio final com resolução completa
+
+Uma fábrica de lâmpadas afirma que suas lâmpadas duram em média 1200 horas com desvio padrão de 150 horas. Um cliente compra um lote de 36 lâmpadas e encontra uma vida média de 1150 horas.
+
+a) Qual a probabilidade de uma amostra de 36 lâmpadas ter média menor ou igual a 1150 horas, assumindo que a afirmação da fábrica é verdadeira?
+
+b) Com base no resultado de (a), o cliente deve desconfiar da afirmação da fábrica?
+
+c) Qual o intervalo de confiança de 95% para a verdadeira média, baseado na amostra do cliente?
+
+d) Se o cliente quisesse estimar a média com erro máximo de 20 horas e 95% de confiança, quantas lâmpadas ele deveria testar?
+
+<details>
+<summary>💡 Ver resolução completa</summary>
+
+a) $\mu = 1200$, $\sigma = 150$, $n = 36$.
+   Erro padrão = $150/\sqrt{36} = 25$.
+   $Z = (1150 - 1200)/25 = -2,0$.
+   $P(Z \le -2,0) = 0,0228$.
+
+b) A probabilidade de obter uma média tão baixa por acaso é de apenas 2,28%. Como isso é menor que 5%, o cliente tem razões para desconfiar da afirmação da fábrica.
+
+c) $\bar{x} = 1150$, $s = 150$, $n = 36$.
+   Erro padrão = $150/\sqrt{36} = 25$.
+   Intervalo: $1150 \pm 1,96 \cdot 25 = 1150 \pm 49 = (1101, 1199)$.
+
+d) $E = 20$, $Z = 1,96$, $\sigma = 150$.
+   $n = (Z \cdot \sigma/E)^2 = (1,96 \cdot 150/20)^2 = (14,7)^2 = 216,09$.
+   $n \ge 217$.
+
+**Respostas:**
+a) 2,28%
+b) Sim, há evidência contra a afirmação da fábrica
+c) (1101, 1199) horas
+d) 217 lâmpadas
+
+</details>
+
+> *O Teorema Central do Limite nos ensina que, mesmo partindo do caos mais assimétrico, a repetição organiza a incerteza na forma perfeita do sino — a Normal emerge como o destino de toda média.*

@@ -1,0 +1,463 @@
+# Unicode Transformation Format2
+
+## Como os Caracteres Unicode São Armazenados e Transmitidos
+
+
+## 1. Introdução
+
+Nas duas aulas anteriores, aprendemos que o ASCII foi o primeiro padrão de codificação (128 caracteres, 7 bits) e que o Unicode resolveu o problema da universalidade com mais de 143.000 caracteres, cada um com seu ponto de código único.
+
+Mas existe um problema: **como armazenar e transmitir esses +143.000 caracteres?**
+
+- Se usarmos 1 Byte (8 bits) por caractere, só conseguimos 256 combinações — insuficiente.
+- Se usarmos 2 Bytes (16 bits) por caractere, conseguimos 65.536 combinações — ainda insuficiente para todos os idiomas.
+- Se usarmos 3 Bytes (24 bits) por caractere, conseguimos 16.777.216 combinações — suficiente, mas qual é o custo?
+
+A solução foi criar **formatos de codificação** que traduzem os pontos de código Unicode em bytes que podem ser armazenados e transmitidos. Os três principais formatos são:
+
+- **UTF-8:** 1 a 4 Bytes por caractere (padrão da web)
+- **UTF-16:** 2 a 4 Bytes por caractere (usado pelo Windows e Java)
+- **UTF-32:** 4 Bytes fixos por caractere (simples, mas ineficiente)
+
+Nesta aula, vamos entender como cada um desses formatos funciona, quais são suas vantagens e desvantagens, e por que o UTF-8 se tornou o padrão da internet.
+
+
+## 2. O Que São UTF-8, UTF-16 e UTF-32?
+
+**UTF** significa **Unicode Transformation Format** — *Formato de Transformação Unicode*.
+
+Cada UTF é uma forma de **codificar** (transformar) os pontos de código Unicode em bytes que podem ser armazenados em memória, em discos, ou transmitidos pela internet.
+
+| Formato | Bytes por caractere | Combinações | Onde é usado |
+|---------|-------------------|-------------|--------------|
+| **UTF-8** | 1 a 4 Bytes | +1 milhão | **Web (99% dos sites)**, Linux, macOS, Python, JSON |
+| **UTF-16** | 2 a 4 Bytes | +1 milhão | Windows, Java, JavaScript (strings), .NET |
+| **UTF-32** | 4 Bytes (fixos) | +1 milhão | Raramente usado (apenas sistemas internos) |
+
+**Analogia:** Pense no Unicode como um **catálogo universal** de caracteres. O UTF-8, UTF-16 e UTF-32 são como **formatos de empacotamento** para enviar esses caracteres pelo correio:
+- **UTF-8** é como enviar uma carta em um envelope que se adapta ao tamanho da carta (1-4 páginas).
+- **UTF-16** é como enviar uma carta em um envelope que sempre tem 2 páginas (mas pode ter 4 para cartas muito longas).
+- **UTF-32** é como enviar uma carta em um envelope que sempre tem 4 páginas, mesmo que a carta seja pequena.
+
+
+## 3. UTF-8 — O Padrão da Web
+
+### 3.1 O que é UTF-8?
+
+**UTF-8** é um formato de codificação que usa **1 a 4 Bytes** para representar cada caractere Unicode. Ele foi criado em 1993 por Ken Thompson e Rob Pike, e hoje é o **padrão da internet**.
+
+### 3.2 Como o UTF-8 funciona?
+
+O UTF-8 usa um **esquema inteligente** onde o primeiro byte indica quantos bytes o caractere ocupa:
+
+| Faixa Unicode | Primeiro Byte (binário) | Bytes | Exemplo |
+|---------------|------------------------|-------|---------|
+| U+0000 a U+007F | `0xxxxxxx` | 1 Byte | 'A' (U+0041) → `0100 0001` |
+| U+0080 a U+07FF | `110xxxxx` | 2 Bytes | 'ç' (U+00E7) → `1100 0011 1010 0111` |
+| U+0800 a U+FFFF | `1110xxxx` | 3 Bytes | '€' (U+20AC) → `1110 0010 1000 0010 1010 1100` |
+| U+10000 a U+10FFFF | `11110xxx` | 4 Bytes | '😊' (U+1F60A) → `1111 0000 1001 1111 1001 1000 1000 1010` |
+
+**Onde `x` = bits do caractere.**
+
+### 3.3 Vantagens do UTF-8
+
+1. **Compatível com ASCII:** Os primeiros 128 caracteres são idênticos ao ASCII (1 Byte). Arquivos ASCII antigos continuam funcionando.
+2. **Eficiente para inglês:** Textos em inglês usam apenas 1 Byte por caractere.
+3. **Eficiente para europeu:** Textos em português, espanhol, francês usam 1-2 Bytes por caractere.
+4. **Sem problemas de ordem de bytes:** UTF-8 não tem *endianness* (não importa se o computador é little-endian ou big-endian).
+5. **Detecta erros:** O formato permite detectar bytes corrompidos.
+6. **Padrão da internet:** 99% dos sites usam UTF-8.
+
+### 3.4 Desvantagens do UTF-8
+
+1. **Tamanho variável:** Dificulta algumas operações (ex: acessar o 5º caractere sem percorrer todos os anteriores).
+2. **Ineficiente para asiáticos:** Chinês, japonês, coreano usam 3 Bytes por caractere (enquanto UTF-16 usa 2 Bytes).
+
+### 3.5 Exemplos práticos de codificação UTF-8
+
+| Caractere | Ponto Unicode | UTF-8 (hexadecimal) | UTF-8 (binário) |
+|-----------|---------------|---------------------|-----------------|
+| 'A' | U+0041 | 41 | `0100 0001` (1 Byte) |
+| 'ç' | U+00E7 | C3 A7 | `1100 0011 1010 0111` (2 Bytes) |
+| 'ã' | U+00E3 | C3 A3 | `1100 0011 1010 0011` (2 Bytes) |
+| '€' | U+20AC | E2 82 AC | `1110 0010 1000 0010 1010 1100` (3 Bytes) |
+| '😊' | U+1F60A | F0 9F 98 8A | `1111 0000 1001 1111 1001 1000 1000 1010` (4 Bytes) |
+
+### 3.6 Por que o UTF-8 venceu?
+
+1. **Compatibilidade com ASCII:** Arquivos ASCII antigos funcionam sem modificação.
+2. **Eficiência:** Inglês usa 1 Byte, europeu usa 1-2 Bytes, asiático usa 3 Bytes.
+3. **Detecção de erros:** Bytes inválidos são facilmente identificados.
+4. **Sem endianness:** Funciona em qualquer computador, independente da arquitetura.
+5. **Padrão da internet:** HTTP, HTML, XML, JSON, e a maioria dos protocolos usam UTF-8.
+
+
+## 4. UTF-16 — O Padrão do Windows e Java
+
+### 4.1 O que é UTF-16?
+
+**UTF-16** é um formato de codificação que usa **2 a 4 Bytes** para representar cada caractere Unicode.
+
+### 4.2 Como o UTF-16 funciona?
+
+- **Caracteres Básicos (U+0000 a U+FFFF):** Usam **2 Bytes**.
+- **Caracteres Complementares (U+10000 a U+10FFFF):** Usam **4 Bytes** (usando *surrogate pairs* — pares substitutos).
+
+| Faixa Unicode | Bytes | Exemplo |
+|---------------|-------|---------|
+| U+0000 a U+FFFF | 2 Bytes | 'A' (U+0041) → `00 41` |
+| U+10000 a U+10FFFF | 4 Bytes | '😊' (U+1F60A) → `D8 3D DE 0A` |
+
+### 4.3 O problema do UTF-16: Endianness
+
+O UTF-16 tem um problema: a **ordem dos bytes** (*endianness*).
+
+- **Little-endian:** O byte menos significativo vem primeiro (ex: `41 00` para 'A')
+- **Big-endian:** O byte mais significativo vem primeiro (ex: `00 41` para 'A')
+
+**Solução:** O UTF-16 usa um **BOM** (Byte Order Mark) no início do arquivo para indicar a ordem:
+- `FE FF` = Big-endian
+- `FF FE` = Little-endian
+
+### 4.4 Vantagens do UTF-16
+
+1. **Eficiente para caracteres não-ASCII:** Chinês, japonês, coreano, árabe, etc., usam 2 Bytes (enquanto UTF-8 usa 3 Bytes).
+2. **Tamanho fixo para a maioria:** A maioria dos caracteres usa 2 Bytes (exceto emojis e caracteres raros).
+3. **Usado pelo Windows:** O Windows usa UTF-16 internamente para strings.
+
+### 4.5 Desvantagens do UTF-16
+
+1. **Ineficiente para inglês:** Um texto em inglês usa 2 Bytes por caractere (em vez de 1 Byte do UTF-8).
+2. **Problema de endianness:** É necessário indicar a ordem dos bytes.
+3. **Tamanho variável:** Caracteres complementares usam 4 Bytes (surrogate pairs).
+4. **Menos usado na web:** Apenas 0,1% dos sites usam UTF-16.
+
+### 4.6 Exemplos práticos de codificação UTF-16
+
+| Caractere | Ponto Unicode | UTF-16 (hex, big-endian) | UTF-16 (binário, big-endian) |
+|-----------|---------------|--------------------------|-----------------------------|
+| 'A' | U+0041 | 00 41 | `0000 0000 0100 0001` (2 Bytes) |
+| 'ç' | U+00E7 | 00 E7 | `0000 0000 1110 0111` (2 Bytes) |
+| '€' | U+20AC | 20 AC | `0010 0000 1010 1100` (2 Bytes) |
+| '😊' | U+1F60A | D8 3D DE 0A | `1101 1000 0011 1101 1101 1110 0000 1010` (4 Bytes) |
+
+
+## 5. UTF-32 — O Mais Simples, o Mais Ineficiente
+
+### 5.1 O que é UTF-32?
+
+**UTF-32** é um formato de codificação que usa **4 Bytes fixos** para representar **cada** caractere Unicode.
+
+### 5.2 Como o UTF-32 funciona?
+
+- **Todos os caracteres** (U+0000 a U+10FFFF) usam exatamente **4 Bytes**.
+- Não importa se é 'A' (1 Byte no UTF-8) ou '😊' (4 Bytes no UTF-8) — **todos** usam 4 Bytes no UTF-32.
+
+| Caractere | Ponto Unicode | UTF-32 (hex, big-endian) | UTF-32 (binário, big-endian) |
+|-----------|---------------|--------------------------|-----------------------------|
+| 'A' | U+0041 | 00 00 00 41 | `0000 0000 0000 0000 0000 0000 0100 0001` (4 Bytes) |
+| 'ç' | U+00E7 | 00 00 00 E7 | `0000 0000 0000 0000 0000 0000 1110 0111` (4 Bytes) |
+| '€' | U+20AC | 00 00 20 AC | `0000 0000 0000 0000 0010 0000 1010 1100` (4 Bytes) |
+| '😊' | U+1F60A | 00 01 F6 0A | `0000 0000 0000 0001 1111 0110 0000 1010` (4 Bytes) |
+
+### 5.3 Vantagens do UTF-32
+
+1. **Tamanho fixo:** Todos os caracteres usam exatamente 4 Bytes. Isso facilita operações como acessar o 5º caractere (basta pular 20 Bytes).
+2. **Simples de implementar:** Não há bytes variáveis, nem surrogate pairs.
+3. **Sem endianness:** Pode usar BOM, mas não é obrigatório.
+
+### 5.4 Desvantagens do UTF-32
+
+1. **Ineficiente em espaço:** Um texto em inglês ocupa 4x mais espaço que UTF-8.
+2. **Ineficiente em tráfego:** Transmite 4x mais dados que UTF-8 para textos em inglês.
+3. **Raramente usado:** Praticamente nenhum sistema usa UTF-32 externamente.
+
+### 5.5 Onde o UTF-32 é usado?
+
+- **Internamente em alguns sistemas:** Alguns sistemas usam UTF-32 internamente para processamento de texto (ex: Python usa internamente dependendo da compilação).
+- **Raramente em arquivos:** Quase nunca é usado para armazenamento ou transmissão.
+
+
+## 6. Comparativo Completo: UTF-8 vs UTF-16 vs UTF-32
+
+### 6.1 Tabela comparativa
+
+| Característica | UTF-8 | UTF-16 | UTF-32 |
+|----------------|-------|--------|--------|
+| **Bytes por caractere** | 1 a 4 | 2 a 4 | 4 (fixo) |
+| **Compatível com ASCII** | ✅ Sim | ❌ Não | ❌ Não |
+| **Eficiente para inglês** | ✅ Excelente (1 Byte) | ❌ Ruim (2 Bytes) | ❌ Péssimo (4 Bytes) |
+| **Eficiente para europeu** | ✅ Bom (1-2 Bytes) | ⚠️ Médio (2 Bytes) | ❌ Péssimo (4 Bytes) |
+| **Eficiente para asiático** | ⚠️ Médio (3 Bytes) | ✅ Bom (2 Bytes) | ❌ Péssimo (4 Bytes) |
+| **Eficiente para emojis** | ⚠️ Médio (4 Bytes) | ⚠️ Médio (4 Bytes) | ❌ Péssimo (4 Bytes) |
+| **Problema de endianness** | ✅ Não | ❌ Sim (BOM necessário) | ⚠️ Sim (pode ter BOM) |
+| **Detecção de erros** | ✅ Excelente | ⚠️ Limitada | ⚠️ Limitada |
+| **Padrão da web** | ✅ **Sim (99%)** | ❌ Não (0,1%) | ❌ Não |
+| **Usado por** | Web, Linux, macOS, Python | Windows, Java, JavaScript | Raramente |
+
+### 6.2 Exemplo prático: A palavra "Ação" em cada formato
+
+| Caractere | UTF-8 (Bytes) | UTF-16 (Bytes) | UTF-32 (Bytes) |
+|-----------|---------------|----------------|----------------|
+| 'A' | 1 | 2 | 4 |
+| 'ç' | 2 | 2 | 4 |
+| 'ã' | 2 | 2 | 4 |
+| 'o' | 1 | 2 | 4 |
+| **Total** | **6 Bytes** | **8 Bytes** | **16 Bytes** |
+
+**Conclusão:** Para a palavra "Ação", UTF-8 ocupa 6 Bytes, UTF-16 ocupa 8 Bytes, e UTF-32 ocupa 16 Bytes. O UTF-8 é o mais eficiente.
+
+### 6.3 Exemplo prático: A palavra "China" em cada formato
+
+| Caractere | UTF-8 (Bytes) | UTF-16 (Bytes) | UTF-32 (Bytes) |
+|-----------|---------------|----------------|----------------|
+| '中' | 3 | 2 | 4 |
+| '国' | 3 | 2 | 4 |
+| **Total** | **6 Bytes** | **4 Bytes** | **8 Bytes** |
+
+**Conclusão:** Para a palavra "China" (em chinês), UTF-16 ocupa 4 Bytes, UTF-8 ocupa 6 Bytes, e UTF-32 ocupa 8 Bytes. O UTF-16 é o mais eficiente para textos asiáticos.
+
+
+## 7. Como o Computador Sabe Qual UTF Usar?
+
+### 7.1 A importância do BOM (Byte Order Mark)
+
+O **BOM** (Byte Order Mark) é um caractere especial no início de um arquivo que indica:
+1. Qual UTF está sendo usado.
+2. Qual a ordem dos bytes (endianness) para UTF-16 e UTF-32.
+
+| BOM (hex) | Formato |
+|-----------|---------|
+| EF BB BF | UTF-8 |
+| FE FF | UTF-16 (Big-endian) |
+| FF FE | UTF-16 (Little-endian) |
+| 00 00 FE FF | UTF-32 (Big-endian) |
+| FF FE 00 00 | UTF-32 (Little-endian) |
+
+### 7.2 Como os sistemas identificam o formato
+
+1. **BOM no início do arquivo:** O sistema lê os primeiros bytes e identifica o formato.
+2. **Meta tags (HTML):** A tag `<meta charset="UTF-8">` indica o formato.
+3. **Cabeçalhos HTTP:** O servidor envia `Content-Type: text/html; charset=UTF-8`.
+4. **Heurística:** O sistema tenta adivinhar baseado nos bytes (ex: se começa com `0xEF 0xBB 0xBF`, é UTF-8).
+
+### 7.3 Exemplo: HTML com UTF-8
+
+```html
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Página em Português</title>
+</head>
+<body>
+    <p>Ação, coração, pão, mês.</p>
+    <p>Emojis: 😊 🚀 ❤️</p>
+</body>
+</html>
+```
+
+**Como funciona:**
+1. O navegador lê o arquivo.
+2. A tag `<meta charset="UTF-8">` indica que o arquivo está em UTF-8.
+3. O navegador decodifica os bytes usando UTF-8.
+4. Mostra "Ação, coração, pão, mês." e os emojis corretamente.
+
+
+## 8. Por Que o UTF-8 Venceu na Web
+
+### 8.1 As razões do sucesso do UTF-8
+
+1. **Compatibilidade com ASCII:** Arquivos ASCII antigos funcionam sem modificação.
+2. **Eficiência:** Inglês usa 1 Byte, europeu usa 1-2 Bytes, asiático usa 3 Bytes.
+3. **Sem endianness:** Funciona em qualquer computador.
+4. **Detecção de erros:** Bytes inválidos são facilmente identificados.
+5. **Padrão da internet:** HTTP, HTML, XML, JSON, e a maioria dos protocolos usam UTF-8.
+6. **Adoção por grandes empresas:** Google, Facebook, Amazon, Microsoft, etc., usam UTF-8.
+
+### 8.2 Estatísticas atuais
+
+| Formato | Uso na web |
+|---------|-----------|
+| **UTF-8** | **99,0%** |
+| UTF-16 | 0,1% |
+| ISO-8859-1 | 0,2% |
+| Outros | 0,7% |
+
+**Fonte:** W3Techs (2024)
+
+
+## 9. Exercícios
+
+<details>
+<summary>📗 Exercício 1 — Identificar o Formato (fácil)</summary>
+
+**Enunciado:** Qual formato de codificação é o padrão da internet?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** UTF-8
+
+**Explicação:** 99% dos sites usam UTF-8 como codificação padrão.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Bytes de A em UTF-8 (fácil)</summary>
+
+**Enunciado:** Quantos Bytes ocupa a letra A em UTF-8?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** 1 Byte
+
+**Explicação:** A é ASCII (U+0041), e o UTF-8 usa 1 Byte para caracteres ASCII (0xxxxxxx).
+
+**Código UTF-8:** 0100 0001 (41 em hexadecimal)
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Bytes de ç em UTF-8 (fácil)</summary>
+
+**Enunciado:** Quantos Bytes ocupa a letra ç em UTF-8?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** 2 Bytes
+
+**Explicação:** ç é U+00E7, que está na faixa U+0080 a U+07FF, usando 2 Bytes no UTF-8.
+
+**Código UTF-8:** 1100 0011 1010 0111 (C3 A7 em hexadecimal)
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Bytes de 😊 em UTF-8 (médio)</summary>
+
+**Enunciado:** Quantos Bytes ocupa o emoji 😊 em UTF-8?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** 4 Bytes
+
+**Explicação:** 😊 é U+1F60A, que está na faixa U+10000 a U+10FFFF, usando 4 Bytes no UTF-8.
+
+**Código UTF-8:** F0 9F 98 8A (4 Bytes)
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Comparação UTF-8 vs UTF-16 (médio)</summary>
+
+**Enunciado:** A palavra "Ação" ocupa quantos Bytes em UTF-8 e quantos em UTF-16?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+- **UTF-8:** 6 Bytes
+- **UTF-16:** 8 Bytes
+
+**Cálculo:**
+- 'A' = 1 Byte (UTF-8) / 2 Bytes (UTF-16)
+- 'ç' = 2 Bytes (UTF-8) / 2 Bytes (UTF-16)
+- 'ã' = 2 Bytes (UTF-8) / 2 Bytes (UTF-16)
+- 'o' = 1 Byte (UTF-8) / 2 Bytes (UTF-16)
+
+**Total:** 6 Bytes (UTF-8) vs 8 Bytes (UTF-16)
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Comparação UTF-8 vs UTF-16 (chinês) (médio)</summary>
+
+**Enunciado:** A palavra "中国" (China) ocupa quantos Bytes em UTF-8 e quantos em UTF-16?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+- **UTF-8:** 6 Bytes
+- **UTF-16:** 4 Bytes
+
+**Cálculo:**
+- '中' (U+4E2D) = 3 Bytes (UTF-8) / 2 Bytes (UTF-16)
+- '国' (U+56FD) = 3 Bytes (UTF-8) / 2 Bytes (UTF-16)
+
+**Total:** 6 Bytes (UTF-8) vs 4 Bytes (UTF-16)
+
+**Conclusão:** Para textos asiáticos, UTF-16 pode ser mais eficiente que UTF-8.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — BOM e Endianness (conceitual)</summary>
+
+**Enunciado:** Por que o UTF-8 não precisa de BOM (Byte Order Mark)?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Porque o UTF-8 não tem problema de *endianness* (ordem dos bytes).
+
+**Explicação:** No UTF-8, cada caractere é uma sequência de bytes onde a ordem é fixa (do byte mais significativo para o menos significativo). Não há ambiguidade sobre qual byte vem primeiro.
+
+No UTF-16 e UTF-32, a ordem dos bytes pode ser little-endian ou big-endian, e o BOM é necessário para indicar qual está sendo usado.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — Qual formato escolher? (desafio)</summary>
+
+**Enunciado:** Você está criando um sistema que precisa armazenar textos em:
+- a) **Inglês** (maioria dos textos)
+- b) **Português** (com acentos e 'ç')
+- c) **Chinês** (textos em mandarim)
+- d) **Emojis** (mensagens com muitos emojis)
+
+Qual formato (UTF-8 ou UTF-16) seria mais eficiente em cada caso?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+| Caso | Formato mais eficiente | Justificativa |
+|------|----------------------|---------------|
+| **a) Inglês** | **UTF-8** | 1 Byte por caractere (vs 2 Bytes no UTF-16) |
+| **b) Português** | **UTF-8** | 1-2 Bytes por caractere (vs 2 Bytes no UTF-16) |
+| **c) Chinês** | **UTF-16** | 2 Bytes por caractere (vs 3 Bytes no UTF-8) |
+| **d) Emojis** | **Empate** | Ambos usam 4 Bytes para emojis |
+
+**Conclusão:** UTF-8 é melhor para idiomas ocidentais. UTF-16 é melhor para idiomas asiáticos. Para emojis, ambos são iguais.
+
+</details>
+</details>
+
+
+## 10. Glossário Final
+
+| Termo | Definição |
+|-------|-----------|
+| **UTF-8** | Formato de codificação que usa 1-4 Bytes por caractere. Padrão da web. |
+| **UTF-16** | Formato de codificação que usa 2-4 Bytes por caractere. Usado pelo Windows/Java. |
+| **UTF-32** | Formato de codificação que usa 4 Bytes fixos por caractere. Raramente usado. |
+| **BOM** | Byte Order Mark — indica o formato e a ordem dos bytes. |
+| **Endianness** | Ordem dos bytes em sistemas (little-endian vs big-endian). |
+| **Surrogate Pair** | Par de 2 bytes usado no UTF-16 para representar caracteres complementares. |
+| **Codificação** | Processo de converter caracteres em bytes. |
+| **Decodificação** | Processo de converter bytes em caracteres. |
+<br>
+
+
+> **"UTF-8, UTF-16 e UTF-32 são os formatos de codificação que traduzem os pontos de código Unicode em bytes armazenáveis. O UTF-8 é o padrão da internet (99% dos sites), usando 1-4 Bytes por caractere e sendo compatível com ASCII. O UTF-16 é usado pelo Windows e Java, usando 2-4 Bytes. O UTF-32 usa 4 Bytes fixos, mas é raramente usado por sua ineficiência. Cada formato tem suas vantagens: UTF-8 é eficiente para inglês e europeu, UTF-16 é eficiente para asiático, e UTF-32 é simples mas ineficiente. O UTF-8 venceu na web por sua compatibilidade com ASCII, eficiência, e ausência de problemas de endianness."**

@@ -1,0 +1,458 @@
+# TIPOS DE DADOS
+
+## 1. INTRODUÇÃO
+
+Na aula anterior, estudamos as unidades de medida — como medimos a quantidade de informação em bits, bytes e seus múltiplos. Vimos que um byte pode representar 256 valores diferentes, mas não especificamos **o que** esses valores significam.<br><br>
+
+Um byte pode ser um número inteiro, uma letra, um valor lógico (verdadeiro/falso), ou parte de um número maior. A interpretação depende do **tipo de dado**. O tipo de dado define:
+
+1. **Quantos bytes** são usados para armazenar o dado.
+2. **Como os bits são interpretados** (ex: com ou sem sinal, inteiro ou ponto flutuante).
+3. **Quais operações** podem ser realizadas com esse dado.<br><br>
+
+Imagine que você está em uma loja de ferragens. Você vê uma caixa com vários objetos. Se a caixa estiver rotulada "Parafusos", você sabe que são parafusos — mesmo antes de abrir. Se estiver rotulada "Porcas", você sabe que são porcas. O rótulo (tipo de dado) diz ao computador como interpretar os bits (objetos) na memória.<br><br>
+
+Nesta aula, vamos estudar os tipos de dados: os primitivos (int, float, bool, char) e os compostos (arrays, structs, classes). Vamos entender como eles são armazenados na memória, como são interpretados e como são usados em programação.
+
+## 2. TIPOS DE DADOS PRIMITIVOS
+
+### 2.1 Definição
+
+> "Tipos de dados primitivos são os tipos fundamentais fornecidos por uma linguagem de programação, que representam valores simples e indivisíveis, como números inteiros, números de ponto flutuante, caracteres e valores booleanos."
+
+### 2.2 Os principais tipos primitivos
+
+| Tipo | Descrição | Tamanho típico | Exemplo |
+|---------|---------|---------|---------|
+| **int** | Número inteiro (com sinal) | 4 bytes (32 bits) | 42, -15, 0 |
+| **unsigned int** | Número inteiro (sem sinal) | 4 bytes (32 bits) | 0, 42, 65535 |
+| **float** | Número de ponto flutuante (precisão simples) | 4 bytes (32 bits) | 3.14, -2.5, 1.0e-3 |
+| **double** | Número de ponto flutuante (precisão dupla) | 8 bytes (64 bits) | 3.1415926535, -2.5e-10 |
+| **char** | Caractere (ASCII/Unicode) | 1 byte (8 bits) | 'A', '7', '\n' |
+| **bool** | Valor lógico (verdadeiro/falso) | 1 byte (8 bits) | true, false |
+
+### 2.3 int — Números inteiros
+
+**Representação:** Complemento de 2 (com sinal) ou binário puro (sem sinal).
+
+| Tamanho | Com sinal | Sem sinal |
+|---------|---------|---------|
+| **8 bits** | -128 a 127 | 0 a 255 |
+| **16 bits** | -32.768 a 32.767 | 0 a 65.535 |
+| **32 bits** | -2.147.483.648 a 2.147.483.647 | 0 a 4.294.967.295 |
+| **64 bits** | -9.22e18 a 9.22e18 | 0 a 1.84e19 |
+
+**Exemplo (8 bits):**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+Representação de -5 em complemento de 2:
+1. 5 em binário: 0000 0101
+2. Inverter: 1111 1010
+3. Somar 1: 1111 1011 → -5 ✅
+</pre>
+
+### 2.4 float — Números de ponto flutuante
+
+**Representação:** IEEE 754 (padrão internacional).
+
+**Estrutura de um float (32 bits):**
+
+<details>
+<summary> **Estrutura de um float (IEEE 754)**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+┌─────┬─────────────────────────┬───────────────────────────┐
+│ S   │   Expoente (8 bits)     │   Mantissa (23 bits)      │
+│ 1   │   E (8 bits)            │   M (23 bits)             │
+└─────┴─────────────────────────┴───────────────────────────┘
+
+Valor = (-1)^S × (1 + M/2^23) × 2^(E - 127)
+    </pre>
+</details>
+
+**Exemplo: 3.14 em float (aproximadamente)**
+- Sinal: 0 (positivo)
+- Expoente: 128 (E - 127 = 1 → 2¹)
+- Mantissa: 0.57 (aprox.)
+- Valor: 1.57 × 2 = 3.14
+
+### 2.5 char — Caracteres
+
+**Representação:** ASCII (7 bits) ou Unicode (16-32 bits).
+
+| Tipo | Tamanho | Representação |
+|---------|---------|---------|
+| **char** | 1 byte | ASCII (0-127) |
+| **wchar_t** | 2 bytes | Unicode (UCS-2) |
+| **char32_t** | 4 bytes | Unicode (UTF-32) |
+
+**Exemplo ASCII:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+'A' = 65 = 0100 0001
+'a' = 97 = 0110 0001
+'0' = 48 = 0011 0000
+'\n' = 10 = 0000 1010 (nova linha)
+</pre>
+
+### 2.6 bool — Valores lógicos
+
+**Representação:** 0 = false, 1 = true (ou qualquer valor diferente de 0).
+
+| Valor | Representação em bits |
+|---------|---------|
+| **false** | 0 (0000 0000) |
+| **true** | 1 (0000 0001) |
+
+## 3. TIPOS DE DADOS COMPOSTOS
+
+### 3.1 Definição
+
+> "Tipos de dados compostos são tipos que agrupam múltiplos valores (primitivos ou outros compostos) em uma única estrutura, permitindo organizar dados complexos de forma coerente."
+
+### 3.2 Array — Conjunto ordenado
+
+**Definição:** Um array é uma coleção de elementos do **mesmo tipo**, armazenados em posições contíguas de memória.
+
+**Estrutura:**
+
+<details>
+<summary> **Array na memória**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+Array de 5 inteiros (cada int = 4 bytes):
+
+Endereço:  0x1000  0x1004  0x1008  0x100C  0x1010
+           ┌───────┬───────┬───────┬───────┬───────┐
+           │  42   │  15   │  30   │   7   │  99   │
+           └───────┴───────┴───────┴───────┴───────┘
+           Índice:   0       1       2       3       4
+    </pre>
+</details>
+
+**Acesso:** `array[0]` = 42, `array[1]` = 15, etc.
+
+**Tamanho em bytes:** `número de elementos × tamanho de cada elemento`
+
+**Exemplo:** `int array[5]` = 5 × 4 = 20 bytes
+
+### 3.3 Struct — Conjunto heterogêneo
+
+**Definição:** Uma struct (ou registro) é uma coleção de campos de **tipos diferentes**, agrupados em uma única estrutura.
+
+**Exemplo em C:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+struct Pessoa {
+    char nome[20];   // 20 bytes
+    int idade;       // 4 bytes
+    float altura;    // 4 bytes
+};
+</pre>
+
+**Memória:**
+
+<details>
+<summary> **Struct na memória**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+Endereço:  0x2000  0x2004  0x2008  0x200C  ...  0x2014
+           ┌───────┬───────┬───────┬───────┬───────┐
+           │ nome[0]│ nome[1]│ ...  │ idade │altura │
+           │  ...  │  ...  │  ...  │ (4B)  │ (4B)  │
+           └───────┴───────┴───────┴───────┴───────┘
+           offset:  0       1       ...     20      24
+    </pre>
+</details>
+
+**Acesso:** `pessoa.idade`, `pessoa.altura`, etc.
+
+**Tamanho total:** Soma dos tamanhos de cada campo (mais alinhamento).
+
+### 3.4 Union — Sobposição de dados
+
+**Definição:** Uma union permite que diferentes tipos de dados compartilhem a mesma região de memória.
+
+**Exemplo em C:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+union Dado {
+    int i;    // 4 bytes
+    float f;  // 4 bytes
+    char c;   // 1 byte
+};
+</pre>
+
+**Memória:**
+
+<details>
+<summary> **Union na memória**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+Endereço:  0x3000
+           ┌───────────────────────┐
+           │                       │
+           │  int i / float f      │
+           │  (mesma região)       │
+           │                       │
+           │  char c (1 byte)      │
+           └───────────────────────┘
+    </pre>
+</details>
+
+**Uso:** Um único valor, mas interpretado de formas diferentes.
+
+### 3.5 Class — Objeto com comportamento
+
+**Definição:** Uma classe é uma estrutura que agrupa **dados (atributos)** e **comportamento (métodos)** , sendo a base da programação orientada a objetos.
+
+**Exemplo em Python:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+class Pessoa:
+    def __init__(self, nome, idade):
+        self.nome = nome      # atributo
+        self.idade = idade    # atributo
+    
+    def falar(self):          # método
+        print(f"{self.nome} está falando...")
+</pre>
+
+### 3.6 Enum — Conjunto de constantes
+
+**Definição:** Um enum define um conjunto de valores constantes com nomes simbólicos.
+
+**Exemplo em C:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+enum Cor {
+    VERMELHO,  // 0
+    VERDE,     // 1
+    AZUL       // 2
+};
+</pre>
+
+## 4. TAMANHO DOS TIPOS NA MEMÓRIA
+
+### 4.1 Tabela comparativa (C/C++)
+
+| Tipo | Tamanho (bytes) | Windows 64-bit | Linux 64-bit |
+|---------|---------|---------|---------|
+| `char` | 1 | 1 | 1 |
+| `bool` | 1 | 1 | 1 |
+| `short` | 2 | 2 | 2 |
+| `int` | 4 | 4 | 4 |
+| `long` | 4 (Windows) / 8 (Linux) | 4 | 8 |
+| `long long` | 8 | 8 | 8 |
+| `float` | 4 | 4 | 4 |
+| `double` | 8 | 8 | 8 |
+| `pointer` | 8 (64-bit) | 8 | 8 |
+
+### 4.2 Tabela comparativa (Python)
+
+| Tipo | Tamanho aproximado | Observação |
+|---------|---------|---------|
+| `int` | 28 bytes | Arbitrário (não fixo) |
+| `float` | 24 bytes | Double precisão |
+| `bool` | 28 bytes | Herda de int |
+| `str` | 49 + 1 byte por caractere | Unicode UTF-8 |
+| `list` | 56 + 8 bytes por elemento | Referências |
+| `tuple` | 40 + 8 bytes por elemento | Imutável |
+| `dict` | ~72 bytes por entrada | Tabela hash |
+
+## 5. ALINHAMENTO E PADDING
+
+### 5.1 O que é alinhamento?
+
+Para eficiência, os processadores acessam memória em palavras (4 ou 8 bytes). Dados desalinhados podem causar penalidades de desempenho.
+
+### 5.2 Exemplo: Struct com padding
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+struct Exemplo1 {
+    char a;     // 1 byte
+    int b;      // 4 bytes
+    char c;     // 1 byte
+};
+</pre>
+
+**Sem padding (suposto):** 1 + 4 + 1 = 6 bytes
+**Com padding (real):** 12 bytes (padding de 3 bytes após a, 3 bytes após c)
+
+**Por que?** O campo `int` precisa estar alinhado a 4 bytes.
+
+### 5.3 Organização para minimizar padding
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+struct Exemplo2 {
+    int b;      // 4 bytes
+    char a;     // 1 byte
+    char c;     // 1 byte
+};              // 8 bytes (menos padding!)
+</pre>
+
+**Regra:** Colocar campos maiores primeiro para minimizar padding.
+
+## 6. APLICAÇÕES REAIS
+
+| Contexto | Tipos de dados usados |
+|---------|----------|
+| **Jogos** | float (posições), int (pontuação), bool (estados), structs (personagens) |
+| **Banco de dados** | int (IDs), float (valores), char (texto), boolean (flags) |
+| **Machine Learning** | float/double (pesos), int (índices), arrays (matrizes) |
+| **Sistemas operacionais** | int (descritores), void* (ponteiros), structs (processos, arquivos) |
+| **Aplicações web** | str (texto), bool (autenticação), dict (JSON), list (itens) |
+
+## 7. EXERCÍCIOS
+
+<details>
+<summary>📗 Exercício 1 — Tipos primitivos (Fácil)</summary>
+
+**Enunciado:** Quais são os cinco tipos de dados primitivos mais comuns?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** int, float, double, char, bool
+
+**Explicação:** Esses são os tipos fundamentais que representam valores simples e indivisíveis.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Tamanho de tipos (Fácil)</summary>
+
+**Enunciado:** Quantos bytes ocupa um int em C/C++ (na maioria das arquiteturas modernas)?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** 4 bytes (32 bits)
+
+**Explicação:** A maioria das arquiteturas modernas usa 4 bytes para int (32 bits).
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Array (Médio)</summary>
+
+**Enunciado:** Um array de 10 floats ocupa quantos bytes? (float = 4 bytes)
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** 10 × 4 = 40 bytes
+
+**Explicação:** O tamanho do array é o número de elementos vezes o tamanho de cada elemento.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Struct e padding (Médio)</summary>
+
+**Enunciado:** Estime o tamanho em bytes da seguinte struct em C:
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+struct Dados {
+    char a;    // 1 byte
+    int b;     // 4 bytes
+    short c;   // 2 bytes
+};
+</pre>
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Aproximadamente 12 bytes (com padding)
+
+**Explicação:**
+- a: 1 byte + 3 bytes de padding (para alinhar b)
+- b: 4 bytes
+- c: 2 bytes + 2 bytes de padding (para alinhar a estrutura)
+
+Total: 1 + 3 + 4 + 2 + 2 = 12 bytes
+
+**Observação:** O tamanho exato depende da arquitetura e do compilador.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Struct reorganizada (Médio)</summary>
+
+**Enunciado:** Reorganize a struct do exercício anterior para minimizar o padding.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+struct Dados {
+    int b;     // 4 bytes
+    short c;   // 2 bytes
+    char a;    // 1 byte
+};
+</pre>
+
+**Tamanho:** 4 + 2 + 1 + 1 (padding) = 8 bytes
+
+**Explicação:** Colocar campos maiores primeiro minimiza o padding.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Union (Difícil)</summary>
+
+**Enunciado:** Qual a diferença entre struct e union em C/C++?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+- **Struct:** Cada campo tem sua própria região de memória. Todos os campos existem simultaneamente.
+- **Union:** Todos os campos compartilham a mesma região de memória. Apenas um campo pode ser usado por vez.
+
+**Exemplo:** Uma union pode interpretar os mesmos bytes como um int, float ou char.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — Tipos em Python (Difícil)</summary>
+
+**Enunciado:** Por que um int em Python ocupa ~28 bytes, enquanto em C ocupa 4 bytes?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Python é uma linguagem de alto nível com objetos.
+
+**Razões:**
+1. **Objeto:** O int em Python é um objeto com metadados (tipo, contagem de referência, etc.).
+2. **Arbitrário:** O int em Python pode representar números de qualquer tamanho (big integers).
+3. **Flexibilidade:** A estrutura do objeto permite recursos como herança e métodos.
+
+**Explicação:** A simplicidade e flexibilidade de Python têm um custo em memória.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — Escolhendo o tipo certo (Desafio)</summary>
+
+**Enunciado:** Você está projetando um sistema para armazenar a temperatura de milhões de sensores. Os valores variam entre -50°C e 50°C, com precisão de 0.1°C. Que tipo de dado você escolheria e por quê?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** `short` (2 bytes) ou `int` (4 bytes) com escala.
+
+**Razões:**
+1. **Float:** Precisão desnecessária (0.1°C é suficiente) e custo de memória maior.
+2. **Double:** Muito mais memória que o necessário.
+3. **int/short:** Pode armazenar o valor multiplicado por 10 (-500 a 500).
+
+**Exemplo:**
+- Temperatura real: 23.4°C
+- Valor armazenado: 234 (inteiro)
+- Escala: dividir por 10 para obter o valor real
+
+**Cálculo:** -50°C a 50°C com 0.1°C de precisão → 1000 valores possíveis → 10 bits são suficientes (1024 valores). `short` (16 bits) é mais que suficiente.
+
+**Conclusão:** Usar `short` e armazenar o valor multiplicado por 10.
+</details>
+</details>
+
+> Tipos de dados são a gramática da memória — eles definem como os bits são interpretados e como os dados são organizados. Primitivos como int, float, bool e char são os blocos fundamentais. Compostos como arrays, structs, unions e classes são as estruturas que organizam esses blocos em padrões complexos, refletindo a complexidade do mundo real. Entender os tipos de dados é essencial para qualquer programador. Eles determinam como a memória é usada, como os dados são interpretados e quais operações são possíveis. Escolher o tipo certo para cada situação é uma arte que combina conhecimento de hardware, requisitos de aplicação e boas práticas de programação.

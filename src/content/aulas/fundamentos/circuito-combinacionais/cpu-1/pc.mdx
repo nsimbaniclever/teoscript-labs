@@ -1,0 +1,443 @@
+# Contador de Programa (PC)
+
+## 1. Introdução
+
+Nas aulas anteriores, exploramos o **Registrador de Instrução (IR)** — o componente que guarda a instrução atual. Vimos como ele segura a instrução enquanto a Unidade de Controle a decodifica e a executa.<br><br>
+
+Mas há uma pergunta fundamental: como a CPU sabe **onde** buscar a próxima instrução? O IR guarda a instrução atual, mas como a CPU encontra a próxima?<br><br>
+
+A resposta está no **Contador de Programa** (PC, do inglês *Program Counter*) — talvez o registrador mais importante de toda a CPU. O PC não é apenas um registrador; ele é o **ponteiro que guia a execução do programa**.<br><br>
+
+Pense no PC como o **dedo de um leitor** em um livro:
+
+- O leitor está lendo uma página (a instrução no IR).
+- O dedo do leitor marca a **próxima** página a ser lida (o PC).
+- Quando o leitor vira a página, o dedo avança (PC = PC + 1).
+- Se o leitor pula para outro capítulo, o dedo se move para a nova página (JMP).
+
+O PC é o componente que mantém o fluxo do programa. Ele é incrementado a cada instrução, mas pode ser modificado por instruções de salto, loops e chamadas de função. Sem ele, a CPU estaria perdida, sem saber qual instrução executar em seguida.
+
+Nesta aula, vamos explorar o Contador de Programa em detalhes: como ele funciona, como é incrementado, como é alterado por saltos, e qual é seu papel no ciclo de execução.
+
+
+## 2. O Que é o Contador de Programa?
+
+### 2.1 Definição
+
+O **Contador de Programa** (PC), também chamado de **Instruction Pointer** (IP) em arquiteturas x86, é um registrador especial da CPU que:
+
+> **Armazena o endereço da próxima instrução a ser executada.**
+
+### 2.2 Características principais
+
+| Característica | Descrição |
+|----------------|-----------|
+| **Tamanho** | Igual ao barramento de endereços (16, 32, 64 bits) |
+| **Função** | Apontar para a próxima instrução na memória |
+| **Comportamento** | Normalmente incrementado (+1) após cada instrução |
+| **Alteração** | Pode ser modificado por saltos (JMP, CALL, RET) |
+
+### 2.3 Analogia
+
+Pense no PC como o **marcador de página em um livro**:
+
+<details>
+<summary>🔧 Ver Analogia do PC</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 450px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">PC — O MARCADOR DE PÁGINA</div>
+
+  <pre style="color: #93c5fd; font-size: 0.65rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    ┌─────────────────────────────────────────────────────┐
+    │                                                     │
+    │   LIVRO (MEMÓRIA)                                   │
+    │                                                     │
+    │   ┌─────────────────────────────────────────────┐   │
+    │   │  Página 100  │  Instrução 1               │   │
+    │   │  Página 101  │  Instrução 2               │   │
+    │   │  Página 102  │  Instrução 3   ◄─────── PC │   │
+    │   │  Página 103  │  Instrução 4               │   │
+    │   │  Página 104  │  Instrução 5               │   │
+    │   └─────────────────────────────────────────────┘   │
+    │                                                     │
+    │   O PC aponta para a PRÓXIMA página a ser lida.    │
+    │   A página atual (102) está no IR.                 │
+    └─────────────────────────────────────────────────────┘
+  </pre>
+
+</div>
+</details>
+
+### 2.4 Diagrama
+
+<details>
+<summary>🔧 Ver Diagrama do PC</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 500px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">CONTADOR DE PROGRAMA (PC)</div>
+
+  <pre style="color: #93c5fd; font-size: 0.6rem; line-height: 1.6; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    ┌─────────────────────────────────────────────────────────────────┐
+    │                         CPU                                     │
+    │                                                                 │
+    │  ┌─────────────┐    ┌─────────────────────────────────────┐    │
+    │  │   MEMÓRIA   │    │        UNIDADE DE CONTROLE          │    │
+    │  │             │    │                                     │    │
+    │  │  Instrução  │◄───│  ┌─────────────────────────────┐   │    │
+    │  │  em 0x1002  │    │  │            IR              │   │    │
+    │  │             │    │  │    (Instrução atual)        │   │    │
+    │  │             │    │  └─────────────────────────────┘   │    │
+    │  │             │    │                                     │    │
+    │  │             │    │  ┌─────────────────────────────┐   │    │
+    │  │             │───►│  │            PC              │   │    │
+    │  │             │    │  │     (Próximo endereço)      │   │    │
+    │  │             │    │  │        0x1003              │   │    │
+    │  │             │    │  └─────────────────────────────┘   │    │
+    │  └─────────────┘    └─────────────────────────────────────┘    │
+    │                                                                 │
+    └─────────────────────────────────────────────────────────────────┘
+  </pre>
+
+</div>
+</details>
+
+
+## 3. Funcionamento do PC
+
+### 3.1 Comportamento normal: incremento
+
+Na maioria das instruções, o PC se comporta assim:
+
+1. **Busca:** O PC envia o endereço para a memória.
+2. **Leitura:** A memória retorna a instrução para o IR.
+3. **Incremento:** PC = PC + 1 (ou +2, +4, dependendo do tamanho da instrução).
+
+**Exemplo:**
+
+<pre>
+Estado inicial: PC = 0x1000
+
+Ciclo 1:
+- ${\color{white}\text{Busca: Memória[0x1000] → IR}}$
+- ${\color{white}\text{PC = 0x1001}}$
+
+Ciclo 2:
+- ${\color{white}\text{Busca: Memória[0x1001] → IR}}$ 
+- ${\color{white}\text{PC = 0x1002}}$
+
+Ciclo 3:
+- ${\color{white}\text{Busca: Memória[0x1002] → IR}}$ 
+- ${\color{white}\text{PC = 0x1003}}$ 
+</pre>
+
+### 3.2 Como o PC é incrementado?
+
+O incremento depende do tamanho da instrução:
+
+| Tamanho da instrução | Incremento do PC |
+|----------------------|------------------|
+| 1 byte | PC = PC + 1 |
+| 2 bytes | PC = PC + 2 |
+| 4 bytes | PC = PC + 4 |
+| 8 bytes | PC = PC + 8 |
+
+**Exemplo (x86 - tamanho variável):**
+
+<pre>
+Instrução: ADD AL, BL  (2 bytes) → PC = PC + 2
+Instrução: ADD AX, BX  (3 bytes) → PC = PC + 3
+Instrução: ADD EAX, EBX (4 bytes) → PC = PC + 4
+</pre>
+
+### 3.3 O PC e o IR juntos
+
+<details>
+<summary>🔧 Ver Fluxo PC e IR</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 450px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">PC E IR JUNTOS</div>
+
+  <pre style="color: #93c5fd; font-size: 0.65rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    ┌─────────────────────────────────────────────────────┐
+    │                                                     │
+    │   PC = 0x1000                                      │
+    │   IR = 0x0000                                      │
+    │                                                     │
+    │   ▼ BUSCA                                          │
+    │   Memória[0x1000] = 0x8A3B                        │
+    │                                                     │
+    │   IR = 0x8A3B                                      │
+    │   PC = 0x1001 (incrementado)                       │
+    │                                                     │
+    │   ▼ DECODIFICAÇÃO E EXECUÇÃO                       │
+    │   UC decodifica IR = 0x8A3B                        │
+    │   ULA executa a operação                           │
+    │                                                     │
+    │   ▼ PRÓXIMO CICLO                                   │
+    │   PC = 0x1001 (aponta para a próxima instrução)    │
+    │                                                     │
+    └─────────────────────────────────────────────────────┘
+  </pre>
+
+</div>
+</details>
+
+
+## 4. Modificação do PC (Saltos)
+
+### 4.1 Salto incondicional (JMP)
+
+**Instrução:** `JMP 0x2000`
+
+**O que acontece:**
+1. A instrução é buscada e armazenada no IR.
+2. A UC decodifica: opcode = JMP, operando = 0x2000.
+3. A UC **substitui** o valor do PC por 0x2000.
+
+<pre>
+Antes: PC = 0x1000
+JMP 0x2000
+Depois: PC = 0x2000
+</pre>
+
+### 4.2 Salto condicional (JE, JZ, etc.)
+
+**Instrução:** `JE 0x2000` (Jump if Equal)
+
+**O que acontece:**
+1. A instrução é buscada e armazenada no IR.
+2. A UC verifica a flag Z (Zero) da ULA.
+3. Se Z = 1: PC = 0x2000
+4. Se Z = 0: PC = PC + 1 (próxima instrução)
+
+<pre>
+Antes: PC = 0x1000, Z = 1 (A = B)
+JE 0x2000
+Depois: PC = 0x2000 (salta!)
+
+Antes: PC = 0x1000, Z = 0 (A ≠ B)
+JE 0x2000
+Depois: PC = 0x1001 (não salta)
+</pre>
+
+### 4.3 Chamada de função (CALL)
+
+**Instrução:** `CALL 0x3000`
+
+**O que acontece:**
+1. A instrução é buscada e armazenada no IR.
+2. A UC **salva** o PC atual (endereço de retorno) na pilha.
+3. A UC **carrega** o endereço de destino no PC.
+
+<pre>
+Antes: PC = 0x1000, Pilha = [...]
+CALL 0x3000
+Depois: PC = 0x3000, Pilha = [0x1001, ...]
+</pre>
+
+### 4.4 Retorno de função (RET)
+
+**Instrução:** `RET`
+
+**O que acontece:**
+1. A instrução é buscada e armazenada no IR.
+2. A UC **recupera** o endereço da pilha.
+3. A UC **carrega** o endereço no PC.
+
+<pre>
+Antes: PC = 0x3000, Pilha = [0x1001, ...]
+RET
+Depois: PC = 0x1001, Pilha = [...]
+</pre>
+
+
+## 5. PC na Hierarquia da CPU
+
+### 5.1 Os registradores da CPU
+
+| Registrador | Sigla | Função |
+|-------------|-------|--------|
+| **Contador de Programa** | PC | Endereço da **próxima** instrução |
+| **Registrador de Instrução** | IR | Instrução **atual** |
+| **Registrador de Endereço de Memória** | MAR | Endereço para a memória |
+| **Registrador de Buffer de Memória** | MBR | Dados lidos/escritos na memória |
+| **Registradores de Uso Geral** | R0-Rn | Dados temporários |
+
+### 5.2 Fluxo completo
+
+<details>
+<summary>🔧 Ver Fluxo Completo da CPU</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 400px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">FLUXO COMPLETO DA CPU</div>
+
+  <pre style="color: #93c5fd; font-size: 0.65rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    ┌─────────────────────────────────────────────────────────────┐
+    │                                                             │
+    │  1. PC → MAR (envia endereço para a memória)               │
+    │                                                             │
+    │  2. Memória → MBR (dados lidos)                            │
+    │                                                             │
+    │  3. MBR → IR (instrução armazenada)                        │
+    │                                                             │
+    │  4. PC = PC + tamanho da instrução (incremento)            │
+    │                                                             │
+    │  5. IR → UC (decodificação)                                 │
+    │                                                             │
+    │  6. UC → Sinais de controle (execução)                     │
+    │                                                             │
+    └─────────────────────────────────────────────────────────────┘
+  </pre>
+
+</div>
+</details>
+
+
+## 6. Exemplo de Execução
+
+### 6.1 Programa simples
+
+<pre>
+Endereço | Instrução
+---------|-----------
+0x1000   | ADD R0, R1, R2    (R0 = R1 + R2)
+0x1001   | SUB R3, R0, R1    (R3 = R0 - R1)
+0x1002   | JMP 0x1000        (loop)
+</pre>
+
+### 6.2 Rastreamento do PC
+
+| Ciclo | PC antes | Instrução | PC depois |
+|-------|----------|-----------|-----------|
+| 1 | 0x1000 | ADD R0, R1, R2 | 0x1001 |
+| 2 | 0x1001 | SUB R3, R0, R1 | 0x1002 |
+| 3 | 0x1002 | JMP 0x1000 | 0x1000 |
+| 4 | 0x1000 | ADD R0, R1, R2 | 0x1001 |
+| 5 | 0x1001 | SUB R3, R0, R1 | 0x1002 |
+| ... | ... | ... | ... |
+
+
+## 7. Exercícios
+
+<details>
+<summary>📗 Exercício 1 — Definição (fácil)</summary>
+
+**Enunciado:** O que é o Contador de Programa (PC)?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** O PC é um registrador que armazena o endereço da próxima instrução a ser executada pela CPU.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Função (fácil)</summary>
+
+**Enunciado:** Qual é a função do PC durante o ciclo de instrução?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** O PC fornece o endereço da próxima instrução para a memória durante a etapa de busca. Após a busca, o PC é incrementado para apontar para a instrução seguinte.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — PC vs IR (médio)</summary>
+
+**Enunciado:** Qual a diferença entre o PC e o IR?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** O PC aponta para a **próxima** instrução a ser executada (endereço). O IR armazena a **instrução atual** que está sendo executada.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Incremento do PC (médio)</summary>
+
+**Enunciado:** Se o PC = 0x1000 e a instrução tem 4 bytes, qual será o novo valor do PC após a busca?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** PC = 0x1004
+
+**Explicação:** PC = PC + tamanho da instrução = 0x1000 + 4 = 0x1004.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Salto incondicional (médio)</summary>
+
+**Enunciado:** O que acontece com o PC durante uma instrução JMP 0x2000?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** O PC é **substituído** pelo endereço de destino (0x2000), em vez de ser incrementado normalmente.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Salto condicional (médio)</summary>
+
+**Enunciado:** Como o PC é afetado por uma instrução JE (Jump if Equal) se a flag Z = 1?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Se Z = 1, o PC recebe o endereço de destino do salto. Se Z = 0, o PC é incrementado normalmente (próxima instrução).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — CALL e RET (desafio)</summary>
+
+**Enunciado:** Descreva o que acontece com o PC durante uma instrução CALL e depois durante um RET.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** 
+- **CALL:** O PC atual (endereço de retorno) é salvo na pilha. Depois, o PC recebe o endereço de destino da função.
+- **RET:** O PC recupera o endereço de retorno da pilha, voltando a apontar para a instrução seguinte ao CALL.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — Fluxo do programa (desafio)</summary>
+
+**Enunciado:** Um programa tem instruções em 0x1000, 0x1001, 0x1002, 0x1003. O PC começa em 0x1000 e a instrução em 0x1002 é um JMP 0x1001. Qual é a sequência de valores do PC?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** 0x1000 → 0x1001 → 0x1002 → 0x1001 → 0x1002 → 0x1001 → ...
+
+**Explicação:**
+- Ciclo 1: PC = 0x1000 (executa instrução 0x1000) → PC = 0x1001
+- Ciclo 2: PC = 0x1001 (executa instrução 0x1001) → PC = 0x1002
+- Ciclo 3: PC = 0x1002 (executa JMP 0x1001) → PC = 0x1001
+- Ciclo 4: PC = 0x1001 (executa instrução 0x1001) → PC = 0x1002
+- Ciclo 5: PC = 0x1002 (executa JMP 0x1001) → PC = 0x1001
+- ... (loop infinito)
+
+</details>
+</details>
+
+
+> **"O Contador de Programa (PC) é o ponteiro que guia a execução do programa — ele armazena o endereço da próxima instrução a ser executada. Normalmente, o PC é incrementado após cada instrução (PC = PC + tamanho da instrução), garantindo que as instruções sejam executadas em sequência. Mas instruções de salto (JMP, JE, CALL, RET) podem modificar o PC, alterando o fluxo do programa. O PC trabalha em conjunto com o IR: enquanto o IR guarda a instrução atual, o PC aponta para a próxima. Sem o PC, a CPU não saberia qual instrução executar em seguida, e o programa não teria fluxo."**

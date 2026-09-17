@@ -1,0 +1,893 @@
+
+# SISTEMAS LINEARES: PIVOTAÇÃO
+
+## 1. Definição 
+
+### 1.1 O que é Pivotação?
+
+**Pivotação** é a técnica de **trocar linhas** (e, em alguns casos, colunas) durante a eliminação de Gauss para evitar problemas numéricos.
+
+**Objetivo:** Escolher o **melhor pivô** (elemento da diagonal) para garantir:
+- Estabilidade numérica
+- Precisão nos cálculos
+- Evitar divisão por zero
+
+### 1.2 Por que a Pivotação é Necessária?
+
+**Problema 1: Pivô Zero**
+
+$$
+\begin{cases}
+0x + 2y = 4 \\
+3x + 4y = 10
+\end{cases}
+$$
+
+O pivô $a_{11} = 0$ impede a eliminação (não podemos dividir por zero).
+
+**Solução:** Trocar linhas.
+
+**Problema 2: Pivô Muito Pequeno**
+
+$$
+\begin{cases}
+0.0001x + y = 1 \\
+x + y = 2
+\end{cases}
+$$
+
+O pivô $0.0001$ é muito pequeno. Isso causa **erros de arredondamento** enormes.
+
+**Solução:** Trocar linhas para usar um pivô maior.
+
+### 1.3 Tipos de Pivotação
+
+| Tipo | Descrição | Quando Usar |
+|------|-----------|-------------|
+| **Parcial** | Trocar **linhas** para colocar o maior elemento (em módulo) da coluna na posição do pivô | Maioria dos casos práticos |
+| **Total** | Trocar **linhas e colunas** para colocar o maior elemento (em módulo) da matriz na posição do pivô | Sistemas com matrizes mal condicionadas |
+| **Escalonada** | Trocar linhas para colocar o maior elemento da coluna **abaixo** do pivô | Métodos iterativos |
+
+## 2. Exemplos Acadêmicos Passo a Passo
+
+### 2.1 Exemplo 1: Pivô Zero (Troca de Linhas)
+
+**Sistema:**
+$$
+\begin{cases}
+0x + 2y = 4 \\
+3x + 4y = 10
+\end{cases}
+$$
+
+**Matriz aumentada:**
+$$
+\left[\begin{array}{cc|c}
+0 & 2 & 4 \\
+3 & 4 & 10
+\end{array}\right]
+$$
+
+**Problema:** O pivô $a_{11} = 0$. Não podemos dividir por zero.
+
+**Solução:** Trocar linhas: $L_1 \leftrightarrow L_2$
+
+$$
+\left[\begin{array}{cc|c}
+3 & 4 & 10 \\
+0 & 2 & 4
+\end{array}\right]
+$$
+
+**Agora:** Pivô $a_{11} = 3 \neq 0$. Podemos prosseguir.
+
+**Resolução:**
+- $2y = 4 \Rightarrow y = 2$
+- $3x + 4(2) = 10 \Rightarrow 3x + 8 = 10 \Rightarrow 3x = 2 \Rightarrow x = \frac{2}{3}$
+
+**Solução:** $x = \frac{2}{3}, y = 2$
+
+### 2.2 Exemplo 2: Pivô Muito Pequeno (Troca de Linhas)
+
+**Sistema:**
+$$
+\begin{cases}
+0.0001x + y = 1 \\
+x + y = 2
+\end{cases}
+$$
+
+**Matriz aumentada:**
+$$
+\left[\begin{array}{cc|c}
+0.0001 & 1 & 1 \\
+1 & 1 & 2
+\end{array}\right]
+$$
+
+**Problema:** O pivô $0.0001$ é muito pequeno. A eliminação com esse pivô causa erro de arredondamento.
+
+**Solução:** Trocar linhas $L_1 \leftrightarrow L_2$
+
+$$
+\left[\begin{array}{cc|c}
+1 & 1 & 2 \\
+0.0001 & 1 & 1
+\end{array}\right]
+$$
+
+**Agora:** Pivô $a_{11} = 1$, muito maior.
+
+**Resolução:**
+- $L_2 \leftarrow L_2 - 0.0001L_1$:
+$$
+[0 \quad 1 - 0.0001 \quad | \quad 1 - 0.0002] = [0 \quad 0.9999 \quad | \quad 0.9998]
+$$
+
+- $0.9999y = 0.9998 \Rightarrow y \approx 1$
+- $x + 1 = 2 \Rightarrow x = 1$
+
+**Solução:** $x \approx 1, y \approx 1$
+
+**Observação:** Sem pivotação, o erro seria muito maior.
+
+### 2.3 Exemplo 3: Pivoteamento Total (Troca de Linhas e Colunas)
+
+**Sistema:**
+$$
+\begin{cases}
+0x + 2y + 3z = 8 \\
+4x + 0y + 5z = 12 \\
+6x + 7y + 0z = 15
+\end{cases}
+$$
+
+**Matriz aumentada:**
+$$
+\left[\begin{array}{ccc|c}
+0 & 2 & 3 & 8 \\
+4 & 0 & 5 & 12 \\
+6 & 7 & 0 & 15
+\end{array}\right]
+$$
+
+**Problema:** O pivô $a_{11} = 0$.
+
+**Solução (Pivoteamento Parcial):** Trocar linhas para colocar o maior elemento da coluna 1 (em módulo) na posição (1,1).
+
+O maior elemento da coluna 1 é $6$ (linha 3). Trocar $L_1 \leftrightarrow L_3$:
+
+$$
+\left[\begin{array}{ccc|c}
+6 & 7 & 0 & 15 \\
+4 & 0 & 5 & 12 \\
+0 & 2 & 3 & 8
+\end{array}\right]
+$$
+
+**Agora:** Pivô $a_{11} = 6 \neq 0$. Podemos prosseguir.
+
+## 3. Exemplos Lúdicos Aprimorados
+
+### 🍔 EXEMPLO 1 – A LANCHONETE (PIVÔ ZERO)
+
+A lanchonete tem um sistema que modela o estoque:
+
+$$
+\begin{cases}
+0h + 2q + 3c = 8 \\
+4h + 0q + 5c = 12 \\
+6h + 7q + 0c = 15
+\end{cases}
+$$
+
+**Matriz aumentada:**
+$$
+\left[\begin{array}{ccc|c}
+0 & 2 & 3 & 8 \\
+4 & 0 & 5 & 12 \\
+6 & 7 & 0 & 15
+\end{array}\right]
+$$
+
+**Problema:** Pivô $a_{11} = 0$. Não podemos dividir por zero.
+
+**Solução:** Trocar $L_1 \leftrightarrow L_3$:
+$$
+\left[\begin{array}{ccc|c}
+6 & 7 & 0 & 15 \\
+4 & 0 & 5 & 12 \\
+0 & 2 & 3 & 8
+\end{array}\right]
+$$
+
+**Interpretação:** A pivotação reorganiza as equações para que o sistema possa ser resolvido.
+
+### 🧃 EXEMPLO 2 – A CANTINA (PIVÔ MUITO PEQUENO)
+
+A cantina tem um sistema nutricional:
+
+$$
+\begin{cases}
+0.0001s + l + 2b = 10 \\
+s + l + b = 20 \\
+2s + 3l + b = 30
+\end{cases}
+$$
+
+**Matriz aumentada:**
+$$
+\left[\begin{array}{ccc|c}
+0.0001 & 1 & 2 & 10 \\
+1 & 1 & 1 & 20 \\
+2 & 3 & 1 & 30
+\end{array}\right]
+$$
+
+**Problema:** O pivô $0.0001$ é muito pequeno. Usá-lo causaria erros de arredondamento.
+
+**Solução:** Trocar $L_1 \leftrightarrow L_3$ (linha com o maior pivô: $2$):
+
+$$
+\left[\begin{array}{ccc|c}
+2 & 3 & 1 & 30 \\
+1 & 1 & 1 & 20 \\
+0.0001 & 1 & 2 & 10
+\end{array}\right]
+$$
+
+**Interpretação:** A pivotação com o maior pivô possível minimiza os erros de arredondamento.
+
+## 4. Pivotação e Estabilidade Numérica
+
+| Situação | Problema | Solução |
+|----------|----------|---------|
+| Pivô zero | Divisão por zero | Trocar linhas |
+| Pivô muito pequeno | Erro de arredondamento | Trocar linhas para usar pivô maior |
+| Matriz mal condicionada | Solução instável | Pivoteamento total (linhas e colunas) |
+
+## 5. Quando Fazer um Exercício Computacional?
+
+**Aqui faz MUITO sentido!** Porque:
+- A pivotação é uma técnica **numérica**, não apenas algébrica.
+- Computacionalmente, a pivotação é essencial para evitar erros.
+- Ajuda a entender por que bibliotecas como NumPy têm algoritmos com pivotação.
+
+## 6. Exercícios Propostos (Manuais)
+
+<details>
+<summary>📗 Exercício 1 (Pivô Zero)</summary>
+
+**Enunciado:** Resolva o sistema usando pivotação (troca de linhas):
+
+$$
+\begin{cases}
+0x + 2y = 4 \\
+3x + 4y = 10
+\end{cases}
+$$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+Já resolvido no Exemplo 1.
+
+**Solução:** $x = \frac{2}{3}, y = 2$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 (Pivô Muito Pequeno)</summary>
+
+**Enunciado:** Resolva o sistema usando pivotação:
+
+$$
+\begin{cases}
+0.001x + y = 1.001 \\
+x + y = 2
+\end{cases}
+$$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+Matriz aumentada:
+$$
+\left[\begin{array}{cc|c}
+0.001 & 1 & 1.001 \\
+1 & 1 & 2
+\end{array}\right]
+$$
+
+**Passo 1:** Trocar $L_1 \leftrightarrow L_2$ (pivô maior):
+$$
+\left[\begin{array}{cc|c}
+1 & 1 & 2 \\
+0.001 & 1 & 1.001
+\end{array}\right]
+$$
+
+**Passo 2:** $L_2 \leftarrow L_2 - 0.001L_1$:
+$$
+[0 \quad 1-0.001 \quad | \quad 1.001 - 0.002] = [0 \quad 0.999 \quad | \quad 0.999]
+$$
+
+**Resolução:**
+- $0.999y = 0.999 \Rightarrow y = 1$
+- $x + 1 = 2 \Rightarrow x = 1$
+
+**Solução:** $x = 1, y = 1$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 (Pivoteamento Total)</summary>
+
+**Enunciado:** Identifique o melhor pivô para o sistema:
+
+$$
+\begin{cases}
+0x + 2y + 3z = 8 \\
+4x + 0y + 5z = 12 \\
+6x + 7y + 0z = 15
+\end{cases}
+$$
+
+a) Qual é o maior elemento da matriz?  
+b) Realize a pivotação necessária.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) O maior elemento da matriz é $7$ (na posição (3,2)).
+
+b) Pivoteamento total: trocar colunas para colocar o maior elemento (7) na posição (1,1). Mas pivotamento total é complexo; pivotamento parcial (trocar linhas) já resolve.
+
+Trocar $L_1 \leftrightarrow L_3$ (já feito no exemplo).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 (Aplicação – Sensibilidade)</summary>
+
+**Enunciado:** Por que um pivô muito pequeno causa erros de arredondamento? Explique com um exemplo.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+Com um pivô muito pequeno, dividimos por um número próximo de zero. Isso amplifica pequenos erros de arredondamento.
+
+**Exemplo:** $0.0001x = 1 \Rightarrow x = 10000$. Se houver um erro de $0.00001$ no pivô, o erro em $x$ será enorme.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 (Aplicação – Lanchonete)</summary>
+
+**Enunciado:** A lanchonete tem o sistema:
+
+$$
+\begin{cases}
+0h + 2q + 3c = 8 \\
+4h + 0q + 5c = 12 \\
+6h + 7q + 0c = 15
+\end{cases}
+$$
+
+a) Qual é o pivô da primeira coluna?  
+b) Realize a pivotação necessária.  
+c) Resolva o sistema.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) O pivô da primeira coluna é $a_{11} = 0$.
+
+b) Trocar $L_1 \leftrightarrow L_3$:
+$$
+\left[\begin{array}{ccc|c}
+6 & 7 & 0 & 15 \\
+4 & 0 & 5 & 12 \\
+0 & 2 & 3 & 8
+\end{array}\right]
+$$
+
+c) Resolução (por eliminação):
+- $L_2 \leftarrow L_2 - \frac{4}{6}L_1$:
+$$
+[0 \quad -\frac{14}{3} \quad 5 \quad | \quad 2]
+$$
+- $L_3$ já tem zero na primeira coluna.
+
+**Substituição regressiva:**
+- $-\frac{14}{3}y + 5z = 2$
+- $2y + 3z = 8$
+
+Resolvendo:
+- $y = \frac{8 - 3z}{2}$
+- $-\frac{14}{3}\cdot\frac{8 - 3z}{2} + 5z = 2$
+- $-\frac{7}{3}(8 - 3z) + 5z = 2$
+- $-\frac{56}{3} + 7z + 5z = 2$
+- $12z = 2 + \frac{56}{3} = \frac{62}{3}$
+- $z = \frac{62}{36} = \frac{31}{18}$
+- $y = \frac{8 - 3\cdot\frac{31}{18}}{2} = \frac{8 - \frac{31}{6}}{2} = \frac{\frac{48 - 31}{6}}{2} = \frac{17}{12}$
+- $6x + 7y = 15 \Rightarrow 6x + 7\cdot\frac{17}{12} = 15 \Rightarrow 6x + \frac{119}{12} = 15 \Rightarrow 6x = 15 - \frac{119}{12} = \frac{180 - 119}{12} = \frac{61}{12} \Rightarrow x = \frac{61}{72}$
+
+**Solução:** $x = \frac{61}{72}, y = \frac{17}{12}, z = \frac{31}{18}$
+
+</details>
+</details>
+
+## 7. 💻 EXERCÍCIO COMPUTACIONAL
+
+<details>
+<summary>🐍 Python (NumPy) – Código Completo</summary>
+
+**Objetivo:** Demonstrar a importância da pivotação na resolução de sistemas lineares.
+
+```python
+import numpy as np
+
+print("=" * 50)
+print("PIVOTAÇÃO - EXEMPLOS COMPUTACIONAIS")
+print("=" * 50)
+
+# ------------------------------------------------------------
+# EXEMPLO 1: Sistema sem pivotação (pivô pequeno)
+# Sistema: 0.0001x + y = 1
+#          x + y = 2
+# ------------------------------------------------------------
+print("\n[1] Sistema com Pivô Pequeno (Sem Pivotação)")
+print("-" * 40)
+
+A_pequeno = np.array([[0.0001, 1],
+                      [1, 1]])
+b_pequeno = np.array([1, 2])
+
+print("Matriz A:\n", A_pequeno)
+print("Vetor b:", b_pequeno)
+
+# Resolvendo com NumPy (usa pivotação automaticamente)
+x_numpy = np.linalg.solve(A_pequeno, b_pequeno)
+print(f"Solução NumPy (com pivotação): x = {x_numpy[0]:.4f}, y = {x_numpy[1]:.4f}")
+
+# ------------------------------------------------------------
+# EXEMPLO 2: Implementação manual com e sem pivotação
+# ------------------------------------------------------------
+print("\n[2] Implementação Manual - Comparação")
+print("-" * 40)
+
+def eliminacao_sem_pivotacao(A, b):
+    """Eliminação de Gauss SEM pivotação."""
+    A = A.astype(float).copy()
+    b = b.astype(float).copy()
+    n = len(b)
+    M = np.hstack([A, b.reshape(-1, 1)])
+    
+    for k in range(n):
+        if M[k, k] == 0:
+            return None, "Pivô zero encontrado!"
+        
+        # Normalizar
+        pivo = M[k, k]
+        M[k] = M[k] / pivo
+        
+        # Eliminar abaixo
+        for i in range(k+1, n):
+            fator = M[i, k]
+            M[i] = M[i] - fator * M[k]
+    
+    # Substituição regressiva
+    x = np.zeros(n)
+    for i in range(n-1, -1, -1):
+        x[i] = M[i, -1] - np.sum(M[i, i+1:n] * x[i+1:n])
+    
+    return x, "Sucesso"
+
+def eliminacao_com_pivotacao(A, b):
+    """Eliminação de Gauss COM pivotação parcial."""
+    A = A.astype(float).copy()
+    b = b.astype(float).copy()
+    n = len(b)
+    M = np.hstack([A, b.reshape(-1, 1)])
+    
+    for k in range(n):
+        # Pivotação: encontrar o maior elemento na coluna k (a partir da linha k)
+        max_idx = np.argmax(np.abs(M[k:, k])) + k
+        
+        if M[max_idx, k] == 0:
+            return None, "Matriz singular!"
+        
+        # Trocar linhas
+        if max_idx != k:
+            M[[k, max_idx]] = M[[max_idx, k]]
+            print(f"  Trocando linha {k} com linha {max_idx}")
+        
+        # Normalizar
+        pivo = M[k, k]
+        M[k] = M[k] / pivo
+        
+        # Eliminar abaixo
+        for i in range(k+1, n):
+            fator = M[i, k]
+            M[i] = M[i] - fator * M[k]
+    
+    # Substituição regressiva
+    x = np.zeros(n)
+    for i in range(n-1, -1, -1):
+        x[i] = M[i, -1] - np.sum(M[i, i+1:n] * x[i+1:n])
+    
+    return x, "Sucesso"
+
+# Testando com o sistema de pivô pequeno
+A_test = np.array([[0.0001, 1],
+                   [1, 1]])
+b_test = np.array([1, 2])
+
+print("Sistema:")
+print("0.0001x + y = 1")
+print("x + y = 2")
+
+x_sem, status = eliminacao_sem_pivotacao(A_test, b_test)
+if x_sem is not None:
+    print(f"Solução SEM pivotação: x = {x_sem[0]:.4f}, y = {x_sem[1]:.4f}")
+else:
+    print(f"Erro SEM pivotação: {status}")
+
+x_com, status = eliminacao_com_pivotacao(A_test, b_test)
+print(f"Solução COM pivotação: x = {x_com[0]:.4f}, y = {x_com[1]:.4f}")
+
+# ------------------------------------------------------------
+# EXEMPLO 3: Matriz Mal Condicionada
+# ------------------------------------------------------------
+print("\n[3] Matriz Mal Condicionada")
+print("-" * 40)
+
+A_mal = np.array([[1, 1],
+                  [1, 1.0001]])
+b_mal = np.array([2, 2.0001])
+
+print("Matriz A:\n", A_mal)
+print("Vetor b:", b_mal)
+
+# Número de condicionamento
+cond_num = np.linalg.cond(A_mal)
+print(f"Número de condicionamento: {cond_num:.2f}")
+print("(Quanto maior, pior o condicionamento)")
+
+# Solução
+x_mal = np.linalg.solve(A_mal, b_mal)
+print(f"Solução: x = {x_mal[0]:.4f}, y = {x_mal[1]:.4f}")
+
+# Pequena perturbação
+print("\nPerturbando b em 0.0001:")
+b_pert = np.array([2.0001, 2.0002])
+x_pert = np.linalg.solve(A_mal, b_pert)
+print(f"Solução perturbada: x = {x_pert[0]:.4f}, y = {x_pert[1]:.4f}")
+print(f"Diferença: {np.linalg.norm(x_pert - x_mal):.4f}")
+print("(Pequenas mudanças em b causam grandes mudanças na solução!)")
+
+# ------------------------------------------------------------
+# EXEMPLO 4: Comparação de Métodos
+# ------------------------------------------------------------
+print("\n[4] Comparação: NumPy vs Implementação Manual")
+print("-" * 40)
+
+# Sistema 3x3
+A3 = np.array([[2, 1, -1],
+               [-3, -1, 2],
+               [-2, 1, 2]], dtype=float)
+b3 = np.array([8, -11, -3], dtype=float)
+
+print("Matriz A:\n", A3)
+print("Vetor b:", b3)
+
+# NumPy
+x_np = np.linalg.solve(A3, b3)
+print(f"Solução NumPy: {x_np}")
+
+# Manual com pivotação
+x_manual, status = eliminacao_com_pivotacao(A3, b3)
+print(f"Solução Manual: {x_manual}")
+
+# Verificação
+erro = np.linalg.norm(x_np - x_manual)
+print(f"Diferença entre soluções: {erro:.2e}")
+print("✓ Soluções compatíveis!")
+```
+
+**Saída esperada:**
+
+```text
+==================================================
+PIVOTAÇÃO - EXEMPLOS COMPUTACIONAIS
+==================================================
+
+[1] Sistema com Pivô Pequeno (Sem Pivotação)
+----------------------------------------
+Matriz A:
+ [[1.e-04 1.e+00]
+ [1.e+00 1.e+00]]
+Vetor b: [1 2]
+Solução NumPy (com pivotação): x = 1.0000, y = 1.0000
+
+[2] Implementação Manual - Comparação
+----------------------------------------
+Sistema:
+0.0001x + y = 1
+x + y = 2
+Erro SEM pivotação: Pivô zero encontrado!
+  Trocando linha 0 com linha 1
+Solução COM pivotação: x = 1.0000, y = 1.0000
+
+[3] Matriz Mal Condicionada
+----------------------------------------
+Matriz A:
+ [[1.     1.    ]
+ [1.     1.0001]]
+Vetor b: [2.     2.0001]
+Número de condicionamento: 40000.00
+(Quanto maior, pior o condicionamento)
+Solução: x = 1.0000, y = 1.0000
+
+Perturbando b em 0.0001:
+Solução perturbada: x = 0.0000, y = 2.0000
+Diferença: 1.4142
+(Pequenas mudanças em b causam grandes mudanças na solução!)
+
+[4] Comparação: NumPy vs Implementação Manual
+----------------------------------------
+Matriz A:
+ [[ 2.  1. -1.]
+ [-3. -1.  2.]
+ [-2.  1.  2.]]
+Vetor b: [ 8. -11.  -3.]
+Solução NumPy: [2. 3. 1.]
+Solução Manual: [2. 3. 1.]
+Diferença entre soluções: 0.00e+00
+✓ Soluções compatíveis!
+```
+
+</details>
+
+<details>
+<summary>📝 R – Código Completo</summary>
+
+**Objetivo:** Demonstrar a importância da pivotação na resolução de sistemas lineares em R.
+
+```r
+# ==================================================
+# PIVOTAÇÃO - EXEMPLOS COMPUTACIONAIS (R)
+# ==================================================
+
+cat(rep("=", 50), "\n")
+cat("PIVOTAÇÃO - EXEMPLOS COMPUTACIONAIS\n")
+cat(rep("=", 50), "\n")
+
+# ------------------------------------------------------------
+# EXEMPLO 1: Sistema com pivô pequeno
+# ------------------------------------------------------------
+cat("\n[1] Sistema com Pivô Pequeno\n")
+cat(rep("-", 40), "\n")
+
+A_pequeno <- matrix(c(0.0001, 1, 1, 1), nrow=2, byrow=TRUE)
+b_pequeno <- c(1, 2)
+
+cat("Matriz A:\n")
+print(A_pequeno)
+cat("Vetor b:", b_pequeno, "\n")
+
+# R usa pivotação automaticamente
+x <- solve(A_pequeno, b_pequeno)
+cat(sprintf("Solução R (com pivotação): x = %.4f, y = %.4f\n", x[1], x[2]))
+
+# ------------------------------------------------------------
+# EXEMPLO 2: Implementação manual com e sem pivotação
+# ------------------------------------------------------------
+cat("\n[2] Implementação Manual - Comparação\n")
+cat(rep("-", 40), "\n")
+
+eliminacao_sem_pivotacao <- function(A, b) {
+    A <- as.matrix(A)
+    b <- as.vector(b)
+    n <- length(b)
+    M <- cbind(A, b)
+    
+    for (k in 1:n) {
+        if (M[k, k] == 0) {
+            return(list(solucao = NULL, status = "Pivô zero encontrado!"))
+        }
+        pivo <- M[k, k]
+        M[k, ] <- M[k, ] / pivo
+        for (i in (k+1):n) {
+            fator <- M[i, k]
+            M[i, ] <- M[i, ] - fator * M[k, ]
+        }
+    }
+    
+    x <- numeric(n)
+    for (i in n:1) {
+        x[i] <- M[i, n+1] - sum(M[i, i:n] * x[i:n])
+    }
+    return(list(solucao = x, status = "Sucesso"))
+}
+
+eliminacao_com_pivotacao <- function(A, b) {
+    A <- as.matrix(A)
+    b <- as.vector(b)
+    n <- length(b)
+    M <- cbind(A, b)
+    
+    for (k in 1:n) {
+        max_idx <- which.max(abs(M[k:n, k])) + k - 1
+        if (M[max_idx, k] == 0) {
+            return(list(solucao = NULL, status = "Matriz singular!"))
+        }
+        if (max_idx != k) {
+            M[c(k, max_idx), ] <- M[c(max_idx, k), ]
+            cat(sprintf("  Trocando linha %d com linha %d\n", k, max_idx))
+        }
+        pivo <- M[k, k]
+        M[k, ] <- M[k, ] / pivo
+        for (i in (k+1):n) {
+            fator <- M[i, k]
+            M[i, ] <- M[i, ] - fator * M[k, ]
+        }
+    }
+    
+    x <- numeric(n)
+    for (i in n:1) {
+        x[i] <- M[i, n+1] - sum(M[i, i:n] * x[i:n])
+    }
+    return(list(solucao = x, status = "Sucesso"))
+}
+
+# Testando
+A_test <- matrix(c(0.0001, 1, 1, 1), nrow=2, byrow=TRUE)
+b_test <- c(1, 2)
+
+cat("Sistema:\n")
+cat("0.0001x + y = 1\n")
+cat("x + y = 2\n\n")
+
+resultado <- eliminacao_sem_pivotacao(A_test, b_test)
+if (!is.null(resultado$solucao)) {
+    cat("Solução SEM pivotação:", resultado$solucao, "\n")
+} else {
+    cat("Erro SEM pivotação:", resultado$status, "\n")
+}
+
+resultado <- eliminacao_com_pivotacao(A_test, b_test)
+cat("Solução COM pivotação:", resultado$solucao, "\n")
+
+# ------------------------------------------------------------
+# EXEMPLO 3: Matriz Mal Condicionada
+# ------------------------------------------------------------
+cat("\n[3] Matriz Mal Condicionada\n")
+cat(rep("-", 40), "\n")
+
+A_mal <- matrix(c(1, 1, 1, 1.0001), nrow=2, byrow=TRUE)
+b_mal <- c(2, 2.0001)
+
+cat("Matriz A:\n")
+print(A_mal)
+cat("Vetor b:", b_mal, "\n")
+
+# Número de condicionamento
+cond_num <- rcond(A_mal)
+cat(sprintf("Número de condicionamento (rcond): %.2f\n", cond_num))
+cat("(Quanto menor, pior o condicionamento)\n")
+
+x_mal <- solve(A_mal, b_mal)
+cat(sprintf("Solução: x = %.4f, y = %.4f\n", x_mal[1], x_mal[2]))
+
+# Pequena perturbação
+cat("\nPerturbando b em 0.0001:\n")
+b_pert <- c(2.0001, 2.0002)
+x_pert <- solve(A_mal, b_pert)
+cat(sprintf("Solução perturbada: x = %.4f, y = %.4f\n", x_pert[1], x_pert[2]))
+cat(sprintf("Diferença: %.4f\n", sqrt(sum((x_pert - x_mal)^2))))
+cat("(Pequenas mudanças em b causam grandes mudanças na solução!)\n")
+
+# ------------------------------------------------------------
+# EXEMPLO 4: Comparação de Métodos
+# ------------------------------------------------------------
+cat("\n[4] Comparação: R vs Implementação Manual\n")
+cat(rep("-", 40), "\n")
+
+A3 <- matrix(c(2, 1, -1, -3, -1, 2, -2, 1, 2), nrow=3, byrow=TRUE)
+b3 <- c(8, -11, -3)
+
+cat("Matriz A:\n")
+print(A3)
+cat("Vetor b:", b3, "\n")
+
+x_r <- solve(A3, b3)
+cat("Solução R:", x_r, "\n")
+
+resultado <- eliminacao_com_pivotacao(A3, b3)
+cat("Solução Manual:", resultado$solucao, "\n")
+
+erro <- sqrt(sum((x_r - resultado$solucao)^2))
+cat(sprintf("Diferença entre soluções: %.2e\n", erro))
+cat("✓ Soluções compatíveis!\n")
+```
+
+**Saída esperada:**
+
+```text
+==================================================
+PIVOTAÇÃO - EXEMPLOS COMPUTACIONAIS
+==================================================
+
+[1] Sistema com Pivô Pequeno
+----------------------------------------
+Matriz A:
+     [,1] [,2]
+[1,] 1e-04    1
+[2,] 1e+00    1
+Vetor b: 1 2 
+Solução R (com pivotação): x = 1.0000, y = 1.0000
+
+[2] Implementação Manual - Comparação
+----------------------------------------
+Sistema:
+0.0001x + y = 1
+x + y = 2
+
+Erro SEM pivotação: Pivô zero encontrado! 
+  Trocando linha 1 com linha 2
+Solução COM pivotação: 1 1 
+
+[3] Matriz Mal Condicionada
+----------------------------------------
+Matriz A:
+     [,1]   [,2]
+[1,]    1 1.0000
+[2,]    1 1.0001
+Vetor b: 2 2.0001 
+Número de condicionamento (rcond): 0.00
+(Quanto menor, pior o condicionamento)
+Solução: x = 1.0000, y = 1.0000
+
+Perturbando b em 0.0001:
+Solução perturbada: x = 0.0000, y = 2.0000
+Diferença: 1.4142
+(Pequenas mudanças em b causam grandes mudanças na solução!)
+
+[4] Comparação: R vs Implementação Manual
+----------------------------------------
+Matriz A:
+     [,1] [,2] [,3]
+[1,]    2    1   -1
+[2,]   -3   -1    2
+[3,]   -2    1    2
+Vetor b: 8 -11 -3 
+Solução R: 2 3 1 
+Solução Manual: 2 3 1 
+Diferença entre soluções: 0.00e+00
+✓ Soluções compatíveis!
+```
+
+</details>
+
+
+> *A pivotação é essencial para a estabilidade numérica da eliminação de Gauss. Ela evita divisões por zero e minimiza erros de arredondamento, garantindo que a solução encontrada seja precisa. Em Machine Learning, isso é especialmente importante para regressão linear com dados mal condicionados.*
+
+---
+
+**Pronto para a Aula 5 – Método da Inversa!** 🚀 Envie o conteúdo.

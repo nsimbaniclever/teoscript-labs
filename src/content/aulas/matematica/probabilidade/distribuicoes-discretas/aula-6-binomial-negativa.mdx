@@ -1,0 +1,408 @@
+# 📘 DISTRIBUIÇÃO BINOMIAL NEGATIVA
+
+Definição, Analogias com Resolução Detalhada, Dedução da Fórmula, Função de Probabilidade, Função de Distribuição, Valor Esperado, Variância, FGM, Relação com a Geométrica, Aplicações Práticas, Exercícios Resolvidos Passo a Passo e Desafio Final
+
+### 1. O QUE É A DISTRIBUIÇÃO BINOMIAL NEGATIVA?
+
+A distribuição Binomial Negativa descreve o **número de tentativas** (ou o número de falhas) até a ocorrência do **$r$-ésimo sucesso** em uma sequência de ensaios de Bernoulli independentes, cada um com probabilidade de sucesso $p$. Ela é uma **generalização** da distribuição Geométrica (que é o caso $r = 1$).
+
+> **Definição (Versão 1 — Número de tentativas até o $r$-ésimo sucesso):**
+>> $$ P(X = k) = \binom{k-1}{r-1} p^r (1-p)^{k-r}, \quad k = r, r+1, r+2, ... $$
+
+**Notação:** $X \sim \text{Binomial Negativa}(r, p)$
+
+**Versão 2 (Número de falhas antes do $r$-ésimo sucesso):**
+$$ P(Y = k) = \binom{k+r-1}{k} p^r (1-p)^k, \quad k = 0, 1, 2, 3, ... $$
+
+**Observação:** Vamos adotar a **Versão 1** (número de tentativas) como padrão. A Versão 2 é simplesmente $Y = X - r$.
+
+### 2. ANALOGIAS DO DIA A DIA COM RESOLUÇÃO DETALHADA
+
+---
+
+**Analogia 1 — "Lançamento de Moeda até 3 Caras"**
+
+Uma moeda honesta é lançada até obter **3 caras**. Qual a probabilidade de que o terceiro cara ocorra no 5º lançamento?
+
+**Resolução Passo a Passo:**
+
+- **Identificar o que queremos:** $P(X = 5)$
+- **Identificar os parâmetros:** $r = 3$, $p = 0,5$
+- **Escrever a fórmula geral:**
+  $$ P(X = k) = \binom{k-1}{r-1} p^r (1-p)^{k-r} $$
+- **Substituir $k = 5$, $r = 3$, $p = 0,5$:**
+  $$ P(X = 5) = \binom{4}{2} (0,5)^3 (0,5)^{2} $$
+- **Calcular o coeficiente binomial:**
+  $$ \binom{4}{2} = \frac{4 \cdot 3}{2 \cdot 1} = 6 $$
+- **Calcular as potências:**
+  - $(0,5)^3 = 0,125$
+  - $(0,5)^2 = 0,25$
+- **Multiplicar:**
+  $$ P(X = 5) = 6 \cdot 0,125 \cdot 0,25 = 6 \cdot 0,03125 = 0,1875 $$
+- **Converter para porcentagem:** $0,1875 \times 100 = 18,75\%$
+
+**Resposta:** A probabilidade de que o terceiro cara ocorra no 5º lançamento é de **18,75%**.
+
+---
+
+**Analogia 2 — "Inspeção de Qualidade até 3 Defeitos"**
+
+Uma máquina produz peças com taxa de defeito de 5% ($p = 0,05$). Um inspetor testa peças até encontrar a **terceira peça defeituosa**. Qual a probabilidade de ele encontrar a terceira defeituosa na 10ª inspeção?
+
+**Resolução Passo a Passo:**
+
+- **Identificar:** $P(X = 10)$, $r = 3$, $p = 0,05$
+- **Fórmula:** $P(X = k) = \binom{k-1}{r-1} p^r (1-p)^{k-r}$
+- **Substituir:**
+  $$ P(X = 10) = \binom{9}{2} (0,05)^3 (0,95)^{7} $$
+- **Calcular o coeficiente binomial:**
+  $$ \binom{9}{2} = \frac{9 \cdot 8}{2} = 36 $$
+- **Calcular as potências:**
+  - $(0,05)^3 = 0,000125$
+  - $(0,95)^7 \approx 0,6983$
+- **Multiplicar:**
+  $$ P(X = 10) = 36 \cdot 0,000125 \cdot 0,6983 = 36 \cdot 0,0000873 = 0,003142 $$
+- **Converter para porcentagem:** $0,003142 \times 100 = 0,314\%$
+
+**Resposta:** A probabilidade é de aproximadamente **0,314%**.
+
+---
+
+**Analogia 3 — "O Jogador de Dardos até 5 Acertos"**
+
+Um jogador de dardos acerta o alvo com probabilidade 0,3 a cada arremesso. Quantos arremessos ele precisará até acertar o alvo **5 vezes**?
+
+**Situação A: Probabilidade de acertar o 5º alvo no 8º arremesso**
+
+**Resolução:**
+- $r = 5$, $p = 0,3$, $k = 8$
+$$ P(X = 8) = \binom{7}{4} (0,3)^5 (0,7)^{3} $$
+$$ \binom{7}{4} = 35, \quad (0,3)^5 = 0,00243, \quad (0,7)^3 = 0,343 $$
+$$ P(X = 8) = 35 \cdot 0,00243 \cdot 0,343 = 35 \cdot 0,000833 = 0,02916 \approx 2,92\% $$
+
+---
+
+**Analogia 4 — "O Atendente do Call Center até 2 Atendimentos"**
+
+Em um call center, a probabilidade de um atendente estar disponível em uma ligação é de 20% ($p = 0,2$). Quantas ligações são necessárias até conseguir **2 atendentes disponíveis**?
+
+**Situação A: Probabilidade de conseguir o 2º atendente na 5ª ligação**
+
+**Resolução:**
+- $r = 2$, $p = 0,2$, $k = 5$
+$$ P(X = 5) = \binom{4}{1} (0,2)^2 (0,8)^{3} $$
+$$ \binom{4}{1} = 4, \quad (0,2)^2 = 0,04, \quad (0,8)^3 = 0,512 $$
+$$ P(X = 5) = 4 \cdot 0,04 \cdot 0,512 = 0,08192 \approx 8,19\% $$
+
+---
+
+### 3. DE ONDE VEM A FÓRMULA DA BINOMIAL NEGATIVA? (DEDUÇÃO)
+
+Para que o $r$-ésimo sucesso ocorra exatamente na $k$-ésima tentativa, é necessário que:
+
+1. A **$k$-ésima** tentativa seja um **sucesso** (probabilidade $p$).
+2. Nas **$k-1$** tentativas anteriores, ocorram **exatamente $r-1$ sucessos** e $(k-1) - (r-1) = k-r$ falhas.
+
+O número de maneiras de escolher as posições dos $r-1$ sucessos nas $k-1$ tentativas é $\binom{k-1}{r-1}$.
+
+A probabilidade de uma sequência específica com $r-1$ sucessos e $k-r$ falhas é:
+$$ p^{r-1} (1-p)^{k-r} $$
+
+Multiplicando pelo número de sequências e pelo último sucesso:
+$$ P(X = k) = \binom{k-1}{r-1} p^{r-1} (1-p)^{k-r} \cdot p = \binom{k-1}{r-1} p^r (1-p)^{k-r} $$
+
+**Exemplo Ilustrativo — Moeda Honesta ($p = 0,5$, $r = 3$):**
+
+Qual a probabilidade de que o terceiro cara saia no 5º lançamento?
+
+- Sequências possíveis: 4 posições para os 2 primeiros caras = $\binom{4}{2} = 6$
+- Cada sequência tem 2 caras e 2 coroas: $(0,5)^2 (0,5)^2 = (0,5)^4$
+- Último lançamento é cara: $0,5$
+- Probabilidade total: $6 \cdot (0,5)^4 \cdot 0,5 = 6 \cdot (0,5)^5 = 6 \cdot 0,03125 = 0,1875 \approx 18,75\%$
+
+### 4. FUNÇÃO DE PROBABILIDADE (FP)
+
+$$ P(X = k) = \binom{k-1}{r-1} p^r (1-p)^{k-r}, \quad k = r, r+1, r+2, ... $$
+
+**Propriedades da FP:**
+
+1. **$0 \leq P(X = k) \leq 1$:** Cada termo é um produto de números entre 0 e 1 ✅
+2. **$\sum_{k=r}^{\infty} P(X = k) = 1$:** Soma de uma série binomial negativa.
+
+**Exemplo Ilustrativo — Moeda Honesta ($p = 0,5$, $r = 3$):**
+
+| $k$ | $P(X = k)$ | Cálculo | Probabilidade |
+| --- | --- | --- | --- |
+| 3 | $\binom{2}{2} (0,5)^3 (0,5)^0$ | $1 \cdot 0,125 \cdot 1$ | 12,5% |
+| 4 | $\binom{3}{2} (0,5)^3 (0,5)^1$ | $3 \cdot 0,125 \cdot 0,5$ | 18,75% |
+| 5 | $\binom{4}{2} (0,5)^3 (0,5)^2$ | $6 \cdot 0,125 \cdot 0,25$ | 18,75% |
+| 6 | $\binom{5}{2} (0,5)^3 (0,5)^3$ | $10 \cdot 0,125 \cdot 0,125$ | 15,625% |
+
+**Verificação da soma:** $0,125 + 0,1875 + 0,1875 + 0,15625 + ... = 1$ ✅
+
+**Exemplo Ilustrativo 2 — Controle de Qualidade ($p = 0,05$, $r = 3$):**
+
+Qual a probabilidade de encontrar a terceira peça defeituosa exatamente na 10ª inspeção?
+
+$$ P(X = 10) = \binom{9}{2} (0,05)^3 (0,95)^{7} $$
+$$ \binom{9}{2} = 36, \quad (0,05)^3 = 0,000125, \quad (0,95)^7 \approx 0,6983 $$
+$$ P(X = 10) = 36 \cdot 0,000125 \cdot 0,6983 = 0,003142 \approx 0,314\% $$
+
+### 5. FUNÇÃO DE DISTRIBUIÇÃO (FD)
+
+A FD acumula as probabilidades da FP:
+
+$$ F(x) = P(X \leq x) = \sum_{k=r}^{\lfloor x \rfloor} \binom{k-1}{r-1} p^r (1-p)^{k-r} $$
+
+**Observação:** A FD da Binomial Negativa não tem uma forma fechada simples como a Geométrica. É necessário somar os termos.
+
+**Exemplo Ilustrativo — $p = 0,5$, $r = 3$:**
+
+Para $x = 5$:
+$$ F(5) = P(X = 3) + P(X = 4) + P(X = 5) $$
+$$ F(5) = 0,125 + 0,1875 + 0,1875 = 0,50 $$
+
+Ou seja, há 50% de chance de que o terceiro cara ocorra em até 5 lançamentos.
+
+### 6. VALOR ESPERADO (MÉDIA) — $E[X]$
+
+$$ E[X] = \sum_{k=r}^{\infty} k \cdot \binom{k-1}{r-1} p^r (1-p)^{k-r} $$
+
+**Cálculo via soma de Geométricas (mais fácil):**
+
+Sabemos que $X = \sum_{i=1}^r Y_i$, onde $Y_i$ são variáveis Geométricas independentes com parâmetro $p$ (tempo entre sucessos).
+
+Pela linearidade da esperança:
+$$ E[X] = \sum_{i=1}^r E[Y_i] = \sum_{i=1}^r \frac{1}{p} = \frac{r}{p} $$
+
+**Exemplo Ilustrativo — Moeda Honesta ($p = 0,5$, $r = 3$):**
+- $E[X] = 3/0,5 = 6$. Em média, são necessários 6 lançamentos para obter 3 caras.
+
+### 7. VARIÂNCIA — $Var(X)$
+
+Como as $Y_i$ são independentes:
+$$ Var(X) = \sum_{i=1}^r Var(Y_i) = \sum_{i=1}^r \frac{1-p}{p^2} = \frac{r(1-p)}{p^2} $$
+
+**Exemplo Ilustrativo — Moeda Honesta ($p = 0,5$, $r = 3$):**
+$$ Var(X) = \frac{3 \cdot 0,5}{0,25} = \frac{1,5}{0,25} = 6 $$
+$$ \sigma = \sqrt{6} \approx 2,45 $$
+
+### 8. FUNÇÃO GERATRIZ DE MOMENTOS (FGM) — $M_X(t)$
+
+$$ M_X(t) = E[e^{tX}] = \sum_{k=r}^{\infty} e^{tk} \binom{k-1}{r-1} p^r (1-p)^{k-r} $$
+
+**Usando a identidade da série binomial negativa:**
+
+$$ M_X(t) = \left( \frac{p e^t}{1 - (1-p) e^t} \right)^r $$
+
+**Exemplo Ilustrativo — $p = 0,5$, $r = 3$:**
+$$ M_X(t) = \left( \frac{0,5 e^t}{1 - 0,5 e^t} \right)^3 $$
+
+**Verificação — Geração dos momentos:**
+
+- $M_X'(0) = r/p$ ✅
+- $M_X''(0) - [M_X'(0)]^2 = r(1-p)/p^2$ ✅
+
+### 9. RELAÇÃO COM A DISTRIBUIÇÃO GEOMÉTRICA
+
+| Característica | Geométrica | Binomial Negativa |
+| --- | --- | --- |
+| **Parâmetros** | $p$ | $r, p$ |
+| **Objetivo** | 1º sucesso | $r$-ésimo sucesso |
+| **Caso especial** | — | $r = 1$ |
+| **Soma de Geométricas** | — | $X = \sum_{i=1}^r Y_i$, $Y_i \sim \text{Geométrica}(p)$ |
+
+**Interpretação:** A Binomial Negativa é a **soma de $r$ variáveis Geométricas independentes**, cada uma representando o tempo entre sucessos consecutivos.
+
+### 10. VERSÃO 2 DA BINOMIAL NEGATIVA (NÚMERO DE FALHAS)
+
+**Definição:** Seja $Y$ o número de **falhas** antes do $r$-ésimo sucesso. Então:
+$$ P(Y = k) = \binom{k+r-1}{k} p^r (1-p)^k, \quad k = 0, 1, 2, 3, ... $$
+
+**Relação entre as versões:** $Y = X - r$, onde $X$ é a Versão 1.
+
+| Característica | **Versão 1 (Tentativas)** | **Versão 2 (Falhas)** |
+| --- | --- | --- |
+| **Suporte** | $k = r, r+1, r+2, ...$ | $k = 0, 1, 2, ...$ |
+| **FP** | $\binom{k-1}{r-1} p^r (1-p)^{k-r}$ | $\binom{k+r-1}{k} p^r (1-p)^k$ |
+| **E[X]** | $r/p$ | $r(1-p)/p$ |
+| **Var(X)** | $r(1-p)/p^2$ | $r(1-p)/p^2$ |
+
+### 11. QUADRO RESUMO — BINOMIAL NEGATIVA
+
+| Conceito | Fórmula (Versão 1) |
+| --- | --- |
+| **Suporte** | $\{r, r+1, r+2, ...\}$ |
+| **FP** | $P(X = k) = \binom{k-1}{r-1} p^r (1-p)^{k-r}$ |
+| **FD** | $F(x) = \sum_{k=r}^{\lfloor x \rfloor} \binom{k-1}{r-1} p^r (1-p)^{k-r}$ |
+| **Valor Esperado** | $E[X] = \frac{r}{p}$ |
+| **Variância** | $Var(X) = \frac{r(1-p)}{p^2}$ |
+| **FGM** | $M_X(t) = \left( \frac{p e^t}{1 - (1-p) e^t} \right)^r$ |
+| **Relação com Geométrica** | Soma de $r$ Geométricas independentes |
+
+### 12. APLICAÇÕES PRÁTICAS DA BINOMIAL NEGATIVA
+
+| Área | Exemplo | $r$ | $p$ |
+| --- | --- | --- | --- |
+| **Controle de Qualidade** | Número de inspeções até encontrar 3 defeitos. | 3 | Taxa de defeito |
+| **Jogos** | Número de arremessos até 5 acertos. | 5 | Probabilidade de acerto |
+| **Marketing** | Número de abordagens até 2 vendas. | 2 | Taxa de conversão |
+| **Biologia** | Número de tentativas até 4 mutações bem-sucedidas. | 4 | Taxa de mutação |
+| **Finanças** | Número de meses até 3 meses com lucro. | 3 | Probabilidade de lucro mensal |
+| **Telecomunicações** | Número de pacotes até 2 transmissões bem-sucedidas. | 2 | Probabilidade de transmissão bem-sucedida |
+
+## 📝 EXERCÍCIOS RESOLVIDOS PASSO A PASSO
+
+<details>
+<summary>📗 Exercício 1 — Binomial Negativa Básica</summary>
+
+**Enunciado:** Seja $X \sim \text{Binomial Negativa}(r = 4, p = 0,3)$. Calcule:
+
+a) $P(X = 6)$
+b) $E[X]$
+c) $Var(X)$
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**a) $P(X = 6)$:**
+$$ P(X = 6) = \binom{5}{3} (0,3)^4 (0,7)^{2} $$
+$$ \binom{5}{3} = 10, \quad (0,3)^4 = 0,0081, \quad (0,7)^2 = 0,49 $$
+$$ P(X = 6) = 10 \cdot 0,0081 \cdot 0,49 = 0,03969 \approx 3,97\% $$
+
+**b) $E[X] = r/p = 4/0,3 \approx 13,33$ tentativas esperadas.**
+
+**c) $Var(X) = r(1-p)/p^2 = 4 \cdot 0,7 / 0,09 = 2,8 / 0,09 \approx 31,11$**
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Controle de Qualidade</summary>
+
+**Enunciado:** Uma máquina produz peças com taxa de defeito de 8% ($p = 0,08$). Um inspetor testa peças uma a uma até encontrar a **4ª peça defeituosa**.
+
+a) Qual a probabilidade de ele encontrar a 4ª defeituosa na 10ª inspeção?
+b) Qual o número esperado de inspeções?
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**Parâmetros:** $r = 4$, $p = 0,08$
+
+**a) $P(X = 10)$:**
+$$ P(X = 10) = \binom{9}{3} (0,08)^4 (0,92)^{6} $$
+$$ \binom{9}{3} = 84, \quad (0,08)^4 = 0,00004096, \quad (0,92)^6 \approx 0,606 $$
+$$ P(X = 10) = 84 \cdot 0,00004096 \cdot 0,606 \approx 0,00208 \approx 0,208\% $$
+
+**b) $E[X] = r/p = 4/0,08 = 50$ inspeções esperadas.**
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Soma de Geométricas</summary>
+
+**Enunciado:** Seja $X_1, X_2, X_3$ variáveis Geométricas independentes com $p = 0,4$. Qual a distribuição de $S = X_1 + X_2 + X_3$?
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+A soma de $r$ Geométricas independentes com mesmo $p$ é uma **Binomial Negativa** com parâmetros $r$ e $p$.
+
+Portanto:
+$$ S \sim \text{Binomial Negativa}(r = 3, p = 0,4) $$
+
+**Verificação via FGM:**
+$$ M_S(t) = M_{X_1}(t) \cdot M_{X_2}(t) \cdot M_{X_3}(t) = \left( \frac{0,4 e^t}{1 - 0,6 e^t} \right)^3 $$
+
+Esta é a FGM de uma Binomial Negativa(3, 0,4).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Versão 2 (Falhas)</summary>
+
+**Enunciado:** Seja $Y$ o número de **falhas** antes do 3º sucesso, com $p = 0,25$.
+
+a) Calcule $P(Y = 4)$.
+b) Calcule $E[Y]$.
+c) Calcule $Var(Y)$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**Parâmetros:** $r = 3$, $p = 0,25$
+
+**a) $P(Y = 4)$:**
+$$ P(Y = 4) = \binom{4+3-1}{4} (0,25)^3 (0,75)^4 $$
+$$ \binom{6}{4} = 15, \quad (0,25)^3 = 0,015625, \quad (0,75)^4 = 0,3164 $$
+$$ P(Y = 4) = 15 \cdot 0,015625 \cdot 0,3164 \approx 0,0741 \approx 7,41\% $$
+
+**b) $E[Y] = r(1-p)/p = 3 \cdot 0,75 / 0,25 = 9$ falhas esperadas.**
+
+**c) $Var(Y) = r(1-p)/p^2 = 3 \cdot 0,75 / 0,0625 = 2,25 / 0,0625 = 36$**
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — FGM da Binomial Negativa</summary>
+
+**Enunciado:** Seja $X \sim \text{Binomial Negativa}(r, p)$. Use a FGM para mostrar que $E[X] = r/p$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+A FGM da Binomial Negativa (Versão 1) é:
+$$ M_X(t) = \left( \frac{p e^t}{1 - (1-p) e^t} \right)^r $$
+
+Derivando:
+$$ M_X'(t) = r \left( \frac{p e^t}{1 - (1-p) e^t} \right)^{r-1} \cdot \frac{p e^t}{[1 - (1-p) e^t]^2} $$
+
+Avaliando em $t = 0$:
+$$ M_X'(0) = r \left( \frac{p}{p} \right)^{r-1} \cdot \frac{p}{p^2} = r \cdot 1 \cdot \frac{1}{p} = \frac{r}{p} $$ ✅
+
+</details>
+</details>
+
+## 🎯 DESAFIO FINAL
+
+**Enunciado:** Seja $X \sim \text{Binomial Negativa}(r, p)$. Prove que:
+
+a) A moda da Binomial Negativa (Versão 1) é $\left\lfloor \frac{(r-1)(1-p)}{p} \right\rfloor + r$.
+b) A soma de duas Binomiais Negativas independentes com mesmo $p$ é uma Binomial Negativa.
+c) A relação entre a Binomial Negativa e a Geométrica: $X = \sum_{i=1}^r Y_i$, onde $Y_i \sim \text{Geométrica}(p)$.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**a) Moda:**
+
+Usamos a razão entre probabilidades consecutivas:
+$$ \frac{P(X = k+1)}{P(X = k)} = \frac{k}{k-r+1} \cdot (1-p) $$
+
+A função cresce enquanto a razão $> 1$:
+$$ \frac{k}{k-r+1} (1-p) > 1 \Rightarrow k < \frac{(r-1)(1-p)}{p} + r $$
+
+Portanto, a moda é $\left\lfloor \frac{(r-1)(1-p)}{p} \right\rfloor + r$.
+
+**b) Soma de Binomiais Negativas:**
+
+Se $X \sim \text{Binomial Negativa}(r_1, p)$ e $Y \sim \text{Binomial Negativa}(r_2, p)$ independentes, então:
+$$ X + Y \sim \text{Binomial Negativa}(r_1 + r_2, p) $$
+
+**Prova via FGM:**
+$$ M_{X+Y}(t) = M_X(t) \cdot M_Y(t) = \left( \frac{p e^t}{1 - (1-p) e^t} \right)^{r_1} \cdot \left( \frac{p e^t}{1 - (1-p) e^t} \right)^{r_2} $$
+$$ = \left( \frac{p e^t}{1 - (1-p) e^t} \right)^{r_1 + r_2} $$
+
+Esta é a FGM de uma Binomial Negativa com parâmetros $r_1 + r_2$ e $p$.
+
+**c) Relação com a Geométrica:**
+
+A Binomial Negativa pode ser vista como a soma de $r$ Geométricas independentes, cada uma representando o tempo entre sucessos consecutivos.
+
+</details>
+
+> *A distribuição Binomial Negativa é uma generalização natural da Geométrica, permitindo modelar o tempo de espera até múltiplos sucessos. Ela é amplamente utilizada em controle de qualidade, biologia, e análise de sobrevivência.*

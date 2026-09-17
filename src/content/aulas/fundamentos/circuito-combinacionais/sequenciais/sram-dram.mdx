@@ -1,0 +1,350 @@
+# SRAM vs DRAM
+
+## 1. Introdução
+
+Nas sessões anteriores, foram abordados os **flip-flops** enquanto circuitos elementares de armazenamento de um único bit, bem como a sua organização em **registradores** para a retenção de palavras de múltiplos bits. Ademais, foram discutidos os **contadores**, os quais consistem em registradores especializados cujo estado é incrementado a cada ciclo de clock.<br><br>
+
+Contudo, impõe-se uma limitação inerente a tais dispositivos: flip-flops e registradores apresentam custos elevados e demandam uma área significativa no substrato semicondutor, uma vez que cada flip-flop é implementado mediante múltiplos transistores — um registrador de 32 bits, por exemplo, exige algumas dezenas desses componentes.<br><br>
+
+Diante desse cenário, para o armazenamento de grandes volumes de dados, tal como a memória RAM de sistemas computacionais, cuja capacidade atinge bilhões de bits, torna-se imperativo o emprego de tecnologias de memória que ofereçam maior densidade de integração e menor custo por bit armazenado.<br><br>
+
+Existem dois tipos principais de memória usados em computadores:
+
+| Tipo | Nome | Tecnologia | Uso |
+|------|------|------------|-----|
+| **SRAM** | Static RAM | Flip-flops | Cache (L1, L2, L3) |
+| **DRAM** | Dynamic RAM | Capacitores | Memória principal (RAM) |
+
+Nesta aula, vamos entender as diferenças entre SRAM e DRAM, como cada uma funciona, suas vantagens e desvantagens, e por que ambas são necessárias em um computador.
+
+
+## 2. O Que é SRAM (Static RAM)?
+
+### 2.1 Definição
+
+**SRAM** (Static Random Access Memory) é um tipo de memória que usa **flip-flops** para armazenar cada bit de dados.
+
+### 2.2 Como funciona?
+
+Cada bit na SRAM é armazenado em um **flip-flop** (tipicamente 6 transistores). O flip-flop mantém o valor (0 ou 1) enquanto houver energia.
+
+<details>
+<summary>🔧 Ver Diagrama da Célula SRAM</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 350px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">CÉLULA SRAM (6 TRANSISTORES)</div>
+
+  <pre style="color: #93c5fd; font-size: 0.7rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    ┌─────────────────────┐
+    │                     │
+    │    Flip-Flop        │
+    │    (6 transistores) │
+    │                     │
+    └─────────────────────┘
+           │
+           ▼
+    Bit armazenado (0 ou 1)
+  </pre>
+
+</div>
+</details>
+
+### 2.3 Características da SRAM
+
+| Característica | Valor |
+|----------------|-------|
+| **Velocidade** | Muito rápida (~1-10 ns) |
+| **Densidade** | Baixa (poucos bits por área) |
+| **Custo** | Caro (por bit) |
+| **Consumo** | Moderado (mantém estado constantemente) |
+| **Refrescamento** | Não precisa |
+| **Volatilidade** | Volátil (perde dados sem energia) |
+| **Uso** | Cache L1, L2, L3, registradores |
+
+### 2.4 Vantagens da SRAM
+
+1. **Muito rápida:** Acesso em nanossegundos (1-10 ns).
+2. **Não precisa de refresh:** Mantém o dado enquanto houver energia.
+3. **Simples de controlar:** Não requer circuitos de refresh.
+
+### 2.5 Desvantagens da SRAM
+
+1. **Baixa densidade:** 6 transistores por bit → ocupa muito espaço.
+2. **Cara:** Mais cara de fabricar por bit.
+3. **Consumo de energia:** Mantém o estado constantemente.
+
+
+## 3. O Que é DRAM (Dynamic RAM)?
+
+### 3.1 Definição
+
+**DRAM** (Dynamic Random Access Memory) é um tipo de memória que usa **capacitores** para armazenar cada bit de dados.
+
+### 3.2 Como funciona?
+
+Cada bit na DRAM é armazenado em um **capacitor** (1 transistor + 1 capacitor). O capacitor pode estar carregado (1) ou descarregado (0).
+
+<details>
+<summary>🔧 Ver Diagrama da Célula DRAM</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 350px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">CÉLULA DRAM (1 TRANSISTOR + 1 CAPACITOR)</div>
+
+  <pre style="color: #93c5fd; font-size: 0.7rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    ┌─────────────────────┐
+    │                     │
+    │    Capacitor        │
+    │    (1 transistor +  │
+    │     1 capacitor)    │
+    │                     │
+    └─────────────────────┘
+           │
+           ▼
+    Bit armazenado (0 ou 1)
+  </pre>
+
+</div>
+</details>
+
+**O problema:** O capacitor **descarrega com o tempo** (em milissegundos). Por isso, a DRAM precisa ser **refrescada** periodicamente.
+
+### 3.3 Características da DRAM
+
+| Característica | Valor |
+|----------------|-------|
+| **Velocidade** | Mais lenta (~50-100 ns) |
+| **Densidade** | Alta (muitos bits por área) |
+| **Custo** | Barato (por bit) |
+| **Consumo** | Baixo (apenas no acesso/refresh) |
+| **Refrescamento** | Precisa (a cada ~64 ms) |
+| **Volatilidade** | Volátil (perde dados sem energia) |
+| **Uso** | Memória principal (RAM) |
+
+### 3.4 Vantagens da DRAM
+
+1. **Alta densidade:** 1 transistor + 1 capacitor por bit → ocupa pouco espaço.
+2. **Barata:** Mais barata de fabricar por bit.
+3. **Baixo consumo:** Consome menos energia que SRAM.
+
+### 3.5 Desvantagens da DRAM
+
+1. **Mais lenta:** Acesso em dezenas de nanossegundos (50-100 ns).
+2. **Precisa de refresh:** A cada ~64 ms, cada bit precisa ser lido e reescrito.
+3. **Mais complexa:** Requer circuitos de refresh.
+
+
+## 4. SRAM vs DRAM: Comparativo Direto
+
+### 4.1 Tabela comparativa
+
+| Característica | SRAM | DRAM |
+|----------------|------|------|
+| **Tecnologia** | Flip-flop (6 transistores) | Capacitor (1T + 1C) |
+| **Velocidade** | Muito rápida (1-10 ns) | Mais lenta (50-100 ns) |
+| **Densidade** | Baixa | Alta |
+| **Custo** | Caro | Barato |
+| **Consumo** | Moderado | Baixo |
+| **Refresh** | Não precisa | Precisa (~64 ms) |
+| **Volatilidade** | Volátil | Volátil |
+| **Uso** | Cache, registradores | RAM principal |
+
+### 4.2 Analogia
+
+**SRAM** é como um **quadro branco**:
+- Você escreve (armazena) e a informação fica lá.
+- Rápido de ler e escrever.
+- Ocupa espaço (você só tem um quadro).
+
+**DRAM** é como um **balde com água**:
+- Você enche o balde (armazena 1) ou esvazia (armazena 0).
+- A água evapora com o tempo (precisa de refresh).
+- Muitos baldes cabem no mesmo espaço.
+- Mais barato que um quadro branco.
+
+### 4.3 Por que usamos ambos?
+
+| Nível | Tipo | Por que? |
+|-------|------|----------|
+| **Registradores** | SRAM (muito rápida) | Poucos, mas precisam ser ultrarrápidos |
+| **Cache L1** | SRAM | Pequena, mas muito rápida |
+| **Cache L2** | SRAM | Médio, rápido |
+| **Cache L3** | SRAM | Maior, ainda rápido |
+| **RAM Principal** | DRAM | Muita capacidade, custo baixo |
+| **SSD/HD** | Não volátil | Armazenamento permanente |
+
+
+## 5. O Processo de Refresh na DRAM
+
+### 5.1 Por que a DRAM precisa de refresh?
+
+O capacitor na DRAM **perde carga** com o tempo devido a correntes de fuga. Sem refresh, o dado seria perdido em milissegundos.
+
+### 5.2 Como funciona o refresh?
+
+1. A cada ~64 ms, todas as linhas da DRAM são lidas e reescritas.
+2. Durante o refresh, a memória não pode ser acessada.
+3. O refresh consome tempo e energia.
+
+### 5.3 Tipos de refresh
+
+| Tipo | Descrição |
+|------|-----------|
+| **RAS Only Refresh** | Refresca uma linha por vez |
+| **CAS Before RAS** | Refresca automaticamente |
+| **Auto-Refresh** | Controlado internamente pela DRAM |
+
+
+## 6. SRAM na Cache
+
+### 6.1 Hierarquia de cache
+
+<details>
+<summary>🔧 Ver Hierarquia de Memória</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 550px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">HIERARQUIA DE MEMÓRIA</div>
+
+  <pre style="color: #93c5fd; font-size: 0.6rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    ┌─────────────────────────────────────────────────────┐
+    │  Registradores (SRAM)  │  ~1 ciclo   │  ~1 KB      │
+    ├─────────────────────────────────────────────────────┤
+    │  Cache L1 (SRAM)       │  ~2-4 ciclos│  ~32 KB     │
+    ├─────────────────────────────────────────────────────┤
+    │  Cache L2 (SRAM)       │  ~10 ciclos │  ~256 KB    │
+    ├─────────────────────────────────────────────────────┤
+    │  Cache L3 (SRAM)       │  ~30-40 ciclos│ ~8 MB     │
+    ├─────────────────────────────────────────────────────┤
+    │  RAM (DRAM)            │  ~50-100 ns │  ~16 GB     │
+    ├─────────────────────────────────────────────────────┤
+    │  SSD/HD                │  ~µs/ms     │  ~1 TB      │
+    └─────────────────────────────────────────────────────┘
+  </pre>
+
+</div>
+</details>
+
+### 6.2 Por que a cache usa SRAM?
+
+1. **Velocidade:** A CPU precisa de dados muito rápido.
+2. **Tamanho pequeno:** A cache é pequena (KB a MB), então o custo da SRAM é aceitável.
+3. **Sem refresh:** A SRAM não precisa de refresh, o que simplifica o controle.
+
+
+## 7. Exercícios
+
+<details>
+<summary>📗 Exercício 1 — Definição SRAM (fácil)</summary>
+
+**Enunciado:** O que significa SRAM e qual tecnologia ela usa para armazenar dados?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** SRAM = Static Random Access Memory. Ela usa **flip-flops** (6 transistores por bit) para armazenar dados.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Definição DRAM (fácil)</summary>
+
+**Enunciado:** O que significa DRAM e qual tecnologia ela usa para armazenar dados?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** DRAM = Dynamic Random Access Memory. Ela usa **capacitores** (1 transistor + 1 capacitor por bit) para armazenar dados.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Velocidade (fácil)</summary>
+
+**Enunciado:** Qual é mais rápida: SRAM ou DRAM?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** SRAM é mais rápida (1-10 ns vs 50-100 ns da DRAM).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Refresh (médio)</summary>
+
+**Enunciado:** Por que a DRAM precisa de refresh e a SRAM não?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** A DRAM usa capacitores que perdem carga com o tempo devido a correntes de fuga. A SRAM usa flip-flops que mantêm o estado enquanto houver energia, sem necessidade de refresh.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Densidade (médio)</summary>
+
+**Enunciado:** Qual tem maior densidade: SRAM ou DRAM? Por quê?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** DRAM tem maior densidade. Um bit em DRAM usa 1 transistor + 1 capacitor, enquanto SRAM usa 6 transistores. Isso permite colocar mais bits de DRAM na mesma área de silício.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Custo (médio)</summary>
+
+**Enunciado:** Qual é mais barata: SRAM ou DRAM? Por quê?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** DRAM é mais barata por bit porque usa menos transistores por bit (1T+1C vs 6T), ocupando menos área de silício e sendo mais barata de fabricar.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — Uso na cache (conceitual)</summary>
+
+**Enunciado:** Por que a cache usa SRAM em vez de DRAM?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** A cache usa SRAM porque precisa ser muito rápida para acompanhar a velocidade da CPU. A SRAM é mais rápida que a DRAM (1-10 ns vs 50-100 ns). Como a cache é pequena (KB a MB), o custo mais alto da SRAM é aceitável.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — Hierarquia de memória (conceitual)</summary>
+
+**Enunciado:** Ordene da mais rápida para a mais lenta: RAM (DRAM), Cache L1, SSD, Registradores.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta (da mais rápida para a mais lenta):**
+
+1. **Registradores** (~1 ciclo)
+2. **Cache L1** (~2-4 ciclos)
+3. **RAM (DRAM)** (~50-100 ns)
+4. **SSD** (~µs)
+
+**Explicação:** A hierarquia de memória é organizada da mais rápida (mas menor e mais cara) para a mais lenta (mas maior e mais barata).
+
+</details>
+</details>
+
+
+> **"SRAM e DRAM são os dois tipos de memória volátil usados em computadores. A SRAM (Static RAM) usa flip-flops (6 transistores por bit), é muito rápida (1-10 ns), mas tem baixa densidade e é cara. É usada em cache e registradores. A DRAM (Dynamic RAM) usa capacitores (1 transistor + 1 capacitor por bit), é mais lenta (50-100 ns), mas tem alta densidade e é barata. É usada como memória principal (RAM). A DRAM precisa de refresh periódico (~64 ms) porque os capacitores perdem carga. A combinação de SRAM (rápida, cara, pequena) e DRAM (mais lenta, barata, grande) permite construir sistemas de memória eficientes em termos de custo e desempenho."**

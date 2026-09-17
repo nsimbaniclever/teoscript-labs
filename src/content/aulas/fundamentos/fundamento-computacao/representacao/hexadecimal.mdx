@@ -1,0 +1,643 @@
+# Sistema Numérico Hexadecimal
+
+**Duração estimada:** 45 minutos (leitura) / 1h15 (com exercícios práticos)  
+**Público-alvo:** Estudante com conhecimento básico de matemática e sistema binário  
+**Pré-requisito:** Sistema binário, decimal e octal
+
+
+## 1. Conceito Básico
+
+O sistema hexadecimal é um sistema de numeração cuja **base é 16**. Isso significa que ele utiliza **16 algarismos** para representar qualquer número:
+
+`0, 1, 2, 3, 4, 5, 6, 7, 8, 9, A, B, C, D, E, F`
+
+**Por que letras?**
+
+Como precisamos de 16 símbolos e só temos 10 dígitos (0-9), usamos as letras de A a F para representar os valores de 10 a 15.
+
+| Decimal | Hexadecimal |
+|---------|-------------|
+| 10 | A |
+| 11 | B |
+| 12 | C |
+| 13 | D |
+| 14 | E |
+| 15 | F |
+
+**Por que o "16"?**
+
+É uma potência de 2 ($16 = 2^4$). Cada dígito hexadecimal = exatamente **4 bits**.
+
+- 4 bits = 1 nibble = metade de um byte (8 bits)
+- Um byte pode ser representado por apenas **2 dígitos hexadecimais**! (ex: `FF` = 255)
+
+**A Grande Vantagem:**
+
+Um número como `11111111_{(2)}` vira apenas `FF_{(16)}`. É muito mais compacto e legível para humanos, e a conversão é imediata.
+
+
+## 2. A Tabela de Referência Hexadecimal → Binário (Decore!)
+
+Esta é a tabela mais importante para conversões. Cada número hexadecimal vira 4 bits.
+
+| Hex | Binário | Decimal |
+|-----|---------|---------|
+| 0 | 0000 | 0 |
+| 1 | 0001 | 1 |
+| 2 | 0010 | 2 |
+| 3 | 0011 | 3 |
+| 4 | 0100 | 4 |
+| 5 | 0101 | 5 |
+| 6 | 0110 | 6 |
+| 7 | 0111 | 7 |
+| 8 | 1000 | 8 |
+| 9 | 1001 | 9 |
+| A | 1010 | 10 |
+| B | 1011 | 11 |
+| C | 1100 | 12 |
+| D | 1101 | 13 |
+| E | 1110 | 14 |
+| F | 1111 | 15 |
+
+**Dica de memorização:**
+- A = 10 = `1010`
+- B = 11 = `1011`
+- C = 12 = `1100`
+- D = 13 = `1101`
+- E = 14 = `1110`
+- F = 15 = `1111`
+
+
+## 3. Conversões (Sem e Com Vírgula)
+
+### 3.1 Conversão: Hexadecimal → Decimal (Base 16 → Base 10)
+
+**Método:** Multiplicar cada dígito hexadecimal pela potência de 16 correspondente à sua posição (da direita para esquerda, começando em 0) e somar tudo.
+
+**Valor das posições (da direita para esquerda):**
+
+| Posição | Potência | Valor |
+|---------|----------|-------|
+| 0 | $16^0$ | 1 |
+| 1 | $16^1$ | 16 |
+| 2 | $16^2$ | 256 |
+| 3 | $16^3$ | 4096 |
+| 4 | $16^4$ | 65536 |
+
+**Atenção:** Lembre-se que A=10, B=11, C=12, D=13, E=14, F=15.
+
+**Exemplo 1: Converter $2F_{(16)}$ para decimal**
+
+**Passo 1:** Identifique posições e substitua letras.
+- Hexadecimal: `2   F`
+- Posição: `1   0`
+- `F = 15`
+
+**Passo 2:** Multiplique.
+- Dígito 0 (direita): $15 \times 16^0 = 15 \times 1 = 15$
+- Dígito 1 (esquerda): $2 \times 16^1 = 2 \times 16 = 32$
+
+**Passo 3:** Some tudo: $15 + 32 = 47$
+
+**Resposta:** $2F_{(16)} = 47$ em decimal ✅
+
+**Exemplo 2: Converter $3A7_{(16)}$ para decimal**
+
+**Passo 1:**
+- Hexadecimal: `3   A   7`
+- Posição: `2   1   0`
+- `A = 10`
+
+**Passo 2:**
+- $7 \times 16^0 = 7$
+- $10 \times 16^1 = 160$
+- $3 \times 16^2 = 768$
+
+**Passo 3:** $7 + 160 + 768 = 935$
+
+**Resposta:** $3A7_{(16)} = 935$ em decimal ✅
+
+**Exemplo 3: Converter $1F4C_{(16)}$ para decimal**
+
+**Passo 1:**
+- Hexadecimal: `1   F   4   C`
+- Posição: `3   2   1   0`
+- `F = 15`, `C = 12`
+
+**Passo 2:**
+- $12 \times 16^0 = 12$
+- $4 \times 16^1 = 64$
+- $15 \times 16^2 = 3840$
+- $1 \times 16^3 = 4096$
+
+**Passo 3:** $12 + 64 + 3840 + 4096 = 8012$
+
+**Resposta:** $1F4C_{(16)} = 8012$ em decimal ✅
+
+### 3.2 Conversão: Decimal → Hexadecimal (Base 10 → Base 16)
+
+**Método:** Divisões sucessivas por 16. Pegue o número decimal e divida por 16 repetidamente, anotando os restos. O hexadecimal é lido de **baixo para cima** (do último resto para o primeiro).
+
+**Atenção:** Restos 10, 11, 12, 13, 14, 15 viram A, B, C, D, E, F.
+
+**Exemplo 1: Converter 47 para hexadecimal**
+
+**Passo 1:** Divida por 16 até dar 0.
+- $47 \div 16 = 2$, resto **15** (15 = F, menos significativo - direita)
+- $2 \div 16 = 0$, resto **2** (mais significativo - esquerda)
+
+**Passo 2:** Leia de baixo para cima: `2 F`
+
+**Resposta:** 47 em decimal = $2F_{(16)}$ ✅ (provando a conversão anterior)
+
+**Exemplo 2: Converter 1000 para hexadecimal**
+
+**Passo 1:**
+- $1000 \div 16 = 62$, resto 8
+- $62 \div 16 = 3$, resto 14 (14 = E)
+- $3 \div 16 = 0$, resto 3
+
+**Passo 2:** Leia de baixo: `3 E 8`
+
+**Resposta:** 1000 em decimal = $3E8_{(16)}$ ✅
+
+**Exemplo 3: Converter 255 para hexadecimal**
+
+**Passo 1:**
+- $255 \div 16 = 15$, resto 15 (15 = F)
+- $15 \div 16 = 0$, resto 15 (15 = F)
+
+**Passo 2:** Leia de baixo: `F F`
+
+**Resposta:** 255 em decimal = $FF_{(16)}$ ✅ (o valor máximo de um byte!)
+
+### 3.3 Conversão: Hexadecimal → Binário (O Mais Importante!)
+
+**Método:** Use a tabela. Cada dígito hexadecimal vira 4 bits. Depois junte tudo.
+
+**Exemplo 1: Converter $2F_{(16)}$ para binário**
+
+**Passo 1:** Converta cada dígito usando a tabela.
+- $2 = 0010$
+- $F = 1111$
+
+**Passo 2:** Junte: `0010 1111`
+
+**Passo 3:** Tire o zero da esquerda: `101111`
+
+**Resposta:** $2F_{(16)} = 101111_{(2)}$ ✅
+
+**Exemplo 2: Converter $3A7_{(16)}$ para binário**
+
+**Passo 1:**
+- $3 = 0011$
+- $A = 1010$
+- $7 = 0111$
+
+**Passo 2:** Junte: `001110100111`
+
+**Passo 3:** Tire zeros da esquerda: `1110100111`
+
+**Resposta:** $3A7_{(16)} = 1110100111_{(2)}$ ✅
+
+**Exemplo 3: Converter $F0C_{(16)}$ para binário**
+
+**Passo 1:**
+- $F = 1111$
+- $0 = 0000$
+- $C = 1100$
+
+**Passo 2:** Junte: `111100001100`
+
+**Resposta:** $F0C_{(16)} = 111100001100_{(2)}$ ✅
+
+### 3.4 Conversão: Binário → Hexadecimal
+
+**Método:** O inverso do anterior.
+
+1. Agrupe os bits de **4 em 4**, começando da **direita para a esquerda** (parte inteira).
+2. Se sobrar 1, 2 ou 3 bits no grupo da esquerda, complete com zeros à esquerda.
+3. Converta cada grupo de 4 bits para hexadecimal usando a tabela.
+
+**Exemplo 1: Converter $101111_{(2)}$ para hexadecimal**
+
+**Passo 1:** Agrupe de 4 em 4 da direita.
+- `10 | 1111` (sobraram 2 bits na esquerda)
+
+**Passo 2:** Complete o grupo da esquerda com zeros.
+- `0010 | 1111`
+
+**Passo 3:** Converta cada grupo.
+- $0010_{(2)} = 2$
+- $1111_{(2)} = F$
+
+**Resposta:** $101111_{(2)} = 2F_{(16)}$ ✅
+
+**Exemplo 2: Converter $1110100111_{(2)}$ para hexadecimal**
+
+**Passo 1:**
+- `11 | 1010 | 0111` (sobraram 2 bits)
+
+**Passo 2:** Complete.
+- `0011 | 1010 | 0111`
+
+**Passo 3:** Converta.
+- $0011 = 3$
+- $1010 = A$
+- $0111 = 7$
+
+**Resposta:** $1110100111_{(2)} = 3A7_{(16)}$ ✅
+
+**Exemplo 3: Converter $111100001100_{(2)}$ para hexadecimal**
+
+**Passo 1:**
+- `1111 | 0000 | 1100` (perfeito, 3 grupos)
+
+**Passo 2:** Converta.
+- $1111 = F$
+- $0000 = 0$
+- $1100 = C$
+
+**Resposta:** $111100001100_{(2)} = F0C_{(16)}$ ✅
+
+
+## 4. Números com Vírgula no Hexadecimal
+
+**A regra de ouro se mantém:**
+
+- **Parte inteira:** agrupa da **direita para a esquerda**.
+- **Parte fracionária:** agrupa da **esquerda para a direita**.
+- Se faltar bits, completa com zeros (inteira à esquerda, fracionária à direita).
+
+### 4.1 Hexadecimal com Vírgula → Binário com Vírgula
+
+**Método:** Cada dígito hexadecimal vira 4 bits, mantendo a vírgula no mesmo lugar.
+
+**Exemplo 1: Converter $5,C_{(16)}$ para binário**
+
+**Passo 1 - Inteira (5):**
+- $5 = 0101$
+
+**Passo 2 - Fracionária (C):**
+- $C = 1100$
+
+**Resposta:** $5,C_{(16)} = 101,11_{(2)}$ ✅ (tirando o zero da inteira)
+
+**Exemplo 2: Converter $1A,6_{(16)}$ para binário**
+
+**Passo 1 - Inteira (1A):**
+- $1 = 0001$
+- $A = 1010$
+- Inteira = `00011010` → simplifica: `11010`
+
+**Passo 2 - Fracionária (6):**
+- $6 = 0110$
+
+**Resposta:** $1A,6_{(16)} = 11010,011_{(2)}$ ✅
+
+### 4.2 Binário com Vírgula → Hexadecimal com Vírgula
+
+**Método:** Agrupe os bits de 4 em 4.
+
+- **Parte inteira:** da direita para esquerda.
+- **Parte fracionária:** da esquerda para direita.
+- Complete com zeros quando necessário.
+
+**Exemplo 1: Converter $101,11_{(2)}$ para hexadecimal**
+
+**Passo 1 - Inteira (101):**
+- `101` → falta 1 bit à esquerda → `0101` = 5
+
+**Passo 2 - Fracionária (11):**
+- `11` → falta 2 bits à direita → `1100` = C (12)
+
+**Resposta:** $101,11_{(2)} = 5,C_{(16)}$ ✅
+
+**Exemplo 2: Converter $11010,0110_{(2)}$ para hexadecimal**
+
+**Passo 1 - Inteira (11010):**
+- `1 | 1010` (agrupe da direita)
+- $1010 = A$
+- $1 → 0001 = 1$
+- Inteira = 1A
+
+**Passo 2 - Fracionária (0110):**
+- Já tem 4 bits: `0110` = 6
+
+**Resposta:** $11010,0110_{(2)} = 1A,6_{(16)}$ ✅
+
+**Exemplo 3: Converter $11101,00111_{(2)}$ para hexadecimal**
+
+**Passo 1 - Inteira (11101):**
+- `1 | 1101`
+- $1101 = D$
+- $1 → 0001 = 1$
+- Inteira = 1D
+
+**Passo 2 - Fracionária (00111):**
+- `00111` → agrupe da esquerda: `0011 | 1`
+- $0011 = 3$
+- `1` → falta 3 bits à direita → `1000` = 8
+- Fracionária = 38
+
+**Resposta:** $11101,00111_{(2)} = 1D,38_{(16)}$ ✅
+
+
+## 5. Operações Aritméticas no Hexadecimal
+
+As operações no hexadecimal seguem a mesma lógica, mas com a base 16: **quando a soma de uma coluna atinge 16, você vai 1 para a próxima casa.**
+
+### 5.1 Adição Hexadecimal
+
+**Regra de ouro:** "Some normal. Se der $\ge 16$, subtrai 16 e vai 1".
+
+**Exemplo 1: $F_{(16)} + 1_{(16)}$**
+
+<pre>
+  F
++ 1
+----
+</pre>
+
+$F = 15$. $15 + 1 = 16$. Como 16 é a base, escrevemos 0 e vai 1.
+
+**Resposta:** $F_{(16)} + 1_{(16)} = 10_{(16)}$ ✅ (que é 16 em decimal)
+
+**Exemplo 2: $2F_{(16)} + 3A_{(16)}$**
+
+<pre>
+  2 F                   $\color{white}\text{15 + 10 = 25; 25 - 16 = 9, escreve(9), vai(1)}$
++ 3 A                   $\color{white}\text{2 + 3 + 1 = 6}$
+------
+  6 9
+</pre>
+
+**Passo a passo:**
+- Coluna 1 (direita): $15 + 10 = 25$. $25 \ge 16$, então: $25 - 16 = 9$, vai 1.
+- Coluna 2 (esquerda): $2 + 3 + 1$(que veio) $= 6$. $6 < 16$, escreve 6.
+
+**Resposta:** $2F_{(16)} + 3A_{(16)} = 69_{(16)}$ ✅
+
+**Prova em decimal:** $2F=47$, $3A=58$, $47+58=105$. $69_{(16)}=6\times16+9=96+9=105$. ✅
+
+**Exemplo 3: $A7C_{(16)} + 2F5_{(16)}$**
+
+<pre>
+  A 7 C                    $\color{white}\text{12 + 5 = 17; 17 - 16 = 1, escreve(1), vai(1)}$
++ 2 F 5                    $\color{white}\text{7 + 15 + 1 = 23; 23 - 16 = 7, escreve(7), vai(1)}$
+--------                   $\color{white}\text{10 + 2 + 1 = 13; escreve(13 ou D)}$
+  D 7 1
+</pre>
+
+**Passo a passo:**
+- Coluna 1: $12 + 5 = 17$. $17 - 16 = 1$, vai 1.
+- Coluna 2: $7 + 15 + 1 = 23$. $23 - 16 = 7$, vai 1.
+- Coluna 3: $10 + 2 + 1 = 13$. $13 = D$ (menor que 16, escreve D).
+
+**Resposta:** $A7C_{(16)} + 2F5_{(16)} = D71_{(16)}$ ✅
+
+**Prova:** $A7C=2684$, $2F5=757$, total=3441. $D71=13\times256 + 7\times16 + 1 = 3328+112+1=3441$. ✅
+
+### 5.2 Subtração Hexadecimal
+
+**Regra de ouro:** Se o número de cima for menor que o de baixo, "empresta" 1 da casa à esquerda. Esse 1 emprestado **vale 16** na casa atual.
+
+**Exemplo 1: $69_{(16)} - 2F_{(16)}$**
+
+<pre>
+  6 9
+$\color{white}\text{-}$ 2 F
+------
+  5 8
+</pre>
+
+**Passo a passo:**
+- Coluna 1: $9 - 15$ = não dá! Empresta da coluna 2.
+- Coluna 2: $6$ vira $5$ (pois emprestou 1).
+- Coluna 1: $9 + 16 = 25$. Agora $25 - 15 = 10$ (A). Escreve A.
+- Coluna 2: $5 - 2 = 3$. Escreve 3.
+
+**Resposta:** $69_{(16)} - 2F_{(16)} = 3A_{(16)}$ ✅
+
+**Prova:** $69=105$, $2F=47$, $105-47=58$. $3A=3\times16+10=58$. ✅
+
+**Exemplo 2: $100_{(16)} - 1_{(16)}$**
+
+<pre>
+  1 0 0
+$\color{white}\text{-}$  0 1
+--------
+  0 F F
+</pre>
+
+**Passo a passo:**
+- Coluna 1: $0 - 1$ = não dá! Vai emprestar da coluna 2.
+- Coluna 2: $0 - 1$ também não dá! Vai emprestar da coluna 3.
+- Coluna 3: $1$ vira $0$. Coluna 2 recebe 16.
+- Coluna 2: agora tem 16. Empresta 1 para coluna 1.
+- Coluna 2 vira 15 (F).
+- Coluna 1 recebe 16.
+- Coluna 1: $16 - 1 = 15$ (F). Escreve F.
+- Coluna 2: $15 - 0 = F$. Escreve F.
+- Coluna 3: $0 - 0 = 0$.
+
+**Resposta:** $100_{(16)} - 1_{(16)} = FF_{(16)}$ ✅
+
+**Prova:** $100_{(16)}=256$, $256-1=255$. $FF=15\times16+15=240+15=255$. ✅
+
+
+## 6. Aplicações Reais do Hexadecimal
+
+### 6.1 Cores em HTML/CSS
+
+As cores na web são representadas por 6 dígitos hexadecimais: `#RRGGBB`.
+
+- `#FF0000` = Vermelho puro (R=255, G=0, B=0)
+- `#00FF00` = Verde puro
+- `#0000FF` = Azul puro
+- `#FFFFFF` = Branco (tudo no máximo)
+- `#000000` = Preto (tudo no mínimo)
+
+### 6.2 Endereços de Memória
+
+Quando você vê um erro como `0x7FFF3A1B`, é um endereço de memória em hexadecimal.
+
+- `0x` é o prefixo que indica hexadecimal (em programação)
+- `7FFF3A1B` é um endereço de 32 bits (8 dígitos hexa = 32 bits)
+
+### 6.3 Coisas que Você Vê em Hexadecimal
+
+- Códigos de erro (ex: `0x80070005` no Windows)
+- Endereços MAC (ex: `00:1A:2B:3C:4D:5E`)
+- Hash MD5/SHA (ex: `5d41402abc4b2a76b9719d911017c592`)
+- Unicode/ASCII (ex: A = `0x41`)
+- Debugging de programas (valores de registradores)
+
+### 6.4 Por Que 0x É Usado?
+
+Em linguagens como C, C++, Java, Python, o prefixo `0x` indica que o número está em hexadecimal.
+
+**Exemplo em Python:**
+<pre> python
+numero = 0x2F  # 47 em decimal
+print(numero)  # Imprime 47
+</pre>
+
+
+## 7. Tabela de Comparação: Octal vs Hexadecimal
+
+| Característica | Octal | Hexadecimal |
+|----------------|-------|-------------|
+| Base | 8 | 16 |
+| Bits por dígito | 3 | 4 |
+| Algarismos | 0-7 | 0-9, A-F |
+| Uso comum | Permissões Linux | Cores, endereços, programação |
+| Exemplo | `chmod 755` | `#FF5733` |
+| Prefixo (programação) | `0` (ex: `0755`) | `0x` (ex: `0x2F`) |
+
+
+## 8. Exercícios
+
+<details>
+<summary>📗 Exercício 1 — Hexadecimal → Decimal (fácil)</summary>
+
+**Enunciado:** Converta os seguintes números hexadecimais para decimal:
+- a) $1A_{(16)}$
+- b) $FF_{(16)}$
+- c) $3C8_{(16)}$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**a)** $1A_{(16)} = 1 \times 16 + 10 = 16 + 10 = 26$
+
+**b)** $FF_{(16)} = 15 \times 16 + 15 = 240 + 15 = 255$
+
+**c)** $3C8_{(16)} = 3 \times 256 + 12 \times 16 + 8 = 768 + 192 + 8 = 968$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Decimal → Hexadecimal (fácil)</summary>
+
+**Enunciado:** Converta os seguintes números decimais para hexadecimal:
+- a) 26
+- b) 255
+- c) 4096
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**a)** 26 = $1A_{(16)}$ (26 ÷ 16 = 1 r10(A), 1 ÷ 16 = 0 r1 → 1A)
+
+**b)** 255 = $FF_{(16)}$ (255 ÷ 16 = 15 r15(F), 15 ÷ 16 = 0 r15(F) → FF)
+
+**c)** 4096 = $1000_{(16)}$ (4096 ÷ 16 = 256 r0, 256 ÷ 16 = 16 r0, 16 ÷ 16 = 1 r0, 1 ÷ 16 = 0 r1 → 1000)
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Hexadecimal → Binário (médio)</summary>
+
+**Enunciado:** Converta os seguintes números hexadecimais para binário:
+- a) $5A_{(16)}$
+- b) $F3_{(16)}$
+- c) $2C7_{(16)}$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**a)** $5A_{(16)} = 5(0101) A(1010) = 01011010_{(2)} = 1011010_{(2)}$
+
+**b)** $F3_{(16)} = F(1111) 3(0011) = 11110011_{(2)}$
+
+**c)** $2C7_{(16)} = 2(0010) C(1100) 7(0111) = 001011000111_{(2)} = 1011000111_{(2)}$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Adição Hexadecimal (médio)</summary>
+
+**Enunciado:** Calcule:
+- a) $2A_{(16)} + 1F_{(16)}$
+- b) $F0_{(16)} + 10_{(16)}$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**a)** $2A_{(16)} + 1F_{(16)} = 49_{(16)}$
+
+<pre>
+  2 A
++ 1 F
+-----
+  4 9
+</pre>
+
+**b)** $F0_{(16)} + 10_{(16)} = 100_{(16)}$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Subtração Hexadecimal (difícil)</summary>
+
+**Enunciado:** Calcule:
+- a) $4A_{(16)} - 1F_{(16)}$
+- b) $100_{(16)} - 3A_{(16)}$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**a)** $4A_{(16)} - 1F_{(16)} = 2B_{(16)}$
+
+<pre>
+  4 A
+$\color{white}\text{-}$ 1 F
+-----
+  2 B
+</pre>
+
+**b)** $100_{(16)} - 3A_{(16)} = C6_{(16)}$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Binário com Vírgula → Hexadecimal (desafio)</summary>
+
+**Enunciado:** Converta $1101,101_{(2)}$ para hexadecimal.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Parte inteira (1101):**
+- `1101` = D
+
+**Parte fracionária (101):**
+- `101` → falta 1 bit à direita → `1010` = A
+
+**Resposta:** $1101,101_{(2)} = D,A_{(16)}$ ✅
+
+</details>
+</details>
+
+
+## 9. Glossário
+
+| Termo | Definição |
+|-------|-----------|
+| **Hexadecimal** | Sistema numérico de base 16, usa algarismos 0-9 e A-F |
+| **Nibble** | Grupo de 4 bits, representado por 1 dígito hexadecimal |
+| **Byte** | Grupo de 8 bits, representado por 2 dígitos hexadecimais |
+| **0x** | Prefixo usado em programação para indicar número hexadecimal |
+| **#** | Prefixo usado em HTML/CSS para indicar cor hexadecimal |
+| **RGB** | Sistema de cores usando Vermelho, Verde e Azul (0-255 cada) |
+
+
+## Resumo
+
+> "O sistema hexadecimal é o padrão da indústria — com 16 algarismos (0-9 e A-F) e uma relação direta de 4 bits por dígito, ele compacta o binário em uma forma legível e eficiente, sendo essencial para representar cores, endereços de memória, códigos de erro e tudo que exige precisão na programação e no hardware."

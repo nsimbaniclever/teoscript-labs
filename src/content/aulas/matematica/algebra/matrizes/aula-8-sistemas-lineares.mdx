@@ -1,0 +1,549 @@
+# MATRIZES E SISTEMAS LINEARES
+
+## 1. Definição Formal
+
+### 1.1 Representação Matricial de um Sistema Linear
+
+Um sistema de $m$ equações lineares com $n$ incógnitas pode ser escrito na forma matricial:
+
+$$
+A \vec{x} = \vec{b}
+$$
+
+Onde:
+- $A \in \mathbb{R}^{m \times n}$ é a **matriz dos coeficientes**
+- $\vec{x} \in \mathbb{R}^n$ é o **vetor das incógnitas**
+- $\vec{b} \in \mathbb{R}^m$ é o **vetor dos termos constantes**
+
+**Exemplo:**
+$$
+\begin{cases}
+2x + 3y = 8 \\
+x - y = 1
+\end{cases}
+$$
+
+Forma matricial:
+$$
+\begin{bmatrix} 2 & 3 \\ 1 & -1 \end{bmatrix} \begin{bmatrix} x \\ y \end{bmatrix} = \begin{bmatrix} 8 \\ 1 \end{bmatrix}
+$$
+
+### 1.2 Matriz Aumentada
+
+A **matriz aumentada** do sistema é:
+$$
+[A \mid \vec{b}] =
+\left[\begin{array}{cc|c}
+2 & 3 & 8 \\
+1 & -1 & 1
+\end{array}\right]
+$$
+
+## 2. Solução de Sistemas Lineares
+
+### 2.1 Solução via Matriz Inversa (para $m = n$ e $A$ invertível)
+
+Se $A$ é quadrada ($n \times n$) e invertível ($\det(A) \neq 0$), a solução é:
+
+$$
+\vec{x} = A^{-1} \vec{b}
+$$
+
+**Exemplo:**
+$$
+\begin{cases}
+2x + 3y = 8 \\
+x - y = 1
+\end{cases}
+$$
+
+$$
+A = \begin{bmatrix} 2 & 3 \\ 1 & -1 \end{bmatrix}, \quad \vec{b} = \begin{bmatrix} 8 \\ 1 \end{bmatrix}
+$$
+
+$$
+\det(A) = 2 \cdot (-1) - 3 \cdot 1 = -2 - 3 = -5 \neq 0
+$$
+
+$$
+A^{-1} = \frac{1}{-5} \begin{bmatrix} -1 & -3 \\ -1 & 2 \end{bmatrix} = \begin{bmatrix} 0.2 & 0.6 \\ 0.2 & -0.4 \end{bmatrix}
+$$
+
+$$
+\vec{x} = A^{-1} \vec{b} = \begin{bmatrix} 0.2 & 0.6 \\ 0.2 & -0.4 \end{bmatrix} \begin{bmatrix} 8 \\ 1 \end{bmatrix} = \begin{bmatrix} 1.6 + 0.6 \\ 1.6 - 0.4 \end{bmatrix} = \begin{bmatrix} 2.2 \\ 1.2 \end{bmatrix}
+$$
+
+**Solução:** $x = 2.2, y = 1.2$
+
+### 2.2 Solução via Eliminação Gaussiana (Método Geral)
+
+Para sistemas com $m \neq n$ ou quando $A$ não é invertível, usamos **eliminação gaussiana**:
+
+**Passo 1:** Escrever a matriz aumentada $[A \mid \vec{b}]$.  
+**Passo 2:** Aplicar operações elementares nas linhas para transformar $A$ em uma **matriz escalonada** (triangular superior).  
+**Passo 3:** Resolver por **substituição regressiva** (de baixo para cima).
+
+### 2.3 Exemplo de Eliminação Gaussiana
+
+$$
+\begin{cases}
+x + 2y + 3z = 10 \\
+2x + 3y + z = 13 \\
+3x + y + 2z = 11
+\end{cases}
+$$
+
+**Matriz aumentada:**
+$$
+\left[\begin{array}{ccc|c}
+1 & 2 & 3 & 10 \\
+2 & 3 & 1 & 13 \\
+3 & 1 & 2 & 11
+\end{array}\right]
+$$
+
+**Passo 1:** Eliminar $x$ das linhas 2 e 3:
+
+- $L_2 \leftarrow L_2 - 2L_1$:
+$$
+[0 \quad -1 \quad -5 \quad | \quad -7]
+$$
+
+- $L_3 \leftarrow L_3 - 3L_1$:
+$$
+[0 \quad -5 \quad -7 \quad | \quad -19]
+$$
+
+**Matriz após passo 1:**
+$$
+\left[\begin{array}{ccc|c}
+1 & 2 & 3 & 10 \\
+0 & -1 & -5 & -7 \\
+0 & -5 & -7 & -19
+\end{array}\right]
+$$
+
+**Passo 2:** Eliminar $y$ da linha 3:
+
+- $L_3 \leftarrow L_3 - 5L_2$:
+$$
+[0 \quad 0 \quad 18 \quad | \quad 16]
+$$
+
+**Matriz escalonada:**
+$$
+\left[\begin{array}{ccc|c}
+1 & 2 & 3 & 10 \\
+0 & -1 & -5 & -7 \\
+0 & 0 & 18 & 16
+\end{array}\right]
+$$
+
+**Passo 3:** Substituição regressiva:
+
+- Da linha 3: $18z = 16 \Rightarrow z = \frac{16}{18} = \frac{8}{9}$
+- Da linha 2: $-y - 5z = -7 \Rightarrow -y - 5\cdot\frac{8}{9} = -7 \Rightarrow -y - \frac{40}{9} = -7 \Rightarrow -y = -7 + \frac{40}{9} = \frac{-63 + 40}{9} = -\frac{23}{9} \Rightarrow y = \frac{23}{9}$
+- Da linha 1: $x + 2y + 3z = 10 \Rightarrow x + 2\cdot\frac{23}{9} + 3\cdot\frac{8}{9} = 10 \Rightarrow x + \frac{46}{9} + \frac{24}{9} = 10 \Rightarrow x + \frac{70}{9} = 10 \Rightarrow x = 10 - \frac{70}{9} = \frac{90 - 70}{9} = \frac{20}{9}$
+
+**Solução:** $x = \frac{20}{9}, y = \frac{23}{9}, z = \frac{8}{9}$
+
+## 3. Classificação de Sistemas Lineares
+
+| Tipo | Condição | Número de Soluções |
+|------|----------|-------------------|
+| **Sistema Possível e Determinado (SPD)** | $\det(A) \neq 0$ (ou posto = n) | Solução única |
+| **Sistema Possível e Indeterminado (SPI)** | $\det(A) = 0$ e $\vec{b} \in \text{Col}(A)$ | Infinitas soluções |
+| **Sistema Impossível (SI)** | $\vec{b} \notin \text{Col}(A)$ | Nenhuma solução |
+
+### 3.1 Exemplo de SPD
+$$
+\begin{cases}
+x + y = 3 \\
+x - y = 1
+\end{cases}
+$$
+$\det(A) = -2 \neq 0$ → **Solução única:** $(2, 1)$
+
+### 3.2 Exemplo de SPI
+$$
+\begin{cases}
+x + y = 3 \\
+2x + 2y = 6
+\end{cases}
+$$
+As equações são múltiplas → $\det(A) = 0$.  
+**Infinitas soluções:** $y = 3 - x$.
+
+### 3.3 Exemplo de SI
+$$
+\begin{cases}
+x + y = 3 \\
+x + y = 5
+\end{cases}
+$$
+As equações são inconsistentes → **Nenhuma solução**.
+
+## 4. Exemplos Lúdicos Aprimorados
+
+### 🍔 EXEMPLO 1 – A LANCHONETE (SISTEMA DE PEDIDOS)
+
+A lanchonete quer saber quantos de cada sanduíche foram vendidos.
+
+**Ingredientes disponíveis:**
+- Pão: 10 unidades
+- Carne: 8 unidades
+- Queijo: 6 unidades
+
+**Sanduíches:**
+- Hambúrguer: (1, 1, 0)
+- Queijo: (0, 0, 1)
+- Combo: (1, 1, 1)
+
+**Sistema:**
+$$
+\begin{cases}
+h + c = 10 \\
+h + c = 8 \\
+q + c = 6
+\end{cases}
+$$
+
+**Forma matricial:**
+$$
+\begin{bmatrix}
+1 & 0 & 1 \\
+1 & 0 & 1 \\
+0 & 1 & 1
+\end{bmatrix}
+\begin{bmatrix}
+h \\ q \\ c
+\end{bmatrix}
+=
+\begin{bmatrix}
+10 \\ 8 \\ 6
+\end{bmatrix}
+$$
+
+As duas primeiras equações são $h + c = 10$ e $h + c = 8$ → **Sistema Impossível!**
+
+**Interpretação:** Os ingredientes disponíveis não são consistentes com os sanduíches vendidos. Algo está errado no estoque ou nos registros.
+
+### 🧃 EXEMPLO 2 – A CANTINA (DIETA PERSONALIZADA)
+
+Um nutricionista quer uma dieta com:
+- 40g de açúcar
+- 20mg de cálcio
+- 100mg de vitamina C
+
+**Alimentos:**
+- Suco: (10, 0, 50)
+- Leite: (5, 20, 0)
+- Bolo: (30, 0, 0)
+
+**Sistema:**
+$$
+\begin{cases}
+10s + 5l + 30b = 40 \\
+20l = 20 \\
+50s = 100
+\end{cases}
+$$
+
+**Resolução:**
+- Da terceira: $s = 2$
+- Da segunda: $l = 1$
+- Da primeira: $10(2) + 5(1) + 30b = 40 \Rightarrow 20 + 5 + 30b = 40 \Rightarrow 30b = 15 \Rightarrow b = 0.5$
+
+**Solução:** $s = 2, l = 1, b = 0.5$ → 2 sucos, 1 leite, 0.5 bolo.
+
+## 5. Aplicação na Tese: Regressão Linear
+
+Em regressão linear, o sistema normal é:
+
+$$
+X^T X \vec{w} = X^T \vec{y}
+$$
+
+**Onde:**
+- $X$ é a matriz de dados ($n \times p$)
+- $\vec{y}$ é o vetor de alvos ($n \times 1$)
+- $\vec{w}$ é o vetor de pesos ($p \times 1$)
+
+**Solução:** $\vec{w} = (X^T X)^{-1} X^T \vec{y}$ (se $X^T X$ for invertível).
+
+**Interpretação:** A regressão linear é um sistema linear que encontra os pesos que minimizam o erro quadrático.
+
+## 6. Quando Fazer um Exercício Computacional?
+
+**Aqui faz MUITO sentido!** Porque:
+- Resolver sistemas lineares manualmente é trabalhoso para $3 \times 3$ ou maiores.
+- Computacionalmente, é trivial.
+- É essencial para regressão linear e otimização.
+
+## 7. Exercícios Propostos (Manuais)
+
+<details>
+<summary>📗 Exercício 1 (Solução via Inversa)</summary>
+
+**Enunciado:** Resolva o sistema:
+$$
+\begin{cases}
+2x + y = 5 \\
+x + 3y = 7
+\end{cases}
+$$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+$A = \begin{bmatrix} 2 & 1 \\ 1 & 3 \end{bmatrix}, \quad \det(A) = 2 \cdot 3 - 1 \cdot 1 = 5$
+
+$A^{-1} = \frac{1}{5} \begin{bmatrix} 3 & -1 \\ -1 & 2 \end{bmatrix}$
+
+$\vec{x} = A^{-1} \vec{b} = \frac{1}{5} \begin{bmatrix} 3 & -1 \\ -1 & 2 \end{bmatrix} \begin{bmatrix} 5 \\ 7 \end{bmatrix} = \frac{1}{5} \begin{bmatrix} 15 - 7 \\ -5 + 14 \end{bmatrix} = \frac{1}{5} \begin{bmatrix} 8 \\ 9 \end{bmatrix} = \begin{bmatrix} 1.6 \\ 1.8 \end{bmatrix}$
+
+**Solução:** $x = 1.6, y = 1.8$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 (Solução via Eliminação Gaussiana)</summary>
+
+**Enunciado:** Resolva o sistema:
+$$
+\begin{cases}
+x + y + z = 6 \\
+2x - y + z = 3 \\
+x + 2y - z = 0
+\end{cases}
+$$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+Matriz aumentada:
+$$
+\left[\begin{array}{ccc|c}
+1 & 1 & 1 & 6 \\
+2 & -1 & 1 & 3 \\
+1 & 2 & -1 & 0
+\end{array}\right]
+$$
+
+**Passo 1:** $L_2 \leftarrow L_2 - 2L_1$, $L_3 \leftarrow L_3 - L_1$:
+$$
+\left[\begin{array}{ccc|c}
+1 & 1 & 1 & 6 \\
+0 & -3 & -1 & -9 \\
+0 & 1 & -2 & -6
+\end{array}\right]
+$$
+
+**Passo 2:** Trocar $L_2$ e $L_3$:
+$$
+\left[\begin{array}{ccc|c}
+1 & 1 & 1 & 6 \\
+0 & 1 & -2 & -6 \\
+0 & -3 & -1 & -9
+\end{array}\right]
+$$
+
+**Passo 3:** $L_3 \leftarrow L_3 + 3L_2$:
+$$
+\left[\begin{array}{ccc|c}
+1 & 1 & 1 & 6 \\
+0 & 1 & -2 & -6 \\
+0 & 0 & -7 & -27
+\end{array}\right]
+$$
+
+**Passo 4:** Substituição regressiva:
+- $-7z = -27 \Rightarrow z = \frac{27}{7}$
+- $y - 2z = -6 \Rightarrow y - 2\cdot\frac{27}{7} = -6 \Rightarrow y = -6 + \frac{54}{7} = \frac{-42 + 54}{7} = \frac{12}{7}$
+- $x + y + z = 6 \Rightarrow x + \frac{12}{7} + \frac{27}{7} = 6 \Rightarrow x + \frac{39}{7} = 6 \Rightarrow x = 6 - \frac{39}{7} = \frac{42 - 39}{7} = \frac{3}{7}$
+
+**Solução:** $x = \frac{3}{7}, y = \frac{12}{7}, z = \frac{27}{7}$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 (Classificação de Sistemas)</summary>
+
+**Enunciado:** Classifique os seguintes sistemas:
+
+a) $\begin{cases} x + y = 3 \\ 2x + 2y = 6 \end{cases}$
+
+b) $\begin{cases} x + y = 3 \\ x + y = 5 \end{cases}$
+
+c) $\begin{cases} x + y = 3 \\ x - y = 1 \end{cases}$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\det(A) = 0$, $\vec{b} \in \text{Col}(A)$ → **SPI** (infinitas soluções)
+
+b) $\vec{b} \notin \text{Col}(A)$ → **SI** (nenhuma solução)
+
+c) $\det(A) \neq 0$ → **SPD** (solução única)
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 (Regressão Linear)</summary>
+
+**Enunciado:** Dado:
+$$
+X = \begin{bmatrix}
+1 & 2 \\
+3 & 4 \\
+5 & 6
+\end{bmatrix}, \quad
+\vec{y} = \begin{bmatrix}
+5 \\ 11 \\ 17
+\end{bmatrix}
+$$
+
+a) Escreva o sistema normal $X^T X \vec{w} = X^T \vec{y}$.  
+b) Resolva para $\vec{w}$.  
+c) Verifique que $X\vec{w} = \vec{y}$.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $X^T X = \begin{bmatrix} 35 & 44 \\ 44 & 56 \end{bmatrix}, \quad X^T \vec{y} = \begin{bmatrix} 123 \\ 156 \end{bmatrix}$
+
+b) $\vec{w} = \begin{bmatrix} 1 \\ 2 \end{bmatrix}$ (já calculado na Aula 7)
+
+c) $X\vec{w} = \begin{bmatrix} 5 \\ 11 \\ 17 \end{bmatrix} = \vec{y}$ ✓
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 (Sistema com Infinitas Soluções)</summary>
+
+**Enunciado:** Resolva o sistema:
+$$
+\begin{cases}
+x + y + z = 3 \\
+2x + 2y + 2z = 6
+\end{cases}
+$$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+As equações são múltiplas → $x + y + z = 3$.
+
+**Solução:** $y = 3 - x - z$, onde $x, z \in \mathbb{R}$ (infinitas soluções).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 (Aplicação – Lanchonete)</summary>
+
+**Enunciado:** Uma lanchonete tem 3 sanduíches:
+- Hambúrguer: (1, 1, 0)
+- Queijo: (0, 0, 1)
+- Combo: (1, 1, 1)
+
+Sabendo que foram vendidos:
+- 10 pães
+- 8 carnes
+- 6 queijos
+
+a) Monte o sistema linear.  
+b) O sistema tem solução? Classifique-o.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\begin{cases}
+h + c = 10 \\
+h + c = 8 \\
+q + c = 6
+\end{cases}$
+
+b) As duas primeiras equações são inconsistentes: $h + c = 10$ e $h + c = 8$ → **SI** (sistema impossível).
+
+</details>
+</details>
+
+## 8. EXERCÍCIO COMPUTACIONAL
+
+<details>
+<summary>🐍 Ver código (Python/NumPy)</summary>
+
+```python
+import numpy as np
+
+# Sistema via inversa
+A = np.array([[2, 3], [1, -1]])
+b = np.array([8, 1])
+x = np.linalg.inv(A) @ b
+print("Solução:", x)
+
+# Sistema via eliminação (NumPy resolve diretamente)
+x = np.linalg.solve(A, b)
+print("Solução (solve):", x)
+
+# Regressão linear
+X = np.array([[1, 2], [3, 4], [5, 6]])
+y = np.array([5, 11, 17])
+w = np.linalg.lstsq(X, y, rcond=None)[0]
+print("Pesos:", w)
+print("Previsões:", X @ w)
+```
+
+</details>
+
+<details>
+<summary>📝 Ver código (R)</summary>
+
+```r
+# Sistema via inversa
+A <- matrix(c(2, 1, 3, -1), nrow=2)
+b <- c(8, 1)
+x <- solve(A) %*% b
+print(x)
+
+# Sistema via eliminação (solve direto)
+x <- solve(A, b)
+print(x)
+
+# Regressão linear
+X <- matrix(c(1, 2, 3, 4, 5, 6), nrow=3, ncol=2)
+y <- c(5, 11, 17)
+w <- solve(t(X) %*% X) %*% t(X) %*% y
+print(w)
+print(X %*% w)
+```
+
+</details>
+
+<details>
+<summary>📊 Ver instruções (Excel)</summary>
+
+- Use `=MATRIZ.MULT(MATRIZ.INVERSO(A1:B2); C1:C2)` para resolver via inversa.
+- Para regressão linear, use a função `PROJ.LIN` (LINEST).
+
+</details>
+
+> *Sistemas lineares são a aplicação mais direta de matrizes. A representação $A\vec{x} = \vec{b}$ permite resolver problemas de forma sistemática usando matriz inversa, eliminação gaussiana ou métodos numéricos. Em Machine Learning, a regressão linear é um sistema linear que encontra os pesos que minimizam o erro.*
+

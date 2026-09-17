@@ -1,0 +1,518 @@
+# <center>Coeficiente de Variação (CV)</center>
+
+## Introdução ao Coeficiente de Variação
+
+&emsp;&emsp;&emsp;Nas aulas anteriores, estudámos a **variância** e o **desvio-padrão** — as medidas de dispersão mais poderosas da estatística. Vimos que o desvio-padrão é **interpretável** (está na mesma unidade dos dados) e **fundamental** para a Regra Empírica. No entanto, o desvio-padrão apresenta uma **limitação crucial**: é uma medida **absoluta**.Considera o seguinte problema prático:<br><br>
+
+**Dois conjuntos de dados completamente diferentes:**
+- **Conjunto A (Salários em kz):** média = 2.000, desvio-padrão = 500
+- **Conjunto B (Idades em anos):** média = 30, desvio-padrão = 5
+
+**Pergunta:** Qual dos dois conjuntos tem **maior dispersão**?
+
+&emsp;&emsp;&emsp;Não conseguimos responder! Os dois conjuntos têm **unidades diferentes** (kz vs. anos) e **escalas diferentes** (milhares vs. dezenas). O desvio-padrão de A (500) é **100 vezes maior** que o de B (5), mas isso não significa que A tenha maior dispersão **relativa** — significa apenas que os salários estão numa escala maior. Considera agora um problema ainda mais subtil<br><br>
+
+**Dois conjuntos com a mesma unidade (kz), mas médias diferentes:**
+- **Empresa A:** média = 2.000 kz, desvio-padrão = 500 kz
+- **Empresa B:** média = 10.000 kz, desvio-padrão = 1.000 kz
+
+**Pergunta:** Qual empresa tem **salários mais homogéneos**?
+
+&emsp;&emsp;&emsp;O desvio-padrão de B (1.000) é **maior** que o de A (500). Mas a média de B também é **5 vezes maior**. Será que B tem realmente **maior dispersão relativa**? O desvio-padrão absoluto não responde a esta pergunta.<br><br>
+
+Precisamos, portanto, de uma medida que:
+1. **Seja relativa** (não absoluta) — para comparar conjuntos com escalas diferentes.
+2. **Seja adimensional** (sem unidade) — para comparar conjuntos com unidades diferentes.
+3. **Expresse a dispersão em relação à média** — para responder à pergunta "quão grande é o desvio-padrão comparado com a média?".
+
+&emsp;&emsp;&emsp;É precisamente aqui que entra o ***Coeficiente de Variação (CV)*** — a medida de dispersão **relativa** que resolve todos estes problemas..
+
+<center><details>
+<summary>📊 As medidas de dispersão</summary>
+<style>
+.r{font:14px system-ui;text-align:center}
+.r b{display:inline-block;padding:4px 10px;background:#333;color:#fff;border-radius:6px}
+.r i{display:block;width:2px;height:18px;background:#333;margin:0 auto}
+.r em{display:flex;gap:8px;justify-content:center;position:relative;padding-top:18px}
+.r em::before{content:'';position:absolute;top:0;left:12.5%;right:12.5%;height:2px;background:#333}
+.r em span{flex:1;padding:8px;border:2px solid #333;border-radius:8px;max-width:120px}
+.r em span::before{content:'';position:absolute;top:-18px;left:50%;width:2px;height:18px;background:#333}
+.r em span{position:relative}
+</style>
+<div class="r">
+  <b>Medidas de Dispersão</b>
+  <i></i>
+  <em>
+    <span>Amplitude<br>Total</span>
+    <span>Amplitude<br>Interquartil</span>
+    <span>Desvio<br>Médio</span>
+    <span>Variância</span>
+    <span>Desvio<br>Padrão</span>
+    <span style="background-color: blue; color: white;">Coef. de<br>Variação</span>
+  </em>
+</div>
+</details></center>
+
+> **💡 Dica de Ouro:** O desvio-padrão diz-te **quanto** os dados variam. O coeficiente de variação diz-te **quanto variam em relação à média**. É a diferença entre "500 kz" e "25% da média".
+
+## O que é o Coeficiente de Variação?
+
+&emsp;&emsp;&emsp;O **coeficiente de variação** é uma medida **relativa** de dispersão que expressa o desvio-padrão como **percentagem da média**.
+
+**📐 Fórmula**
+
+$$
+\color{blue} CV = \frac{s}{\bar{x}} \times 100\%
+$$
+
+Onde:
+- **s** = desvio-padrão (amostral)
+- **x̄** = média
+- **CV** = coeficiente de variação (em %)
+
+
+> O CV indica o **tamanho do desvio-padrão em relação à média**
+- Quanto **menor** o CV, mais **homogéneos** são os dados.
+- Quanto **maior** o CV, mais **heterogéneos** são os dados.
+
+> **💡 Por que "relativa"?** Porque o CV é **adimensional** (não tem unidade). Ele expressa a dispersão como **percentagem**, permitindo comparações justas entre conjuntos diferentes.
+
+** Diferença entre Desvio-Padrão e Coeficiente de Variação:**
+
+| -  | **Desvio-Padrão** | **Coeficiente de Variação** |
+|---------|---------|---------|
+| **Tipo** | Absoluto | Relativo |
+| **Unidade** | Original (kz, anos, kg) | Adimensional (%) |
+| **Compara conjuntos com...** | Mesma unidade e escala similar | Qualquer unidade ou escala |
+| **Interpretação** | "Em média, os dados afastam-se X da média" | "O desvio-padrão é X% da média" |
+| **Sensível à média?** | Não diretamente | Sim (está no denominador) |
+
+
+### Coeficiente de Variação para Dados Brutos (Não Agrupados)
+
+**📐 Método do Coeficiente de Variação para Dados Não Agrupados**
+
+
+- **1** --> Calcular a média x̄
+- **2** --> Calcular o desvio-padrão s
+- **3** --> Dividir s por x̄: s/x̄
+- **4** --> Multiplicar por 100: <code>CV = (s/x̄) × 100%</code>
+
+<details>
+<summary>📌 Exemplo do Coeficiente de Variação para Dados Não Agrupados</summary>
+
+**Problema:** Comparar a dispersão dos salários em duas empresas.
+
+| Empresa | Média (kz) | Desvio-Padrão (kz) |
+|---------|---------|---------|
+| **A** | 2.000 | 500 |
+| **B** | 10.000 | 1.000 |
+
+**Cálculo:**
+
+$$
+CV_A = \frac{500}{2000} \times 100\% = \mathbf{25\%}
+$$
+
+$$
+CV_B = \frac{1000}{10000} \times 100\% = \mathbf{10\%}
+$$
+
+✅ A Empresa A tem CV = **25%** e a Empresa B tem CV = **10%**.
+
+> **🔍 Interpretação:** Apesar do desvio-padrão da Empresa B (kz 1.000) ser **maior** que o da Empresa A (kz 500), a **dispersão relativa** da Empresa B é **menor** (10% vs. 25%). Isto significa que os salários da Empresa B são **mais homogéneos** em relação à sua média. Na Empresa A, o desvio-padrão representa 25% da média — há mais variabilidade relativa.
+</details>
+
+<details>
+<summary>📌 Exemplo do Coeficiente de Variação para Dados Não Agrupados</summary>
+
+**Problema:** Qual conjunto tem maior dispersão? (Comparando unidades diferentes)
+
+| Conjunto | Média | Desvio-Padrão |
+|---------|---------|---------|
+| **Altura (cm)** | 170 | 10 |
+| **Peso (kg)** | 70 | 10 |
+
+**Cálculo:**
+
+$$
+CV_{\text{altura}} = \frac{10}{170} \times 100\% \approx \mathbf{5{,}9\%}
+$$
+
+$$
+CV_{\text{peso}} = \frac{10}{70} \times 100\% \approx \mathbf{14{,}3\%}
+$$
+
+✅ A altura tem CV = **5,9%** e o peso tem CV = **14,3%**.
+
+> **🔍 Interpretação:** O **peso** tem **maior dispersão relativa** que a altura, mesmo com o mesmo desvio-padrão (10). Isto acontece porque a média do peso (70 kg) é menor que a da altura (170 cm), então o mesmo desvio-padrão representa uma percentagem maior da média. O CV permite esta comparação, que o desvio-padrão absoluto não permitia.
+</details>
+
+<details>
+<summary>📌 Exemplo do Coeficiente de Variação para Dados Não Agrupados no **R**</summary>
+```R
+- _Dados de exemplo (dados brutos)_
+notas <- c(12, 7, 9, 5, 12, 8, 6, 10, 7, 11)
+
+- _Média_
+media <- mean(notas)
+media
+
+- _Desvio Padrão Amostral_
+desvio <- sd(notas)
+desvio
+
+- _Coeficiente de Variação (CV)_
+cv <- (desvio / media) * 100
+cv
+```
+</details>
+
+<details>
+<summary>📌 Exemplo do Coeficiente de Variação para Dados Não Agrupados no **Python**</summary>
+
+```python
+import numpy as np
+import pandas as pd
+
+- _Dados de exemplo (dados brutos)_
+notas = np.array([12, 7, 9, 5, 12, 8, 6, 10, 7, 11])
+
+- _Média_
+media = np.mean(notas)
+print(media)
+
+- _Desvio Padrão Amostral_
+desvio = np.std(notas, ddof=1)
+print(desvio)
+
+- _Coeficiente de Variação (CV)_
+cv = (desvio / media) * 100
+print(cv)
+
+- _Alternativa com Pandas_
+df = pd.Series(notas)
+cv_pd = (df.std() / df.mean()) * 100
+print(cv_pd)
+```
+</details>
+
+
+### Coeficiente de Variação para Dados Agrupados por Lista
+
+&emsp;&emsp;&emsp;Quando os dados estão numa **tabela de frequências**, calculamos a média e o desvio-padrão com as fórmulas adaptadas, e depois aplicamos o CV.
+
+**📐 Fórmula do Coeficiente de Variação para Dados Agrupados por Lista**
+
+$$
+\color{blue} CV = \frac{s}{\bar{x}} \times 100\%
+$$
+
+Onde:
+- **s** = desvio-padrão (calculado com as frequências)
+- **x̄** = média (calculada com as frequências)
+
+<details>
+<summary>📌 Exemplo do Coeficiente de Variação para Dados Agrupados por Lista</summary>
+
+**Problema:** Calcular o CV das notas de 9 alunos:
+
+| Valor (xi) | fi |
+|---------|---------|
+| 4 | 1 |
+| 5 | 2 |
+| 6 | 3 |
+| 7 | 2 |
+| 8 | 1 |
+| **Total** | **9** |
+
+**Passo 1 — Média:**
+x̄ = (4×1 + 5×2 + 6×3 + 7×2 + 8×1) / 9 = 54/9 = 6
+
+**Passo 2 — Desvio-padrão (calculado na aula anterior):**
+s ≈ 1,22
+
+**Passo 3 — Coeficiente de Variação:**
+
+$$
+CV = \frac{1{,}22}{6} \times 100\% \approx \mathbf{20{,}3\%}
+$$
+
+✅ O CV é **20,3%**.
+
+> **🔍 Interpretação:** O desvio-padrão representa **20,3% da média**. Segundo a classificação típica, isto indica uma **dispersão moderada** (entre 15% e 30%). Os dados não são nem muito homogéneos nem muito heterogéneos.
+</details>
+
+### Coeficiente de Variação para Dados Agrupados por Intervalo
+
+&emsp;&emsp;&emsp;Quando os dados estão em **classes**, usamos o **ponto médio** de cada classe como representante xi.
+
+**📐 Fórmula do Coeficiente de Variação para Dados Agrupados por Intervalo**
+
+$$
+\color{blue} CV = \frac{s}{\bar{x}} \times 100\%
+$$
+
+Onde:
+- **s** = desvio-padrão (calculado com os pontos médios)
+- **x̄** = média (calculada com os pontos médios)
+
+<details>
+<summary>📌 Exemplo do Coeficiente de Variação para Dados Agrupados por Intervalo</summary>
+
+**Problema:** Calcular o CV das notas de 20 alunos agrupadas:
+
+| Classe | Intervalo | fi |
+|---------|---------|-----|
+| 1 | [4, 8[ | 7 |
+| 2 | [8, 12[ | 5 |
+| 3 | [12, 16[ | 5 |
+| 4 | [16, 20] | 3 |
+| **Total** | | **20** |
+
+**Passo 1 — Média (calculada na aula anterior):**
+x̄ = 10,8
+
+**Passo 2 — Desvio-padrão (calculado na aula anterior):**
+s ≈ 4,42
+
+**Passo 3 — Coeficiente de Variação:**
+
+$$
+CV = \frac{4{,}42}{10{,}8} \times 100\% \approx \mathbf{40{,}9\%}
+$$
+
+✅ O CV é **40,9%**.
+
+> **🔍 Interpretação:** O desvio-padrão representa **40,9% da média** — um valor **elevado** (CV > 30%). Isto indica que os dados são **heterogéneos** — há grande variabilidade nas notas em relação à média. Isto faz sentido: as notas variam de 4 a 20, uma faixa muito ampla.
+</details>
+
+## Classificação do CV
+
+&emsp;&emsp;&emsp;Não existe uma regra universal para classificar o CV, mas uma **referência comum** é:
+
+| CV | Classificação | Interpretação |
+|---------|---------|---------|
+| **≤ 15%** | **Baixo** | Dados homogéneos, baixa dispersão |
+| **15% — 30%** | **Médio** | Dispersão moderada |
+| **> 30%** | **Alto** | Dados heterogéneos, alta dispersão |
+
+> **⚠️ Atenção:** Esses limites são **referências gerais** e podem variar conforme a área de estudo. Por exemplo:
+> - Na **saúde**, CV > 20% já é considerado alto.
+> - Na **física**, CV < 5% é o esperado para medições precisas.
+> - Em **finanças**, CV entre 20% e 30% é comum para ações.
+
+
+
+## Vantagens e Desvantagens do CV
+
+| Vantagens | Desvantagens |
+|---------|----------|
+| ✅ **Permite comparação** entre conjuntos com médias diferentes | ❌ **Não pode ser usado** quando a média é próxima de zero (CV muito alto) |
+| ✅ **Permite comparação** entre conjuntos com unidades diferentes | ❌ Perde o sentido se a média for **negativa** |
+| ✅ **Medida adimensional** (sem unidade) — expressa em % | ❌ Sensível a valores **extremos** (assim como DP e média) |
+| ✅ **Intuitivo** — fácil de interpretar | ❌ O ponto de corte (15%, 30%) é **arbitrário** e depende da área |
+| ✅ Muito usado em **controle de qualidade** e **finanças** | ❌ Não faz sentido para dados **categóricos** |
+| ✅ **Padroniza** a dispersão para comparação justa | ❌ Depende da média (se a média não for representativa, o CV também não) |
+
+> **⚠️ Atenção!** O CV **não deve ser usado** quando a média é **próxima de zero**, pois o resultado pode ser extremamente alto e sem sentido prático.
+- **Exemplo:** Média = 1, DP = 1 → CV = 100% (mesmo com dados pouco dispersos).
+
+## Interpretação do CV
+
+> **💡 O CV é a medida de dispersão mais comparável**
+
+&emsp;&emsp;&emsp;O CV permite comparações que o desvio-padrão absoluto não permite. É a ferramenta ideal para **comparar a variabilidade relativa** entre conjuntos diferentes.
+
+**📌 Exemplos de interpretação:**
+
+| Contexto | Média | DP | CV | Interpretação |
+|---------|---------|---------|---------|---------|
+| **Salários (Empresa A)** | 2.000 kz | 500 kz | 25% | O DP é 25% da média — dispersão moderada |
+| **Salários (Empresa B)** | 10.000 kz | 1.000 kz | 10% | O DP é 10% da média — dispersão baixa |
+| **Altura** | 170 cm | 10 cm | 5,9% | O DP é 5,9% da média — muito homogéneo |
+| **Peso** | 70 kg | 10 kg | 14,3% | O DP é 14,3% da média — homogéneo |
+
+**📌 Comparação entre conjuntos:**
+
+| - | **Empresa A** | **Empresa B** |
+|---------|---------|---------|
+| **Média** | 2.000 kz | 10.000 kz |
+| **Desvio-Padrão** | 500 kz | 1.000 kz |
+| **CV** | **25%** | **10%** |
+| **Característica** | Salários mais heterogéneos | Salários mais homogéneos |
+| **Interpretação** | Maior dispersão relativa | Menor dispersão relativa |
+
+**Conclusão:** Mesmo com desvio-padrão absoluto maior, a Empresa B tem salários **relativamente mais homogéneos** (CV menor).
+
+## Comparação com outras medidas
+
+| Medida | Conjunto A (`2,5,7,9,12`) | Conjunto B (`6,7,7,7,8`) |
+|---------|---------|---------|
+| **Amplitude Total** | 10 | 2 |
+| **IQR** | 7 | 1 |
+| **Desvio Médio** | 2,8 | 0,4 |
+| **Variância** | 14,5 | 0,5 |
+| **Desvio Padrão** | 3,81 | 0,71 |
+| **CV** | **54,4%** | **10,1%** |
+
+> **🔍 Interpretação:** O Conjunto A tem CV = 54,4% (dispersão **muito alta**), enquanto o Conjunto B tem CV = 10,1% (dispersão **baixa**). A diferença relativa é **muito clara** com o CV — mais clara do que com o desvio-padrão absoluto (3,81 vs. 0,71), porque o CV tem em conta as médias.
+
+
+
+## 9. EXERCÍCIOS
+
+<details>
+<summary>📗 Exercício 1 — CV (Dados Brutos)</summary>
+
+**Enunciado:** Calcule o CV para os dados: 12, 7, 9, 5, 12, 8, 6, 10, 7, 11
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+Média = 87/10 = 8,7
+
+Desvio-padrão (calculado na aula anterior) = 2,37
+
+CV = (2,37 / 8,7) × 100% ≈ **27,24%**
+
+**Interpretação:** O CV é 27,24% → dispersão **moderada** (15%-30%). O desvio-padrão representa cerca de um quarto da média.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — CV (Dados Agrupados por Lista)</summary>
+
+**Enunciado:** Calcule o CV da tabela:
+
+| xi | fi |
+|---------|---------|
+| 5 | 2 |
+| 10 | 5 |
+| 15 | 3 |
+| **Total** | **10** |
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+Média = 105/10 = 10,5
+
+Desvio-padrão (calculado na aula anterior) ≈ 3,69
+
+CV = (3,69 / 10,5) × 100% ≈ **35,14%**
+
+**Interpretação:** O CV é 35,14% → dispersão **alta** (CV > 30%). Os dados são heterogéneos.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — CV (Dados Agrupados por Intervalo)</summary>
+
+**Enunciado:** Calcule o CV das notas agrupadas:
+
+| Classe | Intervalo | fi |
+|---------|---------|-----|
+| 1 | [0, 4[ | 3 |
+| 2 | [4, 8[ | 7 |
+| 3 | [8, 12[ | 5 |
+| 4 | [12, 16] | 3 |
+| **Total** | | **18** |
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+Média ≈ 7,78
+
+Desvio-padrão (calculado na aula anterior) ≈ 3,93
+
+CV = (3,93 / 7,78) × 100% ≈ **50,51%**
+
+**Interpretação:** O CV é 50,51% → dispersão **muito alta**. Os dados são muito heterogéneos.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Comparação de CV</summary>
+
+**Enunciado:** Dois investimentos têm os seguintes retornos:
+
+- **Investimento A:** retorno médio = 12%, desvio-padrão = 3%
+- **Investimento B:** retorno médio = 20%, desvio-padrão = 5%
+
+Qual investimento tem maior risco relativo?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+CV_A = (3 / 12) × 100% = 25%
+
+CV_B = (5 / 20) × 100% = 25%
+
+**Interpretação:** Ambos têm o **mesmo CV** (25%). Isto significa que, **relativamente à média**, ambos os investimentos têm o mesmo nível de risco. Embora o desvio-padrão de B seja maior (5% vs. 3%), o retorno médio também é maior, equilibrando o risco relativo.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — CV com Média Próxima de Zero</summary>
+
+**Enunciado:** Um conjunto de dados tem média 1 e desvio-padrão 1. Calcule o CV e explique por que é enganador.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+CV = (1 / 1) × 100% = 100%
+
+**Interpretação:** O CV de 100% sugere uma dispersão enorme. Mas se a média é 1 e o desvio-padrão é 1, os dados podem estar entre 0 e 2 — uma dispersão moderada. O problema é que a média está **muito próxima de zero**, o que faz o CV explodir. **O CV não deve ser usado quando a média é próxima de zero.**
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Classificação do CV</summary>
+
+**Enunciado:** Como você interpretaria um CV de 35% em um conjunto de dados de salários?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+Um CV de 35% indica que o desvio-padrão é **35% da média** dos salários. Isso significa que os salários têm uma **dispersão alta** (CV > 30%), ou seja, há **grande variabilidade** nos salários — alguns funcionários ganham muito mais ou muito menos que a média.
+
+**Interpretação prática:** Numa empresa com salário médio de 2.000 kz, um CV de 35% significa um desvio-padrão de 700 kz — os salários variam tipicamente entre 1.300 kz e 2.700 kz.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — Por que o CV é "relativo"?</summary>
+
+**Enunciado:** Explique por que o CV é considerado uma medida "relativa" de dispersão.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+O CV é considerado uma medida **relativa** porque expressa o desvio-padrão como **percentagem da média**. Ele é **adimensional** (não tem unidade), o que permite comparar conjuntos de dados com **médias diferentes** e **unidades de medida diferentes**.
+
+**Exemplo:** Comparar a dispersão de alturas (cm) com a dispersão de pesos (kg). O desvio-padrão absoluto não permite esta comparação (unidades diferentes). O CV permite, porque ambos são expressos em percentagem.
+
+</details>
+</details>
+
+> O desvio-padrão diz-te quanto os dados variam. O coeficiente de variação diz-te quanto variam em relação à média. É a diferença entre "500 kz" e "25% da média" — e é essa diferença que permite comparações justas entre mundos diferentes.

@@ -1,0 +1,503 @@
+# FORMATO XML
+
+## 1. INTRODUÇÃO
+
+Nas últimas três aulas, estudamos arquivos de texto, CSV e JSON. Vimos que cada formato tem seu propósito: CSV para tabelas simples, JSON para dados hierárquicos em APIs. Mas há um formato que foi o padrão antes de JSON existir, e ainda é amplamente usado em muitos sistemas: o **XML (eXtensible Markup Language)**.<br><br>
+
+XML é um formato de dados baseado em texto que usa **tags** (marcadores) para estruturar informações. Diferente do JSON, que usa chaves e colchetes, o XML usa uma sintaxe semelhante ao HTML — com tags de abertura e fechamento, atributos e hierarquia.<br><br>
+
+Imagine que você está organizando um armário. As prateleiras são como as tags XML: cada prateleira tem um nome (tag), e os objetos dentro dela são o conteúdo. Você pode ter prateleiras dentro de prateleiras (hierarquia), e cada prateleira pode ter etiquetas extras (atributos). O XML organiza dados dessa forma — hierárquica, descritiva e extensível.<br><br>
+
+Nesta aula, vamos estudar o XML: sua estrutura, como ler e escrever em várias linguagens, suas vantagens e desvantagens, e onde ele ainda é usado hoje.
+
+## 2. O QUE É XML?
+
+### 2.1 Definição
+
+> "XML (eXtensible Markup Language) é uma linguagem de marcação que define um conjunto de regras para codificar documentos em um formato legível por humanos e máquinas, usando tags para estruturar dados de forma hierárquica."
+
+### 2.2 Características principais
+
+| Característica | Descrição |
+|---------|----------|
+| **Formato** | Texto (UTF-8/UTF-16) |
+| **Estrutura** | Hierárquica (árvore de elementos) |
+| **Tags** | Definidas pelo usuário (extensível) |
+| **Atributos** | Metadados adicionais em elementos |
+| **Vantagens** | Auto-descritivo, extensível, validação via schemas |
+| **Uso principal** | Configurações, troca de dados empresariais, legados |
+
+### 2.3 Analogia
+
+XML é como um **armário com divisórias etiquetadas**:
+
+- **Elemento (tag):** Cada divisória do armário.
+- **Atributo:** Uma etiqueta na divisória (ex: "tamanho=grande").
+- **Conteúdo:** O que está dentro da divisória.
+- **Hierarquia:** Divisórias dentro de divisórias.
+
+## 3. ESTRUTURA DO XML
+
+### 3.1 Componentes básicos
+
+| Componente | Descrição | Exemplo |
+|---------|---------|---------|
+| **Elemento** | Tag de abertura e fechamento | `<nome>João</nome>` |
+| **Tag de abertura** | Início do elemento | `<nome>` |
+| **Tag de fechamento** | Fim do elemento | `</nome>` |
+| **Atributo** | Metadado no elemento | `<pessoa id="123">` |
+| **Conteúdo** | Texto dentro do elemento | `João` |
+| **Elemento vazio** | Tag única | `<elemento/>` |
+
+### 3.2 Exemplo: Pessoa em XML
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+<?xml version="1.0" encoding="UTF-8"?>
+<pessoa id="123">
+    <nome>Ana Souza</nome>
+    <idade>28</idade>
+    <cidade>São Paulo</cidade>
+    <ativo>true</ativo>
+    <salario>4500.50</salario>
+    <telefones>
+        <telefone principal="true">(11) 99999-9999</telefone>
+        <telefone>(11) 88888-8888</telefone>
+    </telefones>
+    <endereco>
+        <rua>Rua das Flores</rua>
+        <numero>123</numero>
+        <bairro>Centro</bairro>
+        <cep>01000-000</cep>
+    </endereco>
+</pessoa>
+</pre>
+
+### 3.3 Exemplo: Lista de pessoas em XML
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+<?xml version="1.0" encoding="UTF-8"?>
+<pessoas>
+    <pessoa id="1">
+        <nome>Ana Souza</nome>
+        <idade>28</idade>
+        <cidade>São Paulo</cidade>
+    </pessoa>
+    <pessoa id="2">
+        <nome>João Silva</nome>
+        <idade>35</idade>
+        <cidade>Rio de Janeiro</cidade>
+    </pessoa>
+    <pessoa id="3">
+        <nome>Maria Oliveira</nome>
+        <idade>42</idade>
+        <cidade>Belo Horizonte</cidade>
+    </pessoa>
+</pessoas>
+</pre>
+
+### 3.4 Regras de sintaxe XML
+
+| Regra | Descrição | Correto | Incorreto |
+|---------|---------|---------|---------|
+| **Tag de fechamento** | Todo elemento deve ser fechado | `<nome>João</nome>` | `<nome>João` |
+| **Aninhamento** | Tags devem ser fechadas na ordem correta | `<a><b></b></a>` | `<a><b></a></b>` |
+| **Letras maiúsculas/minúsculas** | XML é case-sensitive | `<Nome>` ≠ `<nome>` | `<Nome>` = `<nome>` |
+| **Aspas em atributos** | Atributos usam aspas | `<pessoa id="123">` | `<pessoa id=123>` |
+| **Caractere especial** | Escapar com entidades | `&lt;`, `&gt;`, `&amp;` | `<`, `>`, `&` |
+
+## 4. XML VS JSON — COMPARAÇÃO
+
+| Característica | JSON | XML |
+|---------|---------|---------|
+| **Sintaxe** | Chaves, colchetes, vírgulas | Tags com `<` e `>` |
+| **Tamanho** | Menor (compacto) | Maior (mais caracteres) |
+| **Legibilidade** | Excelente | Bom |
+| **Tipos de dados** | Nativos (string, number, bool) | Todos texto (com exceções) |
+| **Hierarquia** | Aninhamento via objetos/arrays | Aninhamento via tags |
+| **Atributos** | Não (apenas objetos) | Sim (atributos em elementos) |
+| **Validação** | Schemas externos (JSON Schema) | Schemas nativos (DTD, XSD) |
+| **Velocidade de parsing** | Mais rápido | Mais lento |
+| **Uso** | APIs, web, mobile | Configurações, sistemas legados, documentos |
+
+### 4.1 Exemplo comparativo: mesmo dado
+
+**JSON:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+{
+  "pessoa": {
+    "nome": "Ana",
+    "idade": 28,
+    "endereco": {
+      "rua": "Rua das Flores",
+      "numero": 123
+    }
+  }
+}
+</pre>
+
+**XML:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+<pessoa>
+  <nome>Ana</nome>
+  <idade>28</idade>
+  <endereco>
+    <rua>Rua das Flores</rua>
+    <numero>123</numero>
+  </endereco>
+</pessoa>
+</pre>
+
+## 5. LENDO E ESCREVENDO XML EM PYTHON
+
+### 5.1 O módulo `xml.etree.ElementTree`
+
+Python tem um módulo embutido para trabalhar com XML: `xml.etree.ElementTree`.
+
+### 5.2 Lendo um arquivo XML
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+import xml.etree.ElementTree as ET
+
+# Lendo arquivo XML
+print("\n📌 LENDO ARQUIVO XML")
+tree = ET.parse("pessoa.xml")
+root = tree.getroot()
+
+# Acessando elementos
+print(f"Tag raiz: {root.tag}")
+print(f"Atributo id: {root.get('id')}")
+
+# Percorrendo elementos
+for elemento in root:
+    print(f"{elemento.tag}: {elemento.text}")
+
+# Acessando elemento aninhado
+endereco = root.find("endereco")
+if endereco is not None:
+    rua = endereco.find("rua").text
+    print(f"Rua: {rua}")
+
+# Lendo lista de elementos
+telefones = root.find("telefones")
+if telefones is not None:
+    for telefone in telefones.findall("telefone"):
+        print(f"Telefone: {telefone.text} (principal: {telefone.get('principal', 'false')})")
+</pre>
+
+### 5.3 Escrevendo um arquivo XML
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+import xml.etree.ElementTree as ET
+
+# Criando a estrutura XML
+root = ET.Element("pessoa", id="123")
+
+# Adicionando elementos
+nome = ET.SubElement(root, "nome")
+nome.text = "Ana Souza"
+
+idade = ET.SubElement(root, "idade")
+idade.text = "28"
+
+cidade = ET.SubElement(root, "cidade")
+cidade.text = "São Paulo"
+
+# Criando elemento com atributo
+ativo = ET.SubElement(root, "ativo")
+ativo.text = "true"
+
+# Criando elemento aninhado
+endereco = ET.SubElement(root, "endereco")
+rua = ET.SubElement(endereco, "rua")
+rua.text = "Rua das Flores"
+numero = ET.SubElement(endereco, "numero")
+numero.text = "123"
+
+# Criando lista de elementos
+telefones = ET.SubElement(root, "telefones")
+tel1 = ET.SubElement(telefones, "telefone", principal="true")
+tel1.text = "(11) 99999-9999"
+tel2 = ET.SubElement(telefones, "telefone")
+tel2.text = "(11) 88888-8888"
+
+# Convertendo para string XML
+xml_string = ET.tostring(root, encoding="utf-8", method="xml")
+print(f"\n📌 XML GERADO:\n{xml_string.decode()}")
+
+# Salvando em arquivo
+tree = ET.ElementTree(root)
+tree.write("pessoa_saida.xml", encoding="utf-8", xml_declaration=True)
+print("\nArquivo XML salvo!")
+</pre>
+
+### 5.4 Parseando XML com `xmltodict` (mais simples)
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+pip install xmltodict
+</pre>
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+import xmltodict
+import json
+
+# Lendo XML e convertendo para dicionário
+with open("pessoa.xml", "r", encoding="utf-8") as arquivo:
+    dados = xmltodict.parse(arquivo.read())
+    print(json.dumps(dados, indent=2))
+</pre>
+
+## 6. XML EM OUTRAS LINGUAGENS
+
+### 6.1 JavaScript (Node.js)
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+const fs = require('fs');
+const xml2js = require('xml2js');
+
+// Ler XML
+const xml = fs.readFileSync('pessoa.xml', 'utf-8');
+xml2js.parseString(xml, (err, result) => {
+    console.log(result.pessoa.nome[0]);
+});
+
+// Escrever XML
+const builder = new xml2js.Builder();
+const xmlString = builder.buildObject({
+    pessoa: {
+        nome: 'Ana',
+        idade: 28
+    }
+});
+fs.writeFileSync('saida.xml', xmlString);
+</pre>
+
+### 6.2 Java (JAXB)
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.Unmarshaller;
+import java.io.File;
+
+// Ler XML
+JAXBContext context = JAXBContext.newInstance(Pessoa.class);
+Unmarshaller unmarshaller = context.createUnmarshaller();
+Pessoa pessoa = (Pessoa) unmarshaller.unmarshal(new File("pessoa.xml"));
+</pre>
+
+## 7. VALIDAÇÃO DE XML — DTD E XSD
+
+### 7.1 DTD (Document Type Definition)
+
+Define a estrutura de um documento XML.
+
+**Exemplo (pessoa.dtd):**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+<!ELEMENT pessoa (nome, idade, cidade)>
+<!ELEMENT nome (#PCDATA)>
+<!ELEMENT idade (#PCDATA)>
+<!ELEMENT cidade (#PCDATA)>
+<!ATTLIST pessoa id CDATA #REQUIRED>
+</pre>
+
+### 7.2 XSD (XML Schema Definition)
+
+Mais poderoso que DTD, define tipos de dados.
+
+**Exemplo (pessoa.xsd):**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    <xs:element name="pessoa">
+        <xs:complexType>
+            <xs:sequence>
+                <xs:element name="nome" type="xs:string"/>
+                <xs:element name="idade" type="xs:integer"/>
+                <xs:element name="cidade" type="xs:string"/>
+            </xs:sequence>
+            <xs:attribute name="id" type="xs:string" use="required"/>
+        </xs:complexType>
+    </xs:element>
+</xs:schema>
+</pre>
+
+## 8. APLICAÇÕES REAIS
+
+| Aplicação | Como usa XML |
+|---------|----------|
+| **Arquivos de configuração** | Web.config, app.config, pom.xml (Maven) |
+| **Troca de dados empresarial** | EDI, sistemas legados |
+| **Formatos de documentos** | Office Open XML (docx, xlsx, pptx) |
+| **Web services SOAP** | Mensagens SOAP usam XML |
+| **Bancos de dados** | XML como formato de exportação |
+| **Fluxos de trabalho** | BPMN, UML |
+
+**Exemplo prático:** Arquivos do Microsoft Office (docx, xlsx) são na verdade arquivos ZIP contendo XML. Quando você descompacta um arquivo .docx, encontra vários arquivos XML que definem o conteúdo, formatação e metadados do documento.
+
+## 9. EXERCÍCIOS
+
+<details>
+<summary>📗 Exercício 1 — O que é XML? (Fácil)</summary>
+
+**Enunciado:** O que significa XML e qual sua principal característica?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** XML significa eXtensible Markup Language (Linguagem de Marcação Extensível).
+
+**Principal característica:** É uma linguagem de marcação que define regras para codificar documentos em formato legível por humanos e máquinas, usando tags para estruturar dados hierarquicamente.
+
+**Explicação:** XML é extensível porque o usuário define suas próprias tags.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Componentes XML (Fácil)</summary>
+
+**Enunciado:** Quais são os componentes básicos de um documento XML?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Elementos (tags de abertura e fechamento), atributos, conteúdo, e a declaração XML.
+
+**Exemplo:**
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+<?xml version="1.0"?>
+<elemento atributo="valor">conteúdo</elemento>
+</pre>
+**Explicação:** Todo documento XML tem uma hierarquia de elementos, opcionalmente com atributos.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — XML válido (Fácil)</summary>
+
+**Enunciado:** O seguinte XML é válido? `<nome>João<idade>30</nome></idade>`
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Não, é inválido.
+
+**Explicação:** As tags estão aninhadas incorretamente. A tag `<idade>` foi fechada depois de `</nome>`, mas deveria ser fechada antes. O correto é `<nome>João</nome><idade>30</idade>` ou `<pessoa><nome>João</nome><idade>30</idade></pessoa>`.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Criando XML (Médio)</summary>
+
+**Enunciado:** Crie um documento XML que represente um livro com título, autor, ano e capítulos.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+<?xml version="1.0" encoding="UTF-8"?>
+<livro>
+    <titulo>O Senhor dos Anéis</titulo>
+    <autor>J.R.R. Tolkien</autor>
+    <ano>1954</ano>
+    <capitulos>
+        <capitulo numero="1">O Condado</capitulo>
+        <capitulo numero="2">A Floresta Velha</capitulo>
+        <capitulo numero="3">O Conselho de Elrond</capitulo>
+    </capitulos>
+</livro>
+</pre>
+**Explicação:** O XML tem uma hierarquia com o elemento raiz `livro` contendo elementos aninhados.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Ler XML em Python (Médio)</summary>
+
+**Enunciado:** Escreva um trecho de código Python para ler um arquivo XML chamado `dados.xml`.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+import xml.etree.ElementTree as ET
+
+tree = ET.parse("dados.xml")
+root = tree.getroot()
+
+for elemento in root:
+    print(f"{elemento.tag}: {elemento.text}")
+</pre>
+**Explicação:** `ET.parse()` lê o arquivo XML, `getroot()` obtém o elemento raiz.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Escrever XML em Python (Médio)</summary>
+
+**Enunciado:** Escreva um trecho de código Python para criar um arquivo XML com um elemento `pessoa` contendo `nome` e `idade`.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+import xml.etree.ElementTree as ET
+
+root = ET.Element("pessoa")
+nome = ET.SubElement(root, "nome")
+nome.text = "Ana"
+idade = ET.SubElement(root, "idade")
+idade.text = "28"
+
+tree = ET.ElementTree(root)
+tree.write("pessoa.xml", encoding="utf-8", xml_declaration=True)
+</pre>
+**Explicação:** Cria a estrutura XML e salva em arquivo.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — XML vs JSON (Difícil)</summary>
+
+**Enunciado:** Qual a principal desvantagem do XML em comparação com o JSON?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** O XML é **mais verboso** (mais caracteres para representar os mesmos dados) e **mais lento de processar** que o JSON.
+
+**Exemplo:** O mesmo dado em JSON é mais compacto que em XML.
+
+**Explicação:** As tags de abertura e fechamento adicionam caracteres extras, e o parsing de XML é mais complexo que JSON.
+
+**Outras desvantagens:** XML é mais complexo de ler para humanos e tem uma sintaxe mais rígida.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — XML vs HTML (Desafio)</summary>
+
+**Enunciado:** Qual a diferença entre XML e HTML? Eles são a mesma coisa?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Não, não são a mesma coisa.
+
+| Característica | XML | HTML |
+|---------|---------|---------|
+| **Propósito** | Transportar e estruturar dados | Apresentar conteúdo na web |
+| **Tags** | Definidas pelo usuário | Predefinidas (html, body, p, etc.) |
+| **Fechamento** | Sempre deve fechar tags | Tags podem não fechar (`<br>`) |
+| **Case-sensitive** | Sim | Não |
+| **Validação** | Pode ser validado (DTD, XSD) | Não |
+
+**Explicação:** XML é para dados; HTML é para apresentação. XML é mais rígido e extensível.
+</details>
+</details>
+
+> XML foi o padrão antes de JSON. Mais verboso, mais lento, mais complexo — mas também mais poderoso. Com atributos, schemas e namespaces, o XML é a linguagem de dados dos sistemas corporativos, documentos complexos e integrações legadas. Ainda hoje, ele vive em configurações, arquivos de escritório e web services SOAP. O XML é um formato poderoso e extensível que ainda é amplamente usado em sistemas empresariais, configurações de aplicações e formatos de documentos. Embora tenha sido superado pelo JSON em muitos contextos — especialmente em APIs web — sua robustez, validação e suporte a schemas o mantêm relevante em nichos específicos.

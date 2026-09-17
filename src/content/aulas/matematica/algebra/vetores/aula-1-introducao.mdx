@@ -1,0 +1,253 @@
+---
+title: "Introdução a Vetores"
+author: "TeoScript Labs"
+date: "2026-09-05"
+references:
+  - author: "Lay, D. C., Lay, S. R., & McDonald, J. J."
+    title: "Linear Algebra and Its Applications"
+    year: 2015
+    publisher: "Pearson"
+    edition: "5th"
+  - author: "Strang, G."
+    title: "Introduction to Linear Algebra"
+    year: 2016
+    publisher: "Wellesley-Cambridge Press"
+    edition: "5th"
+---
+
+# INTRODUÇÃO A VETORES
+
+## 1. Definição Formal de Vetor
+
+> **Definição:** Um vetor é um elemento de um **espaço vetorial** sobre um corpo $\mathbb{K}$ (geralmente $\mathbb{R}$), que pode ser representado como uma **n-upla ordenada** de escalares:
+
+$$
+\vec{v} = (v_1, v_2, \ldots, v_n) \in \mathbb{R}^n
+$$
+
+onde cada $v_i \in \mathbb{R}$ é chamado de **coordenada** ou **componente** do vetor.
+
+## 1. Definição Formal de Vetor
+
+> **Definição:** Um vetor é um elemento de um **espaço vetorial** sobre um corpo $\mathbb{K}$ (geralmente $\mathbb{R}$), que pode ser representado como uma **n-upla ordenada** de escalares:
+
+$$
+\vec{v} = (v_1, v_2, \ldots, v_n) \in \mathbb{R}^n
+$$
+
+onde cada $v_i \in \mathbb{R}$ é chamado de **coordenada** ou **componente** do vetor.
+
+**Interpretação abstrata:**  
+O vetor é um **objeto matemático** que possui duas operações definidas (soma e multiplicação por escalar) e obedece aos axiomas de espaço vetorial.
+
+
+## 2. Representações: Vetor Linha vs Vetor Coluna
+
+Na prática computacional e algébrica, um vetor pode ser escrito de duas formas:
+
+### 2.1 Vetor Linha (Row Vector)
+
+> Disposição horizontal dos componentes.
+
+$$
+\vec{v} = \begin{bmatrix} v_1 & v_2 & \cdots & v_n \end{bmatrix}
+$$
+
+**Exemplo:**
+
+$$
+\vec{v} = \begin{bmatrix} 3 & -2 & 5 \end{bmatrix}
+$$
+
+### 2.2 Vetor Coluna (Column Vector)
+
+> Disposição vertical dos componentes.
+
+$$
+\vec{v} = \begin{bmatrix} v_1 \\ v_2 \\ \vdots \\ v_n \end{bmatrix}
+$$
+
+**Exemplo:**
+
+$$
+\vec{v} = \begin{bmatrix} 3 \\ -2 \\ 5 \end{bmatrix}
+$$
+
+**Observação importante:**  
+Ambas as representações denotam o **mesmo objeto matemático**. A escolha entre linha ou coluna é determinada pelo contexto operacional (ex: multiplicação por matrizes, onde a conformidade dimensional é exigida).
+
+## 3. Exemplos Lúdicos
+
+Apesar da definição formal, podemos pensar em vetores como **listas organizadas de números** que representam informações do mundo real.
+
+### Exemplo 1 – A mochila do João
+
+João tem na mochila:
+- 3 cadernos
+- 2 livros
+- 1 estojo
+- 5 canetas
+
+Isso pode ser um vetor:
+
+$$
+\vec{joão} = (3, 2, 1, 5) \in \mathbb{R}^4
+$$
+
+Cada posição tem um significado fixo: (cadernos, livros, estojo, canetas).
+
+### Exemplo 2 – As notas da Maria
+
+Maria fez 4 provas:
+- Matemática: 8.5
+- Português: 7.0
+- História: 9.2
+- Ciências: 6.8
+
+Vetor:
+
+$$
+\vec{maria} = (8.5, 7.0, 9.2, 6.8) \in \mathbb{R}^4
+$$
+
+### Exemplo 3 – O cardápio da cantina
+
+A cantina vende:
+- Pão: R$ 2,50
+- Suco: R$ 4,00
+- Bolo: R$ 3,50
+
+Vetor de preços:
+
+$$
+\vec{preços} = (2.50, 4.00, 3.50) \in \mathbb{R}^3
+$$
+
+
+## 4. Vetores no Plano Cartesiano (Geometria)
+
+Para $n = 2$, um vetor $\vec{v} = (x, y) \in \mathbb{R}^2$ pode ser interpretado geometricamente como uma **seta** partindo da origem $(0,0)$ até o ponto $(x, y)$.
+
+**Exemplo:**  
+$\vec{v} = (3, 4)$ → seta que anda 3 unidades no eixo X e 4 unidades no eixo Y.
+
+**Propriedades geométricas associadas:**
+- **Direção:** reta suporte da seta.
+- **Sentido:** orientação da seta (para onde a ponta aponta).
+- **Módulo (norma):** comprimento da seta, dado por $\|\vec{v}\| = \sqrt{x^2 + y^2}$.
+
+**Para $n > 3$**, a visualização geométrica direta não é possível, mas a estrutura algébrica permanece a mesma.
+
+
+## 5. Propriedades Algébricas Imediatas
+
+Sejam $\vec{u}, \vec{v}, \vec{w} \in \mathbb{R}^n$ e $c, d \in \mathbb{R}$. Valem:
+
+- **Comutatividade:** $\vec{u} + \vec{v} = \vec{v} + \vec{u}$
+- **Associatividade:** $(\vec{u} + \vec{v}) + \vec{w} = \vec{u} + (\vec{v} + \vec{w})$
+- **Elemento neutro:** $\vec{0} = (0,0,\ldots,0)$ tal que $\vec{v} + \vec{0} = \vec{v}$
+- **Inverso aditivo:** $-\vec{v} = (-v_1, -v_2, \ldots, -v_n)$ tal que $\vec{v} + (-\vec{v}) = \vec{0}$
+- **Distributividade:** $c(\vec{u} + \vec{v}) = c\vec{u} + c\vec{v}$ e $(c+d)\vec{v} = c\vec{v} + d\vec{v}$
+
+
+## 6. Relevancia para a Tese e Machine Learning
+
+No contexto de **Machine Learning** e **Otimização Distribuída** (como Federação de Aprendizado):
+
+- Cada **exemplo de treino** (uma imagem, um texto, um registro de cliente) é representado como um vetor em $\mathbb{R}^n$.
+- Cada **parâmetro de modelo** (pesos de uma rede neural) é um vetor em $\mathbb{R}^p$.
+- Cada **gradiente** calculado durante o backpropagation é um vetor em $\mathbb{R}^p$.
+- A **agregação de modelos** (FedAvg) é uma operação de soma e média de vetores.
+
+Portanto, **vetores são a linguagem fundamental** sobre a qual toda a matemática do aprendizado de máquina é construída.
+
+
+
+## 7. Resumo Estruturado
+
+| Conceito | Definição |
+|----------|-----------|
+| Vetor | Elemento de $\mathbb{R}^n$, representado por uma n-upla ordenada |
+| Vetor linha | Representação horizontal: $[v_1, v_2, \ldots, v_n]$ |
+| Vetor coluna | Representação vertical: $\begin{bmatrix} v_1 \\ v_2 \\ \vdots \\ v_n \end{bmatrix}$ |
+| Coordenadas | Cada $v_i$ é uma componente escalar |
+| $\mathbb{R}^n$ | Espaço vetorial real de dimensão $n$ |
+| Vetor nulo | $\vec{0} = (0,0,\ldots,0)$, elemento neutro da adição |
+| Interpretação geométrica (n=2,3) | Seta com direção, sentido e módulo |
+
+
+
+## 8. Exercícios Propostos
+
+<details>
+<summary>📗 Exercício 1 (Conceitual)</summary>
+
+**Enunciado:** Dado o vetor $\vec{v} = (4, -1, 7)$:
+
+a) Escreva-o na forma de vetor coluna.  
+b) Quantas coordenadas ele possui? Qual é o espaço vetorial associado?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\begin{bmatrix} 4 \\ -1 \\ 7 \end{bmatrix}$
+
+b) 3 coordenadas → espaço $\mathbb{R}^3$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 (Notação)</summary>
+
+**Enunciado:** Represente as seguintes informações como vetores em $\mathbb{R}^n$:
+
+a) As temperaturas registradas em 5 cidades: 22°C, 19°C, 25°C, 21°C, 18°C.  
+b) A quantidade de cada tipo de fruta em uma cesta: 5 maçãs, 3 bananas, 8 laranjas, 2 peras.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $(22, 19, 25, 21, 18) \in \mathbb{R}^5$
+
+b) $(5, 3, 8, 2) \in \mathbb{R}^4$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 (Geometria)</summary>
+
+**Enunciado:** Desenhe no plano cartesiano o vetor $\vec{u} = (2, 3)$ e o vetor $\vec{v} = (-1, 4)$.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** *(Desenho esperado: setas partindo da origem (0,0) até os pontos (2,3) e (-1,4) no plano cartesiano.)*
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 (Reflexão)</summary>
+
+**Enunciado:** Por que é útil representar dados do mundo real como vetores? Dê dois exemplos além dos citados.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Resposta livre. Exemplos esperados:
+
+- Representar um paciente por seus exames (pressão, glicose, idade).
+- Representar um filme por suas características (duração, ano, gênero codificado).
+
+</details>
+</details>
+
+> *O vetor é a estrutura mais básica e fundamental da Álgebra Linear. Todo o resto do curso — normas, produtos internos, transformações, bases, autovalores — será construído sobre esse conceito. Domine-o.*
+
+

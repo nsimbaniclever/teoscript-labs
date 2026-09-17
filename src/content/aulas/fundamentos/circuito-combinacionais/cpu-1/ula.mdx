@@ -1,0 +1,340 @@
+# Unidade Lógica e Aritmética
+
+## 1. Introdução
+
+Até agora, percorremos um longo caminho. Começamos com os fundamentos — o bit, o byte, os sistemas numéricos. Construímos a lógica com portas AND, OR, NOT. Aprendemos a somar e subtrair com circuitos combinacionais. Exploramos a memória com flip-flops, registradores e contadores. E finalmente, vimos como os barramentos conectam tudo em uma grande rede digital.<br><br>
+
+Mas há um lugar onde tudo isso se encontra — um componente que é, talvez, o mais importante de todo o computador. Um lugar onde os dados entram, as operações acontecem, e os resultados saem. Um lugar que é o **coração pulsante** da CPU. <br><br>
+
+Esse lugar é a **ULA** — a **Unidade Lógica e Aritmética**.<br><br>
+
+A ULA é o componente responsável por realizar **todas as operações matemáticas e lógicas** do computador. É ela que soma, subtrai, compara, faz AND, OR, XOR, e muito mais. Cada vez que você abre uma planilha, joga um jogo, ou assiste a um vídeo, a ULA está trabalhando incansavelmente, realizando bilhões de operações por segundo.<br><br>
+
+Nesta aula, vamos explorar a ULA em detalhes: como ela é construída, como funciona, quais operações ela realiza, e como ela se encaixa no resto da CPU. Vamos entender por que ela é chamada de "coração computacional" do processador.<br><br>
+
+
+## 2. O Que é a ULA?
+
+### 2.1 Definição
+
+A **ULA** (Unidade Lógica e Aritmética), ou **ALU** (*Arithmetic Logic Unit*) em inglês, é o circuito combinacional da CPU responsável por executar operações aritméticas e lógicas sobre os dados.
+
+### 2.2 Funções da ULA
+
+| Tipo | Operações | Exemplos |
+|------|-----------|----------|
+| **Aritméticas** | Soma, subtração, incremento, decremento | A + B, A - B, A + 1, A - 1 |
+| **Lógicas** | AND, OR, NOT, XOR, NAND, NOR | A AND B, A OR B, NOT A |
+| **Comparações** | Igualdade, maior que, menor que | A = B, A > B, A < B |
+| **Deslocamentos** | Shift left, shift right | A << 1, A >> 1 |
+
+### 2.3 Analogia
+
+Pense na ULA como uma **calculadora industrial** dentro da CPU:
+
+- Você coloca dois números (os operandos).
+- Você seleciona a operação (soma, subtração, AND, etc.).
+- A calculadora executa e devolve o resultado.
+- Tudo isso em frações de nanossegundo.
+
+### 2.4 Diagrama da ULA
+
+<details>
+<summary>🔧 Ver Diagrama da ULA</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 500px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">ULA (UNIDADE LÓGICA E ARITMÉTICA)</div>
+
+  <pre style="color: #93c5fd; font-size: 0.6rem; line-height: 1.6; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    ┌─────────────────────────────────────────────────────────────┐
+    │                         ULA                                 │
+    │                                                             │
+    │  ┌─────────────┐    ┌─────────────┐    ┌─────────────┐    │
+    │  │  SOMADOR    │    │  SUBTRATOR  │    │  AND, OR,   │    │
+    │  │  (A+B)      │    │  (A-B)      │    │  XOR, NOT   │    │
+    │  └─────────────┘    └─────────────┘    └─────────────┘    │
+    │                                                             │
+    │  ┌─────────────────────────────────────────────────────┐    │
+    │  │                  M U X                             │    │
+    │  │  (Seleciona a operação baseado no opcode)          │    │
+    │  └─────────────────────────────────────────────────────┘    │
+    │                                                             │
+    └─────────────────────────────────────────────────────────────┘
+         ↑                ↑                 ↑
+    ┌────┴────┐    ┌──────┴──────┐    ┌────┴────┐
+    │   A     │    │     B       │    │ Opcode  │
+    │(Operando│    │  (Operando  │    │ (Código │
+    │   1)    │    │     2)      │    │  da op.)│
+    └─────────┘    └─────────────┘    └─────────┘
+  </pre>
+
+</div>
+</details>
+
+
+## 3. Estrutura Interna da ULA
+
+### 3.1 Componentes principais
+
+| Componente | Função |
+|------------|--------|
+| **Circuitos Aritméticos** | Somador, subtrator, incrementador, decrementador |
+| **Circuitos Lógicos** | AND, OR, XOR, NOT, NAND, NOR |
+| **Multiplexador (MUX)** | Seleciona qual operação será enviada como resultado |
+| **Registradores de entrada** | Armazenam os operandos A e B |
+| **Registrador de saída** | Armazena o resultado |
+| **Flags (bits de status)** | Indicam condições especiais (overflow, zero, negativo) |
+
+### 3.2 As flags da ULA
+
+As **flags** são bits de status que indicam o resultado da última operação:
+
+| Flag | Significado | Quando é 1 |
+|------|-------------|------------|
+| **Z (Zero)** | O resultado é zero | Resultado = 0 |
+| **N (Negative)** | O resultado é negativo | MSB = 1 |
+| **C (Carry)** | Houve vai-um | Overflow na soma |
+| **V (Overflow)** | Overflow em Complemento de 2 | Resultado não cabe |
+| **E (Equal)** | A e B são iguais | A = B |
+
+### 3.3 Exemplo: ULA com 4 operações
+
+| Opcode (S₁,S₀) | Operação | Fórmula |
+|----------------|----------|---------|
+| 00 | Soma | F = A + B |
+| 01 | Subtração | F = A - B |
+| 10 | AND | F = A ∧ B |
+| 11 | OR | F = A ∨ B |
+
+
+## 4. Operações Aritméticas
+
+### 4.1 Soma (A + B)
+
+- Usa o **somador completo** que estudamos anteriormente.
+- Entradas: A, B, Cin (carry de entrada).
+- Saídas: Soma, Cout (carry de saída).
+
+**Exemplo:** 5 + 3 = 8
+<pre>
+  0101  (5)
++ 0011  (3)
+────────
+  1000  (8)
+</pre>
+
+### 4.2 Subtração (A - B)
+
+- Usa o **subtrator** via Complemento de 2.
+- A - B = A + (~B + 1).
+
+**Exemplo:** 5 - 3 = 2
+<pre>
+  0101  (5)
++ 1101  (-3)
+────────
+  0010  (2)
+</pre>
+
+### 4.3 Incremento (A + 1)
+
+- Soma com Cin = 1 e B = 0.
+- Muito usado em contadores e no PC.
+
+### 4.4 Decremento (A - 1)
+
+- Subtrai 1 via Complemento de 2.
+
+
+## 5. Operações Lógicas
+
+### 5.1 AND, OR, XOR, NOT
+
+| Operação | Expressão | Tabela Verdade (A=1, B=0) |
+|----------|-----------|---------------------------|
+| **AND** | F = A ∧ B | 1 ∧ 0 = 0 |
+| **OR** | F = A ∨ B | 1 ∨ 0 = 1 |
+| **XOR** | F = A ⊕ B | 1 ⊕ 0 = 1 |
+| **NOT** | F = ¬A | ¬1 = 0 |
+
+### 5.2 Comparações
+
+A ULA também pode comparar valores:
+
+| Operação | Como é feita |
+|----------|--------------|
+| **A = B** | A - B = 0 → flag Z = 1 |
+| **A > B** | A - B > 0 → flag N = 0 |
+| **A < B** | A - B < 0 → flag N = 1 |
+
+
+## 6. A ULA na CPU
+
+### 6.1 Fluxo de dados
+
+<details>
+<summary>🔧 Ver Fluxo de Dados da ULA na CPU</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 400px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">FLUXO DE DADOS DA ULA</div>
+
+  <pre style="color: #93c5fd; font-size: 0.65rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    ┌─────────────┐
+    │  Registrador│
+    │  A          │────────────┐
+    └─────────────┘            │
+                               │
+    ┌─────────────┐            ▼
+    │  Registrador│    ┌─────────────┐
+    │  B          │───►│     ULA     │
+    └─────────────┘    │             │
+                       │  A op B     │
+    ┌─────────────┐    │     =       │
+    │  UC (Opcode)│───►│  Resultado  │
+    └─────────────┘    └─────────────┘
+                               │
+                               ▼
+                        ┌─────────────┐
+                        │  Registrador│
+                        │  de Saída   │
+                        └─────────────┘
+  </pre>
+
+</div>
+</details>
+
+### 6.2 O ciclo da ULA
+
+1. **Busca:** A UC envia o opcode (código da operação) para a ULA.
+2. **Leitura:** A ULA recebe os operandos A e B dos registradores.
+3. **Execução:** A ULA realiza a operação especificada pelo opcode.
+4. **Escrita:** O resultado é armazenado em um registrador ou na memória.
+5. **Flags:** As flags são atualizadas (Z, N, C, V).
+
+
+## 7. Aplicações Reais
+
+| Aplicação | Como a ULA contribui |
+|-----------|---------------------|
+| **Planilhas** | Soma, subtração, comparação de células |
+| **Jogos** | Cálculos de física, detecção de colisão |
+| **Compressão de dados** | Operações lógicas e aritméticas |
+| **Criptografia** | XOR, AND, OR em algoritmos de cifra |
+| **IA/ML** | Operações matriciais (soma, multiplicação) |
+| **Edição de vídeo** | Filtros, transformações, correção de cor |
+
+
+## 8. Exercícios
+
+<details>
+<summary>📗 Exercício 1 — Definição (fácil)</summary>
+
+**Enunciado:** O que significa ULA e qual é sua função?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** ULA = Unidade Lógica e Aritmética. É o circuito da CPU responsável por executar operações aritméticas (soma, subtração) e lógicas (AND, OR, NOT) sobre os dados.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Operações (fácil)</summary>
+
+**Enunciado:** Cite três operações que a ULA pode realizar.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Soma (A+B), Subtração (A-B), AND (A∧B), OR (A∨B), XOR (A⊕B), NOT (¬A), Incremento (A+1), Decremento (A-1), Comparação (A=B, A>B, A<B). (Qualquer três)
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Opcode (médio)</summary>
+
+**Enunciado:** O que é um opcode e como ele é usado pela ULA?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Opcode é o código que identifica qual operação a ULA deve realizar. Ele é enviado pela Unidade de Controle (UC) e usado pelo multiplexador para selecionar a operação correta.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Flags (médio)</summary>
+
+**Enunciado:** O que são as flags da ULA? Cite três exemplos.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Flags são bits de status que indicam o resultado da última operação. Exemplos: Z (Zero), N (Negativo), C (Carry), V (Overflow), E (Equal).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Comparação com AND (médio)</summary>
+
+**Enunciado:** Como a ULA pode determinar se A = B?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** A ULA subtrai B de A (A - B). Se o resultado for zero, a flag Z = 1, indicando que A = B.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Componentes da ULA (médio)</summary>
+
+**Enunciado:** Quais são os principais componentes internos da ULA?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Circuitos aritméticos (somador, subtrator), circuitos lógicos (AND, OR, XOR), multiplexador (seleciona a operação), registradores de entrada/saída, e flags (bits de status).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — ULA e CPU (conceitual)</summary>
+
+**Enunciado:** Qual é a relação entre a ULA e a Unidade de Controle (UC)?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** A UC decodifica as instruções e envia o opcode para a ULA. A ULA executa a operação especificada pelo opcode e retorna o resultado e as flags. A UC usa as flags para tomar decisões (ex: saltos condicionais).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — A ULA no dia a dia (desafio)</summary>
+
+**Enunciado:** Dê um exemplo de uma operação cotidiana que depende da ULA.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Praticamente tudo! Exemplos:
+- **Planilha:** Soma de valores em uma coluna → ULA soma.
+- **Jogo:** Detectar se um personagem colidiu com uma parede → ULA compara posições.
+- **Editor de texto:** Encontrar uma palavra → ULA compara caracteres.
+- **Calculadora:** Qualquer conta → ULA soma, subtrai, etc.
+
+</details>
+</details>
+
+
+> **"A ULA é o coração computacional da CPU — o componente que realmente executa as operações que fazem o computador funcionar. Ela combina circuitos aritméticos (soma, subtração) e lógicos (AND, OR, NOT) com um multiplexador que seleciona a operação correta baseada no opcode. As flags (Zero, Negativo, Carry, Overflow) fornecem informações sobre o resultado, permitindo que a CPU tome decisões. Cada vez que você faz uma conta, compara dois valores ou toma uma decisão no computador, é a ULA que está trabalhando. Sem ela, o computador seria apenas um grande armazenador de dados, incapaz de processar qualquer informação."**

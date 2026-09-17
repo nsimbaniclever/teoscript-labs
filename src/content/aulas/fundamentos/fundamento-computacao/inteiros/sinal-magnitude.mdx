@@ -1,0 +1,324 @@
+# Sinal-Magnitude
+
+## 1. Introdução
+
+Até agora, aprendemos a representar números positivos em binário. O número 5 em binário é `0101`, o número 12 é `1100`, e assim por diante. Mas como o computador representa números negativos? Como ele entende -5, -12, -42? <br><br>
+
+O computador só entende 0 e 1. Não existe o símbolo **"-"** dentro da máquina. Precisamos de uma forma de representar o sinal negativo usando apenas 0 e 1. Esta é uma questão fundamental na computação, porque sem números negativos não seria possível fazer subtrações, representar temperaturas abaixo de zero, saldos bancários negativos, ou qualquer conceito matemático que envolva valores negativos. <br><br>
+
+Ao longo da história da computação, três sistemas principais foram criados para resolver esse problema:
+
+1. **Sinal-Magnitude** — A primeira tentativa, intuitiva mas problemática.
+2. **Complemento de 1** — Uma melhoria, mas ainda com defeitos.
+3. **Complemento de 2** — A solução definitiva, usada em todos os processadores modernos.
+
+Nesta aula, vamos estudar o **Sinal-Magnitude** — a primeira tentativa de representar números negativos. Vamos entender o que ele é, como funciona, quais são seus problemas, e por que ele foi substituído.
+
+
+## 2. O Que é Sinal-Magnitude?
+
+**Sinal-Magnitude** (em português: *Sinal e Magnitude*) é o sistema mais intuitivo para representar números negativos.
+
+A ideia é simples: usamos o **primeiro bit** (o bit mais à esquerda) para representar o **sinal**, e os bits restantes para representar a **magnitude** (o valor absoluto do número).
+
+| Bit de Sinal (MSB) | Significado |
+|-------------------|-------------|
+| **0** | Número **positivo** (+) |
+| **1** | Número **negativo** (-) |
+
+**MSB** = *Most Significant Bit* — o bit mais significativo, o primeiro da esquerda.
+
+### 2.1 Exemplo com 4 bits
+
+Com 4 bits, temos:
+- **1 bit** para o sinal (o primeiro)
+- **3 bits** para a magnitude (o valor absoluto)
+
+| Representação | Sinal | Magnitude | Valor Decimal |
+|---------------|-------|-----------|---------------|
+| `0111` | 0 (+) | 111 (7) | **+7** |
+| `0110` | 0 (+) | 110 (6) | **+6** |
+| `0101` | 0 (+) | 101 (5) | **+5** |
+| `0100` | 0 (+) | 100 (4) | **+4** |
+| `0011` | 0 (+) | 011 (3) | **+3** |
+| `0010` | 0 (+) | 010 (2) | **+2** |
+| `0001` | 0 (+) | 001 (1) | **+1** |
+| `0000` | 0 (+) | 000 (0) | **+0** |
+| `1000` | 1 (-) | 000 (0) | **-0** |
+| `1001` | 1 (-) | 001 (1) | **-1** |
+| `1010` | 1 (-) | 010 (2) | **-2** |
+| `1011` | 1 (-) | 011 (3) | **-3** |
+| `1100` | 1 (-) | 100 (4) | **-4** |
+| `1101` | 1 (-) | 101 (5) | **-5** |
+| `1110` | 1 (-) | 110 (6) | **-6** |
+| `1111` | 1 (-) | 111 (7) | **-7** |
+
+### 2.2 Como converter um número para Sinal-Magnitude?
+
+**Para números positivos:**
+1. Converta o número para binário.
+2. Adicione um `0` no início (bit de sinal).
+
+**Exemplo: +5 em 4 bits**
+- 5 em binário = `101` (3 bits)
+- Adicione o bit de sinal `0` → `0101`
+- **Resposta:** `0101`
+
+**Para números negativos:**
+1. Converta o valor absoluto para binário.
+2. Adicione um `1` no início (bit de sinal).
+
+**Exemplo: -5 em 4 bits**
+- 5 em binário = `101` (3 bits)
+- Adicione o bit de sinal `1` → `1101`
+- **Resposta:** `1101`
+
+### 2.3 Faixa de valores no Sinal-Magnitude
+
+Com **n bits**, o Sinal-Magnitude pode representar:
+
+- **Maior positivo:** `0` seguido de `(n-1)` uns = `2^(n-1) - 1`
+- **Menor negativo:** `1` seguido de `(n-1)` uns = `-(2^(n-1) - 1)`
+
+| Bits | Faixa de valores |
+|------|------------------|
+| 4 bits | -7 a +7 |
+| 8 bits | -127 a +127 |
+| 16 bits | -32.767 a +32.767 |
+| 32 bits | -2.147.483.647 a +2.147.483.647 |
+
+**Atenção:** O Sinal-Magnitude **não representa** `-8` com 4 bits (a faixa é apenas -7 a +7).
+
+
+## 3. O Problema dos Dois Zeros
+
+O maior problema do Sinal-Magnitude é que ele tem **duas representações para o zero**:
+
+| Representação | Valor |
+|---------------|-------|
+| `0000` | **+0** (zero positivo) |
+| `1000` | **-0** (zero negativo) |
+
+### 3.1 Por que isso é um problema?
+
+1. **Desperdício:** Uma combinação de bits é desperdiçada (em 4 bits, são 16 combinações, mas apenas 15 valores únicos).
+
+2. **Comparação complicada:** Para verificar se um número é zero, o computador precisa comparar com `0000` **E** com `1000`. Isso torna a lógica mais lenta e complexa.
+
+3. **Operações matemáticas inconsistentes:**
+   - `+0 + 1 = 1` → `0000 + 0001 = 0001` ✅ (funciona)
+   - `-0 + 1 = 1` → `1000 + 0001 = 1001` = **-1** ❌ (resultado errado!)
+
+4. **Ineficiência:** Em 4 bits, em vez de representar -8 a +7 (16 valores), representamos -7 a +7 (apenas 15 valores).
+
+**Analogia:** Imagine que você tem um termômetro que marca +0°C e -0°C como temperaturas diferentes. Seria confuso, não é? É exatamente isso que acontece com o Sinal-Magnitude.
+
+
+## 4. O Problema da Subtração Complexa
+
+Outro problema grave do Sinal-Magnitude é que a **subtração não pode ser feita simplesmente somando**.
+
+### 4.1 Subtração no Sinal-Magnitude
+
+Para subtrair `A - B`, o computador precisaria:
+
+1. Verificar o sinal de B.
+2. Se B for positivo, mudar para negativo.
+3. Se B for negativo, mudar para positivo.
+4. Depois somar A e B (considerando os sinais).
+
+Ou seja, a subtração exige **lógica condicional** complexa — não é apenas uma soma com um número negativo.
+
+**Exemplo com 4 bits: 3 - 2**
+
+| Passo | Operação | Representação |
+|-------|----------|---------------|
+| 1 | 3 em binário | `0011` (+3) |
+| 2 | 2 em binário | `0010` (+2) |
+| 3 | Inverter o sinal de 2 | `1010` (-2) |
+| 4 | Somar 3 + (-2) | `0011 + 1010` |
+
+**A soma de `0011` (+3) e `1010` (-2) em Sinal-Magnitude não é direta.** Você precisa lidar com os sinais separadamente, o que torna a operação mais lenta e complexa.
+
+### 4.2 Comparação com o sistema decimal
+
+No sistema decimal, subtrair é fácil: `5 - 3 = 2` é `5 + (-3)`. Mas no Sinal-Magnitude, somar um número positivo com um negativo **não funciona automaticamente**. A lógica de soma precisaria tratar os sinais separadamente.
+
+**Resultado:** Processadores precisam de circuitos mais complexos e lentos para fazer subtrações.
+
+
+## 5. Onde o Sinal-Magnitude Foi Usado?
+
+O Sinal-Magnitude foi usado em alguns computadores antigos, mas nunca se tornou dominante:
+
+| Computador | Ano | Sistema usado |
+|------------|-----|---------------|
+| **IBM 7090** | 1959 | Sinal-Magnitude |
+| **PDP-1** (primeiros modelos) | 1959 | Sinal-Magnitude |
+| **CDC 1604** | 1960 | Sinal-Magnitude |
+| **Vários minicomputadores** | 1960-1970 | Sinal-Magnitude |
+
+**Observação:** O Sinal-Magnitude foi usado em computadores científicos antigos porque era intuitivo para os programadores da época, que estavam acostumados com a notação matemática tradicional (+ e -).
+
+
+## 6. Limitações do Sinal-Magnitude
+
+| Limitação | Explicação |
+|-----------|------------|
+| **Dois zeros** | `0000` (+0) e `1000` (-0) desperdiçam uma combinação e complicam a lógica |
+| **Faixa reduzida** | Com n bits, representa apenas `-(2^(n-1)-1)` a `+(2^(n-1)-1)` (perde um valor) |
+| **Subtração complexa** | Não pode usar soma direta; precisa de lógica condicional |
+| **Mais lento** | Operações aritméticas exigem mais passos e mais circuitos |
+| **Não é usado hoje** | Todos os processadores modernos usam Complemento de 2 |
+
+> **🔬 Observação:** O Sinal-Magnitude é como uma "roda quadrada" da computação — funcionava, mas de forma ineficiente. Foi substituído por sistemas melhores.
+
+
+## 7. Como o Computador "Entende" Sinal-Magnitude?
+
+Embora o Sinal-Magnitude não seja mais usado, é útil entender como ele funcionaria:
+
+1. **Bit de sinal:** O primeiro bit (MSB) é lido separadamente.
+2. **Magnitude:** Os bits restantes são lidos como um número binário normal.
+3. **Sinal:** Se o MSB for 0, o número é positivo; se for 1, é negativo.
+
+**Exemplo prático:** O computador lê `1101` em Sinal-Magnitude:
+- MSB = 1 → número negativo.
+- Magnitude = `101` = 5.
+- Resultado = **-5**.
+
+**Por que isso é importante?** Porque mostra como a máquina precisa interpretar os bits de forma diferente dependendo do sistema usado. No Complemento de 2 (que veremos depois), a interpretação é completamente diferente.
+
+
+## 8. Exercícios
+
+<details>
+<summary>📗 Exercício 1 — Converter +6 para Sinal-Magnitude (fácil)</summary>
+
+**Enunciado:** Converta o número **+6** para Sinal-Magnitude usando 4 bits.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Passo 1:** 6 em binário = `110` (3 bits)
+
+**Passo 2:** Adicione o bit de sinal `0` → `0110`
+
+**Resposta:** `0110`
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Converter -6 para Sinal-Magnitude (fácil)</summary>
+
+**Enunciado:** Converta o número **-6** para Sinal-Magnitude usando 4 bits.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Passo 1:** 6 em binário = `110` (3 bits)
+
+**Passo 2:** Adicione o bit de sinal `1` → `1110`
+
+**Resposta:** `1110`
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Decodificar `1011` (fácil)</summary>
+
+**Enunciado:** Qual é o valor decimal da representação `1011` em Sinal-Magnitude (4 bits)?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Passo 1:** MSB = `1` → número negativo.
+
+**Passo 2:** Magnitude = `011` = 3
+
+**Resposta:** -3
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Faixa de valores com 5 bits (médio)</summary>
+
+**Enunciado:** Qual é a faixa de valores que pode ser representada em Sinal-Magnitude com 5 bits?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Passo 1:** n = 5 bits → 1 bit para sinal, 4 bits para magnitude.
+
+**Passo 2:** Maior positivo = `0 1111` = +15
+
+**Passo 3:** Menor negativo = `1 1111` = -15
+
+**Resposta:** -15 a +15 (ou `-(2^4 - 1)` a `+(2^4 - 1)`)
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Dois zeros (conceitual)</summary>
+
+**Enunciado:** Quais são as duas representações do zero em Sinal-Magnitude com 4 bits?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** `0000` (+0) e `1000` (-0)
+
+**Explicação:** O zero positivo tem o bit de sinal 0; o zero negativo tem o bit de sinal 1.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Por que o Sinal-Magnitude foi substituído? (conceitual)</summary>
+
+**Enunciado:** Dê três razões pelas quais o Sinal-Magnitude foi substituído por outros sistemas.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+1. **Dois zeros:** `+0` e `-0` desperdiçam uma combinação e complicam comparações.
+2. **Faixa reduzida:** Perde um valor em comparação com o Complemento de 2.
+3. **Subtração complexa:** Não permite usar soma direta; precisa de lógica condicional.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — Desafio: Soma no Sinal-Magnitude (desafio)</summary>
+
+**Enunciado:** Some `0011` (+3) e `1010` (-2) em Sinal-Magnitude. Qual o resultado? (Dica: você precisa lidar com os sinais separadamente).
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Passo 1:** Identifique os sinais:
+- `0011` = +3 (MSB = 0)
+- `1010` = -2 (MSB = 1)
+
+**Passo 2:** Como os sinais são diferentes, subtraia a magnitude menor da maior:
+- Magnitude de 3 = `011` = 3
+- Magnitude de 2 = `010` = 2
+- 3 - 2 = 1
+
+**Passo 3:** O sinal do resultado é o sinal da magnitude maior:
+- A magnitude maior é 3 (positivo) → sinal positivo.
+
+**Resultado:** `0001` (+1)
+
+**Resposta:** `0001` (+1) ✅
+
+**Conclusão:** Este exemplo mostra como a soma no Sinal-Magnitude exige lógica condicional (verificar sinais, comparar magnitudes, subtrair, etc.), tornando a operação mais complexa do que uma simples soma binária.
+
+</details>
+</details>
+
+> **"O Sinal-Magnitude foi a primeira tentativa de representar números negativos em binário, usando o primeiro bit para indicar o sinal (0 = positivo, 1 = negativo) e os bits restantes para a magnitude. Embora intuitivo, ele tem problemas graves: dois zeros (+0 e -0), faixa reduzida de valores, e subtração complexa que exige lógica condicional. Essas limitações levaram ao desenvolvimento de sistemas melhores — primeiro o Complemento de 1, e finalmente o Complemento de 2, que é o padrão usado em todos os processadores modernos."**

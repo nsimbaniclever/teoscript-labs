@@ -1,0 +1,381 @@
+# INTEGRAIS IMPRÓPRIAS
+
+## 1. Definição Formal
+
+### 1.1 O que são Integrais Impróprias?
+
+Uma **integral imprópria** é uma integral definida em que:
+1. O intervalo de integração é **infinito** (ex: $\int_a^\infty f(x) dx$).
+2. A função tem uma **singularidade** (descontinuidade infinita) no intervalo (ex: $\int_0^1 \frac{1}{x} dx$).
+
+**Objetivo:** Determinar se a integral **converge** (tem um valor finito) ou **diverge** (tende a $\infty$ ou não existe).
+
+### 1.2 Tipos de Integrais Impróprias
+
+| Tipo | Forma | Definição |
+|------|-------|-----------|
+| **Infinito no limite superior** | $\int_a^\infty f(x) dx$ | $\lim_{b \to \infty} \int_a^b f(x) dx$ |
+| **Infinito no limite inferior** | $\int_{-\infty}^b f(x) dx$ | $\lim_{a \to -\infty} \int_a^b f(x) dx$ |
+| **Infinito em ambos os limites** | $\int_{-\infty}^{\infty} f(x) dx$ | $\int_{-\infty}^c f(x) dx + \int_c^\infty f(x) dx$ |
+| **Singularidade no interior** | $\int_a^b f(x) dx$ com $f$ descontínua em $c$ | $\lim_{\epsilon \to 0} \int_a^{c-\epsilon} f(x) dx + \lim_{\delta \to 0} \int_{c+\delta}^b f(x) dx$ |
+
+## 2. Exemplos Acadêmicos Passo a Passo
+
+### 2.1 Exemplo 1: Integral com Limite Infinito (Convergente)
+
+Calcular:
+$$
+\int_1^\infty \frac{1}{x^2} \, dx
+$$
+
+**Passo 1:** Escrever como limite:
+$$
+\int_1^\infty \frac{1}{x^2} \, dx = \lim_{b \to \infty} \int_1^b \frac{1}{x^2} \, dx
+$$
+
+**Passo 2:** Calcular a integral definida:
+$$
+\int_1^b \frac{1}{x^2} \, dx = \left[ -\frac{1}{x} \right]_1^b = -\frac{1}{b} + 1 = 1 - \frac{1}{b}
+$$
+
+**Passo 3:** Calcular o limite:
+$$
+\lim_{b \to \infty} \left( 1 - \frac{1}{b} \right) = 1
+$$
+
+**Resultado:** A integral converge para 1.
+
+### 2.2 Exemplo 2: Integral com Limite Infinito (Divergente)
+
+Calcular:
+$$
+\int_1^\infty \frac{1}{x} \, dx
+$$
+
+**Passo 1:** Escrever como limite:
+$$
+\int_1^\infty \frac{1}{x} \, dx = \lim_{b \to \infty} \int_1^b \frac{1}{x} \, dx
+$$
+
+**Passo 2:** Calcular a integral definida:
+$$
+\int_1^b \frac{1}{x} \, dx = \left[ \ln(x) \right]_1^b = \ln(b) - \ln(1) = \ln(b)
+$$
+
+**Passo 3:** Calcular o limite:
+$$
+\lim_{b \to \infty} \ln(b) = \infty
+$$
+
+**Resultado:** A integral diverge para $\infty$.
+
+### 2.3 Exemplo 3: Integral com Singularidade
+
+Calcular:
+$$
+\int_0^1 \frac{1}{\sqrt{x}} \, dx
+$$
+
+**Passo 1:** A função $\frac{1}{\sqrt{x}}$ tem singularidade em $x = 0$.
+
+**Passo 2:** Escrever como limite:
+$$
+\int_0^1 \frac{1}{\sqrt{x}} \, dx = \lim_{a \to 0^+} \int_a^1 \frac{1}{\sqrt{x}} \, dx
+$$
+
+**Passo 3:** Calcular a integral definida:
+$$
+\int_a^1 \frac{1}{\sqrt{x}} \, dx = \left[ 2\sqrt{x} \right]_a^1 = 2 - 2\sqrt{a}
+$$
+
+**Passo 4:** Calcular o limite:
+$$
+\lim_{a \to 0^+} (2 - 2\sqrt{a}) = 2
+$$
+
+**Resultado:** A integral converge para 2.
+
+### 2.4 Exemplo 4: Singularidade com Divergência
+
+Calcular:
+$$
+\int_0^1 \frac{1}{x} \, dx
+$$
+
+**Passo 1:** A função $\frac{1}{x}$ tem singularidade em $x = 0$.
+
+**Passo 2:** Escrever como limite:
+$$
+\int_0^1 \frac{1}{x} \, dx = \lim_{a \to 0^+} \int_a^1 \frac{1}{x} \, dx
+$$
+
+**Passo 3:** Calcular a integral definida:
+$$
+\int_a^1 \frac{1}{x} \, dx = \left[ \ln(x) \right]_a^1 = 0 - \ln(a) = -\ln(a)
+$$
+
+**Passo 4:** Calcular o limite:
+$$
+\lim_{a \to 0^+} (-\ln(a)) = \infty
+$$
+
+**Resultado:** A integral diverge para $\infty$.
+
+### 2.5 Exemplo 5: Infinito em Ambos os Limites
+
+Calcular:
+$$
+\int_{-\infty}^{\infty} e^{-x^2} \, dx
+$$
+
+**Passo 1:** Dividir a integral:
+$$
+\int_{-\infty}^{\infty} e^{-x^2} \, dx = \int_{-\infty}^0 e^{-x^2} \, dx + \int_0^\infty e^{-x^2} \, dx
+$$
+
+**Passo 2:** Usar o limite:
+$$
+\int_0^\infty e^{-x^2} \, dx = \lim_{b \to \infty} \int_0^b e^{-x^2} \, dx
+$$
+
+**Passo 3:** Sabemos (resultado famoso) que:
+$$
+\int_{-\infty}^{\infty} e^{-x^2} \, dx = \sqrt{\pi}
+$$
+
+**Resultado:** A integral converge para $\sqrt{\pi}$.
+
+## 3. Critérios de Convergência
+
+### 3.1 Critério da Comparação
+
+Se $0 \leq f(x) \leq g(x)$ para $x \geq a$:
+- Se $\int_a^\infty g(x) dx$ converge → $\int_a^\infty f(x) dx$ converge.
+- Se $\int_a^\infty f(x) dx$ diverge → $\int_a^\infty g(x) dx$ diverge.
+
+### 3.2 Critério do Limite (Comparação no Limite)
+
+Se $\lim_{x \to \infty} \frac{f(x)}{g(x)} = L$, onde $0 < L < \infty$:
+- $\int_a^\infty f(x) dx$ e $\int_a^\infty g(x) dx$ têm o mesmo comportamento (ambas convergem ou ambas divergem).
+
+### 3.3 Critério da Função $p$
+
+Para integrais do tipo:
+$$
+\int_1^\infty \frac{1}{x^p} \, dx
+$$
+
+| $p$ | Comportamento |
+|---------|---------------|
+| $p > 1$ | **Converge** |
+| $p \leq 1$ | **Diverge** |
+
+Para integrais do tipo:
+$$
+\int_0^1 \frac{1}{x^p} \, dx
+$$
+
+| $p$ | Comportamento |
+|---------|---------------|
+| $p < 1$ | **Converge** |
+| $p \geq 1$ | **Diverge** |
+
+## 4. Exemplos Lúdicos Aprimorados
+
+### 🍔 EXEMPLO 1 – A LANCHONETE (DECAIMENTO INFINITO)
+
+A lanchonete tem um fluxo de vendas que decai exponencialmente:
+$$
+V(t) = 100e^{-0.1t}
+$$
+onde $t$ é o tempo em meses.
+
+**Total de vendas ao longo de todo o tempo:**
+$$
+\int_0^\infty 100e^{-0.1t} \, dt = \lim_{b \to \infty} \left[ -1000e^{-0.1t} \right]_0^b = \lim_{b \to \infty} (-1000e^{-0.1b} + 1000) = 1000
+$$
+
+**Interpretação:** O total de vendas ao longo de todo o tempo é 1000 unidades. A integral converge!
+
+### 🧃 EXEMPLO 2 – A CANTINA (ESTOQUE INFINITO)
+
+A cantina tem um fluxo de estoque:
+$$
+E(t) = \frac{1}{t^2}
+$$
+
+**Estoque total acumulado ao longo de todo o tempo:**
+$$
+\int_1^\infty \frac{1}{t^2} \, dt = \lim_{b \to \infty} \left[ -\frac{1}{t} \right]_1^b = \lim_{b \to \infty} \left( -\frac{1}{b} + 1 \right) = 1
+$$
+
+**Interpretação:** O estoque total acumulado é 1 unidade. A integral converge.
+
+### 📚 EXEMPLO 3 – A BIBLIOTECA (LEITURA INFINITA)
+
+A biblioteca tem uma taxa de leitura:
+$$
+L(t) = \frac{1}{t}
+$$
+
+**Total de páginas lidas ao longo de todo o tempo:**
+$$
+\int_1^\infty \frac{1}{t} \, dt = \lim_{b \to \infty} \left[ \ln(t) \right]_1^b = \lim_{b \to \infty} \ln(b) = \infty
+$$
+
+**Interpretação:** O total de páginas lidas é infinito! A integral diverge.
+
+## 5. Aplicação na Tese: Integrais Impróprias em FL
+
+### 5.1 Análise de Convergência
+
+Em FL, a análise de convergência frequentemente envolve integrais impróprias para:
+- Calcular o **erro total** ao longo do treinamento infinito.
+- Determinar se o erro **converge** para zero ou diverge.
+
+### 5.2 Exemplo: Erro Acumulado
+
+Se o erro decai como:
+$$
+e(t) = \frac{1}{t^2}
+$$
+
+O erro total é:
+$$
+E = \int_1^\infty \frac{1}{t^2} \, dt = 1
+$$
+
+**Interpretação:** O erro total é finito, indicando convergência.
+
+## 6. Exercícios Propostos (Manuais)
+
+<details>
+<summary>📗 Exercício 1 (Limites Infinitos)</summary>
+
+**Enunciado:** Determine se as integrais convergem ou divergem:
+
+a) $\int_1^\infty \frac{1}{x^3} \, dx$
+
+b) $\int_1^\infty \frac{1}{\sqrt{x}} \, dx$
+
+c) $\int_0^\infty e^{-x} \, dx$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\int_1^\infty \frac{1}{x^3} dx = \left[ -\frac{1}{2x^2} \right]_1^\infty = 0 + \frac{1}{2} = \frac{1}{2}$ → **Converge**
+
+b) $\int_1^\infty \frac{1}{\sqrt{x}} dx = \lim_{b \to \infty} \left[ 2\sqrt{x} \right]_1^b = \infty$ → **Diverge**
+
+c) $\int_0^\infty e^{-x} dx = \left[ -e^{-x} \right]_0^\infty = 0 + 1 = 1$ → **Converge**
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 (Singularidades)</summary>
+
+**Enunciado:** Determine se as integrais convergem ou divergem:
+
+a) $\int_0^1 \frac{1}{\sqrt{x}} \, dx$
+
+b) $\int_0^1 \frac{1}{x^2} \, dx$
+
+c) $\int_{-1}^1 \frac{1}{x} \, dx$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\int_0^1 \frac{1}{\sqrt{x}} dx = 2$ → **Converge**
+
+b) $\int_0^1 \frac{1}{x^2} dx = \lim_{a \to 0^+} \left[ -\frac{1}{x} \right]_a^1 = \infty$ → **Diverge**
+
+c) $\int_{-1}^1 \frac{1}{x} dx$ → **Diverge** (singularidade em 0, a integral não existe)
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 (Critério da Comparação)</summary>
+
+**Enunciado:** Use o critério da comparação para determinar se a integral converge:
+
+$$
+\int_1^\infty \frac{1}{x^2 + 1} \, dx
+$$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+$\frac{1}{x^2 + 1} \leq \frac{1}{x^2}$ para $x \geq 1$.  
+Como $\int_1^\infty \frac{1}{x^2} dx$ converge, $\int_1^\infty \frac{1}{x^2 + 1} dx$ **converge**.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 (Aplicação – FL)</summary>
+
+**Enunciado:** Em FL, o erro decai como:
+$$
+e(t) = \frac{1}{t^{1.5}}
+$$
+
+a) Calcule o erro total $E = \int_1^\infty \frac{1}{t^{1.5}} \, dt$.
+
+b) A integral converge?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $E = \int_1^\infty \frac{1}{t^{1.5}} dt = \left[ -\frac{2}{t^{0.5}} \right]_1^\infty = 0 + 2 = 2$
+
+b) Sim! A integral converge para 2.
+
+</details>
+</details>
+
+## 7. 💻EXERCÍCIO COMPUTACIONAL
+
+<details>
+<summary>🐍 Ver código (Python/SymPy)</summary>
+
+```python
+import sympy as sp
+
+x = sp.Symbol('x')
+
+# Limites infinitos
+f1 = 1 / x**2
+integral1 = sp.integrate(f1, (x, 1, sp.oo))
+print(f"∫₁^∞ 1/x² dx = {integral1}")
+
+f2 = 1 / x
+integral2 = sp.integrate(f2, (x, 1, sp.oo))
+print(f"∫₁^∞ 1/x dx = {integral2}")
+
+f3 = sp.exp(-x)
+integral3 = sp.integrate(f3, (x, 0, sp.oo))
+print(f"∫₀^∞ e^(-x) dx = {integral3}")
+
+# Singularidades
+f4 = 1 / sp.sqrt(x)
+integral4 = sp.integrate(f4, (x, 0, 1))
+print(f"∫₀¹ 1/√x dx = {integral4}")
+
+f5 = 1 / x
+integral5 = sp.integrate(f5, (x, 0, 1))
+print(f"∫₀¹ 1/x dx = {integral5}")
+```
+
+</details>
+
+> *Integrais impróprias estendem o conceito de integração para intervalos infinitos e funções com singularidades. A convergência ou divergência é determinada pelo comportamento da função no infinito ou próximo à singularidade. Em Machine Learning, integrais impróprias são usadas para analisar a convergência de algoritmos e calcular erros acumulados.*

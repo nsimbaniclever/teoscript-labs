@@ -1,0 +1,515 @@
+# Aula 5: Distribuição Gama
+
+## O que é a Distribuição Gama?
+
+A Distribuição Gama é uma distribuição contínua muito versátil que generaliza a distribuição Exponencial. Enquanto a Exponencial modela o tempo até o **primeiro** evento em um processo de Poisson, a Gama modela o tempo até o **k-ésimo** evento.
+
+Pense assim: se você está esperando não apenas o primeiro cliente chegar, mas o terceiro cliente, ou a quinta falha de um sistema, a distribuição Gama é a ferramenta certa.
+
+A distribuição Gama tem dois parâmetros:
+- **$\alpha$** (alfa): chamado de parâmetro de forma. Deve ser positivo. Ele determina a "forma" da distribuição.
+- **$\lambda$** (lambda): chamado de parâmetro de taxa. Deve ser positivo. É o mesmo $\lambda$ da distribuição Exponencial.
+
+A distribuição Gama é denotada por $X \sim \text{Gama}(\alpha, \lambda)$.
+
+**Caso especial importante:** Quando $\alpha = 1$, a distribuição Gama se reduz à distribuição Exponencial com parâmetro $\lambda$. Ou seja, $\text{Gama}(1, \lambda) = \text{Exp}(\lambda)$.
+
+## A Função Gama
+
+Antes de entendermos a densidade da Gama, precisamos conhecer a **função Gama**, denotada por $\Gamma(\alpha)$. Ela é definida como:
+
+>> $$\Gamma(\alpha) = \int_0^\infty t^{\alpha-1} e^{-t} dt \quad \text{para } \alpha > 0$$
+
+A função Gama tem propriedades importantes:
+- $\Gamma(1) = 1$
+- $\Gamma(\alpha + 1) = \alpha \cdot \Gamma(\alpha)$ (propriedade de recorrência)
+- Para $\alpha$ inteiro positivo: $\Gamma(n) = (n-1)!$
+
+**Exemplos:**
+- $\Gamma(1) = 0! = 1$
+- $\Gamma(2) = 1! = 1$
+- $\Gamma(3) = 2! = 2$
+- $\Gamma(4) = 3! = 6$
+- $\Gamma(5) = 4! = 24$
+
+A função Gama também pode ser calculada para valores não inteiros. Por exemplo, $\Gamma(1/2) = \sqrt{\pi}$.
+
+## Função Densidade de Probabilidade
+
+A função densidade da Gama é:
+
+>> $$f(x) = \frac{\lambda^\alpha}{\Gamma(\alpha)} x^{\alpha-1} e^{-\lambda x} \quad \text{para } x \ge 0$$
+
+>> $$f(x) = 0 \quad \text{para } x < 0$$
+
+Vamos entender cada parte:
+- $\frac{\lambda^\alpha}{\Gamma(\alpha)}$ é a constante que garante que a área total seja 1.
+- $x^{\alpha-1}$ é o termo que dá forma à distribuição. Dependendo do valor de $\alpha$, a curva terá formas diferentes.
+- $e^{-\lambda x}$ é o mesmo decaimento exponencial que vimos na Exponencial.
+
+**Exemplo 1:** Seja $X \sim \text{Gama}(\alpha = 1, \lambda = 2)$. Calcule $f(x)$ e identifique a distribuição.
+
+**Resolução:**
+
+$f(x) = \frac{2^1}{\Gamma(1)} \cdot x^{1-1} \cdot e^{-2x} = \frac{2}{1} \cdot x^0 \cdot e^{-2x} = 2e^{-2x}$.
+
+Esta é exatamente a densidade da Exponencial com $\lambda = 2$. Confirmando: $\text{Gama}(1, 2) = \text{Exp}(2)$.
+
+**Exemplo 2:** Seja $X \sim \text{Gama}(\alpha = 2, \lambda = 0,5)$. Calcule $f(1)$, $f(2)$ e $f(3)$.
+
+**Resolução:**
+
+$\Gamma(2) = 1! = 1$. $\lambda^\alpha = (0,5)^2 = 0,25$.
+
+$f(x) = 0,25 \cdot x^{2-1} \cdot e^{-0,5x} = 0,25 \cdot x \cdot e^{-0,5x}$.
+
+- $f(1) = 0,25 \cdot 1 \cdot e^{-0,5} = 0,25 \cdot 0,6065 = 0,1516$
+- $f(2) = 0,25 \cdot 2 \cdot e^{-1} = 0,5 \cdot 0,3679 = 0,1839$
+- $f(3) = 0,25 \cdot 3 \cdot e^{-1,5} = 0,75 \cdot 0,2231 = 0,1673$
+
+**Interpretação:** A densidade aumenta até um ponto e depois diminui. Isso é diferente da Exponencial, que sempre decresce.
+
+**Exemplo 3:** Seja $X \sim \text{Gama}(\alpha = 3, \lambda = 1)$. Calcule $f(0)$, $f(1)$, $f(2)$ e $f(3)$.
+
+**Resolução:**
+
+$\Gamma(3) = 2! = 2$. $\lambda^\alpha = 1^3 = 1$.
+
+$f(x) = \frac{1}{2} \cdot x^{3-1} \cdot e^{-x} = 0,5 \cdot x^2 \cdot e^{-x}$.
+
+- $f(0) = 0,5 \cdot 0 \cdot e^0 = 0$
+- $f(1) = 0,5 \cdot 1 \cdot e^{-1} = 0,5 \cdot 0,3679 = 0,1839$
+- $f(2) = 0,5 \cdot 4 \cdot e^{-2} = 2 \cdot 0,1353 = 0,2707$
+- $f(3) = 0,5 \cdot 9 \cdot e^{-3} = 4,5 \cdot 0,0498 = 0,2240$
+
+**Interpretação:** A densidade começa em zero (quando $\alpha > 1$), sobe até um pico, e depois decai. Quanto maior o $\alpha$, mais a curva se afasta de zero.
+
+**Exemplo 4:** Compare as densidades Gama para diferentes valores de $\alpha$: $\alpha = 1$, $\alpha = 2$ e $\alpha = 3$, todos com $\lambda = 1$.
+
+**Resolução:**
+
+- $\alpha = 1$: $f(x) = e^{-x}$ (Exponencial)
+- $\alpha = 2$: $f(x) = x \cdot e^{-x}$ (já que $\Gamma(2) = 1$)
+- $\alpha = 3$: $f(x) = 0,5 \cdot x^2 \cdot e^{-x}$
+
+**Interpretação:** Quando $\alpha = 1$, a densidade é máxima em $x = 0$. Quando $\alpha = 2$, a densidade é zero em $x = 0$, sobe e depois desce. Quando $\alpha = 3$, a densidade é zero em $x = 0$, sobe mais lentamente e atinge o pico em um valor maior.
+
+**Exemplo 5:** Verifique que a área total sob a curva da Gama é 1.
+
+**Resolução:**
+
+Precisamos mostrar que $\int_0^\infty f(x) dx = 1$.
+
+$\int_0^\infty \frac{\lambda^\alpha}{\Gamma(\alpha)} \cdot x^{\alpha-1} \cdot e^{-\lambda x} dx = \frac{\lambda^\alpha}{\Gamma(\alpha)} \int_0^\infty x^{\alpha-1} \cdot e^{-\lambda x} dx$.
+
+Faça a substituição $t = \lambda x \to x = t/\lambda \to dx = dt/\lambda$.
+
+A integral se torna: $\frac{\lambda^\alpha}{\Gamma(\alpha)} \int_0^\infty (t/\lambda)^{\alpha-1} \cdot e^{-t} \cdot (dt/\lambda)$.
+
+Simplificando: $\frac{\lambda^\alpha}{\Gamma(\alpha)} \int_0^\infty t^{\alpha-1} \cdot \lambda^{1-\alpha} \cdot e^{-t} \cdot \lambda^{-1} dt = \frac{1}{\Gamma(\alpha)} \int_0^\infty t^{\alpha-1} \cdot e^{-t} dt = \frac{\Gamma(\alpha)}{\Gamma(\alpha)} = 1$.
+
+## Função de Distribuição Acumulada (FDA)
+
+A FDA da Gama não tem uma forma fechada simples. Ela é definida como:
+
+>> $$F(x) = P(X \le x) = \int_0^x \frac{\lambda^\alpha}{\Gamma(\alpha)} t^{\alpha-1} e^{-\lambda t} dt$$
+
+Para calcular probabilidades, geralmente usamos softwares ou tabelas da função Gama incompleta.
+
+No entanto, quando $\alpha$ é um inteiro positivo ($\alpha = n$), a FDA tem uma expressão mais simples:
+
+>> $$F(x) = 1 - e^{-\lambda x} \sum_{k=0}^{n-1} \frac{(\lambda x)^k}{k!}$$
+
+Isso é muito útil porque relaciona a Gama com a distribuição de Poisson.
+
+**Exemplo 1:** Seja $X \sim \text{Gama}(\alpha = 2, \lambda = 0,5)$. Calcule $P(X \le 3)$ usando a fórmula para $\alpha$ inteiro.
+
+**Resolução:**
+
+Para $\alpha = 2$: $F(x) = 1 - e^{-\lambda x} \cdot [1 + \lambda x]$.
+
+$F(3) = 1 - e^{-0,5 \cdot 3} \cdot [1 + 0,5 \cdot 3] = 1 - e^{-1,5} \cdot [1 + 1,5] = 1 - 0,2231 \cdot 2,5 = 1 - 0,5578 = 0,4422$.
+
+**Interpretação:** 44,22% dos valores são menores ou iguais a 3.
+
+**Exemplo 2:** Seja $X \sim \text{Gama}(\alpha = 3, \lambda = 1)$. Calcule $P(X \le 2)$.
+
+**Resolução:**
+
+Para $\alpha = 3$: $F(x) = 1 - e^{-x} \cdot [1 + x + x^2/2]$.
+
+$F(2) = 1 - e^{-2} \cdot [1 + 2 + 4/2] = 1 - e^{-2} \cdot [1 + 2 + 2] = 1 - e^{-2} \cdot 5 = 1 - 0,1353 \cdot 5 = 1 - 0,6767 = 0,3233$.
+
+**Interpretação:** 32,33% dos valores são menores ou iguais a 2.
+
+**Exemplo 3:** Seja $X \sim \text{Gama}(\alpha = 4, \lambda = 2)$. Calcule $P(X \le 1)$.
+
+**Resolução:**
+
+Para $\alpha = 4$: $F(x) = 1 - e^{-2x} \cdot [1 + 2x + (2x)^2/2 + (2x)^3/6]$.
+
+$F(1) = 1 - e^{-2} \cdot [1 + 2 + 4/2 + 8/6] = 1 - e^{-2} \cdot [1 + 2 + 2 + 1,3333] = 1 - e^{-2} \cdot 6,3333 = 1 - 0,1353 \cdot 6,3333 = 1 - 0,8571 = 0,1429$.
+
+**Interpretação:** 14,29% dos valores são menores ou iguais a 1.
+
+**Exemplo 4:** Seja $X \sim \text{Gama}(\alpha = 2, \lambda = 3)$. Calcule $P(0,5 \le X \le 1,5)$.
+
+**Resolução:**
+
+$F(1,5) = 1 - e^{-3 \cdot 1,5} \cdot [1 + 3 \cdot 1,5] = 1 - e^{-4,5} \cdot [1 + 4,5] = 1 - 0,0111 \cdot 5,5 = 1 - 0,0611 = 0,9389$.
+
+$F(0,5) = 1 - e^{-3 \cdot 0,5} \cdot [1 + 3 \cdot 0,5] = 1 - e^{-1,5} \cdot [1 + 1,5] = 1 - 0,2231 \cdot 2,5 = 1 - 0,5578 = 0,4422$.
+
+$P(0,5 \le X \le 1,5) = F(1,5) - F(0,5) = 0,9389 - 0,4422 = 0,4967$.
+
+**Interpretação:** 49,67% dos valores estão entre 0,5 e 1,5.
+
+**Exemplo 5:** Seja $X \sim \text{Gama}(\alpha = 1, \lambda = 0,5)$. Calcule $P(X \le 2)$.
+
+**Resolução:**
+
+$\alpha = 1 \to \text{Gama}(1, 0,5) = \text{Exp}(0,5)$.
+
+$F(2) = 1 - e^{-0,5 \cdot 2} = 1 - e^{-1} = 1 - 0,3679 = 0,6321$.
+
+**Interpretação:** Confirmando que para $\alpha = 1$, a FDA da Gama é a FDA da Exponencial.
+
+## Esperança (média) e Variância
+
+Para a distribuição Gama:
+
+>> $$E[X] = \frac{\alpha}{\lambda}$$\
+>> $$Var(X) = \frac{\alpha}{\lambda^2}$$
+
+O desvio padrão é $\sigma = \frac{\sqrt{\alpha}}{\lambda}$.
+
+**Observe:** Para $\alpha = 1$, $E[X] = 1/\lambda$ e $Var(X) = 1/\lambda^2$, que são exatamente os valores da Exponencial.
+
+**Exemplo 1:** Seja $X \sim \text{Gama}(\alpha = 2, \lambda = 0,5)$. Calcule $E[X]$ e $Var(X)$.
+
+**Resolução:**
+
+- $E[X] = \alpha/\lambda = 2/0,5 = 4$
+- $Var(X) = \alpha/\lambda^2 = 2/(0,5)^2 = 2/0,25 = 8$
+- Desvio padrão = $\sqrt{8} = 2,828$
+
+**Interpretação:** O tempo médio até o segundo evento ($\alpha = 2$) é 4, com variância 8.
+
+**Exemplo 2:** Seja $X \sim \text{Gama}(\alpha = 3, \lambda = 2)$. Calcule $E[X]$ e $Var(X)$.
+
+**Resolução:**
+
+- $E[X] = 3/2 = 1,5$
+- $Var(X) = 3/2^2 = 3/4 = 0,75$
+- Desvio padrão = $\sqrt{0,75} = 0,866$
+
+**Exemplo 3:** Seja $X \sim \text{Gama}(\alpha = 5, \lambda = 1)$. Calcule $E[X]$ e $Var(X)$.
+
+**Resolução:**
+
+- $E[X] = 5/1 = 5$
+- $Var(X) = 5/1^2 = 5$
+- Desvio padrão = $\sqrt{5} = 2,236$
+
+**Exemplo 4:** O tempo até a terceira falha de um sistema segue uma distribuição Gama com média 6 meses. Se $\lambda = 0,5$, encontre $\alpha$.
+
+**Resolução:**
+
+$E[X] = \alpha/\lambda = 6 \to \alpha/0,5 = 6 \to \alpha = 3$.
+
+**Interpretação:** Estamos modelando o tempo até a terceira falha ($\alpha = 3$).
+
+**Exemplo 5:** Suponha que $X \sim \text{Gama}(\alpha, \lambda)$ com $E[X] = 10$ e $Var(X) = 25$. Encontre $\alpha$ e $\lambda$.
+
+**Resolução:**
+
+$E[X] = \alpha/\lambda = 10 \to \alpha = 10\lambda$.
+
+$Var(X) = \alpha/\lambda^2 = 25 \to (10\lambda)/\lambda^2 = 25 \to 10/\lambda = 25 \to \lambda = 10/25 = 0,4$.
+
+$\alpha = 10 \cdot 0,4 = 4$.
+
+**Verificação:** $E[X] = 4/0,4 = 10$; $Var(X) = 4/0,16 = 25$. ✅
+
+**Resposta:** $\alpha = 4$ e $\lambda = 0,4$.
+
+## A Relação entre Gama e Poisson
+
+Há uma relação importante entre a distribuição Gama e a distribuição de Poisson:
+
+Se o número de eventos em um intervalo de tempo segue uma distribuição de Poisson com parâmetro $\lambda t$, então o tempo até o $\alpha$-ésimo evento segue uma distribuição $\text{Gama}(\alpha, \lambda)$.
+
+Equivalentemente, para $\alpha = n$ (inteiro):
+
+>> $$P(X > x) = P(N(x) \le n-1)$$
+
+onde $N(x) \sim \text{Poisson}(\lambda x)$.
+
+Isso significa que a probabilidade de o tempo até o $n$-ésimo evento ser maior que $x$ é igual à probabilidade de ocorrerem no máximo $n-1$ eventos no intervalo de tempo $x$.
+
+**Exemplo:** Se o número de chamadas em uma central segue Poisson com taxa 2 por minuto, o tempo até a terceira chamada segue $\text{Gama}(3, 2)$. $P(T > 2) = P(\text{menos de 3 chamadas em 2 minutos}) = P(\text{Poisson}(4) \le 2)$.
+
+## Quando usar a Distribuição Gama?
+
+A Gama é apropriada quando:
+
+1. Você está modelando o tempo até o $\alpha$-ésimo evento em um processo de Poisson.
+2. A variável é sempre positiva (tempo, distância, etc.).
+3. A taxa de ocorrência é constante.
+4. Você precisa de mais flexibilidade que a Exponencial (pois $\alpha$ pode ser ajustado).
+
+**Exemplos de aplicações:**
+
+- Tempo até a $n$-ésima falha de um sistema.
+- Tempo de espera até que $n$ clientes cheguem em uma fila.
+- Tempo de vida de sistemas com múltiplos componentes.
+- Modelagem de tempos de sobrevivência em medicina.
+- Previsão de demanda (tempo até $n$ pedidos).
+
+## Limitações e quando NÃO usar
+
+A Gama **NÃO deve ser usada** quando:
+
+1. A taxa de ocorrência não é constante ao longo do tempo.
+2. O processo tem memória (a Exponencial não tem, e a Gama é a soma de Exponenciais).
+3. A variável pode assumir valores negativos.
+4. O fenômeno é discreto.
+
+
+### Analogia 1: O tempo até o terceiro cliente
+
+Uma loja recebe clientes a uma taxa média de 2 clientes por hora. O tempo até o terceiro cliente segue uma $\text{Gama}(\alpha = 3, \lambda = 2)$.
+
+**Pergunta:** Qual a probabilidade de o terceiro cliente chegar em menos de 1 hora?
+
+**Resolução passo a passo:**
+
+1. $X \sim \text{Gama}(3, 2)$
+2. Usando a FDA para $\alpha = 3$: $F(x) = 1 - e^{-2x} \cdot [1 + 2x + (2x)^2/2]$
+3. $F(1) = 1 - e^{-2} \cdot [1 + 2 + 4/2] = 1 - e^{-2} \cdot [1 + 2 + 2] = 1 - e^{-2} \cdot 5 = 1 - 0,1353 \cdot 5 = 1 - 0,6767 = 0,3233$
+
+**Resposta:** 32,33% de chance de o terceiro cliente chegar em menos de 1 hora.
+
+### Analogia 2: O tempo até a quarta falha
+
+Um sistema tem uma taxa de falhas de 0,5 falhas por mês. O tempo até a quarta falha segue uma $\text{Gama}(\alpha = 4, \lambda = 0,5)$.
+
+**Pergunta:** Qual o tempo médio até a quarta falha?
+
+**Resolução passo a passo:**
+
+1. $X \sim \text{Gama}(4, 0,5)$
+2. $E[X] = \alpha/\lambda = 4/0,5 = 8$ meses
+
+**Resposta:** O tempo médio até a quarta falha é de 8 meses.
+
+### Analogia 3: O tempo de espera no banco
+
+Em um banco, chegam em média 3 clientes por minuto. Você quer saber o tempo até o quinto cliente chegar, pois é quando você será atendido.
+
+**Pergunta:** Qual a probabilidade de você esperar mais de 2 minutos?
+
+**Resolução passo a passo:**
+
+1. Tempo até o quinto cliente: $X \sim \text{Gama}(5, 3)$
+2. $P(X > 2) = 1 - F(2) = e^{-3 \cdot 2} \cdot [1 + 3 \cdot 2 + (3 \cdot 2)^2/2 + (3 \cdot 2)^3/6 + (3 \cdot 2)^4/24]$
+3. $= e^{-6} \cdot [1 + 6 + 18 + 36 + 54] = e^{-6} \cdot 115 = 0,00248 \cdot 115 = 0,2852$
+
+**Resposta:** 28,52% de chance de esperar mais de 2 minutos.
+
+### Analogia 4: O tempo até a segunda entrega
+
+Uma transportadora faz entregas a uma taxa de 4 entregas por hora. Você está esperando a segunda entrega do dia.
+
+**Pergunta:** Qual a probabilidade de a segunda entrega ocorrer entre 0,5 e 1 hora?
+
+**Resolução passo a passo:**
+
+1. $X \sim \text{Gama}(2, 4)$
+2. $F(1) = 1 - e^{-4} \cdot [1 + 4] = 1 - e^{-4} \cdot 5 = 1 - 0,0183 \cdot 5 = 1 - 0,0916 = 0,9084$
+3. $F(0,5) = 1 - e^{-2} \cdot [1 + 2] = 1 - 0,1353 \cdot 3 = 1 - 0,4060 = 0,5940$
+4. $P(0,5 \le X \le 1) = F(1) - F(0,5) = 0,9084 - 0,5940 = 0,3144$
+
+**Resposta:** 31,44% de chance de a segunda entrega ocorrer entre 0,5 e 1 hora.
+
+## Exemplos práticos com cálculos passo a passo
+
+### Exemplo 1: Cálculo da densidade
+
+Seja $X \sim \text{Gama}(\alpha = 4, \lambda = 2)$. Calcule $f(1)$.
+
+**Resolução:**
+
+$\Gamma(4) = 3! = 6$. $\lambda^\alpha = 2^4 = 16$.
+
+$f(1) = \frac{16}{6} \cdot 1^{4-1} \cdot e^{-2 \cdot 1} = \frac{16}{6} \cdot e^{-2} = 2,6667 \cdot 0,1353 = 0,3608$.
+
+**Resposta:** $f(1) = 0,3608$.
+
+### Exemplo 2: Cálculo de probabilidade
+
+Seja $X \sim \text{Gama}(\alpha = 3, \lambda = 1)$. Calcule $P(X \le 2)$.
+
+**Resolução:**
+
+$F(2) = 1 - e^{-2} \cdot [1 + 2 + 4/2] = 1 - 0,1353 \cdot (1 + 2 + 2) = 1 - 0,1353 \cdot 5 = 1 - 0,6767 = 0,3233$.
+
+**Resposta:** 32,33%.
+
+### Exemplo 3: Cálculo da média
+
+Seja $X \sim \text{Gama}(\alpha = 2, \lambda = 0,3)$. Calcule $E[X]$ e $Var(X)$.
+
+**Resolução:**
+
+$E[X] = 2/0,3 = 6,6667$.
+$Var(X) = 2/(0,3)^2 = 2/0,09 = 22,2222$.
+
+**Resposta:** $E[X] = 6,67$ e $Var(X) = 22,22$.
+
+### Exemplo 4: Relação com a Poisson
+
+Seja $X \sim \text{Gama}(\alpha = 3, \lambda = 2)$. Calcule $P(X > 1)$ usando a relação com Poisson.
+
+**Resolução:**
+
+$P(X > 1) = P(\text{Poisson}(2) \le 2) = e^{-2} \cdot [1 + 2 + 4/2] = e^{-2} \cdot (1 + 2 + 2) = 0,1353 \cdot 5 = 0,6767$.
+
+**Verificação:** $P(X > 1) = 1 - F(1) = 1 - [1 - e^{-2} \cdot (1 + 2 + 4/2)] = e^{-2} \cdot 5 = 0,6767$.
+
+**Resposta:** 67,67%.
+
+### Exemplo 5: Encontrando parâmetros
+
+Suponha que $X \sim \text{Gama}(\alpha, \lambda)$ com $E[X] = 6$ e $Var(X) = 12$. Encontre $\alpha$ e $\lambda$.
+
+**Resolução:**
+
+$E[X] = \alpha/\lambda = 6 \to \alpha = 6\lambda$.
+$Var(X) = \alpha/\lambda^2 = 12 \to (6\lambda)/\lambda^2 = 12 \to 6/\lambda = 12 \to \lambda = 0,5$.
+$\alpha = 6 \cdot 0,5 = 3$.
+
+**Resposta:** $\alpha = 3$ e $\lambda = 0,5$.
+
+## Exercícios resolvidos (níveis crescentes de dificuldade)
+
+### Exercício 1 (Fácil)
+
+Seja $X \sim \text{Gama}(\alpha = 2, \lambda = 1)$. Calcule $P(X \le 1)$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$F(1) = 1 - e^{-1} \cdot [1 + 1] = 1 - 0,3679 \cdot 2 = 1 - 0,7358 = 0,2642$.
+
+**Resposta:** 26,42%.
+
+</details>
+
+### Exercício 2 (Fácil/Médio)
+
+Seja $X \sim \text{Gama}(\alpha = 3, \lambda = 2)$. Calcule $E[X]$ e $Var(X)$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$E[X] = 3/2 = 1,5$.
+$Var(X) = 3/4 = 0,75$.
+
+**Resposta:** $E[X] = 1,5$ e $Var(X) = 0,75$.
+
+</details>
+
+### Exercício 3 (Médio)
+
+Seja $X \sim \text{Gama}(\alpha = 4, \lambda = 0,5)$. Calcule $P(2 \le X \le 4)$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+Para $\alpha = 4$: $F(x) = 1 - e^{-0,5x} \cdot [1 + 0,5x + (0,5x)^2/2 + (0,5x)^3/6]$.
+
+$F(4) = 1 - e^{-2} \cdot [1 + 2 + 4/2 + 8/6] = 1 - 0,1353 \cdot (1 + 2 + 2 + 1,3333) = 1 - 0,1353 \cdot 6,3333 = 1 - 0,8571 = 0,1429$.
+
+$F(2) = 1 - e^{-1} \cdot [1 + 1 + 2/2 + 2/6] = 1 - 0,3679 \cdot (1 + 1 + 1 + 0,3333) = 1 - 0,3679 \cdot 3,3333 = 1 - 1,2264 = -0,2264$. (Erro! Vamos recalcular.)
+
+Na verdade, $F(2) = 1 - e^{-1} \cdot [1 + 1 + (1)^2/2 + (1)^3/6] = 1 - 0,3679 \cdot (1 + 1 + 0,5 + 0,1667) = 1 - 0,3679 \cdot 2,6667 = 1 - 0,9810 = 0,0190$.
+
+$P(2 \le X \le 4) = F(4) - F(2) = 0,1429 - 0,0190 = 0,1239$.
+
+**Resposta:** 12,39%.
+
+</details>
+
+### Exercício 4 (Médio)
+
+Seja $X \sim \text{Gama}(\alpha = 5, \lambda = 1)$. Calcule $P(X > 3)$ usando a relação com Poisson.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$P(X > 3) = P(\text{Poisson}(3) \le 4) = e^{-3} \cdot [1 + 3 + 9/2 + 27/6 + 81/24] = e^{-3} \cdot [1 + 3 + 4,5 + 4,5 + 3,375] = 0,0498 \cdot 16,375 = 0,8153$.
+
+**Resposta:** 81,53%.
+
+</details>
+
+### Exercício 5 (Difícil)
+
+O tempo até a segunda falha de um sistema segue uma distribuição $\text{Gama}(\alpha = 2, \lambda)$. Sabendo que $P(X \le 4) = 0,5$, encontre $\lambda$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+Para $\alpha = 2$: $F(4) = 1 - e^{-4\lambda} \cdot [1 + 4\lambda] = 0,5$.
+
+$e^{-4\lambda} \cdot (1 + 4\lambda) = 0,5$.
+
+Precisamos resolver esta equação. Por tentativa:
+
+$\lambda = 0,2$: $e^{-0,8} \cdot (1 + 0,8) = 0,4493 \cdot 1,8 = 0,8087$ (muito alto)
+$\lambda = 0,1$: $e^{-0,4} \cdot (1 + 0,4) = 0,6703 \cdot 1,4 = 0,9384$ (muito alto)
+$\lambda = 0,3$: $e^{-1,2} \cdot (1 + 1,2) = 0,3012 \cdot 2,2 = 0,6626$ (alto)
+$\lambda = 0,5$: $e^{-2} \cdot (1 + 2) = 0,1353 \cdot 3 = 0,4060$ (baixo)
+$\lambda = 0,4$: $e^{-1,6} \cdot (1 + 1,6) = 0,2019 \cdot 2,6 = 0,5249$ (próximo)
+$\lambda = 0,42$: $e^{-1,68} \cdot (1 + 1,68) = 0,1864 \cdot 2,68 = 0,4996$ (próximo)
+
+$\lambda \approx 0,42$.
+
+**Resposta:** $\lambda \approx 0,42$.
+
+</details>
+
+## Desafio final com resolução completa
+
+Um sistema de filas recebe clientes a uma taxa média de 2 clientes por minuto. Você está interessado no tempo até o sexto cliente chegar.
+
+a) Qual distribuição descreve o tempo até o sexto cliente?
+b) Qual o tempo médio até o sexto cliente?
+c) Qual a probabilidade de o sexto cliente chegar em menos de 2 minutos?
+d) Qual a probabilidade de o sexto cliente chegar entre 2 e 4 minutos?
+
+<details>
+<summary>💡 Ver resolução completa</summary>
+
+a) O tempo até o sexto cliente segue uma distribuição $\text{Gama}(\alpha = 6, \lambda = 2)$.
+
+b) $E[X] = \alpha/\lambda = 6/2 = 3$ minutos.
+
+c) Para $\alpha = 6$: $F(x) = 1 - e^{-2x} \cdot [1 + 2x + (2x)^2/2 + (2x)^3/6 + (2x)^4/24 + (2x)^5/120]$.
+
+$F(2) = 1 - e^{-4} \cdot [1 + 4 + 16/2 + 64/6 + 256/24 + 1024/120] = 1 - 0,0183 \cdot [1 + 4 + 8 + 10,6667 + 10,6667 + 8,5333] = 1 - 0,0183 \cdot 42,8667 = 1 - 0,7845 = 0,2155$.
+
+d) $F(4) = 1 - e^{-8} \cdot [1 + 8 + 64/2 + 512/6 + 4096/24 + 32768/120] = 1 - 0,000335 \cdot [1 + 8 + 32 + 85,3333 + 170,6667 + 273,0667] = 1 - 0,000335 \cdot 570,0667 = 1 - 0,1910 = 0,8090$.
+
+$P(2 \le X \le 4) = F(4) - F(2) = 0,8090 - 0,2155 = 0,5935$.
+
+**Respostas:**
+a) $X \sim \text{Gama}(6, 2)$
+b) 3 minutos
+c) 21,55%
+d) 59,35%
+
+</details>
+
+> *A Distribuição Gama nos ensina que a espera pelo enésimo evento é mais do que a soma de esperas individuais — é a paciência acumulada que se transforma em um novo padrão de probabilidade.*

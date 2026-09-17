@@ -1,0 +1,495 @@
+# Distribuição t-Student
+
+## O que é a Distribuição t-Student?
+
+A Distribuição t-Student (ou simplesmente distribuição t) é uma das distribuições mais importantes em estatística inferencial. Ela foi introduzida por William Sealy Gosset em 1908, que publicou sob o pseudônimo "Student" (daí o nome). Gosset trabalhava na cervejaria Guinness e precisava de uma distribuição para lidar com amostras pequenas.
+
+A distribuição t é usada principalmente quando:
+
+- Você tem uma amostra pequena ($n < 30$) e não conhece o desvio padrão da população.
+- Você está testando hipóteses sobre a média de uma população.
+- Você está construindo intervalos de confiança para a média.
+
+A distribuição t é muito parecida com a distribuição Normal padrão ($N(0, 1)$), mas tem "caudas mais pesadas". Isso significa que ela atribui mais probabilidade a valores extremos do que a Normal. Conforme o tamanho da amostra (ou melhor, os graus de liberdade) aumenta, a distribuição t se aproxima da Normal padrão.
+
+A distribuição t é denotada por $T \sim t(\nu)$, onde $\nu$ (nu) é o número de **graus de liberdade**. Este parâmetro está relacionado ao tamanho da amostra: $\nu = n - 1$.
+
+## Função Densidade de Probabilidade
+
+A função densidade da t-Student é:
+
+>> $$f(t) = \frac{\Gamma\left(\frac{\nu+1}{2}\right)}{\sqrt{\nu\pi} \cdot \Gamma\left(\frac{\nu}{2}\right)} \left(1 + \frac{t^2}{\nu}\right)^{-\frac{\nu+1}{2}} \quad \text{para } -\infty < t < \infty$$
+
+A fórmula parece complicada, mas o que importa é entender suas características:
+
+- É simétrica em torno de 0 (como a Normal).
+- Tem formato de sino (como a Normal).
+- Tem caudas mais pesadas que a Normal (mais probabilidade em valores extremos).
+- Conforme $\nu$ aumenta, a t se aproxima da Normal padrão.
+
+**Exemplo 1:** Compare a densidade da $t(\nu=1)$ com a Normal padrão no ponto $t = 0$.
+
+**Resolução:**
+
+Para $t(1)$: $f(0) = \frac{\Gamma(1)}{\sqrt{\pi} \cdot \Gamma(0,5)} \cdot (1 + 0)^{-1} = \frac{1}{\sqrt{\pi} \cdot \sqrt{\pi}} = \frac{1}{\pi} \approx 0,3183$.
+
+Para $N(0, 1)$: $f(0) = \frac{1}{\sqrt{2\pi}} \approx 0,3989$.
+
+**Interpretação:** A $t(1)$ tem densidade menor no centro, o que significa que a probabilidade está mais espalhada (caudas mais pesadas).
+
+**Exemplo 2:** Compare a densidade da $t(\nu=10)$ com a Normal padrão no ponto $t = 2$.
+
+**Resolução:**
+
+Para $t(10)$: $f(2) = \frac{\Gamma(5,5)}{\sqrt{10\pi} \cdot \Gamma(5)} \cdot \left(1 + \frac{4}{10}\right)^{-5,5}$.
+
+$\Gamma(5,5) \approx 52,3428$; $\Gamma(5) = 24$; $\sqrt{10\pi} \approx 5,60499$.
+
+$f(2) = \frac{52,3428}{5,60499 \cdot 24} \cdot (1,4)^{-5,5} = \frac{52,3428}{134,5198} \cdot 0,1227 = 0,3891 \cdot 0,1227 = 0,0477$.
+
+Para $N(0, 1)$: $f(2) = 0,0540$.
+
+**Interpretação:** A $t(10)$ tem densidade ligeiramente menor em $t = 2$, indicando que as caudas são um pouco mais pesadas.
+
+**Exemplo 3:** Compare as densidades para diferentes graus de liberdade: $\nu = 1$, $\nu = 5$ e $\nu = 30$, com a Normal padrão, no ponto $t = 3$.
+
+**Resolução:**
+
+- $t(1)$: $f(3) = \frac{1}{\pi \cdot (1 + 9)} = \frac{1}{10\pi} = 0,0318$
+- $t(5)$: $f(3) \approx 0,0173$
+- $t(30)$: $f(3) \approx 0,0144$
+- $N(0, 1)$: $f(3) = 0,0044$
+
+**Interpretação:** A $t(1)$ tem a maior densidade em $t = 3$ (caudas mais pesadas). À medida que $\nu$ aumenta, a densidade se aproxima da Normal. Com $\nu = 30$, já está bem próxima.
+
+**Exemplo 4:** Calcule $f(0)$ para $t(\nu)$ para $\nu = 1, 2, 3, 5, 10, \infty$.
+
+**Resolução:**
+
+$f(0) = \frac{\Gamma((\nu+1)/2)}{\sqrt{\nu\pi} \cdot \Gamma(\nu/2)}$.
+
+- $\nu = 1$: $f(0) = 0,3183$
+- $\nu = 2$: $f(0) = 0,3536$
+- $\nu = 3$: $f(0) = 0,3676$
+- $\nu = 5$: $f(0) = 0,3796$
+- $\nu = 10$: $f(0) = 0,3891$
+- $\nu = \infty$: $f(0) = 0,3989$
+
+**Interpretação:** Conforme $\nu$ aumenta, a densidade no centro se aproxima da Normal. Com $\nu = 10$, já está bem próxima.
+
+**Exemplo 5:** Para $t(2)$, calcule $f(1)$ e $f(2)$.
+
+**Resolução:**
+
+$\Gamma(3/2) = \sqrt{\pi}/2 \approx 0,8862$; $\Gamma(1) = 1$; $\sqrt{2\pi} \approx 2,5066$.
+
+$f(t) = \frac{0,8862}{2,5066 \cdot 1} \cdot \left(1 + \frac{t^2}{2}\right)^{-1,5} = 0,3536 \cdot \left(1 + \frac{t^2}{2}\right)^{-1,5}$.
+
+- $f(1) = 0,3536 \cdot (1,5)^{-1,5} = 0,3536 \cdot 0,5443 = 0,1925$
+- $f(2) = 0,3536 \cdot (3)^{-1,5} = 0,3536 \cdot 0,1925 = 0,0681$
+
+## Função de Distribuição Acumulada (FDA)
+
+A FDA da t-Student não tem uma forma fechada simples. Para calcular probabilidades, usamos tabelas da distribuição t ou softwares estatísticos. As tabelas geralmente fornecem os quantis da t, ou seja, os valores $t_p$ tais que $P(T \le t_p) = p$.
+
+No entanto, podemos usar algumas propriedades importantes:
+
+- A t é simétrica: $P(T > t) = P(T < -t)$
+- $P(T \le t) = 1 - P(T > t)$
+- Os quantis superiores da t são frequentemente denotados por $t_{\alpha, \nu}$, onde $P(T > t_{\alpha, \nu}) = \alpha$.
+
+**Exemplo 1:** Seja $T \sim t(\nu = 10)$. Encontre o valor $t_{0,95}$ tal que $P(T \le t_{0,95}) = 0,95$.
+
+**Resolução:**
+
+Consultando uma tabela t com $\nu = 10$ e probabilidade 0,95 (unilateral superior), encontramos $t = 1,812$.
+
+**Interpretação:** 95% dos valores da $t(10)$ são menores que 1,812. Ou seja, $P(T \le 1,812) = 0,95$.
+
+**Exemplo 2:** Seja $T \sim t(\nu = 20)$. Encontre $P(T \le 1,725)$.
+
+**Resolução:**
+
+Para $\nu = 20$, o valor 1,725 corresponde a $t_{0,95}$. Portanto, $P(T \le 1,725) = 0,95$.
+
+**Exemplo 3:** Seja $T \sim t(\nu = 5)$. Calcule $P(T \le -2,015)$.
+
+**Resolução:**
+
+$P(T \le -2,015) = P(T > 2,015)$ pela simetria.
+
+Para $\nu = 5$, $t_{0,95} = 2,015$. Portanto, $P(T > 2,015) = 0,05$.
+
+Então $P(T \le -2,015) = 0,05$.
+
+**Exemplo 4:** Seja $T \sim t(\nu = 15)$. Calcule $P(-2,131 \le T \le 1,753)$.
+
+**Resolução:**
+
+Para $\nu = 15$:
+- $t_{0,95} = 1,753 \to P(T \le 1,753) = 0,95$
+- $t_{0,975} = 2,131 \to P(T \le 2,131) = 0,975$
+- $P(T \le -2,131) = 0,025$
+
+$P(-2,131 \le T \le 1,753) = P(T \le 1,753) - P(T \le -2,131) = 0,95 - 0,025 = 0,925$.
+
+**Interpretação:** 92,5% dos valores da $t(15)$ estão entre -2,131 e 1,753.
+
+**Exemplo 5:** Seja $T \sim t(\nu = 8)$. Encontre o valor $k$ tal que $P(-k \le T \le k) = 0,90$.
+
+**Resolução:**
+
+$P(-k \le T \le k) = 0,90 \to P(T \le k) = 0,95$.
+
+Para $\nu = 8$, $t_{0,95} = 1,860$. Portanto, $k = 1,860$.
+
+**Interpretação:** 90% dos valores da $t(8)$ estão entre -1,860 e 1,860.
+
+## Esperança (média) e Variância
+
+Para a distribuição t-Student:
+
+>> $$E[T] = 0 \quad \text{para } \nu > 1$$\
+>> $$Var(T) = \frac{\nu}{\nu - 2} \quad \text{para } \nu > 2$$
+
+**Importante:**
+- Para $\nu \le 1$, a média não existe.
+- Para $\nu \le 2$, a variância é infinita (ou não existe).
+- Para $\nu > 2$, a variância é finita e maior que 1.
+- Conforme $\nu \to \infty$, $Var(T) \to 1$ (aproximando-se da Normal padrão).
+
+**Exemplo 1:** Seja $T \sim t(\nu = 5)$. Calcule $E[T]$ e $Var(T)$.
+
+**Resolução:**
+
+- $E[T] = 0$ ($\nu > 1$)
+- $Var(T) = \frac{5}{5 - 2} = \frac{5}{3} = 1,6667$
+- Desvio padrão = $\sqrt{1,6667} = 1,291$
+
+**Interpretação:** A $t(5)$ tem caudas mais pesadas que a Normal (que tem variância 1).
+
+**Exemplo 2:** Seja $T \sim t(\nu = 10)$. Calcule $E[T]$ e $Var(T)$.
+
+**Resolução:**
+
+- $E[T] = 0$
+- $Var(T) = \frac{10}{10 - 2} = \frac{10}{8} = 1,25$
+- Desvio padrão = $\sqrt{1,25} = 1,118$
+
+**Interpretação:** Com $\nu = 10$, a t já está mais próxima da Normal.
+
+**Exemplo 3:** Seja $T \sim t(\nu = 30)$. Calcule $E[T]$ e $Var(T)$.
+
+**Resolução:**
+
+- $E[T] = 0$
+- $Var(T) = \frac{30}{30 - 2} = \frac{30}{28} = 1,0714$
+- Desvio padrão = $\sqrt{1,0714} = 1,035$
+
+**Interpretação:** Com $\nu = 30$, a t está muito próxima da Normal padrão (variância $\approx 1$).
+
+**Exemplo 4:** Qual o valor de $\nu$ tal que $Var(T) = 1,1$?
+
+**Resolução:**
+
+$\frac{\nu}{\nu - 2} = 1,1 \to \nu = 1,1\nu - 2,2 \to 0,1\nu = 2,2 \to \nu = 22$.
+
+**Interpretação:** Com $\nu = 22$, a variância da t é 1,1.
+
+**Exemplo 5:** Para $T \sim t(\nu)$, qual a probabilidade de $T$ estar dentro de 2 desvios padrão da média?
+
+**Resolução:**
+
+Para a Normal padrão, $P(-2 \le Z \le 2) \approx 0,9544$.
+
+Para a $t(5)$, com desvio padrão $\sigma = 1,291$: $P(-2,582 \le T \le 2,582)$.
+
+Para $t(5)$, $P(-2,571 \le T \le 2,571) = 0,95$ e $P(-3,365 \le T \le 3,365) = 0,99$.
+
+Então $P(-2,582 \le T \le 2,582)$ está entre 0,95 e 0,99.
+
+## Relação entre a t-Student e a Normal
+
+A distribuição t se aproxima da Normal padrão quando $\nu \to \infty$. Na prática:
+
+- Para $\nu \ge 30$, a aproximação já é muito boa.
+- Para $\nu \ge 100$, a t é praticamente igual à Normal.
+
+Isso significa que, para amostras grandes ($n \ge 30$), podemos usar a Normal no lugar da t sem perder muita precisão. Para amostras pequenas ($n < 30$), a t é necessária.
+
+**Comparação de quantis:**
+
+| Probabilidade | Normal | $t(10)$ | $t(5)$ | $t(1)$ |
+| --- | --- | --- | --- | --- |
+| 0,90 | 1,282 | 1,372 | 1,476 | 3,078 |
+| 0,95 | 1,645 | 1,812 | 2,015 | 6,314 |
+| 0,975 | 1,960 | 2,228 | 2,571 | 12,706 |
+| 0,99 | 2,326 | 2,764 | 3,365 | 31,821 |
+
+**Interpretação:** Para a mesma probabilidade, a $t(1)$ exige valores muito maiores que a Normal. Isso reflete as caudas pesadas.
+
+## Quando usar a Distribuição t-Student?
+
+A t-Student é usada principalmente em inferência estatística:
+
+1. **Teste de hipóteses para a média:** Quando você quer testar se a média de uma população é igual a um valor específico.
+2. **Intervalos de confiança para a média:** Quando você quer estimar a média populacional com um determinado nível de confiança.
+3. **Teste t para duas amostras:** Para comparar as médias de duas populações.
+4. **Teste t pareado:** Para comparar duas medições feitas no mesmo sujeito.
+
+**Exemplos de aplicações:**
+
+- Comparar a eficácia de dois medicamentos.
+- Testar se a média de notas de uma turma é diferente da média nacional.
+- Estimar o tempo médio de entrega de um produto.
+- Comparar o desempenho de duas máquinas em uma fábrica.
+
+## Limitações e quando NÃO usar
+
+A t-Student **NÃO deve ser usada** quando:
+
+1. A amostra é grande ($n \ge 30$) e você pode usar a Normal.
+2. Os dados não são aproximadamente Normais (use testes não paramétricos).
+3. Há outliers extremos que distorcem a média.
+4. A variável é discreta ou contável.
+
+### Analogia 1: O teste de qualidade do produto
+
+Uma fábrica produz parafusos e quer testar se o diâmetro médio é de 5 mm. Eles pegam uma amostra de 10 parafusos e calculam a média amostral.
+
+**Situação:** Com $n = 10$, os graus de liberdade são $\nu = 9$. Eles usam a $t(9)$ para testar a hipótese.
+
+**Pergunta:** Qual o valor $t_{0,95}$ para $\nu = 9$?
+
+**Resolução:**
+
+Consultando a tabela t com $\nu = 9$ e probabilidade 0,95, encontramos $t = 1,833$.
+
+**Interpretação:** Se o valor calculado for maior que 1,833 ou menor que -1,833, há evidência de que o diâmetro médio não é 5 mm.
+
+### Analogia 2: O intervalo de confiança para o tempo de entrega
+
+Uma empresa quer estimar o tempo médio de entrega de seus produtos. Eles coletam uma amostra de 15 entregas e encontram média de 4,5 dias e desvio padrão de 1,2 dias.
+
+**Pergunta:** Qual o intervalo de confiança de 95% para o tempo médio de entrega?
+
+**Resolução passo a passo:**
+
+1. $n = 15$, $\nu = 14$. Para 95% ($\alpha = 0,05$), $t_{0,025, 14} = 2,145$.
+2. Intervalo: $\bar{x} \pm t \cdot \frac{s}{\sqrt{n}} = 4,5 \pm 2,145 \cdot \frac{1,2}{\sqrt{15}}$
+3. $\frac{1,2}{\sqrt{15}} = \frac{1,2}{3,873} = 0,3098$
+4. $2,145 \cdot 0,3098 = 0,6645$
+5. Intervalo: $4,5 \pm 0,6645 = (3,8355, 5,1645)$
+
+**Resposta:** Com 95% de confiança, o tempo médio de entrega está entre 3,84 e 5,16 dias.
+
+### Analogia 3: Comparando duas máquinas
+
+Uma fábrica tem duas máquinas que produzem peças. Eles querem saber se há diferença na produção média. Coletam 8 amostras da máquina A e 10 da máquina B.
+
+**Pergunta:** Quantos graus de liberdade tem o teste?
+
+**Resolução:**
+
+$\nu = n_1 + n_2 - 2 = 8 + 10 - 2 = 16$.
+
+**Interpretação:** O teste t para duas amostras independentes tem $\nu = 16$ graus de liberdade.
+
+### Analogia 4: O efeito do treinamento
+
+Uma empresa aplica um treinamento para seus funcionários e quer saber se houve melhora no desempenho. Eles medem o desempenho de 12 funcionários antes e depois do treinamento.
+
+**Pergunta:** Qual distribuição usar?
+
+**Resolução:**
+
+Como são medições pareadas (mesmo sujeito antes e depois), usa-se o teste t pareado com $\nu = 12 - 1 = 11$.
+
+**Interpretação:** Usamos a $t(11)$ para testar se a diferença média é significativa.
+
+## Exemplos práticos com cálculos passo a passo
+
+### Exemplo 1: Encontrando um quantil
+
+Seja $T \sim t(\nu = 8)$. Encontre o valor $t$ tal que $P(T > t) = 0,025$.
+
+**Resolução:**
+
+$P(T > t) = 0,025 \to P(T \le t) = 0,975$.
+
+Para $\nu = 8$ e probabilidade 0,975, $t = 2,306$.
+
+**Resposta:** $t = 2,306$.
+
+### Exemplo 2: Probabilidade de um intervalo
+
+Seja $T \sim t(\nu = 12)$. Calcule $P(-1,356 \le T \le 1,356)$.
+
+**Resolução:**
+
+Para $\nu = 12$, $P(T \le 1,356) = 0,90$ (pois $t_{0,90} = 1,356$).
+
+$P(-1,356 \le T \le 1,356) = 2 \cdot 0,90 - 1 = 0,80$.
+
+**Resposta:** 80%.
+
+### Exemplo 3: Intervalo de confiança
+
+Uma amostra de 25 elementos tem média 50 e desvio padrão 3. Encontre o intervalo de confiança de 95% para a média.
+
+**Resolução:**
+
+$n = 25$, $\nu = 24$. $t_{0,025, 24} = 2,064$.
+
+Intervalo: $50 \pm 2,064 \cdot \frac{3}{\sqrt{25}} = 50 \pm 2,064 \cdot 0,6 = 50 \pm 1,2384 = (48,7616, 51,2384)$.
+
+**Resposta:** $(48,76, 51,24)$.
+
+### Exemplo 4: Teste de hipótese
+
+Uma amostra de 10 elementos tem média 42 e desvio padrão 5. Teste se a média populacional é 40 ($\alpha = 0,05$).
+
+**Resolução:**
+
+$t = \frac{\bar{x} - \mu_0}{s/\sqrt{n}} = \frac{42 - 40}{5/\sqrt{10}} = \frac{2}{1,5811} = 1,2649$.
+
+$\nu = 9$. $t_{0,025, 9} = 2,262$ (para teste bicaudal, usamos $t_{0,025}$).
+
+Como $1,2649 < 2,262$, não rejeitamos a hipótese nula.
+
+**Resposta:** Não há evidência suficiente para dizer que a média é diferente de 40.
+
+### Exemplo 5: Comparando duas amostras
+
+Amostra 1: $n_1 = 10$, $\bar{x}_1 = 25$, $s_1 = 4$
+Amostra 2: $n_2 = 12$, $\bar{x}_2 = 28$, $s_2 = 5$
+
+Teste se as médias são diferentes ($\alpha = 0,05$).
+
+**Resolução:**
+
+Primeiro, calculamos o desvio padrão combinado:
+$s_p = \sqrt{\frac{(n_1-1)s_1^2 + (n_2-1)s_2^2}{n_1 + n_2 - 2}}$
+$s_p = \sqrt{\frac{9 \cdot 16 + 11 \cdot 25}{10 + 12 - 2}} = \sqrt{\frac{144 + 275}{20}} = \sqrt{\frac{419}{20}} = \sqrt{20,95} = 4,577$.
+
+$t = \frac{\bar{x}_1 - \bar{x}_2}{s_p \cdot \sqrt{1/n_1 + 1/n_2}} = \frac{25 - 28}{4,577 \cdot \sqrt{0,1 + 0,0833}} = \frac{-3}{4,577 \cdot \sqrt{0,1833}} = \frac{-3}{4,577 \cdot 0,4282} = \frac{-3}{1,960} = -1,531$.
+
+$\nu = 20$. $t_{0,025, 20} = 2,086$.
+
+Como $|-1,531| < 2,086$, não rejeitamos a hipótese nula.
+
+**Resposta:** Não há evidência suficiente para dizer que as médias são diferentes.
+
+## Exercícios resolvidos (níveis crescentes de dificuldade)
+
+### Exercício 1 (Fácil)
+
+Seja $T \sim t(\nu = 15)$. Encontre o valor $t$ tal que $P(T \le t) = 0,90$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+Para $\nu = 15$ e probabilidade 0,90, $t_{0,90} = 1,341$.
+
+**Resposta:** $t = 1,341$.
+
+</details>
+
+### Exercício 2 (Fácil/Médio)
+
+Seja $T \sim t(\nu = 20)$. Calcule $P(T \le 1,325)$ e $P(T > 2,528)$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$P(T \le 1,325) = 0,90$ ($t_{0,90, 20} = 1,325$).
+$P(T > 2,528) = 0,01$ ($t_{0,99, 20} = 2,528$).
+
+**Resposta:** 90% e 1%.
+
+</details>
+
+### Exercício 3 (Médio)
+
+Seja $T \sim t(\nu = 25)$. Encontre $k$ tal que $P(-k \le T \le k) = 0,95$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$P(-k \le T \le k) = 0,95 \to P(T \le k) = 0,975$.
+
+Para $\nu = 25$ e probabilidade 0,975, $t_{0,975, 25} = 2,060$.
+
+**Resposta:** $k = 2,060$.
+
+</details>
+
+### Exercício 4 (Médio)
+
+Uma amostra de 16 elementos tem média 75 e desvio padrão 8. Encontre o intervalo de confiança de 90% para a média.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$n = 16$, $\nu = 15$. $t_{0,05, 15} = 1,753$ (para 90%, $\alpha = 0,10$, usamos $t_{0,05}$).
+
+Intervalo: $75 \pm 1,753 \cdot \frac{8}{\sqrt{16}} = 75 \pm 1,753 \cdot 2 = 75 \pm 3,506 = (71,494, 78,506)$.
+
+**Resposta:** $(71,49, 78,51)$.
+
+</details>
+
+### Exercício 5 (Difícil)
+
+Duas amostras independentes têm: $n_1 = 8$, $\bar{x}_1 = 30$, $s_1 = 3$ e $n_2 = 10$, $\bar{x}_2 = 35$, $s_2 = 4$. Teste se a média da segunda população é maior que a primeira ($\alpha = 0,05$).
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+Hipóteses: $H_0: \mu_1 = \mu_2$, $H_1: \mu_1 < \mu_2$ (teste unilateral).
+
+$s_p = \sqrt{\frac{7 \cdot 9 + 9 \cdot 16}{8 + 10 - 2}} = \sqrt{\frac{63 + 144}{16}} = \sqrt{\frac{207}{16}} = \sqrt{12,9375} = 3,597$.
+
+$t = \frac{\bar{x}_1 - \bar{x}_2}{s_p \cdot \sqrt{1/n_1 + 1/n_2}} = \frac{30 - 35}{3,597 \cdot \sqrt{0,125 + 0,1}} = \frac{-5}{3,597 \cdot \sqrt{0,225}} = \frac{-5}{3,597 \cdot 0,4743} = \frac{-5}{1,706} = -2,931$.
+
+$\nu = 16$. $t_{0,05, 16} = 1,746$ (unilateral superior).
+
+Como $-2,931 < -1,746$, rejeitamos $H_0$.
+
+**Resposta:** Há evidência de que a média da segunda população é maior que a primeira.
+
+</details>
+
+## Desafio final com resolução completa
+
+Uma empresa quer estimar o tempo médio de produção de um novo produto. Ela coleta uma amostra de 20 unidades e obtém média de 12,5 minutos e desvio padrão de 3,2 minutos.
+
+a) Qual distribuição deve ser usada para construir o intervalo de confiança?
+b) Encontre o intervalo de confiança de 95% para a média.
+c) Encontre o intervalo de confiança de 99% para a média.
+d) Se a empresa quiser que a margem de erro seja de no máximo 1 minuto com 95% de confiança, quantas unidades ela deve amostrar?
+
+<details>
+<summary>💡 Ver resolução completa</summary>
+
+a) Como $n = 20$ (pequeno) e $\sigma$ é desconhecido, usamos a distribuição t com $\nu = 19$.
+
+b) $n = 20$, $\nu = 19$. Para 95% ($\alpha = 0,05$, bicaudal), $t_{0,025, 19} = 2,093$.
+   Intervalo: $12,5 \pm 2,093 \cdot \frac{3,2}{\sqrt{20}} = 12,5 \pm 2,093 \cdot 0,7155 = 12,5 \pm 1,497 = (11,003, 13,997)$.
+
+c) Para 99% ($\alpha = 0,01$, bicaudal), $t_{0,005, 19} = 2,861$.
+   Intervalo: $12,5 \pm 2,861 \cdot 0,7155 = 12,5 \pm 2,047 = (10,453, 14,547)$.
+
+d) Margem de erro: $E = t \cdot \frac{s}{\sqrt{n}}$. Usamos $t \approx 2,093$ (assumindo $n$ próximo de 20).
+   $1 = 2,093 \cdot \frac{3,2}{\sqrt{n}} \to 1 = \frac{6,6976}{\sqrt{n}} \to \sqrt{n} = 6,6976 \to n = 44,86$.
+   Arredondando para cima: $n = 45$.
+
+**Respostas:**
+a) $t(19)$
+b) $(11,003, 13,997)$ minutos
+c) $(10,453, 14,547)$ minutos
+d) 45 unidades
+
+</details>
+
+> *A Distribuição t-Student nos ensina que, quando o conhecimento é limitado e os dados são escassos, a incerteza se expande — mas com mais observações, ela se aproxima da verdade, como a Normal que emerge do limite da dúvida.*

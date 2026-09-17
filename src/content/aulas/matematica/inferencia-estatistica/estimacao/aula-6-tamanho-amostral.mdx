@@ -1,0 +1,396 @@
+# Determinação do Tamanho Amostral
+
+## O que é Determinação do Tamanho Amostral?
+
+A determinação do tamanho amostral é uma das etapas mais importantes no planejamento de qualquer pesquisa ou experimento. Ela responde a pergunta: **quantas observações precisamos coletar** para obter resultados com a precisão e confiabilidade desejadas?
+
+Escolher o tamanho amostral adequado é um equilíbrio delicado:
+
+- **Amostra muito pequena:** Resultados imprecisos, baixo poder estatístico, conclusões pouco confiáveis.
+- **Amostra muito grande:** Desperdício de recursos (tempo, dinheiro, esforço), pode ser eticamente problemático.
+
+**Fatores que afetam o tamanho amostral:**
+
+1. **Nível de confiança ($1-\alpha$):** Quanto maior o nível de confiança, maior a amostra necessária.
+2. **Margem de erro ($E$):** Quanto menor a margem de erro desejada, maior a amostra.
+3. **Variabilidade dos dados ($\sigma$ ou $p$):** Quanto mais variáveis os dados, maior a amostra.
+4. **Tamanho da população ($N$):** Para populações finitas, há um ajuste (fator de correção).
+
+## Tamanho Amostral para Média ($\sigma$ conhecido)
+
+Quando a variância populacional $\sigma^2$ é conhecida, a fórmula é direta:
+
+>> $$n = \left( \frac{Z_{\alpha/2} \cdot \sigma}{E} \right)^2$$
+
+onde:
+- $Z_{\alpha/2}$ é o quantil da Normal para o nível de confiança desejado
+- $\sigma$ é o desvio padrão populacional
+- $E$ é a margem de erro máxima aceitável
+
+**Exemplo 1: Tamanho amostral para média ($\sigma$ conhecido)**
+
+Uma população tem $\sigma = 10$. Qual o tamanho da amostra necessário para estimar a média com margem de erro de 2 unidades e 95% de confiança?
+
+**Resolução:**
+
+$Z_{0,025} = 1,96$, $\sigma = 10$, $E = 2$
+$n = (1,96 \cdot 10/2)^2 = (9,8)^2 = 96,04$
+
+**Resposta:** $n \ge 97$.
+
+**Exemplo 2: Tamanho amostral para média (90% de confiança)**
+
+Mesmo exemplo, com 90% de confiança.
+
+**Resolução:**
+
+$Z_{0,05} = 1,645$, $\sigma = 10$, $E = 2$
+$n = (1,645 \cdot 10/2)^2 = (8,225)^2 = 67,65$
+
+**Resposta:** $n \ge 68$.
+
+**Exemplo 3: Tamanho amostral para média (99% de confiança)**
+
+Mesmo exemplo, com 99% de confiança.
+
+**Resolução:**
+
+$Z_{0,005} = 2,576$, $\sigma = 10$, $E = 2$
+$n = (2,576 \cdot 10/2)^2 = (12,88)^2 = 165,89$
+
+**Resposta:** $n \ge 166$.
+
+**Exemplo 4: Tamanho amostral para média ($E$ menor)**
+
+Mesmo exemplo, com margem de erro de 1.
+
+**Resolução:**
+
+$n = (1,96 \cdot 10/1)^2 = (19,6)^2 = 384,16$
+
+**Resposta:** $n \ge 385$.
+
+**Exemplo 5: Tamanho amostral para média ($\sigma$ maior)**
+
+Se $\sigma = 20$, $E = 2$, 95% de confiança.
+
+**Resolução:**
+
+$n = (1,96 \cdot 20/2)^2 = (19,6)^2 = 384,16$
+
+**Resposta:** $n \ge 385$.
+
+## Tamanho Amostral para Média ($\sigma$ desconhecido)
+
+Quando $\sigma$ é desconhecido, precisamos de uma estimativa preliminar (geralmente de um estudo piloto ou da literatura). Usamos a distribuição $t$, mas como $t$ depende de $n$, o processo é iterativo.
+
+**Abordagem prática:**
+
+1. Faça uma estimativa inicial de $\sigma$ (usando $S$ de um estudo piloto).
+2. Use a fórmula com $Z$ (aproximação) para obter $n_0$.
+3. Refine usando $t$ com $n_0-1$ graus de liberdade.
+4. Itere até convergência.
+
+**Fórmula aproximada:**
+
+>> $$n \approx \left( \frac{t_{\alpha/2, n-1} \cdot S}{E} \right)^2$$
+
+**Exemplo: Tamanho amostral para média ($\sigma$ desconhecido)**
+
+Um estudo piloto com 10 elementos tem $S = 5$. Qual o tamanho da amostra para estimar $\mu$ com $E = 2$ e 95% de confiança?
+
+**Resolução:**
+
+Iteração 1: $Z = 1,96 \to n_0 = (1,96 \cdot 5/2)^2 = (4,9)^2 = 24,01 \to n \approx 25$
+
+Iteração 2: $t_{0,025, 24} = 2,064 \to n = (2,064 \cdot 5/2)^2 = (5,16)^2 = 26,63 \to n \approx 27$
+
+Iteração 3: $t_{0,025, 26} = 2,056 \to n = (2,056 \cdot 5/2)^2 = (5,14)^2 = 26,42 \to n \approx 27$
+
+**Resposta:** $n \ge 27$.
+
+## Tamanho Amostral para Proporção
+
+Para estimar uma proporção populacional $p$:
+
+>> $$n = \frac{Z_{\alpha/2}^2 \cdot p(1-p)}{E^2}$$
+
+Quando não se tem ideia de $p$, usa-se o valor mais conservador: $p = 0,5$ (que maximiza $p(1-p) = 0,25$).
+
+**Exemplo 1: Tamanho amostral para proporção ($p$ conhecido)**
+
+Em uma pesquisa, estima-se que $p \approx 0,3$. Qual o tamanho da amostra para $E = 0,03$ e 95% de confiança?
+
+**Resolução:**
+
+$n = \frac{1,96^2 \cdot 0,3 \cdot 0,7}{0,03^2} = \frac{3,8416 \cdot 0,21}{0,0009} = \frac{0,8067}{0,0009} = 896,3$
+
+**Resposta:** $n \ge 897$.
+
+**Exemplo 2: Tamanho amostral para proporção ($p$ desconhecido)**
+
+Mesmo exemplo, mas sem conhecimento de $p$.
+
+**Resolução:**
+
+$n = \frac{1,96^2 \cdot 0,5 \cdot 0,5}{0,03^2} = \frac{3,8416 \cdot 0,25}{0,0009} = \frac{0,9604}{0,0009} = 1067,1$
+
+**Resposta:** $n \ge 1068$.
+
+**Exemplo 3: Tamanho amostral para proporção ($E$ maior)**
+
+$p$ desconhecido, $E = 0,05$, 95% de confiança.
+
+**Resolução:**
+
+$n = \frac{1,96^2 \cdot 0,5 \cdot 0,5}{0,05^2} = \frac{0,9604}{0,0025} = 384,16$
+
+**Resposta:** $n \ge 385$.
+
+## Tamanho Amostral para Diferença de Médias
+
+Para comparar duas médias independentes:
+
+>> $$n_1 = n_2 = \frac{2 \cdot (Z_{\alpha/2} + Z_{\beta})^2 \cdot \sigma^2}{(\mu_1 - \mu_2)^2}$$
+
+onde:
+- $\beta$ é a probabilidade de erro Tipo II ($1 -$ poder do teste)
+- $\sigma^2$ é a variância comum (assumindo variâncias iguais)
+
+**Exemplo: Tamanho amostral para diferença de médias**
+
+Queremos detectar uma diferença de 2 unidades entre duas médias, com $\sigma = 5$, $\alpha = 0,05$, poder = 0,80 ($\beta = 0,20$).
+
+**Resolução:**
+
+$Z_{0,025} = 1,96$, $Z_{0,20} = 0,842$
+$n = \frac{2 \cdot (1,96 + 0,842)^2 \cdot 25}{2^2} = \frac{2 \cdot (2,802)^2 \cdot 25}{4} = \frac{392,55}{4} = 98,14$
+
+**Resposta:** $n \ge 99$ para cada grupo.
+
+## Tamanho Amostral para Diferença de Proporções
+
+Para comparar duas proporções:
+
+>> $$n_1 = n_2 = \frac{(Z_{\alpha/2} + Z_{\beta})^2 \cdot [p_1(1-p_1) + p_2(1-p_2)]}{(p_1 - p_2)^2}$$
+
+**Exemplo: Tamanho amostral para diferença de proporções**
+
+Queremos detectar uma diferença de 0,1 entre $p_1 = 0,4$ e $p_2 = 0,3$, com $\alpha = 0,05$ e poder = 0,80.
+
+**Resolução:**
+
+$Z_{0,025} = 1,96$, $Z_{0,20} = 0,842$
+Numerador: $(1,96 + 0,842)^2 \cdot [0,4 \cdot 0,6 + 0,3 \cdot 0,7] = (2,802)^2 \cdot [0,24 + 0,21] = 7,851 \cdot 0,45 = 3,533$
+Denominador: $(0,1)^2 = 0,01$
+$n = 3,533/0,01 = 353,3$
+
+**Resposta:** $n \ge 354$ para cada grupo.
+
+## Fator de Correção para Populações Finitas
+
+Quando a população é finita (tamanho $N$ conhecido), podemos ajustar o tamanho amostral:
+
+>> $$n_{ajustado} = \frac{n \cdot N}{n + N - 1}$$
+
+**Exemplo: População finita**
+
+Uma população tem $N = 500$. Calculamos $n = 100$ usando a fórmula usual. Qual o tamanho ajustado?
+
+**Resolução:**
+
+$n_{ajustado} = \frac{100 \cdot 500}{100 + 500 - 1} = \frac{50000}{599} = 83,47$
+
+**Resposta:** $n \approx 84$.
+
+## Resumo: Fórmulas de Tamanho Amostral
+
+| Parâmetro | Fórmula | Observação |
+| --- | --- | --- |
+| Média ($\sigma$ conhecido) | $n = (Z \cdot \sigma/E)^2$ | $\sigma$ conhecido |
+| Média ($\sigma$ desconhecido) | $n \approx (t \cdot S/E)^2$ | Usar $S$ de estudo piloto |
+| Proporção | $n = Z^2 \cdot p(1-p)/E^2$ | $p$ desconhecido $\to p = 0,5$ |
+| Diferença de médias | $n = 2 \cdot (Z_\alpha + Z_\beta)^2 \cdot \sigma^2/(\mu_1-\mu_2)^2$ | Cada grupo |
+| Diferença de proporções | $n = (Z_\alpha + Z_\beta)^2 \cdot [p_1(1-p_1)+p_2(1-p_2)]/(p_1-p_2)^2$ | Cada grupo |
+| População finita | $n_{ajust} = n \cdot N/(n+N-1)$ | $N$ conhecido |
+
+## Analogias
+
+### Analogia 1: O pescador
+
+Um pescador quer estimar o peso médio dos peixes em um lago. Quanto mais peixes ele pesca (amostra), mais precisa é sua estimativa. Mas pescar muitos peixes custa tempo e esforço. O tamanho amostral é o número de peixes que ele decide pescar.
+
+### Analogia 2: O fotógrafo
+
+Um fotógrafo quer tirar uma foto nítida. Quanto mais luz (amostra maior), mais nítida a foto (menor erro). Mas luz demais pode queimar a foto (desperdício de recursos).
+
+### Analogia 3: O provador de vinho
+
+Um sommelier prova algumas garrafas de um lote para avaliar a qualidade geral. Provar muitas garrafas dá mais precisão, mas destrói o estoque. O número de garrafas provadas é o tamanho amostral.
+
+## Exemplos Práticos com Cálculos Passo a Passo
+
+### Exemplo 1: Tamanho amostral para média
+
+$\sigma = 8$, $E = 1,5$, 95% de confiança.
+
+**Resolução:**
+
+$n = (1,96 \cdot 8/1,5)^2 = (10,453)^2 = 109,27$
+
+**Resposta:** $n \ge 110$.
+
+### Exemplo 2: Tamanho amostral para proporção
+
+$p = 0,6$, $E = 0,04$, 95% de confiança.
+
+**Resolução:**
+
+$n = \frac{1,96^2 \cdot 0,6 \cdot 0,4}{0,04^2} = \frac{3,8416 \cdot 0,24}{0,0016} = \frac{0,922}{0,0016} = 576,2$
+
+**Resposta:** $n \ge 577$.
+
+### Exemplo 3: População finita
+
+$N = 1000$, $n$ calculado = 200. Encontre $n$ ajustado.
+
+**Resolução:**
+
+$n_{ajust} = \frac{200 \cdot 1000}{200 + 1000 - 1} = \frac{200000}{1199} = 166,8$
+
+**Resposta:** $n \approx 167$.
+
+## Exercícios Resolvidos
+
+### Exercício 1 (Fácil)
+
+$\sigma = 5$, $E = 1$, 95% de confiança. Encontre $n$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$n = (1,96 \cdot 5/1)^2 = (9,8)^2 = 96,04$
+
+**Resposta:** $n \ge 97$.
+
+</details>
+
+### Exercício 2 (Fácil/Médio)
+
+$p = 0,4$, $E = 0,02$, 90% de confiança.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$n = \frac{1,645^2 \cdot 0,4 \cdot 0,6}{0,02^2} = \frac{2,706 \cdot 0,24}{0,0004} = \frac{0,6494}{0,0004} = 1623,5$
+
+**Resposta:** $n \ge 1624$.
+
+</details>
+
+### Exercício 3 (Médio)
+
+$\sigma = 3$, $E = 0,5$, 99% de confiança.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$n = (2,576 \cdot 3/0,5)^2 = (15,456)^2 = 238,9$
+
+**Resposta:** $n \ge 239$.
+
+</details>
+
+### Exercício 4 (Médio)
+
+$N = 500$, $n$ calculado = 150. Encontre $n$ ajustado.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$n_{ajust} = \frac{150 \cdot 500}{150 + 500 - 1} = \frac{75000}{649} = 115,56$
+
+**Resposta:** $n \approx 116$.
+
+</details>
+
+### Exercício 5 (Difícil)
+
+Diferença de médias: $\sigma = 4$, $\mu_1-\mu_2 = 1,5$, $\alpha = 0,05$, poder = 0,90.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$Z_{0,025} = 1,96$, $Z_{0,10} = 1,282$
+$n = \frac{2 \cdot (1,96 + 1,282)^2 \cdot 16}{(1,5)^2} = \frac{2 \cdot (3,242)^2 \cdot 16}{2,25} = \frac{2 \cdot 10,51 \cdot 16}{2,25} = \frac{336,3}{2,25} = 149,5$
+
+**Resposta:** $n \ge 150$ para cada grupo.
+
+</details>
+
+## Desafio Final com Resolução Completa
+
+Uma empresa de pesquisa quer estimar a proporção de consumidores que preferem um novo produto. Estudos anteriores sugerem que a proporção é cerca de 0,35.
+
+a) Qual o tamanho amostral necessário para estimar $p$ com margem de erro de 3% e 95% de confiança?
+
+b) Qual o tamanho amostral necessário se a empresa não tiver ideia do valor de $p$?
+
+c) Se a população for finita ($N = 10.000$), qual o tamanho ajustado para (a)?
+
+d) Qual seria o tamanho amostral para estimar a média de gastos ($\sigma = 20$) com margem de erro de 5 e 95% de confiança?
+
+e) Compare os resultados e discuta as implicações práticas.
+
+<details>
+<summary>💡 Ver resolução completa</summary>
+
+a) $p = 0,35$, $E = 0,03$, $Z = 1,96$
+   $n = \frac{1,96^2 \cdot 0,35 \cdot 0,65}{0,03^2} = \frac{3,8416 \cdot 0,2275}{0,0009} = \frac{0,8739}{0,0009} = 971,0$
+   $n \ge 972$
+
+b) $p$ desconhecido $\to p = 0,5$
+   $n = \frac{1,96^2 \cdot 0,5 \cdot 0,5}{0,03^2} = \frac{0,9604}{0,0009} = 1067,1$
+   $n \ge 1068$
+
+c) $n_{ajust} = \frac{972 \cdot 10000}{972 + 10000 - 1} = \frac{9.720.000}{10.971} = 885,9$
+   $n \approx 886$
+
+d) $\sigma = 20$, $E = 5$, $Z = 1,96$
+   $n = (1,96 \cdot 20/5)^2 = (7,84)^2 = 61,47$
+   $n \ge 62$
+
+e) Comparação:
+   - Proporção ($p$ conhecido): 972 consumidores
+   - Proporção ($p$ desconhecido): 1068 consumidores (cerca de 10% maior)
+   - Com população finita: 886 consumidores (economia de $\sim$9%)
+   - Média de gastos: apenas 62 consumidores (muito menor, pois $\sigma$ é pequeno em relação à margem)
+
+**Implicações:** O tamanho amostral depende fortemente do tipo de parâmetro, da variabilidade esperada e da margem de erro desejada. Para a proporção, é crucial ter uma boa estimativa de $p$ para evitar amostras desnecessariamente grandes.
+
+**Respostas:**
+a) 972 consumidores
+b) 1068 consumidores
+c) 886 consumidores
+d) 62 consumidores
+e) Ver discussão acima
+
+</details>
+
+---
+
+Agora você já sabe como determinar o tamanho amostral para diferentes situações! Você aprendeu a calcular para média (com $\sigma$ conhecido e desconhecido), proporção, diferença de médias e diferença de proporções. Também viu como ajustar para populações finitas e como o nível de confiança, a margem de erro e a variabilidade afetam o tamanho amostral.
+
+Este é um conhecimento essencial para o planejamento de pesquisas e experimentos, garantindo que você colete dados suficientes para obter conclusões confiáveis, sem desperdiçar recursos.
+
+**Fim do Módulo de Estimação!** 🎉
+
+Este módulo cobriu:
+1. ✅ Estimação Pontual
+2. ✅ Métodos de Estimação (MM e MLE)
+3. ✅ Distribuições Amostrais
+4. ✅ Intervalos de Confiança I
+5. ✅ Intervalos de Confiança II
+6. ✅ Determinação do Tamanho Amostral
+
+> *O tamanho amostral é a ponte entre a ambição da pergunta e a realidade dos recursos — grande o bastante para ser confiável, pequeno o bastante para ser viável.*

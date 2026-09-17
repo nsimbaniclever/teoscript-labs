@@ -1,0 +1,826 @@
+# Sistema Numérico Decimal
+
+**Duração estimada:** 45 minutos (leitura) / 1h15 (com exercícios práticos)  
+**Público-alvo:** Estudante com conhecimento básico de matemática  
+**Pré-requisito:** Conhecimento de sistema numérico decimal (base 10)
+
+---
+
+## 1. Conceito Básico
+
+O sistema decimal é um sistema de numeração de **base 10**, ou seja, utiliza **10 algarismos**: `0, 1, 2, 3, 4, 5, 6, 7, 8, 9`
+
+**Motivo histórico:** Porque temos 10 dedos nas mãos! Nossos ancestrais usavam os dedos para contar.
+
+**Sistema posicional:** O valor de cada dígito depende da posição que ele ocupa no número.
+
+### Exemplo prático:
+
+No número 3.725:
+
+- O dígito 5 vale 5 unidades (posição 0)
+- O dígito 2 vale 2 dezenas = 20 (posição 1)
+- O dígito 7 vale 7 centenas = 700 (posição 2)
+- O dígito 3 vale 3 milhares = 3.000 (posição 3)
+
+**Soma:** $3.000 + 700 + 20 + 5 = 3.725$ ✅
+
+
+## 2. Estrutura Posicional do Decimal
+
+Cada posição no decimal representa uma potência de 10.
+
+**Valor das posições (parte inteira):**
+
+| Posição | Potência | Valor |
+|---------|----------|-------|
+| 0 | $10^0$ | 1 (unidades) |
+| 1 | $10^1$ | 10 (dezenas) |
+| 2 | $10^2$ | 100 (centenas) |
+| 3 | $10^3$ | 1.000 (milhares) |
+| 4 | $10^4$ | 10.000 (dezenas de milhar) |
+| 5 | $10^5$ | 100.000 (centenas de milhar) |
+| 6 | $10^6$ | 1.000.000 (milhões) |
+| 7 | $10^7$ | 10.000.000 (dezenas de milhões) |
+
+### Exemplo: Número 4.206
+
+- Algarismos: `4   2   0   6`
+- Posições: `3   2   1   0`
+
+**Cálculo:**
+- $6 \times 10^0 = 6$
+- $0 \times 10^1 = 0$
+- $2 \times 10^2 = 200$
+- $4 \times 10^3 = 4.000$
+
+**Total:** $4.206$ ✅
+
+
+## 3. Números com Vírgula (Decimais)
+
+A mesma lógica se aplica, mas agora usamos potências **negativas** de 10.
+
+**Valor das posições (parte fracionária):**
+
+| Casa | Potência | Valor |
+|------|----------|-------|
+| 1ª à direita | $10^{-1}$ | 0,1 |
+| 2ª à direita | $10^{-2}$ | 0,01 |
+| 3ª à direita | $10^{-3}$ | 0,001 |
+| 4ª à direita | $10^{-4}$ | 0,0001 |
+
+### Exemplo: Número 3,725
+
+- Parte inteira: `3` → $3 \times 10^0 = 3$
+- Parte fracionária: `7, 2, 5`
+  - $7 \times 10^{-1} = 0,7$
+  - $2 \times 10^{-2} = 0,02$
+  - $5 \times 10^{-3} = 0,005$
+
+**Total:** $3 + 0,7 + 0,02 + 0,005 = 3,725$ ✅
+
+
+## 4. Conversão: Decimal → Binário
+
+**Método:** Divisões sucessivas por 2
+
+1. Divida o número por 2 repetidamente
+2. Anote os restos (0 ou 1)
+3. Leia os restos de **baixo para cima**
+
+### Exemplo 1: Converter 25 para binário
+
+| Divisão | Quociente | Resto |
+|---------|-----------|-------|
+| $25 \div 2$ | 12 | **1** |
+| $12 \div 2$ | 6 | **0** |
+| $6 \div 2$ | 3 | **0** |
+| $3 \div 2$ | 1 | **1** |
+| $1 \div 2$ | 0 | **1** |
+
+**Leia de baixo para cima:** `11001`
+
+**Resposta:** $25$ decimal = $11001_{(2)}$ ✅
+
+### Exemplo 2: Converter 13 para binário
+
+| Divisão | Quociente | Resto |
+|---------|-----------|-------|
+| $13 \div 2$ | 6 | 1 |
+| $6 \div 2$ | 3 | 0 |
+| $3 \div 2$ | 1 | 1 |
+| $1 \div 2$ | 0 | 1 |
+
+**Resposta:** $1101_{(2)}$ ✅
+
+
+## 5. Conversão: Decimal → Octal
+
+**Método:** Divisões sucessivas por 8
+
+1. Divida o número por 8 repetidamente
+2. Anote os restos (0 a 7)
+3. Leia os restos de **baixo para cima**
+
+### Exemplo 1: Converter 100 para octal
+
+| Divisão | Quociente | Resto |
+|---------|-----------|-------|
+| $100 \div 8$ | 12 | **4** |
+| $12 \div 8$ | 1 | **4** |
+| $1 \div 8$ | 0 | **1** |
+
+**Leia de baixo:** `144`
+
+**Resposta:** $100$ decimal = $144_{(8)}$ ✅
+
+### Exemplo 2: Converter 159 para octal
+
+| Divisão | Quociente | Resto |
+|---------|-----------|-------|
+| $159 \div 8$ | 19 | 7 |
+| $19 \div 8$ | 2 | 3 |
+| $2 \div 8$ | 0 | 2 |
+
+**Resposta:** $237_{(8)}$ ✅
+
+
+## 6. Conversão: Decimal → Hexadecimal
+
+**Método:** Divisões sucessivas por 16
+
+1. Divida o número por 16 repetidamente
+2. Anote os restos (0 a 15)
+3. Restos 10-15 viram A-F
+4. Leia os restos de **baixo para cima**
+
+### Exemplo 1: Converter 255 para hexadecimal
+
+| Divisão | Quociente | Resto |
+|---------|-----------|-------|
+| $255 \div 16$ | 15 | **15 (F)** |
+| $15 \div 16$ | 0 | **15 (F)** |
+
+**Resposta:** $FF_{(16)}$ ✅
+
+### Exemplo 2: Converter 47 para hexadecimal
+
+| Divisão | Quociente | Resto |
+|---------|-----------|-------|
+| $47 \div 16$ | 2 | 15 (F) |
+| $2 \div 16$ | 0 | 2 |
+
+**Resposta:** $2F_{(16)}$ ✅
+
+
+## 7. Conversão: Binário → Decimal
+
+**Método:** Multiplicar cada bit por potências de 2
+
+1. Da direita para esquerda, posição 0, 1, 2, 3...
+2. Multiplique cada bit por $2$ elevado à sua posição
+3. Some tudo
+
+### Exemplo 1: Converter $1101_{(2)}$ para decimal
+
+- Algarismos: `1   1   0   1`
+- Posições: `3   2   1   0`
+
+**Cálculo:**
+- $1 \times 2^3 = 8$
+- $1 \times 2^2 = 4$
+- $0 \times 2^1 = 0$
+- $1 \times 2^0 = 1$
+
+**Total:** $8 + 4 + 0 + 1 = 13$ ✅
+
+### Exemplo 2: Converter $10110_{(2)}$ para decimal
+
+- Algarismos: `1   0   1   1   0`
+- Posições: `4   3   2   1   0`
+
+**Cálculo:**
+- $0 \times 2^0 = 0$
+- $1 \times 2^1 = 2$
+- $1 \times 2^2 = 4$
+- $0 \times 2^3 = 0$
+- $1 \times 2^4 = 16$
+
+**Total:** $0 + 2 + 4 + 0 + 16 = 22$ ✅
+
+
+## 8. Conversão: Octal → Decimal
+
+**Método:** Multiplicar cada dígito por potências de 8
+
+1. Da direita para esquerda, posição 0, 1, 2, 3...
+2. Multiplique cada dígito por $8$ elevado à sua posição
+3. Some tudo
+
+### Exemplo 1: Converter $237_{(8)}$ para decimal
+
+- Algarismos: `2   3   7`
+- Posições: `2   1   0`
+
+**Cálculo:**
+- $7 \times 8^0 = 7$
+- $3 \times 8^1 = 24$
+- $2 \times 8^2 = 128$
+
+**Total:** $7 + 24 + 128 = 159$ ✅
+
+### Exemplo 2: Converter $456_{(8)}$ para decimal
+
+- Algarismos: `4   5   6`
+- Posições: `2   1   0`
+
+**Cálculo:**
+- $6 \times 8^0 = 6$
+- $5 \times 8^1 = 40$
+- $4 \times 8^2 = 256$
+
+**Total:** $6 + 40 + 256 = 302$ ✅
+
+
+## 9. Conversão: Hexadecimal → Decimal
+
+**Método:** Multiplicar cada dígito por potências de 16
+
+1. Da direita para esquerda, posição 0, 1, 2, 3...
+2. Lembre-se: A=10, B=11, C=12, D=13, E=14, F=15
+3. Multiplique cada dígito por $16$ elevado à sua posição
+4. Some tudo
+
+### Exemplo 1: Converter $3A7_{(16)}$ para decimal
+
+- Algarismos: `3   A   7`
+- Posições: `2   1   0`
+- `A = 10`
+
+**Cálculo:**
+- $7 \times 16^0 = 7$
+- $10 \times 16^1 = 160$
+- $3 \times 16^2 = 768$
+
+**Total:** $7 + 160 + 768 = 935$ ✅
+
+### Exemplo 2: Converter $2F_{(16)}$ para decimal
+
+- Algarismos: `2   F`
+- Posições: `1   0`
+- `F = 15`
+
+**Cálculo:**
+- $15 \times 16^0 = 15$
+- $2 \times 16^1 = 32$
+
+**Total:** $15 + 32 = 47$ ✅
+
+
+## 10. Números Decimais com Vírgula → Outras Bases
+
+**Regra geral:**
+- **Parte inteira:** divisões sucessivas pela base
+- **Parte fracionária:** multiplicações sucessivas pela base
+
+### 10.1 Decimal com Vírgula → Binário
+
+#### Exemplo 1: Converter 5,75 para binário
+
+**Passo 1 - Parte inteira (5):**
+- $5 \div 2 = 2$, resto 1
+- $2 \div 2 = 1$, resto 0
+- $1 \div 2 = 0$, resto 1
+- Resultado: `101`
+
+**Passo 2 - Parte fracionária (0,75):**
+- $0,75 \times 2 = 1,5$ → pega **1**, sobra 0,5
+- $0,5 \times 2 = 1,0$ → pega **1**, sobra 0 (ACABOU!)
+- Resultado: `11`
+
+**Resposta:** $101,11_{(2)}$ ✅
+
+#### Exemplo 2: Converter 3,25 para binário
+
+**Parte inteira (3):**
+- $3 \div 2 = 1$, resto 1
+- $1 \div 2 = 0$, resto 1
+- Resultado: `11`
+
+**Parte fracionária (0,25):**
+- $0,25 \times 2 = 0,5$ → pega 0, sobra 0,5
+- $0,5 \times 2 = 1,0$ → pega 1, sobra 0
+- Resultado: `01`
+
+**Resposta:** $11,01_{(2)}$ ✅
+
+### 10.2 Decimal com Vírgula → Octal
+
+#### Exemplo 1: Converter 5,75 para octal
+
+**Parte inteira (5):**
+- $5 \div 8 = 0$, resto 5
+- Resultado: `5`
+
+**Parte fracionária (0,75):**
+- $0,75 \times 8 = 6,0$ → pega 6, sobra 0
+- Resultado: `6`
+
+**Resposta:** $5,6_{(8)}$ ✅
+
+#### Exemplo 2: Converter 7,25 para octal
+
+**Parte inteira (7):**
+- $7 \div 8 = 0$, resto 7
+- Resultado: `7`
+
+**Parte fracionária (0,25):**
+- $0,25 \times 8 = 2,0$ → pega 2, sobra 0
+- Resultado: `2`
+
+**Resposta:** $7,2_{(8)}$ ✅
+
+### 10.3 Decimal com Vírgula → Hexadecimal
+
+#### Exemplo: Converter 5,75 para hexadecimal
+
+**Parte inteira (5):**
+- $5 \div 16 = 0$, resto 5
+- Resultado: `5`
+
+**Parte fracionária (0,75):**
+- $0,75 \times 16 = 12,0$ → pega 12 (C), sobra 0
+- Resultado: `C`
+
+**Resposta:** $5,C_{(16)}$ ✅
+
+
+## 11. Por Que o Computador Não Usa Decimal Diretamente?
+
+### Problema: 10 não é potência de 2
+
+O computador trabalha com interruptores (0 e 1). Para representar um dígito decimal (0-9), precisamos de 4 bits, que podem representar 0-15 (16 combinações). Isso gera um **desperdício** de 6 combinações não utilizadas.
+
+### Solução 1: Binário puro
+
+- Mais eficiente em espaço
+- Usado em praticamente tudo
+
+### Solução 2: BCD (Binary Coded Decimal)
+
+- Cada dígito decimal é armazenado em 4 bits separados
+- Usado em calculadoras e relógios digitais
+- Exemplo: 159 em BCD = `0001 0101 1001` (12 bits)
+
+### Por que isso importa?
+
+Em sistemas financeiros, $0,1$ em binário é uma **dízima periódica** ($0,0001100110011...$). Isso causa erros de arredondamento. Por isso, bancos usam tipos especiais como `decimal` (C#) ou `BigDecimal` (Java).
+
+
+## 12. Tabela de Conversão Rápida (Decore!)
+
+| Decimal | Binário | Octal | Hexadecimal |
+|---------|---------|-------|-------------|
+| 0 | 0 | 0 | 0 |
+| 1 | 1 | 1 | 1 |
+| 2 | 10 | 2 | 2 |
+| 3 | 11 | 3 | 3 |
+| 4 | 100 | 4 | 4 |
+| 5 | 101 | 5 | 5 |
+| 6 | 110 | 6 | 6 |
+| 7 | 111 | 7 | 7 |
+| 8 | 1000 | 10 | 8 |
+| 9 | 1001 | 11 | 9 |
+| 10 | 1010 | 12 | A |
+| 11 | 1011 | 13 | B |
+| 12 | 1100 | 14 | C |
+| 13 | 1101 | 15 | D |
+| 14 | 1110 | 16 | E |
+| 15 | 1111 | 17 | F |
+| 16 | 10000 | 20 | 10 |
+
+**Observação:** Veja como cada sistema "carrega" para a próxima casa em momentos diferentes:
+- Binário: carrega a cada 2
+- Octal: carrega a cada 8
+- Decimal: carrega a cada 10
+- Hexadecimal: carrega a cada 16
+
+
+## 13. Aplicações Reais do Decimal na Computação
+
+### 1. Sistemas Financeiros
+
+Bancos usam números decimais exatos para evitar erros de arredondamento com centavos.
+
+### 2. Interface com Usuário
+
+Tudo que você vê na tela (números, preços, idades) é convertido de binário para decimal.
+
+### 3. Tipos de Dados em Programação
+
+- `int` → números inteiros (sem vírgula)
+- `float` / `double` → números com vírgula (ponto flutuante)
+- `decimal` → números com vírgula de alta precisão (financeiro)
+
+### 4. Notação Científica
+
+Computadores armazenam números muito grandes ou muito pequenos usando ponto flutuante (IEEE 754).
+
+
+## 14. Exercícios Resolvidos
+
+<details>
+<summary>📘 Exercício 1: Converta $10110_{(2)}$ para decimal</summary>
+
+- `1   0   1   1   0`
+- Posições: `4   3   2   1   0`
+
+**Cálculo:**
+- $0 \times 2^0 = 0$
+- $1 \times 2^1 = 2$
+- $1 \times 2^2 = 4$
+- $0 \times 2^3 = 0$
+- $1 \times 2^4 = 16$
+
+**Total:** $0 + 2 + 4 + 0 + 16 = 22$
+
+**Resposta:** $10110_{(2)} = 22$ em decimal ✅
+</details>
+
+<details>
+<summary>📘 Exercício 2: Converta $456_{(8)}$ para decimal</summary>
+
+- `4   5   6`
+- Posições: `2   1   0`
+
+**Cálculo:**
+- $6 \times 8^0 = 6$
+- $5 \times 8^1 = 40$
+- $4 \times 8^2 = 256$
+
+**Total:** $6 + 40 + 256 = 302$
+
+**Resposta:** $456_{(8)} = 302$ em decimal ✅
+</details>
+
+<details>
+<summary>📘 Exercício 3: Converta $2F_{(16)}$ para decimal</summary>
+
+- `2   F`
+- Posições: `1   0`
+- `F = 15`
+
+**Cálculo:**
+- $15 \times 16^0 = 15$
+- $2 \times 16^1 = 32$
+
+**Total:** $15 + 32 = 47$
+
+**Resposta:** $2F_{(16)} = 47$ em decimal ✅
+</details>
+
+<details>
+<summary>📘 Exercício 4: Converta 25 decimal para binário</summary>
+
+| Divisão | Quociente | Resto |
+|---------|-----------|-------|
+| $25 \div 2$ | 12 | 1 |
+| $12 \div 2$ | 6 | 0 |
+| $6 \div 2$ | 3 | 0 |
+| $3 \div 2$ | 1 | 1 |
+| $1 \div 2$ | 0 | 1 |
+
+**Resposta:** $11001_{(2)}$ ✅
+</details>
+
+<details>
+<summary>📘 Exercício 5: Converta 100 decimal para octal</summary>
+
+| Divisão | Quociente | Resto |
+|---------|-----------|-------|
+| $100 \div 8$ | 12 | 4 |
+| $12 \div 8$ | 1 | 4 |
+| $1 \div 8$ | 0 | 1 |
+
+**Resposta:** $144_{(8)}$ ✅
+</details>
+
+<details>
+<summary>📘 Exercício 6: Converta 255 decimal para hexadecimal</summary>
+
+| Divisão | Quociente | Resto |
+|---------|-----------|-------|
+| $255 \div 16$ | 15 | 15 (F) |
+| $15 \div 16$ | 0 | 15 (F) |
+
+**Resposta:** $FF_{(16)}$ ✅
+</details>
+
+
+## 15. Mapa Mental dos Sistemas Numéricos
+
+<div style="background: #0a0f1e; padding: 2rem 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Segoe UI', system-ui, sans-serif; max-width: 700px; margin: 1.5rem auto; text-align: center;">
+
+  <div style="color: #fbbf24; font-size: 1.1rem; font-weight: 700; margin-bottom: 1.2rem; letter-spacing: 1px;">
+    🧠 SISTEMAS NUMÉRICOS
+  </div>
+
+  <div style="color: #6b7280; font-size: 0.8rem; margin-bottom: 0.5rem;">|</div>
+
+  <div style="display: flex; gap: 0.3rem; justify-content: center; flex-wrap: wrap; margin-bottom: 0.3rem;">
+    <div style="flex: 1; min-width: 100px; background: #1a3a5c; padding: 0.7rem 0.5rem; border-radius: 10px;">
+      <div style="color: #60a5fa; font-weight: 700; font-size: 0.9rem;">DECIMAL</div>
+      <div style="color: #93c5fd; font-size: 0.6rem;">(BASE 10)</div>
+      <div style="color: #6b7280; font-size: 0.55rem; margin-top: 0.2rem;">O que você<br>usa no dia a dia</div>
+    </div>
+
+    <div style="flex: 1; min-width: 100px; background: #2d1b69; padding: 0.7rem 0.5rem; border-radius: 10px;">
+      <div style="color: #a78bfa; font-weight: 700; font-size: 0.9rem;">BINÁRIO</div>
+      <div style="color: #c4b5fd; font-size: 0.6rem;">(BASE 2)</div>
+      <div style="color: #6b7280; font-size: 0.55rem; margin-top: 0.2rem;">A linguagem<br>do computador</div>
+    </div>
+
+    <div style="flex: 1; min-width: 100px; background: #1a5c3a; padding: 0.7rem 0.5rem; border-radius: 10px;">
+      <div style="color: #34d399; font-weight: 700; font-size: 0.9rem;">OCTAL</div>
+      <div style="color: #6ee7b7; font-size: 0.6rem;">(BASE 8)</div>
+      <div style="color: #6b7280; font-size: 0.55rem; margin-top: 0.2rem;">Atalho de<br>3 bits</div>
+    </div>
+  </div>
+
+  <div style="color: #6b7280; font-size: 0.8rem; margin-top: 0.2rem; margin-bottom: 0.2rem;">|</div>
+
+  <div style="display: flex; justify-content: center; margin-top: 0.2rem;">
+    <div style="background: #5c3a1a; padding: 0.7rem 1.5rem; border-radius: 10px; min-width: 140px;">
+      <div style="color: #fcd34d; font-weight: 700; font-size: 0.9rem;">HEXADECIMAL</div>
+      <div style="color: #fde68a; font-size: 0.6rem;">(BASE 16)</div>
+      <div style="color: #6b7280; font-size: 0.55rem; margin-top: 0.2rem;">Padrão da indústria<br>Atalho de 4 bits<br>Cores, endereços</div>
+    </div>
+  </div>
+
+</div>
+
+## 16. Exercícios para Praticar
+
+### Nível Fácil
+
+<details>
+<summary>📗 Exercício 7: $1001_{(2)}$ → Decimal</summary>
+
+**Enunciado:** Converta o número binário $1001_{(2)}$ para decimal.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** 9
+
+**Cálculo:**
+- $1 \times 2^3 = 8$
+- $0 \times 2^2 = 0$
+- $0 \times 2^1 = 0$
+- $1 \times 2^0 = 1$
+- **Total:** $8 + 0 + 0 + 1 = 9$
+
+$1001_{(2)} = 9$ ✅
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8: $37_{(8)}$ → Decimal</summary>
+
+**Enunciado:** Converta o número octal $37_{(8)}$ para decimal.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** 31
+
+**Cálculo:**
+- $7 \times 8^0 = 7$
+- $3 \times 8^1 = 24$
+- **Total:** $7 + 24 = 31$
+
+$37_{(8)} = 31$ ✅
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 9: $1A_{(16)}$ → Decimal</summary>
+
+**Enunciado:** Converta o número hexadecimal $1A_{(16)}$ para decimal.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** 26
+
+**Cálculo:**
+- $A = 10$
+- $10 \times 16^0 = 10$
+- $1 \times 16^1 = 16$
+- **Total:** $10 + 16 = 26$
+
+$1A_{(16)} = 26$ ✅
+</details>
+</details>
+
+### Nível Médio
+
+<details>
+<summary>📙 Exercício 10: 42 → Binário</summary>
+
+**Enunciado:** Converta o número decimal 42 para binário.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** $101010_{(2)}$
+
+**Divisões sucessivas por 2:**
+
+| Divisão | Quociente | Resto |
+|---------|-----------|-------|
+| $42 \div 2$ | 21 | 0 |
+| $21 \div 2$ | 10 | 1 |
+| $10 \div 2$ | 5 | 0 |
+| $5 \div 2$ | 2 | 1 |
+| $2 \div 2$ | 1 | 0 |
+| $1 \div 2$ | 0 | 1 |
+
+**Leia de baixo para cima:** `101010`
+
+42 decimal = $101010_{(2)}$ ✅
+</details>
+</details>
+
+<details>
+<summary>📙 Exercício 11: 100 → Octal</summary>
+
+**Enunciado:** Converta o número decimal 100 para octal.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** $144_{(8)}$
+
+**Divisões sucessivas por 8:**
+
+| Divisão | Quociente | Resto |
+|---------|-----------|-------|
+| $100 \div 8$ | 12 | 4 |
+| $12 \div 8$ | 1 | 4 |
+| $1 \div 8$ | 0 | 1 |
+
+**Leia de baixo para cima:** `144`
+
+100 decimal = $144_{(8)}$ ✅
+</details>
+</details>
+
+<details>
+<summary>📙 Exercício 12: 200 → Hexadecimal</summary>
+
+**Enunciado:** Converta o número decimal 200 para hexadecimal.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** $C8_{(16)}$
+
+**Divisões sucessivas por 16:**
+
+| Divisão | Quociente | Resto |
+|---------|-----------|-------|
+| $200 \div 16$ | 12 | 8 |
+| $12 \div 16$ | 0 | 12 (C) |
+
+**Leia de baixo para cima:** `C8`
+
+200 decimal = $C8_{(16)}$ ✅
+</details>
+</details>
+
+### Nível Difícil
+
+<details>
+<summary>📕 Exercício 13: $1010,101_{(2)}$ → Decimal</summary>
+
+**Enunciado:** Converta o número binário com vírgula $1010,101_{(2)}$ para decimal.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** 10,625
+
+**Parte inteira (1010):**
+- $0 \times 2^0 = 0$
+- $1 \times 2^1 = 2$
+- $0 \times 2^2 = 0$
+- $1 \times 2^3 = 8$
+- **Soma:** $0 + 2 + 0 + 8 = 10$
+
+**Parte fracionária (101):**
+- $1 \times 2^{-1} = 0,5$
+- $0 \times 2^{-2} = 0$
+- $1 \times 2^{-3} = 0,125$
+- **Soma:** $0,5 + 0 + 0,125 = 0,625$
+
+**Total:** $10 + 0,625 = 10,625$
+
+$1010,101_{(2)} = 10,625$ ✅
+</details>
+</details>
+
+<details>
+<summary>📕 Exercício 14: 15,5 → Binário</summary>
+
+**Enunciado:** Converta o número decimal 15,5 para binário.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** $1111,1_{(2)}$
+
+**Parte inteira (15):**
+
+| Divisão | Quociente | Resto |
+|---------|-----------|-------|
+| $15 \div 2$ | 7 | 1 |
+| $7 \div 2$ | 3 | 1 |
+| $3 \div 2$ | 1 | 1 |
+| $1 \div 2$ | 0 | 1 |
+
+- **Resultado:** `1111`
+
+**Parte fracionária (0,5):**
+- $0,5 \times 2 = 1,0$ → pega 1, sobra 0
+- **Resultado:** `1`
+
+15,5 decimal = $1111,1_{(2)}$ ✅
+</details>
+</details>
+
+<details>
+<summary>📕 Exercício 15: 15,5 → Hexadecimal</summary>
+
+**Enunciado:** Converta o número decimal 15,5 para hexadecimal.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** $F,8_{(16)}$
+
+**Parte inteira (15):**
+- $15 \div 16 = 0$, resto 15 (F)
+- **Resultado:** `F`
+
+**Parte fracionária (0,5):**
+- $0,5 \times 16 = 8,0$ → pega 8, sobra 0
+- **Resultado:** `8`
+
+15,5 decimal = $F,8_{(16)}$ ✅
+</details>
+</details>
+
+### Desafio Extra
+
+<details>
+<summary>🔥 Desafio: $0,1$ decimal → Binário</summary>
+
+**Enunciado:** O que acontece se você tentar converter $0,1$ decimal para binário?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Dá uma **dízima periódica**!
+
+**Multiplicações sucessivas por 2:**
+- $0,1 \times 2 = 0,2$ → pega 0, sobra 0,2
+- $0,2 \times 2 = 0,4$ → pega 0, sobra 0,4
+- $0,4 \times 2 = 0,8$ → pega 0, sobra 0,8
+- $0,8 \times 2 = 1,6$ → pega 1, sobra 0,6
+- $0,6 \times 2 = 1,2$ → pega 1, sobra 0,2
+- $0,2 \times 2 = 0,4$ → pega 0, sobra 0,4... **(repete)**
+
+**Resultado:** $0,0001100110011...$ (periódico)
+
+**Por que isso importa?** Por isso bancos usam `decimal` (C#) ou `BigDecimal` (Java) em vez de `float`/`double` para evitar erros de arredondamento.
+</details>
+</details>
+
+
+## 17. Resumo dos Exercícios
+
+| Nível | Exercícios | Quantidade |
+|-------|------------|------------|
+| Resolvidos | 1 a 6 | 6 |
+| Fácil | 7 a 9 | 3 |
+| Médio | 10 a 12 | 3 |
+| Difícil | 13 a 15 | 3 |
+| Desafio | 16 | 1 |
+| **Total** | | **16** |
+
+
+## Resumo
+
+> **"O sistema decimal é a base do nosso pensamento numérico — com 10 algarismos e uma estrutura posicional que usamos no dia a dia. Entender suas conversões para binário, octal e hexadecimal é a ponte que conecta o raciocínio humano à linguagem da máquina, revelando por que o computador prefere 0 e 1, mas precisa do decimal para nos comunicar."**

@@ -1,0 +1,808 @@
+# Diagrama de Dispersão (Scatterplot)
+
+## 1. INTRODUÇÃO
+
+&emsp;&emsp;&emsp;Na aula anterior estudámos o **conceito de correlação** — vimos que ela mede a **força** e a **direção** da relação linear entre duas variáveis. Vimos também que o coeficiente de Pearson (r) quantifica essa relação com um número entre −1 e +1.<br>
+
+&emsp;&emsp;&emsp;Mas há um problema fundamental: **um número não conta a história completa**.<br>
+
+&emsp;&emsp;&emsp;Considera o seguinte problema prático:
+
+> **Quatro conjuntos de dados diferentes, todos com a mesma correlação (r = 0,82) e a mesma reta de regressão:**
+
+| Conjunto | Descrição |
+|---------|----------|
+| **A** | Relação linear típica |
+| **B** | Relação curvilínea (não linear) |
+| **C** | Relação linear com um outlier extremo |
+| **D** | Relação linear com um ponto de alavanca |
+
+**Vamos calcular as medidas que já conhecemos:**
+
+| Medida | Conjunto A | Conjunto B | Conjunto C | Conjunto D |
+|---------|---------|---------|---------|---------|
+| **Média de X** | 9 | 9 | 9 | 9 |
+| **Média de Y** | 7,5 | 7,5 | 7,5 | 7,5 |
+| **Correlação (r)** | 0,82 | 0,82 | 0,82 | 0,82 |
+| **Reta de regressão** | y = 0,5x + 3 | y = 0,5x + 3 | y = 0,5x + 3 | y = 0,5x + 3 |
+
+&emsp;&emsp;&emsp;Todas as medidas numéricas são **idênticas**! Se usássemos apenas o coeficiente de correlação, concluiríamos que os quatro conjuntos são **iguais**. Mas isso é **falso**!
+
+- O **Conjunto A** é uma relação linear típica.
+- O **Conjunto B** é uma relação **curvilínea** — o r de Pearson **não detecta** esta relação.
+- O **Conjunto C** tem um **outlier** que distorce a reta.
+- O **Conjunto D** tem um **ponto de alavanca** que puxa a reta para si.
+
+&emsp;&emsp;&emsp;Este é o **Quarteto de Anscombe** — um exemplo clássico que mostra que **as estatísticas numéricas sozinhas podem ser enganadoras**. Precisamos de **visualizar** os dados antes de confiar cegamente nos números.<br>
+
+&emsp;&emsp;&emsp;É precisamente aqui que entra o **diagrama de dispersão (scatterplot)** — a ferramenta visual que revela o que os números escondem.
+
+<details>
+<summary>📊 Ver a família dos gráficos de associação</summary>
+<style>
+.r{font:14px system-ui;text-align:center}
+.r b{display:inline-block;padding:4px 10px;background:#333;color:#fff;border-radius:6px}
+.r i{display:block;width:2px;height:18px;background:#333;margin:0 auto}
+.r em{display:flex;gap:8px;justify-content:center;position:relative;padding-top:18px}
+.r em::before{content:'';position:absolute;top:0;left:25%;right:25%;height:2px;background:#333}
+.r em span{flex:1;padding:8px;border:2px solid #333;border-radius:8px;max-width:140px}
+.r em span::before{content:'';position:absolute;top:-18px;left:50%;width:2px;height:18px;background:#333}
+.r em span{position:relative}
+</style>
+<div class="r">
+  <b>Gráficos de Associação</b>
+  <i></i>
+  <em>
+    <span>Scatterplot</span>
+    <span>Heatmap</span>
+    <span>Bubble Chart</span>
+  </em>
+</div>
+</details>
+
+> **💡 Dica de Ouro:** A visualização **antecede** o cálculo. Nunca calcules uma correlação sem primeiro olhar para o scatterplot. O número pode mentir — o gráfico não.
+
+**📌 Nota sobre dados agrupados:**
+
+O scatterplot é uma ferramenta para **dados brutos** (pares individuais). Para dados agrupados, usamos outras representações (tabelas de contingência, heatmaps).
+
+| Forma | Representação visual |
+|---------|----------|
+| **Dados brutos** | Scatterplot (cada ponto = um par) |
+| **Agrupados por lista** | Heatmap ou bubble chart |
+| **Agrupados por intervalo** | Heatmap |
+
+## 2. O QUE É UM DIAGRAMA DE DISPERSÃO?
+
+&emsp;&emsp;&emsp;O **diagrama de dispersão** (ou **scatterplot**) é um gráfico que representa **pares de valores** (xi, yi) como pontos num plano cartesiano. Cada ponto representa uma observação.
+
+**📌 Estrutura:**
+
+| Elemento | Descrição |
+|---------|----------|
+| **Eixo horizontal (X)** | Variável independente (ou preditora) |
+| **Eixo vertical (Y)** | Variável dependente (ou resposta) |
+| **Cada ponto** | Um par (xi, yi) |
+| **Padrão dos pontos** | Revela a relação entre X e Y |
+
+**📌 O que o scatterplot revela:**
+
+| Padrão | Interpretação |
+|---------|----------|
+| **Nuvem ascendente** | Correlação positiva |
+| **Nuvem descendente** | Correlação negativa |
+| **Nuvem sem padrão** | Correlação nula |
+| **Curva** | Relação não linear |
+| **Pontos isolados** | Outliers |
+| **Ponto distante na horizontal** | Ponto de alavanca |
+| **Grupos separados** | Subpopulações |
+
+## 3. COMO CONSTRUIR UM SCATTERPLOT
+
+### 3.1 Passo a Passo
+
+| Passo | Descrição |
+|---------|----------|
+| **1** | Escolher duas variáveis quantitativas (X e Y) |
+| **2** | Definir qual é a independente (X) e qual é a dependente (Y) |
+| **3** | Desenhar os eixos com escalas adequadas |
+| **4** | Plotar cada par (xi, yi) como um ponto |
+| **5** | Adicionar título, rótulos e legenda |
+| **6** | Analisar o padrão visual |
+
+### 3.2 Exemplo Prático — Horas de Estudo vs. Notas
+
+<center><details>
+<summary>**📌 Exemplo Prático**</summary>
+
+**Problema:** Construir o scatterplot das horas de estudo (X) vs. notas (Y):
+
+| Aluno | X | Y |
+|---------|---------|---------|
+| 1 | 1 | 4 |
+| 2 | 2 | 5 |
+| 3 | 3 | 7 |
+| 4 | 4 | 8 |
+| 5 | 5 | 10 |
+| 6 | 6 | 11 |
+| 7 | 7 | 13 |
+| 8 | 8 | 14 |
+| 9 | 9 | 16 |
+| 10 | 10 | 17 |
+
+**Passo 1 — Escolher variáveis:** X = horas de estudo, Y = nota
+
+**Passo 2 — Definir eixos:** X de 0 a 11, Y de 0 a 18
+
+**Passo 3 — Plotar os pontos:**
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); max-width: 600px; margin: 1rem auto; font-family: 'Segoe UI', system-ui, sans-serif;">
+
+  <div style="color: #fbbf24; font-weight: 700; font-size: 0.85rem; text-align: center; margin-bottom: 1rem;">
+    HORAS DE ESTUDO vs. NOTAS
+  </div>
+
+  <div style="position: relative; height: 220px; background: #1a1a2e; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); padding: 1rem;">
+
+    <span style="position: absolute; bottom: 20px; left: 30px; color: #a78bfa; font-size: 0.8rem;">•</span>
+    <span style="position: absolute; bottom: 38px; left: 60px; color: #a78bfa; font-size: 0.8rem;">•</span>
+    <span style="position: absolute; bottom: 56px; left: 90px; color: #a78bfa; font-size: 0.8rem;">•</span>
+    <span style="position: absolute; bottom: 74px; left: 120px; color: #a78bfa; font-size: 0.8rem;">•</span>
+    <span style="position: absolute; bottom: 92px; left: 150px; color: #a78bfa; font-size: 0.8rem;">•</span>
+    <span style="position: absolute; bottom: 110px; left: 180px; color: #a78bfa; font-size: 0.8rem;">•</span>
+    <span style="position: absolute; bottom: 128px; left: 210px; color: #a78bfa; font-size: 0.8rem;">•</span>
+    <span style="position: absolute; bottom: 146px; left: 240px; color: #a78bfa; font-size: 0.8rem;">•</span>
+    <span style="position: absolute; bottom: 164px; left: 270px; color: #a78bfa; font-size: 0.8rem;">•</span>
+    <span style="position: absolute; bottom: 182px; left: 300px; color: #a78bfa; font-size: 0.8rem;">•</span>
+
+    <div style="position: absolute; bottom: 5px; left: 25px; color: #6b7280; font-size: 0.55rem;">1</div>
+    <div style="position: absolute; bottom: 5px; left: 85px; color: #6b7280; font-size: 0.55rem;">3</div>
+    <div style="position: absolute; bottom: 5px; left: 145px; color: #6b7280; font-size: 0.55rem;">5</div>
+    <div style="position: absolute; bottom: 5px; left: 205px; color: #6b7280; font-size: 0.55rem;">7</div>
+    <div style="position: absolute; bottom: 5px; left: 265px; color: #6b7280; font-size: 0.55rem;">9</div>
+
+    <div style="position: absolute; bottom: 20px; left: 5px; color: #6b7280; font-size: 0.55rem;">4</div>
+    <div style="position: absolute; bottom: 74px; left: 5px; color: #6b7280; font-size: 0.55rem;">8</div>
+    <div style="position: absolute; bottom: 128px; left: 5px; color: #6b7280; font-size: 0.55rem;">12</div>
+    <div style="position: absolute; bottom: 182px; left: 5px; color: #6b7280; font-size: 0.55rem;">16</div>
+
+  </div>
+
+  <div style="display: flex; justify-content: space-between; margin-top: 0.5rem; color: #6b7280; font-size: 0.6rem;">
+    <span>Horas de estudo (X)</span>
+    <span>Nota (Y)</span>
+  </div>
+
+</div>
+
+**Passo 4 — Analisar o padrão:**
+
+> **🔍 Interpretação:** O scatterplot mostra uma **nuvem ascendente** — quando as horas de estudo aumentam, as notas também aumentam. Os pontos estão **quase perfeitamente alinhados** numa reta imaginária. Isto confirma a **correlação positiva forte** (r ≈ 0,999) que calculámos na aula anterior. Não há outliers visíveis, nem curvatura, nem grupos separados.
+</details></center>
+
+## 4. O QUE PROCURAR NUM SCATTERPLOT
+
+### 4.1 Direção
+
+| Padrão | Direção |
+|---------|----------|
+| Nuvem ascendente (↗) | **Positiva** |
+| Nuvem descendente (↘) | **Negativa** |
+| Nuvem sem padrão (→) | **Nula** |
+
+### 4.2 Força
+
+| Padrão | Força |
+|---------|----------|
+| Pontos muito próximos de uma reta | **Forte** |
+| Pontos moderadamente dispersos | **Moderada** |
+| Pontos muito dispersos | **Fraca** |
+
+### 4.3 Forma
+
+| Padrão | Forma |
+|---------|----------|
+| Pontos alinhados numa reta | **Linear** |
+| Pontos formando uma curva | **Não linear** |
+| Pontos formando grupos | **Multimodal** |
+
+### 4.4 Outliers
+
+| Padrão | Interpretação |
+|---------|----------|
+| Ponto isolado longe da nuvem | **Outlier** — pode distorcer o r |
+| Ponto distante na horizontal | **Ponto de alavanca** — puxa a reta de regressão |
+| Ponto distante na vertical | **Outlier de resposta** — afeta o r, mas não a reta |
+
+## 5. O QUARTETO DE ANSCOMBE
+
+&emsp;&emsp;&emsp;O **Quarteto de Anscombe** é um exemplo clássico que mostra a importância da visualização. Consiste em **quatro conjuntos de dados** com **estatísticas idênticas**, mas **formas completamente diferentes**.
+
+**📌 As estatísticas idênticas:**
+
+| Medida | Valor |
+|---------|----------|
+| **Média de X** | 9 |
+| **Variância de X** | 11 |
+| **Média de Y** | 7,5 |
+| **Variância de Y** | 4,13 |
+| **Correlação (r)** | 0,816 |
+| **Reta de regressão** | y = 0,5x + 3 |
+
+**📌 Visualização em HTML+CSS:**
+
+<div style="background: #0a0f1e; padding: 2rem 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Segoe UI', system-ui, sans-serif; max-width: 750px; margin: 1.5rem auto; text-align: center;">
+
+  <div style="color: #fbbf24; font-size: 1rem; font-weight: 700; margin-bottom: 1.2rem; letter-spacing: 0.5px;">
+    📊 QUARTETO DE ANSCOMBE
+  </div>
+
+  <div style="display: flex; gap: 0.8rem; flex-wrap: wrap; justify-content: center;">
+
+    <!-- Conjunto A -->
+    <div style="flex: 0 1 300px; background: #1a1a2e; padding: 1rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+      <div style="color: #6ee7b7; font-weight: 600; font-size: 0.75rem; margin-bottom: 0.6rem;">Conjunto A — Linear</div>
+      <div style="position: relative; height: 100px; background: #0a0f1e; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
+        <span style="position: absolute; bottom: 15px; left: 10px; color: #a78bfa; font-size: 0.7rem;">•</span>
+        <span style="position: absolute; bottom: 25px; left: 35px; color: #a78bfa; font-size: 0.7rem;">•</span>
+        <span style="position: absolute; bottom: 38px; left: 60px; color: #a78bfa; font-size: 0.7rem;">•</span>
+        <span style="position: absolute; bottom: 50px; left: 85px; color: #a78bfa; font-size: 0.7rem;">•</span>
+        <span style="position: absolute; bottom: 62px; left: 110px; color: #a78bfa; font-size: 0.7rem;">•</span>
+        <span style="position: absolute; bottom: 75px; left: 135px; color: #a78bfa; font-size: 0.7rem;">•</span>
+        <span style="position: absolute; bottom: 88px; left: 160px; color: #a78bfa; font-size: 0.7rem;">•</span>
+      </div>
+    </div>
+
+    <!-- Conjunto B -->
+    <div style="flex: 0 1 300px; background: #1a1a2e; padding: 1rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+      <div style="color: #fca5a5; font-weight: 600; font-size: 0.75rem; margin-bottom: 0.6rem;">Conjunto B — Curvilíneo</div>
+      <div style="position: relative; height: 100px; background: #0a0f1e; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
+        <span style="position: absolute; bottom: 70px; left: 10px; color: #a78bfa; font-size: 0.7rem;">•</span>
+        <span style="position: absolute; bottom: 40px; left: 35px; color: #a78bfa; font-size: 0.7rem;">•</span>
+        <span style="position: absolute; bottom: 20px; left: 60px; color: #a78bfa; font-size: 0.7rem;">•</span>
+        <span style="position: absolute; bottom: 12px; left: 85px; color: #a78bfa; font-size: 0.7rem;">•</span>
+        <span style="position: absolute; bottom: 18px; left: 110px; color: #a78bfa; font-size: 0.7rem;">•</span>
+        <span style="position: absolute; bottom: 35px; left: 135px; color: #a78bfa; font-size: 0.7rem;">•</span>
+        <span style="position: absolute; bottom: 65px; left: 160px; color: #a78bfa; font-size: 0.7rem;">•</span>
+      </div>
+    </div>
+
+    <!-- Conjunto C -->
+    <div style="flex: 0 1 300px; background: #1a1a2e; padding: 1rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+      <div style="color: #fca5a5; font-weight: 600; font-size: 0.75rem; margin-bottom: 0.6rem;">Conjunto C — Outlier</div>
+      <div style="position: relative; height: 100px; background: #0a0f1e; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
+        <span style="position: absolute; bottom: 15px; left: 10px; color: #a78bfa; font-size: 0.7rem;">•</span>
+        <span style="position: absolute; bottom: 25px; left: 35px; color: #a78bfa; font-size: 0.7rem;">•</span>
+        <span style="position: absolute; bottom: 38px; left: 60px; color: #a78bfa; font-size: 0.7rem;">•</span>
+        <span style="position: absolute; bottom: 50px; left: 85px; color: #a78bfa; font-size: 0.7rem;">•</span>
+        <span style="position: absolute; bottom: 62px; left: 110px; color: #a78bfa; font-size: 0.7rem;">•</span>
+        <span style="position: absolute; bottom: 10px; left: 200px; color: #fca5a5; font-size: 0.7rem;">•</span>
+      </div>
+    </div>
+
+    <!-- Conjunto D -->
+    <div style="flex: 0 1 300px; background: #1a1a2e; padding: 1rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+      <div style="color: #fca5a5; font-weight: 600; font-size: 0.75rem; margin-bottom: 0.6rem;">Conjunto D — Alavanca</div>
+      <div style="position: relative; height: 100px; background: #0a0f1e; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05);">
+        <span style="position: absolute; bottom: 75px; left: 180px; color: #a78bfa; font-size: 0.7rem;">•</span>
+        <span style="position: absolute; bottom: 78px; left: 180px; color: #a78bfa; font-size: 0.7rem;">•</span>
+        <span style="position: absolute; bottom: 80px; left: 180px; color: #a78bfa; font-size: 0.7rem;">•</span>
+        <span style="position: absolute; bottom: 82px; left: 180px; color: #a78bfa; font-size: 0.7rem;">•</span>
+        <span style="position: absolute; bottom: 85px; left: 180px; color: #a78bfa; font-size: 0.7rem;">•</span>
+        <span style="position: absolute; bottom: 20px; left: 20px; color: #fca5a5; font-size: 0.7rem;">•</span>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+> **🔍 Interpretação:** Sem o scatterplot, concluiríamos que os quatro conjuntos são iguais. Com o scatterplot, vemos que são **radicalmente diferentes**. O Conjunto B tem uma relação **não linear** (o r de Pearson é enganador). O Conjunto C tem um **outlier** que distorce a reta. O Conjunto D tem um **ponto de alavanca** que puxa a reta para si.
+
+**📌 Lição do Quarteto de Anscombe:**
+
+> **Nunca confies apenas nas estatísticas numéricas. Visualiza sempre os dados primeiro.**
+
+## 6. SCATTERPLOT COM DADOS AGRUPADOS
+
+&emsp;&emsp;&emsp;Quando os dados estão agrupados (por lista ou por intervalo), o scatterplot tradicional não funciona — cada ponto representaria uma **frequência**, não uma observação individual. Nesses casos, usamos:
+
+### 6.1 Heatmap (Mapa de Calor)
+
+&emsp;&emsp;&emsp;Um **heatmap** representa a **frequência conjunta** de duas variáveis categóricas ou agrupadas. As cores indicam a intensidade da frequência.
+
+**📌 Exemplo:**
+
+| X \ Y | 10 | 20 | 30 |
+|---------|---------|---------|---------|
+| **5** | 2 | 1 | 0 |
+| **10** | 1 | 3 | 1 |
+| **15** | 0 | 1 | 2 |
+
+**📌 Representação em HTML+CSS:**
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); max-width: 400px; margin: 1rem auto; font-family: 'Segoe UI', system-ui, sans-serif;">
+
+  <div style="color: #fbbf24; font-weight: 700; font-size: 0.8rem; text-align: center; margin-bottom: 1rem;">
+    HEATMAP — FREQUÊNCIA CONJUNTA
+  </div>
+
+  <div style="display: grid; grid-template-columns: 40px repeat(3, 1fr); gap: 4px;">
+
+    <div style="color: #6b7280; font-size: 0.6rem; display: flex; align-items: center; justify-content: center;"></div>
+    <div style="color: #93c5fd; font-size: 0.6rem; text-align: center;">10</div>
+    <div style="color: #93c5fd; font-size: 0.6rem; text-align: center;">20</div>
+    <div style="color: #93c5fd; font-size: 0.6rem; text-align: center;">30</div>
+
+    <div style="color: #93c5fd; font-size: 0.6rem; display: flex; align-items: center; justify-content: center;">5</div>
+    <div style="background: #2d1b69; padding: 0.6rem; border-radius: 6px; text-align: center; color: #c4b5fd; font-size: 0.7rem;">2</div>
+    <div style="background: #1a3a5c; padding: 0.6rem; border-radius: 6px; text-align: center; color: #93c5fd; font-size: 0.7rem;">1</div>
+    <div style="background: #0a0f1e; padding: 0.6rem; border-radius: 6px; text-align: center; color: #6b7280; font-size: 0.7rem;">0</div>
+
+    <div style="color: #93c5fd; font-size: 0.6rem; display: flex; align-items: center; justify-content: center;">10</div>
+    <div style="background: #1a3a5c; padding: 0.6rem; border-radius: 6px; text-align: center; color: #93c5fd; font-size: 0.7rem;">1</div>
+    <div style="background: #5c1a1a; padding: 0.6rem; border-radius: 6px; text-align: center; color: #fca5a5; font-size: 0.7rem;">3</div>
+    <div style="background: #1a3a5c; padding: 0.6rem; border-radius: 6px; text-align: center; color: #93c5fd; font-size: 0.7rem;">1</div>
+
+    <div style="color: #93c5fd; font-size: 0.6rem; display: flex; align-items: center; justify-content: center;">15</div>
+    <div style="background: #0a0f1e; padding: 0.6rem; border-radius: 6px; text-align: center; color: #6b7280; font-size: 0.7rem;">0</div>
+    <div style="background: #1a3a5c; padding: 0.6rem; border-radius: 6px; text-align: center; color: #93c5fd; font-size: 0.7rem;">1</div>
+    <div style="background: #2d1b69; padding: 0.6rem; border-radius: 6px; text-align: center; color: #c4b5fd; font-size: 0.7rem;">2</div>
+
+  </div>
+
+  <div style="display: flex; justify-content: center; gap: 0.8rem; margin-top: 0.8rem;">
+    <span style="color: #6b7280; font-size: 0.55rem;">■ Baixa</span>
+    <span style="color: #93c5fd; font-size: 0.55rem;">■ Média</span>
+    <span style="color: #c4b5fd; font-size: 0.55rem;">■ Alta</span>
+    <span style="color: #fca5a5; font-size: 0.55rem;">■ Muito alta</span>
+  </div>
+
+</div>
+
+> **🔍 Interpretação:** O heatmap mostra que a frequência mais alta está na célula (10, 20) — 3 observações. Há uma concentração de dados na diagonal, sugerindo uma **associação positiva** entre X e Y.
+
+### 6.2 Bubble Chart (Gráfico de Bolhas)
+
+&emsp;&emsp;&emsp;Um **bubble chart** é como um scatterplot, mas o **tamanho** de cada ponto representa a **frequência** ou **peso** da observação.
+
+**📌 Exemplo:**
+
+| X | Y | f |
+|---------|---------|---------|
+| 5 | 10 | 2 |
+| 5 | 20 | 1 |
+| 10 | 10 | 1 |
+| 10 | 20 | 3 |
+| 10 | 30 | 1 |
+| 15 | 20 | 1 |
+| 15 | 30 | 2 |
+
+**📌 Representação em HTML+CSS:**
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); max-width: 450px; margin: 1rem auto; font-family: 'Segoe UI', system-ui, sans-serif;">
+
+  <div style="color: #fbbf24; font-weight: 700; font-size: 0.8rem; text-align: center; margin-bottom: 1rem;">
+    BUBBLE CHART — FREQUÊNCIA COMO TAMANHO
+  </div>
+
+  <div style="position: relative; height: 180px; background: #1a1a2e; border-radius: 8px; border: 1px solid rgba(255,255,255,0.05); padding: 1rem;">
+
+    <div style="position: absolute; bottom: 20px; left: 20px; width: 20px; height: 20px; background: #2d1b69; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #c4b5fd; font-size: 0.6rem;">2</div>
+    <div style="position: absolute; bottom: 60px; left: 20px; width: 14px; height: 14px; background: #1a3a5c; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #93c5fd; font-size: 0.5rem;">1</div>
+    <div style="position: absolute; bottom: 20px; left: 80px; width: 14px; height: 14px; background: #1a3a5c; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #93c5fd; font-size: 0.5rem;">1</div>
+    <div style="position: absolute; bottom: 60px; left: 80px; width: 26px; height: 26px; background: #5c1a1a; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #fca5a5; font-size: 0.7rem;">3</div>
+    <div style="position: absolute; bottom: 100px; left: 80px; width: 14px; height: 14px; background: #1a3a5c; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #93c5fd; font-size: 0.5rem;">1</div>
+    <div style="position: absolute; bottom: 60px; left: 140px; width: 14px; height: 14px; background: #1a3a5c; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #93c5fd; font-size: 0.5rem;">1</div>
+    <div style="position: absolute; bottom: 100px; left: 140px; width: 20px; height: 20px; background: #2d1b69; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #c4b5fd; font-size: 0.6rem;">2</div>
+
+    <div style="position: absolute; bottom: 5px; left: 25px; color: #6b7280; font-size: 0.55rem;">5</div>
+    <div style="position: absolute; bottom: 5px; left: 85px; color: #6b7280; font-size: 0.55rem;">10</div>
+    <div style="position: absolute; bottom: 5px; left: 145px; color: #6b7280; font-size: 0.55rem;">15</div>
+
+    <div style="position: absolute; bottom: 20px; left: 5px; color: #6b7280; font-size: 0.55rem;">10</div>
+    <div style="position: absolute; bottom: 60px; left: 5px; color: #6b7280; font-size: 0.55rem;">20</div>
+    <div style="position: absolute; bottom: 100px; left: 5px; color: #6b7280; font-size: 0.55rem;">30</div>
+
+  </div>
+
+</div>
+
+> **🔍 Interpretação:** O bubble chart mostra a mesma informação do heatmap, mas com uma representação visual diferente. As bolhas maiores indicam maior frequência. Há uma concentração de dados na região central (10, 20).
+
+## 7. SCATTERPLOT E CORRELAÇÃO
+
+&emsp;&emsp;&emsp;O scatterplot é a **ferramenta visual** que complementa o **coeficiente de correlação**. Juntos, contam a história completa.
+
+| r | Scatterplot | Interpretação |
+|---------|----------|----------|
+| r = +1 | Pontos perfeitamente alinhados numa reta ascendente | Correlação positiva perfeita |
+| r = +0,8 | Nuvem ascendente, pontos próximos da reta | Correlação positiva forte |
+| r = +0,4 | Nuvem ascendente, pontos dispersos | Correlação positiva moderada |
+| r = 0 | Nuvem sem padrão | Correlação nula |
+| r = −0,4 | Nuvem descendente, pontos dispersos | Correlação negativa moderada |
+| r = −0,8 | Nuvem descendente, pontos próximos da reta | Correlação negativa forte |
+| r = −1 | Pontos perfeitamente alinhados numa reta descendente | Correlação negativa perfeita |
+
+## 8. SCATTERPLOT EM PYTHON
+
+<details>
+<summary>📊 Código Python — Scatterplot com Matplotlib e Seaborn</summary>
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+import matplotlib.pyplot as plt
+import seaborn as sns
+import numpy as np
+
+# Dados: Horas de estudo vs. Notas
+horas = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+notas = [4, 5, 7, 8, 10, 11, 13, 14, 16, 17]
+
+# 1. SCATTERPLOT BÁSICO COM MATPLOTLIB
+plt.figure(figsize=(8, 6))
+plt.scatter(horas, notas, color='blue', s=100, alpha=0.7)
+plt.title('Horas de Estudo vs. Notas', fontsize=14)
+plt.xlabel('Horas de Estudo', fontsize=12)
+plt.ylabel('Nota', fontsize=12)
+plt.grid(True, alpha=0.3)
+plt.show()
+
+# 2. SCATTERPLOT COM SEABORN (mais bonito)
+plt.figure(figsize=(8, 6))
+sns.scatterplot(x=horas, y=notas, s=100, color='blue')
+plt.title('Horas de Estudo vs. Notas', fontsize=14)
+plt.xlabel('Horas de Estudo', fontsize=12)
+plt.ylabel('Nota', fontsize=12)
+plt.grid(True, alpha=0.3)
+plt.show()
+
+# 3. SCATTERPLOT COM RETA DE REGRESSÃO
+plt.figure(figsize=(8, 6))
+sns.regplot(x=horas, y=notas, color='blue', scatter_kws={'s': 100})
+plt.title('Horas de Estudo vs. Notas (com reta de regressão)', fontsize=14)
+plt.xlabel('Horas de Estudo', fontsize=12)
+plt.ylabel('Nota', fontsize=12)
+plt.grid(True, alpha=0.3)
+plt.show()
+
+# 4. SCATTERPLOT DO QUARTETO DE ANSCOMBE (exemplo)
+x = [10, 8, 13, 9, 11, 14, 6, 4, 12, 7, 5]
+y1 = [8.04, 6.95, 7.58, 8.81, 8.33, 9.96, 7.24, 4.26, 10.84, 4.82, 5.68]
+y2 = [9.14, 8.14, 8.74, 8.77, 9.26, 8.10, 6.13, 3.10, 9.13, 7.26, 4.74]
+y3 = [7.46, 6.77, 12.74, 7.11, 7.81, 8.84, 6.08, 5.39, 8.15, 6.42, 5.73]
+y4 = [6.58, 5.76, 7.71, 8.84, 8.47, 7.04, 5.25, 12.50, 5.56, 7.91, 6.89]
+
+fig, axes = plt.subplots(2, 2, figsize=(12, 10))
+axes[0, 0].scatter(x, y1, color='blue')
+axes[0, 0].set_title('Conjunto A (linear)')
+axes[0, 1].scatter(x, y2, color='green')
+axes[0, 1].set_title('Conjunto B (curvilíneo)')
+axes[1, 0].scatter(x, y3, color='red')
+axes[1, 0].set_title('Conjunto C (outlier)')
+axes[1, 1].scatter(x, y4, color='purple')
+axes[1, 1].set_title('Conjunto D (ponto de alavanca)')
+plt.tight_layout()
+plt.show()
+</pre>
+
+</details>
+
+<details>
+<summary>📊 Código R — Scatterplot com ggplot2</summary>
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+library(ggplot2)
+
+# Dados: Horas de estudo vs. Notas
+dados <- data.frame(
+  horas = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10),
+  notas = c(4, 5, 7, 8, 10, 11, 13, 14, 16, 17)
+)
+
+# 1. SCATTERPLOT BÁSICO
+ggplot(dados, aes(x = horas, y = notas)) +
+  geom_point(size = 4, color = "blue", alpha = 0.7) +
+  labs(title = "Horas de Estudo vs. Notas",
+       x = "Horas de Estudo",
+       y = "Nota") +
+  theme_minimal()
+
+# 2. SCATTERPLOT COM RETA DE REGRESSÃO
+ggplot(dados, aes(x = horas, y = notas)) +
+  geom_point(size = 4, color = "blue", alpha = 0.7) +
+  geom_smooth(method = "lm", se = TRUE, color = "red") +
+  labs(title = "Horas de Estudo vs. Notas (com reta de regressão)",
+       x = "Horas de Estudo",
+       y = "Nota") +
+  theme_minimal()
+
+# 3. QUARTETO DE ANSCOMBE
+anscombe_long <- data.frame(
+  x = rep(anscombe$x1, 4),
+  y = c(anscombe$y1, anscombe$y2, anscombe$y3, anscombe$y4),
+  grupo = rep(c("A", "B", "C", "D"), each = 11)
+)
+
+ggplot(anscombe_long, aes(x = x, y = y)) +
+  geom_point(size = 3, color = "blue") +
+  facet_wrap(~ grupo, ncol = 2) +
+  labs(title = "Quarteto de Anscombe",
+       x = "X",
+       y = "Y") +
+  theme_minimal()
+</pre>
+
+</details>
+
+## 9. VANTAGENS E DESVANTAGENS DO SCATTERPLOT
+
+| Vantagens | Desvantagens |
+|---------|----------|
+| ✅ **Revela padrões** que os números escondem | ❌ Não quantifica a relação (precisa de r) |
+| ✅ **Detecta outliers** visualmente | ❌ Com muitos pontos, pode ficar sobrecarregado |
+| ✅ **Detecta relações não lineares** | ❌ Difícil de interpretar com mais de 2 variáveis |
+| ✅ **Detecta grupos** (subpopulações) | ❌ Requer escolha adequada de escalas |
+| ✅ **Intuitivo** e fácil de entender | ❌ Pode ser enganador se mal construído |
+| ✅ **Complementa** o coeficiente de correlação | ❌ Não substitui a análise numérica |
+
+## 10. INTERPRETAÇÃO DO SCATTERPLOT
+
+> **💡 O scatterplot é a ferramenta visual que complementa o coeficiente de correlação**
+
+**📌 Exemplos de interpretação:**
+
+| Contexto | Padrão | Interpretação |
+|---------|---------|---------|
+| **Horas de estudo vs. notas** | Nuvem ascendente, pontos próximos | Correlação positiva forte |
+| **Preço vs. quantidade vendida** | Nuvem descendente, pontos dispersos | Correlação negativa moderada |
+| **Altura vs. peso** | Nuvem ascendente, pontos moderadamente dispersos | Correlação positiva moderada |
+| **Temperatura vs. consumo de aquecimento** | Nuvem descendente, pontos próximos | Correlação negativa forte |
+| **Cor do cabelo vs. inteligência** | Nuvem sem padrão | Correlação nula |
+
+**📌 O que procurar:**
+
+1. **Direção:** ascendente, descendente ou nula?
+2. **Força:** pontos próximos ou dispersos?
+3. **Forma:** linear ou curvilínea?
+4. **Outliers:** há pontos isolados?
+5. **Grupos:** há subpopulações?
+
+## 11. QUANDO USAR O SCATTERPLOT
+
+| Critério | Scatterplot |
+|---------|----------|
+| **Duas variáveis quantitativas** | ✅ Único |
+| **Detectar relação linear** | ✅ Único |
+| **Detectar relação não linear** | ✅ Único |
+| **Detectar outliers** | ✅ Único |
+| **Detectar grupos** | ✅ Único |
+| **Complementar o r** | ✅ Único |
+| **Mais de duas variáveis** | ❌ Usar pairplot ou heatmap |
+| **Dados categóricos** | ❌ Usar gráfico de barras ou heatmap |
+
+**Fluxo de Decisão:**
+
+1. Tens **duas variáveis quantitativas**? → **Scatterplot**
+2. Queres **detectar a forma** da relação? → **Scatterplot**
+3. Queres **detectar outliers**? → **Scatterplot**
+4. Queres **quantificar** a relação? → **Coeficiente de correlação** (Pearson ou Spearman)
+5. Tens **mais de duas variáveis**? → **Pairplot** ou **heatmap**
+6. Tens **variáveis categóricas**? → **Gráfico de barras** ou **heatmap**
+
+## 12. EXERCÍCIOS
+
+<details>
+<summary>📗 Exercício 1 — Interpretar um scatterplot</summary>
+
+**Enunciado:** Descreve o padrão do seguinte scatterplot:
+
+<div style="background: #0a0f1e; padding: 1rem; border-radius: 8px; max-width: 300px; margin: 0.5rem auto;">
+  <div style="position: relative; height: 100px; background: #1a1a2e; border-radius: 6px; border: 1px solid rgba(255,255,255,0.05);">
+    <span style="position: absolute; bottom: 15px; left: 20px; color: #a78bfa; font-size: 0.7rem;">•</span>
+    <span style="position: absolute; bottom: 30px; left: 50px; color: #a78bfa; font-size: 0.7rem;">•</span>
+    <span style="position: absolute; bottom: 50px; left: 80px; color: #a78bfa; font-size: 0.7rem;">•</span>
+    <span style="position: absolute; bottom: 40px; left: 100px; color: #a78bfa; font-size: 0.7rem;">•</span>
+    <span style="position: absolute; bottom: 65px; left: 120px; color: #a78bfa; font-size: 0.7rem;">•</span>
+    <span style="position: absolute; bottom: 80px; left: 150px; color: #a78bfa; font-size: 0.7rem;">•</span>
+  </div>
+</div>
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+**Direção:** Positiva (nuvem ascendente)
+
+**Força:** Moderada (pontos dispersos)
+
+**Forma:** Linear
+
+**Outliers:** Nenhum visível
+
+**Interpretação:** Existe uma correlação positiva moderada entre X e Y. Quando X aumenta, Y tende a aumentar, mas a relação não é perfeita — há dispersão considerável.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Detetar outliers</summary>
+
+**Enunciado:** Descreve o padrão do seguinte scatterplot:
+
+<div style="background: #0a0f1e; padding: 1rem; border-radius: 8px; max-width: 300px; margin: 0.5rem auto;">
+  <div style="position: relative; height: 100px; background: #1a1a2e; border-radius: 6px; border: 1px solid rgba(255,255,255,0.05);">
+    <span style="position: absolute; bottom: 15px; left: 20px; color: #a78bfa; font-size: 0.7rem;">•</span>
+    <span style="position: absolute; bottom: 30px; left: 50px; color: #a78bfa; font-size: 0.7rem;">•</span>
+    <span style="position: absolute; bottom: 45px; left: 80px; color: #a78bfa; font-size: 0.7rem;">•</span>
+    <span style="position: absolute; bottom: 55px; left: 110px; color: #a78bfa; font-size: 0.7rem;">•</span>
+    <span style="position: absolute; bottom: 80px; left: 200px; color: #fca5a5; font-size: 0.7rem;">•</span>
+  </div>
+</div>
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+**Direção:** Positiva (nuvem ascendente)
+
+**Força:** Forte (pontos próximos, exceto um)
+
+**Forma:** Linear
+
+**Outliers:** **Sim** — há um ponto isolado à direita que está muito distante da nuvem principal.
+
+**Interpretação:** Existe uma correlação positiva forte entre X e Y, mas há um **outlier** que pode distorcer o coeficiente de correlação. É preciso investigar este ponto antes de tirar conclusões.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Detetar relação não linear</summary>
+
+**Enunciado:** Descreve o padrão do seguinte scatterplot:
+
+<div style="background: #0a0f1e; padding: 1rem; border-radius: 8px; max-width: 300px; margin: 0.5rem auto;">
+  <div style="position: relative; height: 100px; background: #1a1a2e; border-radius: 6px; border: 1px solid rgba(255,255,255,0.05);">
+    <span style="position: absolute; bottom: 70px; left: 15px; color: #a78bfa; font-size: 0.7rem;">•</span>
+    <span style="position: absolute; bottom: 40px; left: 45px; color: #a78bfa; font-size: 0.7rem;">•</span>
+    <span style="position: absolute; bottom: 20px; left: 75px; color: #a78bfa; font-size: 0.7rem;">•</span>
+    <span style="position: absolute; bottom: 12px; left: 105px; color: #a78bfa; font-size: 0.7rem;">•</span>
+    <span style="position: absolute; bottom: 18px; left: 135px; color: #a78bfa; font-size: 0.7rem;">•</span>
+    <span style="position: absolute; bottom: 38px; left: 165px; color: #a78bfa; font-size: 0.7rem;">•</span>
+    <span style="position: absolute; bottom: 65px; left: 195px; color: #a78bfa; font-size: 0.7rem;">•</span>
+  </div>
+</div>
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+**Direção:** Não linear (curva em U)
+
+**Força:** Forte (pontos seguem um padrão claro)
+
+**Forma:** **Não linear** (curvilínea)
+
+**Outliers:** Nenhum visível
+
+**Interpretação:** Existe uma relação **não linear** entre X e Y. O coeficiente de Pearson pode ser **próximo de zero**, mesmo havendo uma relação forte. É preciso usar outras medidas (Spearman) ou transformar os dados.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Detetar grupos</summary>
+
+**Enunciado:** Descreve o padrão do seguinte scatterplot:
+
+<div style="background: #0a0f1e; padding: 1rem; border-radius: 8px; max-width: 300px; margin: 0.5rem auto;">
+  <div style="position: relative; height: 100px; background: #1a1a2e; border-radius: 6px; border: 1px solid rgba(255,255,255,0.05);">
+    <span style="position: absolute; bottom: 12px; left: 15px; color: #a78bfa; font-size: 0.7rem;">•</span>
+    <span style="position: absolute; bottom: 18px; left: 30px; color: #a78bfa; font-size: 0.7rem;">•</span>
+    <span style="position: absolute; bottom: 10px; left: 45px; color: #a78bfa; font-size: 0.7rem;">•</span>
+    <span style="position: absolute; bottom: 70px; left: 130px; color: #a78bfa; font-size: 0.7rem;">•</span>
+    <span style="position: absolute; bottom: 78px; left: 145px; color: #a78bfa; font-size: 0.7rem;">•</span>
+    <span style="position: absolute; bottom: 85px; left: 160px; color: #a78bfa; font-size: 0.7rem;">•</span>
+  </div>
+</div>
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+**Direção:** Positiva em cada grupo, mas os grupos estão separados
+
+**Força:** Forte dentro de cada grupo
+
+**Forma:** Linear dentro de cada grupo
+
+**Grupos:** **Sim** — há dois grupos distintos: um no canto inferior esquerdo (X baixo, Y baixo) e outro no canto superior direito (X alto, Y alto).
+
+**Interpretação:** Existe uma correlação positiva **global**, mas os dados estão divididos em **duas subpopulações**. Isto pode indicar uma variável categórica escondida (ex: sexo, grupo de tratamento). É preciso investigar.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Quarteto de Anscombe</summary>
+
+**Enunciado:** Por que o Quarteto de Anscombe é importante para a estatística?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+O Quarteto de Anscombe é importante porque mostra que **as estatísticas numéricas sozinhas podem ser enganadoras**. Quatro conjuntos de dados com **estatísticas idênticas** (média, variância, correlação, reta de regressão) têm **formas completamente diferentes**:
+- **A:** Relação linear típica
+- **B:** Relação curvilínea (o r não detecta)
+- **C:** Relação linear com outlier
+- **D:** Relação linear com ponto de alavanca
+
+**Lição:** Nunca confies apenas nos números. **Visualiza sempre os dados primeiro.**
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Construir um scatterplot</summary>
+
+**Enunciado:** Constrói o scatterplot dos seguintes dados e interpreta:
+
+| X | Y |
+|---------|---------|
+| 1 | 10 |
+| 2 | 9 |
+| 3 | 8 |
+| 4 | 7 |
+| 5 | 6 |
+| 6 | 5 |
+| 7 | 4 |
+| 8 | 3 |
+| 9 | 2 |
+| 10 | 1 |
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+**Scatterplot:**
+
+<div style="background: #0a0f1e; padding: 1rem; border-radius: 8px; max-width: 350px; margin: 0.5rem auto;">
+  <div style="position: relative; height: 120px; background: #1a1a2e; border-radius: 6px; border: 1px solid rgba(255,255,255,0.05);">
+    <span style="position: absolute; bottom: 100px; left: 15px; color: #a78bfa; font-size: 0.7rem;">•</span>
+    <span style="position: absolute; bottom: 90px; left: 45px; color: #a78bfa; font-size: 0.7rem;">•</span>
+    <span style="position: absolute; bottom: 80px; left: 75px; color: #a78bfa; font-size: 0.7rem;">•</span>
+    <span style="position: absolute; bottom: 70px; left: 105px; color: #a78bfa; font-size: 0.7rem;">•</span>
+    <span style="position: absolute; bottom: 60px; left: 135px; color: #a78bfa; font-size: 0.7rem;">•</span>
+    <span style="position: absolute; bottom: 50px; left: 165px; color: #a78bfa; font-size: 0.7rem;">•</span>
+    <span style="position: absolute; bottom: 40px; left: 195px; color: #a78bfa; font-size: 0.7rem;">•</span>
+    <span style="position: absolute; bottom: 30px; left: 225px; color: #a78bfa; font-size: 0.7rem;">•</span>
+    <span style="position: absolute; bottom: 20px; left: 255px; color: #a78bfa; font-size: 0.7rem;">•</span>
+    <span style="position: absolute; bottom: 10px; left: 285px; color: #a78bfa; font-size: 0.7rem;">•</span>
+  </div>
+</div>
+
+**Interpretação:**
+
+**Direção:** Negativa (nuvem descendente)
+
+**Força:** Perfeita (pontos perfeitamente alinhados)
+
+**Forma:** Linear
+
+**Outliers:** Nenhum
+
+**Correlação:** r = −1 (correlação negativa perfeita)
+
+**Interpretação:** Existe uma relação **negativa perfeita** entre X e Y. Quando X aumenta, Y diminui de forma perfeitamente proporcional.
+
+</details>
+</details>
+
+> Um número pode mentir. Um gráfico pode enganar. Mas juntos — o número e o gráfico — contam a verdade. O scatterplot é a ponte entre os dados e a compreensão.

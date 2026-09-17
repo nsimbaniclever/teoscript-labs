@@ -1,0 +1,409 @@
+# Flip-Flops
+
+## 1. Introdução
+
+**circuitos combinacionais** — são os circuitos cuja saída depende **apenas** das entradas atuais. Se você mudar a entrada, a saída muda imediatamente. Não há "memória" do que aconteceu antes.Entretanto um computador precisa de **memória**. Precisa lembrar de valores, estados e resultados anteriores. Precisa armazenar dados temporariamente durante a execução de programas.
+
+Como um circuito pode "lembrar" de algo?
+
+A resposta está nos **circuitos sequenciais** — circuitos que têm **estado interno** (memória). E o componente mais fundamental de todo circuito sequencial é o **Flip-Flop**.
+
+O flip-flop é um circuito que:
+
+- **Armazena 1 bit de informação** (0 ou 1).
+- **Mantém o valor armazenado** mesmo depois que a entrada que o criou é removida.
+- **Só muda de estado** quando recebe um sinal de *clock* (ou uma combinação específica de entradas).
+
+Nesta aula, vamos estudar os principais tipos de flip-flops:
+
+- **Flip-Flop SR** — O mais básico (Set/Reset)
+- **Flip-Flop JK** — Elimina o estado inválido do SR
+- **Flip-Flop D** — O mais usado (Data/Delay)
+- **Flip-Flop T** — Toggle (alterna o estado)
+
+Estes são os blocos fundamentais de construção de registradores, memórias cache, contadores e toda a hierarquia de memória de um computador.
+
+
+## 2. O Que é um Flip-Flop?
+
+### 2.1 Definição
+
+Um **Flip-Flop** é um circuito sequencial que:
+
+> **Armazena 1 bit de dado e só altera seu estado na borda de um sinal de clock (ou em resposta a entradas específicas).**
+
+### 2.2 A diferença: Latch vs Flip-Flop
+
+| Característica | Latch | Flip-Flop |
+|----------------|-------|-----------|
+| **Sensível a** | Nível do sinal | Borda do clock |
+| **Quando muda** | Enquanto a entrada estiver ativa | Apenas na transição do clock (subida/descida) |
+| **Uso** | Menos comum | Muito comum em registradores |
+
+**Observação:** Em muitas literaturas, "flip-flop" é usado como termo genérico para ambos. Nesta aula, focaremos nos flip-flops com clock.
+
+### 2.3 Analogia
+
+Pense no flip-flop como um **interruptor de luz com memória**:
+
+- Você aperta o botão → a luz acende (estado 1).
+- Você aperta o botão de novo → a luz apaga (estado 0).
+- A luz **lembra** seu estado mesmo depois que você tira o dedo do botão.
+
+O flip-flop faz exatamente isso, mas com eletricidade e em escala microscópica.
+
+
+## 3. Flip-Flop SR (Set/Reset)
+
+### 3.1 Definição
+
+O **Flip-Flop SR** é o tipo mais básico de flip-flop. Ele tem:
+
+- **2 entradas:** S (Set) e R (Reset)
+- **2 saídas:** Q e ¬Q (a negação de Q)
+
+| Entrada | Função |
+|---------|--------|
+| **S = 1, R = 0** | Set: Q = 1 (armazena 1) |
+| **S = 0, R = 1** | Reset: Q = 0 (armazena 0) |
+| **S = 0, R = 0** | Mantém o estado anterior (memória) |
+| **S = 1, R = 1** | **Estado inválido!** (Q e ¬Q ficam iguais) |
+
+### 3.2 Tabela verdade do Flip-Flop SR
+
+| S | R | Q (próximo) | ¬Q (próximo) | Estado |
+|---|---|-------------|--------------|--------|
+| 0 | 0 | Q (mantém) | ¬Q (mantém) | **Memória** |
+| 0 | 1 | 0 | 1 | **Reset** (Zera) |
+| 1 | 0 | 1 | 0 | **Set** (Armazena 1) |
+| 1 | 1 | 0 | 0 | **Inválido!** |
+
+### 3.3 O problema do estado inválido (S = R = 1)
+
+Quando S = 1 e R = 1, ambas as saídas Q e ¬Q tentam ser 1, o que viola a condição de que ¬Q é sempre o inverso de Q. Este estado é **proibido** e deve ser evitado.
+
+### 3.4 Como o Flip-Flop SR mantém memória?
+
+O flip-flop SR usa um **circuito de realimentação** (feedback) para manter o estado:
+
+<details>
+<summary>🔧 Ver Diagrama do Flip-Flop SR</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 350px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">FLIP-FLOP SR</div>
+
+  <pre style="color: #93c5fd; font-size: 0.7rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    S ───┐
+         ├── NOR ── Q
+    Q ───┘
+
+    R ───┐
+         ├── NOR ── ¬Q
+    ¬Q ──┘
+  </pre>
+
+  <div style="margin-top: 0.8rem; padding-top: 0.8rem; border-top: 1px solid rgba(255,255,255,0.05); display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap;">
+    <span style="background: #1a3a5c; color: #93c5fd; padding: 0.15rem 0.6rem; border-radius: 12px; font-size: 0.55rem;">S=1,R=0 → Set (Q=1)</span>
+    <span style="background: #5c1a1a; color: #fca5a5; padding: 0.15rem 0.6rem; border-radius: 12px; font-size: 0.55rem;">S=1,R=1 → Inválido!</span>
+  </div>
+
+</div>
+</details>
+
+Quando S = 0 e R = 0, a saída Q realimenta a entrada do NOR superior, mantendo o estado atual.
+
+### 3.5 Exemplo prático
+
+**Situação:** O flip-flop está no estado Q = 0 (reset). Em seguida, aplicamos S = 1, R = 0 (set).
+
+**Passo 1:** Estado atual: Q = 0, ¬Q = 1
+**Passo 2:** S = 1, R = 0
+**Passo 3:** S = 1 força Q = 1
+**Passo 4:** Q = 1 força ¬Q = 0
+**Passo 5:** Novo estado: Q = 1, ¬Q = 0 (armazenou 1!)
+
+**Resultado:** O flip-flop armazenou o valor 1 e o mantém mesmo depois que S volta a 0.
+
+
+## 4. Flip-Flop JK
+
+### 4.1 Definição
+
+O **Flip-Flop JK** é uma melhoria do flip-flop SR que **elimina o estado inválido** (S = R = 1).
+
+Ele tem:
+
+- **2 entradas:** J e K (equivalentes a S e R)
+- **2 saídas:** Q e ¬Q
+
+| Entrada | Função |
+|---------|--------|
+| **J = 0, K = 0** | Mantém o estado (memória) |
+| **J = 0, K = 1** | Reset (Q = 0) |
+| **J = 1, K = 0** | Set (Q = 1) |
+| **J = 1, K = 1** | **Toggle** (inverte o estado) |
+
+### 4.2 Tabela verdade do Flip-Flop JK
+
+| J | K | Q (próximo) | Estado |
+|---|---|-------------|--------|
+| 0 | 0 | Q (mantém) | **Memória** |
+| 0 | 1 | 0 | **Reset** |
+| 1 | 0 | 1 | **Set** |
+| 1 | 1 | ¬Q (inverte) | **Toggle** |
+
+### 4.3 A grande vantagem: Toggle (J = K = 1)
+
+Quando J = 1 e K = 1, o flip-flop **inverte** seu estado a cada pulso de clock:
+
+- Se Q = 0 → Q = 1
+- Se Q = 1 → Q = 0
+
+Isso é extremamente útil para construir **contadores** e **divisores de frequência**.
+
+### 4.4 Exemplo prático
+
+**Situação:** O flip-flop está no estado Q = 0. Aplicamos J = 1, K = 1 (toggle).
+
+**Passo 1:** Estado atual: Q = 0
+**Passo 2:** J = 1, K = 1 → toggle
+**Passo 3:** Q = ¬Q = 1
+
+**Resultado:** O flip-flop inverteu de 0 para 1 ✅
+
+
+## 5. Flip-Flop D (Data / Delay)
+
+### 5.1 Definição
+
+O **Flip-Flop D** (Data ou Delay) é o tipo mais comum e mais útil de flip-flop. Ele tem:
+
+- **1 entrada:** D (Data)
+- **2 saídas:** Q e ¬Q
+
+| D | Q (próximo) | Estado |
+|---|-------------|--------|
+| 0 | 0 | Armazena 0 |
+| 1 | 1 | Armazena 1 |
+
+### 5.2 A grande vantagem: Simplicidade
+
+O flip-flop D é extremamente simples:
+
+> **Na borda do clock, Q recebe o valor de D.**
+
+Em outras palavras, o flip-flop D "amostra" o valor da entrada D na borda do clock e o armazena até o próximo clock.
+
+### 5.3 Analogia
+
+Pense no flip-flop D como uma **foto tirada no momento exato do clock**:
+
+- O clock é o "flash" da câmera.
+- O valor de D no momento do flash é "congelado" e armazenado em Q.
+- Mesmo que D mude depois, Q mantém o valor que estava no momento do flash.
+
+### 5.4 Por que o Flip-Flop D é tão importante?
+
+O flip-flop D é a base de:
+
+- **Registradores** (armazenam múltiplos bits)
+- **Memórias cache** (SRAM)
+- **Pipeline de processadores**
+- **Sincronização de dados**
+
+
+## 6. Flip-Flop T (Toggle)
+
+### 6.1 Definição
+
+O **Flip-Flop T** (Toggle) é um flip-flop que:
+
+- **Alterna (toggle)** seu estado a cada pulso de clock quando T = 1.
+- **Mantém** o estado quando T = 0.
+
+| T | Q (próximo) | Estado |
+|---|-------------|--------|
+| 0 | Q (mantém) | **Memória** |
+| 1 | ¬Q (inverte) | **Toggle** |
+
+### 6.2 Como construir um Flip-Flop T
+
+O flip-flop T pode ser construído a partir de um **Flip-Flop JK** com J = K = T:
+
+<details>
+<summary>🔧 Ver Diagrama do Flip-Flop T</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 300px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">FLIP-FLOP T</div>
+
+  <pre style="color: #93c5fd; font-size: 0.7rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    T ───┤ J │
+         │   │
+    Clock┤   ├── Q
+         │   │
+         └───┘
+    J = K = T
+  </pre>
+
+</div>
+</details>
+
+### 6.3 Aplicação: Contadores
+
+O flip-flop T é usado para construir **contadores binários**:
+
+<details>
+<summary>🔧 Ver Contador com Flip-Flops T</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 400px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">CONTADOR BINÁRIO COM FLIP-FLOPS T</div>
+
+  <pre style="color: #93c5fd; font-size: 0.65rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    Clock ──┤ T │── Q₀ (LSB)
+            │   │
+    Q₀ ─────┤ T │── Q₁
+            │   │
+    Q₁ ─────┤ T │── Q₂
+            │   │
+  </pre>
+
+</div>
+</details>
+
+
+## 7. Comparação Entre os Flip-Flops
+
+| Característica | SR | JK | D | T |
+|----------------|----|----|---|----|
+| **Entradas** | 2 (S, R) | 2 (J, K) | 1 (D) | 1 (T) |
+| **Estado inválido?** | Sim (S=R=1) | Não | Não | Não |
+| **Toggle?** | Não | Sim (J=K=1) | Não | Sim (T=1) |
+| **Mais usado?** | Raramente | Às vezes | **Sim** | Às vezes |
+| **Uso principal** | Básico | Contadores | Registradores | Contadores |
+
+
+## 8. Exercícios
+
+<details>
+<summary>📗 Exercício 1 — Flip-Flop SR: Set (fácil)</summary>
+
+**Enunciado:** Um flip-flop SR está em Q = 0. Aplicamos S = 1, R = 0. Qual será o novo estado?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Q = 1
+
+**Explicação:** S = 1 força o flip-flop a ir para o estado Set (Q = 1).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Flip-Flop SR: Reset (fácil)</summary>
+
+**Enunciado:** Um flip-flop SR está em Q = 1. Aplicamos S = 0, R = 1. Qual será o novo estado?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Q = 0
+
+**Explicação:** R = 1 força o flip-flop a ir para o estado Reset (Q = 0).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Flip-Flop SR: Estado inválido (fácil)</summary>
+
+**Enunciado:** Qual é a combinação de entradas proibida em um flip-flop SR?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** S = 1, R = 1
+
+**Explicação:** Quando S = R = 1, ambas as saídas Q e ¬Q tentam ser 1, violando a condição de que ¬Q = ¬Q.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Flip-Flop JK: Toggle (médio)</summary>
+
+**Enunciado:** Um flip-flop JK está em Q = 1. Aplicamos J = 1, K = 1. Qual será o novo estado?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Q = 0
+
+**Explicação:** J = 1, K = 1 → toggle → Q = ¬Q = 0.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Flip-Flop D (médio)</summary>
+
+**Enunciado:** Um flip-flop D tem D = 1. Qual será o valor de Q após a borda do clock?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Q = 1
+
+**Explicação:** No flip-flop D, Q assume o valor de D na borda do clock.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Flip-Flop T (médio)</summary>
+
+**Enunciado:** Um flip-flop T tem T = 1 e Q = 0. Qual será o novo estado?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Q = 1
+
+**Explicação:** T = 1 → toggle → Q = ¬Q = 1.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — Flip-Flop T (médio)</summary>
+
+**Enunciado:** Um flip-flop T tem T = 0 e Q = 1. Qual será o novo estado?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Q = 1 (mantém)
+
+**Explicação:** T = 0 → mantém o estado → Q = 1.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — Aplicação do Flip-Flop D (conceitual)</summary>
+
+**Enunciado:** Por que o flip-flop D é o mais usado em computadores?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Porque o flip-flop D é simples (uma entrada) e armazena exatamente o valor da entrada D na borda do clock. Ele é a base para construir registradores, que são grupos de flip-flops D usados para armazenar dados na CPU.
+
+</details>
+</details>
+
+
+> **"O flip-flop é o bloco fundamental de toda memória digital — ele armazena 1 bit de informação. O flip-flop SR é o mais básico (Set/Reset), mas tem um estado inválido (S=R=1). O flip-flop JK elimina esse problema e adiciona a função toggle (J=K=1). O flip-flop D é o mais usado: na borda do clock, Q = D. O flip-flop T alterna seu estado quando T = 1. Juntos, esses flip-flops formam a base de registradores, memórias cache, contadores e toda a hierarquia de memória de um computador. Sem flip-flops, não haveria memória — e sem memória, não haveria computação."**

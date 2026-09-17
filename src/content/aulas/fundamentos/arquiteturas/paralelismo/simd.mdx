@@ -1,0 +1,446 @@
+# SIMD — UMA INSTRUÇÃO, MÚLTIPLOS DADOS
+
+## 1. INTRODUÇÃO
+
+Nas últimas sete aulas, estudamos como a CPU executa instruções — desde o pipeline básico até a execução fora de ordem e especulação. Vimos como os processadores modernos executam várias instruções por ciclo, mantendo o pipeline ocupado e maximizando o throughput.<br><br>
+
+Mas há outra forma de paralelismo, igualmente importante: o **paralelismo de dados**. Em vez de executar várias instruções diferentes ao mesmo tempo (paralelismo de instrução), o processador pode executar a **mesma instrução em vários dados diferentes ao mesmo tempo**. Isso é o **SIMD (Single Instruction, Multiple Data)**.<br><br>
+
+Imagine que você tem que pintar 100 cadeiras da mesma cor. Você pode pintar uma cadeira por vez (instrução única, dado único), ou pode usar uma pistola de pintura que pinta várias cadeiras ao mesmo tempo (instrução única, múltiplos dados). O SIMD é a pistola de pintura da computação.<br><br>
+
+O SIMD é usado em processamento de áudio, vídeo, imagens, gráficos 3D, machine learning e qualquer aplicação que precise processar grandes quantidades de dados com a mesma operação. É a base de extensões como SSE, AVX (Intel) e NEON (ARM).<br><br>
+
+Nesta aula, vamos estudar o SIMD: o que é, como funciona, quais são suas extensões, e como ele acelera aplicações do mundo real.
+
+## 2. O QUE É SIMD?
+
+### 2.1 Definição
+
+> "SIMD (Single Instruction, Multiple Data) é um paradigma de computação onde uma única instrução é executada sobre múltiplos dados simultaneamente, permitindo processamento paralelo de vetores e matrizes."
+
+### 2.2 Características principais
+
+| Característica | Descrição |
+|---------|----------|
+| **O que faz** | Uma instrução opera em múltiplos dados (vetores) |
+| **Unidade de processamento** | Unidades SIMD (ex: SSE, AVX, NEON) |
+| **Tamanho dos registradores** | 128, 256, 512 bits (múltiplos dados por vez) |
+| **Vantagem** | Acelera operações em grandes conjuntos de dados |
+| **Uso** | Áudio, vídeo, gráficos, machine learning |
+
+### 2.3 Analogia
+
+O SIMD é como uma **pistola de pintura** em vez de um pincel:
+
+- **SISD (pincel):** Uma instrução, um dado por vez. `A = B + C`
+- **SIMD (pistola):** Uma instrução, vários dados ao mesmo tempo. `A[0..3] = B[0..3] + C[0..3]`
+
+## 3. SIMD VS SISD
+
+### 3.1 Comparação de paradigmas
+
+| Paradigma | Descrição | Exemplo |
+|---------|---------|---------|
+| **SISD** | Single Instruction, Single Data | CPU tradicional (sem SIMD) |
+| **SIMD** | Single Instruction, Multiple Data | SSE, AVX, NEON |
+| **MISD** | Multiple Instruction, Single Data | Raro (poucas aplicações) |
+| **MIMD** | Multiple Instruction, Multiple Data | Multicore, clusters |
+
+### 3.2 Diagrama: SISD vs SIMD
+
+<details>
+<summary> **SISD vs SIMD**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+SISD (Uma instrução, um dado por vez):
+
+Operação: ADD
+Dado 1:  1 + 2 = 3  → 1ª execução
+Dado 2:  3 + 4 = 7  → 2ª execução
+Dado 3:  5 + 6 = 11 → 3ª execução
+Dado 4:  7 + 8 = 15 → 4ª execução
+
+SIMD (Uma instrução, múltiplos dados):
+
+Operação: ADD (uma única vez!)
+Dados:   [1, 2, 3, 4] + [5, 6, 7, 8] = [6, 8, 10, 12]
+                     ↑
+              Executado em paralelo!
+    </pre>
+</details>
+
+**Ganho:** 4x mais rápido (em teoria) para este exemplo.
+
+## 4. EXTENSÕES SIMD
+
+### 4.1 Principais extensões SIMD
+
+| Extensão | Fabricante | Tamanho do vetor | Introdução |
+|---------|---------|---------|---------|
+| **MMX** | Intel | 64 bits | 1997 |
+| **SSE** | Intel | 128 bits | 1999 |
+| **SSE2** | Intel | 128 bits | 2001 |
+| **SSE3** | Intel | 128 bits | 2004 |
+| **SSE4** | Intel | 128 bits | 2006 |
+| **AVX** | Intel | 256 bits | 2011 |
+| **AVX2** | Intel | 256 bits | 2013 |
+| **AVX-512** | Intel | 512 bits | 2015 |
+| **NEON** | ARM | 128 bits | 2011 |
+| **SVE** | ARM | 128-2048 bits | 2016 |
+
+### 4.2 Tamanho dos registradores e capacidade
+
+| Extensão | Bits por registrador | Números por registro (32 bits) | Números por registro (64 bits) |
+|---------|---------|---------|---------|
+| **MMX** | 64 | 2 | 1 |
+| **SSE** | 128 | 4 | 2 |
+| **AVX** | 256 | 8 | 4 |
+| **AVX-512** | 512 | 16 | 8 |
+| **SVE** | 128-2048 | 4-64 | 2-32 |
+
+### 4.3 Exemplo: SSE vs AVX
+
+**Código sem SIMD (SISD):**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+for (int i = 0; i < 8; i++) {
+    C[i] = A[i] + B[i];
+}
+</pre>
+
+**Com SSE (128 bits, 4 números por vez):**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+for (int i = 0; i < 8; i += 4) {
+    // Carrega 4 números de A e B
+    __m128 a = _mm_load_ps(&A[i]);
+    __m128 b = _mm_load_ps(&B[i]);
+    // Soma 4 números de uma vez
+    __m128 c = _mm_add_ps(a, b);
+    // Armazena 4 resultados
+    _mm_store_ps(&C[i], c);
+}
+</pre>
+
+**Com AVX (256 bits, 8 números por vez):**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+for (int i = 0; i < 8; i += 8) {
+    // Carrega 8 números de A e B
+    __m256 a = _mm256_load_ps(&A[i]);
+    __m256 b = _mm256_load_ps(&B[i]);
+    // Soma 8 números de uma vez
+    __m256 c = _mm256_add_ps(a, b);
+    // Armazena 8 resultados
+    _mm256_store_ps(&C[i], c);
+}
+</pre>
+
+**Ganho:** AVX é 2x mais rápido que SSE neste exemplo (8 números por vez vs 4).
+
+## 5. COMO O SIMD FUNCIONA?
+
+### 5.1 Registradores SIMD
+
+Os registradores SIMD são **grandes** comparados aos registradores normais:
+
+- **Registrador normal (x86):** 64 bits (RAX, RBX, etc.)
+- **Registrador SSE:** 128 bits (XMM0-XMM15)
+- **Registrador AVX:** 256 bits (YMM0-YMM15)
+- **Registrador AVX-512:** 512 bits (ZMM0-ZMM31)
+
+### 5.2 Diagrama: Registrador SIMD
+
+<details>
+<summary> **Registradores SIMD**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+Registrador normal (64 bits):
+┌─────────────────────────────────────────────────────────────┐
+│  Dado único (ex: inteiro de 64 bits)                       │
+└─────────────────────────────────────────────────────────────┘
+
+Registrador SSE (128 bits):
+┌─────────────┬─────────────┬─────────────┬─────────────┐
+│   Dado 1    │   Dado 2    │   Dado 3    │   Dado 4    │
+│  (32 bits)  │  (32 bits)  │  (32 bits)  │  (32 bits)  │
+└─────────────┴─────────────┴─────────────┴─────────────┘
+                     4 números por vez
+
+Registrador AVX (256 bits):
+┌─────────────┬─────────────┬─────────────┬─────────────┐
+│   Dado 1    │   Dado 2    │   Dado 3    │   Dado 4    │
+│  (32 bits)  │  (32 bits)  │  (32 bits)  │  (32 bits)  │
+├─────────────┼─────────────┼─────────────┼─────────────┤
+│   Dado 5    │   Dado 6    │   Dado 7    │   Dado 8    │
+│  (32 bits)  │  (32 bits)  │  (32 bits)  │  (32 bits)  │
+└─────────────┴─────────────┴─────────────┴─────────────┘
+                     8 números por vez
+    </pre>
+</details>
+
+### 5.3 Operações SIMD
+
+| Operação | Descrição | Exemplo (SSE) |
+|---------|---------|---------|
+| **Adição** | Soma vetorizada | `_mm_add_ps` |
+| **Subtração** | Subtração vetorizada | `_mm_sub_ps` |
+| **Multiplicação** | Multiplicação vetorizada | `_mm_mul_ps` |
+| **Divisão** | Divisão vetorizada | `_mm_div_ps` |
+| **Comparação** | Compara elementos | `_mm_cmp_ps` |
+| **Shuffle** | Reorganiza elementos | `_mm_shuffle_ps` |
+| **Load/Store** | Carrega/armazena vetores | `_mm_load_ps`, `_mm_store_ps` |
+
+## 6. APLICAÇÕES DO SIMD
+
+### 6.1 Processamento de áudio
+
+**Exemplo:** Aplicar um filtro a uma amostra de áudio.
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+Sem SIMD: 44100 amostras/segundo × 1 operação cada = 44100 operações/segundo
+Com SIMD: 44100/4 = 11025 operações/segundo (SSE, 4x mais rápido)
+Com AVX: 44100/8 = 5512 operações/segundo (AVX, 8x mais rápido)
+</pre>
+
+### 6.2 Processamento de vídeo
+
+**Exemplo:** Codificação/decodificação de vídeo (H.264, H.265).
+
+- Transformada DCT (Discrete Cosine Transform) — usada em compressão de vídeo.
+- SIMD acelera a DCT em 4-8x.
+
+### 6.3 Gráficos 3D
+
+**Exemplo:** Transformações de vértices (rotação, escala, translação).
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+Matriz 4×4 × Vetor 4D = 16 multiplicações + 12 adições
+Com SIMD: 4 multiplicações por vez (SSE) → 4x mais rápido
+</pre>
+
+### 6.4 Machine Learning
+
+**Exemplo:** Redes neurais e multiplicação de matrizes.
+
+- Multiplicação de matrizes é a base de redes neurais.
+- SIMD acelera em 4-8x (SSE/AVX).
+- GPUs usam SIMD massivo (warps de 32 threads).
+
+### 6.5 Jogos
+
+**Exemplo:** Física, detecção de colisão, renderização.
+
+- Cálculo de posições, velocidades, forças.
+- SIMD acelera o cálculo de múltiplos objetos simultaneamente.
+
+## 7. COMPILADORES E SIMD
+
+### 7.1 Auto-vectorização
+
+Compiladores modernos podem **automaticamente** gerar código SIMD a partir de código C/C++ comum.
+
+**Exemplo:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+// Código C normal
+for (int i = 0; i < 1000; i++) {
+    c[i] = a[i] + b[i];
+}
+
+// O compilador gera código SIMD automaticamente!
+</pre>
+
+**Opções de compilação:**
+- GCC: `-O3 -march=native -ftree-vectorize`
+- Clang: `-O3 -march=native -Rpass=loop-vectorize`
+- MSVC: `/O2 /arch:AVX2`
+
+### 7.2 Intrinsics (programação manual)
+
+Para máximo desempenho, o programador pode usar **intrinsics** — funções que mapeiam diretamente para instruções SIMD.
+
+**Exemplo (AVX):**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+#include <immintrin.h>
+
+void soma_vetor_avx(float *a, float *b, float *c, int n) {
+    for (int i = 0; i < n; i += 8) {
+        __m256 va = _mm256_load_ps(&a[i]);
+        __m256 vb = _mm256_load_ps(&b[i]);
+        __m256 vc = _mm256_add_ps(va, vb);
+        _mm256_store_ps(&c[i], vc);
+    }
+}
+</pre>
+
+## 8. VANTAGENS E LIMITAÇÕES
+
+### 8.1 Vantagens
+
+| Vantagem | Explicação |
+|---------|----------|
+| **Grande ganho de desempenho** | 4-8x mais rápido (ou mais) para operações vetorizáveis |
+| **Baixo custo de energia** | Mais operações por watt que CPU normal |
+| **Amplamente suportado** | Todos os processadores modernos têm SIMD |
+| **Fácil de usar** | Compiladores podem auto-vectorizar |
+
+### 8.2 Limitações
+
+| Limitação | Explicação |
+|---------|----------|
+| **Não funciona para todos os loops** | Dependências entre iterações impedem SIMD |
+| **Acesso à memória precisa ser alinhado** | Dados desalinhados causam penalidades |
+| **Nem todos os tipos de dados** | SIMD funciona melhor com floats e inteiros |
+| **Código mais complexo** | Intrinsics são mais difíceis que C normal |
+| **Overhead de energia** | Registradores maiores consomem mais energia |
+
+## 9. EXERCÍCIOS
+
+<details>
+<summary>📗 Exercício 1 — O que é SIMD? (Fácil)</summary>
+
+**Enunciado:** Defina o que é SIMD e qual seu principal benefício.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** SIMD (Single Instruction, Multiple Data) é um paradigma onde uma única instrução opera sobre múltiplos dados simultaneamente.
+
+**Benefício:** Acelera operações em grandes conjuntos de dados, como vetores e matrizes.
+
+**Explicação:** Em vez de processar um dado por vez, o SIMD processa vários dados com a mesma instrução.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — SISD vs SIMD (Fácil)</summary>
+
+**Enunciado:** Qual a diferença entre SISD e SIMD?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+- **SISD:** Uma instrução opera em um dado por vez (CPU tradicional).
+- **SIMD:** Uma instrução opera em múltiplos dados ao mesmo tempo (SSE, AVX, NEON).
+
+**Explicação:** SIMD é um paradigma de paralelismo de dados, enquanto SISD é o paradigma tradicional sequencial.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Extensões SIMD (Fácil)</summary>
+
+**Enunciado:** Cite três extensões SIMD e seus respectivos fabricantes.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+1. **SSE** — Intel (128 bits)
+2. **AVX** — Intel (256 bits)
+3. **NEON** — ARM (128 bits)
+
+**Explicação:** Cada fabricante tem suas próprias extensões SIMD.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Tamanho dos registradores (Médio)</summary>
+
+**Enunciado:** Quantos números de 32 bits cabem em um registrador SSE (128 bits)? E em um registrador AVX (256 bits)?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+- **SSE (128 bits):** 128 / 32 = 4 números
+- **AVX (256 bits):** 256 / 32 = 8 números
+
+**Explicação:** O número de dados que cabem em um registrador SIMD é o tamanho do registrador dividido pelo tamanho de cada dado.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Auto-vectorização (Médio)</summary>
+
+**Enunciado:** O que é auto-vectorização e como os compiladores a realizam?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Auto-vectorização é a capacidade do compilador de gerar código SIMD automaticamente a partir de código C/C++ comum.
+
+**Como realiza:** O compilador analisa loops e identifica operações independentes que podem ser executadas em paralelo.
+
+**Exemplo:** O loop `for (i=0; i<n; i++) c[i]=a[i]+b[i]` pode ser auto-vectorizado.
+
+**Explicação:** Compiladores modernos (GCC, Clang, MSVC) suportam auto-vectorização com flags como `-O3 -march=native`.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Aplicações do SIMD (Médio)</summary>
+
+**Enunciado:** Cite três aplicações onde o SIMD é amplamente utilizado.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+1. **Processamento de áudio** — filtros, efeitos, codecs.
+2. **Processamento de vídeo** — codificação/decodificação (H.264, H.265).
+3. **Machine Learning** — multiplicação de matrizes (redes neurais).
+
+**Explicação:** Qualquer aplicação que processe grandes quantidades de dados com a mesma operação pode se beneficiar do SIMD.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — Código SIMD (Difícil)</summary>
+
+**Enunciado:** Escreva pseudo-código SIMD para somar 8 números de 32 bits usando AVX (256 bits).
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+; Carrega 8 números de A em YMM0
+YMM0 = load_ps(&A[0..7])
+
+; Carrega 8 números de B em YMM1
+YMM1 = load_ps(&B[0..7])
+
+; Soma os 8 números em paralelo
+YMM2 = add_ps(YMM0, YMM1)
+
+; Armazena os 8 resultados em C
+store_ps(&C[0..7], YMM2)
+</pre>
+
+**Explicação:** Uma única instrução (add_ps) soma 8 pares de números simultaneamente.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — SIMD vs MIMD (Desafio)</summary>
+
+**Enunciado:** Qual a diferença entre SIMD e MIMD? Dê um exemplo de cada.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+- **SIMD:** Uma instrução opera em múltiplos dados. Exemplo: SSE, AVX, NEON.
+- **MIMD:** Múltiplas instruções operam em múltiplos dados. Exemplo: Processadores multicore, clusters.
+
+**Diferença fundamental:** SIMD tem uma única unidade de controle que emite uma instrução para múltiplas unidades de dados. MIMD tem múltiplas unidades de controle, cada uma com sua própria instrução e dados.
+
+**Exemplo prático:**
+- SIMD: `A[0..7] = B[0..7] + C[0..7]` (uma instrução, 8 dados)
+- MIMD: Núcleo 1 executa `A = B + C`, Núcleo 2 executa `D = E * F` (diferentes instruções em diferentes dados)
+</details>
+</details>
+
+> O SIMD é a artilharia pesada do paralelismo de dados. Uma única instrução, múltiplos dados. Em vez de processar um número por vez, ela processa 4, 8, 16 ou mais números simultaneamente. É a base de todo processamento moderno de áudio, vídeo, gráficos, machine learning e ciência de dados. O SIMD é uma das técnicas mais importantes para acelerar aplicações que processam grandes volumes de dados. Com extensões como SSE, AVX e NEON, processadores modernos podem executar operações em vetores de 4, 8, 16 ou mais elementos ao mesmo tempo, multiplicando o desempenho de aplicações como codificação de vídeo, processamento de áudio, gráficos 3D e redes neurais.

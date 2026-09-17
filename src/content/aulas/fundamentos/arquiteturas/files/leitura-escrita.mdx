@@ -1,0 +1,421 @@
+# LEITURA E ESCRITA DE ARQUIVOS
+
+## 1. INTRODUÇÃO
+
+Nas últimas doze aulas, estudamos como os computadores processam dados: desde a execução de instruções no pipeline até a organização da memória e a estruturação de dados em tipos. Mas há uma pergunta fundamental que ainda não respondemos: **como os dados são salvos de forma persistente?**<br><br>
+
+Quando você desliga o computador, os dados na RAM são perdidos. Para guardar informações permanentemente, precisamos de **arquivos** — estruturas de dados armazenadas em dispositivos de armazenamento (HD, SSD, etc.). Os arquivos são a base da persistência digital: documentos, fotos, vídeos, programas, configurações, bancos de dados — todos são arquivos.<br><br>
+
+A leitura e escrita de arquivos é uma habilidade essencial para qualquer programador. É assim que os programas interagem com o sistema de arquivos, lendo configurações, processando dados de entrada e salvando resultados.<br><br>
+
+Imagine que você está escrevendo um livro. A RAM é a sua mente — onde você organiza as ideias enquanto escreve. O arquivo é o papel onde você escreve o livro para que ele não seja perdido quando você parar de pensar. A leitura e escrita de arquivos são o ato de transferir ideias da mente para o papel (e vice-versa).<br><br>
+
+Nesta aula, vamos estudar a leitura e escrita de arquivos: como abrir, ler, escrever e fechar arquivos, quais são os modos de acesso, e como diferentes tipos de arquivos são manipulados.
+
+## 2. O QUE É UM ARQUIVO?
+
+### 2.1 Definição
+
+> "Um arquivo é uma coleção nomeada de dados armazenados em um dispositivo de armazenamento persistente (HD, SSD, etc.), que pode ser lido, escrito e gerenciado pelo sistema operacional."
+
+### 2.2 Características principais
+
+| Característica | Descrição |
+|---------|----------|
+| **Persistência** | Os dados permanecem após o programa terminar |
+| **Nome** | Identificador único no sistema de arquivos |
+| **Tamanho** | Quantidade de bytes que ocupa |
+| **Tipo** | Binário, texto, executável, etc. |
+| **Permissões** | Quem pode ler, escrever, executar |
+| **Metadados** | Data de criação, modificação, etc. |
+
+### 2.3 Analogia
+
+Um arquivo é como uma **página em um caderno**. Você pode escrever nela (escrever), ler o que escreveu (ler), rasgar a página e começar de novo (sobrescrever), ou guardar o caderno na estante para ler depois (persistência).
+
+## 3. OPERAÇÕES BÁSICAS COM ARQUIVOS
+
+### 3.1 O ciclo de vida de um arquivo
+
+<details>
+<summary> **Ciclo de vida de um arquivo**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+┌─────────────────────────────────────────────────────────────┐
+│                                                             │
+│   1. ABRIR (Open)                                          │
+│      → O programa solicita acesso ao arquivo              │
+│      → O sistema operacional verifica permissões         │
+│      → Obtém um descritor de arquivo (file handle)       │
+│                                                             │
+│   2. PROCESSAR (Read/Write)                                │
+│      → Ler dados do arquivo                               │
+│      → Escrever dados no arquivo                          │
+│      → Mover o ponteiro de posição (seek)                │
+│                                                             │
+│   3. FECHAR (Close)                                        │
+│      → Libera o descritor de arquivo                      │
+│      → Garante que todos os dados foram escritos         │
+│      → Finaliza a sessão de acesso                       │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+    </pre>
+</details>
+
+### 3.2 Modos de abertura de arquivo
+
+| Modo | Descrição | Ação |
+|---------|---------|---------|
+| **r** | Leitura (read) | Abre o arquivo para leitura. Erro se não existir. |
+| **w** | Escrita (write) | Abre para escrita. Cria se não existir. Sobrescreve se existir. |
+| **a** | Append (anexar) | Abre para escrita no final do arquivo. Cria se não existir. |
+| **r+** | Leitura e escrita | Abre para leitura e escrita. Erro se não existir. |
+| **w+** | Leitura e escrita | Abre para leitura e escrita. Cria/sobrescreve. |
+| **a+** | Leitura e append | Abre para leitura e escrita no final. Cria se não existir. |
+| **rb** | Leitura binária | Abre arquivo binário para leitura. |
+| **wb** | Escrita binária | Abre arquivo binário para escrita. |
+
+### 3.3 Exemplo em Python
+
+<details>
+<summary> EXEMPLOS DE MANIPULAÇÃO DE ARQUIVOS EM PYTHON</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+       // 1. ESCREVER EM UM ARQUIVO
+        print("\n📌 ESCREVENDO NO ARQUIVO")
+        with open("exemplo.txt", "w") as arquivo:
+            arquivo.write("Linha 1: Olá mundo!\n")
+            arquivo.write("Linha 2: Esta é a segunda linha.\n")
+            arquivo.write("Linha 3: Terceira linha do arquivo.\n")
+        print("Arquivo 'exemplo.txt' criado com 3 linhas.")
+
+        // 2. LER UM ARQUIVO INTEIRO
+        print("\n📌 LENDO O ARQUIVO INTEIRO")
+        with open("exemplo.txt", "r") as arquivo:
+            conteudo = arquivo.read()
+            print(f"Conteúdo:\n{conteudo}")
+
+        // 3. LER LINHA POR LINHA
+        print("\n📌 LENDO LINHA POR LINHA")
+        with open("exemplo.txt", "r") as arquivo:
+            for linha in arquivo:
+                print(f"Linha: {linha.strip()}")
+
+        // 4. ADICIONAR AO FINAL DO ARQUIVO (APPEND)
+        print("\n📌 ADICIONANDO AO FINAL DO ARQUIVO")
+        with open("exemplo.txt", "a") as arquivo:
+            arquivo.write("Linha 4: Esta linha foi adicionada no final.\n")
+        print("Linha adicionada ao final do arquivo.")
+
+        // 5. LER ARQUIVO BINÁRIO
+        print("\n📌 LENDO ARQUIVO BINÁRIO")
+        with open("imagem.jpg", "rb") as arquivo:
+            dados = arquivo.read(100)  # Lê os primeiros 100 bytes
+            print(f"Primeiros 100 bytes: {dados[:20]}...")
+    </pre>
+</details>
+
+### 3.4 Exemplo em C
+
+<details>
+<summary> Exemplo em Linguagem C</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+    #include <stdio.h>
+
+    int main() {
+        FILE *arquivo;
+        char buffer[100];
+
+        // 1. ESCREVER
+        arquivo = fopen("exemplo.txt", "w");
+        if (arquivo == NULL) {
+            printf("Erro ao abrir arquivo!\n");
+            return 1;
+        }
+        fprintf(arquivo, "Linha 1: Olá mundo!\n");
+        fprintf(arquivo, "Linha 2: Segunda linha.\n");
+        fclose(arquivo);
+
+        // 2. LER
+        arquivo = fopen("exemplo.txt", "r");
+        if (arquivo == NULL) {
+            printf("Erro ao abrir arquivo!\n");
+            return 1;
+        }
+        while (fgets(buffer, sizeof(buffer), arquivo) != NULL) {
+            printf("%s", buffer);
+        }
+        fclose(arquivo);
+
+        return 0;
+    }
+    </pre>
+</details>
+
+## 4. PONTEIRO DE POSIÇÃO (FILE POINTER)
+
+### 4.1 O que é o ponteiro de posição?
+
+Quando você abre um arquivo, o sistema operacional mantém um **ponteiro de posição** que indica onde a próxima operação de leitura/escrita vai ocorrer.
+
+<details>
+<summary> **Ponteiro de posição**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+┌─────────────────────────────────────────────────────────────┐
+│                                                             │
+│   Arquivo: "dados.txt"                                     │
+│                                                             │
+│   Posição:  0    1    2    3    4    5    6    7    8    9│
+│   Conteúdo:  H    e    l    l    o    ,       W    o    r│
+│                                                             │
+│   Ponteiro de posição → aponta para a próxima posição     │
+│                                                             │
+│   Depois de ler "Hello": posição = 5                      │
+│   Depois de escrever " World": posição = 11              │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+    </pre>
+</details>
+
+### 4.2 Movendo o ponteiro — Seek
+
+A função `seek` move o ponteiro de posição para uma localização específica.
+
+| Origem | Descrição |
+|---------|----------|
+| **SEEK_SET** | Início do arquivo |
+| **SEEK_CUR** | Posição atual |
+| **SEEK_END** | Final do arquivo |
+
+**Exemplo (Python):**
+
+<details>
+<summary> Exemplo (Python)</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+# Abrir arquivo
+with open("dados.bin", "rb") as f:
+    Ir para o byte 100
+    f.seek(100, 0)  # SEEK_SET = 0
+    
+    Ler 10 bytes a partir da posição 100
+    dados = f.read(10)
+    
+    Voltar 5 bytes da posição atual
+    f.seek(-5, 1)   # SEEK_CUR = 1
+    
+    Ir para o final do arquivo
+    f.seek(0, 2)    # SEEK_END = 2
+</pre>
+</details>
+
+## 5. ARQUIVOS DE TEXTO VS BINÁRIOS
+
+| Característica | Texto | Binário |
+|---------|---------|---------|
+| **Conteúdo** | Caracteres legíveis | Dados brutos (bytes) |
+| **Codificação** | ASCII, UTF-8, etc. | Nenhuma (bytes) |
+| **Quebra de linha** | \n (UNIX), \r\n (Windows) | Indeterminada |
+| **Leitura** | Linhas | Bytes |
+| **Uso** | Configurações, logs, código | Imagens, áudio, vídeo, executáveis |
+
+### 5.1 Exemplo: Arquivo de texto
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+Hello World!
+Esta é uma linha.
+12345
+</pre>
+
+**Em bytes (ASCII):**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+48 65 6C 6C 6F 20 57 6F 72 6C 64 21 0A  ...
+</pre>
+
+### 5.2 Exemplo: Arquivo binário (imagem)
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+FF D8 FF E0 00 10 4A 46 49 46 00 01 01 01 00 60 00 60 00 00
+...
+</pre>
+
+## 6. GERENCIAMENTO DE ARQUIVOS EM PROGRAMAÇÃO
+
+### 6.1 Boas práticas
+
+| Prática | Descrição |
+|---------|----------|
+| **Sempre fechar arquivos** | Libera recursos do sistema |
+| **Usar context managers** | `with open(...) as f:` em Python (fecha automaticamente) |
+| **Tratar exceções** | Arquivo pode não existir, sem permissão, etc. |
+| **Verificar retorno** | Em C, verifique se `fopen` retornou NULL |
+| **Flush** | Garantir que dados sejam escritos fisicamente |
+
+### 6.2 Exemplo com tratamento de exceções
+
+<details>
+<summary> Exemplo com tratamento de exceções</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+    try:
+    with open("dados.txt", "r") as arquivo:
+        conteudo = arquivo.read()
+        print(conteudo)
+    except FileNotFoundError:
+        print("Erro: Arquivo não encontrado!")
+    except PermissionError:
+        print("Erro: Sem permissão para ler o arquivo!")
+    except Exception as e:
+        print(f"Erro inesperado: {e}")
+</pre>
+</details>
+
+## 7. APLICAÇÕES REAIS
+
+| Aplicação | Como usa arquivos |
+|---------|----------|
+| **Editor de texto** | Lê e escreve documentos como arquivos de texto |
+| **Navegador** | Lê arquivos HTML, CSS, JavaScript |
+| **Banco de dados** | Armazena dados em arquivos de dados (binários) |
+| **Jogos** | Lê recursos (imagens, áudio, modelos 3D) |
+| **Sistema operacional** | Lê arquivos de configuração (logs, /etc, etc.) |
+| **Compilador** | Lê código-fonte, escreve executáveis |
+| **Aplicação web** | Lê arquivos de configuração, escreve logs |
+
+## 8. EXERCÍCIOS
+
+<details>
+<summary>📗 Exercício 1 — Modos de abertura (Fácil)</summary>
+
+**Enunciado:** Qual modo deve ser usado para abrir um arquivo para adicionar conteúdo ao final, sem apagar o existente?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Modo "a" (append)
+
+**Explicação:** O modo "a" abre o arquivo para escrita no final. Se o arquivo não existir, ele é criado. O conteúdo existente é preservado.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Texto vs Binário (Fácil)</summary>
+
+**Enunciado:** Qual a principal diferença entre um arquivo de texto e um arquivo binário?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Arquivos de texto contêm caracteres legíveis codificados (ASCII/UTF-8). Arquivos binários contêm dados brutos (bytes) que podem representar qualquer tipo de informação.
+
+**Explicação:** Arquivos de texto podem ser abertos em um editor de texto. Arquivos binários são interpretados por programas específicos (ex: imagens, áudio, executáveis).
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Ciclo de vida (Fácil)</summary>
+
+**Enunciado:** Quais são as três operações básicas no ciclo de vida de um arquivo?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Abrir → Processar (ler/escrever) → Fechar
+
+**Explicação:** O ciclo de vida de um arquivo começa com a abertura, seguida pelo processamento e termina com o fechamento.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Seek (Médio)</summary>
+
+**Enunciado:** Em Python, como você move o ponteiro de posição para o byte 50 do início do arquivo?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** `arquivo.seek(50, 0)` ou `arquivo.seek(50)`
+
+**Explicação:** `seek(offset, whence)` onde `whence=0` significa SEEK_SET (início do arquivo).
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — with open (Médio)</summary>
+
+**Enunciado:** Qual a vantagem de usar `with open(...) as arquivo` em Python?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** O arquivo é **fechado automaticamente** ao sair do bloco, mesmo se uma exceção ocorrer.
+
+**Explicação:** Isso evita vazamento de recursos e garante que os dados sejam salvos corretamente.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Leitura linha a linha (Médio)</summary>
+
+**Enunciado:** Escreva um trecho de código Python que leia um arquivo de texto linha por linha e imprima cada linha numerada.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+with open("arquivo.txt", "r") as f:
+    for num, linha in enumerate(f, 1):
+        print(f"{num}: {linha.strip()}")
+</pre>
+**Explicação:** O loop `for linha in f` lê o arquivo linha por linha. `enumerate` adiciona números, e `strip()` remove a quebra de linha.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — Escrever vários valores (Difícil)</summary>
+
+**Enunciado:** Escreva um trecho de código Python que crie um arquivo com 100 números aleatórios, um por linha.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+import random
+
+with open("numeros.txt", "w") as f:
+    for i in range(100):
+        num = random.randint(1, 1000)
+        f.write(f"{num}\n")
+print("Arquivo criado com 100 números.")
+</pre>
+**Explicação:** O loop gera 100 números aleatórios e escreve cada um em uma linha separada.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — Arquivo de configuração (Desafio)</summary>
+
+**Enunciado:** Crie um programa que leia um arquivo de configuração com formato `chave=valor` (ex: `host=localhost`, `porta=8080`) e imprima as configurações em um dicionário.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+def ler_config(arquivo):
+    config = {}
+    with open(arquivo, "r") as f:
+        for linha in f:
+            linha = linha.strip()
+            if linha and "=" in linha:
+                chave, valor = linha.split("=", 1)
+                config[chave.strip()] = valor.strip()
+    return config
+
+config = ler_config("config.txt")
+print(config)
+</pre>
+**Explicação:** O programa lê cada linha, remove espaços, separa por "=" e monta um dicionário.
+</details>
+</details>
+
+> Arquivos são a memória persistente dos programas. Abrir, ler, escrever e fechar — essas quatro operações fundamentais permitem que os programas interajam com o sistema de arquivos, armazenando dados que sobrevivem ao fim da execução. A escolha entre arquivos de texto e binários, e entre diferentes modos de abertura, depende do que você precisa fazer. A leitura e escrita de arquivos é uma habilidade essencial para qualquer programador. Seja para salvar configurações, processar dados de entrada, registrar logs ou persistir resultados, o domínio das operações com arquivos é fundamental para o desenvolvimento de software.

@@ -1,0 +1,423 @@
+# Registradores
+
+
+## 1. Introdução
+
+Na aula anterior, aprendemos sobre os **flip-flops** — circuitos que armazenam **1 bit** de informação. Vimos o flip-flop SR, o JK, o D e o T, e entendemos que o flip-flop D é o mais usado em sistemas computacionais por sua simplicidade e previsibilidade.
+
+Mas um único bit não é suficiente para um computador. Um processador moderno trabalha com **32 ou 64 bits por vez**. Uma instrução tem vários bits. Um endereço de memória tem vários bits. Um número inteiro tem vários bits.
+
+Como armazenar múltiplos bits?
+
+A resposta é simples: **agrupamos flip-flops D em paralelo**. Um grupo de flip-flops D que compartilham o mesmo clock é chamado de **Registrador**.
+
+Um registrador é:
+
+- Um conjunto de **n flip-flops D** (um para cada bit).
+- Todos os flip-flops compartilham o **mesmo clock**.
+- Cada flip-flop armazena um bit independente.
+- Juntos, armazenam uma **palavra** de n bits (8, 16, 32, 64 bits).
+
+Nesta aula, vamos aprender como os registradores são construídos, como funcionam, e como eles são usados na CPU para armazenar dados temporariamente durante a execução de programas.
+
+
+## 2. O Que é um Registrador?
+
+### 2.1 Definição
+
+Um **Registrador** é um conjunto de **n flip-flops D** que compartilham o mesmo clock e armazenam **n bits** de dados.
+
+### 2.2 Diagrama de um Registrador de 4 bits
+
+<details>
+<summary>🔧 Ver Diagrama do Registrador de 4 bits</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 500px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">REGISTRADOR DE 4 BITS</div>
+
+  <pre style="color: #93c5fd; font-size: 0.65rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+          Clock
+            │
+    ┌───────┼───────────────────────────────────────┐
+    │       │                                       │
+    │  ┌────┴────┐  ┌────┴────┐  ┌────┴────┐  ┌────┴────┐
+D₀ ─┤─┤ D  Q    │  │ D  Q    │  │ D  Q    │  │ D  Q    │
+    │ │    ──── │  │    ──── │  │    ──── │  │    ──── │
+    │ └─────────┘  └─────────┘  └─────────┘  └─────────┘
+    │    Q₀           Q₁           Q₂           Q₃
+    └──────────────────────────────────────────────────┘
+  </pre>
+
+</div>
+</details>
+
+### 2.3 Como funciona?
+
+1. **Entrada:** Cada flip-flop recebe um bit de dados (D₀, D₁, D₂, D₃).
+2. **Clock:** Todos os flip-flops recebem o mesmo sinal de clock.
+3. **Saída:** Na borda do clock, cada flip-flop armazena seu bit de entrada.
+4. **Memória:** Os bits permanecem armazenados até o próximo clock.
+
+### 2.4 Analogia
+
+Pense em um registrador como uma **fileira de pequenas caixas**:
+
+- Cada caixa pode armazenar um bit (0 ou 1).
+- Todas as caixas são abertas e fechadas ao mesmo tempo (clock).
+- Quando o clock dispara, cada caixa guarda o valor que está na sua entrada.
+- Os valores permanecem nas caixas até o próximo disparo do clock.
+
+
+## 3. Registrador de 4 Bits (Exemplo Completo)
+
+### 3.1 Diagrama
+
+<details>
+<summary>🔧 Ver Diagrama Detalhado do Registrador de 4 bits</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 450px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">REGISTRADOR 4 BITS — DETALHADO</div>
+
+  <pre style="color: #93c5fd; font-size: 0.6rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    Clock ──────────────────────────────────────────┐
+                                                    │
+    D₃ ────────┐                                    │
+               │    ┌─────┐                         │
+    D₂ ────────┼────┤     │                         │
+               │    │  D  │── Q₃                    │
+    D₁ ────────┼────┤     │                         │
+               │    └─────┘                         │
+    D₀ ────────┤                                    │
+               │    ┌─────┐                         │
+               └────┤     │                         │
+                    │  D  │── Q₂                    │
+                    │     │                         │
+                    └─────┘                         │
+                                                    │
+                    ┌─────┐                         │
+                    │     │                         │
+                    │  D  │── Q₁                    │
+                    │     │                         │
+                    └─────┘                         │
+                                                    │
+                    ┌─────┐                         │
+                    │     │                         │
+                    │  D  │── Q₀                    │
+                    │     │                         │
+                    └─────┘                         │
+  </pre>
+
+</div>
+</details>
+
+### 3.2 Exemplo prático
+
+**Carregar o valor `1010` (10 em decimal) no registrador:**
+
+| Clock | D₃ | D₂ | D₁ | D₀ | Q₃ | Q₂ | Q₁ | Q₀ |
+|-------|----|----|----|----|----|----|----|----|
+| Antes | - | - | - | - | 0 | 0 | 0 | 0 |
+| Borda ↑ | 1 | 0 | 1 | 0 | 1 | 0 | 1 | 0 |
+| Depois | - | - | - | - | 1 | 0 | 1 | 0 |
+
+**Resultado:** O registrador armazenou `1010` (10) ✅
+
+
+## 4. Registrador com Enable (Habilitação)
+
+### 4.1 Por que precisamos de enable?
+
+Nem sempre queremos que o registrador carregue novos dados a cada clock. Às vezes, queremos **manter o valor atual** mesmo com um clock.
+
+Para isso, adicionamos uma entrada **Enable (E)**:
+
+- **E = 1:** O registrador carrega novos dados no próximo clock.
+- **E = 0:** O registrador mantém o valor atual (ignora o clock).
+
+### 4.2 Diagrama do Registrador com Enable
+
+<details>
+<summary>🔧 Ver Diagrama do Registrador com Enable</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 450px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">REGISTRADOR COM ENABLE</div>
+
+  <pre style="color: #93c5fd; font-size: 0.6rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    Clock ──────────────────────────────────────────┐
+                                                    │
+    Enable ──────────────────────────────────────┐   │
+                                                │   │
+    D₃ ────────┐                                │   │
+               │    ┌─────┐                     │   │
+    D₂ ────────┼────┤     │                     │   │
+               │    │  D  │── Q₃                │   │
+    D₁ ────────┼────┤     │                     │   │
+               │    └─────┘                     │   │
+    D₀ ────────┤    ┌─────┐                     │   │
+               └────┤     │                     │   │
+                    │  D  │── Q₂                │   │
+                    │     │                     │   │
+                    └─────┘                     │   │
+                                                │   │
+                    ┌─────┐                     │   │
+                    │     │                     │   │
+                    │  D  │── Q₁                │   │
+                    │     │                     │   │
+                    └─────┘                     │   │
+                                                │   │
+                    ┌─────┐                     │   │
+                    │     │                     │   │
+                    │  D  │── Q₀                │   │
+                    │     │                     │   │
+                    └─────┘                     │   │
+  </pre>
+
+</div>
+</details>
+
+### 4.3 Exemplo prático com Enable
+
+**Cenário:** O registrador tem `Q = 0000`. Queremos carregar `1010`, mas apenas quando Enable = 1.
+
+| Clock | Enable | D₃D₂D₁D₀ | Q₃Q₂Q₁Q₀ |
+|-------|--------|----------|----------|
+| 1 ↑ | 0 | 1010 | 0000 (mantém) |
+| 2 ↑ | 1 | 1010 | 1010 (carrega) |
+| 3 ↑ | 0 | 1111 | 1010 (mantém) |
+
+
+## 5. Registrador de Deslocamento (Shift Register)
+
+### 5.1 O que é um registrador de deslocamento?
+
+Um **registrador de deslocamento** (Shift Register) é um tipo especial de registrador onde os bits podem ser **deslocados** para a esquerda ou direita a cada clock.
+
+### 5.2 Diagrama do Shift Register (deslocamento à direita)
+
+<details>
+<summary>🔧 Ver Diagrama do Shift Register</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 450px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">SHIFT REGISTER (DESLOCAMENTO À DIREITA)</div>
+
+  <pre style="color: #93c5fd; font-size: 0.6rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    Clock ──────────────────────────────────────────┐
+                                                    │
+    Entrada ────────────────────────────────────┐   │
+                                               │   │
+    D₃ ────────┐                               │   │
+               │    ┌─────┐                    │   │
+    Q₂ ────────┼────┤     │                    │   │
+               │    │  D  │── Q₃               │   │
+    Q₁ ────────┼────┤     │                    │   │
+               │    └─────┘                    │   │
+    Q₀ ────────┤    ┌─────┐                    │   │
+               └────┤     │                    │   │
+                    │  D  │── Q₂               │   │
+                    │     │                    │   │
+                    └─────┘                    │   │
+                                               │   │
+                    ┌─────┐                    │   │
+                    │     │                    │   │
+                    │  D  │── Q₁               │   │
+                    │     │                    │   │
+                    └─────┘                    │   │
+                                               │   │
+                    ┌─────┐                    │   │
+                    │     │                    │   │
+                    │  D  │── Q₀               │   │
+                    │     │                    │   │
+                    └─────┘                    │   │
+                                               │   │
+                                               └───┘
+  </pre>
+
+</div>
+</details>
+
+### 5.3 Exemplo prático: Deslocamento à direita
+
+**Cenário:** Q = `1010`, entrada = 0, deslocamento à direita.
+
+| Clock | Q₃Q₂Q₁Q₀ | Novo Q₃Q₂Q₁Q₀ |
+|-------|----------|---------------|
+| 0 | 1010 | - |
+| 1 ↑ | 1010 | 0101 |
+| 2 ↑ | 0101 | 0010 |
+| 3 ↑ | 0010 | 0001 |
+| 4 ↑ | 0001 | 0000 |
+
+
+## 6. Registradores na CPU
+
+### 6.1 Tipos de registradores na CPU
+
+| Tipo | Função | Exemplo |
+|------|--------|---------|
+| **Registrador de Instrução (IR)** | Armazena a instrução em execução | IR |
+| **Contador de Programa (PC)** | Armazena o endereço da próxima instrução | PC |
+| **Registrador de Endereço de Memória (MAR)** | Armazena endereço a ser lido/escrito | MAR |
+| **Registrador de Buffer de Memória (MBR)** | Armazena dados lidos/escritos da memória | MBR |
+| **Registradores de Uso Geral** | Armazenam operandos e resultados | R0, R1, R2, ... |
+
+### 6.2 Banco de Registradores
+
+Um **banco de registradores** é um conjunto de vários registradores que podem ser acessados seletivamente.
+
+<details>
+<summary>🔧 Ver Diagrama do Banco de Registradores</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 300px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">BANCO DE REGISTRADORES</div>
+
+  <pre style="color: #93c5fd; font-size: 0.7rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    ┌─────────────┐
+    │  R0  (32 bits) │
+    │  R1  (32 bits) │
+    │  R2  (32 bits) │
+    │  R3  (32 bits) │
+    │  ...           │
+    │  R31 (32 bits) │
+    └─────────────┘
+  </pre>
+
+</div>
+</details>
+
+Cada registrador tem um **endereço** (0 a 31). Uma instrução pode especificar qual registrador ler ou escrever.
+
+
+## 7. Exercícios
+
+<details>
+<summary>📗 Exercício 1 — Registrador de 4 bits (fácil)</summary>
+
+**Enunciado:** Um registrador de 4 bits com D₃D₂D₁D₀ = 1010. Qual será a saída Q₃Q₂Q₁Q₀ após a borda do clock?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Q₃Q₂Q₁Q₀ = 1010
+
+**Explicação:** Na borda do clock, cada flip-flop D armazena o valor de sua entrada.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Registrador com Enable (fácil)</summary>
+
+**Enunciado:** Um registrador com Enable tem Q = 0101, Enable = 0, D = 1111. O que acontece na próxima borda do clock?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Q = 0101 (mantém)
+
+**Explicação:** Enable = 0 → o registrador ignora a entrada e mantém o valor atual.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Registrador com Enable (médio)</summary>
+
+**Enunciado:** Um registrador com Enable tem Q = 0000, Enable = 1, D = 1100. Qual será Q após a borda do clock?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Q = 1100
+
+**Explicação:** Enable = 1 → o registrador carrega o valor de D.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Shift Register (médio)</summary>
+
+**Enunciado:** Um shift register (deslocamento à direita) tem Q = 1010 e entrada = 0. Qual será Q após 1 clock?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Q = 0101
+
+**Explicação:** Os bits deslocam uma posição para a direita. Q₃ → Q₂ → Q₁ → Q₀. O bit mais à esquerda recebe a entrada (0).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Shift Register (médio)</summary>
+
+**Enunciado:** Um shift register (deslocamento à direita) tem Q = 1111 e entrada = 0. Qual será Q após 4 clocks?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Q = 0000
+
+**Explicação:** A cada clock, um 0 entra pela esquerda. Após 4 clocks, todos os bits são 0.
+
+| Clock | Q |
+|-------|---|
+| 0 | 1111 |
+| 1 | 0111 |
+| 2 | 0011 |
+| 3 | 0001 |
+| 4 | 0000 |
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Quantos flip-flops? (conceitual)</summary>
+
+**Enunciado:** Quantos flip-flops são necessários para construir um registrador de 16 bits?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** 16 flip-flops
+
+**Explicação:** Cada bit requer um flip-flop. 16 bits → 16 flip-flops.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — Registrador na CPU (conceitual)</summary>
+
+**Enunciado:** Qual é a função do Contador de Programa (PC)?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** O Contador de Programa (PC) armazena o endereço da próxima instrução a ser executada. Após cada instrução, o PC é incrementado (ou atualizado com um endereço de salto).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — Banco de Registradores (desafio)</summary>
+
+**Enunciado:** Explique a diferença entre um registrador individual e um banco de registradores.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Um registrador individual armazena um único valor (ex: 32 bits). Um banco de registradores é um conjunto de vários registradores (ex: 32 registradores de 32 bits), cada um com um endereço. O banco permite que a CPU acesse diferentes registradores seletivamente, usando o endereço para escolher qual ler ou escrever.
+
+</details>
+</details>
+
+
+> **"Um registrador é um agrupamento de flip-flops D que compartilham o mesmo clock, permitindo armazenar múltiplos bits em paralelo. Registradores de 4, 8, 16, 32 e 64 bits são a base do armazenamento temporário na CPU. O registrador com enable permite controlar quando novos dados são carregados. O shift register desloca os bits a cada clock, sendo usado em conversores serial-paralelo e em operações de deslocamento. Os registradores na CPU incluem o IR (Instrução), PC (Program Counter), MAR e MBR, além dos registradores de uso geral. Sem registradores, não haveria lugar para armazenar dados durante a execução de programas."**
+

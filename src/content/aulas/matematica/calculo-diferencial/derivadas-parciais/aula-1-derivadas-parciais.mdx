@@ -1,0 +1,333 @@
+# DERIVADAS PARCIAIS
+
+## 1. Definição
+
+### 1.1 O que é uma Derivada Parcial?
+
+Uma **derivada parcial** é a derivada de uma função de **várias variáveis** em relação a **uma variável**, mantendo as outras variáveis **constantes**.
+
+Para uma função $f(x, y)$, a derivada parcial em relação a $x$ é:
+
+$$
+\frac{\partial f}{\partial x} = \lim_{h \to 0} \frac{f(x + h, y) - f(x, y)}{h}
+$$
+
+E em relação a $y$:
+
+$$
+\frac{\partial f}{\partial y} = \lim_{h \to 0} \frac{f(x, y + h) - f(x, y)}{h}
+$$
+
+**Notação:**
+- $\frac{\partial f}{\partial x}$ ou $f_x$
+- $\frac{\partial f}{\partial y}$ ou $f_y$
+
+### 1.2 Interpretação Geométrica
+
+- $\frac{\partial f}{\partial x}$: inclinação da reta tangente na direção do eixo $x$.
+- $\frac{\partial f}{\partial y}$: inclinação da reta tangente na direção do eixo $y$.
+
+## 2. Cálculo de Derivadas Parciais
+
+### 2.1 Regra Prática
+
+Para calcular $\frac{\partial f}{\partial x}$:
+1. Trate todas as outras variáveis como **constantes**.
+2. Derive em relação a $x$ usando as regras normais (potência, produto, etc.).
+
+### 2.2 Exemplo 1: Função Polinomial
+
+$$
+f(x, y) = 3x^2 y + 2xy^3 - 5x + 4y
+$$
+
+**Derivada parcial em relação a $x$:**
+
+Trate $y$ como constante:
+$$
+\frac{\partial f}{\partial x} = 3 \cdot 2x \cdot y + 2 \cdot 1 \cdot y^3 - 5 + 0 = 6xy + 2y^3 - 5
+$$
+
+**Derivada parcial em relação a $y$:**
+
+Trate $x$ como constante:
+$$
+\frac{\partial f}{\partial y} = 3x^2 \cdot 1 + 2x \cdot 3y^2 + 0 + 4 = 3x^2 + 6xy^2 + 4
+$$
+
+### 2.3 Exemplo 2: Função Exponencial e Logarítmica
+
+$$
+f(x, y) = e^{xy} + \ln(x^2 + y)
+$$
+
+**Derivada parcial em relação a $x$:**
+
+Trate $y$ como constante:
+$$
+\frac{\partial f}{\partial x} = e^{xy} \cdot y + \frac{1}{x^2 + y} \cdot 2x = y e^{xy} + \frac{2x}{x^2 + y}
+$$
+
+**Derivada parcial em relação a $y$:**
+
+Trate $x$ como constante:
+$$
+\frac{\partial f}{\partial y} = e^{xy} \cdot x + \frac{1}{x^2 + y} \cdot 1 = x e^{xy} + \frac{1}{x^2 + y}
+$$
+
+### 2.4 Exemplo 3: Função Trigonométrica
+
+$$
+f(x, y) = \sin(xy) + \cos(x + y^2)
+$$
+
+**Derivada parcial em relação a $x$:**
+
+Trate $y$ como constante:
+$$
+\frac{\partial f}{\partial x} = \cos(xy) \cdot y - \sin(x + y^2) \cdot 1 = y\cos(xy) - \sin(x + y^2)
+$$
+
+**Derivada parcial em relação a $y$:**
+
+Trate $x$ como constante:
+$$
+\frac{\partial f}{\partial y} = \cos(xy) \cdot x - \sin(x + y^2) \cdot 2y = x\cos(xy) - 2y\sin(x + y^2)
+$$
+
+## 3. Derivadas de Ordem Superior
+
+### 3.1 Segundas Derivadas Parciais
+
+$$
+\frac{\partial^2 f}{\partial x^2} = f_{xx}, \quad \frac{\partial^2 f}{\partial y^2} = f_{yy}, \quad \frac{\partial^2 f}{\partial x \partial y} = f_{xy}
+$$
+
+**Teorema de Clairaut:** Se as derivadas mistas são contínuas, então:
+$$
+\frac{\partial^2 f}{\partial x \partial y} = \frac{\partial^2 f}{\partial y \partial x}
+$$
+
+### 3.2 Exemplo
+
+Para $f(x, y) = 3x^2 y + 2xy^3$:
+
+**Primeiras derivadas:**
+$$
+f_x = 6xy + 2y^3, \quad f_y = 3x^2 + 6xy^2
+$$
+
+**Segundas derivadas:**
+$$
+f_{xx} = 6y, \quad f_{yy} = 12xy, \quad f_{xy} = 6x + 6y^2, \quad f_{yx} = 6x + 6y^2
+$$
+
+**Verificação:** $f_{xy} = f_{yx}$ ✓ (Clairaut)
+
+## 4. Exemplos Lúdicos Aprimorados
+
+### 🍔 EXEMPLO 1 – A LANCHONETE (LUCRO BIDIMENSIONAL)
+
+A lanchonete tem lucro em função do número de hambúrgueres $x$ e sanduíches $y$:
+
+$$
+L(x, y) = -2x^2 - 3y^2 + 12x + 18y + 10
+$$
+
+**Derivadas parciais:**
+$$
+L_x = -4x + 12, \quad L_y = -6y + 18
+$$
+
+**Interpretação:** A derivada parcial $L_x$ mostra como o lucro varia quando aumentamos $x$ (mantendo $y$ fixo).
+
+**Ponto crítico:** $L_x = 0 \Rightarrow x = 3$, $L_y = 0 \Rightarrow y = 3$.
+
+**Lucro máximo:** $L(3, 3) = -18 - 27 + 36 + 54 + 10 = 55$
+
+### 🧃 EXEMPLO 2 – A CANTINA (PERDA BIDIMENSIONAL)
+
+A cantina tem uma função de perda que depende de dois parâmetros:
+
+$$
+L(w_1, w_2) = (w_1 - 2)^2 + (w_2 - 3)^2
+$$
+
+**Derivadas parciais:**
+$$
+L_{w_1} = 2(w_1 - 2), \quad L_{w_2} = 2(w_2 - 3)
+$$
+
+**Interpretação:** As derivadas parciais indicam como a perda muda quando ajustamos cada parâmetro.
+
+**Gradiente:**
+$$
+\nabla L = \begin{bmatrix} 2(w_1 - 2) \\ 2(w_2 - 3) \end{bmatrix}
+$$
+
+## 5. Aplicação na Tese: Gradiente e Otimização
+
+### 5.1 Gradiente de uma Função
+
+O **gradiente** de $f(x_1, x_2, \ldots, x_n)$ é o vetor de derivadas parciais:
+
+$$
+\nabla f = \begin{bmatrix} \frac{\partial f}{\partial x_1} \\ \frac{\partial f}{\partial x_2} \\ \vdots \\ \frac{\partial f}{\partial x_n} \end{bmatrix}
+$$
+
+**Interpretação:** O gradiente aponta na direção de **maior crescimento** da função.
+
+### 5.2 Gradiente Descendente
+
+Em Machine Learning, minimizamos a função de perda $L(\vec{w})$ usando:
+$$
+\vec{w}_{t+1} = \vec{w}_t - \eta \nabla L(\vec{w}_t)
+$$
+
+**Interpretação:** Andamos na direção oposta ao gradiente (direção de maior decrescimento).
+
+## 6. Exercícios Propostos (Manuais)
+
+<details>
+<summary>📗 Exercício 1 (Derivadas Parciais Básicas)</summary>
+
+**Enunciado:** Calcule $f_x$ e $f_y$ para:
+
+a) $f(x, y) = x^3 y^2 + 2xy - 5$
+
+b) $f(x, y) = \frac{x}{x^2 + y^2}$
+
+c) $f(x, y) = e^{2x} \ln(y)$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $f_x = 3x^2 y^2 + 2y$, $f_y = 2x^3 y + 2x$
+
+b) $f_x = \frac{y^2 - x^2}{(x^2 + y^2)^2}$, $f_y = -\frac{2xy}{(x^2 + y^2)^2}$
+
+c) $f_x = 2e^{2x}\ln(y)$, $f_y = \frac{e^{2x}}{y}$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 (Derivadas Mistas)</summary>
+
+**Enunciado:** Para $f(x, y) = x^2 y^3 + x^3 y^2$:
+
+a) Calcule $f_x$, $f_y$.  
+b) Calcule $f_{xy}$ e $f_{yx}$.  
+c) Verifique o Teorema de Clairaut.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $f_x = 2xy^3 + 3x^2 y^2$, $f_y = 3x^2 y^2 + 2x^3 y$
+
+b) $f_{xy} = 6xy^2 + 6x^2 y$, $f_{yx} = 6xy^2 + 6x^2 y$
+
+c) $f_{xy} = f_{yx}$ ✓
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 (Aplicação – Perda)</summary>
+
+**Enunciado:** Uma função de perda é:
+$$
+L(w_1, w_2) = (w_1 - 2)^2 + (w_2 + 1)^2
+$$
+
+a) Calcule as derivadas parciais.
+
+b) Onde a perda é mínima?
+
+c) Qual é o gradiente no ponto $(1, 0)$?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $L_{w_1} = 2(w_1 - 2)$, $L_{w_2} = 2(w_2 + 1)$
+
+b) $w_1 = 2, w_2 = -1$
+
+c) $\nabla L(1, 0) = \begin{bmatrix} -2 \\ 2 \end{bmatrix}$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 (Aplicação – Gradiente Descendente)</summary>
+
+**Enunciado:** A função de perda é $L(w) = (w - 3)^2$.
+
+a) Calcule $L'(w)$.
+
+b) Se $w_0 = 0$ e $\eta = 0.1$, calcule $w_1, w_2, w_3$.
+
+c) O que acontece com $w$ ao longo do tempo?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $L'(w) = 2(w - 3)$
+
+b) $w_{t+1} = w_t - 0.1 \cdot 2(w_t - 3) = w_t - 0.2(w_t - 3)$
+
+$w_0 = 0$
+
+$w_1 = 0 - 0.2(0 - 3) = 0.6$
+
+$w_2 = 0.6 - 0.2(0.6 - 3) = 0.6 + 0.48 = 1.08$
+
+$w_3 = 1.08 - 0.2(1.08 - 3) = 1.08 + 0.384 = 1.464$
+
+c) $w$ converge para 3 (mínimo da perda).
+
+</details>
+</details>
+
+## 7. 💻 EXERCÍCIO COMPUTACIONAL
+
+<details>
+<summary>🐍 Ver código (Python/SymPy)</summary>
+
+```python
+import sympy as sp
+
+x, y = sp.symbols('x y')
+
+# Função
+f = 3*x**2 * y + 2*x * y**3 - 5*x + 4*y
+
+# Derivadas parciais
+fx = sp.diff(f, x)
+fy = sp.diff(f, y)
+print(f"∂f/∂x = {fx}")
+print(f"∂f/∂y = {fy}")
+
+# Derivadas mistas
+fxy = sp.diff(fx, y)
+fyx = sp.diff(fy, x)
+print(f"∂²f/∂x∂y = {fxy}")
+print(f"∂²f/∂y∂x = {fyx}")
+print(f"fxy == fyx: {fxy == fyx}")
+
+# Gradiente
+gradiente = sp.Matrix([fx, fy])
+print(f"∇f = {gradiente}")
+```
+
+</details>
+
+> *Derivadas parciais são a base do cálculo multivariado. Elas permitem calcular o **gradiente**, que é usado no **gradiente descendente** para otimizar funções de perda em Machine Learning. Dominar derivadas parciais é essencial para entender como modelos são treinados.*

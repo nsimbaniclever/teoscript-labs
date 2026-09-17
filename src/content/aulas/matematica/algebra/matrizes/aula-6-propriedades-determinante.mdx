@@ -1,0 +1,444 @@
+# DETERMINANTE (II)
+
+## 1. Propriedades Fundamentais do Determinante
+
+### 1.1 Propriedade 1: 
+
+$\det(AB) = \det(A) \cdot \det(B)$
+
+O determinante do **produto** de duas matrizes é o **produto dos determinantes**.
+
+**Exemplo:**
+$$
+A = \begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix}, \quad \det(A) = -2
+$$
+$$
+B = \begin{bmatrix} 2 & 0 \\ 1 & 3 \end{bmatrix}, \quad \det(B) = 2 \cdot 3 - 0 \cdot 1 = 6
+$$
+
+$\det(AB) = \det(A) \cdot \det(B) = -2 \cdot 6 = -12$
+
+**Verificação:**
+$$
+AB = \begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix} \begin{bmatrix} 2 & 0 \\ 1 & 3 \end{bmatrix} = \begin{bmatrix}
+1\cdot2 + 2\cdot1 & 1\cdot0 + 2\cdot3 \\
+3\cdot2 + 4\cdot1 & 3\cdot0 + 4\cdot3
+\end{bmatrix} = \begin{bmatrix}
+4 & 6 \\
+10 & 12
+\end{bmatrix}
+$$
+$$
+\det(AB) = 4 \cdot 12 - 6 \cdot 10 = 48 - 60 = -12 ✓
+$$
+
+### 1.2 Propriedade 2: 
+
+$\det(A^T) = \det(A)$
+
+O determinante da **transposta** é igual ao determinante da matriz original.
+
+**Exemplo:**
+$$
+A = \begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix}, \quad \det(A) = -2
+$$
+$$
+A^T = \begin{bmatrix} 1 & 3 \\ 2 & 4 \end{bmatrix}, \quad \det(A^T) = 1 \cdot 4 - 3 \cdot 2 = 4 - 6 = -2 ✓
+$$
+
+### 1.3 Propriedade 3: 
+
+$\det(cA) = c^n \cdot \det(A)$
+
+Multiplicar **todos os elementos** de uma matriz $n \times n$ por um escalar $c$ multiplica o determinante por $c^n$.
+
+**Exemplo:**
+$$
+A = \begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix}, \quad \det(A) = -2, \quad c = 2, \quad n = 2
+$$
+$$
+2A = \begin{bmatrix} 2 & 4 \\ 6 & 8 \end{bmatrix}, \quad \det(2A) = 2 \cdot 8 - 4 \cdot 6 = 16 - 24 = -8
+$$
+$$
+c^n \cdot \det(A) = 2^2 \cdot (-2) = 4 \cdot (-2) = -8 ✓
+$$
+
+**Cuidado:** $\det(cA) \neq c \cdot \det(A)$ (a menos que $n = 1$).
+
+### 1.4 Propriedade 4: 
+
+$\det(A^{-1}) = \frac{1}{\det(A)}$ (se $A$ invertível)
+
+O determinante da **inversa** é o inverso do determinante.
+
+**Exemplo:**
+$$
+A = \begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix}, \quad \det(A) = -2
+$$
+$$
+A^{-1} = \frac{1}{-2} \begin{bmatrix} 4 & -2 \\ -3 & 1 \end{bmatrix} = \begin{bmatrix} -2 & 1 \\ 1.5 & -0.5 \end{bmatrix}
+$$
+$$
+\det(A^{-1}) = (-2) \cdot (-0.5) - 1 \cdot 1.5 = 1 - 1.5 = -0.5 = \frac{1}{-2} ✓
+$$
+
+### 1.5 Propriedade 5: Determinante de Matriz Diagonal/Triangular
+
+Para uma matriz **diagonal** ou **triangular** (superior ou inferior), o determinante é o **produto dos elementos da diagonal principal**.
+
+**Exemplo (diagonal):**
+$$
+A = \begin{bmatrix} 2 & 0 & 0 \\ 0 & 3 & 0 \\ 0 & 0 & 5 \end{bmatrix}, \quad \det(A) = 2 \cdot 3 \cdot 5 = 30
+$$
+
+**Exemplo (triangular superior):**
+$$
+A = \begin{bmatrix} 1 & 2 & 3 \\ 0 & 4 & 5 \\ 0 & 0 & 6 \end{bmatrix}, \quad \det(A) = 1 \cdot 4 \cdot 6 = 24
+$$
+
+### 1.6 Propriedade 6: Determinante com Linhas/Colunas Proporcionais
+
+Se duas linhas (ou duas colunas) são **proporcionais** (ou iguais), o determinante é **zero**.
+
+**Exemplo:**
+$$
+A = \begin{bmatrix} 1 & 2 & 3 \\ 2 & 4 & 6 \\ 3 & 6 & 9 \end{bmatrix}
+$$
+A linha 2 é $2 \times$ linha 1, e linha 3 é $3 \times$ linha 1.
+$$
+\det(A) = 0
+$$
+
+### 1.7 Propriedade 7: Efeito de Troca de Linhas/Colunas
+
+- Trocar **duas linhas** (ou duas colunas) **muda o sinal** do determinante.
+- Se uma linha (ou coluna) é **multiplicada por um escalar**, o determinante é multiplicado por esse escalar.
+- Adicionar um múltiplo de uma linha a outra **não altera** o determinante.
+
+## 2. Exemplos Lúdicos Aprimorados
+
+### 🍔 EXEMPLO 1 – A LANCHONETE (PRODUTO DE DETERMINANTES)
+
+A lanchonete tem duas matrizes de pedidos:
+
+**Matriz A:**
+$$
+A = \begin{bmatrix} 1 & 1 & 0 \\ 0 & 0 & 1 \\ 1 & 1 & 1 \end{bmatrix}, \quad \det(A) = 0
+$$
+
+**Matriz B:**
+$$
+B = \begin{bmatrix} 2 & 0 & 1 \\ 1 & 1 & 0 \\ 0 & 1 & 2 \end{bmatrix}, \quad \det(B) = ?
+$$
+
+**Cálculo de $\det(B)$:**
+
+Repetir colunas:
+$$
+\begin{array}{ccc|cc}
+2 & 0 & 1 & 2 & 0 \\
+1 & 1 & 0 & 1 & 1 \\
+0 & 1 & 2 & 0 & 1
+\end{array}
+$$
+
+Diagonais principais:
+- $2 \cdot 1 \cdot 2 = 4$
+- $0 \cdot 0 \cdot 0 = 0$
+- $1 \cdot 1 \cdot 1 = 1$
+Soma: $5$
+
+Diagonais secundárias:
+- $1 \cdot 1 \cdot 0 = 0$
+- $0 \cdot 0 \cdot 2 = 0$
+- $2 \cdot 1 \cdot 1 = 2$
+Soma: $2$
+
+$$
+\det(B) = 5 - 2 = 3
+$$
+
+**Agora:** $\det(AB) = \det(A) \cdot \det(B) = 0 \cdot 3 = 0$
+
+**Interpretação:** $AB$ é singular (não invertível). Como $A$ é singular, qualquer produto com $A$ também será singular.
+
+### 🧃 EXEMPLO 2 – A CANTINA (TRANSPOSTA E DETERMINANTE)
+
+A cantina tem a matriz nutricional:
+$$
+A = \begin{bmatrix}
+10 & 0 & 50 \\
+5 & 20 & 0 \\
+30 & 0 & 0
+\end{bmatrix}, \quad \det(A) = -30.000
+$$
+
+**Transposta:**
+$$
+A^T = \begin{bmatrix}
+10 & 5 & 30 \\
+0 & 20 & 0 \\
+50 & 0 & 0
+\end{bmatrix}
+$$
+
+**Pela propriedade:** $\det(A^T) = \det(A) = -30.000$
+
+**Verificação:** (Você pode calcular pela Regra de Sarrus para confirmar.)
+
+### 📚 EXEMPLO 3 – A BIBLIOTECA (DETERMINANTE DE MATRIZ TRIANGULAR)
+
+A biblioteca tem uma matriz de conteúdo que é triangular superior:
+$$
+A = \begin{bmatrix}
+10 & 5 & 2 \\
+0 & 8 & 3 \\
+0 & 0 & 6
+\end{bmatrix}
+$$
+
+**Pela propriedade:** $\det(A) = 10 \cdot 8 \cdot 6 = 480$
+
+**Interpretação:** O volume do paralelepípedo formado pelos vetores coluna (livros) é 480.
+
+## 3. Resumo das Propriedades
+
+| Propriedade | Fórmula | Exemplo |
+|-------------|---------|---------|
+| **Produto** | $\det(AB) = \det(A) \cdot \det(B)$ | $\det(A) = -2, \det(B) = 6 \Rightarrow \det(AB) = -12$ |
+| **Transposta** | $\det(A^T) = \det(A)$ | $\det(A) = -2 \Rightarrow \det(A^T) = -2$ |
+| **Escalar** | $\det(cA) = c^n \det(A)$ | $\det(2A) = 4 \cdot (-2) = -8$ |
+| **Inversa** | $\det(A^{-1}) = 1/\det(A)$ | $\det(A^{-1}) = -0.5$ |
+| **Diagonal/Triangular** | Produto dos elementos da diagonal | $\det(\text{diag}(2,3,5)) = 30$ |
+| **Linhas/Colunas Proporcionais** | $\det(A) = 0$ | Matriz com linhas repetidas → det = 0 |
+| **Troca de Linhas** | Muda o sinal | Trocar duas linhas → det vira -det |
+| **Adição de Múltiplo** | Não altera o determinante | Linha ← Linha + k·Outra → det inalterado |
+
+## 4. Quando Fazer um Exercício Computacional?
+
+**Aqui faz sentido!** Porque:
+- As propriedades são mais fáceis de verificar computacionalmente.
+- Ajuda a entender a relação entre $\det(AB)$, $\det(A^T)$, e $\det(cA)$.
+- É útil para validar contas manuais.
+
+## 5. Exercícios Propostos (Manuais)
+
+<details>
+<summary>📗 Exercício 1 (Produto de Determinantes)</summary>
+
+**Enunciado:** Dadas:
+$$
+A = \begin{bmatrix} 2 & 1 \\ 3 & 4 \end{bmatrix}, \quad
+B = \begin{bmatrix} 1 & 0 \\ 2 & 3 \end{bmatrix}
+$$
+
+a) Calcule $\det(A)$ e $\det(B)$.  
+b) Calcule $AB$.  
+c) Calcule $\det(AB)$.  
+d) Verifique que $\det(AB) = \det(A) \cdot \det(B)$.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\det(A) = 2 \cdot 4 - 1 \cdot 3 = 8 - 3 = 5$  
+$\det(B) = 1 \cdot 3 - 0 \cdot 2 = 3$
+
+b) $AB = \begin{bmatrix} 2\cdot1 + 1\cdot2 & 2\cdot0 + 1\cdot3 \\ 3\cdot1 + 4\cdot2 & 3\cdot0 + 4\cdot3 \end{bmatrix} = \begin{bmatrix} 4 & 3 \\ 11 & 12 \end{bmatrix}$
+
+c) $\det(AB) = 4 \cdot 12 - 3 \cdot 11 = 48 - 33 = 15$
+
+d) $\det(A) \cdot \det(B) = 5 \cdot 3 = 15$ ✓
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 (Transposta e Determinante)</summary>
+
+**Enunciado:** Dada:
+$$
+A = \begin{bmatrix} 1 & 2 & 3 \\ 0 & 4 & 5 \\ 0 & 0 & 6 \end{bmatrix}
+$$
+
+a) Calcule $\det(A)$.  
+b) Calcule $A^T$.  
+c) Calcule $\det(A^T)$.  
+d) Verifique que $\det(A^T) = \det(A)$.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) Matriz triangular superior → $\det(A) = 1 \cdot 4 \cdot 6 = 24$
+
+b) $A^T = \begin{bmatrix} 1 & 0 & 0 \\ 2 & 4 & 0 \\ 3 & 5 & 6 \end{bmatrix}$ (triangular inferior)
+
+c) $\det(A^T) = 1 \cdot 4 \cdot 6 = 24$
+
+d) $\det(A^T) = \det(A) = 24$ ✓
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 (Escalar e Determinante)</summary>
+
+**Enunciado:** Dada:
+$$
+A = \begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix}, \quad \det(A) = -2
+$$
+
+a) Calcule $\det(3A)$.  
+b) Verifique a propriedade $\det(3A) = 3^2 \cdot \det(A)$.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $3A = \begin{bmatrix} 3 & 6 \\ 9 & 12 \end{bmatrix}$  
+$\det(3A) = 3 \cdot 12 - 6 \cdot 9 = 36 - 54 = -18$
+
+b) $3^2 \cdot \det(A) = 9 \cdot (-2) = -18$ ✓
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 (Matriz Diagonal)</summary>
+
+**Enunciado:** Dada:
+$$
+A = \begin{bmatrix} 2 & 0 & 0 \\ 0 & -1 & 0 \\ 0 & 0 & 4 \end{bmatrix}
+$$
+
+a) Calcule $\det(A)$.  
+b) Qual é a propriedade utilizada?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) Matriz diagonal → $\det(A) = 2 \cdot (-1) \cdot 4 = -8$
+
+b) Propriedade: determinante de matriz diagonal é o produto dos elementos da diagonal.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 (Linhas Proporcionais)</summary>
+
+**Enunciado:** Dada:
+$$
+A = \begin{bmatrix}
+1 & 2 & 3 \\
+2 & 4 & 6 \\
+3 & 6 & 9
+\end{bmatrix}
+$$
+
+a) Calcule $\det(A)$.  
+b) Por que o determinante é zero?  
+c) O que isso diz sobre a matriz?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\det(A) = 0$
+
+b) As linhas são proporcionais: linha 2 = $2 \times$ linha 1, linha 3 = $3 \times$ linha 1.
+
+c) A matriz é singular (não invertível).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 (Aplicação – Propriedades)</summary>
+
+**Enunciado:** Se $A$ é uma matriz $3 \times 3$ com $\det(A) = 5$, calcule:
+
+a) $\det(2A)$  
+b) $\det(A^T)$  
+c) $\det(A^{-1})$ (se existir)  
+d) $\det(A^2)$ (onde $A^2 = A \cdot A$)
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\det(2A) = 2^3 \cdot 5 = 8 \cdot 5 = 40$
+
+b) $\det(A^T) = \det(A) = 5$
+
+c) $\det(A^{-1}) = \frac{1}{\det(A)} = \frac{1}{5}$
+
+d) $\det(A^2) = \det(A) \cdot \det(A) = 5 \cdot 5 = 25$
+
+</details>
+</details>
+
+## 6. EXERCÍCIO COMPUTACIONAL
+
+<details>
+<summary>🐍 Ver código (Python/NumPy)</summary>
+
+```python
+import numpy as np
+
+A = np.array([[1, 2], [3, 4]])
+B = np.array([[2, 0], [1, 3]])
+
+print("det(A):", np.linalg.det(A))
+print("det(B):", np.linalg.det(B))
+print("det(A @ B):", np.linalg.det(A @ B))
+print("det(A) * det(B):", np.linalg.det(A) * np.linalg.det(B))
+
+print("det(A^T):", np.linalg.det(A.T))
+print("det(2*A):", np.linalg.det(2 * A))
+
+# Matriz diagonal
+D = np.diag([2, 3, 5])
+print("det(D):", np.linalg.det(D))
+```
+
+</details>
+
+<details>
+<summary>📝 Ver código (R)</summary>
+
+```r
+A <- matrix(c(1, 2, 3, 4), nrow=2)
+B <- matrix(c(2, 0, 1, 3), nrow=2)
+
+print(det(A))
+print(det(B))
+print(det(A %*% B))
+print(det(A) * det(B))
+
+print(det(t(A)))
+print(det(2 * A))
+
+D <- diag(c(2, 3, 5))
+print(det(D))
+```
+
+</details>
+
+<details>
+<summary>📊 Ver instruções (Excel)</summary>
+
+- Use `MATRIZ.DETERM` para calcular determinantes.
+- Para verificar $\det(AB)$, calcule o produto com `MATRIZ.MULT` e depois o determinante.
+
+</details>
+
+> *As propriedades do determinante são ferramentas poderosas que simplificam cálculos e revelam relações profundas entre matrizes. Elas são essenciais para: verificar invertibilidade, resolver sistemas lineares, entender autovalores e compreender transformações lineares (escala, rotação, reflexão).*

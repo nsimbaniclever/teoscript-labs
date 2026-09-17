@@ -1,0 +1,369 @@
+# Testes para Variâncias
+
+## O que vamos aprender nesta aula?
+
+Até agora, testamos hipóteses sobre médias e proporções. Agora vamos aprender a testar hipóteses sobre **variâncias** — ou seja, sobre a dispersão dos dados. Isso é importante em diversas situações:
+
+- Verificar se a variabilidade de um processo de produção está dentro dos limites.
+- Comparar a precisão de dois instrumentos de medição.
+- Testar se a variância de uma população é igual a um valor especificado.
+- Verificar o pressuposto de homogeneidade de variâncias (necessário para ANOVA e outros testes).
+
+Os testes que vamos estudar são:
+
+1. **Teste Qui-Quadrado para variância** (uma amostra)
+2. **Teste F para comparação de variâncias** (duas amostras)
+
+## Teste Qui-Quadrado para Variância (Uma Amostra)
+
+Para testar hipóteses sobre a variância populacional $\sigma^2$ de uma população Normal, usamos a distribuição Qui-Quadrado.
+
+**Hipóteses:**
+- Bicaudal: $H_0: \sigma^2 = \sigma_0^2$ vs $H_1: \sigma^2 \ne \sigma_0^2$
+- Unilateral superior: $H_0: \sigma^2 = \sigma_0^2$ vs $H_1: \sigma^2 > \sigma_0^2$
+- Unilateral inferior: $H_0: \sigma^2 = \sigma_0^2$ vs $H_1: \sigma^2 < \sigma_0^2$
+
+**Estatística de teste:**
+
+>> $$\chi^2 = \frac{(n-1)S^2}{\sigma_0^2}$$
+
+**Graus de liberdade:** $\nu = n - 1$
+
+**Regras de decisão:**
+
+| Tipo de teste | $H_1$ | Rejeitar $H_0$ se |
+| --- | --- | --- |
+| Bicaudal | $\sigma^2 \ne \sigma_0^2$ | $\chi^2 < \chi^2_{1-\alpha/2, \nu}$ ou $\chi^2 > \chi^2_{\alpha/2, \nu}$ |
+| Unilateral superior | $\sigma^2 > \sigma_0^2$ | $\chi^2 > \chi^2_{\alpha, \nu}$ |
+| Unilateral inferior | $\sigma^2 < \sigma_0^2$ | $\chi^2 < \chi^2_{1-\alpha, \nu}$ |
+
+**Exemplo 1: Teste Qui-Quadrado para variância (bicaudal)**
+
+Uma máquina deve produzir peças com variância de 0,01 mm². Uma amostra de 20 peças tem variância 0,016 mm². Teste se a variância é diferente ($\alpha = 0,05$).
+
+**Resolução:**
+
+1. $H_0: \sigma^2 = 0,01$; $H_1: \sigma^2 \ne 0,01$
+
+2. $\chi^2 = \frac{(20-1) \cdot 0,016}{0,01} = \frac{19 \cdot 0,016}{0,01} = \frac{0,304}{0,01} = 30,4$
+
+3. $\nu = 19$. Valores críticos:
+   $\chi^2_{0,025, 19} = 32,85$ (superior)
+   $\chi^2_{0,975, 19} = 8,91$ (inferior)
+
+4. $8,91 < 30,4 < 32,85 \to$ Não rejeitar $H_0$
+
+5. Conclusão: Não há evidência de que a variância seja diferente de 0,01.
+
+**Exemplo 2: Teste Qui-Quadrado para variância (unilateral superior)**
+
+Uma fábrica afirma que a variância do peso de seus produtos é no máximo 0,04. Uma amostra de 25 produtos tem variância 0,06. Teste se a variância excede 0,04 ($\alpha = 0,05$).
+
+**Resolução:**
+
+1. $H_0: \sigma^2 = 0,04$; $H_1: \sigma^2 > 0,04$
+
+2. $\chi^2 = \frac{(25-1) \cdot 0,06}{0,04} = \frac{24 \cdot 0,06}{0,04} = \frac{1,44}{0,04} = 36,0$
+
+3. $\nu = 24$. $\chi^2_{0,05, 24} = 36,42$
+
+4. $\chi^2 = 36,0 < 36,42 \to$ Não rejeitar $H_0$
+
+5. Conclusão: Não há evidência suficiente de que a variância exceda 0,04.
+
+**Exemplo 3: Teste Qui-Quadrado para variância (unilateral inferior)**
+
+Uma máquina deve produzir peças com variância de 0,02. Uma amostra de 15 peças tem variância 0,01. Teste se a variância é menor que 0,02 ($\alpha = 0,05$).
+
+**Resolução:**
+
+1. $H_0: \sigma^2 = 0,02$; $H_1: \sigma^2 < 0,02$
+
+2. $\chi^2 = \frac{(15-1) \cdot 0,01}{0,02} = \frac{14 \cdot 0,01}{0,02} = \frac{0,14}{0,02} = 7,0$
+
+3. $\nu = 14$. $\chi^2_{0,95, 14} = 6,57$
+
+4. $\chi^2 = 7,0 > 6,57 \to$ Não rejeitar $H_0$
+
+5. Conclusão: Não há evidência suficiente de que a variância seja menor que 0,02.
+
+**Exemplo 4: Teste Qui-Quadrado com p-valor**
+
+No exemplo 2, $\chi^2 = 36,0$ com $\nu = 24$. Encontre o p-valor.
+
+**Resolução:**
+
+p-valor = $P(\chi^2 > 36,0) \approx 0,054$ (pela tabela Qui-Quadrado)
+
+**Interpretação:** Se $\alpha = 0,05$, não rejeitamos $H_0$ ($0,054 > 0,05$).
+
+**Exemplo 5: Teste Qui-Quadrado (intervalo de confiança para $\sigma^2$)**
+
+Usando os dados do exemplo 1, construa um IC de 95% para $\sigma^2$.
+
+**Resolução:**
+
+$IC = \left[ \frac{(n-1)S^2}{\chi^2_{0,025, 19}}, \frac{(n-1)S^2}{\chi^2_{0,975, 19}} \right]$
+$= \left[ \frac{19 \cdot 0,016}{32,85}, \frac{19 \cdot 0,016}{8,91} \right]$
+$= \left[ \frac{0,304}{32,85}, \frac{0,304}{8,91} \right]$
+$= [0,00925, 0,0341]$
+
+**Interpretação:** Com 95% de confiança, a variância populacional está entre 0,0093 e 0,0341.
+
+## Teste F para Comparação de Variâncias (Duas Amostras)
+
+Para comparar as variâncias de duas populações Normais independentes, usamos a distribuição $F$.
+
+**Hipóteses:**
+- Bicaudal: $H_0: \sigma_1^2 = \sigma_2^2$ vs $H_1: \sigma_1^2 \ne \sigma_2^2$
+- Unilateral superior: $H_0: \sigma_1^2 = \sigma_2^2$ vs $H_1: \sigma_1^2 > \sigma_2^2$
+- Unilateral inferior: $H_0: \sigma_1^2 = \sigma_2^2$ vs $H_1: \sigma_1^2 < \sigma_2^2$
+
+**Estatística de teste:**
+
+>> $$F = \frac{S_1^2}{S_2^2}$$
+
+**Graus de liberdade:** $\nu_1 = n_1 - 1$ (numerador), $\nu_2 = n_2 - 1$ (denominador)
+
+**Convenção:** Coloca-se a maior variância no numerador para facilitar os testes unilaterais. Para testes bicaudais, a razão pode ser qualquer ordem.
+
+**Exemplo 1: Teste $F$ para comparação de variâncias (bicaudal)**
+
+Duas amostras independentes:
+- $n_1 = 10$, $S_1^2 = 25$
+- $n_2 = 12$, $S_2^2 = 16$
+
+Teste se as variâncias são diferentes ($\alpha = 0,05$).
+
+**Resolução:**
+
+1. $H_0: \sigma_1^2 = \sigma_2^2$; $H_1: \sigma_1^2 \ne \sigma_2^2$
+
+2. $F = 25/16 = 1,5625$
+
+3. $\nu_1 = 9$, $\nu_2 = 11$. Valores críticos:
+   $F_{0,025, 9, 11} = 3,59$ (superior)
+   $F_{0,975, 9, 11} = 1/F_{0,025, 11, 9} = 1/3,96 = 0,253$ (inferior)
+
+4. $0,253 < 1,5625 < 3,59 \to$ Não rejeitar $H_0$
+
+5. Conclusão: Não há evidência de que as variâncias sejam diferentes.
+
+**Exemplo 2: Teste $F$ para comparação de variâncias (unilateral superior)**
+
+Duas amostras:
+- $n_1 = 15$, $S_1^2 = 30$ (grupo 1)
+- $n_2 = 20$, $S_2^2 = 20$ (grupo 2)
+
+Teste se $\sigma_1^2 > \sigma_2^2$ ($\alpha = 0,05$).
+
+**Resolução:**
+
+1. $H_0: \sigma_1^2 = \sigma_2^2$; $H_1: \sigma_1^2 > \sigma_2^2$
+
+2. $F = 30/20 = 1,5$
+
+3. $\nu_1 = 14$, $\nu_2 = 19$. $F_{0,05, 14, 19} = 2,23$
+
+4. $F = 1,5 < 2,23 \to$ Não rejeitar $H_0$
+
+5. Conclusão: Não há evidência de que $\sigma_1^2 > \sigma_2^2$.
+
+**Exemplo 3: Teste $F$ para comparação de variâncias (unilateral inferior)**
+
+Duas amostras:
+- $n_1 = 12$, $S_1^2 = 15$
+- $n_2 = 10$, $S_2^2 = 25$
+
+Teste se $\sigma_1^2 < \sigma_2^2$ ($\alpha = 0,05$).
+
+**Resolução:**
+
+1. $H_0: \sigma_1^2 = \sigma_2^2$; $H_1: \sigma_1^2 < \sigma_2^2$
+
+2. Para usar a convenção (maior no numerador), invertemos:
+   $F = S_2^2/S_1^2 = 25/15 = 1,667$
+   $H_1$ agora: $\sigma_2^2 > \sigma_1^2$ (equivalente)
+
+3. $\nu_1 = 9$, $\nu_2 = 11$. $F_{0,05, 9, 11} = 2,90$
+
+4. $F = 1,667 < 2,90 \to$ Não rejeitar $H_0$
+
+5. Conclusão: Não há evidência de que $\sigma_1^2 < \sigma_2^2$.
+
+**Exemplo 4: Teste $F$ com p-valor**
+
+No exemplo 1, $F = 1,5625$ com $\nu_1 = 9$, $\nu_2 = 11$. Encontre o p-valor.
+
+**Resolução:**
+
+p-valor = $2 \cdot P(F > 1,5625) \approx 2 \cdot 0,23 = 0,46$
+
+**Interpretação:** p-valor = 0,46 $> 0,05 \to$ Não rejeitar $H_0$.
+
+**Exemplo 5: Teste $F$ (intervalo de confiança para razão de variâncias)**
+
+Usando os dados do exemplo 1, construa um IC de 95% para $\sigma_1^2/\sigma_2^2$.
+
+**Resolução:**
+
+$IC = \left[ \frac{S_1^2}{S_2^2} \cdot \frac{1}{F_{0,025, 9, 11}}, \frac{S_1^2}{S_2^2} \cdot F_{0,025, 11, 9} \right]$
+$= [1,5625/3,59, 1,5625 \cdot 3,96]$
+$= [0,435, 6,188]$
+
+**Interpretação:** Com 95% de confiança, a razão das variâncias está entre 0,435 e 6,188. Como contém 1, não há evidência de diferença.
+
+## Teste F e o Pressuposto de Homogeneidade de Variâncias
+
+O teste $F$ é frequentemente usado como um **teste de pressupostos** antes de realizar outros procedimentos estatísticos, como:
+
+1. **ANOVA:** Exige homogeneidade de variâncias entre os grupos.
+2. **Teste t para duas amostras:** A versão com variâncias iguais exige homogeneidade.
+
+**Exemplo:** Antes de aplicar um teste $t$ para duas amostras independentes, verificamos se as variâncias são iguais. Se o teste $F$ não rejeitar $H_0$, usamos a versão com variâncias iguais. Se rejeitar, usamos a versão de Welch (variâncias diferentes).
+
+## Resumo: Testes para Variâncias
+
+| Situação | Estatística | Distribuição | Condição |
+| --- | --- | --- | --- |
+| Uma variância | $\chi^2 = (n-1)S^2/\sigma_0^2$ | Qui-Quadrado($n-1$) | População Normal |
+| Comparar duas variâncias | $F = S_1^2/S_2^2$ | $F(n_1-1, n_2-1)$ | Duas populações Normais |
+
+## Analogias
+
+### Analogia 1: A precisão de dois relógios
+
+Testar variâncias é como comparar dois relógios para ver qual é mais preciso. O relógio mais preciso tem menor variância (os desvios são menores).
+
+### Analogia 2: Dois atiradores
+
+Comparar variâncias é como comparar dois atiradores para ver qual é mais preciso. O atirador mais preciso tem seus tiros mais agrupados (menor variância).
+
+### Analogia 3: A máquina de produção
+
+Testar uma variância é como verificar se uma máquina está produzindo peças com a variabilidade esperada. Se a variância é muito grande, a máquina pode estar com problema.
+
+## Exercícios Resolvidos
+
+### Exercício 1 (Fácil)
+
+Uma amostra de 16 elementos tem variância 12. Teste se $\sigma^2 = 10$ ($\alpha = 0,05$, bicaudal).
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$\chi^2 = \frac{15 \cdot 12}{10} = 18,0$
+$\nu = 15$. $\chi^2_{0,025, 15} = 27,49$; $\chi^2_{0,975, 15} = 6,26$
+$6,26 < 18,0 < 27,49 \to$ Não rejeitar $H_0$
+
+**Resposta:** Não rejeitar $H_0$. Não há evidência de que $\sigma^2 \ne 10$.
+
+</details>
+
+### Exercício 2 (Fácil/Médio)
+
+Duas amostras: $n_1 = 10$, $S_1^2 = 20$; $n_2 = 12$, $S_2^2 = 15$. Teste se $\sigma_1^2 > \sigma_2^2$ ($\alpha = 0,05$).
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$F = 20/15 = 1,333$
+$\nu_1 = 9$, $\nu_2 = 11$. $F_{0,05, 9, 11} = 2,90$
+$F = 1,333 < 2,90 \to$ Não rejeitar $H_0$
+
+**Resposta:** Não rejeitar $H_0$. Não há evidência de que $\sigma_1^2 > \sigma_2^2$.
+
+</details>
+
+### Exercício 3 (Médio)
+
+Uma amostra de 25 elementos tem variância 0,05. Teste se $\sigma^2 > 0,03$ ($\alpha = 0,01$).
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$\chi^2 = \frac{24 \cdot 0,05}{0,03} = 40,0$
+$\nu = 24$. $\chi^2_{0,01, 24} = 42,98$
+$\chi^2 = 40,0 < 42,98 \to$ Não rejeitar $H_0$
+
+**Resposta:** Não rejeitar $H_0$. Não há evidência de que $\sigma^2 > 0,03$.
+
+</details>
+
+### Exercício 4 (Médio)
+
+Duas amostras: $n_1 = 8$, $S_1^2 = 36$; $n_2 = 10$, $S_2^2 = 25$. Teste se $\sigma_1^2 \ne \sigma_2^2$ ($\alpha = 0,05$).
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$F = 36/25 = 1,44$
+$\nu_1 = 7$, $\nu_2 = 9$. $F_{0,025, 7, 9} = 4,20$; $F_{0,975, 7, 9} = 1/4,20 = 0,238$
+$0,238 < 1,44 < 4,20 \to$ Não rejeitar $H_0$
+
+**Resposta:** Não rejeitar $H_0$. Não há evidência de diferença.
+
+</details>
+
+### Exercício 5 (Difícil)
+
+Uma amostra de 12 elementos tem variância 14. Construa um IC de 90% para $\sigma^2$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$\nu = 11$. $\chi^2_{0,05, 11} = 19,68$; $\chi^2_{0,95, 11} = 4,57$
+$IC = \left[ \frac{11 \cdot 14}{19,68}, \frac{11 \cdot 14}{4,57} \right] = \left[ \frac{154}{19,68}, \frac{154}{4,57} \right] = [7,83, 33,70]$
+
+**Resposta:** (7,83, 33,70).
+
+</details>
+
+## Desafio Final com Resolução Completa
+
+Uma empresa tem duas máquinas que produzem o mesmo tipo de peça. Para verificar a consistência das máquinas, foram coletadas amostras:
+
+- Máquina A: $n_1 = 12$, $S_1^2 = 0,08$
+- Máquina B: $n_2 = 10$, $S_2^2 = 0,02$
+
+a) Teste se a variância da máquina A é maior que a da máquina B ($\alpha = 0,05$).
+
+b) Qual o p-valor do teste?
+
+c) Construa um IC de 95% para a razão das variâncias.
+
+d) Se a máquina A deve ter variância máxima de 0,05, teste se ela está dentro do limite ($\alpha = 0,05$, unilateral superior).
+
+e) Interprete os resultados e dê uma recomendação para a empresa.
+
+<details>
+<summary>💡 Ver resolução completa</summary>
+
+a) $H_0: \sigma_A^2 = \sigma_B^2$; $H_1: \sigma_A^2 > \sigma_B^2$
+   $F = 0,08/0,02 = 4,0$
+   $\nu_1 = 11$, $\nu_2 = 9$. $F_{0,05, 11, 9} = 3,10$
+   $F = 4,0 > 3,10 \to$ Rejeitar $H_0$
+
+b) p-valor = $P(F > 4,0) \approx 0,025$ (unilateral)
+
+c) $F_{0,025, 11, 9} = 3,96$; $F_{0,025, 9, 11} = 3,59$
+   $IC = [4,0/3,96, 4,0 \cdot 3,59] = [1,01, 14,36]$
+
+d) $H_0: \sigma_A^2 = 0,05$; $H_1: \sigma_A^2 > 0,05$
+   $\chi^2 = \frac{(12-1) \cdot 0,08}{0,05} = \frac{11 \cdot 0,08}{0,05} = \frac{0,88}{0,05} = 17,6$
+   $\nu = 11$. $\chi^2_{0,05, 11} = 19,68$
+   $\chi^2 = 17,6 < 19,68 \to$ Não rejeitar $H_0$
+   Não há evidência de que a máquina A exceda o limite.
+
+e) A máquina A tem variância significativamente maior que a máquina B (p-valor $\approx 0,025$). No entanto, a variância da máquina A (0,08) não excede estatisticamente o limite de 0,05, mas está muito próxima. Recomenda-se investigar a máquina A para reduzir sua variabilidade, mesmo que ainda esteja dentro do limite formal. A máquina B é claramente mais consistente.
+
+**Respostas:**
+a) Rejeitar $H_0$. A variância da máquina A é maior que a da máquina B.
+b) p-valor $\approx 0,025$
+c) (1,01, 14,36)
+d) Não rejeitar $H_0$. A máquina A está dentro do limite.
+e) A máquina A é mais variável, mas ainda dentro do limite. Recomenda-se investigação.
+
+</details>
+
+> *A variância revela a consistência oculta dos processos — testá-la é como afinar um instrumento: pequenas diferenças na dispersão podem significar grandes diferenças na qualidade.*

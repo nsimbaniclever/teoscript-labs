@@ -1,0 +1,293 @@
+# Distribuição Uniforme
+
+## O que é a Distribuição Uniforme Contínua?
+
+A Distribuição Uniforme Contínua é a mais simples das distribuições contínuas. Ela descreve uma situação onde **todos os valores dentro de um intervalo $[a, b]$ têm a mesma chance de ocorrer**. Isso significa que não há nenhum valor privilegiado dentro do intervalo: a probabilidade de a variável cair em qualquer subintervalo de mesmo comprimento é exatamente a mesma.
+
+Pense assim: se você vai chegar a um ponto de ônibus em um horário aleatório entre 14h e 15h, o tempo que você vai esperar (em minutos) pode ser modelado por uma Uniforme Contínua, porque todos os minutos dentro dessa hora têm a mesma chance de ser o seu horário de chegada.
+
+A distribuição Uniforme Contínua é denotada por $X \sim \text{Uniforme}(a, b)$, onde $a$ é o valor mínimo possível e $b$ é o valor máximo possível.
+
+## Função Densidade de Probabilidade
+
+A função densidade da Uniforme Contínua é extremamente simples:
+
+> **$$f(x) = \frac{1}{b-a} \quad \text{para } a \le x \le b$$**\
+> **$$f(x) = 0 \quad \text{para qualquer outro valor}$$**
+
+Veja que a densidade é **constante** (um número fixo) dentro do intervalo. Isso significa que a curva da densidade é uma linha reta horizontal. A altura dessa linha é $\frac{1}{(b-a)}$, que é exatamente o valor que faz a área total sob a curva ser igual a 1.
+
+Por que a altura é $\frac{1}{(b-a)}$? Lembre-se: a área de um retângulo é **base × altura**. A base do nosso retângulo é o comprimento do intervalo, que é $(b-a)$. Para que a área total seja 1, precisamos que $(b-a) \times \text{h} = 1$, então $\text{h} = \frac{1}{(b-a)}$.
+
+## Função de Distribuição Acumulada (FDA)
+
+A FDA da Uniforme Contínua nos dá $P(X \le x)$. Como a densidade é constante, a FDA cresce de forma linear:
+
+$$F(x) = 0 \quad \text{para } x < a$$
+$$F(x) = \frac{x-a}{b-a} \quad \text{para } a \le x \le b$$
+$$F(x) = 1 \quad \text{para } x > b$$
+
+Isso faz sentido: em $x = a$, $F(a) = \frac{(a-a)}{(b-a)} = 0$; em $x = b$, $F(b) = \frac{(b-a)}{(b-a)} = 1$. A probabilidade vai crescendo de forma constante à medida que $x$ avança no intervalo.
+
+## Esperança (média) e Variância
+
+A esperança da Uniforme Contínua é simplesmente o ponto médio do intervalo:
+
+$$E[X] = \frac{a+b}{2}$$
+
+Isso é intuitivo: se todos os valores são igualmente prováveis, o valor médio é exatamente o centro do intervalo.
+
+A variância é:
+
+$$Var(X) = \frac{(b-a)^2}{12}$$
+
+O desvio padrão é a raiz quadrada da variância: $\sigma = \frac{b-a}{\sqrt{12}} \approx 0,2887(b-a)$.
+
+## Propriedade importante: probabilidade proporcional ao comprimento
+
+Uma propriedade fundamental da Uniforme Contínua é que a probabilidade de $X$ cair em um subintervalo $[c, d]$ dentro de $[a, b]$ é proporcional ao comprimento desse subintervalo:
+
+$$P(c \le X \le d) = \frac{d-c}{b-a}$$
+
+Isso é uma consequência direta da densidade constante. Por exemplo, se $X \sim \text{Uniforme}(0, 10)$, a probabilidade de $X$ estar entre 2 e 5 é $(5-2)/(10-0) = 3/10 = 0,3$. Se o intervalo fosse entre 0 e 3, a probabilidade seria $3/10 = 0,3$ também. **Subintervalos de mesmo comprimento têm a mesma probabilidade**.
+
+## Quando usar a Distribuição Uniforme Contínua?
+
+A Uniforme Contínua é apropriada quando:
+
+1. Não há informação privilegiada sobre onde o valor vai cair dentro do intervalo.
+2. Todos os valores dentro do intervalo são igualmente prováveis.
+3. Você está modelando situações de "aleatoriedade pura".
+
+**Exemplos de aplicações:**
+
+- O horário em que um ônibus passa em um ponto, se você só sabe que ele passa entre 8h e 8h30.
+- A posição de um ponto ao longo de uma barra de comprimento $L$.
+- O ângulo de rotação de uma roda que para em uma posição aleatória.
+- O erro de arredondamento ao aproximar um número real para o inteiro mais próximo.
+- O horário de chegada de uma pessoa que marcou um encontro entre 14h e 15h.
+
+## Limitações e quando NÃO usar
+
+A Uniforme Contínua **NÃO deve ser usada** quando:
+
+1. Há evidências de que alguns valores são mais prováveis que outros. Por exemplo, a altura das pessoas não é uniforme: pessoas com altura média são mais comuns, e pessoas muito altas ou muito baixas são mais raras.
+2. A variável tem uma distribuição que concentra probabilidade em certas regiões.
+3. O fenômeno que você está modelando tem "caudas" ou "picos" que não são capturados pela densidade constante.
+
+Em geral, a Uniforme é usada como um "modelo padrão" quando você não tem informação suficiente para escolher uma distribuição mais elaborada, ou em situações onde a aleatoriedade é realmente uniforme.
+
+### Analogia 1: O horário de chegada no trabalho
+
+Suponha que você chega ao trabalho todos os dias em um horário aleatório entre 8h e 9h. Se não há motivo para você chegar mais cedo ou mais tarde, seu horário de chegada segue uma Uniforme Contínua no intervalo $[8, 9]$ (medido em horas).
+
+**Pergunta:** Qual a probabilidade de você chegar entre 8h15 e 8h45?
+
+**Resolução passo a passo:**
+
+1. Temos $X \sim \text{Uniforme}(8, 9)$, então $a = 8$ e $b = 9$.
+2. Queremos $P(8,25 \le X \le 8,75)$, porque 8h15 = 8,25 horas e 8h45 = 8,75 horas.
+3. Usando a fórmula: $P(c \le X \le d) = \frac{d-c}{b-a} = \frac{8,75 - 8,25}{9 - 8} = \frac{0,5}{1} = 0,5$.
+
+**Resposta:** A probabilidade de você chegar entre 8h15 e 8h45 é de **50%**.
+
+### Analogia 2: A posição de um ponto em uma régua
+
+Uma régua de 30 cm é posicionada na horizontal, e um ponto é marcado em uma posição aleatória ao longo dela. A posição $X$ do ponto (em cm) segue uma Uniforme Contínua no intervalo $[0, 30]$.
+
+**Pergunta:** Qual a probabilidade de o ponto estar entre 10 cm e 20 cm?
+
+**Resolução passo a passo:**
+
+1. $X \sim \text{Uniforme}(0, 30)$, então $a = 0$ e $b = 30$.
+2. Queremos $P(10 \le X \le 20)$.
+3. Usando a fórmula: $P(10 \le X \le 20) = \frac{20 - 10}{30 - 0} = \frac{10}{30} = \frac{1}{3} \approx 0,3333$.
+
+**Resposta:** A probabilidade de o ponto estar entre 10 cm e 20 cm é de aproximadamente **33,33%**.
+
+### Analogia 3: O tempo de espera no restaurante
+
+Um restaurante faz entregas em domicílio e promete que a entrega será feita entre 30 e 50 minutos após o pedido. O tempo de entrega é uniformemente distribuído nesse intervalo.
+
+**Pergunta:** Qual a probabilidade de a entrega demorar menos de 40 minutos?
+
+**Resolução passo a passo:**
+
+1. $X \sim \text{Uniforme}(30, 50)$, então $a = 30$ e $b = 50$.
+2. Queremos $P(X < 40)$.
+3. Usando a FDA: $F(40) = \frac{40 - 30}{50 - 30} = \frac{10}{20} = 0,5$.
+
+**Resposta:** A probabilidade de a entrega demorar menos de 40 minutos é de **50%**.
+
+## Exemplos práticos com cálculos passo a passo
+
+### Exemplo 1: Cálculo de probabilidade básica
+
+Seja $X \sim \text{Uniforme}(2, 8)$. Calcule $P(3 \le X \le 6)$.
+
+**Resolução:**
+
+1. $a = 2$, $b = 8$, então $b - a = 6$.
+2. $P(3 \le X \le 6) = \frac{6 - 3}{8 - 2} = \frac{3}{6} = 0,5$.
+
+**Resposta:** 50%.
+
+### Exemplo 2: Cálculo de probabilidade usando a FDA
+
+Seja $X \sim \text{Uniforme}(0, 12)$. Calcule $P(X > 9)$.
+
+**Resolução:**
+
+1. $a = 0$, $b = 12$.
+2. $P(X > 9) = 1 - P(X \le 9) = 1 - F(9) = 1 - \frac{9 - 0}{12 - 0} = 1 - \frac{9}{12} = 1 - 0,75 = 0,25$.
+
+**Resposta:** 25%.
+
+### Exemplo 3: Encontrando um valor a partir da probabilidade
+
+Seja $X \sim \text{Uniforme}(5, 15)$. Encontre o valor $k$ tal que $P(X \le k) = 0,7$.
+
+**Resolução:**
+
+1. $a = 5$, $b = 15$.
+2. $F(k) = \frac{k - 5}{15 - 5} = 0,7$.
+3. $\frac{k - 5}{10} = 0,7 \to k - 5 = 7 \to k = 12$.
+
+**Resposta:** $k = 12$.
+
+### Exemplo 4: Cálculo de média e variância
+
+Seja $X \sim \text{Uniforme}(4, 10)$. Calcule $E[X]$ e $Var(X)$.
+
+**Resolução:**
+
+1. $E[X] = \frac{a + b}{2} = \frac{4 + 10}{2} = 7$.
+2. $Var(X) = \frac{(b - a)^2}{12} = \frac{(10 - 4)^2}{12} = \frac{36}{12} = 3$.
+
+**Resposta:** $E[X] = 7$ e $Var(X) = 3$.
+
+### Exemplo 5: Probabilidade condicional com Uniforme
+
+Seja $X \sim \text{Uniforme}(0, 20)$. Calcule a probabilidade de $X$ ser maior que 15, sabendo que $X$ é maior que 10. Ou seja, calcule $P(X > 15 | X > 10)$.
+
+**Resolução:**
+
+1. $P(X > 15 | X > 10) = \frac{P(X > 15 \text{ e } X > 10)}{P(X > 10)} = \frac{P(X > 15)}{P(X > 10)}$.
+2. $P(X > 15) = 1 - F(15) = 1 - \frac{15}{20} = \frac{5}{20} = 0,25$.
+3. $P(X > 10) = 1 - F(10) = 1 - \frac{10}{20} = \frac{10}{20} = 0,5$.
+4. $\frac{0,25}{0,5} = 0,5$.
+
+**Resposta:** 50%. (Interessante: mesmo sabendo que $X > 10$, a probabilidade de ser $> 15$ é 50%, porque dentro do subintervalo $[10,20]$, a distribuição ainda é uniforme!)
+
+## Exercícios resolvidos (níveis crescentes de dificuldade)
+
+### Exercício 1 (Fácil)
+
+Seja $X \sim \text{Uniforme}(0, 1)$. Calcule $P(X \le 0,3)$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+1. $a = 0$, $b = 1$.
+2. $P(X \le 0,3) = F(0,3) = \frac{0,3 - 0}{1 - 0} = 0,3$.
+
+**Resposta:** 30%.
+
+</details>
+
+### Exercício 2 (Fácil/Médio)
+
+Seja $X \sim \text{Uniforme}(-2, 3)$. Calcule $P(-1 \le X \le 2)$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+1. $a = -2$, $b = 3$, então $b - a = 5$.
+2. $P(-1 \le X \le 2) = \frac{2 - (-1)}{5} = \frac{3}{5} = 0,6$.
+
+**Resposta:** 60%.
+
+</details>
+
+### Exercício 3 (Médio)
+
+Seja $X \sim \text{Uniforme}(0, k)$. Sabendo que $P(X \le 3) = 0,25$, encontre o valor de $k$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+1. $F(3) = \frac{3 - 0}{k - 0} = \frac{3}{k}$.
+2. $\frac{3}{k} = 0,25 \to k = \frac{3}{0,25} = 12$.
+
+**Resposta:** $k = 12$.
+
+</details>
+
+### Exercício 4 (Médio)
+
+Seja $X \sim \text{Uniforme}(a, b)$ com $E[X] = 6$ e $Var(X) = 3$. Encontre os valores de $a$ e $b$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+1. $E[X] = \frac{a + b}{2} = 6 \to a + b = 12$. (Equação 1)
+2. $Var(X) = \frac{(b - a)^2}{12} = 3 \to (b - a)^2 = 36 \to b - a = 6$ (pois $b > a$). (Equação 2)
+3. Resolvendo o sistema:
+   $a + b = 12$
+   $b - a = 6$
+   Somando as equações: $2b = 18 \to b = 9$.
+   Substituindo: $a + 9 = 12 \to a = 3$.
+
+**Resposta:** $a = 3$ e $b = 9$.
+
+</details>
+
+### Exercício 5 (Difícil)
+
+Seja $X \sim \text{Uniforme}(0, 10)$. Calcule a probabilidade de $X$ estar entre 2 e 5, dado que $X$ está entre 1 e 6. Ou seja, calcule $P(2 \le X \le 5 | 1 \le X \le 6)$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+1. $P(2 \le X \le 5 | 1 \le X \le 6) = \frac{P(2 \le X \le 5 \text{ e } 1 \le X \le 6)}{P(1 \le X \le 6)} = \frac{P(2 \le X \le 5)}{P(1 \le X \le 6)}$.
+2. $P(2 \le X \le 5) = \frac{5 - 2}{10 - 0} = \frac{3}{10} = 0,3$.
+3. $P(1 \le X \le 6) = \frac{6 - 1}{10 - 0} = \frac{5}{10} = 0,5$.
+4. $\frac{0,3}{0,5} = 0,6$.
+
+**Resposta:** 60%.
+
+</details>
+
+## Desafio final com resolução completa
+
+Seja $X$ uma variável aleatória contínua com FDA:
+
+$$F(x) = 0 \quad \text{para } x < 0$$
+$$F(x) = \frac{x}{6} \quad \text{para } 0 \le x \le 6$$
+$$F(x) = 1 \quad \text{para } x > 6$$
+
+a) Mostre que $X$ segue uma distribuição Uniforme Contínua e identifique os parâmetros $a$ e $b$.
+b) Calcule $P(2 \le X \le 5)$.
+c) Calcule $E[X]$ e $Var(X)$.
+d) Encontre o valor $k$ tal que $P(X > k) = 0,3$.
+
+<details>
+<summary>💡 Ver resolução completa</summary>
+
+a) A FDA dada é $F(x) = x/6$ para $0 \le x \le 6$. Isso tem a forma $F(x) = \frac{x - a}{b - a}$ com $a = 0$ e $b = 6$, pois $F(x) = \frac{x - 0}{6 - 0} = \frac{x}{6}$. Portanto, $X \sim \text{Uniforme}(0, 6)$.
+
+b) $P(2 \le X \le 5) = F(5) - F(2) = \frac{5}{6} - \frac{2}{6} = \frac{3}{6} = 0,5$.
+
+c) $E[X] = \frac{a + b}{2} = \frac{0 + 6}{2} = 3$.
+   $Var(X) = \frac{(b - a)^2}{12} = \frac{36}{12} = 3$.
+
+d) $P(X > k) = 0,3$.
+   $P(X > k) = 1 - F(k) = 1 - \frac{k}{6}$.
+   $1 - \frac{k}{6} = 0,3 \to \frac{k}{6} = 0,7 \to k = 6 \cdot 0,7 = 4,2$.
+
+**Respostas:** $a = 0$, $b = 6$; $P(2 \le X \le 5) = 0,5$; $E[X] = 3$, $Var(X) = 3$; $k = 4,2$.
+
+</details>
+
+
+> *A Distribuição Uniforme Contínua nos ensina que, quando não há informação privilegiada, todos os valores têm a mesma chance de ocorrer — e a probabilidade de qualquer intervalo é apenas o tamanho dele em relação ao todo.*

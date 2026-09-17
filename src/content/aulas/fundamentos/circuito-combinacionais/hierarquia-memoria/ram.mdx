@@ -1,0 +1,327 @@
+# Memória RAM
+
+## 1. Introdução
+
+Nas duas últimas aulas, exploramos os níveis mais rápidos e caros da hierarquia de memória: os **Registradores**, que ficam dentro da CPU e são acessados em 1 ciclo, e a **Cache** (L1, L2, L3), que fica entre a CPU e a RAM e reduz o tempo de espera . Agora descemos para o nível seguinte — a **Memória RAM** (Random Access Memory). Se os registradores são a mesa de trabalho do artesão e a cache é a gaveta de ferramentas, a RAM é a **estante de ferramentas** — o armazém principal onde todos os programas e dados em execução são mantidos.<br><br>
+
+A RAM é onde:
+
+- O sistema operacional reside enquanto o computador está ligado.
+- Os programas são carregados para serem executados.
+- Os dados abertos (documentos, imagens, vídeos) são armazenados temporariamente.
+
+Diferente dos registradores e da cache, que são feitos com SRAM (estática, rápida, cara), a RAM é feita com **DRAM** (dinâmica, mais lenta, barata). Ela é a memória que você vê quando verifica o "Memória" no Gerenciador de Tarefas do Windows (8 GB, 16 GB, 32 GB).
+
+Nesta aula, vamos explorar a Memória RAM: como ela funciona, os diferentes tipos (DDR4, DDR5), sua velocidade, capacidade e por que ela é essencial para o funcionamento do computador.
+
+
+## 2. O Que é a Memória RAM?
+
+### 2.1 Definição
+
+A **RAM** (Random Access Memory) é a memória principal do computador, onde:
+
+> **Programas e dados em execução são armazenados temporariamente para acesso rápido pela CPU.**
+
+### 2.2 Características
+
+| Característica | Valor Típico |
+|----------------|--------------|
+| **Tecnologia** | DRAM (Dynamic RAM) |
+| **Capacidade** | 4 GB a 128 GB (comum: 8 GB, 16 GB, 32 GB) |
+| **Velocidade** | ~50-100 ns (nanossegundos) |
+| **Frequência** | 1600 MHz a 8400 MHz (DDR4/DDR5) |
+| **Volatilidade** | Volátil (perde dados sem energia) |
+| **Custo** | Barato (comparado com SRAM) |
+| **Localização** | Na placa-mãe (slots DIMM) |
+
+### 2.3 Analogia
+
+Pense na RAM como a **estante de ferramentas do artesão**:
+
+<details>
+<summary>🔧 Ver Analogia da RAM</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 450px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">RAM — A ESTANTE DO ARTESÃO</div>
+
+  <pre style="color: #93c5fd; font-size: 0.6rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    ┌─────────────────────────────────────────────────────┐
+    │                                                     │
+    │   MESA (REGISTRADORES)                             │
+    │   Ferramentas que estão sendo usadas AGORA         │
+    │   (1 ciclo)                                        │
+    │                                                     │
+    │   GAVETA (CACHE)                                   │
+    │   Ferramentas usadas com FREQUÊNCIA                │
+    │   (2-40 ciclos)                                    │
+    │                                                     │
+    │   ESTANTE (RAM)                                    │
+    │   Todas as ferramentas do ARTESÃO                   │
+    │   (50-100 ns)                                      │
+    │                                                     │
+    │   DEPÓSITO (SSD/HD)                                │
+    │   Ferramentas guardadas para LONGO PRAZO            │
+    │   (µs - ms)                                        │
+    │                                                     │
+    └─────────────────────────────────────────────────────┘
+  </pre>
+
+</div>
+</details>
+
+### 2.4 Diagrama da RAM na Hierarquia
+
+<details>
+<summary>🔧 Ver Diagrama da Hierarquia com RAM</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 450px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">HIERARQUIA COM RAM</div>
+
+  <pre style="color: #93c5fd; font-size: 0.6rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    ┌─────────────────────────────────────────────────────────────┐
+    │  REGISTRADORES     │ ~1 ciclo    │ ~1 KB    │ Muito caro │
+    └─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+    ┌─────────────────────────────────────────────────────────────┐
+    │  CACHE L1          │ ~2-4 ciclos │ ~64 KB   │ Muito caro │
+    └─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+    ┌─────────────────────────────────────────────────────────────┐
+    │  CACHE L2          │ ~10 ciclos  │ ~256 KB  │ Caro       │
+    └─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+    ┌─────────────────────────────────────────────────────────────┐
+    │  CACHE L3          │ ~30-40 ciclos│ ~8 MB   │ Moderado   │
+    └─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+    ┌─────────────────────────────────────────────────────────────┐
+    │  RAM (DRAM)        │ ~50-100 ns  │ ~16 GB  │ Barato      │
+    └─────────────────────────────────────────────────────────────┘
+                              │
+                              ▼
+    ┌─────────────────────────────────────────────────────────────┐
+    │  SSD/HD            │ ~µs / ~ms   │ ~1 TB   │ Muito barato│
+    └─────────────────────────────────────────────────────────────┘
+  </pre>
+
+</div>
+</details>
+
+
+## 3. Tecnologia da RAM: DRAM
+
+### 3.1 O que é DRAM?
+
+**DRAM** (Dynamic RAM) é o tipo de memória usado na RAM principal. Ela usa **capacitores** para armazenar cada bit.
+
+| Característica | Detalhe |
+|----------------|---------|
+| **Tecnologia** | 1 transistor + 1 capacitor por bit |
+| **Velocidade** | Mais lenta que SRAM (~50-100 ns) |
+| **Densidade** | Alta (muitos bits por área) |
+| **Custo** | Barato (por bit) |
+| **Refrescamento** | Precisa (a cada ~64 ms) |
+
+### 3.2 Por que a DRAM precisa de refresh?
+
+O capacitor na DRAM **perde carga** com o tempo devido a correntes de fuga. Sem refresh, o dado seria perdido em milissegundos.
+
+- **Refresh:** A cada ~64 ms, todas as linhas da DRAM são lidas e reescritas.
+- **Durante o refresh:** A memória não pode ser acessada (pequena penalidade de desempenho).
+
+### 3.3 SRAM vs DRAM (Revisão)
+
+| Característica | SRAM (Cache) | DRAM (RAM) |
+|----------------|--------------|------------|
+| **Tecnologia** | Flip-flop (6 transistores) | Capacitor (1T + 1C) |
+| **Velocidade** | Muito rápida | Mais lenta |
+| **Densidade** | Baixa | Alta |
+| **Custo** | Caro | Barato |
+| **Refresh** | Não precisa | Precisa |
+| **Uso** | Cache, registradores | RAM principal |
+
+
+## 4. Tipos de RAM: DDR4, DDR5, etc.
+
+### 4.1 Evolução da RAM
+
+| Geração | Lançamento | Velocidade (MT/s) | Tensão | Capacidade máxima |
+|---------|------------|-------------------|--------|-------------------|
+| **DDR** | 2000 | 200-400 | 2.5V | 1 GB |
+| **DDR2** | 2003 | 400-1066 | 1.8V | 4 GB |
+| **DDR3** | 2007 | 800-2133 | 1.5V | 16 GB |
+| **DDR4** | 2014 | 1600-3200 | 1.2V | 128 GB |
+| **DDR5** | 2020 | 4800-8400 | 1.1V | 512 GB+ |
+
+### 4.2 DDR vs DDR4 vs DDR5
+
+| Característica | DDR4 | DDR5 |
+|----------------|------|------|
+| **Velocidade** | 1600-3200 MT/s | 4800-8400 MT/s |
+| **Tensão** | 1.2V | 1.1V |
+| **Capacidade por pente** | 4-32 GB | 8-128 GB |
+| **Largura de banda** | ~25.6 GB/s | ~51.2 GB/s |
+| **Consumo** | Maior | Menor |
+
+### 4.3 O que significa DDR?
+
+**DDR** = **Double Data Rate** (Taxa de Dados Dupla).
+
+- DDR transfere dados **duas vezes por ciclo de clock** (na subida e na descida).
+- Uma memória DDR4-3200 tem clock de 1600 MHz, mas transfere a 3200 MT/s.
+
+
+## 5. Capacidade e Desempenho
+
+### 5.1 Quanta RAM é necessária?
+
+| Uso | Capacidade sugerida |
+|-----|---------------------|
+| **Básico** (navegação, e-mail, documentos) | 4-8 GB |
+| **Intermediário** (jogos leves, edição simples) | 8-16 GB |
+| **Avançado** (jogos pesados, edição de vídeo) | 16-32 GB |
+| **Profissional** (3D, IA, máquinas virtuais) | 32-64 GB+ |
+
+### 5.2 Como a RAM afeta o desempenho?
+
+| Situação | Efeito |
+|----------|--------|
+| **RAM suficiente** | O sistema funciona rapidamente |
+| **RAM insuficiente** | O sistema usa o SSD/HD como "memória virtual" → MUITO lento |
+| **RAM mais rápida** | Melhor desempenho em jogos e aplicações pesadas |
+| **RAM em dual-channel** | Maior largura de banda (2x mais rápida) |
+
+### 5.3 Memória Virtual (Swap)
+
+Quando a RAM está cheia, o sistema operacional usa o SSD/HD como "memória virtual":
+
+- **Swap (Linux)** / **Pagefile (Windows)**
+- Muito mais lento que a RAM (µs/ms vs ns)
+- Indica que você precisa de mais RAM!
+
+
+## 6. Exercícios
+
+<details>
+<summary>📗 Exercício 1 — Definição (fácil)</summary>
+
+**Enunciado:** O que é a memória RAM?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** A RAM (Random Access Memory) é a memória principal do computador, onde programas e dados em execução são armazenados temporariamente para acesso rápido pela CPU.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Tecnologia (fácil)</summary>
+
+**Enunciado:** Qual tecnologia é usada na RAM principal?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** DRAM (Dynamic RAM) — usa capacitores e 1 transistor por bit.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Velocidade (fácil)</summary>
+
+**Enunciado:** Qual é o tempo de acesso típico da RAM?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** ~50-100 ns (nanossegundos).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — DDR vs DDR5 (médio)</summary>
+
+**Enunciado:** Qual a diferença entre DDR4 e DDR5?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** DDR5 é mais rápida (4800-8400 MT/s vs 1600-3200 MT/s), consome menos energia (1.1V vs 1.2V), suporta mais capacidade (128 GB vs 32 GB por pente).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — RAM insuficiente (conceitual)</summary>
+
+**Enunciado:** O que acontece quando a RAM está cheia?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** O sistema operacional usa o SSD/HD como memória virtual (swap/pagefile). Isso torna o sistema muito mais lento, pois o SSD/HD é milhares de vezes mais lento que a RAM.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — DDR significado (conceitual)</summary>
+
+**Enunciado:** O que significa DDR?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** DDR = Double Data Rate (Taxa de Dados Dupla). Transfere dados duas vezes por ciclo de clock (na subida e na descida).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — Capacidade de RAM (desafio)</summary>
+
+**Enunciado:** Quantos GB de RAM são recomendados para jogos pesados?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** 16-32 GB de RAM para jogos pesados.
+
+**Explicação:** Jogos modernos exigem muita memória para texturas, modelos 3D e dados do jogo. 8 GB pode ser insuficiente para jogos lançados após 2020.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — Hierarquia de memória (desafio)</summary>
+
+**Enunciado:** Ordene da mais rápida para a mais lenta: RAM, Registradores, Cache L1, SSD.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta (da mais rápida para a mais lenta):**
+
+1. **Registradores** (~1 ciclo)
+2. **Cache L1** (~2-4 ciclos)
+3. **RAM** (~50-100 ns)
+4. **SSD** (~µs)
+
+**Diferença:** A RAM é milhares de vezes mais rápida que o SSD.
+
+</details>
+</details>
+
+
+> **"A memória RAM é o armazém principal do computador — onde programas e dados em execução são mantidos para acesso rápido pela CPU. Feita com tecnologia DRAM (capacitores), ela é mais lenta que a cache e os registradores, mas muito mais rápida que o armazenamento secundário (SSD/HD). A RAM é volátil — perde todos os dados quando o computador é desligado. As gerações evoluíram de DDR para DDR5, com velocidades cada vez maiores e consumo cada vez menor. A quantidade de RAM (8 GB, 16 GB, 32 GB) determina quantos programas podem rodar simultaneamente. Quando a RAM está cheia, o sistema usa memória virtual (swap), o que torna o computador extremamente lento. A RAM é o coração da memória volátil — sem ela, nenhum programa poderia ser executado."**
+

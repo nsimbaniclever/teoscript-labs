@@ -1,0 +1,812 @@
+# As Médias na Estatística
+
+## 1. INTRODUÇÃO
+
+&emsp;&emsp;&emsp;A média é a medida de tendência central mais amplamente utilizada em Estatística. Representa o ponto de equilíbrio de um conjunto de dados — o valor em torno do qual a soma dos desvios se anula. Existem três tipos principais de média, cada um adequado a diferentes contextos de aplicação:
+
+<center><details>
+<summary>📊 TIPO DE MÉDIA</summary>
+<style>
+.r{font:14px system-ui;text-align:center}
+.r b{display:inline-block;padding:4px 10px;background:#333;color:#fff;border-radius:6px}
+.r i{display:block;width:2px;height:18px;background:#333;margin:0 auto}
+.r em{display:flex;gap:8px;justify-content:center;position:relative;padding-top:18px}
+.r em::before{content:'';position:absolute;top:0;left:25%;right:25%;height:2px;background:#333}
+.r em span{flex:1;padding:8px;border:2px solid #333;border-radius:8px;max-width:140px}
+.r em span::before{content:'';position:absolute;top:-18px;left:50%;width:2px;height:18px;background:#333}
+.r em span{position:relative}
+</style>
+<div class="r">
+  <b>Tipos de média</b>
+  <i></i>
+  <em>
+    <span>📈 Aritmética</span>
+    <span>🔮 Geométrica</span>
+    <span>🔮 Harmônica</span>
+  </em>
+</div>
+</details></center>
+
+> **💡 Dica de Ouro:** A escolha da média certa depende do **tipo de dado** e do **contexto** da análise. A média errada pode levar a conclusões equivocadas!
+
+## 2. MÉDIA ARITMÉTICA
+
+&emsp;&emsp;&emsp;A média aritmética é uma das medidas de tendência central mais utilizadas em Estatística. Consiste no valor obtido pela soma de todos os valores observados, dividida pelo número total de observações. Em termos simples, representa o "valor equilibrado" ou "valor típico" de um conjunto de dados, funcionando como um ponto de referência em torno do qual os restantes valores se distribuem.<br><br>
+
+&emsp;&emsp;&emsp;Por sua vez, a média aritmética subdivide-se em duas partes: a **média aritmética simples**, aplicada quando todos os valores têm o mesmo peso, e a **média aritmética ponderada**, utilizada quando cada valor possui um peso ou frequência diferente, devendo esse peso ser tido em conta no cálculo.
+
+<center><details>
+<summary>📊 TIPO DE MÉDIA MÉDIA ARITMÉTICA</summary>
+<style>
+.r{font:14px system-ui;text-align:center}
+.r b{display:inline-block;padding:4px 10px;background:#333;color:#fff;border-radius:6px}
+.r i{display:block;width:2px;height:18px;background:#333;margin:0 auto}
+.r em{display:flex;gap:8px;justify-content:center;position:relative;padding-top:18px}
+.r em::before{content:'';position:absolute;top:0;left:25%;right:25%;height:2px;background:#333}
+.r em span{flex:1;padding:8px;border:2px solid #333;border-radius:8px;max-width:140px}
+.r em span::before{content:'';position:absolute;top:-18px;left:50%;width:2px;height:18px;background:#333}
+.r em span{position:relative}
+</style>
+<div class="r">
+  <b>Média Aritmética</b>
+  <i></i>
+  <em>
+    <span>Média Aritmética<br> Simples</span>
+    <span>Média Aritmética<br> Ponderada</span>
+  </em>
+</div>
+</details></center>
+
+### 2.1 Média Aritmética Simples
+
+&emsp;&emsp;&emsp;A média aritmética simples é a medida de tendência central mais elementar da Estatística. Define-se como o quociente entre a soma de todos os valores observados e o número total de elementos que constituem o conjunto de dados. Em termos simples, obtém-se somando todos os valores e dividindo o resultado pelo número de parcelas somadas.<br><br>
+
+**📐 Fórmula da Média Aritmética Simples para Dados Não Agrupados**
+
+$$
+\color{blue} \bar{x} = \frac{x_1 + x_2 + x_3 + \cdots + x_n}{n} = \frac{\sum_{i=1}^{n} x_i}{n}
+$$
+
+- **x̄** = média
+- **Σx** = somatório de todos os valores 
+- **n** = número total de elementos<br><br>
+
+&emsp;&emsp;&emsp;Quando os dados se repetem muitas vezes, não vale a pena somá-los um a um. Organiza-se uma **tabela de frequências** — cada valor aparece uma vez, acompanhado do número de vezes que se repete (a sua frequência). A média calcula-se somando os produtos de cada valor pela sua frequência e dividindo pelo total de dados.<br><br>
+
+**📐 Fórmula da Média Aritmética Simples para Dados Agrupados por Lista**
+
+$$
+\color{blue} \bar{x} = \frac{\sum_{i=1}^{k} x_i \cdot f_i}{\sum_{i=1}^{k} f_i}
+$$
+
+Onde:
+- **xᵢ** = cada valor distinto
+- **fᵢ** = frequência desse valor
+- **k** = número de valores distintos
+- **n = Σfᵢ** = total de dados<br><br>
+
+&emsp;&emsp;&emsp;Quando os dados estão agrupados em **classes (intervalos)**, não conhecemos os valores exatos dentro de cada classe. Assumimos então que os dados estão **uniformemente distribuídos** e representamos cada classe pelo seu **ponto médio**.<br><br>
+
+**📐 Fórmula Média Aritmética Simples para Dados Agrupados por Intervalo de Classe**
+
+$$
+\color{blue} \bar{x} = \frac{\sum_{i=1}^{k} x_i \cdot f_i}{\sum_{i=1}^{k} f_i}
+$$
+
+Onde:
+- **xᵢ** = **ponto médio** da classe: \( x_i = \frac{L_{inf} + L_{sup}}{2} \)
+- **fᵢ** = frequência da classe
+- **k** = número de classes
+
+
+
+<details>
+<summary>📌 Exemplo da Média Aritmética Simples para Dados Não Agrupados</summary></summary>
+
+
+Dados: As idades de 8 pessoas são: 23, 19, 31, 27, 22, 35, 29, 24. Qual é a idade média?
+
+- **Passo 1 (Rol):** 19, 22, 23, 24, 27, 29, 31, 35
+- **Passo 2 (Soma):** 19 + 22 + 23 + 24 + 27 + 29 + 31 + 35 = **210**
+- **Passo 3 (n):** 8 elementos
+- **Passo 4 (Divisão):** 210 ÷ 8 = **26,25**
+
+✅ A idade média é **26,25 anos**.
+</details>
+
+
+<details>
+<summary>📌 Exemplo Média Aritmética Simples para Dados Agrupados por Lista</summary></summary>
+
+**Problema:** As notas de 9 alunos foram: 4, 5, 5, 6, 6, 6, 7, 7, 8. Qual é a nota média?
+
+**Passo 1 — Construir a tabela de frequências:**
+
+| Valor (xᵢ) | Frequência (fᵢ) | xᵢ · fᵢ |
+|---------|---------|---------|
+| 4 | 1 | 4 |
+| 5 | 2 | 10 |
+| 6 | 3 | 18 |
+| 7 | 2 | 14 |
+| 8 | 1 | 8 |
+| **Total** | **9** | **54** |
+
+**Passo 2 — Aplicar a fórmula:**
+
+$$
+\bar{x} = \frac{54}{9} = \mathbf{6}
+$$
+
+✅ A nota média é **6**.
+
+> **🔍 Verificação:** Se somarmos os dados soltos: 4+5+5+6+6+6+7+7+8 = 54. Dividido por 9 = 6. **Dá o mesmo!**
+</details>
+
+<details>
+<summary>📌 Exemplo Média Aritmética Simples para Dados Agrupados por Intervalo de Classe</summary></summary>
+
+**Problema:** As notas de 20 alunos foram agrupadas nas seguintes classes:
+
+| Classe | Intervalo | fᵢ |
+|---------|---------|-----|
+| 1 | [4, 8[ | 7 |
+| 2 | [8, 12[ | 5 |
+| 3 | [12, 16[ | 5 |
+| 4 | [16, 20] | 3 |
+| **Total** | - | **20** |
+
+**Passo 1 — Calcular o ponto médio de cada classe:**
+
+| Classe | Intervalo | xᵢ (ponto médio) | fᵢ | xᵢ · fᵢ |
+|---------|---------|---------|-----|---------|
+| 1 | [4, 8[ | (4+8)/2 = 6 | 7 | 6 x 7 = 42 |
+| 2 | [8, 12[ | (8+12)/2 = 10 | 5 | 10 x 5 = 50 |
+| 3 | [12, 16[ | (12+16)/2 = 14 | 5 | 14 x 5 = 70 |
+| 4 | [16, 20] | (16+20)/2 = 18 | 3 | 18 x 3 = 54 |
+| **Total** | -  | - | **20** | **216** |
+
+**Passo 2 — Aplicar a fórmula:**
+
+$$
+\bar{x} = \frac{216}{20} = \mathbf{10{,}8}
+$$
+
+✅ A nota média é **10,8**.
+
+> **⚠️ Atenção:** Este valor é uma **aproximação**. Se usarmos os dados originais não agrupados, a média real é 9,95. A diferença existe porque perdemos informação ao agrupar.
+</details>
+
+### 2.2 Média Aritmética Ponderada
+
+&emsp;&emsp;&emsp;A **média aritmética ponderada** é calculada multiplicando cada valor pelo seu respectivo **peso**, somando esses produtos e dividindo pela **soma total dos pesos**. Ao contrário da média simples (onde todos os valores têm o mesmo peso), aqui cada valor contribui de forma diferente para o resultado final.<br><br>
+
+**📐 Fórmula da Média Aritmética Ponderada para Dados Não Agrupados**
+
+$$
+\color{blue} \bar{x}_p = \frac{\sum_{i=1}^{n} (x_i \cdot p_i)}{\sum_{i=1}^{n} p_i} = \frac{x_1 \cdot p_1 + x_2 \cdot p_2 + \cdots + x_n \cdot p_n}{p_1 + p_2 + \cdots + p_n}
+$$
+
+Onde:
+- **xᵢ** = valor
+- **pᵢ** = peso desse valor
+- **Σ(x·p)** = soma dos produtos
+- **Σp** = soma dos pesos<br><br>
+
+&emsp;&emsp;&emsp;Quando os dados estão numa **tabela de frequências**, a frequência \( f_i \) funciona como o **peso** de cada valor. A fórmula é exatamente a mesma da média ponderada — só muda a interpretação: o peso é a frequência.<br><br>
+
+**📐 Fórmula da Média Aritmética Ponderada para Dados Agrupados por Lista**
+
+$$
+\color{blue} \bar{x} = \frac{\sum_{i=1}^{k} x_i \cdot f_i}{\sum_{i=1}^{k} f_i}
+$$
+
+Onde:
+- **xᵢ** = cada valor distinto
+- **fᵢ** = frequência (peso) desse valor
+- **k** = número de valores distintos<br><br>
+
+
+&emsp;&emsp;&emsp;Quando os dados estão em **classes**, cada classe tem um **peso** (a sua frequência) e um **valor representativo** (o ponto médio). A média ponderada calcula-se multiplicando cada ponto médio pela frequência da classe.<br><br>
+
+**📐 Fórmula da Média Aritmética Ponderada para Dados Agrupados por Intervalo de Classe**
+
+$$
+\color{blue} \bar{x} = \frac{\sum_{i=1}^{k} x_i \cdot f_i}{\sum_{i=1}^{k} f_i}
+$$
+
+Onde:
+- **xᵢ** = **ponto médio** da classe: $\color{blue} x_i = \frac{L_{inf} + L_{sup}}{2}$
+- **fᵢ** = frequência (peso) da classe
+- **k** = número de classes<br><br>
+
+<details>
+<summary>📌 Exemplo Média Aritmética Ponderada para Dados Não Agrupados</summary>
+
+**Problema:** Um aluno fez 4 provas com os seguintes pesos:
+
+- Prova 1 (peso 1) → nota 18
+- Prova 2 (peso 2) → nota 22
+- Prova 3 (peso 3) → nota 15
+- Prova 4 (peso 4) → nota 20
+
+| Avaliação | Nota (x) | Peso (p) | x · p |
+|---------|---------|---------|---------|
+| Prova 1 | 18 | 1 | 18 |
+| Prova 2 | 22 | 2 | 44 |
+| Prova 3 | 15 | 3 | 45 |
+| Prova 4 | 20 | 4 | 80 |
+| **Total** | - | **10** | **187** |
+
+- **Passo 1 (Valores e pesos):** (18,1), (22,2), (15,3), (20,4)
+- **Passo 2 (Multiplicar):** 18×1=18 | 22×2=44 | 15×3=45 | 20×4=80
+- **Passo 3 (Soma dos produtos):** 18 + 44 + 45 + 80 = **187**
+- **Passo 4 (Soma dos pesos):** 1 + 2 + 3 + 4 = **10**
+- **Passo 5 (Divisão):** 187 ÷ 10 = **18,7**
+
+✅ A média ponderada é **18,7**.
+</details>
+
+<details>
+<summary>📌 Exemplo da Média Aritmética Ponderada para Dados Agrupados por Lista</summary>
+
+**Problema:** As notas de 10 alunos estão na tabela. Qual é a média?
+
+| Nota (xᵢ) | Frequência (fᵢ) | xᵢ · fᵢ |
+|---------|---------|---------|
+| 5 | 1 | 5 |
+| 6 | 3 | 18 |
+| 7 | 4 | 28 |
+| 8 | 2 | 16 |
+| **Total** | **10** | **67** |
+
+$$
+\bar{x} = \frac{67}{10} = \mathbf{6{,}7}
+$$
+
+✅ A nota média é **6,7**.
+
+> **🔍 Nota:** Repara que a **média aritmética simples para dados agrupados por lista** e a **média ponderada para dados agrupados por lista** são **a mesma coisa** — a frequência é o peso. A distinção só é útil para mostrar que a fórmula ponderada generaliza a simples.
+</details>
+
+<details>
+<summary>📌 Exemplo da Média Aritmética Ponderada para Dados Agrupados por Intervalo de Classe</summary>
+
+**Problema:** Os salários de 25 funcionários foram agrupados. Qual é o salário médio?
+
+| Classe | Intervalo | xᵢ (ponto médio) | fᵢ | xᵢ · fᵢ |
+|---------|---------|---------|-----|---------|
+| 1 | [1000, 1500[ | 1250 | 8 | 10 000 |
+| 2 | [1500, 2000[ | 1750 | 10 | 17 500 |
+| 3 | [2000, 2500[ | 2250 | 5 | 11 250 |
+| 4 | [2500, 3000] | 2750 | 2 | 5 500 |
+| **Total** | - | - | **25** | **44 250** |
+
+$$
+\bar{x} = \frac{44\,250}{25} = \mathbf{1\,770 \text{ kz}}
+$$
+
+✅ O salário médio é **1 770 kz**.
+</details>
+
+## 3. MÉDIA GEOMÉTRICA
+
+&emsp;&emsp;&emsp;A **média geométrica** é utilizada quando os dados representam **taxas de crescimento**, **proporções** ou **variações percentuais**. Diferente da média aritmética (que soma os valores), a média geométrica **multiplica** os valores e extrai a raiz enésima.<br><br>
+
+**📐 Fórmula da Média Geométrica para Dados Não Agrupados**
+
+$$
+\color{blue} G = \sqrt[n]{x_1 \cdot x_2 \cdot x_3 \cdots x_n} = \left( \prod_{i=1}^{n} x_i \right)^{1/n}
+$$
+
+Onde: 
+- **G** = média geométrica
+- **n** = número de elementos
+- **Π** = produtório <br><br>
+
+
+&emsp;&emsp;&emsp;Quando os valores se repetem, a média geométrica tem em conta a **frequência** de cada valor. Em vez de multiplicar o valor \( f_i \) vezes, eleva-se esse valor à potência \( f_i \).<br><br>
+
+**📐 Fórmula da Média Geométrica para Dados Agrupados por Lista**
+
+$$
+\color{blue} G = \sqrt[n]{\prod_{i=1}^{k} x_i^{f_i}} = \left( x_1^{f_1} \cdot x_2^{f_2} \cdots x_k^{f_k} \right)^{1/n}
+$$
+
+Onde:
+- **xᵢ** = cada valor distinto
+- **fᵢ** = frequência desse valor
+- **n = Σfᵢ** = total de dados
+- **k** = número de valores distintos<br><br>
+
+
+&emsp;&emsp;&emsp;Quando os dados estão em classes, usamos o **ponto médio** de cada classe como representante, e aplicamos a mesma lógica da lista.<br><br>
+
+**📐 Fórmula da Média Geométrica para Dados Agrupados por Intervalo de Classe**
+
+$$
+\color{blue} G = \sqrt[n]{\prod_{i=1}^{k} x_i^{f_i}}
+$$
+
+Onde:
+- **xᵢ** = ponto médio da classe
+- **fᵢ** = frequência da classe
+- **n = Σfᵢ** = total de dados
+
+<details>
+<summary>📌 Exemplo Média Geométrica para Dados Não Agrupados</summary>
+
+Uma empresa teve os seguintes crescimentos anuais de faturamento: 10%, 15%, 8% e 12%. Qual foi a taxa média anual de crescimento?
+
+- Passo 1 (Valores em fatores): 1,10; 1,15; 1,08; 1,12
+- Passo 2 (Multiplicar): 1,10 × 1,15 × 1,08 × 1,12 = **1,529**
+- Passo 3 (n): 4 períodos
+- Passo 4 (Raiz): ⁴√1,529 = **1,111**
+
+**Taxa média:** 1,111 − 1 = **11,1% ao ano**
+
+✅ A taxa média anual de crescimento foi de **11,1%**.
+</details>
+
+<details>
+<summary>📌 Exemplo da Média Geométrica para Dados Agrupados por Lista</summary>
+
+**Problema:** Os fatores de crescimento de uma empresa ao longo de 6 anos foram: 1,10 (2 vezes), 1,20 (3 vezes) e 1,50 (1 vez). Qual foi o fator médio de crescimento?
+
+**Passo 1 — Tabela de frequências:**
+
+| Fator (xᵢ) | fᵢ | xᵢ^fᵢ |
+|---------|-----|---------|
+| 1,10 | 2 | 1,10² = 1,21 |
+| 1,20 | 3 | 1,20³ = 1,728 |
+| 1,50 | 1 | 1,50¹ = 1,50 |
+| **Total** | **6** | |
+
+**Passo 2 — Produto:**
+
+$$
+1{,}21 \times 1{,}728 \times 1{,}50 = 3{,}136
+$$
+
+**Passo 3 — Raiz de ordem n = 6:**
+
+$$
+G = \sqrt[6]{3{,}136} = \mathbf{1{,}210}
+$$
+
+**Taxa média:** 1,210 − 1 = **21,0% ao ano**
+
+✅ O fator médio de crescimento foi **1,210** (21,0% ao ano).
+</details>
+
+<details>
+<summary>📌 Exemplo da Média Geométrica para Dados Agrupados por Intervalo de Classe</summary>
+
+**Problema:** Os fatores de crescimento de uma empresa em 20 períodos foram agrupados:
+
+| Classe | Intervalo | xᵢ (ponto médio) | fᵢ |
+|---------|---------|---------|-----|
+| 1 | [1,00; 1,10[ | 1,05 | 7 |
+| 2 | [1,10; 1,20[ | 1,15 | 5 |
+| 3 | [1,20; 1,30[ | 1,25 | 5 |
+| 4 | [1,30; 1,40] | 1,35 | 3 |
+| **Total** | | | **20** |
+
+**Passo 1 — Calcular xᵢ^fᵢ:**
+
+| xᵢ | fᵢ | xᵢ^fᵢ |
+|-----|-----|---------|
+| 1,05 | 7 | 1,05⁷ ≈ 1,4071 |
+| 1,15 | 5 | 1,15⁵ ≈ 2,0114 |
+| 1,25 | 5 | 1,25⁵ ≈ 3,0518 |
+| 1,35 | 3 | 1,35³ ≈ 2,4604 |
+
+**Passo 2 — Produto:**
+
+$$
+1{,}4071 \times 2{,}0114 \times 3{,}0518 \times 2{,}4604 \approx 21{,}27
+$$
+
+**Passo 3 — Raiz de ordem n = 20:**
+
+$$
+G = \sqrt[20]{21{,}27} \approx \mathbf{1{,}165}
+$$
+
+**Taxa média:** 1,165 − 1 = **16,5% ao período**
+
+✅ O fator médio de crescimento foi **1,165** (16,5% ao período).
+</details>
+
+## 4. MÉDIA HARMÔNICA
+
+&emsp;&emsp;&emsp;A **média harmônica** é utilizada quando os dados representam **taxas**, **velocidades** ou **razões inversas**. Ela é o **inverso da média aritmética dos inversos**.<br><br>
+
+**📐 Fórmula da Média Harmônica para Dados Não Agrupados**
+
+$$
+\color{blue} H = \frac{n}{\frac{1}{x_1} + \frac{1}{x_2} + \frac{1}{x_3} + \cdots + \frac{1}{x_n}} = \frac{n}{\sum_{i=1}^{n} \frac{1}{x_i}}
+$$
+
+Onde: 
+- **H** = média harmônica
+- **n** = número de elementos
+- **Σ(1/xᵢ)** = soma dos inversos<br><br>
+
+Quando os valores se repetem, a média harmônica tem em conta a frequência de cada valor.
+
+**📐 Fórmula da Média Harmônica para Dados Agrupados por Lista **
+
+$$
+\color{blue} H = \frac{n}{\sum_{i=1}^{k} \frac{f_i}{x_i}}
+$$
+
+Onde:
+- **xᵢ** = cada valor distinto
+- **fᵢ** = frequência desse valor
+- **n = Σfᵢ** = total de dados
+- **k** = número de valores distintos<br><br>
+
+
+Quando os dados estão em classes, usamos o **ponto médio** de cada classe.
+
+**📐 Fórmula da Média Harmônica para Dados Agrupados por Intervalo de Classe**
+
+$$
+\color{blue} H = \frac{n}{\sum_{i=1}^{k} \frac{f_i}{x_i}}
+$$
+
+Onde:
+- **xᵢ** = ponto médio da classe
+- **fᵢ** = frequência da classe
+- **n = Σfᵢ** = total de dados
+
+<details>
+<summary>📌 Exemplo da Média Harmônica para Dados Não Agrupados</summary>
+
+Um carro viaja de uma cidade A para uma cidade B a **60 km/h** e volta pela mesma estrada a **40 km/h**. Qual foi a **velocidade média** de todo o percurso?
+
+- Passo 1 (Valores): 60 e 40 km/h
+- Passo 2 (Inversos): 1/60 = 0,0167 | 1/40 = 0,025
+- Passo 3 (Soma dos inversos): 0,0167 + 0,025 = **0,0417**
+- Passo 4 (n): 2 valores
+- Passo 5 (Divisão): H = 2 / 0,0417 = **48 km/h**
+
+✅ A velocidade média do percurso foi de **48 km/h**.
+
+> **Comparação:** A média aritmética seria (60+40)/2 = 50 km/h. A média harmônica (48 km/h) é a correta porque o percurso tem a mesma distância nos dois trechos!
+</details> 
+
+<details>
+<summary>📌 Exemplo da Média Harmônica para Dados Agrupados por Lista</summary>
+
+**Problema:** Um carro fez 5 viagens de igual distância: 2 viagens a 60 km/h e 3 viagens a 40 km/h. Qual foi a velocidade média?
+
+**Passo 1 — Tabela de frequências:**
+
+| Velocidade (xᵢ) | fᵢ | fᵢ / xᵢ |
+|---------|-----|---------|
+| 60 | 2 | 2/60 = 0,0333 |
+| 40 | 3 | 3/40 = 0,0750 |
+| **Total** | **5** | **0,1083** |
+
+**Passo 2 — Aplicar a fórmula:**
+
+$$
+H = \frac{5}{0{,}1083} \approx \mathbf{46{,}15 \text{ km/h}}
+$$
+
+✅ A velocidade média foi **46,15 km/h**.
+
+> **🔍 Nota:** Não é 48 km/h (que seria o caso de 1 ida e 1 volta). Como há mais viagens a 40 km/h, a média harmônica aproxima-se mais desse valor.
+</details>
+
+<details>
+<summary>📌 Exemplo da Média Harmônica para Dados Agrupados por Intervalo de Classe</summary>
+
+**Problema:** As velocidades de 20 viagens de igual distância foram agrupadas:
+
+| Classe | Intervalo | xᵢ (ponto médio) | fᵢ |
+|---------|---------|---------|-----|
+| 1 | [30, 40[ | 35 | 4 |
+| 2 | [40, 50[ | 45 | 8 |
+| 3 | [50, 60[ | 55 | 5 |
+| 4 | [60, 70] | 65 | 3 |
+| **Total** | | | **20** |
+
+**Passo 1 — Calcular fᵢ / xᵢ:**
+
+| xᵢ | fᵢ | fᵢ / xᵢ |
+|-----|-----|---------|
+| 35 | 4 | 4/35 ≈ 0,1143 |
+| 45 | 8 | 8/45 ≈ 0,1778 |
+| 55 | 5 | 5/55 ≈ 0,0909 |
+| 65 | 3 | 3/65 ≈ 0,0462 |
+| **Total** | **20** | **0,4292** |
+
+**Passo 2 — Aplicar a fórmula:**
+
+$$
+H = \frac{20}{0{,}4292} \approx \mathbf{46{,}60 \text{ km/h}}
+$$
+
+✅ A velocidade média foi **46,60 km/h**.
+
+> **⚠️ Atenção:** Este valor é uma **aproximação**, pois usámos os pontos médios das classes em vez dos valores exatos.
+</details>
+
+<details>
+<summary> Exemplo no R</summary>
+```R
+# Dados de exemplo
+notas <- c(4, 5, 5, 6, 6, 6, 7, 7, 8)
+pesos <- c(1, 2, 3, 4, 5, 6, 7, 8, 9)
+
+- _Média Aritmética Simples_
+media_arit <- mean(notas)
+media_arit
+
+- _Média Aritmética Ponderada_
+media_pond <- weighted.mean(notas, pesos)
+media_pond
+
+- _Média Geométrica_
+media_geo <- exp(mean(log(notas)))
+media_geo
+```
+</details>
+
+<details>
+<summary>🐍 Exemplo no Python</summary>
+
+```python
+import numpy as np
+import pandas as pd
+from scipy.stats import gmean, hmean
+
+- _Dados de exemplo_
+notas = pd.Series([4, 5, 5, 6, 6, 6, 7, 7, 8])
+pesos = pd.Series([1, 2, 3, 4, 5, 6, 7, 8, 9])
+
+- _Média Aritmética Simples_
+media_arit = notas.mean()
+print(media_arit)
+
+- _Média Aritmética Ponderada_
+media_pond = np.average(notas, weights=pesos)
+print(media_pond)
+
+- _Média Geométrica_
+media_geo = gmean(notas)
+print(media_geo)
+
+- _Média Harmônica_
+media_har = hmean(notas)
+print(media_har)
+```
+</details>
+
+## Tabela Comparativa dos Três Ferramentas
+
+| Operação | Excel | R | Python |
+|----------|-------|---|--------|
+| **Média Aritmética Simples** | `=MÉDIA(intervalo)` | `mean(x)` | `x.mean()` ou `np.mean(x)` |
+| **Média Aritmética Ponderada** | `=SOMARPRODUTO(x; p)/SOMA(p)` | `weighted.mean(x, p)` | `np.average(x, weights=p)` |
+| **Média Geométrica** | `=MÉDIA.GEOMÉTRICA(intervalo)` | `exp(mean(log(x)))` ou `geometric.mean(x)` | `gmean(x)` |
+| **Média Harmônica** | `=MÉDIA.HARMÔNICA(intervalo)` | `1/mean(1/x)` ou `harmonic.mean(x)` | `hmean(x)` |
+
+## 5. EXERCÍCIOS
+
+<details>
+<summary>📗 Exercício 1 — Média Aritmética Simples</summary>
+
+**Enunciado:** Calcule a média aritmética simples dos seguintes números: 12, 15, 18, 22, 25, 28.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+Soma = 12 + 15 + 18 + 22 + 25 + 28 = 120
+
+n = 6
+
+Média = 120 / 6 = **20**
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Média Aritmética Simples para Dados Agrupados por Lista</summary>
+
+**Enunciado:** Calcule a média da tabela de frequências abaixo.
+
+| Valor (xᵢ) | Frequência (fᵢ) |
+|---------|---------|
+| 10 | 2 |
+| 20 | 5 |
+| 30 | 4 |
+| 40 | 1 |
+| **Total** | **12** |
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+| xᵢ | fᵢ | xᵢ · fᵢ |
+|-----|-----|---------|
+| 10 | 2 | 20 |
+| 20 | 5 | 100 |
+| 30 | 4 | 120 |
+| 40 | 1 | 40 |
+| **Total** | **12** | **280** |
+
+Média = 280 / 12 = **23,33**
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Média Aritmética Simples para Dados Agrupados por Intervalo</summary>
+
+**Enunciado:** Calcule a média das notas agrupadas abaixo.
+
+| Classe | Intervalo | fᵢ |
+|---------|---------|-----|
+| 1 | [0, 5[ | 4 |
+| 2 | [5, 10[ | 8 |
+| 3 | [10, 15[ | 6 |
+| 4 | [15, 20] | 2 |
+| **Total** | | **20** |
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+| Classe | xᵢ | fᵢ | xᵢ · fᵢ |
+|---------|---------|-----|---------|
+| [0, 5[ | 2,5 | 4 | 10 |
+| [5, 10[ | 7,5 | 8 | 60 |
+| [10, 15[ | 12,5 | 6 | 75 |
+| [15, 20] | 17,5 | 2 | 35 |
+| **Total** | | **20** | **180** |
+
+Média = 180 / 20 = **9**
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Média Aritmética Ponderada</summary>
+
+**Enunciado:** Um aluno teve as seguintes notas: Prova 1 (peso 1) = 7,0; Prova 2 (peso 2) = 8,5; Trabalho (peso 3) = 9,0. Calcule a média ponderada.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+| Avaliação | Nota (x) | Peso (p) | x · p |
+|---------|---------|---------|---------|
+| Prova 1 | 7,0 | 1 | 7,0 |
+| Prova 2 | 8,5 | 2 | 17,0 |
+| Trabalho | 9,0 | 3 | 27,0 |
+| **Total** | | **6** | **51,0** |
+
+Média = 51,0 / 6 = **8,5**
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Média Geométrica</summary>
+
+**Enunciado:** Calcule a média geométrica dos números: 2, 8, 4, 16.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+Produto = 2 × 8 × 4 × 16 = 1024
+
+n = 4
+
+G = ⁴√1024 = **5,66**
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Média Geométrica para Dados Agrupados por Lista</summary>
+
+**Enunciado:** Os fatores de crescimento de uma empresa durante 5 anos foram: 1,10 (2 vezes), 1,20 (2 vezes) e 1,50 (1 vez). Calcule o fator médio de crescimento.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+| xᵢ | fᵢ | xᵢ^fᵢ |
+|-----|-----|---------|
+| 1,10 | 2 | 1,21 |
+| 1,20 | 2 | 1,44 |
+| 1,50 | 1 | 1,50 |
+| **Total** | **5** | |
+
+Produto = 1,21 × 1,44 × 1,50 = 2,6136
+
+G = ⁵√2,6136 ≈ **1,212**
+
+Taxa média = 1,212 − 1 = **21,2% ao ano**
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — Média Harmônica</summary>
+
+**Enunciado:** Uma pessoa viajou de ida a 80 km/h e volta a 50 km/h. Qual foi a velocidade média do percurso?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+H = 2 / (1/80 + 1/50)
+
+H = 2 / (0,0125 + 0,02)
+
+H = 2 / 0,0325 = **61,54 km/h**
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — Média Harmônica para Dados Agrupados por Lista</summary>
+
+**Enunciado:** Um carro fez 6 viagens de igual distância: 2 a 80 km/h e 4 a 60 km/h. Qual foi a velocidade média?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+| xᵢ | fᵢ | fᵢ / xᵢ |
+|-----|-----|---------|
+| 80 | 2 | 0,025 |
+| 60 | 4 | 0,0667 |
+| **Total** | **6** | **0,0917** |
+
+H = 6 / 0,0917 ≈ **65,45 km/h**
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 9 — Identificando a Média Correta</summary>
+
+**Enunciado:** Identifique qual tipo de média (Aritmética, Geométrica ou Harmônica) é mais adequada para cada situação:
+
+a) Calcular o salário médio de uma empresa
+
+b) Calcular a taxa média de inflação de um período
+
+c) Calcular a velocidade média de uma viagem com distâncias iguais
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) **Média Aritmética** — dados homogéneos sem pesos diferentes
+
+b) **Média Geométrica** — taxas de crescimento/variação percentual
+
+c) **Média Harmônica** — velocidades médias com distâncias iguais
+
+</details>
+</details>
+
+> A média é o ponto de equilíbrio dos dados — ela resume em um único número a essência de todo um conjunto. Mas escolher a média certa é tão importante quanto calculá-la: a média errada conta a história errada.

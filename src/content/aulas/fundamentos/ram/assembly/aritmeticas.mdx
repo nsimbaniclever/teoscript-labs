@@ -1,0 +1,348 @@
+# INSTRUÇÕES ARITMÉTICAS
+
+## 1. INTRODUÇÃO
+
+Nas aulas anteriores, estudamos a memória — onde os dados ficam armazenados. Vimos a hierarquia que vai dos registradores (mais rápidos) até a memória virtual (mais lenta). Mas a memória é apenas o palco. O que realmente importa é o que a CPU faz com os dados armazenados nela.<br><br>
+
+A CPU (Unidade Central de Processamento) é o cérebro do computador. Sua função principal é **executar instruções**. E entre as instruções mais básicas e fundamentais estão as **instruções aritméticas** — operações matemáticas como soma, subtração, multiplicação e divisão.<br><br>
+
+Imagine que a CPU é uma grande calculadora. Os números estão na memória (RAM), e a CPU os busca, realiza cálculos e coloca os resultados de volta na memória ou em registradores. Essas operações matemáticas são a base de tudo que um computador faz: desde somar 1+1 em uma planilha até calcular a física de um jogo ou renderizar um filme em 3D.<br><br>
+
+Nesta aula, vamos estudar as instruções aritméticas em Assembly — a linguagem mais próxima do hardware. Vamos entender como a CPU soma, subtrai, multiplica e divide, e como essas operações são representadas no nível mais baixo da programação.
+
+## 2. O QUE SÃO INSTRUÇÕES ARITMÉTICAS?
+
+### 2.1 Definição
+
+> "Instruções aritméticas são operações matemáticas básicas executadas pela CPU sobre dados armazenados em registradores ou na memória, incluindo soma, subtração, multiplicação, divisão e incremento/decremento."
+
+### 2.2 Instruções aritméticas básicas
+
+| Instrução | Operação | Exemplo | Significado |
+|---------|---------|---------|---------|
+| **ADD** | Soma (Addition) | `ADD R1, R2, R3` | R1 = R2 + R3 |
+| **SUB** | Subtração (Subtraction) | `SUB R1, R2, R3` | R1 = R2 - R3 |
+| **MUL** | Multiplicação (Multiplication) | `MUL R1, R2, R3` | R1 = R2 × R3 |
+| **DIV** | Divisão (Division) | `DIV R1, R2, R3` | R1 = R2 ÷ R3 |
+| **INC** | Incremento (Increment) | `INC R1` | R1 = R1 + 1 |
+| **DEC** | Decremento (Decrement) | `DEC R1` | R1 = R1 - 1 |
+
+### 2.3 Analogia
+
+As instruções aritméticas são como as **operações básicas de uma calculadora**. Quando você aperta "+" em uma calculadora, ela soma dois números. A CPU faz a mesma coisa, mas com números binários e em velocidades de bilhões de operações por segundo.
+
+## 3. COMO A CPU EXECUTA UMA INSTRUÇÃO ARITMÉTICA?
+
+### 3.1 O ciclo de instrução (Fetch-Decode-Execute)
+
+Toda instrução passa por três fases:
+
+1. **Fetch (Busca):** A CPU busca a instrução na memória.
+2. **Decode (Decodificação):** A CPU decodifica a instrução para entender o que fazer.
+3. **Execute (Execução):** A CPU executa a instrução (ex: soma dois números).
+
+### 3.2 Exemplo: ADD R1, R2, R3
+
+<details>
+<summary> **Ciclo da instrução ADD**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+1. FETCH: CPU busca "ADD R1, R2, R3" na memória
+         │
+         ▼
+2. DECODE: CPU entende que:
+           - Operação: ADD (soma)
+           - Destino: R1
+           - Operandos: R2 e R3
+         │
+         ▼
+3. EXECUTE: CPU pega os valores de R2 e R3,
+            soma,
+            coloca o resultado em R1
+    </pre>
+</details>
+
+### 3.3 Diagrama: Execução de uma instrução aritmética
+
+<details>
+<summary> **ALU — Unidade Lógica e Aritmética**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+┌─────────────────────────────────────────────────────────────┐
+│                       UNIDADE LÓGICA E ARITMÉTICA (ULA)    │
+│                                                             │
+│   R2 (valor) ──────┐                                       │
+│                     │                                       │
+│   R3 (valor) ──────┼────► [  ADD  ] ──► R1 (resultado)   │
+│                     │                                       │
+│   Sinal de controle ─┘                                       │
+│   (determina a operação)                                    │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+    </pre>
+</details>
+
+A ALU (Unidade Lógica e Aritmética) é o componente da CPU que executa as operações aritméticas e lógicas.
+
+## 4. INSTRUÇÕES ARITMÉTICAS EM ASSEMBLY
+
+### 4.1 Sintaxe básica
+
+A sintaxe geral de uma instrução aritmética em Assembly é:
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+OP Destino, Operando1, Operando2
+</pre>
+
+Onde:
+- **OP:** A operação (ADD, SUB, MUL, DIV, etc.)
+- **Destino:** Registrador que recebe o resultado
+- **Operando1:** Primeiro valor da operação
+- **Operando2:** Segundo valor da operação
+
+### 4.2 Exemplos práticos
+
+**Soma:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+ADD R1, R2, R3    ; R1 = R2 + R3
+</pre>
+
+Se R2 = 10 e R3 = 20, então R1 = 30.
+
+**Subtração:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+SUB R1, R2, R3    ; R1 = R2 - R3
+</pre>
+
+Se R2 = 30 e R3 = 10, então R1 = 20.
+
+**Multiplicação:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+MUL R1, R2, R3    ; R1 = R2 × R3
+</pre>
+
+Se R2 = 5 e R3 = 4, então R1 = 20.
+
+**Divisão:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+DIV R1, R2, R3    ; R1 = R2 ÷ R3
+</pre>
+
+Se R2 = 20 e R3 = 4, então R1 = 5.
+
+**Incremento:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+INC R1            ; R1 = R1 + 1
+</pre>
+
+Se R1 = 5, então R1 = 6.
+
+**Decremento:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+DEC R1            ; R1 = R1 - 1
+</pre>
+
+Se R1 = 5, então R1 = 4.
+
+### 4.3 Variações de sintaxe (diferentes processadores)
+
+Diferentes arquiteturas de processador têm sintaxes diferentes:
+
+| Arquitetura | Soma | Subtração |
+|---------|---------|---------|
+| **ARM** | `ADD R1, R2, R3` | `SUB R1, R2, R3` |
+| **x86 (Intel)** | `ADD EAX, EBX` | `SUB EAX, EBX` |
+| **MIPS** | `add $t0, $t1, $t2` | `sub $t0, $t1, $t2` |
+
+**Observação:** Em x86, o destino é o primeiro operando (ADD destino, fonte). Em ARM e MIPS, o destino é o primeiro registrador listado.
+
+## 5. COMO A CPU LIDA COM NÚMEROS NEGATIVOS?
+
+### 5.1 O problema dos números negativos
+
+A CPU só entende binário (0s e 1s). Como representar números negativos?
+
+**Solução:** Complemento de 2 (que vimos no módulo de sistemas numéricos).
+
+### 5.2 Exemplo: Soma com números negativos
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+R2 = 10  (0000 1010)
+R3 = -5  (1111 1011 em complemento de 2)
+
+ADD R1, R2, R3
+</pre>
+
+A CPU soma 10 + (-5) = 5.
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+  0000 1010  (10)
++ 1111 1011  (-5)
+= 0000 0101  (5) ✅
+</pre>
+
+### 5.3 Flags (indicadores) da ALU
+
+A ALU gera flags após cada operação:
+
+| Flag | Descrição | Exemplo |
+|---------|---------|---------|
+| **Z (Zero)** | Resultado é zero | 5 - 5 = 0 → Z = 1 |
+| **N (Negative)** | Resultado é negativo | 5 - 10 = -5 → N = 1 |
+| **C (Carry)** | Houve "vai-um" (overflow) | 255 + 1 = 256 → C = 1 (em 8 bits) |
+| **V (Overflow)** | Estouro de sinal | 127 + 1 = -128 (em 8 bits com sinal) |
+
+Essas flags são usadas por instruções de desvio condicional (que veremos na próxima aula).
+
+## 6. APLICAÇÕES REAIS
+
+| Aplicação | Como usa instruções aritméticas |
+|---------|----------|
+| **Planilhas (Excel, Google Sheets)** | Somar, subtrair, multiplicar, dividir células |
+| **Jogos** | Calcular física (velocidade, posição, colisão) |
+| **Renderização 3D** | Transformações matemáticas (rotação, escala, translação) |
+| **Compressão de dados** | Operações matemáticas para compactar arquivos |
+| **Criptografia** | Operações aritméticas em números grandes |
+| **Inteligência Artificial** | Multiplicação de matrizes (soma + multiplicação) |
+| **Processamento de áudio/vídeo** | Operações matemáticas em amostras de áudio |
+
+**Exemplo prático:** A cada frame de um jogo, a CPU executa milhões de instruções aritméticas para calcular posições de objetos, detectar colisões, aplicar física e renderizar gráficos.
+
+## 7. EXERCÍCIOS
+
+<details>
+<summary>📗 Exercício 1 — ADD (Fácil)</summary>
+
+**Enunciado:** Se R2 = 15 e R3 = 27, qual será o valor de R1 após a execução de `ADD R1, R2, R3`?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** R1 = 15 + 27 = 42
+
+**Explicação:** A instrução ADD soma R2 e R3 e coloca o resultado em R1.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — SUB (Fácil)</summary>
+
+**Enunciado:** Se R2 = 50 e R3 = 23, qual será o valor de R1 após a execução de `SUB R1, R2, R3`?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** R1 = 50 - 23 = 27
+
+**Explicação:** A instrução SUB subtrai R3 de R2 e coloca o resultado em R1.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — MUL (Fácil)</summary>
+
+**Enunciado:** Se R2 = 7 e R3 = 8, qual será o valor de R1 após a execução de `MUL R1, R2, R3`?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** R1 = 7 × 8 = 56
+
+**Explicação:** A instrução MUL multiplica R2 por R3 e coloca o resultado em R1.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — DIV (Fácil)</summary>
+
+**Enunciado:** Se R2 = 100 e R3 = 4, qual será o valor de R1 após a execução de `DIV R1, R2, R3`?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** R1 = 100 ÷ 4 = 25
+
+**Explicação:** A instrução DIV divide R2 por R3 e coloca o resultado em R1.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — INC e DEC (Médio)</summary>
+
+**Enunciado:** Se R1 = 10, qual será o valor de R1 após executar `INC R1` seguido de `INC R1` e depois `DEC R1`?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** R1 = 11
+
+**Explicação:** 
+1. R1 = 10 + 1 = 11 (INC)
+2. R1 = 11 + 1 = 12 (INC)
+3. R1 = 12 - 1 = 11 (DEC)
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Múltiplas operações (Médio)</summary>
+
+**Enunciado:** Dado R2 = 10, R3 = 5, R4 = 3, calcule R1 após a execução de:
+1. `ADD R1, R2, R3`
+2. `SUB R1, R1, R4`
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** R1 = 12
+
+**Explicação:**
+1. R1 = 10 + 5 = 15
+2. R1 = 15 - 3 = 12
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — Flags (Difícil)</summary>
+
+**Enunciado:** Considere uma CPU de 8 bits. Se R2 = 255 e R3 = 1, qual será o resultado de `ADD R1, R2, R3` e qual flag será ativada?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** 
+- Resultado: R1 = 0 (em 8 bits, 255 + 1 = 256 → 0 com carry)
+- Flag ativada: **C (Carry)** — houve "vai-um" além dos 8 bits.
+
+**Explicação:** Em uma CPU de 8 bits, o maior número que pode ser representado é 255 (1111 1111). 255 + 1 = 256, que não cabe em 8 bits, então o resultado é 0 e a flag Carry é ativada.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — Expressão aritmética em Assembly (Desafio)</summary>
+
+**Enunciado:** Escreva uma sequência de instruções Assembly para calcular: `X = (A + B) - (C × D)`
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** (usando ARM Assembly)
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+; R1 = A, R2 = B, R3 = C, R4 = D
+ADD R5, R1, R2     ; R5 = A + B
+MUL R6, R3, R4     ; R6 = C × D
+SUB R7, R5, R6     ; R7 = (A + B) - (C × D)
+</pre>
+
+**Explicação:** 
+1. Soma A e B → guarda em R5.
+2. Multiplica C e D → guarda em R6.
+3. Subtrai os resultados → guarda em R7 (que representa X).
+</details>
+</details>
+
+> Instruções aritméticas são o coração matemático da CPU. ADD, SUB, MUL, DIV — com apenas essas operações básicas, a CPU pode executar qualquer cálculo, desde uma simples soma até a física de um jogo em 3D. A ALU (Unidade Lógica e Aritmética) é a responsável por executar essas operações em nanossegundos, bilhões de vezes por segundo. As instruções aritméticas são a base de toda a computação. Sem elas, não haveria planilhas, jogos, renderização 3D, criptografia ou inteligência artificial. Tudo o que um computador faz, em última análise, se resume a operações aritméticas e lógicas executadas em alta velocidade.

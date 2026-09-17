@@ -1,0 +1,287 @@
+# AUTOVALORES E FEDERATED LEARNING (FL)
+
+## 1. Definição
+
+### 1.1 Por que Autovalores são Importantes no FL?
+
+No Federated Learning, os autovalores aparecem em dois contextos principais:
+
+1. **Análise de convergência do FedAvg** — a taxa de convergência é determinada pelos autovalores da Hessiana.
+2. **Detecção de anomalias** — autovalores atípicos podem indicar clientes maliciosos ou dados heterogêneos.
+
+### 1.2 FedAvg como Sistema Dinâmico
+
+O FedAvg pode ser aproximado por:
+
+$$
+\vec{w}_{t+1} = \vec{w}_t - \eta \nabla L(\vec{w}_t)
+$$
+
+Linearizando em torno do mínimo $\vec{w}^*$:
+
+$$
+\vec{w}_{t+1} - \vec{w}^* \approx (I - \eta H)(\vec{w}_t - \vec{w}^*)
+$$
+
+Onde $H = \nabla^2 L(\vec{w}^*)$ é a **Hessiana** (matriz de segundas derivadas).
+
+**Autovalores da matriz de transição:**
+
+$$
+\lambda_i = 1 - \eta \mu_i
+$$
+
+Onde $\mu_i$ são os autovalores da Hessiana.
+
+### 1.3 Condição de Convergência do FedAvg
+
+Para convergência, precisamos:
+
+$$
+|1 - \eta \mu_i| < 1 \quad \text{para todos } i
+$$
+
+**Condição para o passo $\eta$:**
+
+$$
+0 < \eta < \frac{2}{\mu_{max}}
+$$
+
+**Número de condição:**
+
+$$
+\kappa = \frac{\mu_{max}}{\mu_{min}}
+$$
+
+**Interpretação:**
+- Quanto maior $\kappa$, mais lenta a convergência.
+- $\kappa$ mede a "dificuldade" do problema de otimização.
+
+## 2. Detecção de Anomalias via Autovalores
+
+### 2.1 A Ideia
+
+Em FL, clientes maliciosos podem enviar atualizações que **distorcem** a distribuição dos dados.
+
+**Teste:** Calcular os autovalores da matriz de covariância das atualizações dos clientes. Autovalores **atípicos** (muito grandes ou muito pequenos) podem indicar anomalias.
+
+### 2.2 Exemplo
+
+Suponha que 5 clientes enviem as seguintes atualizações (em $\mathbb{R}^2$):
+
+$$
+\vec{w}_1 = (1, 2), \vec{w}_2 = (2, 3), \vec{w}_3 = (3, 4), \vec{w}_4 = (4, 5), \vec{w}_5 = (100, 200)
+$$
+
+**Observação:** O cliente 5 é claramente atípico.
+
+**Matriz de covariância das atualizações:**
+
+$$
+\Sigma = \frac{1}{5} \sum_{i=1}^5 (\vec{w}_i - \vec{\mu})(\vec{w}_i - \vec{\mu})^T
+$$
+
+**Autovalores de $\Sigma$:**
+- $\lambda_1 \approx 0.5$ (variação normal)
+- $\lambda_2 \approx 5000$ (variação atípica — cliente malicioso!)
+
+**Interpretação:** O autovalor grande indica que há uma direção com alta variância, causada pelo cliente malicioso.
+
+## 3. Exemplos Lúdicos Aprimorados
+
+### 🍔 EXEMPLO 1 – A LANCHONETE (ANÁLISE DE CONVERGÊNCIA)
+
+A lanchonete tem uma Hessiana com autovalores:
+$$
+\mu_1 = 10, \mu_2 = 0.1
+$$
+
+**Número de condição:** $\kappa = \frac{10}{0.1} = 100$
+
+**Interpretação:** O problema é mal condicionado — a convergência será lenta.
+
+**Solução:** Usar **pré-condicionamento** ou **normalização** para reduzir $\kappa$.
+
+### 🧃 EXEMPLO 2 – A CANTINA (DETECÇÃO DE ANOMALIA)
+
+A cantina tem 5 clientes com atualizações:
+
+$$
+\vec{w}_1 = (1, 2), \vec{w}_2 = (2, 3), \vec{w}_3 = (3, 4), \vec{w}_4 = (4, 5), \vec{w}_5 = (100, 200)
+$$
+
+**Autovalores da covariância:** $\lambda_1 \approx 0.5, \lambda_2 \approx 5000$
+
+**Interpretação:** O autovalor $5000$ indica que o cliente 5 é um **outlier** (anomalia). A cantina pode **ignorar** esse cliente na agregação.
+
+## 4. Aplicações Práticas em FL
+
+### 4.1 Redução de Dimensionalidade Local
+
+Em FL, cada cliente pode ter dados de alta dimensão. Usando PCA local (baseado nos autovalores da covariância local), cada cliente pode reduzir a dimensionalidade antes de enviar as atualizações.
+
+**Interpretação:** Os autovalores indicam quais direções são mais importantes para cada cliente.
+
+### 4.2 Detecção de Heterogeneidade
+
+A **heterogeneidade** dos dados entre clientes pode ser medida pela **variância** dos autovalores locais.
+
+**Interpretação:** Se os autovalores variam muito entre clientes, os dados são heterogêneos — o FedAvg pode ter dificuldade.
+
+## 5. Resumo Estruturado
+
+| Conceito | Definição | Aplicação em FL |
+|----------|-----------|-----------------|
+| **Hessiana** | Matriz de segundas derivadas | Análise de convergência do FedAvg |
+| **Número de condição** | $\kappa = \mu_{max} / \mu_{min}$ | Mede a dificuldade do problema |
+| **Autovalores da covariância** | Variância das atualizações | Detecção de anomalias |
+| **PCA local** | Autovetores da covariância local | Redução de dimensionalidade |
+
+## 6. Exercícios Propostos (Manuais)
+
+<details>
+<summary>📗 Exercício 1 (Convergência do FedAvg)</summary>
+
+**Enunciado:** Uma Hessiana tem autovalores $\mu_1 = 8, \mu_2 = 0.5$.
+
+a) Calcule o número de condição.  
+b) Qual é o passo $\eta$ máximo para convergência?  
+c) Qual é a taxa de convergência com $\eta = 0.15$?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\kappa = \frac{8}{0.5} = 16$
+
+b) $\eta < \frac{2}{8} = 0.25$
+
+c) Com $\eta = 0.15$: $\lambda_1 = 1 - 0.15 \cdot 8 = 1 - 1.2 = -0.2$ (módulo 0.2)  
+$\lambda_2 = 1 - 0.15 \cdot 0.5 = 0.925$
+
+Taxa de convergência: $0.925$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 (Detecção de Anomalia)</summary>
+
+**Enunciado:** Você tem 4 clientes com as seguintes atualizações (em $\mathbb{R}^2$):
+
+$$
+\vec{w}_1 = (1, 1), \vec{w}_2 = (2, 2), \vec{w}_3 = (3, 3), \vec{w}_4 = (10, 0)
+$$
+
+a) Qual cliente parece ser uma anomalia?  
+b) Como os autovalores da covariância podem ajudar a detectar isso?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) Cliente 4 $(10, 0)$ — está muito distante dos outros (que estão na reta $y = x$).
+
+b) A covariância terá um autovalor grande na direção do cliente 4, indicando a anomalia.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 (Redução de Dimensionalidade)</summary>
+
+**Enunciado:** Um cliente tem dados com matriz de covariância:
+$$
+\Sigma = \begin{bmatrix} 5 & 1 \\ 1 & 1 \end{bmatrix}
+$$
+
+a) Calcule os autovalores.  
+b) Qual é a direção de maior variância?  
+c) Se você quiser reduzir para 1 dimensão, qual direção deve manter?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\text{tr}(\Sigma) = 6, \det(\Sigma) = 5 - 1 = 4$  
+$\lambda^2 - 6\lambda + 4 = 0 \Rightarrow \lambda = \frac{6 \pm \sqrt{36 - 16}}{2} = \frac{6 \pm \sqrt{20}}{2} = 3 \pm \sqrt{5}$  
+$\lambda_1 \approx 5.24, \lambda_2 \approx 0.76$
+
+b) Autovetor para $\lambda_1 \approx 5.24$: $\Sigma - \lambda_1 I = \begin{bmatrix} -0.24 & 1 \\ 1 & -4.24 \end{bmatrix}$  
+Resolvendo: $-0.24x + y = 0 \Rightarrow y \approx 0.24x$ → $\vec{v}_1 \approx \begin{bmatrix} 0.97 \\ 0.24 \end{bmatrix}$
+
+c) Manter a direção $\vec{v}_1$ (maior autovalor).
+
+</details>
+</details>
+
+## 7. EXERCÍCIO COMPUTACIONAL
+
+<details>
+<summary>🐍 Ver código (Python/NumPy)</summary>
+
+```python
+import numpy as np
+
+# Simulação de FedAvg com Hessiana mal condicionada
+mu = np.array([10, 0.1])  # autovalores da Hessiana
+eta = 0.15  # taxa de aprendizado
+
+# Autovalores da matriz de transição
+lambda_transicao = 1 - eta * mu
+print("Autovalores da transição:", lambda_transicao)
+
+# Raio espectral
+rho = np.max(np.abs(lambda_transicao))
+print(f"Raio espectral: {rho}")
+
+# Detecção de anomalia
+w = np.array([[1, 1], [2, 2], [3, 3], [10, 0]])
+w_mean = np.mean(w, axis=0)
+w_centered = w - w_mean
+
+# Matriz de covariância
+Sigma = (w_centered.T @ w_centered) / w.shape[0]
+autovalores, autovetores = np.linalg.eig(Sigma)
+print("Autovalores da covariância:", autovalores)
+```
+
+</details>
+
+<details>
+<summary>📝 Ver código (R)</summary>
+
+```r
+# Simulação de FedAvg
+mu <- c(10, 0.1)
+eta <- 0.15
+
+# Autovalores da matriz de transição
+lambda_transicao <- 1 - eta * mu
+print(lambda_transicao)
+
+# Raio espectral
+rho <- max(abs(lambda_transicao))
+print(rho)
+
+# Detecção de anomalia
+w <- matrix(c(1, 2, 3, 10, 1, 2, 3, 0), nrow=4, ncol=2)
+w_mean <- colMeans(w)
+w_centered <- scale(w, center=w_mean, scale=FALSE)
+
+# Matriz de covariância
+Sigma <- t(w_centered) %*% w_centered / nrow(w)
+eig <- eigen(Sigma)
+print(eig$values)
+```
+
+</details>
+
+> *Autovalores são ferramentas essenciais para analisar e melhorar o Federated Learning. Eles permitem: analisar a convergência do FedAvg (via Hessiana e número de condição), detectar anomalias (clientes maliciosos ou dados heterogêneos) e reduzir dimensionalidade localmente (PCA). Compreender autovalores é fundamental para projetar algoritmos de FL mais rápidos, estáveis e robustos.*
+
+---
+
+## 🎉 Fim das 8 Aulas sobre Autovalores e Autovetores!

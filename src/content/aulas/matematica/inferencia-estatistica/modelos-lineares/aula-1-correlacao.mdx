@@ -1,0 +1,362 @@
+# Análise de Correlação
+
+## O que vamos aprender nesta aula?
+
+Nesta aula, vamos estudar a **análise de correlação**, que é o primeiro passo para entender a relação entre duas variáveis numéricas. A correlação nos ajuda a responder perguntas como:
+
+- Existe relação entre horas de estudo e nota na prova?
+- Qual a relação entre idade e pressão arterial?
+- Há associação entre investimento em publicidade e vendas?
+
+A correlação mede a **força** e a **direção** da relação linear entre duas variáveis. É a base para a regressão linear, que veremos nas próximas aulas.
+
+## Correlação de Pearson (Coeficiente de Correlação Linear)
+
+O coeficiente de correlação de Pearson ($\rho$ para a população, $r$ para a amostra) mede a **relação linear** entre duas variáveis numéricas $X$ e $Y$.
+
+**Fórmula populacional:**
+
+>> $$\rho = \frac{Cov(X, Y)}{\sigma_X \cdot \sigma_Y}$$
+
+**Fórmula amostral:**
+
+>> $$r = \frac{\sum (X_i - \bar{X})(Y_i - \bar{Y})}{\sqrt{\sum (X_i - \bar{X})^2 \cdot \sum (Y_i - \bar{Y})^2}}$$
+
+**Fórmula alternativa (mais fácil para cálculos):**
+
+>> $$r = \frac{n\sum XY - \sum X \sum Y}{\sqrt{[n\sum X^2 - (\sum X)^2] \cdot [n\sum Y^2 - (\sum Y)^2]}}$$
+
+**Propriedades da correlação de Pearson:**
+
+1. **$-1 \le r \le 1$** (sempre entre -1 e 1)
+2. **$r = 1$**: Correlação positiva perfeita (todos os pontos estão em uma reta crescente)
+3. **$r = -1$**: Correlação negativa perfeita (todos os pontos estão em uma reta decrescente)
+4. **$r = 0$**: Sem correlação linear (mas pode haver relação não-linear)
+5. **$r > 0$**: Correlação positiva (quando $X$ aumenta, $Y$ tende a aumentar)
+6. **$r < 0$**: Correlação negativa (quando $X$ aumenta, $Y$ tende a diminuir)
+
+**Interpretação da força da correlação:**
+
+| $|r|$ | Interpretação |
+| --- | --- |
+| 0,00 a 0,19 | Muito fraca |
+| 0,20 a 0,39 | Fraca |
+| 0,40 a 0,59 | Moderada |
+| 0,60 a 0,79 | Forte |
+| 0,80 a 1,00 | Muito forte |
+
+**Exemplo 1: Cálculo da correlação**
+
+Dados de 5 alunos: horas de estudo ($X$) e nota ($Y$):
+
+| Aluno | $X$ (horas) | $Y$ (nota) |
+| --- | --- | --- |
+| 1 | 2 | 6 |
+| 2 | 3 | 7 |
+| 3 | 5 | 8 |
+| 4 | 7 | 9 |
+| 5 | 8 | 10 |
+
+Calcule o coeficiente de correlação $r$.
+
+**Resolução:**
+
+$\sum X = 2+3+5+7+8 = 25$; $\sum Y = 6+7+8+9+10 = 40$
+$\sum X^2 = 4+9+25+49+64 = 151$; $\sum Y^2 = 36+49+64+81+100 = 330$
+$\sum XY = 2\cdot 6 + 3\cdot 7 + 5\cdot 8 + 7\cdot 9 + 8\cdot 10 = 12+21+40+63+80 = 216$
+$n = 5$
+
+$r = \frac{5 \cdot 216 - 25 \cdot 40}{\sqrt{(5 \cdot 151 - 25^2) \cdot (5 \cdot 330 - 40^2)}}$
+$= \frac{1080 - 1000}{\sqrt{(755 - 625) \cdot (1650 - 1600)}}$
+$= \frac{80}{\sqrt{130 \cdot 50}} = \frac{80}{\sqrt{6500}} = \frac{80}{80,62} = 0,992$
+
+**Interpretação:** $r = 0,992$ indica uma correlação positiva muito forte. Quanto mais horas de estudo, maior a nota.
+
+**Exemplo 2: Correlação negativa**
+
+Dados de 5 alunos: horas de sono ($X$) e cansaço ($Y$):
+
+| Aluno | $X$ (horas de sono) | $Y$ (cansaço) |
+| --- | --- | --- |
+| 1 | 4 | 9 |
+| 2 | 5 | 8 |
+| 3 | 6 | 7 |
+| 4 | 7 | 6 |
+| 5 | 8 | 5 |
+
+Calcule $r$.
+
+**Resolução:**
+
+$\sum X = 30$; $\sum Y = 35$; $\sum X^2 = 16+25+36+49+64 = 190$; $\sum Y^2 = 81+64+49+36+25 = 255$; $\sum XY = 4\cdot 9+5\cdot 8+6\cdot 7+7\cdot 6+8\cdot 5 = 36+40+42+42+40 = 200$
+$n = 5$
+
+$r = \frac{5 \cdot 200 - 30 \cdot 35}{\sqrt{(5 \cdot 190 - 900) \cdot (5 \cdot 255 - 1225)}}$
+$= \frac{1000 - 1050}{\sqrt{(950 - 900) \cdot (1275 - 1225)}}$
+$= \frac{-50}{\sqrt{50 \cdot 50}} = \frac{-50}{50} = -1,0$
+
+**Interpretação:** $r = -1,0$ indica uma correlação negativa perfeita. Quanto mais horas de sono, menor o cansaço.
+
+**Exemplo 3: Correlação fraca**
+
+Dados de 5 alunos: idade ($X$) e nota ($Y$):
+
+| Aluno | $X$ (idade) | $Y$ (nota) |
+| --- | --- | --- |
+| 1 | 18 | 7 |
+| 2 | 19 | 8 |
+| 3 | 20 | 6 |
+| 4 | 21 | 9 |
+| 5 | 22 | 7 |
+
+Calcule $r$.
+
+**Resolução:**
+
+$\sum X = 100$; $\sum Y = 37$; $\sum X^2 = 324+361+400+441+484 = 2010$; $\sum Y^2 = 49+64+36+81+49 = 279$; $\sum XY = 18\cdot 7+19\cdot 8+20\cdot 6+21\cdot 9+22\cdot 7 = 126+152+120+189+154 = 741$
+$n = 5$
+
+$r = \frac{5 \cdot 741 - 100 \cdot 37}{\sqrt{(5 \cdot 2010 - 10000) \cdot (5 \cdot 279 - 1369)}}$
+$= \frac{3705 - 3700}{\sqrt{(10050 - 10000) \cdot (1395 - 1369)}}$
+$= \frac{5}{\sqrt{50 \cdot 26}} = \frac{5}{\sqrt{1300}} = \frac{5}{36,06} = 0,139$
+
+**Interpretação:** $r = 0,139$ indica uma correlação muito fraca. Não há relação entre idade e nota.
+
+## Correlação de Spearman (Correlação por Postos)
+
+A correlação de Spearman é uma versão não paramétrica da correlação de Pearson. Ela é usada quando:
+
+- Os dados são ordinais (categorias ordenadas).
+- A relação não é linear, mas é monotônica.
+- Há outliers que distorcem a correlação de Pearson.
+- Os dados não são Normais.
+
+**Fórmula (para dados sem empates):**
+
+>> $$r_s = 1 - \frac{6\sum d_i^2}{n(n^2 - 1)}$$
+
+onde $d_i$ é a diferença entre os postos de $X$ e $Y$ para cada observação.
+
+**Exemplo: Correlação de Spearman**
+
+| Indivíduo | $X$ | $Y$ | Posto $X$ | Posto $Y$ | $d$ | $d^2$ |
+| --- | --- | --- | --- | --- | --- | --- |
+| 1 | 10 | 8 | 1 | 2 | -1 | 1 |
+| 2 | 20 | 7 | 2 | 1 | 1 | 1 |
+| 3 | 30 | 9 | 3 | 3 | 0 | 0 |
+| 4 | 40 | 10 | 4 | 4 | 0 | 0 |
+| 5 | 50 | 11 | 5 | 5 | 0 | 0 |
+
+$\sum d^2 = 2$, $n = 5$
+$r_s = 1 - \frac{6 \cdot 2}{5 \cdot 24} = 1 - \frac{12}{120} = 1 - 0,1 = 0,9$
+
+**Interpretação:** $r_s = 0,9$ indica uma correlação muito forte.
+
+## Teste de Significância da Correlação
+
+Para testar se a correlação populacional $\rho$ é diferente de zero:
+
+**Hipóteses:**
+- $H_0: \rho = 0$ (não há correlação linear)
+- $H_1: \rho \ne 0$ (há correlação linear)
+
+**Estatística de teste:**
+
+>> $$t = \frac{r \sqrt{n-2}}{\sqrt{1-r^2}}$$
+
+**Graus de liberdade:** $\nu = n - 2$
+
+**Exemplo: Teste de significância**
+
+Para o exemplo 1 (horas de estudo e nota): $r = 0,992$, $n = 5$.
+
+**Resolução:**
+
+$t = \frac{0,992 \cdot \sqrt{5-2}}{\sqrt{1-0,992^2}} = \frac{0,992 \cdot \sqrt{3}}{\sqrt{1-0,984}} = \frac{0,992 \cdot 1,732}{\sqrt{0,016}} = \frac{1,718}{0,1265} = 13,58$
+
+$\nu = 3$. $t_{0,025, 3} = 3,182$
+$|t| = 13,58 > 3,182 \to$ Rejeitar $H_0$
+
+**Conclusão:** Há evidência de correlação significativa entre horas de estudo e nota.
+
+## Propriedades da Correlação
+
+1. **A correlação não implica causalidade.** Duas variáveis podem estar correlacionadas sem que uma cause a outra (ex: sorvete e afogamentos).
+
+2. **A correlação é sensível a outliers.** Um único ponto fora da curva pode distorcer a correlação.
+
+3. **Correlação zero não significa independência.** Pode haver relação não-linear.
+
+4. **A correlação mede apenas relações lineares.** Uma relação quadrática (em U) pode ter correlação próxima de zero.
+
+5. **A correlação é adimensional.** Não depende das unidades de medida.
+
+## Analogias
+
+### Analogia 1: O termômetro e o aquecimento
+
+A correlação entre temperatura e consumo de energia é positiva: quanto mais quente, mais energia usamos para refrigeração.
+
+### Analogia 2: O acelerador e a velocidade
+
+A correlação entre pisar no acelerador e a velocidade do carro é positiva.
+
+### Analogia 3: O freio e a velocidade
+
+A correlação entre pisar no freio e a velocidade é negativa.
+
+### Analogia 4: O tamanho do sapato e a inteligência
+
+Pode haver correlação positiva entre tamanho do sapato e inteligência em crianças, mas isso ocorre porque ambas aumentam com a idade, não porque pé grande causa inteligência.
+
+## Cuidados com a Correlação
+
+**Correlação espúria:** Quando duas variáveis estão correlacionadas por acaso ou por uma terceira variável.
+
+**Exemplo clássico:** Número de sorvetes vendidos e número de afogamentos. Ambos aumentam no verão. A correlação é real, mas não há relação causal.
+
+**Outro exemplo:** Número de igrejas e número de crimes em uma cidade. A correlação pode ser positiva porque ambas aumentam com o tamanho da população.
+
+## Exercícios Resolvidos
+
+### Exercício 1 (Fácil)
+
+Calcule $r$ para os dados: (1,2), (2,3), (3,4), (4,5)
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$\sum X = 10$; $\sum Y = 14$; $\sum X^2 = 30$; $\sum Y^2 = 54$; $\sum XY = 40$; $n = 4$
+$r = \frac{4 \cdot 40 - 10 \cdot 14}{\sqrt{(4 \cdot 30 - 100) \cdot (4 \cdot 54 - 196)}}$
+$= \frac{160 - 140}{\sqrt{(120 - 100) \cdot (216 - 196)}} = \frac{20}{\sqrt{20 \cdot 20}} = \frac{20}{20} = 1$
+
+**Resposta:** $r = 1$ (correlação perfeita positiva).
+
+</details>
+
+### Exercício 2 (Fácil/Médio)
+
+Calcule $r$ para os dados: (1,5), (2,4), (3,3), (4,2), (5,1)
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$\sum X = 15$; $\sum Y = 15$; $\sum X^2 = 55$; $\sum Y^2 = 55$; $\sum XY = 35$; $n = 5$
+$r = \frac{5 \cdot 35 - 15 \cdot 15}{\sqrt{(5 \cdot 55 - 225) \cdot (5 \cdot 55 - 225)}}$
+$= \frac{175 - 225}{\sqrt{(275 - 225) \cdot (275 - 225)}} = \frac{-50}{\sqrt{50 \cdot 50}} = -1$
+
+**Resposta:** $r = -1$ (correlação perfeita negativa).
+
+</details>
+
+### Exercício 3 (Médio)
+
+Teste a significância de $r = 0,6$ com $n = 12$ ($\alpha = 0,05$, bicaudal).
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$t = \frac{0,6 \cdot \sqrt{10}}{\sqrt{1-0,36}} = \frac{0,6 \cdot 3,162}{\sqrt{0,64}} = \frac{1,897}{0,8} = 2,371$
+$\nu = 10$; $t_{0,025, 10} = 2,228$
+$|t| = 2,371 > 2,228 \to$ Rejeitar $H_0$
+
+**Resposta:** Há correlação significativa.
+
+</details>
+
+### Exercício 4 (Médio)
+
+Calcule a correlação de Spearman para os dados: $X$: 5,6,7,8,9; $Y$: 2,4,3,5,6
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+Postos $X$: 1,2,3,4,5; Postos $Y$: 1,4,2,5,6
+$d$: 0, -2, 1, -1, -1; $d^2$: 0, 4, 1, 1, 1; $\sum d^2 = 7$
+$r_s = 1 - \frac{6 \cdot 7}{5 \cdot 24} = 1 - \frac{42}{120} = 1 - 0,35 = 0,65$
+
+**Resposta:** $r_s = 0,65$.
+
+</details>
+
+### Exercício 5 (Difícil)
+
+Explique por que correlação não implica causalidade. Dê um exemplo.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+Correlação não implica causalidade porque duas variáveis podem estar correlacionadas sem que uma cause a outra. Pode haver uma terceira variável (confundidora) que causa ambas.
+
+Exemplo: O número de sorvetes vendidos e o número de afogamentos estão correlacionados positivamente. Isso não significa que sorvete causa afogamento. A variável confundidora é o verão (temperatura alta), que aumenta tanto as vendas de sorvete quanto o número de pessoas na água.
+
+**Resposta:** Correlação $\ne$ Causalidade. Exemplo: sorvete e afogamentos.
+
+</details>
+
+## Desafio Final com Resolução Completa
+
+Uma empresa coletou dados de 10 funcionários sobre anos de experiência ($X$) e salário mensal em milhares ($Y$):
+
+| Funcionário | Experiência ($X$) | Salário ($Y$) |
+| --- | --- | --- |
+| 1 | 2 | 3 |
+| 2 | 3 | 4 |
+| 3 | 5 | 5 |
+| 4 | 7 | 6 |
+| 5 | 8 | 7 |
+| 6 | 10 | 8 |
+| 7 | 12 | 9 |
+| 8 | 15 | 10 |
+| 9 | 18 | 11 |
+| 10 | 20 | 12 |
+
+a) Calcule o coeficiente de correlação de Pearson.
+
+b) Interprete o resultado.
+
+c) Teste se a correlação é significativa ($\alpha = 0,05$).
+
+d) Calcule a correlação de Spearman.
+
+e) Compare os dois coeficientes e discuta os resultados.
+
+<details>
+<summary>💡 Ver resolução completa</summary>
+
+a) Cálculos:
+   $\sum X = 2+3+5+7+8+10+12+15+18+20 = 100$
+   $\sum Y = 3+4+5+6+7+8+9+10+11+12 = 75$
+   $\sum X^2 = 4+9+25+49+64+100+144+225+324+400 = 1344$
+   $\sum Y^2 = 9+16+25+36+49+64+81+100+121+144 = 645$
+   $\sum XY = 6+12+25+42+56+80+108+150+198+240 = 917$
+   $n = 10$
+
+   $r = \frac{10 \cdot 917 - 100 \cdot 75}{\sqrt{(10 \cdot 1344 - 10000) \cdot (10 \cdot 645 - 5625)}}$
+   $= \frac{9170 - 7500}{\sqrt{(13440 - 10000) \cdot (6450 - 5625)}}$
+   $= \frac{1670}{\sqrt{3440 \cdot 825}} = \frac{1670}{\sqrt{2.838.000}} = \frac{1670}{1684,64} = 0,9913$
+
+b) $r = 0,9913$ indica uma correlação positiva muito forte. Existe uma relação linear quase perfeita entre anos de experiência e salário.
+
+c) $t = \frac{0,9913 \cdot \sqrt{10-2}}{\sqrt{1-0,9913^2}} = \frac{0,9913 \cdot \sqrt{8}}{\sqrt{1-0,9827}} = \frac{0,9913 \cdot 2,828}{\sqrt{0,0173}} = \frac{2,803}{0,1315} = 21,32$
+   $\nu = 8$; $t_{0,025, 8} = 2,306$
+   $|t| = 21,32 > 2,306 \to$ Rejeitar $H_0$
+   Há evidência de correlação significativa.
+
+d) Postos $X$: 1,2,3,4,5,6,7,8,9,10
+   Postos $Y$: 1,2,3,4,5,6,7,8,9,10
+   $d$: 0,0,0,0,0,0,0,0,0,0; $\sum d^2 = 0$
+   $r_s = 1 - \frac{6 \cdot 0}{10 \cdot 99} = 1$
+
+e) $r = 0,9913$ e $r_s = 1$. Ambos indicam correlação muito forte. A correlação de Spearman é ligeiramente maior (1,0) porque a relação é perfeitamente monotônica (um aumento constante em $X$ leva a um aumento constante em $Y$). A correlação de Pearson é 0,9913, indicando uma relação linear quase perfeita.
+
+**Respostas:**
+a) $r = 0,9913$
+b) Correlação positiva muito forte
+c) Rejeitar $H_0$ (há correlação significativa)
+d) $r_s = 1$
+e) Ambos indicam correlação muito forte; Spearman é 1 por ser perfeitamente monotônica
+
+</details>
+
+> *A correlação revela a dança entre duas variáveis — a força do abraço que as une, mas não a razão que as aproxima. Ela mostra o "quanto", não o "porquê".*

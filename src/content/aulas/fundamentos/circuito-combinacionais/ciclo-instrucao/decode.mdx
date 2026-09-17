@@ -1,0 +1,420 @@
+# Decodificação (Decode)
+
+## 1. Introdução
+
+Na aula anterior, aprendemos sobre a **Busca (Fetch)** — a primeira etapa do ciclo de instrução, onde a CPU busca a próxima instrução da memória e a armazena no Registrador de Instrução (IR). Vimos como o PC, o MAR, o MBR e o IR trabalham juntos para trazer a instrução para dentro da CPU.<br><br>
+
+Mas uma instrução na memória é apenas uma sequência de bits — um número como `0x8A3B`. A CPU não sabe o que fazer com esse número até que ele seja **interpretado**. É como ter um livro em uma língua estrangeira: você pode ter o texto em mãos, mas não sabe o que ele significa até que seja traduzido.<br><br>
+
+Essa "tradução" é exatamente o que acontece na **Decodificação (Decode)** — a segunda etapa do ciclo de instrução.
+
+Durante a decodificação, a **Unidade de Controle (UC)** examina o IR, extrai o **opcode** (código da operação) e os **operandos**, e determina quais sinais de controle devem ser gerados para executar a instrução. É aqui que a CPU "entende" o que deve fazer.<br><br>
+
+Nesta aula, vamos explorar a Decodificação em detalhes: como a UC interpreta uma instrução, como os sinais de controle são gerados, e como a CPU sabe quais circuitos ativar para cada operação.<br><br>
+
+
+## 2. O Que é a Decodificação (Decode)?
+
+### 2.1 Definição
+
+A **Decodificação** (em inglês, *Decode*) é a segunda etapa do ciclo de instrução, onde:
+
+> **A Unidade de Controle (UC) interpreta o opcode e os operandos da instrução armazenada no IR, gerando os sinais de controle necessários para sua execução.**
+
+### 2.2 O que acontece durante a decodificação?
+
+| Passo | O que acontece | Componente envolvido |
+|-------|----------------|---------------------|
+| 1 | A UC lê o IR (instrução armazenada) | UC → IR |
+| 2 | A UC extrai o opcode (código da operação) | IR → Opcode |
+| 3 | A UC extrai os operandos (registradores, endereços) | IR → Operandos |
+| 4 | A UC decodifica o opcode em sinais de controle | Opcode → Sinais |
+| 5 | Os sinais de controle são preparados para a execução | UC → ULA, Registradores, Memória |
+
+### 2.3 Analogia
+
+Pense na decodificação como a **tradução de um código**:
+
+<details>
+<summary>🔧 Ver Analogia da Decodificação</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 450px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">DECODIFICAÇÃO — A TRADUÇÃO</div>
+
+  <pre style="color: #93c5fd; font-size: 0.6rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    ┌─────────────────────────────────────────────────────┐
+    │                                                     │
+    │   CÓDIGO (INSTRUÇÃO)                               │
+    │   ┌─────────────────────────────────────────────┐   │
+    │   │  0x8A3B                                     │   │
+    │   └─────────────────────────────────────────────┘   │
+    │                         │                           │
+    │                         ▼                           │
+    │   TRADUTOR (UNIDADE DE CONTROLE)                   │
+    │   ┌─────────────────────────────────────────────┐   │
+    │   │  "Traduzindo..."                           │   │
+    │   │  0x8 → SOMA                                │   │
+    │   │  0xA → Registrador R0                      │   │
+    │   │  0x3 → Registrador R1                      │   │
+    │   │  0xB → Registrador R2                      │   │
+    │   └─────────────────────────────────────────────┘   │
+    │                         │                           │
+    │                         ▼                           │
+    │   AÇÃO (SINAIS DE CONTROLE)                        │
+    │   ┌─────────────────────────────────────────────┐   │
+    │   │  "Leia R1 e R2, some, escreva em R0"       │   │
+    │   └─────────────────────────────────────────────┘   │
+    │                                                     │
+    └─────────────────────────────────────────────────────┘
+  </pre>
+
+</div>
+</details>
+
+### 2.4 Diagrama do Decode
+
+<details>
+<summary>🔧 Ver Diagrama da Decodificação</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 500px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">ETAPA DE DECODIFICAÇÃO (DECODE)</div>
+
+  <pre style="color: #93c5fd; font-size: 0.5rem; line-height: 1.6; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    ┌─────────────────────────────────────────────────────────────────┐
+    │                                                                 │
+    │  IR = 0x8A3B                                                   │
+    │     │                                                           │
+    │     ▼                                                           │
+    │  ┌─────────────────────────────────────────────────────────┐    │
+    │  │                   UNIDADE DE CONTROLE                   │    │
+    │  │                                                         │    │
+    │  │  ┌─────────────────────────────────────────────────┐   │    │
+    │  │  │          DECODIFICADOR DE INSTRUÇÕES            │   │    │
+    │  │  │                                                 │   │    │
+    │  │  │  Opcode = 0x8  →  "SOMA"                       │   │    │
+    │  │  │  Destino = 0xA  →  "R0"                        │   │    │
+    │  │  │  Op1 = 0x3     →  "R1"                         │   │    │
+    │  │  │  Op2 = 0xB     →  "R2"                         │   │    │
+    │  │  └─────────────────────────────────────────────────┘   │    │
+    │  │                         │                               │    │
+    │  │                         ▼                               │    │
+    │  │  ┌─────────────────────────────────────────────────┐   │    │
+    │  │  │          GERADOR DE SINAIS DE CONTROLE         │   │    │
+    │  │  │                                                 │   │    │
+    │  │  │  ALU_OP    → SOMA                              │   │    │
+    │  │  │  REG_READ  → R1, R2                            │   │    │
+    │  │  │  REG_WRITE → R0                                │   │    │
+    │  │  │  MEM_READ  → 0                                 │   │    │
+    │  │  │  MEM_WRITE → 0                                 │   │    │
+    │  │  └─────────────────────────────────────────────────┘   │    │
+    │  │                                                         │    │
+    │  └─────────────────────────────────────────────────────────┘    │
+    │                              │                                  │
+    │                              ▼                                  │
+    │                    ┌─────────────────┐                        │
+    │                    │  SINAIS DE      │                        │
+    │                    │  CONTROLE       │                        │
+    │                    └─────────────────┘                        │
+    │                                                                 │
+    └─────────────────────────────────────────────────────────────────┘
+  </pre>
+
+</div>
+</details>
+
+
+## 3. Estrutura da Instrução
+
+### 3.1 Campos da instrução
+
+Uma instrução típica é dividida em campos:
+
+<pre>
+┌────────────┬────────────┬────────────┬────────────┐
+│   Opcode   │  Destino   │  Operando  │  Operando  │
+│   (4 bits) │  (4 bits)  │  1 (4 bits)│  2 (4 bits)│
+└────────────┴────────────┴────────────┴────────────┘
+
+Exemplo: 0x8A3B
+0x8 = Opcode (soma)
+0xA = Destino (registrador R0)
+0x3 = Operando 1 (registrador R1)
+0xB = Operando 2 (registrador R2)
+</pre>
+
+### 3.2 Tipos de opcodes
+
+| Tipo | Descrição | Exemplo |
+|------|-----------|---------|
+| **Aritmético** | Operações matemáticas | ADD, SUB, MUL, DIV |
+| **Lógico** | Operações booleanas | AND, OR, XOR, NOT |
+| **Deslocamento** | Shift left/right | SHL, SHR |
+| **Comparação** | Comparar valores | CMP, TEST |
+| **Salto** | Alterar fluxo do programa | JMP, JE, JZ, CALL, RET |
+| **Transferência** | Mover dados | MOV, LOAD, STORE |
+
+### 3.3 Tipos de operandos
+
+| Tipo | Descrição | Exemplo |
+|------|-----------|---------|
+| **Registrador** | Um registrador da CPU | R0, R1, R2 |
+| **Imediato** | Um valor constante | #5, #0xFF |
+| **Endereço** | Uma posição de memória | [0x1000] |
+| **Indireto** | Endereço armazenado em registrador | [R0] |
+
+
+## 4. O Processo de Decodificação
+
+### 4.1 Extração do opcode
+
+A UC extrai o opcode da instrução no IR:
+
+<pre>
+IR = 0x8A3B (0000 1000 1010 0011 1011)
+
+Opcode = bits 12-15 (4 bits) = 0x8
+Destino = bits 8-11 (4 bits) = 0xA
+Op1 = bits 4-7 (4 bits) = 0x3
+Op2 = bits 0-3 (4 bits) = 0xB
+</pre>
+
+### 4.2 Decodificação do opcode
+
+A UC usa um **decodificador** para traduzir o opcode em sinais de controle:
+
+| Opcode | Operação | ALU_OP | REG_READ | REG_WRITE | MEM_READ | MEM_WRITE |
+|--------|----------|--------|----------|-----------|----------|-----------|
+| 0x0 | NOP | - | 0 | 0 | 0 | 0 |
+| 0x1 | MOV | - | Op1 | Destino | 0 | 0 |
+| 0x2 | ADD | Soma | Op1, Op2 | Destino | 0 | 0 |
+| 0x3 | SUB | Sub | Op1, Op2 | Destino | 0 | 0 |
+| 0x4 | AND | AND | Op1, Op2 | Destino | 0 | 0 |
+| 0x5 | OR | OR | Op1, Op2 | Destino | 0 | 0 |
+| 0x6 | XOR | XOR | Op1, Op2 | Destino | 0 | 0 |
+| 0x7 | CMP | Sub | Op1, Op2 | 0 | 0 | 0 |
+| 0x8 | JMP | - | - | - | 0 | 0 |
+| 0x9 | JE | - | - | - | 0 | 0 |
+| 0xA | LOAD | - | - | Destino | 1 | 0 |
+| 0xB | STORE | - | Op1 | - | 0 | 1 |
+| 0xC | CALL | - | - | - | 0 | 0 |
+| 0xD | RET | - | - | - | 0 | 0 |
+
+### 4.3 Geração dos sinais de controle
+
+Com base no opcode, a UC gera os sinais de controle:
+
+<pre>
+Para ADD R0, R1, R2 (0x8A3B):
+
+ALU_OP    = SOMA
+REG_READ  = R1, R2
+REG_WRITE = R0
+MEM_READ  = 0
+MEM_WRITE = 0
+PC_WRITE  = 0
+
+Para LOAD R0, [0x1000] (0xA0A1):
+
+ALU_OP    = - (não usado)
+REG_READ  = - (não usado)
+REG_WRITE = R0
+MEM_READ  = 1
+MEM_WRITE = 0
+PC_WRITE  = 0
+</pre>
+
+
+## 5. Tipos de Unidade de Controle
+
+### 5.1 UC Rígida (Hardwired Control)
+
+- Sinais de controle gerados por **circuitos lógicos dedicados**.
+- Mais rápida, mas **difícil de modificar**.
+- Usada em processadores RISC e em partes críticas de processadores modernos.
+
+**Exemplo:** Decodificador implementado com portas lógicas.
+
+### 5.2 UC Microprogramada (Microprogrammed Control)
+
+- Sinais de controle armazenados em uma **memória ROM**.
+- Mais flexível, mas **mais lenta**.
+- Usada em processadores CISC (ex: x86).
+
+**Exemplo:** Microprograma armazenado em ROM.
+
+### 5.3 Comparação
+
+| Característica | UC Rígida | UC Microprogramada |
+|----------------|-----------|---------------------|
+| **Velocidade** | Muito rápida | Mais lenta |
+| **Flexibilidade** | Baixa | Alta |
+| **Complexidade** | Alta (circuitos) | Média (ROM) |
+| **Modificação** | Difícil | Fácil |
+| **Uso** | RISC, partes críticas | CISC |
+
+
+## 6. Decodificação e Pipeline
+
+### 6.1 Decodificação em pipeline
+
+Em processadores com pipeline, a decodificação ocorre em **paralelo** com outras etapas:
+
+<pre>
+Ciclo 1: Fetch I1 | Decode -  | Execute - | Write -
+Ciclo 2: Fetch I2 | Decode I1 | Execute - | Write -
+Ciclo 3: Fetch I3 | Decode I2 | Execute I1| Write -
+Ciclo 4: Fetch I4 | Decode I3 | Execute I2| Write I1
+...
+</pre>
+
+### 6.2 Hazards de decodificação
+
+**Hazard** é uma situação onde a decodificação é atrasada porque:
+
+1. **Dependência de dados:** A instrução atual depende do resultado da anterior.
+2. **Dependência de controle:** A instrução é um salto condicional.
+3. **Dependência estrutural:** O decodificador está ocupado.
+
+
+## 7. Exercícios
+
+<details>
+<summary>📗 Exercício 1 — Definição (fácil)</summary>
+
+**Enunciado:** O que é a etapa de Decodificação (Decode) no ciclo de instrução?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** A Decodificação é a segunda etapa do ciclo de instrução, onde a Unidade de Controle interpreta o opcode e os operandos da instrução armazenada no IR, gerando os sinais de controle necessários para sua execução.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Campos da instrução (fácil)</summary>
+
+**Enunciado:** Quais são os principais campos de uma instrução típica?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Opcode (código da operação), Destino (registrador ou endereço onde o resultado será armazenado) e Operandos (dados ou registradores sobre os quais a operação atua).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Extração do Opcode (médio)</summary>
+
+**Enunciado:** Dado IR = 0x4C2A, qual é o opcode se ele ocupa os 4 primeiros bits?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Passo 1:** 0x4C2A em binário = 0100 1100 0010 1010
+**Passo 2:** Os 4 primeiros bits = 0100 = 0x4
+
+**Resposta:** Opcode = 0x4
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Sinais de controle (médio)</summary>
+
+**Enunciado:** Quais sinais de controle seriam gerados para uma instrução SUB R0, R1, R2?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+- ALU_OP = SUB (subtração)
+- REG_READ = R1, R2 (ler operandos)
+- REG_WRITE = R0 (escrever resultado)
+- MEM_READ = 0
+- MEM_WRITE = 0
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — UC Rígida vs Microprogramada (conceitual)</summary>
+
+**Enunciado:** Qual a diferença entre uma UC rígida e uma microprogramada?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** A UC rígida usa circuitos lógicos dedicados para gerar sinais de controle (rápida, difícil de modificar). A UC microprogramada usa uma memória ROM que contém o microprograma (flexível, mais lenta).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Decodificação de LOAD (médio)</summary>
+
+**Enunciado:** Quais sinais de controle seriam gerados para a instrução LOAD R0, [0x1000]?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+- ALU_OP = - (não usado)
+- REG_READ = - (não usado)
+- REG_WRITE = R0 (escrever resultado)
+- MEM_READ = 1 (ler da memória)
+- MEM_WRITE = 0
+- PC_WRITE = 0
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — Tabela de decodificação (desafio)</summary>
+
+**Enunciado:** Complete a tabela de decodificação para a instrução JMP 0x2000:
+
+| Sinal | Valor |
+|-------|-------|
+| ALU_OP | ? |
+| REG_READ | ? |
+| REG_WRITE | ? |
+| MEM_READ | ? |
+| MEM_WRITE | ? |
+| PC_WRITE | ? |
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+| Sinal | Valor | Justificativa |
+|-------|-------|---------------|
+| ALU_OP | - | A ULA não é usada para saltos |
+| REG_READ | - | Não precisa ler registradores |
+| REG_WRITE | - | Não precisa escrever registradores |
+| MEM_READ | 0 | Não lê da memória |
+| MEM_WRITE | 0 | Não escreve na memória |
+| PC_WRITE | 1 | Carrega novo endereço no PC |
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — Pipeline e Decodificação (desafio)</summary>
+
+**Enunciado:** Explique como a decodificação funciona em um processador com pipeline.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Em um processador com pipeline, a decodificação ocorre em paralelo com outras etapas. Enquanto a instrução atual está sendo decodificada, a próxima instrução já está sendo buscada, e a instrução anterior já está sendo executada. Isso permite que a CPU execute várias instruções simultaneamente, aumentando o desempenho. No entanto, podem ocorrer "hazards" (atrasos) se uma instrução depender do resultado da anterior (dependência de dados) ou se for um salto condicional (dependência de controle).
+
+</details>
+</details>
+
+
+## 8. Resumo
+
+> **"A Decodificação (Decode) é a segunda etapa do ciclo de instrução — a CPU interpreta a instrução que foi buscada da memória. A Unidade de Controle examina o IR, extrai o opcode (código da operação) e os operandos, e gera os sinais de controle necessários para executar a instrução. Esses sinais ativam a ULA, os registradores, a memória e outros componentes da CPU. A decodificação pode ser feita por circuitos rígidos (rápidos, mas fixos) ou por microprograma armazenado em ROM (flexíveis, mas mais lentos). Sem a decodificação, a CPU não saberia o que fazer com a instrução — seria apenas um número sem significado."**

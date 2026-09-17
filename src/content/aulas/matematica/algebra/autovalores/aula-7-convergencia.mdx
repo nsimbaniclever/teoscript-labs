@@ -1,0 +1,381 @@
+# AUTOVALORES E CONVERGÊNCIA
+
+## 1. Definição Formal
+
+### 1.1 Sistemas Dinâmicos Discretos
+
+Um **sistema dinâmico discreto** é descrito por:
+
+$$
+\vec{x}_{t+1} = A \vec{x}_t
+$$
+
+Onde:
+- $\vec{x}_t$ é o estado do sistema no tempo $t$.
+- $A$ é a matriz de transição.
+
+**Solução geral:**
+$$
+\vec{x}_t = A^t \vec{x}_0
+$$
+
+**Interpretação:** A evolução do sistema é determinada pelas potências de $A$.
+
+### 1.2 Convergência de Sistemas Dinâmicos
+
+A convergência do sistema $\vec{x}_{t+1} = A \vec{x}_t$ é determinada pelos **autovalores** de $A$:
+
+| Condição | Comportamento |
+|----------|---------------|
+| $|\lambda_i| < 1$ para todos | O sistema **converge** para $\vec{0}$ |
+| $|\lambda_i| = 1$ para algum | O sistema **não converge** (oscila ou se mantém) |
+| $|\lambda_i| > 1$ para algum | O sistema **diverge** |
+
+**Taxa de convergência:** Determinada pelo **maior autovalor** em módulo (raio espectral):
+
+$$
+\rho(A) = \max_i |\lambda_i|
+$$
+
+Quanto menor $\rho(A)$, mais rápida a convergência.
+
+## 2. Exemplos Acadêmicos Passo a Passo
+
+### 2.1 Exemplo 1: Sistema Convergente
+
+Seja:
+$$
+A = \begin{bmatrix} 0.5 & 0 \\ 0 & 0.8 \end{bmatrix}
+$$
+
+**Autovalores:** $\lambda_1 = 0.5, \lambda_2 = 0.8$
+
+**Raio espectral:** $\rho(A) = 0.8$
+
+**Comportamento:** Como $|\lambda_i| < 1$, o sistema converge para zero.
+
+**Velocidade:** O termo $0.8^t$ é o que decai mais lentamente.
+
+### 2.2 Exemplo 2: Sistema Divergente
+
+Seja:
+$$
+A = \begin{bmatrix} 1.2 & 0 \\ 0 & 0.8 \end{bmatrix}
+$$
+
+**Autovalores:** $\lambda_1 = 1.2, \lambda_2 = 0.8$
+
+**Raio espectral:** $\rho(A) = 1.2$
+
+**Comportamento:** Como $|\lambda_1| > 1$, o sistema diverge.
+
+### 2.3 Exemplo 3: Sistema com Autovalor Unitário
+
+Seja:
+$$
+A = \begin{bmatrix} 1 & 0 \\ 0 & 0.8 \end{bmatrix}
+$$
+
+**Autovalores:** $\lambda_1 = 1, \lambda_2 = 0.8$
+
+**Comportamento:** O sistema não converge para zero (o componente na direção do autovalor $1$ permanece constante).
+
+## 3. Número de Condição e Convergência
+
+### 3.1 Definição
+
+O **número de condição** de uma matriz $A$ é:
+
+$$
+\kappa(A) = \frac{|\lambda_{max}|}{|\lambda_{min}|}
+$$
+
+**Interpretação:**
+- $\kappa \approx 1$: matriz bem condicionada (convergência rápida).
+- $\kappa \gg 1$: matriz mal condicionada (convergência lenta).
+
+### 3.2 Exemplo
+
+Seja:
+$$
+A = \begin{bmatrix} 0.9 & 0 \\ 0 & 0.1 \end{bmatrix}
+$$
+
+**Autovalores:** $\lambda_1 = 0.9, \lambda_2 = 0.1$
+
+**Número de condição:** $\kappa = \frac{0.9}{0.1} = 9$
+
+**Interpretação:** A convergência é dominada pelo autovalor $0.9$, que decai lentamente.
+
+## 4. Exemplos Lúdicos Aprimorados
+
+### 🍔 EXEMPLO 1 – A LANCHONETE (CRESCIMENTO DE ESTOQUE)
+
+A lanchonete tem a matriz de evolução:
+$$
+A = \begin{bmatrix} 1.2 & 0 \\ 0 & 0.9 \end{bmatrix}
+$$
+
+**Autovalores:** $\lambda_1 = 1.2, \lambda_2 = 0.9$
+
+**Interpretação:**
+- O estoque de pão cresce 20% a cada dia (diverge).
+- O estoque de carne diminui 10% a cada dia (converge para zero).
+
+**A longo prazo:** O sistema diverge (o pão cresce indefinidamente).
+
+### 🧃 EXEMPLO 2 – A CANTINA (DECAIMENTO DE NUTRIENTES)
+
+A cantina tem a matriz de evolução:
+$$
+A = \begin{bmatrix} 0.9 & 0 \\ 0 & 0.95 \end{bmatrix}
+$$
+
+**Autovalores:** $\lambda_1 = 0.9, \lambda_2 = 0.95$
+
+**Interpretação:**
+- O açúcar diminui 10% a cada dia.
+- O cálcio diminui 5% a cada dia.
+
+**Taxa de convergência:** O cálcio (0.95) é o que decai mais lentamente.
+
+### 📚 EXEMPLO 3 – A BIBLIOTECA (CONVERGÊNCIA DE ESTUDO)
+
+A biblioteca tem a matriz de evolução:
+$$
+A = \begin{bmatrix} 0.8 & 0.2 \\ 0.2 & 0.8 \end{bmatrix}
+$$
+
+**Autovalores:** $\lambda_1 = 1, \lambda_2 = 0.6$
+
+**Interpretação:**
+- $\lambda_1 = 1$: O sistema não converge para zero (há um estado estacionário).
+- $\lambda_2 = 0.6$: As perturbações decaem com taxa 0.6.
+
+## 5. Aplicação na Tese: Análise de Convergência do FedAvg
+
+### 5.1 FedAvg como Sistema Dinâmico
+
+Em FedAvg, a evolução do modelo global pode ser aproximada por:
+
+$$
+\vec{w}_{t+1} = (I - \eta H) \vec{w}_t
+$$
+
+Onde:
+- $\eta$ é a taxa de aprendizado.
+- $H$ é a Hessiana (matriz de segundas derivadas).
+
+**Autovalores de $I - \eta H$:**
+
+$$
+\lambda_i = 1 - \eta \mu_i
+$$
+
+Onde $\mu_i$ são os autovalores da Hessiana.
+
+### 5.2 Condição de Convergência
+
+Para convergência, precisamos:
+$$
+|1 - \eta \mu_i| < 1 \quad \text{para todos } i
+$$
+
+**Condição para o passo $\eta$:**
+$$
+0 < \eta < \frac{2}{\mu_{max}}
+$$
+
+**Número de condição:**
+$$
+\kappa = \frac{\mu_{max}}{\mu_{min}}
+$$
+
+**Interpretação:** Quanto maior $\kappa$, mais lenta é a convergência.
+
+### 5.3 Exemplo Numérico
+
+Suponha que a Hessiana tenha autovalores:
+$$
+\mu_1 = 10, \mu_2 = 0.1
+$$
+
+**Número de condição:** $\kappa = \frac{10}{0.1} = 100$
+
+**Passo máximo:** $\eta < \frac{2}{10} = 0.2$
+
+**Taxa de convergência:** Dominada pelo autovalor $1 - 0.2 \cdot 0.1 = 0.98$, que é muito próximo de 1 → convergência lenta.
+
+## 6. Quando Fazer um Exercício Computacional?
+
+**Aqui faz MUITO sentido!** Porque:
+- A convergência de sistemas dinâmicos é melhor visualizada computacionalmente.
+- Ajuda a entender a relação entre autovalores e convergência.
+- Permite simular cenários de FL.
+
+## 7. Exercícios Propostos (Manuais)
+
+<details>
+<summary>📗 Exercício 1 (Convergência)</summary>
+
+**Enunciado:** Classifique os seguintes sistemas $\vec{x}_{t+1} = A \vec{x}_t$ como convergentes, divergentes ou oscilatórios:
+
+a) $A = \begin{bmatrix} 0.5 & 0 \\ 0 & 0.8 \end{bmatrix}$
+
+b) $A = \begin{bmatrix} 1.2 & 0 \\ 0 & 0.8 \end{bmatrix}$
+
+c) $A = \begin{bmatrix} 0 & 1 \\ -1 & 0 \end{bmatrix}$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) Convergente ($|0.5| < 1, |0.8| < 1$)
+
+b) Divergente ($|1.2| > 1$)
+
+c) Oscilatório ($|i| = 1, |-i| = 1$)
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 (Taxa de Convergência)</summary>
+
+**Enunciado:** Para o sistema:
+$$
+A = \begin{bmatrix} 0.9 & 0 \\ 0 & 0.7 \end{bmatrix}
+$$
+
+a) Calcule o raio espectral.  
+b) Qual é a taxa de convergência?  
+c) Após quantos passos o estado é reduzido a menos de 1% do valor inicial?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\rho(A) = \max(0.9, 0.7) = 0.9$
+
+b) Taxa de convergência: $0.9$
+
+c) Precisamos $0.9^t < 0.01 \Rightarrow t > \frac{\ln(0.01)}{\ln(0.9)} \approx \frac{-4.605}{-0.105} \approx 43.8$ → **44 passos**
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 (FedAvg)</summary>
+
+**Enunciado:** Uma Hessiana tem autovalores $\mu_1 = 5, \mu_2 = 0.5$.
+
+a) Calcule o número de condição.  
+b) Qual é o passo $\eta$ máximo para convergência?  
+c) Qual é a taxa de convergência com $\eta = 0.2$?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\kappa = \frac{5}{0.5} = 10$
+
+b) $\eta < \frac{2}{5} = 0.4$
+
+c) Com $\eta = 0.2$: $\lambda_1 = 1 - 0.2 \cdot 5 = 0$, $\lambda_2 = 1 - 0.2 \cdot 0.5 = 0.9$  
+Taxa de convergência: $0.9$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 (Autovalores e Estabilidade)</summary>
+
+**Enunciado:** A matriz de um sistema dinâmico é:
+$$
+A = \begin{bmatrix} 0.5 & 0.3 \\ 0.3 & 0.5 \end{bmatrix}
+$$
+
+a) Calcule os autovalores.  
+b) O sistema converge?  
+c) Qual é a taxa de convergência?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\text{tr}(A) = 1, \det(A) = 0.25 - 0.09 = 0.16$  
+$\lambda^2 - 1\lambda + 0.16 = 0 \Rightarrow \lambda = \frac{1 \pm \sqrt{1 - 0.64}}{2} = \frac{1 \pm 0.6}{2}$  
+$\lambda_1 = 0.8, \lambda_2 = 0.2$
+
+b) Sim! $|0.8| < 1, |0.2| < 1$
+
+c) $\rho(A) = 0.8$
+
+</details>
+</details>
+
+## 8. EXERCÍCIO COMPUTACIONAL
+
+<details>
+<summary>🐍 Ver código (Python/NumPy)</summary>
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Simulação de sistema convergente
+A = np.array([[0.5, 0], [0, 0.8]])
+x0 = np.array([1, 1])
+
+# Evolução
+t_max = 20
+x_t = np.zeros((t_max, 2))
+x_t[0, :] = x0
+
+for t in range(1, t_max):
+    x_t[t, :] = A @ x_t[t-1, :]
+
+plt.plot(x_t[:, 0], label='Componente 1')
+plt.plot(x_t[:, 1], label='Componente 2')
+plt.xlabel('Tempo')
+plt.ylabel('Estado')
+plt.legend()
+plt.grid()
+plt.show()
+
+# Raio espectral
+autovalores = np.linalg.eigvals(A)
+rho = np.max(np.abs(autovalores))
+print(f"Raio espectral: {rho}")
+```
+
+</details>
+
+<details>
+<summary>📝 Ver código (R)</summary>
+
+```r
+# Simulação de sistema convergente
+A <- matrix(c(0.5, 0, 0, 0.8), nrow=2)
+x0 <- c(1, 1)
+
+t_max <- 20
+x_t <- matrix(0, nrow=t_max, ncol=2)
+x_t[1, ] <- x0
+
+for (t in 2:t_max) {
+    x_t[t, ] <- A %*% x_t[t-1, ]
+}
+
+plot(1:t_max, x_t[, 1], type="l", col="blue", ylim=c(0, 1), xlab="Tempo", ylab="Estado")
+lines(1:t_max, x_t[, 2], col="red")
+legend("topright", legend=c("Componente 1", "Componente 2"), col=c("blue", "red"), lty=1)
+```
+
+</details>
+
+> *A convergência de sistemas dinâmicos é determinada pelos autovalores da matriz de transição. O raio espectral $\rho(A)$ controla a taxa de convergência: $\rho(A) < 1$ → convergência; $\rho(A) > 1$ → divergência. Em FL, a análise de convergência do FedAvg envolve os autovalores da Hessiana e o número de condição.*

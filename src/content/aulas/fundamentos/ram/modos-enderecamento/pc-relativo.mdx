@@ -1,0 +1,420 @@
+# ENDEREÇAMENTO PC-RELATIVO
+
+## 1. INTRODUÇÃO
+
+Nas últimas cinco aulas, estudamos os modos de endereçamento que permitem à CPU acessar dados na memória: imediato, direto, indireto, por registro e base + deslocamento. Cada um tem seu papel, e juntos eles formam o conjunto completo de ferramentas que a CPU usa para encontrar e processar dados.<br><br>
+
+Mas há um problema fundamental que nenhum desses modos resolve sozinho: **o código precisa ser carregado em endereços específicos para funcionar**. Se um programa foi compilado para começar no endereço 0x1000, ele só funciona se for carregado exatamente nesse endereço. Em sistemas modernos, onde vários programas compartilham a memória, isso é um problema sério.<br><br>
+
+A solução é o **endereçamento PC-relativo**. Em vez de usar endereços absolutos, o código usa o **PC (Program Counter)** como base. O PC contém o endereço da instrução atual sendo executada. Ao usar PC + deslocamento, o código pode ser carregado em **qualquer endereço** e ainda funcionar corretamente.<br><br>
+
+Imagine que você está em uma cidade desconhecida e tem um mapa com coordenadas relativas: "vire à esquerda na próxima rua, depois 100 metros à frente". Você não precisa saber o nome da rua ou o endereço absoluto — apenas a posição relativa. O endereçamento PC-relativo funciona exatamente assim.<br><br>
+
+Nesta aula, vamos estudar o endereçamento PC-relativo: o que é, como funciona, por que é essencial para bibliotecas compartilhadas e código position-independent (PIC), e como ele revolucionou a maneira como programas são carregados e executados.
+
+## 2. O QUE É ENDEREÇAMENTO PC-RELATIVO?
+
+### 2.1 Definição
+
+> "Endereçamento PC-relativo é um modo onde o endereço efetivo é calculado como a soma do Program Counter (PC) e um deslocamento, permitindo que o código seja executado independentemente de onde esteja carregado na memória, tornando-o position-independent."
+
+### 2.2 Características principais
+
+| Característica | Descrição |
+|---------|----------|
+| **Base** | Program Counter (PC) — endereço da instrução atual |
+| **Deslocamento** | Valor constante (geralmente 12-32 bits) |
+| **Endereço efetivo** | PC + Deslocamento |
+| **Vantagem** | Código position-independent (PIC) |
+| **Uso** | Bibliotecas compartilhadas (.so, .dll), executáveis position-independent (PIE), jumps relativos |
+
+### 2.3 Analogia
+
+O endereçamento PC-relativo é como **instruções para chegar a um lugar usando pontos de referência locais**. Em vez de dizer "vá para a Rua Principal, número 1000" (endereço absoluto), você diz "vá 3 quarteirões à frente e vire à direita" (endereço relativo). Se você começar de pontos diferentes, as instruções relativas ainda o levarão ao destino correto.
+
+## 3. COMO FUNCIONA O ENDEREÇAMENTO PC-RELATIVO?
+
+### 3.1 O Program Counter (PC)
+
+O **Program Counter (PC)** é um registrador especial que contém o endereço da **próxima instrução** a ser executada.
+
+**Em diferentes arquiteturas:**
+- **ARM:** PC = R15 (aponta para a instrução atual + 8)
+- **x86:** PC = EIP/RIP (aponta para a próxima instrução)
+- **MIPS:** PC = endereço da instrução atual + 4
+
+### 3.2 Estrutura da instrução
+
+Uma instrução com endereçamento PC-relativo contém:
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+[CÓDIGO DA OPERAÇÃO] [REGISTRADOR DESTINO] [PC + DESLOCAMENTO]
+</pre>
+
+**Exemplo (ARM):** `LDR R1, [PC, #4]`
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+LDR    R1,    [PC, #4]
+Opcode Destino PC + Deslocamento
+</pre>
+
+### 3.3 Como a CPU executa
+
+1. A CPU busca a instrução da memória.
+2. A CPU decodifica a instrução.
+3. A CPU lê o valor atual do PC.
+4. A CPU soma o deslocamento ao PC.
+5. A CPU acessa a memória no endereço calculado.
+6. A CPU carrega o valor para o registrador destino.
+
+**Cálculo do endereço:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+Endereço Efetivo = PC + Deslocamento
+</pre>
+
+### 3.4 Diagrama: Endereçamento PC-relativo
+
+<details>
+<summary> **Fluxo do endereçamento PC-relativo**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+┌─────────────────────────────────────────────────────────────┐
+│                                                             │
+│   Código na memória (endereços absolutos):                  │
+│   0x1000: LDR R1, [PC, #4]   ←── PC = 0x1000             │
+│   0x1004: Dados: 42          ←── PC + 4 = 0x1004         │
+│                                                             │
+│   Se o código for carregado em 0x2000:                     │
+│   0x2000: LDR R1, [PC, #4]   ←── PC = 0x2000             │
+│   0x2004: Dados: 42          ←── PC + 4 = 0x2004         │
+│                                                             │
+│   Funciona em QUALQUER ENDEREÇO!                            │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+    </pre>
+</details>
+
+### 3.5 Exemplo prático
+
+**Instrução:** `LDR R1, [PC, #4]`
+
+**Cenário 1 (código em 0x1000):**
+- PC = 0x1000
+- Endereço = 0x1000 + 4 = 0x1004
+- R1 = valor em 0x1004
+
+**Cenário 2 (código em 0x2000):**
+- PC = 0x2000
+- Endereço = 0x2000 + 4 = 0x2004
+- R1 = valor em 0x2004
+
+**Resultado:** Funciona em ambos os casos!
+
+## 4. TIPOS DE INSTRUÇÕES PC-RELATIVAS
+
+### 4.1 Load de dados
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+LDR R1, [PC, #8]    ; Carrega dado a 8 bytes da instrução atual
+LDR R2, [PC, #16]   ; Carrega dado a 16 bytes da instrução atual
+</pre>
+
+### 4.2 Jumps e Branches relativos
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+JMP label           ; Salto para label (calculado como PC + deslocamento)
+BEQ label           ; Salto condicional (PC + deslocamento)
+</pre>
+
+### 4.3 Acesso a constantes
+
+Em ARM, constantes grandes são colocadas perto do código e acessadas via PC-relativo:
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+LDR R1, [PC, #4]    ; Carrega constante
+...
+.const: 0x12345678   ; Dado acessado via PC + 4
+</pre>
+
+### 4.4 Adr (ARM) — Endereço de label
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+ADR R1, label       ; R1 = endereço de label (calculado via PC + deslocamento)
+</pre>
+
+## 5. POR QUE O CÓDIGO PRECISA SER POSITION-INDEPENDENT?
+
+### 5.1 O problema dos endereços absolutos
+
+**Código com endereços absolutos:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+0x1000: LDR R1, [0x2000]   ; Só funciona se o dado estiver em 0x2000
+0x1004: ADD R1, R1, #1
+0x1008: STR R1, [0x2000]   ; Só funciona se o dado estiver em 0x2000
+</pre>
+
+Se este código for carregado em 0x2000 (em vez de 0x1000), ele tentará acessar 0x2000, que agora é onde o código está, não onde os dados estão. O programa falha.
+
+### 5.2 A solução: Position-Independent Code (PIC)
+
+**Código PC-relativo:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+0x1000: LDR R1, [PC, #8]   ; Acessa dados em PC + 8
+0x1004: ADD R1, R1, #1
+0x1008: STR R1, [PC, #8]   ; Acessa dados em PC + 8
+0x100C: .data: 42
+</pre>
+
+Se carregado em 0x2000:
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+0x2000: LDR R1, [PC, #8]   ; Acessa dados em 0x2008 (PC + 8)
+0x2004: ADD R1, R1, #1
+0x2008: STR R1, [PC, #8]   ; Acessa dados em 0x2008
+0x200C: .data: 42
+</pre>
+
+**Funciona em qualquer endereço!** ✅
+
+### 5.3 Por que isso é importante?
+
+| Sistema | Por que precisa de PIC |
+|---------|----------|
+| **Bibliotecas compartilhadas (.so/.dll)** | Uma biblioteca pode ser carregada em endereços diferentes em programas diferentes |
+| **Executáveis PIE (Position-Independent Executable)** | Segurança (ASLR — Address Space Layout Randomization) |
+| **Carregamento dinâmico** | Programas podem ser carregados em endereços imprevisíveis |
+| **Sistemas embarcados** | Código pode ser executado de diferentes locais de memória |
+
+## 6. CÓDIGO POSITION-INDEPENDENT (PIC)
+
+### 6.1 O que é PIC?
+
+**Position-Independent Code (PIC)** é código que pode ser executado em **qualquer endereço de memória** sem modificação. Todo acesso a dados e saltos usa endereçamento relativo (PC-relativo).
+
+### 6.2 Como o PIC é implementado?
+
+1. **Dados:** Acessados via PC + deslocamento.
+2. **Saltos:** Usam branches relativos (PC + deslocamento).
+3. **Funções externas:** Usam PLT (Procedure Linkage Table) e GOT (Global Offset Table).
+
+### 6.3 PLT e GOT
+
+Em sistemas como Linux, bibliotecas compartilhadas usam duas tabelas:
+
+- **GOT (Global Offset Table):** Contém endereços reais de funções e variáveis globais.
+- **PLT (Procedure Linkage Table):** Contém stubs para chamadas de funções.
+
+Quando uma função é chamada, o código chama a PLT, que resolve o endereço real via GOT.
+
+### 6.4 Exemplo: Chamada de função em PIC
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+; Código PIC
+BL func          ; Branch com link (PC-relativo)
+...
+func:
+; Código da função
+</pre>
+
+Se a função for externa (em outra biblioteca), o linker resolve o endereço via PLT/GOT.
+
+## 7. ENDEREÇAMENTO PC-RELATIVO EM DIFERENTES ARQUITETURAS
+
+### 7.1 ARM
+
+Em ARM, o PC é R15 e pode ser usado em instruções LDR/STR:
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+LDR R1, [PC, #4]    ; Carrega de PC + 4
+ADR R1, label       ; Carrega o endereço de label (PC-relativo)
+</pre>
+
+### 7.2 x86
+
+Em x86-64, o endereçamento PC-relativo é feito com `RIP`:
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+LEA RAX, [RIP + offset]    ; Carrega endereço relativo ao RIP
+MOV RAX, [RIP + offset]    ; Carrega dado relativo ao RIP
+JMP label                  ; Salto relativo (PC + deslocamento)
+</pre>
+
+### 7.3 MIPS
+
+Em MIPS, branches são sempre PC-relativos:
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+BEQ $t0, $t1, label    ; Salto condicional (PC + offset)
+J label                ; Salto absoluto (pode não ser position-independent)
+</pre>
+
+## 8. VANTAGENS E LIMITAÇÕES
+
+### 8.1 Vantagens
+
+| Vantagem | Explicação |
+|---------|----------|
+| **Position-independent** | O código funciona em qualquer endereço |
+| **Segurança (ASLR)** | Permite randomização de endereços, dificultando ataques |
+| **Bibliotecas compartilhadas** | Uma única cópia da biblioteca na memória pode ser usada por múltiplos programas |
+| **Carregamento dinâmico** | Permite carregar código em tempo de execução |
+
+### 8.2 Limitações
+
+| Limitação | Explicação |
+|---------|----------|
+| **Deslocamento limitado** | O deslocamento tem tamanho limitado (ex: 8-12 bits em ARM) |
+| **Overhead** | Acesso via PC pode ser um pouco mais lento que acesso absoluto |
+| **Complexidade** | Links e carregadores precisam lidar com relocações |
+| **Tamanho do código** | Pode ser ligeiramente maior que código absoluto |
+
+## 9. APLICAÇÕES REAIS
+
+| Aplicação | Como usa PC-relativo |
+|---------|----------|
+| **Bibliotecas compartilhadas (.so, .dll)** | Todo acesso a dados é PC-relativo |
+| **Executáveis PIE (Linux)** | Executáveis position-independent |
+| **ASLR (Address Space Layout Randomization)** | Código é carregado em endereços aleatórios |
+| **Bootloaders** | Carregados em diferentes endereços em diferentes sistemas |
+| **Código de kernel** | Pode ser mapeado em diferentes endereços virtuais |
+| **Sistemas embarcados** | Código pode ser executado de flash ou RAM em diferentes endereços |
+
+**Exemplo prático:** No Linux, programas são compilados com `-fPIE` (Position-Independent Executable) por padrão. Isso permite que o sistema operacional carregue o programa em um endereço aleatório (ASLR), dificultando ataques de segurança.
+
+## 10. EXERCÍCIOS
+
+<details>
+<summary>📗 Exercício 1 — O que é PC-relativo? (Fácil)</summary>
+
+**Enunciado:** Defina o que é endereçamento PC-relativo e qual sua principal vantagem.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Endereçamento PC-relativo é um modo onde o endereço efetivo é calculado como a soma do Program Counter (PC) e um deslocamento.
+
+**Vantagem:** Permite que o código seja position-independent, funcionando em qualquer endereço de memória.
+
+**Explicação:** O PC contém o endereço da instrução atual. PC + deslocamento acessa dados ou código relativo à posição atual do programa.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — O que é PIC? (Fácil)</summary>
+
+**Enunciado:** O que significa PIC e por que é importante?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** PIC significa Position-Independent Code. É código que pode ser executado em qualquer endereço de memória.
+
+**Importância:** Permite que bibliotecas compartilhadas sejam carregadas em endereços diferentes por diferentes programas, e permite ASLR (segurança).
+
+**Explicação:** Sem PIC, cada programa precisaria ser carregado em um endereço específico, o que é impraticável em sistemas modernos.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Identificar PC-relativo (Fácil)</summary>
+
+**Enunciado:** Quais das seguintes instruções usam endereçamento PC-relativo?
+1. `LDR R1, [PC, #8]`
+2. `LDR R1, [R2, #8]`
+3. `JMP label`
+4. `LDR R1, [0x1000]`
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** As instruções 1 e 3 usam PC-relativo (direta ou indiretamente).
+
+**Explicação:**
+1. `LDR R1, [PC, #8]` → PC-relativo (acesso a dados)
+2. `LDR R1, [R2, #8]` → Base + deslocamento (usando R2, não PC)
+3. `JMP label` → PC-relativo (salto calculado como PC + offset)
+4. `LDR R1, [0x1000]` → Endereçamento direto (endereço absoluto)
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Cálculo de endereço (Médio)</summary>
+
+**Enunciado:** Se PC = 0x1000, qual endereço é acessado por `LDR R1, [PC, #8]`?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** 0x1008 (0x1000 + 8)
+
+**Explicação:** O endereço efetivo = PC + deslocamento = 0x1000 + 8 = 0x1008.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Position-independent (Médio)</summary>
+
+**Enunciado:** Por que o endereçamento PC-relativo é essencial para bibliotecas compartilhadas?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Bibliotecas compartilhadas podem ser carregadas em endereços diferentes em diferentes programas. Se o código usasse endereços absolutos, ele só funcionaria se carregado em um endereço específico. Com PC-relativo, o código funciona independentemente de onde esteja carregado.
+
+**Explicação:** Uma biblioteca .so no Linux pode ser carregada em 0x7000 em um programa e 0x8000 em outro. O código PC-relativo funciona em ambos os casos.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — PC-relativo vs absoluto (Médio)</summary>
+
+**Enunciado:** Qual a diferença entre código PC-relativo e código com endereços absolutos?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+- **Código absoluto:** Usa endereços fixos (ex: LDR R1, [0x1000]). Só funciona se carregado no endereço esperado.
+- **Código PC-relativo:** Usa endereços relativos ao PC (ex: LDR R1, [PC, #8]). Funciona em qualquer endereço.
+
+**Explicação:** Código PC-relativo é position-independent, enquanto código absoluto é position-dependent.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — ASLR (Difícil)</summary>
+
+**Enunciado:** O que é ASLR e como o endereçamento PC-relativo o torna possível?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** ASLR (Address Space Layout Randomization) é uma técnica de segurança que carrega programas em endereços aleatórios para dificultar ataques.
+
+**Como PC-relativo ajuda:** Como o código é position-independent (usa PC-relativo), ele pode ser carregado em qualquer endereço aleatório escolhido pelo sistema operacional, sem precisar ser modificado.
+
+**Explicação:** Sem PIC, o sistema operacional não poderia randomizar o endereço de carregamento sem reescrever o código.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — PLT e GOT (Desafio)</summary>
+
+**Enunciado:** O que são PLT e GOT e como eles se relacionam com código PC-relativo?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+- **GOT (Global Offset Table):** Tabela que contém os endereços reais de funções e variáveis globais.
+- **PLT (Procedure Linkage Table):** Tabela com stubs para chamadas de funções.
+
+**Relação com PC-relativo:** O código chama funções via PLT (usando branches PC-relativos). A PLT consulta a GOT para obter o endereço real da função. A GOT é atualizada pelo linker/dinâmico em tempo de execução.
+
+**Explicação:** Isso permite que o código chame funções externas sem saber seus endereços reais em tempo de compilação, mantendo o código position-independent.
+</details>
+</details>
+
+> O endereçamento PC-relativo é a base da modularidade moderna. Ao calcular endereços a partir da posição atual do código, ele permite que programas e bibliotecas sejam carregados em qualquer endereço de memória, viabilizando bibliotecas compartilhadas, ASLR e a segurança e flexibilidade dos sistemas operacionais modernos. O endereçamento PC-relativo é um dos conceitos mais importantes da computação moderna. Sem ele, bibliotecas compartilhadas não existiriam, a segurança ASLR seria impossível, e cada programa precisaria ser carregado em um endereço específico — um pesadelo para sistemas operacionais e usuários. Ele é a prova de que, às vezes, as soluções mais elegantes são aquelas que se baseiam na posição relativa, não na posição absoluta.

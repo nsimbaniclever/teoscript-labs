@@ -1,0 +1,440 @@
+# MÉTODO DA INVERSA
+
+## 1. Definição
+
+### 1.1 O que é o Método da Inversa?
+
+Se $A$ é uma matriz **quadrada** ($n \times n$) e **invertível** ($\det(A) \neq 0$), então o sistema:
+
+$$
+A \vec{x} = \vec{b}
+$$
+
+pode ser resolvido multiplicando ambos os lados por $A^{-1}$:
+
+$$
+\vec{x} = A^{-1} \vec{b}
+$$
+
+**Observação:** Este método só funciona se:
+1. $A$ é **quadrada** ($m = n$)
+2. $\det(A) \neq 0$ ($A$ é invertível)
+
+### 1.2 Vantagens e Desvantagens
+
+| Vantagens | Desvantagens |
+|-----------|--------------|
+| Simples e direto | Requer o cálculo da inversa (caro computacionalmente) |
+| Útil para resolver múltiplos sistemas com a mesma $A$ e diferentes $\vec{b}$ | Instável numericamente para matrizes mal condicionadas |
+| Fórmula explícita | Não funciona para matrizes singulares |
+
+### 1.3 Exemplo Acadêmico Passo a Passo
+
+**Sistema:**
+$$
+\begin{cases}
+2x + 3y = 8 \\
+x - y = 1
+\end{cases}
+$$
+
+**Matriz dos coeficientes:**
+$$
+A = \begin{bmatrix} 2 & 3 \\ 1 & -1 \end{bmatrix}
+$$
+
+**Passo 1:** Calcular $\det(A)$:
+$$
+\det(A) = 2 \cdot (-1) - 3 \cdot 1 = -2 - 3 = -5 \neq 0
+$$
+
+**Passo 2:** Calcular $A^{-1}$:
+$$
+A^{-1} = \frac{1}{\det(A)} \begin{bmatrix} -1 & -3 \\ -1 & 2 \end{bmatrix} = \frac{1}{-5} \begin{bmatrix} -1 & -3 \\ -1 & 2 \end{bmatrix} = \begin{bmatrix} 0.2 & 0.6 \\ 0.2 & -0.4 \end{bmatrix}
+$$
+
+**Passo 3:** Calcular $\vec{x} = A^{-1} \vec{b}$:
+$$
+\vec{x} = \begin{bmatrix} 0.2 & 0.6 \\ 0.2 & -0.4 \end{bmatrix} \begin{bmatrix} 8 \\ 1 \end{bmatrix} = \begin{bmatrix} 0.2 \cdot 8 + 0.6 \cdot 1 \\ 0.2 \cdot 8 - 0.4 \cdot 1 \end{bmatrix} = \begin{bmatrix} 1.6 + 0.6 \\ 1.6 - 0.4 \end{bmatrix} = \begin{bmatrix} 2.2 \\ 1.2 \end{bmatrix}
+$$
+
+**Solução:** $x = 2.2, y = 1.2$
+
+## 2. Múltiplos Sistemas com a Mesma Matriz
+
+### 2.1 O Problema
+
+Suponha que você precise resolver:
+
+$$
+A \vec{x}_1 = \vec{b}_1, \quad A \vec{x}_2 = \vec{b}_2, \quad A \vec{x}_3 = \vec{b}_3
+$$
+
+**Solução eficiente:** Calcular $A^{-1}$ **uma vez** e depois multiplicar por cada $\vec{b}_i$.
+
+$$
+\vec{x}_1 = A^{-1} \vec{b}_1, \quad \vec{x}_2 = A^{-1} \vec{b}_2, \quad \vec{x}_3 = A^{-1} \vec{b}_3
+$$
+
+### 2.2 Exemplo
+
+Seja:
+$$
+A = \begin{bmatrix} 2 & 3 \\ 1 & -1 \end{bmatrix}
+$$
+
+**Múltiplos $\vec{b}$:**
+
+$$
+\vec{b}_1 = \begin{bmatrix} 8 \\ 1 \end{bmatrix}, \quad \vec{b}_2 = \begin{bmatrix} 5 \\ 2 \end{bmatrix}, \quad \vec{b}_3 = \begin{bmatrix} 10 \\ 3 \end{bmatrix}
+$$
+
+**Soluções:**
+
+$$
+\vec{x}_1 = A^{-1} \vec{b}_1 = \begin{bmatrix} 0.2 & 0.6 \\ 0.2 & -0.4 \end{bmatrix} \begin{bmatrix} 8 \\ 1 \end{bmatrix} = \begin{bmatrix} 2.2 \\ 1.2 \end{bmatrix}
+$$
+
+$$
+\vec{x}_2 = A^{-1} \vec{b}_2 = \begin{bmatrix} 0.2 & 0.6 \\ 0.2 & -0.4 \end{bmatrix} \begin{bmatrix} 5 \\ 2 \end{bmatrix} = \begin{bmatrix} 1.0 + 1.2 \\ 1.0 - 0.8 \end{bmatrix} = \begin{bmatrix} 2.2 \\ 0.2 \end{bmatrix}
+$$
+
+$$
+\vec{x}_3 = A^{-1} \vec{b}_3 = \begin{bmatrix} 0.2 & 0.6 \\ 0.2 & -0.4 \end{bmatrix} \begin{bmatrix} 10 \\ 3 \end{bmatrix} = \begin{bmatrix} 2.0 + 1.8 \\ 2.0 - 1.2 \end{bmatrix} = \begin{bmatrix} 3.8 \\ 0.8 \end{bmatrix}
+$$
+
+**Interpretação:** Com uma única inversa, resolvemos três sistemas diferentes.
+
+## 3. Exemplos Lúdicos Aprimorados
+
+### 🍔 EXEMPLO 1 – A LANCHONETE (PREÇOS POR INGREDIENTES)
+
+A lanchonete quer descobrir o preço de cada ingrediente com base no preço dos sanduíches.
+
+**Sanduíches e preços:**
+- Hambúrguer: (1, 1, 0) → R$ 7,00
+- Queijo: (0, 0, 1) → R$ 3,00
+- Combo: (1, 1, 1) → R$ 20,00
+
+**Sistema:**
+$$
+\begin{cases}
+p + c = 7 \\
+q = 3 \\
+p + c + q = 20
+\end{cases}
+$$
+
+**Matriz:**
+$$
+A = \begin{bmatrix}
+1 & 1 & 0 \\
+0 & 0 & 1 \\
+1 & 1 & 1
+\end{bmatrix}, \quad
+\vec{b} = \begin{bmatrix} 7 \\ 3 \\ 20 \end{bmatrix}
+$$
+
+**Observação:** $\det(A) = 0$ → A matriz é singular! Não podemos usar o método da inversa.
+
+**Interpretação:** O sistema tem redundância (o combo é a soma dos outros dois). O preço dos ingredientes não pode ser determinado de forma única.
+
+### 🧃 EXEMPLO 2 – A CANTINA (PREÇO POR NUTRIENTE)
+
+A cantina quer descobrir o preço de cada nutriente com base no preço dos alimentos.
+
+**Alimentos e preços:**
+- Suco: (10, 0, 50) → R$ 5,00
+- Leite: (5, 20, 0) → R$ 8,00
+- Bolo: (30, 0, 0) → R$ 12,00
+
+**Sistema:**
+$$
+\begin{cases}
+10a + 0c + 50v = 5 \\
+5a + 20c + 0v = 8 \\
+30a + 0c + 0v = 12
+\end{cases}
+$$
+
+**Matriz:**
+$$
+A = \begin{bmatrix}
+10 & 0 & 50 \\
+5 & 20 & 0 \\
+30 & 0 & 0
+\end{bmatrix}, \quad
+\vec{b} = \begin{bmatrix} 5 \\ 8 \\ 12 \end{bmatrix}
+$$
+
+**Passo 1:** $\det(A) = -30000 \neq 0$ → A matriz é invertível.
+
+**Passo 2:** Calcular $A^{-1}$ (usando Gauss-Jordan ou fórmula):
+
+(Os cálculos são extensos; mas vamos supor que já tenhamos a inversa.)
+
+**Passo 3:** $\vec{x} = A^{-1} \vec{b}$
+
+**Interpretação:** Podemos determinar o preço de cada nutriente (açúcar, cálcio, vitamina C) de forma única.
+
+## 4. Conexão com Regressão Linear
+
+Em regressão linear, a solução é:
+
+$$
+\vec{w} = (X^T X)^{-1} X^T \vec{y}
+$$
+
+**O método da inversa é usado diretamente aqui!**
+
+**Interpretação:** Para encontrar os pesos $\vec{w}$, precisamos da inversa de $X^T X$.
+
+**Exemplo:**
+$$
+X = \begin{bmatrix}
+1 & 2 \\
+3 & 4 \\
+5 & 6
+\end{bmatrix}, \quad
+\vec{y} = \begin{bmatrix} 5 \\ 11 \\ 17 \end{bmatrix}
+$$
+
+**Passo 1:** $X^T X = \begin{bmatrix} 35 & 44 \\ 44 & 56 \end{bmatrix}$
+
+**Passo 2:** $(X^T X)^{-1} = \frac{1}{24} \begin{bmatrix} 56 & -44 \\ -44 & 35 \end{bmatrix}$
+
+**Passo 3:** $X^T \vec{y} = \begin{bmatrix} 123 \\ 156 \end{bmatrix}$
+
+**Passo 4:** $\vec{w} = (X^T X)^{-1} X^T \vec{y} = \begin{bmatrix} 1 \\ 2 \end{bmatrix}$
+
+**Verificação:** $X\vec{w} = \begin{bmatrix} 5 \\ 11 \\ 17 \end{bmatrix} = \vec{y}$ ✓
+
+## 5. Quando Fazer um Exercício Computacional?
+
+**Aqui faz MUITO sentido!** Porque:
+- Calcular inversas manualmente para $3 \times 3$ é trabalhoso.
+- Computacionalmente, é trivial.
+- Ajuda a verificar contas manuais.
+- É essencial para regressão linear.
+
+## 6. Exercícios Propostos (Manuais)
+
+<details>
+<summary>📗 Exercício 1 (Método da Inversa $2 \times 2$)</summary>
+
+**Enunciado:** Resolva o sistema usando o método da inversa:
+
+$$
+\begin{cases}
+2x + y = 5 \\
+x + 3y = 7
+\end{cases}
+$$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+$A = \begin{bmatrix} 2 & 1 \\ 1 & 3 \end{bmatrix}, \quad \det(A) = 2 \cdot 3 - 1 \cdot 1 = 5$
+
+$A^{-1} = \frac{1}{5} \begin{bmatrix} 3 & -1 \\ -1 & 2 \end{bmatrix}$
+
+$\vec{x} = A^{-1} \vec{b} = \frac{1}{5} \begin{bmatrix} 3 & -1 \\ -1 & 2 \end{bmatrix} \begin{bmatrix} 5 \\ 7 \end{bmatrix} = \frac{1}{5} \begin{bmatrix} 15 - 7 \\ -5 + 14 \end{bmatrix} = \frac{1}{5} \begin{bmatrix} 8 \\ 9 \end{bmatrix} = \begin{bmatrix} 1.6 \\ 1.8 \end{bmatrix}$
+
+**Solução:** $x = 1.6, y = 1.8$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 (Múltiplos $\vec{b}$)</summary>
+
+**Enunciado:** Dada:
+$$
+A = \begin{bmatrix} 2 & 1 \\ 1 & 3 \end{bmatrix}
+$$
+
+Resolva $A\vec{x} = \vec{b}$ para:
+
+a) $\vec{b} = \begin{bmatrix} 5 \\ 7 \end{bmatrix}$
+
+b) $\vec{b} = \begin{bmatrix} 3 \\ 4 \end{bmatrix}$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\vec{x}_1 = A^{-1} \vec{b}_1 = \frac{1}{5} \begin{bmatrix} 3 & -1 \\ -1 & 2 \end{bmatrix} \begin{bmatrix} 5 \\ 7 \end{bmatrix} = \begin{bmatrix} 1.6 \\ 1.8 \end{bmatrix}$
+
+b) $\vec{x}_2 = A^{-1} \vec{b}_2 = \frac{1}{5} \begin{bmatrix} 3 & -1 \\ -1 & 2 \end{bmatrix} \begin{bmatrix} 3 \\ 4 \end{bmatrix} = \frac{1}{5} \begin{bmatrix} 9 - 4 \\ -3 + 8 \end{bmatrix} = \frac{1}{5} \begin{bmatrix} 5 \\ 5 \end{bmatrix} = \begin{bmatrix} 1 \\ 1 \end{bmatrix}$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 (Matriz Singular)</summary>
+
+**Enunciado:** Verifique se o método da inversa pode ser usado para:
+
+$$
+A = \begin{bmatrix} 1 & 2 \\ 2 & 4 \end{bmatrix}
+$$
+
+Justifique.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+$\det(A) = 1 \cdot 4 - 2 \cdot 2 = 4 - 4 = 0$
+
+**Não é invertível!** O método da inversa **não pode** ser usado.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 (Regressão Linear)</summary>
+
+**Enunciado:** Dados:
+$$
+X = \begin{bmatrix}
+1 & 1 \\
+2 & 1 \\
+3 & 1
+\end{bmatrix}, \quad
+\vec{y} = \begin{bmatrix} 2 \\ 3 \\ 4 \end{bmatrix}
+$$
+
+a) Calcule $X^T X$.  
+b) Calcule $(X^T X)^{-1}$.  
+c) Calcule $X^T \vec{y}$.  
+d) Calcule $\vec{w} = (X^T X)^{-1} X^T \vec{y}$.  
+e) Verifique que $X\vec{w} \approx \vec{y}$.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $X^T X = \begin{bmatrix} 1 & 2 & 3 \\ 1 & 1 & 1 \end{bmatrix} \begin{bmatrix} 1 & 1 \\ 2 & 1 \\ 3 & 1 \end{bmatrix} = \begin{bmatrix} 14 & 6 \\ 6 & 3 \end{bmatrix}$
+
+b) $\det(X^T X) = 14 \cdot 3 - 6 \cdot 6 = 42 - 36 = 6$
+
+$(X^T X)^{-1} = \frac{1}{6} \begin{bmatrix} 3 & -6 \\ -6 & 14 \end{bmatrix} = \begin{bmatrix} 0.5 & -1 \\ -1 & 2.333 \end{bmatrix}$
+
+c) $X^T \vec{y} = \begin{bmatrix} 1 & 2 & 3 \\ 1 & 1 & 1 \end{bmatrix} \begin{bmatrix} 2 \\ 3 \\ 4 \end{bmatrix} = \begin{bmatrix} 2 + 6 + 12 \\ 2 + 3 + 4 \end{bmatrix} = \begin{bmatrix} 20 \\ 9 \end{bmatrix}$
+
+d) $\vec{w} = (X^T X)^{-1} X^T \vec{y} = \begin{bmatrix} 0.5 & -1 \\ -1 & 2.333 \end{bmatrix} \begin{bmatrix} 20 \\ 9 \end{bmatrix} = \begin{bmatrix} 10 - 9 \\ -20 + 21 \end{bmatrix} = \begin{bmatrix} 1 \\ 1 \end{bmatrix}$
+
+e) $X\vec{w} = \begin{bmatrix} 1 & 1 \\ 2 & 1 \\ 3 & 1 \end{bmatrix} \begin{bmatrix} 1 \\ 1 \end{bmatrix} = \begin{bmatrix} 2 \\ 3 \\ 4 \end{bmatrix} = \vec{y}$ ✓
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 (Aplicação – Lanchonete)</summary>
+
+**Enunciado:** A lanchonete tem:
+$$
+A = \begin{bmatrix}
+1 & 1 & 0 \\
+0 & 0 & 1 \\
+1 & 1 & 1
+\end{bmatrix}, \quad
+\vec{b} = \begin{bmatrix} 7 \\ 3 \\ 20 \end{bmatrix}
+$$
+
+a) $A$ é invertível?  
+b) O método da inversa pode ser usado?  
+c) O que isso significa para a lanchonete?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\det(A) = 0$ → **Não é invertível!**
+
+b) **Não!** O método da inversa não pode ser usado.
+
+c) Os preços dos ingredientes não podem ser determinados de forma única porque o combo é uma combinação dos outros dois sanduíches.
+
+</details>
+</details>
+
+## 7. EXERCÍCIO COMPUTACIONAL
+
+<details>
+<summary>🐍 Ver código (Python/NumPy)</summary>
+
+```python
+import numpy as np
+
+# Exemplo 2x2
+A = np.array([[2, 3], [1, -1]])
+b = np.array([8, 1])
+
+A_inv = np.linalg.inv(A)
+x = A_inv @ b
+print("Solução:", x)
+print("Verificação:", A @ x)
+
+# Múltiplos sistemas
+b1 = np.array([8, 1])
+b2 = np.array([5, 2])
+b3 = np.array([10, 3])
+
+x1 = A_inv @ b1
+x2 = A_inv @ b2
+x3 = A_inv @ b3
+print("Soluções:", x1, x2, x3)
+
+# Regressão linear
+X = np.array([[1, 2], [3, 4], [5, 6]])
+y = np.array([5, 11, 17])
+
+w = np.linalg.inv(X.T @ X) @ X.T @ y
+print("Pesos:", w)
+print("Previsões:", X @ w)
+```
+
+</details>
+
+<details>
+<summary>📝 Ver código (R)</summary>
+
+```r
+# Exemplo 2x2
+A <- matrix(c(2, 1, 3, -1), nrow=2)
+b <- c(8, 1)
+
+A_inv <- solve(A)
+x <- A_inv %*% b
+print(x)
+
+# Múltiplos sistemas
+b1 <- c(8, 1)
+b2 <- c(5, 2)
+b3 <- c(10, 3)
+
+x1 <- A_inv %*% b1
+x2 <- A_inv %*% b2
+x3 <- A_inv %*% b3
+print(c(x1, x2, x3))
+
+# Regressão linear
+X <- matrix(c(1, 2, 3, 4, 5, 6), nrow=3, ncol=2)
+y <- c(5, 11, 17)
+
+w <- solve(t(X) %*% X) %*% t(X) %*% y
+print(w)
+print(X %*% w)
+```
+
+</details>
+
+> *O método da inversa é uma ferramenta poderosa para resolver sistemas lineares, especialmente quando precisamos resolver múltiplos sistemas com a mesma matriz. No entanto, ele só funciona para matrizes quadradas e invertíveis. Em Machine Learning, ele é a base da regressão linear via equações normais.*

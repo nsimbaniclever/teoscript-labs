@@ -1,0 +1,429 @@
+# Distribuições Amostrais
+
+## O que são Distribuições Amostrais?
+
+Uma distribuição amostral é a distribuição de probabilidade de uma **estatística** (como a média, a variância ou uma proporção) calculada a partir de amostras aleatórias de uma população.
+
+Pense assim: se você coletar muitas amostras diferentes da mesma população e calcular a média de cada uma, a distribuição dessas médias é a **distribuição amostral da média**. Ela nos diz como a estatística varia de amostra para amostra.
+
+A distribuição amostral é o elo entre a **estatística descritiva** (o que vemos na amostra) e a **estatística inferencial** (o que podemos concluir sobre a população). Ela é a base para:
+
+- Construir intervalos de confiança
+- Realizar testes de hipóteses
+- Calcular probabilidades associadas a estimativas
+
+## Distribuição Amostral da Média
+
+Seja $X_1, X_2, \dots, X_n$ uma amostra aleatória de uma população com média $\mu$ e variância $\sigma^2$. A média amostral é:
+
+>> $$\bar{X} = \frac{1}{n}\sum_{i=1}^n X_i$$
+
+**Propriedades:**
+
+1. **Valor esperado:** $E[\bar{X}] = \mu$ (não viesado)
+
+2. **Variância:** $Var(\bar{X}) = \sigma^2/n$
+
+3. **Desvio padrão (erro padrão):** $EP(\bar{X}) = \sigma/\sqrt{n}$
+
+**Distribuição exata (caso Normal):**
+
+Se a população é Normal $N(\mu, \sigma^2)$, então a distribuição amostral da média é exatamente:
+
+>> $$\bar{X} \sim N\left(\mu, \frac{\sigma^2}{n}\right)$$
+
+**Distribuição aproximada (caso não-Normal):**
+
+Pelo Teorema Central do Limite, para $n$ suficientemente grande:
+
+>> $$\bar{X} \approx N\left(\mu, \frac{\sigma^2}{n}\right)$$
+
+**Exemplo numérico:**
+
+Suponha que a altura de uma população seja Normal com $\mu = 170$ cm e $\sigma = 10$ cm.
+
+**Pergunta:** Para amostras de $n = 25$, qual a probabilidade de a média amostral ser maior que 172 cm?
+
+**Resolução:**
+
+$EP = 10/\sqrt{25} = 2$
+$Z = (172 - 170)/2 = 1,0$
+$P(Z > 1,0) = 0,1587$
+
+**Resposta:** 15,87% de chance.
+
+## Distribuição Amostral da Proporção
+
+Seja $X$ o número de sucessos em $n$ tentativas de Bernoulli com probabilidade $p$. A proporção amostral é:
+
+>> $$\hat{p} = \frac{X}{n}$$
+
+**Propriedades:**
+
+1. **Valor esperado:** $E[\hat{p}] = p$ (não viesado)
+
+2. **Variância:** $Var(\hat{p}) = p(1-p)/n$
+
+3. **Desvio padrão (erro padrão):** $EP(\hat{p}) = \sqrt{p(1-p)/n}$
+
+**Distribuição aproximada:**
+
+Pelo TCL, para $n$ suficientemente grande:
+
+>> $$\hat{p} \approx N\left(p, \frac{p(1-p)}{n}\right)$$
+
+**Exemplo numérico:**
+
+Em uma pesquisa com 400 pessoas, 60% dizem preferir o produto A.
+
+**Pergunta:** Qual a probabilidade de a proporção amostral ser maior que 63%?
+
+**Resolução:**
+
+$p = 0,6$, $n = 400$
+$EP = \sqrt{0,6 \cdot 0,4 / 400} = \sqrt{0,24/400} = \sqrt{0,0006} = 0,0245$
+$Z = (0,63 - 0,6)/0,0245 = 1,224$
+$P(Z > 1,224) = 0,1105$
+
+**Resposta:** 11,05% de chance.
+
+## Distribuição Amostral da Variância
+
+Seja $X_1, X_2, \dots, X_n$ uma amostra aleatória de uma população Normal com variância $\sigma^2$. A variância amostral é:
+
+>> $$S^2 = \frac{1}{n-1}\sum_{i=1}^n (X_i - \bar{X})^2$$
+
+**Distribuição exata (caso Normal):**
+
+>> $$\frac{(n-1)S^2}{\sigma^2} \sim \chi^2(n-1)$$
+
+**Propriedades:**
+
+1. **Valor esperado:** $E[S^2] = \sigma^2$ (não viesado)
+
+2. **Variância:** $Var(S^2) = \frac{2\sigma^4}{n-1}$
+
+**Exemplo numérico:**
+
+Uma amostra de 20 elementos de uma população Normal tem variância 16.
+
+**Pergunta:** Qual a probabilidade de a variância amostral ser menor que 12?
+
+**Resolução:**
+
+$\chi^2 = \frac{19 \cdot 12}{16} = 14,25$ com $\nu = 19$.
+$P(\chi^2 < 14,25) \approx 0,20$ (valor aproximado pela tabela).
+
+**Resposta:** Aproximadamente 20%.
+
+## Distribuição da Diferença de Médias
+
+Sejam duas amostras independentes de duas populações Normais:
+
+- Amostra 1: $n_1$, $\bar{X}_1$, $\sigma_1^2$
+- Amostra 2: $n_2$, $\bar{X}_2$, $\sigma_2^2$
+
+**Distribuição da diferença:**
+
+>> $$\bar{X}_1 - \bar{X}_2 \sim N\left(\mu_1 - \mu_2, \frac{\sigma_1^2}{n_1} + \frac{\sigma_2^2}{n_2}\right)$$
+
+**Exemplo numérico:**
+
+Duas máquinas produzem peças. Máquina A: $\mu_1 = 50$, $\sigma_1 = 2$, $n_1 = 30$. Máquina B: $\mu_2 = 52$, $\sigma_2 = 3$, $n_2 = 40$.
+
+**Pergunta:** Qual a probabilidade de a diferença entre as médias amostrais ser maior que 1?
+
+**Resolução:**
+
+$E[\bar{X}_1 - \bar{X}_2] = 50 - 52 = -2$
+$Var = 4/30 + 9/40 = 0,1333 + 0,225 = 0,3583$
+$EP = \sqrt{0,3583} = 0,5986$
+$P(\bar{X}_1 - \bar{X}_2 > 1) = P(Z > (1 - (-2))/0,5986) = P(Z > 5,01) \approx 0$
+
+**Resposta:** Praticamente 0%.
+
+## Distribuição da Diferença de Proporções
+
+Sejam duas amostras independentes com proporções $p_1$ e $p_2$.
+
+>> $$\hat{p}_1 - \hat{p}_2 \approx N\left(p_1 - p_2, \frac{p_1(1-p_1)}{n_1} + \frac{p_2(1-p_2)}{n_2}\right)$$
+
+**Exemplo numérico:**
+
+Em uma pesquisa, 55% de 200 homens preferem o produto A, e 45% de 250 mulheres preferem o produto A.
+
+**Pergunta:** Qual a probabilidade de a diferença entre as proporções ser maior que 15%?
+
+**Resolução:**
+
+$p_1 = 0,55$, $n_1 = 200$; $p_2 = 0,45$, $n_2 = 250$
+$E[\hat{p}_1 - \hat{p}_2] = 0,10$
+$Var = 0,55 \cdot 0,45/200 + 0,45 \cdot 0,55/250 = 0,0012375 + 0,00099 = 0,0022275$
+$EP = \sqrt{0,0022275} = 0,0472$
+$P(\hat{p}_1 - \hat{p}_2 > 0,15) = P(Z > (0,15 - 0,10)/0,0472) = P(Z > 1,059) = 0,1446$
+
+**Resposta:** 14,46%.
+
+## A Distribuição Qui-Quadrado ($\chi^2$)
+
+A distribuição Qui-Quadrado é fundamental para a distribuição amostral da variância.
+
+**Definição:** Se $Z_1, Z_2, \dots, Z_k \sim N(0,1)$ independentes, então:
+
+>> $$\sum_{i=1}^k Z_i^2 \sim \chi^2(k)$$
+
+**Propriedades:**
+
+- $E[\chi^2(k)] = k$
+- $Var(\chi^2(k)) = 2k$
+- $\chi^2(k) = \text{Gama}(k/2, 1/2)$
+
+**Exemplo numérico:**
+
+Para uma amostra de $n = 10$ de uma Normal com $\sigma^2 = 25$, qual a probabilidade de $S^2 > 40$?
+
+**Resolução:**
+
+$\chi^2 = 9 \cdot 40/25 = 14,4$ com $\nu = 9$.
+$P(\chi^2 > 14,4) \approx 0,10$ (pela tabela).
+
+**Resposta:** 10%.
+
+## A Distribuição t-Student
+
+A distribuição $t$ é usada quando a variância populacional é desconhecida.
+
+**Definição:** Se $Z \sim N(0,1)$ e $W \sim \chi^2(k)$ independentes, então:
+
+>> $$T = \frac{Z}{\sqrt{W/k}} \sim t(k)$$
+
+**Aplicação:** Para amostras de uma Normal com $\sigma$ desconhecido:
+
+>> $$\frac{\bar{X} - \mu}{S/\sqrt{n}} \sim t(n-1)$$
+
+**Exemplo numérico:**
+
+Uma amostra de $n = 10$ tem $\bar{X} = 50$ e $S = 5$. Encontre $P(\bar{X} < 48)$.
+
+**Resolução:**
+
+$t = \frac{48 - 50}{5/\sqrt{10}} = \frac{-2}{1,581} = -1,265$ com $\nu = 9$.
+$P(T < -1,265) \approx 0,12$ (pela tabela).
+
+**Resposta:** 12%.
+
+## A Distribuição F
+
+A distribuição $F$ é usada para comparar variâncias de duas populações.
+
+**Definição:** Se $U \sim \chi^2(k_1)$ e $V \sim \chi^2(k_2)$ independentes, então:
+
+>> $$F = \frac{U/k_1}{V/k_2} \sim F(k_1, k_2)$$
+
+**Aplicação:** Para duas amostras Normais independentes:
+
+>> $$\frac{S_1^2/\sigma_1^2}{S_2^2/\sigma_2^2} \sim F(n_1-1, n_2-1)$$
+
+**Exemplo numérico:**
+
+Duas amostras: $n_1 = 10$, $S_1^2 = 25$; $n_2 = 12$, $S_2^2 = 16$.
+
+**Pergunta:** Qual a probabilidade de $F > 1,5$?
+
+**Resolução:**
+
+$F = \frac{25/\sigma_1^2}{16/\sigma_2^2}$. Se $\sigma_1^2 = \sigma_2^2$ ($H_0$), então $F = 25/16 = 1,5625$ com $\nu_1 = 9$, $\nu_2 = 11$.
+$P(F > 1,5625) \approx 0,23$ (pela tabela).
+
+**Resposta:** 23%.
+
+### Analogia 1: O termômetro
+
+A distribuição amostral da média é como um termômetro que usamos para medir a temperatura média da população. O erro padrão é a precisão do termômetro. Quanto maior a amostra, mais preciso o termômetro.
+
+### Analogia 2: O arqueiro
+
+A distribuição amostral da média é a distribuição dos acertos de um arqueiro. O centro é o alvo (a média populacional). O desvio padrão (erro padrão) é a precisão do arqueiro.
+
+### Analogia 3: A régua
+
+A distribuição amostral da média é como medir o comprimento de uma mesa com uma régua. Quanto mais medições você faz, mais precisa é a média das medições.
+
+### Analogia 4: O pesquisador de opinião
+
+A distribuição amostral da proporção é como as estimativas de diferentes pesquisadores sobre a intenção de voto. Quanto maior a amostra, mais próximas as estimativas estão da verdade.
+
+## Exemplos Práticos com Cálculos Passo a Passo
+
+### Exemplo 1: Distribuição amostral da média
+
+Uma população tem $\mu = 100$ e $\sigma = 15$. Para $n = 36$, calcule $P(\bar{X} > 102)$.
+
+**Resolução:**
+
+$EP = 15/\sqrt{36} = 2,5$
+$Z = (102 - 100)/2,5 = 0,8$
+$P(Z > 0,8) = 0,2119$
+
+**Resposta:** 21,19%.
+
+### Exemplo 2: Distribuição amostral da proporção
+
+Em uma população, $p = 0,3$. Para $n = 200$, calcule $P(\hat{p} > 0,35)$.
+
+**Resolução:**
+
+$EP = \sqrt{0,3 \cdot 0,7 / 200} = \sqrt{0,21/200} = \sqrt{0,00105} = 0,0324$
+$Z = (0,35 - 0,3)/0,0324 = 1,543$
+$P(Z > 1,543) = 0,0615$
+
+**Resposta:** 6,15%.
+
+### Exemplo 3: Distribuição amostral da variância
+
+Uma amostra de $n = 15$ de uma Normal com $\sigma^2 = 10$. Calcule $P(S^2 > 15)$.
+
+**Resolução:**
+
+$\chi^2 = 14 \cdot 15/10 = 21,0$ com $\nu = 14$.
+$P(\chi^2 > 21,0) \approx 0,10$.
+
+**Resposta:** 10%.
+
+### Exemplo 4: Distribuição t
+
+Uma amostra de $n = 20$ tem $\bar{X} = 50$ e $S = 8$. Calcule $P(\bar{X} < 45)$.
+
+**Resolução:**
+
+$t = \frac{45 - 50}{8/\sqrt{20}} = \frac{-5}{1,789} = -2,795$ com $\nu = 19$.
+$P(T < -2,795) \approx 0,005$.
+
+**Resposta:** 0,5%.
+
+### Exemplo 5: Distribuição F
+
+Duas amostras: $n_1 = 10$, $S_1^2 = 20$; $n_2 = 15$, $S_2^2 = 10$. Calcule $P(F > 3)$.
+
+**Resolução:**
+
+$F = \frac{20/\sigma_1^2}{10/\sigma_2^2}$. Se $\sigma_1^2 = \sigma_2^2$: $F = 20/10 = 2,0$ com $\nu_1 = 9$, $\nu_2 = 14$.
+$P(F > 2,0) \approx 0,10$ (pela tabela).
+
+**Resposta:** 10%.
+
+## Exercícios Resolvidos
+
+### Exercício 1 (Fácil)
+
+Uma população tem $\mu = 50$ e $\sigma = 8$. Para $n = 64$, calcule $EP(\bar{X})$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$EP = 8/\sqrt{64} = 8/8 = 1$.
+
+**Resposta:** 1.
+
+</details>
+
+### Exercício 2 (Fácil/Médio)
+
+Para a população do exercício 1, calcule $P(49 \le \bar{X} \le 51)$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$Z_1 = (49 - 50)/1 = -1,0$
+$Z_2 = (51 - 50)/1 = 1,0$
+$P(-1,0 \le Z \le 1,0) = 0,6826$.
+
+**Resposta:** 68,26%.
+
+</details>
+
+### Exercício 3 (Médio)
+
+Uma amostra de $n = 30$ tem $\bar{X} = 42$ e $S = 5$. Construa um intervalo de 95% para $\mu$ usando $t$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$\nu = 29$. $t_{0,025, 29} = 2,045$.
+$EP = 5/\sqrt{30} = 0,9129$.
+Intervalo: $42 \pm 2,045 \cdot 0,9129 = 42 \pm 1,867 = (40,133, 43,867)$.
+
+**Resposta:** (40,13, 43,87).
+
+</details>
+
+### Exercício 4 (Médio)
+
+Duas amostras: $n_1 = 20$, $\bar{X}_1 = 30$, $S_1 = 4$; $n_2 = 25$, $\bar{X}_2 = 35$, $S_2 = 5$. Calcule o $EP$ da diferença das médias.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$EP = \sqrt{S_1^2/n_1 + S_2^2/n_2} = \sqrt{16/20 + 25/25} = \sqrt{0,8 + 1} = \sqrt{1,8} = 1,342$.
+
+**Resposta:** 1,342.
+
+</details>
+
+### Exercício 5 (Difícil)
+
+Uma amostra de $n = 12$ de uma Normal tem $S^2 = 25$. Encontre o intervalo de 90% para $\sigma^2$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$\nu = 11$. $\chi^2_{0,05, 11} = 19,68$; $\chi^2_{0,95, 11} = 4,57$.
+Intervalo: $\left[\frac{11 \cdot 25}{19,68}, \frac{11 \cdot 25}{4,57}\right] = \left[\frac{275}{19,68}, \frac{275}{4,57}\right] = [13,97, 60,17]$.
+
+**Resposta:** (13,97, 60,17).
+
+</details>
+
+## Desafio Final com Resolução Completa
+
+Uma fábrica produz parafusos com diâmetro médio 10mm e desvio padrão 0,5mm. O departamento de qualidade coleta amostras de 25 parafusos.
+
+a) Qual a distribuição amostral da média do diâmetro?
+
+b) Qual a probabilidade de uma amostra ter diâmetro médio entre 9,8mm e 10,2mm?
+
+c) Se a fábrica quer que 95% das médias amostrais estejam a menos de 0,2mm da média verdadeira, quantos parafusos devem ser amostrados?
+
+d) Como a distribuição amostral mudaria se a população não fosse Normal?
+
+e) Compare a distribuição amostral da média com a distribuição da população.
+
+<details>
+<summary>💡 Ver resolução completa</summary>
+
+a) $\bar{X} \sim N(\mu, \sigma^2/n) = N(10, 0,5^2/25) = N(10, 0,01)$
+
+b) $EP = 0,5/\sqrt{25} = 0,1$
+   $Z_1 = (9,8 - 10)/0,1 = -2,0$
+   $Z_2 = (10,2 - 10)/0,1 = 2,0$
+   $P(-2,0 \le Z \le 2,0) = 0,9544$
+
+c) Queremos que $P(|\bar{X} - 10| < 0,2) = 0,95$.
+   $0,2 = 1,96 \cdot EP = 1,96 \cdot 0,5/\sqrt{n}$
+   $\sqrt{n} = 1,96 \cdot 0,5/0,2 = 4,9$
+   $n = 24,01 \to n \ge 25$
+
+d) Pelo TCL, para $n = 25$, a distribuição amostral é aproximadamente Normal, mesmo que a população não seja Normal. A aproximação melhora com $n$ maior.
+
+e) A população tem $\sigma = 0,5$ (mais dispersa). A distribuição amostral tem $EP = 0,1$ (menos dispersa). A distribuição amostral é mais concentrada em torno da média.
+
+**Respostas:**
+a) $N(10, 0,01)$
+b) 95,44%
+c) $n \ge 25$
+d) Aproximadamente Normal pelo TCL
+e) A distribuição amostral tem menor variabilidade
+
+</details>
+
+> *A distribuição amostral é o espelho da população refletido nas médias de muitas amostras — cada reflexo traz um pouco da verdade, e juntos formam a imagem da certeza.*

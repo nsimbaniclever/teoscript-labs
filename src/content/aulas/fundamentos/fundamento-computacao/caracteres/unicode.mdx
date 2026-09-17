@@ -1,0 +1,410 @@
+
+# Tabela Unicode
+
+## O Padrão Universal de Codificação de Caracteres
+
+## 1. Introdução
+
+Na aula anterior, vimos que o ASCII foi o primeiro padrão internacional de codificação de caracteres. Ele resolveu o problema da comunicação entre computadores americanos, mas tinha uma limitação grave: **apenas 128 caracteres**. Não tinha acentos, não tinha 'ç', não tinha outros idiomas, não tinha emojis.
+
+O mundo, porém, não é composto apenas pelo inglês. Existem milhares de idiomas no mundo: 
+- **português** com seus acentos, 
+- **espanhol** com seu 'ñ', 
+- **alemão** com seu 'ü', 
+- **francês** com seu 'ç', 
+- **chinês** com seus milhares de caracteres, 
+- **árabe** com sua escrita cursiva, e muito mais.
+
+Como criar um único padrão que suporte **todos os idiomas do mundo**, ao mesmo tempo 🤔? Essa foi a missão do **Unicode**.
+
+Nesta aula, vamos estudar o **Unicode** — o padrão que unificou todos os caracteres do mundo em uma única tabela gigante. Vamos entender o que ele é, como funciona, o que ele suporta, e por que ele é o padrão usado hoje em praticamente todos os computadores, celulares e sistemas do mundo.
+
+
+## 2. O Que é o Unicode?
+
+**Unicode** é um padrão internacional criado em **1993** com um objetivo ambicioso:
+
+> **"Dar a cada caractere de cada idioma do mundo um número único e universal."**
+
+Em outras palavras, o Unicode é uma **tabela gigante** que mapeia cada caractere — de letras a emojis, de símbolos matemáticos a caracteres antigos — a um **código único** chamado **ponto de código**.
+
+### 2.1 Características do Unicode
+
+| Característica | Detalhe |
+|----------------|---------|
+| **Criado em** | 1993 |
+| **Número de caracteres** | +143.000 (e crescendo) |
+| **Versão atual** | Unicode 15.1 (2023) |
+| **Suporte** | Todos os idiomas, emojis, símbolos matemáticos, caracteres antigos |
+| **Compatível com ASCII** | Sim (os primeiros 128 caracteres são idênticos) |
+| **Onde é usado** | Praticamente todos os sistemas modernos |
+
+### 2.2 Como funciona o ponto de código?
+
+Cada caractere no Unicode tem um **ponto de código** único, representado em hexadecimal com o prefixo `U+`.
+
+**Exemplos:**
+- 'A' → Ponto de código `U+0041` (igual ao ASCII: 65)
+- 'a' → Ponto de código `U+0061` (igual ao ASCII: 97)
+- 'ç' → Ponto de código `U+00E7` (231 em decimal)
+- 'ã' → Ponto de código `U+00E3` (227 em decimal)
+- '€' → Ponto de código `U+20AC` (símbolo do euro)
+- '😊' → Ponto de código `U+1F60A` (emoji)
+
+**Analogia:** Pense no ponto de código como o **RG** de cada caractere. Cada caractere tem um número único e imutável que o identifica em todo o mundo.
+
+### 2.3 O que o Unicode suporta?
+
+| Categoria | Exemplos | Quantidade |
+|-----------|----------|------------|
+| **Letras latinas** | A-Z, a-z, com acentos (Á, É, Í, Ó, Ú, à, è, ì, ò, ù, etc.) | +1.000 |
+| **Letras gregas** | α, β, γ, δ, ε, Ω, π, Σ, etc. | +100 |
+| **Letras cirílicas** | А, Б, В, Г, Д, Ж, etc. (russo, ucraniano, búlgaro) | +400 |
+| **Caracteres árabes** | ا, ب, ج, د, ه, و, ز, etc. | +1.000 |
+| **Caracteres hebraicos** | א, ב, ג, ד, ה, ו, ז, etc. | +100 |
+| **Caracteres chineses** | 中, 国, 人, 民, 共, 和, 国, etc. | +70.000 |
+| **Caracteres japoneses** | あ, い, う, え, お, カ, キ, ク, etc. | +10.000 |
+| **Caracteres coreanos** | 가, 나, 다, 라, 마, 바, 사, etc. | +10.000 |
+| **Emojis** | 😊, 🚀, ❤️, 🎉, 💻, 🌍, etc. | +3.600 |
+| **Símbolos matemáticos** | ∑, ∫, π, √, ∞, ≠, etc. | +2.000 |
+| **Símbolos de moedas** | €, £, ¥, ₿, ₹, ₩, etc. | +30 |
+| **Caracteres antigos** | 𒀭 (sumério), 𓂀 (egípcio), etc. | +10.000 |
+
+**Total:** Mais de **143.000 caracteres** e crescendo a cada nova versão.
+
+### 2.4 O que o Unicode NÃO é
+
+É importante entender que:
+
+- **Unicode NÃO é um formato de armazenamento.** É apenas uma tabela que atribui números aos caracteres.
+- **Unicode NÃO define quantos bytes cada caractere ocupa.** Isso é definido pelos formatos de codificação (UTF-8, UTF-16, UTF-32 — que veremos na próxima aula).
+- **Unicode NÃO é um programa ou software.** É um padrão mantido pelo Unicode Consortium.
+
+**Analogia:** O Unicode é como um **catálogo universal** que lista todos os livros do mundo e dá a cada um um número ISBN único. O catálogo não diz como os livros são armazenados (em papel, digital, áudio) — apenas dá um número único para cada livro.
+
+
+## 3. A Evolução do ASCII para o Unicode
+
+### 3.1 O problema que o Unicode resolveu
+
+| Padrão | Caracteres | Problema |
+|--------|------------|----------|
+| **ASCII** | 128 (7 bits) | Só inglês. Sem acentos, 'ç', outros idiomas, emojis |
+| **ISO-8859-1** | 256 (8 bits) | Só Europa Ocidental. Sem chinês, árabe, emojis |
+| **ISO-8859-2** | 256 (8 bits) | Só Europa Oriental. Sem chinês, árabe, emojis |
+| **ISO-8859-3** | 256 (8 bits) | Só Malta, Turquia. Sem chinês, árabe, emojis |
+| **ISO-8859-...** | 256 (8 bits) | Cada região tinha sua própria versão. Caos total! |
+
+**O caos dos anos 1980 e 1990:**
+- Um arquivo salvo em ISO-8859-1 (Europa Ocidental) em um computador francês.
+- Quando aberto em um computador chinês com ISO-8859-3 (Malta), os caracteres apareciam como garrancho.
+- Quando aberto em um computador russo, aparecia outro garrancho completamente diferente.
+- **Resultado:** Ninguém conseguia ler nada. O caos era total.
+
+### 3.2 A solução do Unicode
+
+O Unicode resolveu o problema de uma vez por todas:
+
+1. **Uma única tabela** para todos os idiomas do mundo.
+2. **Cada caractere tem um número único** (ponto de código).
+3. **Compatível com ASCII** (os primeiros 128 caracteres são idênticos).
+4. **Universal** — funciona em qualquer computador, em qualquer país, em qualquer sistema.
+
+**Analogia:** Imagine que cada país tivesse seu próprio sistema de placas de carro. Um carro francês teria placas que ninguém na China entenderia. Um carro chinês teria placas que ninguém no Brasil entenderia. O Unicode criou um sistema de placas **único e universal** que funciona em todos os países do mundo.
+
+### 3.3 Exemplo prático: "Ação" em Unicode
+
+| Caractere | ASCII | ISO-8859-1 | Unicode (Ponto de Código) |
+|-----------|-------|------------|---------------------------|
+| A | ✅ 65 | ✅ 65 | ✅ U+0041 |
+| ç | ❌ Não existe | ✅ 231 | ✅ U+00E7 |
+| ã | ❌ Não existe | ✅ 227 | ✅ U+00E3 |
+| o | ✅ 111 | ✅ 111 | ✅ U+006F |
+
+**Resultado:** O Unicode suporta "Ação" perfeitamente. O ASCII não suporta. O ISO-8859-1 suporta, mas não suporta chinês, árabe ou emojis. O Unicode suporta tudo.
+
+
+## 4. Os Blocos do Unicode
+
+O Unicode organiza seus +143.000 caracteres em **blocos** (grupos) baseados em idiomas, sistemas de escrita ou categorias.
+
+### 4.1 Principais blocos do Unicode
+
+| Bloco | Faixa de Pontos | Exemplos |
+|-------|-----------------|----------|
+| **ASCII básico** | U+0000 a U+007F | A-Z, a-z, 0-9, pontuação |
+| **ASCII estendido** | U+0080 a U+00FF | ç, ã, á, é, í, ó, ú, ñ, ü, etc. |
+| **Latim estendido** | U+0100 a U+024F | ō, ū, ē, etc. |
+| **Grego** | U+0370 a U+03FF | α, β, γ, δ, ε, Ω, π, Σ |
+| **Cirílico** | U+0400 a U+04FF | А, Б, В, Г, Д, Ж |
+| **Árabe** | U+0600 a U+06FF | ا, ب, ج, د, ه, و, ز |
+| **Hebraico** | U+0590 a U+05FF | א, ב, ג, ד, ה, ו, ז |
+| **Chinês (CJK)** | U+4E00 a U+9FFF | 中, 国, 人, 民, 共, 和, 国 |
+| **Japonês (Hiragana)** | U+3040 a U+309F | あ, い, う, え, お |
+| **Japonês (Katakana)** | U+30A0 a U+30FF | カ, キ, ク, ケ, コ |
+| **Coreano (Hangul)** | U+AC00 a U+D7AF | 가, 나, 다, 라, 마, 바, 사 |
+| **Emojis** | U+1F600 a U+1F64F | 😊, 😀, 😁, 😂, 😃, 😄, 😅, 😆, 😇, 😈, 😉, 😊 |
+| **Símbolos matemáticos** | U+2200 a U+22FF | ∑, ∫, π, √, ∞, ≠ |
+| **Símbolos de moedas** | U+20A0 a U+20CF | €, £, ¥, ₿, ₹, ₩ |
+
+### 4.2 Blocos de emojis
+
+Os emojis ocupam blocos específicos no Unicode. Cada emoji tem seu próprio ponto de código:
+
+| Emoji | Ponto de Código | Descrição |
+|-------|-----------------|-----------|
+| 😊 | U+1F60A | Smiling Face with Smiling Eyes |
+| 🚀 | U+1F680 | Rocket |
+| ❤️ | U+2764 | Heavy Black Heart |
+| 🎉 | U+1F389 | Party Popper |
+| 💻 | U+1F4BB | Personal Computer |
+| 🌍 | U+1F30D | Earth Globe Europe-Africa |
+
+
+## 5. Pontos de Código e Como Ler Eles
+
+### 5.1 O que é um ponto de código?
+
+Um **ponto de código** é o número único que o Unicode atribui a cada caractere. Ele é representado em **hexadecimal** com o prefixo `U+`.
+
+**Exemplos:**
+- 'A' = U+0041 (65 em decimal)
+- 'a' = U+0061 (97 em decimal)
+- 'ç' = U+00E7 (231 em decimal)
+- 'ã' = U+00E3 (227 em decimal)
+- '€' = U+20AC (8364 em decimal)
+- '😊' = U+1F60A (128522 em decimal)
+
+### 5.2 Como converter ponto de código para decimal?
+
+**Regra geral:** O ponto de código está em hexadecimal. Converta para decimal usando a tabela de conversão hexadecimal → decimal.
+
+**Exemplo:** Converter U+00E7 para decimal.
+
+**Passo 1:** Identifique o valor hexadecimal: `00E7`
+**Passo 2:** Converta para decimal:
+- `E` = 14 (em hexadecimal)
+- `7` = 7 (em hexadecimal)
+- `00E7` = (0 × 16³) + (0 × 16²) + (14 × 16¹) + (7 × 16⁰)
+- `00E7` = 0 + 0 + 224 + 7 = 231
+
+**Resposta:** U+00E7 = 231 em decimal (que é exatamente o valor ISO-8859-1 para 'ç'!)
+
+**Exemplo:** Converter U+1F60A para decimal.
+
+**Passo 1:** `1F60A`
+**Passo 2:** Converta para decimal:
+- `1F60A` = (1 × 16⁴) + (15 × 16³) + (6 × 16²) + (0 × 16¹) + (10 × 16⁰)
+- `1F60A` = 65.536 + 61.440 + 1.536 + 0 + 10 = 128.522
+
+**Resposta:** U+1F60A = 128.522 em decimal
+
+### 5.3 Como o computador "entende" o ponto de código?
+
+Quando você digita "😊" no teclado:
+1. O sistema operacional consulta o Unicode.
+2. O ponto de código é U+1F60A (128.522 em decimal).
+3. O computador converte 128.522 para binário: `11111011000001010` (17 bits).
+4. Esse binário é armazenado e transmitido.
+5. Quando precisa mostrar na tela, o computador lê o binário, converte para o ponto de código, consulta a tabela Unicode e mostra o emoji "😊".
+
+
+## 6. Principais Pontos de Código (Decore!)
+
+| Caractere | Ponto de Código | Decimal | Binário (aproximado) |
+|-----------|-----------------|---------|---------------------|
+| **Espaço** | U+0020 | 32 | 10 0000 |
+| **0** | U+0030 | 48 | 11 0000 |
+| **1** | U+0031 | 49 | 11 0001 |
+| **2** | U+0032 | 50 | 11 0010 |
+| **3** | U+0033 | 51 | 11 0011 |
+| **4** | U+0034 | 52 | 11 0100 |
+| **5** | U+0035 | 53 | 11 0101 |
+| **6** | U+0036 | 54 | 11 0110 |
+| **7** | U+0037 | 55 | 11 0111 |
+| **8** | U+0038 | 56 | 11 1000 |
+| **9** | U+0039 | 57 | 11 1001 |
+| **A** | U+0041 | 65 | 100 0001 |
+| **B** | U+0042 | 66 | 100 0010 |
+| **C** | U+0043 | 67 | 100 0011 |
+| **a** | U+0061 | 97 | 110 0001 |
+| **b** | U+0062 | 98 | 110 0010 |
+| **c** | U+0063 | 99 | 110 0011 |
+| **ç** | U+00E7 | 231 | 1110 0111 |
+| **ã** | U+00E3 | 227 | 1110 0011 |
+| **€** | U+20AC | 8364 | 10 0000 1010 1100 |
+| **😊** | U+1F60A | 128522 | 1 1111 0110 0000 1010 |
+
+
+## 7. Unicode vs ISO-8859-1 vs ASCII (Comparativo)
+
+| Característica | ASCII | ISO-8859-1 | Unicode |
+|----------------|-------|------------|---------|
+| **Criado em** | 1960 | 1980 | 1993 |
+| **Bits por caractere** | 7 (original) / 8 | 8 (1 Byte) | Variável (depende da codificação) |
+| **Combinações** | 128 / 256 | 256 | +143.000 |
+| **Suporta acentos?** | Não | Sim | Sim |
+| **Suporta 'ç'?** | Não | Sim | Sim |
+| **Suporta chinês?** | Não | Não | Sim |
+| **Suporta emojis?** | Não | Não | Sim |
+| **Suporta €, £, ¥?** | Não | Sim (alguns) | Sim |
+| **Compatível com ASCII** | Sim | Sim | Sim |
+| **Usado hoje?** | Não (apenas legado) | Não (apenas legado) | **Sim (padrão mundial)** |
+
+
+## 8. Por Que o Unicode Venceu
+
+### 8.1 As razões do sucesso do Unicode
+
+1. **Universalidade:** Suporta todos os idiomas do mundo — do português ao chinês, do árabe ao japonês.
+2. **Compatibilidade com ASCII:** Os primeiros 128 caracteres são idênticos ao ASCII. Arquivos ASCII antigos continuam funcionando.
+3. **Emojis:** O Unicode inclui emojis — algo essencial para a comunicação moderna.
+4. **Expansibilidade:** O Unicode pode crescer. Novos caracteres são adicionados a cada versão.
+5. **Padrão internacional:** Mantido pelo Unicode Consortium, com participação da Apple, Google, Microsoft, IBM, e outras grandes empresas.
+6. **Gratuito:** Qualquer pessoa pode usar o Unicode sem pagar licenças.
+
+### 8.2 O Unicode hoje
+
+- **Versão atual:** Unicode 15.1 (2023)
+- **+143.000 caracteres**
+- **Suportado por:** Todos os sistemas operacionais modernos (Windows, macOS, Linux, iOS, Android)
+- **Suportado por:** Todas as linguagens de programação modernas (Python, Java, JavaScript, C#, etc.)
+- **Padrão da internet:** 99% dos sites usam Unicode (via UTF-8)
+
+
+## 9. Exercícios
+
+<details>
+<summary>📗 Exercício 1 — Identificar Ponto de Código (fácil)</summary>
+
+**Enunciado:** Qual é o ponto de código Unicode para a letra 'N'? (Dica: é igual ao ASCII)
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** U+004E
+
+**Explicação:** 'N' = 78 em decimal = 4E em hexadecimal → U+004E
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Ponto de Código para 'ç' (fácil)</summary>
+
+**Enunciado:** Qual é o ponto de código Unicode para a letra 'ç'?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** U+00E7
+
+**Explicação:** 'ç' = 231 em decimal = E7 em hexadecimal → U+00E7
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Ponto de Código para 'á' (fácil)</summary>
+
+**Enunciado:** Qual é o ponto de código Unicode para a letra 'á'?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** U+00E1
+
+**Explicação:** 'á' = 225 em decimal = E1 em hexadecimal → U+00E1
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Converter U+00E3 para Decimal (médio)</summary>
+
+**Enunciado:** Converta o ponto de código U+00E3 para decimal.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Passo 1:** U+00E3 = `00E3` em hexadecimal
+**Passo 2:** `E` = 14, `3` = 3
+**Passo 3:** (0 × 16³) + (0 × 16²) + (14 × 16¹) + (3 × 16⁰) = 0 + 0 + 224 + 3 = 227
+
+**Resposta:** 227 em decimal (que é o código para 'ã' em ISO-8859-1)
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Converter U+20AC para Decimal (médio)</summary>
+
+**Enunciado:** Converta o ponto de código U+20AC para decimal (símbolo do Euro).
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Passo 1:** U+20AC = `20AC` em hexadecimal
+**Passo 2:** `2` = 2, `0` = 0, `A` = 10, `C` = 12
+**Passo 3:** (2 × 16³) + (0 × 16²) + (10 × 16¹) + (12 × 16⁰)
+**Passo 4:** (2 × 4096) + 0 + (10 × 16) + 12 = 8192 + 0 + 160 + 12 = 8364
+
+**Resposta:** 8364 em decimal
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Converter U+1F680 para Decimal (difícil)</summary>
+
+**Enunciado:** Converta o ponto de código U+1F680 para decimal (emoji do foguete 🚀).
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Passo 1:** U+1F680 = `1F680` em hexadecimal
+**Passo 2:** `1` = 1, `F` = 15, `6` = 6, `8` = 8, `0` = 0
+**Passo 3:** (1 × 16⁴) + (15 × 16³) + (6 × 16²) + (8 × 16¹) + (0 × 16⁰)
+**Passo 4:** 65.536 + 61.440 + 1.536 + 128 + 0 = 128.640
+
+**Resposta:** 128.640 em decimal
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — Unicode vs ASCII (conceitual)</summary>
+
+**Enunciado:** Por que o Unicode é melhor que o ASCII?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Porque o Unicode:
+1. Suporta **todos os idiomas** do mundo (não apenas o inglês).
+2. Suporta **acentos** e 'ç' (essencial para o português).
+3. Suporta **emojis** (essencial para a comunicação moderna).
+4. Suporta **símbolos matemáticos** e de moedas.
+5. É **expansível** (pode adicionar novos caracteres).
+6. É **compatível com ASCII** (os primeiros 128 caracteres são idênticos).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — Quantos caracteres no Unicode? (conceitual)</summary>
+
+**Enunciado:** Aproximadamente quantos caracteres o Unicode suporta atualmente?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Mais de **143.000 caracteres** (Unicode 15.1, 2023)
+
+**Explicação:** Isso inclui caracteres de todos os idiomas, emojis, símbolos matemáticos, símbolos de moedas, caracteres antigos, e muito mais.
+
+</details>
+</details>
+
+
+> **"O Unicode é o padrão universal que resolveu o problema da Torre de Babel digital. Com mais de 143.000 caracteres — incluindo todos os idiomas, acentos, 'ç', emojis, símbolos matemáticos e moedas — ele substituiu o ASCII e o ISO-8859-1 como o padrão mundial de codificação de caracteres. Cada caractere tem um ponto de código único (ex: U+00E7 para 'ç', U+1F60A para '😊'), e o Unicode é compatível com o ASCII nos primeiros 128 caracteres. Hoje, praticamente todos os computadores, celulares e sistemas do mundo usam o Unicode.**

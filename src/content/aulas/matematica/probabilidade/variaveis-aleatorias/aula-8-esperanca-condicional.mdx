@@ -1,0 +1,275 @@
+# Esperança Condicional e Martingales
+
+### 1. O que é a Esperança Condicional?
+
+Na Aula 7, vimos que $E[X|Y = y]$ é um **número** — o valor esperado de $X$ quando $Y$ assume um valor específico $y$. No entanto, para fins teóricos e aplicações avançadas, é mais útil pensar em $E[X|Y]$ como uma **variável aleatória**, que depende do valor observado de $Y$.
+
+> **Definição Informal:** $E[X|Y]$ é uma função de $Y$ que fornece o valor esperado de $X$ para cada possível valor de $Y$.
+
+**Exemplo:** Se $Y$ é a altura de uma pessoa e $X$ é o peso, $E[X|Y]$ é o peso médio esperado para cada altura específica.
+
+### 2. Definição Formal (Via σ-álgebra)
+
+A definição rigorosa de esperança condicional é um dos pilares da teoria moderna da probabilidade. Ela é definida usando σ-álgebras e a integral de Lebesgue.
+
+> **Definição (Esperança Condicional):** A esperança condicional de $X$ dada a σ-álgebra $\mathcal{G}$, denotada por $E[X|\mathcal{G}]$, é a única variável aleatória $Z$ que satisfaz duas propriedades:
+
+1. **Mensurabilidade:** $Z$ é mensurável com relação a $\mathcal{G}$ (ou seja, $Z$ depende apenas das informações contidas em $\mathcal{G}$).
+2. **Propriedade da projeção:** Para todo $G \in \mathcal{G}$,
+   $$ E[Z \cdot \mathbf{1}_G] = E[X \cdot \mathbf{1}_G] $$
+
+**Interpretação:** $E[X|\mathcal{G}]$ é a "melhor aproximação" de $X$ usando informações de $\mathcal{G}$, no sentido de mínimos quadrados.
+
+### 3. Propriedades da Esperança Condicional
+
+A esperança condicional possui propriedades que a tornam uma ferramenta extremamente poderosa:
+
+| Propriedade | Fórmula | Nome |
+| :--- | :--- | :--- |
+| **1. Linearidade** | $E[aX + bY \mid \mathcal{G}] = aE[X \mid \mathcal{G}] + bE[Y \mid \mathcal{G}]$ | — |
+| **2. Torre (Iteração)** | $E[E[X \mid \mathcal{G}]] = E[X]$ | Lei da Esperança Total |
+| **3. Fatoração** | $E[XY \mid \mathcal{G}] = Y \cdot E[X \mid \mathcal{G}]$, se $Y$ é mensurável em $\mathcal{G}$ | — |
+| **4. Independência** | Se $X$ é independente de $\mathcal{G}$, então $E[X \mid \mathcal{G}] = E[X]$ | — |
+| **5. Desigualdade de Jensen** | $\varphi(E[X \mid \mathcal{G}]) \leq E[\varphi(X) \mid \mathcal{G}]$ para $\varphi$ convexa | — |
+| **6. Esperança Total** | $E[X] = E[E[X \mid Y]]$ | Versão com variáveis |
+
+**Exemplo 1 — Lei da Esperança Total:**
+
+Seja $X$ o número de clientes em uma loja e $Y$ o dia da semana. A esperança total de $X$ é a média das esperanças condicionais para cada dia, ponderada pela probabilidade de cada dia.
+
+$$ 
+E[X] = \sum_{y} E[X \mid Y = y] \cdot P(Y = y)
+$$
+
+**Exemplo 2 — Fatoração:**
+
+Se $Y$ é conhecido (mensurável em $\mathcal{G}$), então:
+$$ E[XY \mid \mathcal{G}] = Y \cdot E[X \mid \mathcal{G}] $$
+
+**Exemplo prático:** Se $Y$ é a altura de uma pessoa (informação conhecida) e $X$ é o peso, então a esperança do produto (altura × peso) dado a altura é a altura multiplicada pela esperança do peso dado a altura.
+
+### 4. Conexão com Projeção Ortogonal em $L^2$
+
+Um dos aspectos mais elegantes da esperança condicional é sua interpretação geométrica no espaço $L^2$.
+
+> **Interpretação:** $E[X|\mathcal{G}]$ é a **projeção ortogonal** de $X$ sobre o subespaço das variáveis aleatórias mensuráveis em $\mathcal{G}$.
+
+**Por que isso é importante?**
+- Em $L^2$, a "melhor previsão" de $X$ com base em $Y$ (no sentido de minimizar o erro quadrático médio $E[(X - g(Y))^2]$) é exatamente $E[X|Y]$.
+- Isso conecta probabilidade com análise funcional e processamento de sinais.
+
+**Visualização:**
+- $L^2$ é um espaço de Hilbert.
+- $\mathcal{G}$ define um subespaço fechado.
+- $E[X|\mathcal{G}]$ é a projeção ortogonal de $X$ nesse subespaço.
+- O erro $X - E[X|\mathcal{G}]$ é ortogonal a esse subespaço.
+
+**Exemplo 3 — Melhor previsão linear:**
+
+Se $X$ e $Y$ têm distribuição conjunta Normal, a melhor previsão de $X$ dado $Y$ é linear:
+$$ E[X \mid Y] = \mu_X + \rho \frac{\sigma_X}{\sigma_Y} (Y - \mu_Y) $$
+
+Isso é exatamente a reta de regressão linear, que é a projeção ortogonal de $X$ sobre o espaço gerado por $1$ e $Y$.
+
+### 5. Introdução a Martingales
+
+A esperança condicional é a base para a definição de **martingales**, que são processos estocásticos com uma propriedade fundamental de "justiça".
+
+> **Definição (Martingale):** Uma sequência de variáveis aleatórias $\{X_n\}_{n \geq 0}$ é um **martingale** em relação a uma filtração $\{\mathcal{F}_n\}_{n \geq 0}$ se:
+
+1. $E[|X_n|] < \infty$ para todo $n$.
+2. $X_n$ é mensurável em $\mathcal{F}_n$ (ou seja, $X_n$ depende das informações até o tempo $n$).
+3. $E[X_{n+1} \mid \mathcal{F}_n] = X_n$.
+
+**Interpretação:** A melhor previsão do próximo valor, dado todo o passado, é o valor atual. Não há tendência de subir ou descer.
+
+**Exemplo 4 — Martingale clássico:**
+
+Seja $X_n$ a sua fortuna após $n$ jogadas de um jogo justo (expectativa de ganho zero em cada rodada). Então:
+$$ E[X_{n+1} \mid \mathcal{F}_n] = X_n $$
+
+Ou seja, o valor esperado da fortuna no futuro, dado o passado, é a fortuna atual. O jogo é "justo" — não há vantagem para nenhum dos lados.
+
+**Exemplo 5 — Passeio aleatório simétrico:**
+
+Seja $S_n = \sum_{i=1}^n \varepsilon_i$, onde $\varepsilon_i$ são independentes com $P(\varepsilon_i = 1) = P(\varepsilon_i = -1) = 1/2$.
+
+**Verificação:**
+$$ E[S_{n+1} \mid \mathcal{F}_n] = E[S_n + \varepsilon_{n+1} \mid \mathcal{F}_n] = S_n + E[\varepsilon_{n+1}] = S_n + 0 = S_n $$
+
+Portanto, $S_n$ é um martingale. Ele representa a posição de um bêbado que anda para a direita ou esquerda com igual probabilidade.
+
+### 6. Propriedades dos Martingales
+
+| Propriedade | Fórmula | Explicação |
+| :--- | :--- | :--- |
+| **Expectativa constante** | $E[X_n] = E[X_0]$ | A média do martingale não muda com o tempo. |
+| **Desigualdade de Doob** | $P(\max_{0 \leq k \leq n} X_k \geq a) \leq \frac{E[\vert X_n \vert]}{a}$ | Limita a probabilidade de atingir um nível alto. |
+| **Teorema da Parada Opcional** | Se $\tau$ é um tempo de parada limitado, então $E[X_\tau] = E[X_0]$. | Permite calcular esperanças em tempos aleatórios. |
+
+### 7. Aplicações dos Martingales
+
+| Área | Aplicação |
+| :--- | :--- |
+| **Finanças** | Modelagem de preços de ativos (movimento Browniano geométrico). |
+| **Jogos** | Estratégias de apostas (como o problema do jogador arruinado). |
+| **Biologia** | Modelagem de populações e evolução. |
+| **Engenharia** | Filtros adaptativos e processamento de sinais. |
+| **Física** | Movimento browniano e processos de difusão. |
+
+### 8. Resumo — Esperança Condicional e Martingales
+
+| Conceito | Definição/Propriedade |
+| :--- | :--- |
+| **Esperança Condicional** | $E[X \mid \mathcal{G}]$ é a projeção ortogonal de $X$ sobre $\mathcal{G}$. |
+| **Linearidade** | $E[aX + bY \mid \mathcal{G}] = aE[X \mid \mathcal{G}] + bE[Y \mid \mathcal{G}]$ |
+| **Lei da Esperança Total** | $E[E[X \mid \mathcal{G}]] = E[X]$ |
+| **Fatoração** | $E[XY \mid \mathcal{G}] = Y \cdot E[X \mid \mathcal{G}]$ (se $Y$ é $\mathcal{G}$-mensurável) |
+| **Martingale** | $E[X_{n+1} \mid \mathcal{F}_n] = X_n$ |
+| **Propriedade fundamental** | $E[X_n] = E[X_0]$ (esperança constante). |
+
+## 📝 EXERCÍCIOS RESOLVIDOS
+
+<details>
+<summary>📗 Exercício 1 — Lei da Esperança Total</summary>
+
+**Enunciado:** Uma fábrica tem 3 máquinas que produzem 50%, 30% e 20% das peças. As taxas de defeito são 2%, 3% e 5%, respectivamente.
+
+a) Calcule a probabilidade total de defeito $P(D)$.
+b) Calcule a probabilidade de uma peça ter vindo da Máquina 1, dado que é defeituosa $P(M_1|D)$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**a) $P(D)$ (Lei da Esperança Total):**
+$$ P(D) = \sum_{i=1}^{3} P(D \mid M_i) \cdot P(M_i) $$
+$$ P(D) = 0,02 \cdot 0,50 + 0,03 \cdot 0,30 + 0,05 \cdot 0,20 = 0,01 + 0,009 + 0,01 = 0,029 $$
+
+**b) $P(M_1|D)$ (Teorema de Bayes):**
+$$ P(M_1 \mid D) = \frac{P(D \mid M_1) \cdot P(M_1)}{P(D)} = \frac{0,02 \cdot 0,50}{0,029} = \frac{0,01}{0,029} \approx 0,3448 $$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Esperança Condicional Discreta</summary>
+
+**Enunciado:** A tabela abaixo mostra a distribuição conjunta de $X$ e $Y$:
+
+| $x \backslash y$ | 1 | 2 | 3 |
+| :--- | :--- | :--- | :--- |
+| 0 | 0,1 | 0,1 | 0,2 |
+| 1 | 0,2 | 0,1 | 0,3 |
+
+Calcule $E[Y|X = 0]$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**Passo 1 — $P(X = 0)$:**
+$$ P(X = 0) = 0,1 + 0,1 + 0,2 = 0,4 $$
+
+**Passo 2 — Distribuição condicional de $Y$ dado $X = 0$:**
+- $P(Y = 1 \mid X = 0) = \frac{0,1}{0,4} = 0,25$
+- $P(Y = 2 \mid X = 0) = \frac{0,1}{0,4} = 0,25$
+- $P(Y = 3 \mid X = 0) = \frac{0,2}{0,4} = 0,50$
+
+**Passo 3 — $E[Y|X = 0]$:**
+$$ E[Y \mid X = 0] = 1 \cdot 0,25 + 2 \cdot 0,25 + 3 \cdot 0,50 = 0,25 + 0,50 + 1,50 = 2,25 $$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Esperança Condicional Contínua</summary>
+
+**Enunciado:** Seja:
+
+$$ f_{X,Y}(x, y) = \begin{cases} 2, & 0 \leq x \leq y \leq 1 \\ 0, & \text{caso contrário} \end{cases} $$
+
+Calcule $E[Y|X = x]$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**Passo 1 — $f_X(x)$:**
+$$ f_X(x) = \int_{x}^{1} 2 \, dy = 2(1 - x), \quad 0 \leq x \leq 1 $$
+
+**Passo 2 — Condicional $f_{Y|X}(y|x)$:**
+$$ f_{Y \mid X}(y \mid x) = \frac{2}{2(1 - x)} = \frac{1}{1 - x}, \quad x \leq y \leq 1 $$
+
+**Passo 3 — $E[Y|X = x]$:**
+$$ E[Y \mid X = x] = \int_{x}^{1} y \cdot \frac{1}{1 - x} \, dy = \frac{1}{1 - x} \cdot \left[ \frac{y^2}{2} \right]_{x}^{1} $$
+$$ = \frac{1}{1 - x} \cdot \frac{1 - x^2}{2} = \frac{1 - x^2}{2(1 - x)} = \frac{(1 - x)(1 + x)}{2(1 - x)} = \frac{1 + x}{2} $$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Verificação de Martingale</summary>
+
+**Enunciado:** Seja $X_n = S_n - n\mu$, onde $S_n = X_1 + ... + X_n$ e $E[X_i] = \mu$. Mostre que $X_n$ é um martingale.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**Passo 1 — Verificar a propriedade do martingale:**
+$$ E[X_{n+1} \mid \mathcal{F}_n] = E[S_{n+1} - (n+1)\mu \mid \mathcal{F}_n] $$
+$$ = E[S_n + X_{n+1} - n\mu - \mu \mid \mathcal{F}_n] = E[S_n - n\mu \mid \mathcal{F}_n] + E[X_{n+1} - \mu \mid \mathcal{F}_n] $$
+$$ = X_n + (E[X_{n+1}] - \mu) = X_n + 0 = X_n $$
+
+**Conclusão:** $X_n$ é um martingale.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Martingale do Passeio Aleatório</summary>
+
+**Enunciado:** Seja $S_n = \sum_{i=1}^n \varepsilon_i$, onde $\varepsilon_i$ são independentes com $P(\varepsilon_i = 1) = p$ e $P(\varepsilon_i = -1) = 1 - p$. Encontre o valor de $p$ para o qual $S_n$ é um martingale.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**Passo 1 — Propriedade do martingale:**
+$$ E[S_{n+1} \mid \mathcal{F}_n] = S_n + E[\varepsilon_{n+1}] = S_n + (2p - 1) $$
+
+**Passo 2 — Para ser martingale:**
+$$ E[S_{n+1} \mid \mathcal{F}_n] = S_n \Rightarrow 2p - 1 = 0 \Rightarrow p = \frac{1}{2} $$
+
+**Conclusão:** O passeio aleatório é um martingale **apenas** quando $p = 1/2$ (caso simétrico).
+
+</details>
+</details>
+
+## 🎯 DESAFIO FINAL
+
+**Enunciado:** Seja $X$ uma variável aleatória com $E[X] = \mu$ e $Var(X) = \sigma^2$. Seja $Y$ uma variável aleatória independente de $X$.
+
+Calcule:
+- a) $E[X|Y]$
+- b) $Var(E[X|Y])$
+- c) $E[Var(X|Y)]$
+- d) Verifique a decomposição da variância: $Var(X) = Var(E[X|Y]) + E[Var(X|Y)]$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**a) $E[X|Y]$:**
+- Como $X$ e $Y$ são independentes, $E[X \mid Y] = E[X] = \mu$.
+
+**b) $Var(E[X|Y])$:**
+- $E[X \mid Y] = \mu$ é uma constante, então $Var(\mu) = 0$.
+
+**c) $E[Var(X|Y)]$:**
+- Como $X$ é independente de $Y$, $Var(X \mid Y) = Var(X) = \sigma^2$.
+- Portanto, $E[Var(X \mid Y)] = \sigma^2$.
+
+**d) Decomposição da variância:**
+$$ Var(X) = Var(E[X \mid Y]) + E[Var(X \mid Y)] \Rightarrow \sigma^2 = 0 + \sigma^2 $$
+
+**Verificação:** A identidade é satisfeita.
+
+</details>
+
+> *A esperança condicional é uma das ferramentas mais poderosas da probabilidade moderna, conectando teoria da medida, análise funcional e processos estocásticos. Os martingales, por sua vez, são a base para a modelagem de fenômenos "justos" e para o desenvolvimento de teorias profundas como a integral estocástica.*

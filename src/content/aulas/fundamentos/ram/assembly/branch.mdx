@@ -1,0 +1,493 @@
+# INSTRUÇÕES DE DESVIO
+
+## 1. INTRODUÇÃO
+
+Nas últimas três aulas, estudamos as instruções que a CPU executa: aritméticas (somar, subtrair), lógicas (AND, OR, XOR) e de transferência (load, store). Vimos como a CPU manipula dados, faz cálculos e acessa a memória. Mas há uma pergunta fundamental: **como a CPU decide qual instrução executar em seguida?**<br><br>
+
+Normalmente, a CPU executa instruções em sequência — uma após a outra. Mas a vida não é linear. Muitas vezes precisamos que o computador tome decisões: "se X for maior que Y, faça A; senão, faça B". Ou precisamos repetir um bloco de código várias vezes (loops). É aí que entram as **instruções de desvio**.<br><br>
+
+Instruções de desvio são como **bifurcações em uma estrada**. Sem elas, o programa seria uma linha reta, sempre executando as mesmas instruções na mesma ordem. Com elas, o programa pode tomar decisões, repetir ações e saltar para diferentes partes do código.<br><br>
+
+Nesta aula, vamos estudar as instruções de desvio em Assembly: JMP (saltos incondicionais), BEQ, BNE, BLT, BGT (saltos condicionais), e como eles usam as flags da ALU para tomar decisões. Vamos entender como loops e condicionais funcionam no nível mais baixo da computação.
+
+## 2. O QUE SÃO INSTRUÇÕES DE DESVIO?
+
+### 2.1 Definição
+
+> "Instruções de desvio são operações que alteram o fluxo de execução do programa, permitindo que a CPU execute instruções em uma ordem diferente da sequencial, seja incondicionalmente (jump) ou baseado em condições (branch)."
+
+### 2.2 Tipos de instruções de desvio
+
+| Tipo | Descrição | Exemplo | Significado |
+|---------|---------|---------|---------|
+| **JMP** | Salto incondicional | `JMP label` | Vai para a instrução em 'label' |
+| **BEQ** | Branch if Equal | `BEQ label` | Vai para 'label' se Z = 1 |
+| **BNE** | Branch if Not Equal | `BNE label` | Vai para 'label' se Z = 0 |
+| **BLT** | Branch if Less Than | `BLT label` | Vai para 'label' se N ≠ V |
+| **BGT** | Branch if Greater Than | `BGT label` | Vai para 'label' se Z = 0 e N = V |
+| **BLE** | Branch if Less or Equal | `BLE label` | Vai para 'label' se Z = 1 ou N ≠ V |
+| **BGE** | Branch if Greater or Equal | `BGE label` | Vai para 'label' se N = V |
+
+### 2.3 Analogia
+
+As instruções de desvio são como **placas de trânsito** em uma estrada:
+
+- **JMP:** "Siga em frente" (sempre vá para o próximo ponto).
+- **BEQ:** "Se o semáforo estiver verde, vire à direita" (se a condição for verdadeira).
+- **BNE:** "Se o semáforo estiver vermelho, vire à esquerda" (se a condição for falsa).
+- **BLT/BGT:** "Se a velocidade for menor/maior que o limite, tome uma ação."
+
+## 3. COMO A CPU EXECUTA UM DESVIO?
+
+### 3.1 O Program Counter (PC)
+
+O **Program Counter (PC)** é um registrador especial que contém o endereço da próxima instrução a ser executada. Em uma execução sequencial:
+
+1. A CPU busca a instrução apontada pelo PC.
+2. A CPU executa a instrução.
+3. O PC é incrementado para apontar para a próxima instrução.
+
+### 3.2 Como funciona um salto
+
+Quando a CPU executa uma instrução de desvio:
+
+1. A CPU decodifica a instrução (ex: `JMP label`).
+2. A CPU calcula o endereço da 'label'.
+3. A CPU **substitui o valor do PC** pelo endereço da label.
+4. A próxima instrução buscada será a da label.
+
+**Efeito:** O fluxo de execução "salta" para outra parte do programa.
+
+### 3.3 Diagrama: Execução sequencial vs desvio
+
+**Execução sequencial:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+Endereço 100: ADD R1, R2, R3    ← PC = 100
+Endereço 104: SUB R4, R5, R6    ← PC = 104 (100 + 4)
+Endereço 108: MUL R7, R8, R9    ← PC = 108 (104 + 4)
+</pre>
+
+**Com desvio (JMP):**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+Endereço 100: ADD R1, R2, R3    ← PC = 100
+Endereço 104: JMP 200           ← PC = 104
+Endereço 108: SUB R4, R5, R6    ← (pulado!)
+...
+Endereço 200: MUL R7, R8, R9    ← PC = 200 (salto!)
+</pre>
+
+## 4. JMP — O SALTO INCONDICIONAL
+
+### 4.1 O que é JMP?
+
+JMP (Jump) é a instrução de desvio mais simples: ela **sempre** salta para o endereço especificado, sem nenhuma condição.
+
+### 4.2 Sintaxe
+
+**Forma 1 — Salto para label:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+JMP loop_inicio    ; Vai para a instrução rotulada "loop_inicio"
+</pre>
+
+**Forma 2 — Salto para endereço:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+JMP 0x2000         ; Vai para a instrução no endereço 0x2000
+</pre>
+
+### 4.3 Exemplo: Loop infinito
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+inicio:
+    ADD R1, R1, #1    ; R1++
+    JMP inicio        ; Volta para o início → loop infinito
+</pre>
+
+### 4.4 Exemplo: Pulando código
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+    JMP pular         ; Salta para "pular"
+    ; Este código nunca será executado
+    SUB R2, R2, #1
+    MUL R3, R4, R5
+pular:
+    ADD R6, R7, R8    ; A execução continua aqui
+</pre>
+
+## 5. SALTOS CONDICIONAIS — BASEADOS NAS FLAGS
+
+### 5.1 As flags da ALU
+
+A ALU (Unidade Lógica e Aritmética) gera flags após cada operação:
+
+| Flag | Descrição | Quando é ativada |
+|---------|---------|---------|
+| **Z (Zero)** | Resultado é zero | Resultado = 0 |
+| **N (Negative)** | Resultado é negativo | Resultado < 0 |
+| **C (Carry)** | Houve "vai-um" | Overflow em operações sem sinal |
+| **V (Overflow)** | Estouro de sinal | Overflow em operações com sinal |
+
+### 5.2 Como as instruções condicionais funcionam
+
+1. Uma instrução aritmética ou lógica é executada (ex: `SUB R1, R2, R3`).
+2. As flags são atualizadas com base no resultado.
+3. Uma instrução de desvio condicional verifica as flags.
+4. Se a condição for satisfeita, o salto é executado.
+5. Se a condição não for satisfeita, a execução continua sequencialmente.
+
+### 5.3 Tabela de instruções condicionais
+
+| Instrução | Condição | Flags | Significado |
+|---------|---------|---------|---------|
+| **BEQ** | Igual | Z = 1 | Branch if Equal |
+| **BNE** | Diferente | Z = 0 | Branch if Not Equal |
+| **BLT** | Menor que | N ≠ V | Branch if Less Than |
+| **BGT** | Maior que | Z = 0 e N = V | Branch if Greater Than |
+| **BLE** | Menor ou igual | Z = 1 ou N ≠ V | Branch if Less or Equal |
+| **BGE** | Maior ou igual | N = V | Branch if Greater or Equal |
+| **BPL** | Positivo | N = 0 | Branch if Plus |
+| **BMI** | Negativo | N = 1 | Branch if Minus |
+| **BCS** | Carry set | C = 1 | Branch if Carry Set |
+| **BCC** | Carry clear | C = 0 | Branch if Carry Clear |
+
+## 6. EXEMPLOS PRÁTICOS
+
+### 6.1 IF-THEN-ELSE em Assembly
+
+**Código em C:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+if (x > y) {
+    z = 10;
+} else {
+    z = 20;
+}
+</pre>
+
+**Código Assembly (ARM):**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+; Suponha que x está em R1, y em R2, z em R3
+CMP R1, R2        ; Compara x e y (R1 - R2)
+BLE else_label    ; Se R1 <= R2, vai para else_label
+
+; IF (x > y)
+MOV R3, #10       ; z = 10
+JMP end_if        ; Pula o else
+
+else_label:
+MOV R3, #20       ; z = 20
+
+end_if:
+; Continua...
+</pre>
+
+### 6.2 Loop FOR em Assembly
+
+**Código em C:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+for (i = 0; i < 10; i++) {
+    // Faz algo
+}
+</pre>
+
+**Código Assembly (ARM):**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+MOV R1, #0        ; i = 0
+loop_start:
+CMP R1, #10       ; Compara i com 10
+BGE loop_end      ; Se i >= 10, sai do loop
+
+; Corpo do loop (faz algo)
+ADD R1, R1, #1    ; i++
+
+JMP loop_start    ; Volta para o início
+loop_end:
+; Continua após o loop
+</pre>
+
+### 6.3 Loop WHILE em Assembly
+
+**Código em C:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+while (x > 0) {
+    // Faz algo
+    x--;
+}
+</pre>
+
+**Código Assembly (ARM):**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+loop_start:
+CMP R1, #0        ; Compara x com 0
+BLE loop_end      ; Se x <= 0, sai do loop
+
+; Corpo do loop (faz algo)
+SUB R1, R1, #1    ; x--
+
+JMP loop_start    ; Volta para o início
+loop_end:
+; Continua após o loop
+</pre>
+
+### 6.4 IF aninhado
+
+**Código em C:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+if (a > 10) {
+    if (b > 5) {
+        c = 100;
+    } else {
+        c = 50;
+    }
+} else {
+    c = 0;
+}
+</pre>
+
+**Código Assembly (ARM):**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+; Suponha: a em R1, b em R2, c em R3
+CMP R1, #10       ; Compara a com 10
+BLE else_outer    ; Se a <= 10, vai para else_outer
+
+; IF a > 10
+CMP R2, #5        ; Compara b com 5
+BLE else_inner    ; Se b <= 5, vai para else_inner
+
+; IF b > 5
+MOV R3, #100      ; c = 100
+JMP end_if        ; Pula para o fim
+
+else_inner:
+MOV R3, #50       ; c = 50
+JMP end_if        ; Pula para o fim
+
+else_outer:
+MOV R3, #0        ; c = 0
+
+end_if:
+; Continua...
+</pre>
+
+## 7. COMPARAÇÃO (CMP) — O CORAÇÃO DOS DESVIOS CONDICIONAIS
+
+### 7.1 O que é CMP?
+
+A instrução **CMP** (Compare) compara dois valores subtraindo-os e atualizando as flags, **sem armazenar o resultado**.
+
+**Sintaxe:** `CMP R1, R2` (compara R1 e R2)
+
+**Efeito:** Subtrai R2 de R1 (R1 - R2) e atualiza as flags Z, N, C, V.
+
+### 7.2 Exemplo: Comparação
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+CMP R1, R2        ; Calcula R1 - R2, atualiza flags
+
+BEQ igual         ; Se R1 == R2, salta
+BNE diferente     ; Se R1 != R2, salta
+BLT menor         ; Se R1 < R2, salta
+BGT maior         ; Se R1 > R2, salta
+</pre>
+
+### 7.3 Tabela: Flags após CMP
+
+| Comparação | Z | N | C | V |
+|---------|---------|---------|---------|---------|
+| R1 = R2 | 1 | 0 | 0 | 0 |
+| R1 > R2 (sem sinal) | 0 | 0 | 1 | 0 |
+| R1 < R2 (sem sinal) | 0 | 1 | 0 | 0 |
+| R1 > R2 (com sinal) | 0 | 0 | — | 0 |
+| R1 < R2 (com sinal) | 0 | 1 | — | 0 |
+
+## 8. APLICAÇÕES REAIS
+
+| Aplicação | Como usa instruções de desvio |
+|---------|----------|
+| **Jogos** | Verificar colisões (se entidades se tocam), condições de vitória |
+| **Sistemas operacionais** | Tomar decisões com base em entradas do usuário |
+| **Compiladores** | Gerar código com if/else, loops, switch/case |
+| **Interpretadores** | Executar código condicional e loops |
+| **Banco de dados** | Filtrar registros baseado em condições |
+| **Inteligência Artificial** | Tomar decisões baseadas em modelos |
+
+**Exemplo prático:** Em um jogo de luta, a cada frame a CPU executa instruções como:
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+CMP posicao_x_jogador, posicao_x_inimigo
+BEQ colidiu          ; Se estão na mesma posição, houve colisão
+</pre>
+
+## 9. EXERCÍCIOS
+
+<details>
+<summary>📗 Exercício 1 — JMP (Fácil)</summary>
+
+**Enunciado:** O que acontece quando a CPU executa `JMP 0x2000`?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** A CPU salta para a instrução no endereço 0x2000.
+
+**Explicação:** O valor do PC é substituído por 0x2000, e a próxima instrução buscada será a que está nesse endereço.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — BEQ (Fácil)</summary>
+
+**Enunciado:** Após `CMP R1, R2`, quando a CPU executará `BEQ label`?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Quando R1 = R2 (igualdade).
+
+**Explicação:** BEQ significa "Branch if Equal". Ele verifica se a flag Z (Zero) = 1, que é ativada quando o resultado da comparação é zero (R1 - R2 = 0 → R1 = R2).
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — BNE (Fácil)</summary>
+
+**Enunciado:** Após `CMP R1, R2`, quando a CPU executará `BNE label`?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Quando R1 ≠ R2 (diferentes).
+
+**Explicação:** BNE significa "Branch if Not Equal". Ele verifica se a flag Z (Zero) = 0, que é ativada quando o resultado da comparação é diferente de zero (R1 ≠ R2).
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — IF simples (Médio)</summary>
+
+**Enunciado:** Escreva uma sequência de instruções Assembly para implementar: se R1 > 10, então R2 = 1; senão, R2 = 0.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+CMP R1, #10       ; Compara R1 com 10
+BLE else_label    ; Se R1 <= 10, vai para else
+MOV R2, #1        ; R1 > 10: R2 = 1
+JMP end_if
+else_label:
+MOV R2, #0        ; R1 <= 10: R2 = 0
+end_if:
+</pre>
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Loop simples (Médio)</summary>
+
+**Enunciado:** Escreva uma sequência de instruções Assembly para implementar um loop que execute 5 vezes (use R1 como contador).
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+MOV R1, #0        ; Contador = 0
+loop_start:
+CMP R1, #5        ; Compara com 5
+BGE loop_end      ; Se R1 >= 5, sai do loop
+
+; Corpo do loop (faz algo)
+
+ADD R1, R1, #1    ; Contador++
+JMP loop_start
+loop_end:
+</pre>
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Max de dois números (Médio)</summary>
+
+**Enunciado:** Escreva instruções Assembly para colocar em R3 o maior valor entre R1 e R2.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+CMP R1, R2        ; Compara R1 e R2
+BGE r1_maior      ; Se R1 >= R2, vai para r1_maior
+MOV R3, R2        ; R3 = R2 (R2 é maior)
+JMP end_if
+r1_maior:
+MOV R3, R1        ; R3 = R1 (R1 é maior)
+end_if:
+</pre>
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — DO-WHILE (Difícil)</summary>
+
+**Enunciado:** Escreva uma sequência de instruções Assembly para implementar um loop DO-WHILE: execute o corpo pelo menos uma vez, e repita enquanto R1 > 0.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+loop_start:
+; Corpo do loop (faz algo)
+SUB R1, R1, #1    ; R1--
+CMP R1, #0        ; Compara R1 com 0
+BGT loop_start    ; Se R1 > 0, repete
+</pre>
+**Explicação:** Diferente do WHILE, o DO-WHILE executa o corpo antes de verificar a condição. O código acima faz isso.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — Fibonacci em Assembly (Desafio)</summary>
+
+**Enunciado:** Escreva uma sequência de instruções Assembly para calcular os primeiros 5 números de Fibonacci (0, 1, 1, 2, 3).
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+; R1 = contador, R2 = n-2, R3 = n-1, R4 = n
+MOV R1, #0        ; Contador = 0
+MOV R2, #0        ; F(0) = 0
+MOV R3, #1        ; F(1) = 1
+
+loop_start:
+CMP R1, #5        ; Contador == 5?
+BGE loop_end      ; Se sim, termina
+
+ADD R4, R2, R3    ; R4 = R2 + R3 (F(n) = F(n-1) + F(n-2))
+MOV R2, R3        ; R2 = R3 (desloca)
+MOV R3, R4        ; R3 = R4 (desloca)
+ADD R1, R1, #1    ; Contador++
+
+JMP loop_start
+loop_end:
+; R4 contém o último número calculado
+</pre>
+**Explicação:** A sequência de Fibonacci: 0, 1, 1, 2, 3, 5, 8... O loop calcula cada termo somando os dois anteriores.
+</details>
+</details>
+
+> Instruções de desvio são o que tornam os programas verdadeiramente inteligentes. JMP permite saltos incondicionais; BEQ, BNE, BLT, BGT e outras permitem decisões baseadas em comparações. Combinadas com CMP e as flags da ALU, elas implementam if/else, loops, switch/case e toda a lógica condicional que faz um programa parecer 'vivo'. Sem instruções de desvio, os programas seriam lineares — executando sempre a mesma sequência de instruções. Com elas, os programas podem tomar decisões, repetir ações, saltar para diferentes partes do código, e reagir a entradas do usuário e condições do sistema. Elas são o coração da lógica de programação no nível mais baixo.

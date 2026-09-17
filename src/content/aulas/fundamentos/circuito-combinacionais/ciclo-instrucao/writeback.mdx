@@ -1,0 +1,451 @@
+# Escrita (Write-back)
+
+## 1. Introdução
+
+Nas três últimas aulas, percorremos as três primeiras etapas do ciclo de instrução: a **Busca (Fetch)** , onde a CPU busca a instrução da memória; a **Decodificação (Decode)** , onde a UC interpreta a instrução; e a **Execução (Execute)** , onde a operação é efetivamente realizada. Agora chegamos à etapa final — a etapa que completa o ciclo. A instrução foi buscada, decodificada e executada. A ULA gerou um resultado. Mas onde esse resultado é armazenado? Como ele fica disponível para instruções futuras?<br><br>
+
+A resposta está na **Escrita (Write-back)** — a quarta e última etapa do ciclo de instrução. A Escrita é o momento em que o resultado da execução é **armazenado permanentemente** (dentro da CPU) em um registrador ou na memória. É a etapa que "fecha o ciclo", garantindo que o trabalho feito pela ULA não seja perdido.<br><br>
+
+Pense na Escrita como o **ato de arquivar um documento**:
+
+- Você pesquisou a informação (Fetch).
+- Você entendeu o que fazer com ela (Decode).
+- Você fez o trabalho (Execute).
+- Agora você guarda o resultado (Write-back).
+
+Nesta aula, vamos explorar a Escrita em detalhes: como o resultado é armazenado em registradores ou na memória, quais componentes estão envolvidos, e como essa etapa completa o ciclo de instrução.
+
+
+## 2. O Que é a Escrita (Write-back)?
+
+### 2.1 Definição
+
+A **Escrita** (em inglês, *Write-back*) é a quarta e última etapa do ciclo de instrução, onde:
+
+> **O resultado gerado pela ULA (ou lido da memória) é armazenado no registrador de destino ou na memória.**
+
+### 2.2 O que acontece durante a escrita?
+
+| Tipo de instrução | O que acontece | Componentes envolvidos |
+|-------------------|----------------|----------------------|
+| **Aritmética/Lógica** | Resultado da ULA → Registrador de destino | ULA, Registradores |
+| **LOAD** | Dado do MBR → Registrador de destino | MBR, Registradores |
+| **STORE** | Dado do registrador → Memória (já feito no Execute) | MBR, Memória |
+| **Salto (JMP)** | Nada a escrever (PC já foi alterado) | - |
+| **Comparação (CMP)** | Nada a escrever (apenas flags atualizadas) | - |
+
+### 2.3 Analogia
+
+Pense na escrita como o **ato de guardar o resultado em uma prateleira**:
+
+<details>
+<summary>🔧 Ver Analogia da Escrita</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 450px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">ESCRITA — ARQUIVANDO O RESULTADO</div>
+
+  <pre style="color: #93c5fd; font-size: 0.65rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    ┌─────────────────────────────────────────────────────┐
+    │                                                     │
+    │   TRABALHO (EXECUTE)                               │
+    │   ┌─────────────────────────────────────────────┐   │
+    │   │  "Calculei: 5 + 3 = 8"                     │   │
+    │   └─────────────────────────────────────────────┘   │
+    │                         │                           │
+    │                         ▼                           │
+    │   ARQUIVAMENTO (WRITE-BACK)                        │
+    │   ┌─────────────────────────────────────────────┐   │
+    │   │  "Guardando 8 em R0"                       │   │
+    │   └─────────────────────────────────────────────┘   │
+    │                         │                           │
+    │                         ▼                           │
+    │   PRATELEIRA (REGISTRADOR)                         │
+    │   ┌─────────────────────────────────────────────┐   │
+    │   │  R0 = 8                                    │   │
+    │   └─────────────────────────────────────────────┘   │
+    │                                                     │
+    └─────────────────────────────────────────────────────┘
+  </pre>
+
+</div>
+</details>
+
+### 2.4 Diagrama da Escrita
+
+<details>
+<summary>🔧 Ver Diagrama da Escrita</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 500px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">ETAPA DE ESCRITA (WRITE-BACK)</div>
+
+  <pre style="color: #93c5fd; font-size: 0.5rem; line-height: 1.6; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    ┌─────────────────────────────────────────────────────────────────┐
+    │                                                                 │
+    │  RESULTADO (da Execução)                                       │
+    │     │                                                           │
+    │     ▼                                                           │
+    │  ┌─────────────────────────────────────────────────────────┐    │
+    │  │                   ESCRITA (WRITE-BACK)                  │    │
+    │  │                                                         │    │
+    │  │  ┌─────────────────────────────────────────────────┐   │    │
+    │  │  │         DECISÃO: ONDE ESCREVER?                │   │    │
+    │  │  │                                                 │   │    │
+    │  │  │  Se instrução for ADD/SUB/AND/OR/XOR:          │   │    │
+    │  │  │     → Escrever em registrador de destino       │   │    │
+    │  │  │  Se instrução for LOAD:                        │   │    │
+    │  │  │     → Escrever em registrador de destino       │   │    │
+    │  │  │  Se instrução for STORE:                       │   │    │
+    │  │  │     → Já foi escrito na memória no Execute     │   │    │
+    │  │  │  Se instrução for CMP/JMP/CALL/RET:            │   │    │
+    │  │  │     → Nada a escrever                          │   │    │
+    │  │  └─────────────────────────────────────────────────┘   │    │
+    │  │                         │                               │    │
+    │  │                         ▼                               │    │
+    │  │  ┌─────────────────────────────────────────────────┐   │    │
+    │  │  │              ESCRITA NO REGISTRADOR            │   │    │
+    │  │  │                                                 │   │    │
+    │  │  │  REG_WRITE = 1                                  │   │    │
+    │  │  │  Destino = R0                                   │   │    │
+    │  │  │  Dado = 8                                       │   │    │
+    │  │  │                                                 │   │    │
+    │  │  │  R0 = 8                                         │   │    │
+    │  │  └─────────────────────────────────────────────────┘   │    │
+    │  │                                                         │    │
+    │  └─────────────────────────────────────────────────────────┘    │
+    │                              │                                  │
+    │                              ▼                                  │
+    │                    ┌─────────────────┐                        │
+    │                    │  REGISTRADOR   │                        │
+    │                    │  R0 = 8        │                        │
+    │                    └─────────────────┘                        │
+    │                                                                 │
+    └─────────────────────────────────────────────────────────────────┘
+  </pre>
+
+</div>
+</details>
+
+
+## 3. Tipos de Escrita
+
+### 3.1 Escrita em Registrador
+
+**Instrução:** `ADD R0, R1, R2` (R0 = R1 + R2)
+
+<pre>
+PASSOS:
+1. Resultado da ULA = 8
+2. UC ativa sinal REG_WRITE = 1
+3. UC seleciona registrador de destino (R0)
+4. Dado (8) é escrito em R0
+
+RESULTADO:
+R0 = 8
+</pre>
+
+**Instrução:** `LOAD R0, [0x1000]` (R0 = Memória[0x1000])
+
+<pre>
+PASSOS:
+1. Dado lido da memória = 0x5A
+2. Dado está no MBR
+3. UC ativa sinal REG_WRITE = 1
+4. UC seleciona registrador de destino (R0)
+5. Dado (0x5A) é transferido do MBR para R0
+
+RESULTADO:
+R0 = 0x5A
+</pre>
+
+### 3.2 Escrita em Memória (já ocorreu no Execute)
+
+**Instrução:** `STORE R0, [0x1000]`
+
+<pre>
+A escrita em memória já ocorreu durante a Execução:
+
+EXECUTE:
+1. MAR = 0x1000
+2. MBR = R0 = 0x5A
+3. UC ativa WR = 1
+4. Memória[0x1000] = 0x5A
+
+WRITE-BACK:
+Nada a fazer (já foi escrito)
+</pre>
+
+### 3.3 Nenhuma Escrita
+
+**Instruções que não escrevem:**
+
+| Instrução | Por que não escreve |
+|-----------|---------------------|
+| **CMP** | Apenas atualiza flags, não gera resultado |
+| **JMP** | Apenas altera o PC, não gera resultado |
+| **JE/JZ** | Apenas altera o PC condicionalmente |
+| **CALL** | Salva PC na pilha (já feito no Execute) |
+| **RET** | Recupera PC da pilha (já feito no Execute) |
+| **NOP** | Nenhuma operação |
+
+
+## 4. Componentes Envolvidos na Escrita
+
+### 4.1 Os atores da escrita
+
+| Componente | Função no Write-back |
+|------------|----------------------|
+| **ULA** | Fornece o resultado a ser escrito |
+| **MBR** | Fornece o dado lido da memória (para LOAD) |
+| **Registradores** | Recebem o resultado (REG_WRITE) |
+| **Memória** | Recebe o resultado (para STORE, já feito) |
+| **UC** | Controla REG_WRITE, seleciona destino, coordena a escrita |
+
+### 4.2 O sinal REG_WRITE
+
+O sinal **REG_WRITE** controla a escrita nos registradores:
+
+| REG_WRITE | O que acontece |
+|-----------|----------------|
+| 0 | Nenhum registrador é escrito |
+| 1 | O registrador selecionado recebe o dado |
+
+
+## 5. O Ciclo Completo de Instrução
+
+### 5.1 As quatro etapas juntas
+
+<details>
+<summary>🔧 Ver Ciclo Completo de Instrução</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 450px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">CICLO COMPLETO DE INSTRUÇÃO</div>
+
+  <pre style="color: #93c5fd; font-size: 0.6rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    ┌─────────────────────────────────────────────────────────────────┐
+    │                                                                 │
+    │  1. BUSCA (FETCH)                                              │
+    │     ┌─────────────────────────────────────────────────────┐    │
+    │     │  PC → MAR → Memória → MBR → IR                     │    │
+    │     │  PC = PC + 1                                        │    │
+    │     └─────────────────────────────────────────────────────┘    │
+    │                         │                                      │
+    │                         ▼                                      │
+    │  2. DECODIFICAÇÃO (DECODE)                                    │
+    │     ┌─────────────────────────────────────────────────────┐    │
+    │     │  UC lê IR → Opcode + Operandos → Sinais de Controle│    │
+    │     └─────────────────────────────────────────────────────┘    │
+    │                         │                                      │
+    │                         ▼                                      │
+    │  3. EXECUÇÃO (EXECUTE)                                        │
+    │     ┌─────────────────────────────────────────────────────┐    │
+    │     │  ULA realiza operação → Resultado + Flags          │    │
+    │     └─────────────────────────────────────────────────────┘    │
+    │                         │                                      │
+    │                         ▼                                      │
+    │  4. ESCRITA (WRITE-BACK)                                      │
+    │     ┌─────────────────────────────────────────────────────┐    │
+    │     │  Resultado → Registrador ou Memória                │    │
+    │     └─────────────────────────────────────────────────────┘    │
+    │                                                                 │
+    └─────────────────────────────────────────────────────────────────┘
+  </pre>
+
+</div>
+</details>
+
+### 5.2 Exemplo completo: ADD R0, R1, R2
+
+<pre>
+ESTADO INICIAL:
+PC = 0x1000
+R1 = 5, R2 = 3
+R0 = 0
+
+CICLO 1: BUSCA
+Memória[0x1000] = 0x8A3B
+IR = 0x8A3B
+PC = 0x1001
+
+CICLO 2: DECODIFICAÇÃO
+Opcode = 0x8 → ADD
+Destino = 0xA → R0
+Op1 = 0x3 → R1
+Op2 = 0xB → R2
+Sinais: ALU_OP=SOMA, REG_READ=R1,R2, REG_WRITE=R0
+
+CICLO 3: EXECUÇÃO
+Leitura: R1=5, R2=3
+ULA: 5 + 3 = 8
+Flags: Z=0, N=0, C=0, V=0
+
+CICLO 4: ESCRITA
+REG_WRITE = 1
+R0 = 8
+
+ESTADO FINAL:
+PC = 0x1001
+R0 = 8, R1 = 5, R2 = 3
+IR = 0x8A3B
+Flags: Z=0, N=0, C=0, V=0
+</pre>
+
+
+## 6. Exercícios
+
+<details>
+<summary>📗 Exercício 1 — Definição (fácil)</summary>
+
+**Enunciado:** O que é a etapa de Escrita (Write-back) no ciclo de instrução?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** A Escrita é a quarta e última etapa do ciclo de instrução, onde o resultado gerado pela ULA (ou lido da memória) é armazenado no registrador de destino ou na memória.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Componentes (fácil)</summary>
+
+**Enunciado:** Quais componentes estão envolvidos na etapa de Escrita?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** ULA (fornece o resultado), MBR (fornece dado lido da memória), Registradores (recebem o resultado), Memória (recebe o resultado para STORE), Unidade de Controle (coordena a escrita).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — REG_WRITE (médio)</summary>
+
+**Enunciado:** O que acontece quando o sinal REG_WRITE = 1?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Quando REG_WRITE = 1, o registrador selecionado recebe o dado (resultado da ULA ou da memória). Quando REG_WRITE = 0, nenhum registrador é escrito.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Escrita em registrador (médio)</summary>
+
+**Enunciado:** Descreva o que acontece no Write-back de `ADD R0, R1, R2` se R1 = 10 e R2 = 7.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+1. Resultado da ULA = 17
+2. UC ativa REG_WRITE = 1
+3. UC seleciona R0 como destino
+4. R0 = 17
+
+**Resultado final:** R0 = 17
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — LOAD vs ADD (médio)</summary>
+
+**Enunciado:** Como o Write-back difere entre uma instrução ADD e uma instrução LOAD?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+- **ADD:** O resultado vem diretamente da ULA.
+- **LOAD:** O resultado vem do MBR (dado lido da memória) e é transferido para o registrador de destino.
+
+Em ambos os casos, o registrador de destino recebe o dado.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Instruções sem escrita (conceitual)</summary>
+
+**Enunciado:** Quais instruções não escrevem nenhum resultado e por quê?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** CMP (apenas atualiza flags), JMP (apenas altera PC), JE/JZ (apenas altera PC condicionalmente), NOP (nenhuma operação). Essas instruções não geram um resultado que precise ser armazenado.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — Ciclo completo (desafio)</summary>
+
+**Enunciado:** Simule o ciclo completo de instrução para `SUB R0, R1, R2` com R1 = 10, R2 = 3.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**ESTADO INICIAL:**
+- R1 = 10, R2 = 3
+- R0 = 0
+
+**BUSCA:**
+- Memória[PC] = instrução SUB
+- IR = instrução SUB
+- PC = PC + 1
+
+**DECODIFICAÇÃO:**
+- Opcode = SUB
+- Destino = R0
+- Op1 = R1
+- Op2 = R2
+- Sinais: ALU_OP=SUB, REG_READ=R1,R2, REG_WRITE=R0
+
+**EXECUÇÃO:**
+- Leitura: R1 = 10, R2 = 3
+- ULA: 10 - 3 = 7
+- Flags: Z=0, N=0, C=0, V=0
+
+**ESCRITA:**
+- REG_WRITE = 1
+- R0 = 7
+
+**ESTADO FINAL:**
+- R0 = 7, R1 = 10, R2 = 3
+- Flags: Z=0, N=0, C=0, V=0
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — Pipeline e Write-back (desafio)</summary>
+
+**Enunciado:** Explique como o Write-back se encaixa em um pipeline de 5 estágios.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Em um pipeline de 5 estágios (Fetch, Decode, Execute, Memory, Write-back), o Write-back é o último estágio. Enquanto a instrução atual está no Write-back, a próxima já está no Execute, a seguinte no Decode, e assim por diante.
+
+**Exemplo de pipeline:**
+<pre>
+Ciclo 1: Fetch I1 | Decode -  | Execute - | Memory -  | Write -
+Ciclo 2: Fetch I2 | Decode I1 | Execute - | Memory -  | Write -
+Ciclo 3: Fetch I3 | Decode I2 | Execute I1| Memory -  | Write -
+Ciclo 4: Fetch I4 | Decode I3 | Execute I2| Memory I1 | Write -
+Ciclo 5: Fetch I5 | Decode I4 | Execute I3| Memory I2 | Write I1
+</pre>
+
+O Write-back ocorre em paralelo com as outras etapas, permitindo que o pipeline mantenha sua eficiência.
+
+</details>
+</details>
+
+
+> **"A Escrita (Write-back) é a etapa final do ciclo de instrução — o resultado da execução é armazenado em um registrador ou na memória. O sinal REG_WRITE controla a escrita em registradores: quando ativo, o registrador de destino recebe o resultado da ULA ou o dado lido da memória. Instruções aritméticas e lógicas escrevem o resultado da ULA; instruções LOAD escrevem o dado lido da memória; instruções STORE já escreveram na memória durante a Execução; e instruções de salto e comparação não escrevem nada. Com a Escrita, o ciclo de instrução se completa: a CPU buscou, decodificou, executou e armazenou o resultado. O ciclo então recomeça, buscando a próxima instrução. Este processo se repete bilhões de vezes por segundo, formando a base de toda a computação."**

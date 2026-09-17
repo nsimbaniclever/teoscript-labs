@@ -1,0 +1,311 @@
+# COMPARAÇÃO DAS DECOMPOSIÇÕES
+
+## 1. Visão Geral das Decomposições
+
+### 1.1 Tabela Comparativa Completa
+
+| Decomposição | Fórmula | Condições | Custo Computacional | Aplicação Principal |
+|--------------|---------|-----------|---------------------|---------------------|
+| **LU** | $A = LU$ | $A$ quadrada, pivôs não nulos | $O(2n^3/3)$ | Resolver sistemas lineares, determinante |
+| **QR** | $A = QR$ | Qualquer $A$ (m ≥ n) | $O(2mn^2)$ | Mínimos quadrados, autovalores |
+| **Cholesky** | $A = LL^T$ | Simétrica definida positiva | $O(n^3/3)$ | Regressão linear, simulação |
+| **Espectral** | $A = Q \Lambda Q^{-1}$ | Diagonalizável | $O(n^3)$ | Potências de matrizes, sistemas dinâmicos |
+| **SVD** | $A = U \Sigma V^T$ | Qualquer $A$ | $O(mn^2)$ | PCA, compressão, robustez |
+
+### 1.2 Critérios de Escolha
+
+| Situação | Decomposição Recomendada | Por quê? |
+|----------|--------------------------|----------|
+| **Resolver $A\vec{x} = \vec{b}$** (A quadrada) | **LU** | Mais eficiente para sistemas lineares |
+| **Resolver $A\vec{x} = \vec{b}$** (A retangular) | **QR** ou **SVD** | A LU não se aplica |
+| **Mínimos quadrados** | **QR** ou **SVD** | QR é mais rápido; SVD é mais robusto |
+| **Matriz simétrica definida positiva** | **Cholesky** | 2x mais rápido que LU |
+| **PCA / Redução de dimensionalidade** | **SVD** | Revela variâncias e direções |
+| **Compressão de dados** | **SVD** | Valores singulares indicam importância |
+| **Análise de convergência** | **Espectral** | Autovalores controlam a dinâmica |
+| **Matriz mal condicionada** | **SVD** | Mais robusta numericamente |
+
+## 2. Vantagens e Desvantagens
+
+### 2.1 LU
+
+| Vantagens | Desvantagens |
+|-----------|--------------|
+| ✅ Rápido para sistemas lineares | ❌ Só para matrizes quadradas |
+| ✅ Reutilizável para múltiplos $\vec{b}$ | ❌ Requer pivotação se houver pivô zero |
+| ✅ Fácil de implementar | ❌ Instável para matrizes mal condicionadas |
+
+### 2.2 QR
+
+| Vantagens | Desvantagens |
+|-----------|--------------|
+| ✅ Estável numericamente | ❌ Mais caro que LU |
+| ✅ Funciona para matrizes retangulares | ❌ Não fornece autovalores diretamente |
+| ✅ Ótimo para mínimos quadrados | ❌ Requer mais memória |
+
+### 2.3 Cholesky
+
+| Vantagens | Desvantagens |
+|-----------|--------------|
+| ✅ Mais rápido que LU (2x) | ❌ Só para simétricas definidas positivas |
+| ✅ Estável | ❌ Não funciona para matrizes indefinidas |
+| ✅ Fácil de implementar | ❌ Requer verificação de definitude |
+
+### 2.4 Espectral
+
+| Vantagens | Desvantagens |
+|-----------|--------------|
+| ✅ Revela autovalores e autovetores | ❌ Só para matrizes diagonalizáveis |
+| ✅ Útil para potências de matrizes | ❌ Matrizes simétricas são o melhor caso |
+| ✅ Base para PCA (em covariância) | ❌ Caro computacionalmente |
+
+### 2.5 SVD
+
+| Vantagens | Desvantagens |
+|-----------|--------------|
+| ✅ Funciona para **qualquer** matriz | ❌ Mais caro que todas as outras |
+| ✅ Mais robusta numericamente | ❌ Difícil de interpretar diretamente |
+| ✅ Revela posto, valores singulares | ❌ Requer mais memória |
+| ✅ Base para PCA, compressão, etc. | ❌ Pode ser overkill para problemas simples |
+
+## 3. Exemplos Lúdicos Aprimorados
+
+### 🍔 EXEMPLO 1 – A LANCHONETE (ESCOLHENDO A DECOMPOSIÇÃO)
+
+A lanchonete tem diferentes problemas:
+
+| Problema | Decomposição | Por quê? |
+|----------|--------------|----------|
+| Resolver $A\vec{x} = \vec{b}$ (A quadrada) | **LU** | Mais rápido |
+| Ajustar receitas a dados observados | **QR** | Mínimos quadrados estável |
+| Simular novos estoques | **Cholesky** | Covariância definida positiva |
+| Analisar convergência do estoque | **Espectral** | Autovalores controlam a dinâmica |
+| Comprimir receitas | **SVD** | Valores singulares indicam importância |
+
+### 🧃 EXEMPLO 2 – A CANTINA (DECOMPOSIÇÕES EM AÇÃO)
+
+A cantina tem diferentes tarefas:
+
+| Tarefa | Decomposição | Por quê? |
+|--------|--------------|----------|
+| Regressão linear (dados normais) | **Cholesky** | $X^T X$ é definida positiva |
+| Regressão linear (dados mal condicionados) | **QR** ou **SVD** | Mais estável |
+| PCA (redução de dimensionalidade) | **SVD** | Revela variâncias |
+| Análise de convergência do FedAvg | **Espectral** | Autovalores da Hessiana |
+
+## 4. Aplicação na Tese: Escolhendo a Decomposição no FL
+
+### 4.1 Decisões no FL
+
+| Situação no FL | Decomposição Recomendada | Justificativa |
+|----------------|--------------------------|---------------|
+| Resolver sistemas locais (regressão) | **Cholesky** (se definida positiva) ou **QR** | Eficiência e estabilidade |
+| PCA local para redução de dimensionalidade | **SVD** | Padrão para PCA |
+| Compressão de gradientes | **SVD** | Valores singulares para compressão |
+| Detecção de clientes maliciosos | **SVD** | Outliers no espaço singular |
+| Análise de convergência do FedAvg | **Espectral** | Autovalores da Hessiana |
+| Resolver sistemas com $X^T X$ mal condicionado | **SVD** (pseudo-inversa) | Robustez numérica |
+
+### 4.2 Resumo das Recomendações
+
+| Decomposição | Quando usar no FL |
+|--------------|-------------------|
+| **LU** | Sistemas lineares locais (A quadrada, bem condicionada) |
+| **QR** | Mínimos quadrados locais, regressão |
+| **Cholesky** | Matrizes de covariância locais (simétricas definidas positivas) |
+| **Espectral** | Análise de convergência, estabilidade |
+| **SVD** | PCA, compressão, detecção de outliers, pseudo-inversa |
+
+## 5. Exercícios Propostos (Manuais)
+
+<details>
+<summary>📗 Exercício 1 (Escolha da Decomposição)</summary>
+
+**Enunciado:** Para cada situação, indique qual decomposição é mais adequada:
+
+a) Resolver um sistema $A\vec{x} = \vec{b}$ onde $A$ é $5 \times 5$, simétrica e definida positiva.
+
+b) Encontrar os componentes principais de um dataset com 100 amostras e 20 características.
+
+c) Resolver um sistema $A\vec{x} = \vec{b}$ onde $A$ é $4 \times 3$ (retangular).
+
+d) Analisar a convergência de um sistema dinâmico $\vec{x}_{t+1} = A \vec{x}_t$.
+
+e) Comprimir uma imagem $1000 \times 1000$.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) **Cholesky** (mais rápido para simétricas definidas positivas)
+
+b) **SVD** (padrão para PCA)
+
+c) **QR** (para matrizes retangulares) ou **SVD** (mais robusta)
+
+d) **Espectral** (autovalores controlam a dinâmica)
+
+e) **SVD** (compressão por valores singulares)
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 (Vantagens e Desvantagens)</summary>
+
+**Enunciado:** Preencha a tabela:
+
+| Decomposição | Vantagem Principal | Desvantagem Principal |
+|--------------|-------------------|----------------------|
+| **LU** | | |
+| **QR** | | |
+| **Cholesky** | | |
+| **Espectral** | | |
+| **SVD** | | |
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+| Decomposição | Vantagem Principal | Desvantagem Principal |
+|--------------|-------------------|----------------------|
+| **LU** | Rápido para sistemas lineares | Só para matrizes quadradas |
+| **QR** | Estável para mínimos quadrados | Mais caro que LU |
+| **Cholesky** | 2x mais rápido que LU | Só para definidas positivas |
+| **Espectral** | Revela autovalores/autovetores | Só para diagonalizáveis |
+| **SVD** | Funciona para qualquer matriz | Mais caro de todas |
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 (Custo Computacional)</summary>
+
+**Enunciado:** Ordene as decomposições por custo computacional (do mais rápido para o mais lento) para uma matriz $n \times n$.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+Do mais rápido para o mais lento (para $n \times n$):
+
+1. **Cholesky** ($O(n^3/3)$)
+2. **LU** ($O(2n^3/3)$)
+3. **QR** ($O(2n^3)$)
+4. **Espectral** ($O(n^3)$)
+5. **SVD** ($O(n^3)$ com constante maior)
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 (Aplicação – FL)</summary>
+
+**Enunciado:** No Federated Learning, um cliente precisa:
+
+a) Resolver uma regressão linear local com $X^T X$ definida positiva.  
+b) Comprimir um gradiente de tamanho $1000 \times 1$.  
+c) Detectar se há clientes maliciosos entre 100 clientes.  
+
+Qual decomposição você usaria em cada caso? Justifique.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) **Cholesky** (mais rápido e estável para definidas positivas)
+
+b) **SVD** (compressão por valores singulares)
+
+c) **SVD** (detecção de outliers no espaço singular)
+
+</details>
+</details>
+
+## 6. 💻 EXERCÍCIO COMPUTACIONAL
+
+<details>
+<summary>🐍 Ver código (Python/NumPy)</summary>
+
+```python
+import numpy as np
+import time
+
+# Comparação de desempenho (simulada)
+n = 100
+A = np.random.randn(n, n)
+A = A @ A.T  # Garantir que seja simétrica definida positiva
+b = np.random.randn(n)
+
+# LU
+start = time.time()
+P, L, U = np.linalg.lu(A)
+x_lu = np.linalg.solve(A, b)
+time_lu = time.time() - start
+
+# Cholesky
+start = time.time()
+L_chol = np.linalg.cholesky(A)
+x_chol = np.linalg.solve(L_chol, np.linalg.solve(L_chol.T, b))
+time_chol = time.time() - start
+
+# QR
+start = time.time()
+Q, R = np.linalg.qr(A)
+x_qr = np.linalg.solve(R, Q.T @ b)
+time_qr = time.time() - start
+
+# SVD
+start = time.time()
+U, S, Vt = np.linalg.svd(A)
+x_svd = Vt.T @ np.linalg.solve(np.diag(S), U.T @ b)
+time_svd = time.time() - start
+
+print(f"LU: {time_lu:.6f}s")
+print(f"Cholesky: {time_chol:.6f}s")
+print(f"QR: {time_qr:.6f}s")
+print(f"SVD: {time_svd:.6f}s")
+```
+
+</details>
+
+<details>
+<summary>📝 Ver código (R)</summary>
+
+```r
+# Comparação de desempenho (simulada)
+n <- 100
+A <- matrix(rnorm(n^2), nrow=n)
+A <- A %*% t(A)  # Garantir simétrica definida positiva
+b <- rnorm(n)
+
+# LU (solve já usa LU internamente)
+system.time(x_lu <- solve(A, b))
+
+# Cholesky
+L <- chol(A)
+system.time({
+    y <- solve(L, b)
+    x_chol <- solve(t(L), y)
+})
+
+# QR
+system.time({
+    qr_A <- qr(A)
+    x_qr <- qr.coef(qr_A, b)
+})
+
+# SVD
+system.time({
+    svd_A <- svd(A)
+    x_svd <- svd_A$v %*% (t(svd_A$u) %*% b / svd_A$d)
+})
+```
+
+</details>
+
+> *Não existe uma decomposição "melhor" que todas as outras. Cada decomposição tem suas próprias vantagens, desvantagens e aplicações ideais. A escolha correta depende do problema específico, da estrutura da matriz, da necessidade de estabilidade e do custo computacional.*

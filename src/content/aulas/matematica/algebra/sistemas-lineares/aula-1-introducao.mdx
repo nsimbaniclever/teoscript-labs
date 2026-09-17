@@ -1,0 +1,391 @@
+
+# INTRODUÇÃO
+
+## 1. Definição
+
+### 1.1 O que é um Sistema Linear?
+
+Um **sistema linear** é um conjunto de **equações lineares** com as mesmas incógnitas.
+
+**Forma geral (com $m$ equações e $n$ incógnitas):**
+
+$$
+\begin{cases}
+a_{11}x_1 + a_{12}x_2 + \cdots + a_{1n}x_n = b_1 \\
+a_{21}x_1 + a_{22}x_2 + \cdots + a_{2n}x_n = b_2 \\
+\vdots \\
+a_{m1}x_1 + a_{m2}x_2 + \cdots + a_{mn}x_n = b_m
+\end{cases}
+$$
+
+Onde:
+- $a_{ij}$ são os **coeficientes** (números conhecidos)
+- $x_j$ são as **incógnitas** (valores que queremos encontrar)
+- $b_i$ são os **termos constantes** (números conhecidos)
+
+### 1.2 Representação Matricial
+
+Todo sistema linear pode ser escrito como:
+
+$$
+A \vec{x} = \vec{b}
+$$
+
+Onde:
+- $A \in \mathbb{R}^{m \times n}$ é a **matriz dos coeficientes**
+- $\vec{x} \in \mathbb{R}^n$ é o **vetor das incógnitas**
+- $\vec{b} \in \mathbb{R}^m$ é o **vetor dos termos constantes**
+
+**Exemplo:**
+
+$$
+\begin{cases}
+2x + 3y = 8 \\
+x - y = 1
+\end{cases}
+$$
+
+Forma matricial:
+$$
+\begin{bmatrix} 2 & 3 \\ 1 & -1 \end{bmatrix} \begin{bmatrix} x \\ y \end{bmatrix} = \begin{bmatrix} 8 \\ 1 \end{bmatrix}
+$$
+
+### 1.3 Matriz Aumentada
+
+A **matriz aumentada** é uma forma compacta de representar o sistema:
+
+$$
+[A \mid \vec{b}] =
+\left[\begin{array}{cc|c}
+2 & 3 & 8 \\
+1 & -1 & 1
+\end{array}\right]
+$$
+
+**Interpretação:** A barra vertical separa a matriz dos coeficientes do vetor dos termos constantes.
+
+## 2. Classificação dos Sistemas Lineares
+
+| Tipo | Condição | Número de Soluções | Exemplo |
+|------|----------|-------------------|---------|
+| **Sistema Possível e Determinado (SPD)** | $\det(A) \neq 0$ (para $m=n$) ou posto = n | **Solução única** | $x + y = 3$, $x - y = 1$ → $(2,1)$ |
+| **Sistema Possível e Indeterminado (SPI)** | $\det(A) = 0$ e $\vec{b} \in \text{Col}(A)$ | **Infinitas soluções** | $x + y = 3$, $2x + 2y = 6$ |
+| **Sistema Impossível (SI)** | $\vec{b} \notin \text{Col}(A)$ | **Nenhuma solução** | $x + y = 3$, $x + y = 5$ |
+
+### 2.1 Exemplo de SPD (Solução Única)
+
+$$
+\begin{cases}
+x + y = 3 \\
+x - y = 1
+\end{cases}
+$$
+
+**Solução:** Somando as equações: $2x = 4 \Rightarrow x = 2$  
+$2 + y = 3 \Rightarrow y = 1$
+
+**Conclusão:** $(2, 1)$ → **SPD**
+
+### 2.2 Exemplo de SPI (Infinitas Soluções)
+
+$$
+\begin{cases}
+x + y = 3 \\
+2x + 2y = 6
+\end{cases}
+$$
+
+**Observação:** A segunda equação é $2 \times$ a primeira.
+
+**Solução:** $y = 3 - x$ para qualquer $x \in \mathbb{R}$.
+
+**Conclusão:** **SPI** (infinitas soluções)
+
+### 2.3 Exemplo de SI (Nenhuma Solução)
+
+$$
+\begin{cases}
+x + y = 3 \\
+x + y = 5
+\end{cases}
+$$
+
+**Observação:** As equações são inconsistentes: $3 \neq 5$.
+
+**Conclusão:** **SI** (nenhuma solução)
+
+## 3. Exemplos Lúdicos Aprimorados
+
+### 🍔 EXEMPLO 1 – A LANCHONETE (SISTEMA DE ESTOQUE)
+
+A lanchonete quer saber quantos de cada sanduíche foram vendidos.
+
+**Ingredientes disponíveis:**
+- Pão: 10 unidades
+- Carne: 8 unidades
+- Queijo: 6 unidades
+
+**Sanduíches:**
+- Hambúrguer: (1, 1, 0) → 1 pão, 1 carne, 0 queijo
+- Queijo: (0, 0, 1) → 0 pães, 0 carne, 1 queijo
+- Combo: (1, 1, 1) → 1 pão, 1 carne, 1 queijo
+
+**Sistema:**
+$$
+\begin{cases}
+h + c = 10 \quad \text{(pães)} \\
+h + c = 8 \quad \text{(carnes)} \\
+q + c = 6 \quad \text{(queijos)}
+\end{cases}
+$$
+
+**Análise:** As duas primeiras equações são $h + c = 10$ e $h + c = 8$ → **SI** (sistema impossível).
+
+**Interpretação:** O estoque não é consistente com os sanduíches vendidos. Algo está errado: ou o estoque foi contado errado, ou os sanduíches foram registrados incorretamente.
+
+### 🧃 EXEMPLO 2 – A CANTINA (DIETA PERSONALIZADA)
+
+Um nutricionista quer uma dieta com:
+- 40g de açúcar
+- 20mg de cálcio
+- 100mg de vitamina C
+
+**Alimentos:**
+- Suco: (10, 0, 50) → açúcar, cálcio, vitamina C
+- Leite: (5, 20, 0)
+- Bolo: (30, 0, 0)
+
+**Sistema:**
+$$
+\begin{cases}
+10s + 5l + 30b = 40 & \text{(açúcar)} \\
+20l = 20 & \text{(cálcio)} \\
+50s = 100 & \text{(vitamina C)}
+\end{cases}
+$$
+
+**Resolução:**
+- Da terceira: $s = 2$
+- Da segunda: $l = 1$
+- Da primeira: $10(2) + 5(1) + 30b = 40 \Rightarrow 20 + 5 + 30b = 40 \Rightarrow 30b = 15 \Rightarrow b = 0.5$
+
+**Solução:** $s = 2, l = 1, b = 0.5$ → 2 sucos, 1 leite, 0.5 bolo.
+
+**Classificação:** **SPD** (solução única)
+
+### 📚 EXEMPLO 3 – A BIBLIOTECA (PLANO DE ESTUDO)
+
+Um aluno quer estudar:
+- 30 páginas de teoria
+- 20 exercícios
+- 15 figuras
+
+**Livros:**
+- Matemática: (10, 5, 0)
+- História: (8, 0, 12)
+- Ciências: (6, 8, 4)
+
+**Sistema:**
+$$
+\begin{cases}
+10m + 8h + 6c = 30 & \text{(teoria)} \\
+5m + 0h + 8c = 20 & \text{(exercícios)} \\
+0m + 12h + 4c = 15 & \text{(figuras)}
+\end{cases}
+$$
+
+**Classificação:** Como o determinante da matriz é diferente de zero, o sistema tem **solução única**.
+
+## 4. Conexão com Subespaços
+
+A solução de $A\vec{x} = \vec{b}$ existe se, e somente se:
+$$
+\vec{b} \in \text{Col}(A)
+$$
+
+**Interpretação:** O vetor $\vec{b}$ deve estar no **espaço coluna** de $A$.
+
+- Se $\vec{b} \in \text{Col}(A)$ e $\text{Nul}(A) = \{\vec{0}\}$ → **SPD** (solução única)
+- Se $\vec{b} \in \text{Col}(A)$ e $\dim(\text{Nul}(A)) > 0$ → **SPI** (infinitas soluções)
+- Se $\vec{b} \notin \text{Col}(A)$ → **SI** (nenhuma solução)
+
+## 5. Resumo Estruturado
+
+| Tipo | Condição | Número de Soluções |
+|------|----------|-------------------|
+| **SPD** | $\det(A) \neq 0$ (ou posto = n) | **1** |
+| **SPI** | $\det(A) = 0$ e $\vec{b} \in \text{Col}(A)$ | **∞** |
+| **SI** | $\vec{b} \notin \text{Col}(A)$ | **0** |
+
+## 6. Exercícios Propostos (Manuais)
+
+<details>
+<summary>📗 Exercício 1 (Representação Matricial)</summary>
+
+**Enunciado:** Escreva os seguintes sistemas na forma matricial $A\vec{x} = \vec{b}$:
+
+a) $\begin{cases} 2x + 3y = 7 \\ x - y = 2 \end{cases}$
+
+b) $\begin{cases} x + 2y + 3z = 10 \\ 2x + 3y + z = 13 \\ 3x + y + 2z = 11 \end{cases}$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\begin{bmatrix} 2 & 3 \\ 1 & -1 \end{bmatrix} \begin{bmatrix} x \\ y \end{bmatrix} = \begin{bmatrix} 7 \\ 2 \end{bmatrix}$
+
+b) $\begin{bmatrix} 1 & 2 & 3 \\ 2 & 3 & 1 \\ 3 & 1 & 2 \end{bmatrix} \begin{bmatrix} x \\ y \\ z \end{bmatrix} = \begin{bmatrix} 10 \\ 13 \\ 11 \end{bmatrix}$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 (Classificação de Sistemas)</summary>
+
+**Enunciado:** Classifique os seguintes sistemas como SPD, SPI ou SI:
+
+a) $\begin{cases} x + y = 3 \\ 2x + 2y = 6 \end{cases}$
+
+b) $\begin{cases} x + y = 3 \\ x + y = 5 \end{cases}$
+
+c) $\begin{cases} x + y = 3 \\ x - y = 1 \end{cases}$
+
+d) $\begin{cases} x + y + z = 3 \\ 2x + 2y + 2z = 6 \\ x - y + z = 1 \end{cases}$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) SPI (infinitas soluções)
+
+b) SI (nenhuma solução)
+
+c) SPD (solução única: $(2, 1)$)
+
+d) SPI (infinitas soluções, pois a segunda equação é o dobro da primeira)
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 (Matriz Aumentada)</summary>
+
+**Enunciado:** Escreva a matriz aumentada dos sistemas abaixo:
+
+a) $\begin{cases} 2x - y = 4 \\ x + 3y = 1 \end{cases}$
+
+b) $\begin{cases} x + 2y + 3z = 10 \\ 2x + 3y + z = 13 \\ 3x + y + 2z = 11 \end{cases}$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\left[\begin{array}{cc|c} 2 & -1 & 4 \\ 1 & 3 & 1 \end{array}\right]$
+
+b) $\left[\begin{array}{ccc|c} 1 & 2 & 3 & 10 \\ 2 & 3 & 1 & 13 \\ 3 & 1 & 2 & 11 \end{array}\right]$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 (Resolução Simples)</summary>
+
+**Enunciado:** Resolva os seguintes sistemas:
+
+a) $\begin{cases} x + y = 5 \\ x - y = 1 \end{cases}$
+
+b) $\begin{cases} 2x + y = 7 \\ x - 2y = -1 \end{cases}$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $x = 3, y = 2$
+
+b) $x = 3, y = 1$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 (Aplicação – Lanchonete)</summary>
+
+**Enunciado:** Uma lanchonete vende dois tipos de sanduíche:
+- Simples: (1, 1, 0) → pão, carne, queijo
+- Completo: (1, 1, 1)
+
+Sabendo que foram vendidos 10 pães, 8 carnes e 6 queijos:
+
+a) Monte o sistema linear.  
+b) Classifique o sistema.  
+c) O sistema tem solução? Se sim, qual?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\begin{cases} s + c = 10 \\ s + c = 8 \\ c = 6 \end{cases}$
+
+b) **SI** (sistema impossível) — as duas primeiras equações são contraditórias.
+
+c) Não tem solução → o estoque não é consistente com os sanduíches vendidos.
+
+</details>
+</details>
+
+## 7. EXERCÍCIO COMPUTACIONAL
+
+<details>
+<summary>🐍 Ver código (Python/NumPy)</summary>
+
+```python
+import numpy as np
+
+# Exemplo de sistema SPD
+A = np.array([[2, 3], [1, -1]])
+b = np.array([8, 1])
+x = np.linalg.solve(A, b)
+print("Solução SPD:", x)
+
+# Exemplo de sistema SPI (infinitas soluções)
+A = np.array([[1, 1], [2, 2]])
+b = np.array([3, 6])
+# O solve não funciona para sistemas singulares
+# Usamos lstsq (mínimos quadrados)
+x, res, rank, s = np.linalg.lstsq(A, b, rcond=None)
+print("Solução SPI (aproximada):", x)
+
+# Exemplo de sistema SI (nenhuma solução)
+A = np.array([[1, 1], [1, 1]])
+b = np.array([3, 5])
+x, res, rank, s = np.linalg.lstsq(A, b, rcond=None)
+print("Solução SI (aproximada):", x)
+```
+
+</details>
+
+<details>
+<summary>📝 Ver código (R)</summary>
+
+```r
+# Sistema SPD
+A <- matrix(c(2, 1, 3, -1), nrow=2)
+b <- c(8, 1)
+solve(A, b)
+
+# Sistema SPI (infinitas soluções)
+A <- matrix(c(1, 2, 1, 2), nrow=2)
+b <- c(3, 6)
+# O solve não funciona; usamos lm
+data <- data.frame(x = c(1, 2), y = c(3, 6))
+lm(y ~ x - 1, data = data)
+```
+
+</details>
+
+> *Sistemas lineares são a base de muitos problemas em ML: regressão linear, otimização, redes neurais. A representação matricial $A\vec{x} = \vec{b}$ permite classificar e resolver sistemas de forma sistemática.*

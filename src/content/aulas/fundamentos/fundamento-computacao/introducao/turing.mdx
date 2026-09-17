@@ -1,0 +1,434 @@
+
+# Máquina de Turing
+
+> *"A Arquitetura do Computável"*
+
+**Duração estimada:** 45 minutos (leitura) / 1h30 (com exercícios práticos)  <br>
+**Público-alvo:** Estudante sem conhecimento prévio em computação  <br>
+**Método:** Analógico-conceitual com transposição para a Ciência da Computação <br>
+
+
+## Introdução
+
+### O que é computar?
+
+> **Definição preliminar:** Computar é **transformar informação** seguindo **instruções finitas e precisas**.
+
+Antes de existirem computadores, existiam **computadores humanos** – pessoas contratadas para fazer contas com lápis e papel. O matemático **Alan Turing** (1936) perguntou:
+
+> *"Qual é o limite do que pode ser calculado por um ser humano seguindo regras?"*
+
+A resposta foi um modelo abstrato que hoje chamamos de **Máquina de Turing**. Ela não é uma máquina real – é um **modelo matemático** que define o que é "computável".
+
+
+### Analogia Acadêmica – O Escritor Cego
+
+Imagine um **escriba em uma biblioteca infinita**. Ele:
+
+- Senta-se em uma **cadeira** (posição atual)
+- Lê **uma palavra** por vez em um rolo de papiro infinito
+- Tem um **manual de regras** (o algoritmo)
+- Pode **apagar e reescrever** a palavra
+- Pode **mover o rolo** para a esquerda ou direita
+- Para quando o manual ordena **PARE**
+
+Este escriba **não entende** o que lê. Ele apenas **obedece**. A inteligência não está nele – está no **manual**.
+
+> **📌 Transposição para a Computação:** O escriba é a CPU. O rolo é a memória. O manual é o programa.
+
+
+### Os 5 componentes da Máquina de Turing
+
+| Componente | Definição Formal | Analogia | Correspondência Computacional |
+|------------|------------------|----------|-------------------------------|
+| **1. Fita** | Sequência infinita de células, cada uma com um símbolo de um alfabeto finito | O rolo de papiro | Memória RAM / Disco |
+| **2. Cabeça de leitura/escrita** | Aponta para uma célula por vez; lê, escreve e move | Os olhos e a mão do escriba | Registrador de instrução (IP) |
+| **3. Estado interno** | Um elemento de um conjunto finito de estados $(q_0, q_1, \ldots)$ | A "página" do manual onde o escriba está | Flags e contador de programa |
+| **4. Tabela de transição** | Função $\delta$: (estado, símbolo) $\rightarrow$ (novo símbolo, direção, novo estado) | As regras do manual | Microcódigo / Assembly |
+| **5. Estado de parada** | Um estado especial $q_{aceita}$ ou $q_{rejeita}$ | O comando "PARE" | Instrução HALT |
+
+
+### Definição em linguagem matemática
+
+Uma Máquina de Turing é uma 7-upla:
+
+$$
+M = (Q, \Sigma, \Gamma, \delta, q_0, q_{aceita}, q_{rejeita})
+$$
+
+Onde:
+
+- $Q$ = conjunto finito de estados
+- $\Sigma$ = alfabeto de entrada (ex: $\{0, 1\}$)
+- $\Gamma$ = alfabeto da fita ($\Sigma \cup \{ \_ \}$)
+- $\delta = Q \times \Gamma \rightarrow \Gamma \times \{\leftarrow, \rightarrow, \text{PARE}\} \times Q$
+- $q_0$ = estado inicial
+- $q_{aceita}, q_{rejeita}$ = estados finais
+
+> **🔬 Observação:** Esta definição é **universal**. Qualquer computador real (seu celular, um supercomputador) pode ser simulado por uma Máquina de Turing. O contrário também é verdade: qualquer Máquina de Turing pode ser simulada por um computador real (dado tempo e memória suficientes). Esta é a **Tese de Church-Turing**.
+
+
+### O Ciclo de Instrução
+
+A cada passo, a máquina executa **exatamente uma** das seguintes sequências:
+
+1. **Leia** o símbolo na célula atual
+2. Consulte a tabela $\delta$ com $(estado\_atual, símbolo\_lido)$
+3. **Escreva** o novo símbolo na célula
+4. **Mova** a cabeça ($\leftarrow$ ou $\rightarrow$) ou **PARE**
+5. **Mude** para o novo estado
+6. Repita
+
+> **🧠 Insight:** Este ciclo é o mesmo que qualquer CPU executa bilhões de vezes por segundo (busca $\rightarrow$ decodifica $\rightarrow$ executa $\rightarrow$ escreve $\rightarrow$ próximo).
+
+
+### Exemplo Acadêmico – O Negador de Bits
+
+**Problema:** Dada uma fita com 0s e 1s, inverter todos os bits ($0 \rightarrow 1$, $1 \rightarrow 0$).
+
+**Alfabeto:** $\Sigma = \{0, 1, \_\}$  
+**Estados:** $Q = \{q_0, q_{aceita}\}$
+
+**Tabela de transição:**
+
+| Estado | Lê | Escreve | Move | Vai para |
+|--------|----|---------|------|----------|
+| $q_0$ | 0 | 1 | $\rightarrow$ | $q_0$ |
+| $q_0$ | 1 | 0 | $\rightarrow$ | $q_0$ |
+| $q_0$ | $\_$ | $\_$ | PARE | $q_{aceita}$ |
+
+**Execução para a fita `[1][0][1][_]`:**
+
+| Passo | Estado | Posição | Lê | Escreve | Move | Fita |
+|-------|--------|---------|----|---------|------|------|
+| 0 | $q_0$ | 1 | 1 | 0 | $\rightarrow$ | `[0][0][1][_]` |
+| 1 | $q_0$ | 2 | 0 | 1 | $\rightarrow$ | `[0][1][1][_]` |
+| 2 | $q_0$ | 3 | 1 | 0 | $\rightarrow$ | `[0][1][0][_]` |
+| 3 | $q_0$ | 4 | $\_$ | $\_$ | PARE | `[0][1][0][_]` |
+
+**Resultado:** `[0][1][0]` (inverso de `[1][0][1]`)
+
+> **📌 Conclusão:** Com apenas **3 regras**, a máquina realiza uma operação lógica fundamental.
+
+
+## 4. Aritmética na Máquina de Turing
+
+### 4.1 Aritmética Binária – Por quê binário?
+
+Sistemas computacionais usam **dois estados** por razões físicas (transistor ligado/desligado). A Máquina de Turing é binária por conveniência, mas poderia ser decimal.
+
+**Tabela de conversão:**
+
+| Decimal | Binário |
+|---------|---------|
+| 0 | 0 |
+| 1 | 1 |
+| 2 | 10 |
+| 3 | 11 |
+| 4 | 100 |
+| 5 | 101 |
+| 6 | 110 |
+| 7 | 111 |
+| 8 | 1000 |
+
+
+### 4.2 Operação: Incremento $(+1)$
+
+**Definição:** Soma 1 ao número binário na fita.
+
+**Algoritmo mental:**
+
+1. Vá até o **último dígito** (mais à direita)
+2. Se for 0 $\rightarrow$ vire 1 e pare
+3. Se for 1 $\rightarrow$ vire 0 e vá para a esquerda (carry)
+4. Se encontrar $\_$ $\rightarrow$ escreva 1 e pare
+
+**Tabela de transição:**
+
+| Estado | Lê | Escreve | Move | Vai para |
+|--------|----|---------|------|----------|
+| $q_0$ | 0 | 0 | $\rightarrow$ | $q_0$ |
+| $q_0$ | 1 | 1 | $\rightarrow$ | $q_0$ |
+| $q_0$ | $\_$ | $\_$ | $\leftarrow$ | $q_1$ |
+| $q_1$ | 0 | 1 | PARE | $q_{aceita}$ |
+| $q_1$ | 1 | 0 | $\leftarrow$ | $q_1$ |
+| $q_1$ | $\_$ | 1 | PARE | $q_{aceita}$ |
+
+**Execução: `[1][1][_]` (3 $\rightarrow$ +1 = 4 $\rightarrow$ `[1][0][0]`)**
+
+| Passo | Estado | Lê | Ação | Fita |
+|-------|--------|----|------|------|
+| 1 | $q_0$ | 1 | anda $\rightarrow$ | `[1][1][_]` |
+| 2 | $q_0$ | 1 | anda $\rightarrow$ | `[1][1][_]` |
+| 3 | $q_0$ | $\_$ | volta $\leftarrow$, vai $q_1$ | `[1][1][_]` |
+| 4 | $q_1$ | 1 | vira 0, volta $\leftarrow$ | `[1][0][_]` |
+| 5 | $q_1$ | 1 | vira 0, volta $\leftarrow$ | `[0][0][_]` |
+| 6 | $q_1$ | $\_$ | escreve 1, PARE | `[1][0][0]` |
+
+**Resultado:** `[1][0][0]` = 4 ✓
+
+
+### 4.3 Operação: Soma $(A + B)$
+
+**Método por incremento repetido:**
+
+Para somar $A + B$:
+
+1. Escreva $B$ na fita
+2. Repita $A$ vezes o incremento
+
+**Exemplo: 2 + 3 = 5**
+
+Fita inicial: `[1][0]` (2) + contador separado por `0`: `[1][0][0][1][1][_]`
+
+| Passo | Ação | Fita |
+|-------|------|------|
+| 0 | Início | `[1][0][0][1][1][_]` |
+| 1 | Incrementa B (3 $\rightarrow$ 4) | `[1][0][0][1][0][0]` |
+| 2 | Decrementa A (2 $\rightarrow$ 1) | `[0][0][0][1][0][0]` |
+| 3 | Incrementa B (4 $\rightarrow$ 5) | `[0][0][0][1][0][1]` |
+| 4 | Decrementa A (1 $\rightarrow$ 0) | `[0][0][0][1][0][1]` |
+| 5 | PARE | Resultado: `[1][0][1]` = 5 |
+
+> **⚠️ Observação:** A máquina não sabe que fez "2 + 3". Ela apenas executou instruções de incremento e decremento. Nós interpretamos o resultado.
+
+
+### 4.4 Operação: Subtração $(A - B)$
+
+**Método por decremento repetido:**
+
+Para subtrair $A - B$ (com $A \geq B$):
+
+1. Escreva $A$ na fita
+2. Repita $B$ vezes o decremento $(-1)$
+
+**Regras de decremento (inverso do incremento):**
+
+| Estado | Lê | Escreve | Move | Vai para |
+|--------|----|---------|------|----------|
+| $d_0$ | 0 | 0 | $\rightarrow$ | $d_0$ |
+| $d_0$ | 1 | 1 | $\rightarrow$ | $d_0$ |
+| $d_0$ | $\_$ | $\_$ | $\leftarrow$ | $d_1$ |
+| $d_1$ | 1 | 0 | PARE | $d_{aceita}$ |
+| $d_1$ | 0 | 1 | $\leftarrow$ | $d_1$ |
+| $d_1$ | $\_$ | $\_$ | PARE | $d_{rejeita}$ |
+
+**Exemplo: 5 - 2 = 3**
+
+Fita inicial: `[1][0][1]` (5) e contador `[1][0]` (2)
+
+| Passo | Ação | Fita |
+|-------|------|------|
+| 0 | Início | `[1][0][1][0][1][0]` |
+| 1 | Decrementa A (5 $\rightarrow$ 4) | `[1][0][0][0][1][0]` |
+| 2 | Decrementa B (2 $\rightarrow$ 1) | `[1][0][0][0][0][0]` |
+| 3 | Decrementa A (4 $\rightarrow$ 3) | `[1][0][1][0][0][0]` |
+| 4 | Decrementa B (1 $\rightarrow$ 0) | `[1][0][1][0][0][0]` |
+| 5 | PARE | Resultado: `[1][1]` = 3 |
+
+---
+
+### 4.5 Operação: Multiplicação $(A \times B)$
+
+**Método por adição repetida:**
+
+Para multiplicar $A \times B$:
+
+1. Escreva $B$ na fita (o multiplicando)
+2. Repita $A$ vezes: **some B ao resultado acumulado**
+
+**Algoritmo completo (simplificado):**
+
+<pre>
+resultado = 0
+contador = A
+enquanto contador > 0:
+    resultado = resultado + B
+    contador = contador - 1
+retorne resultado
+</pre><br>
+
+**Exemplo: 2 $\times$ 3 = 6**
+
+| Passo | Ação | Resultado |
+|-------|------|-----------|
+| 0 | Início | 0 |
+| 1 | resultado = 0 + 3 | 3 |
+| 2 | contador = 2 - 1 | 1 |
+| 3 | resultado = 3 + 3 | 6 |
+| 4 | contador = 1 - 1 | 0 |
+| 5 | PARE | 6 = `[1][1][0]` |
+
+> **🧠 Insight fundamental:** As quatro operações aritméticas fundamentais $(+, -, \times, \div)$ podem ser reduzidas a **incrementos e decrementos**. A Máquina de Turing não precisa de uma unidade de soma – ela só precisa saber **somar 1** e **subtrair 1**.
+
+
+### 4.6 Operação: Divisão Inteira $(A \div B)$
+
+**Método por subtração repetida:**
+
+Para dividir $A \div B$ (quociente e resto):
+
+<pre>
+quociente = 0
+resto = A
+enquanto resto >= B:
+    resto = resto - B
+    quociente = quociente + 1
+retorne (quociente, resto)
+</pre><br>
+
+**Exemplo: 7 $\div$ 2 = 3, resto 1**
+
+| Passo | Ação | Quociente | Resto |
+|-------|------|-----------|-------|
+| 0 | Início | 0 | 7 |
+| 1 | 7 - 2 = 5 | 1 | 5 |
+| 2 | 5 - 2 = 3 | 2 | 3 |
+| 3 | 3 - 2 = 1 | 3 | 1 |
+| 4 | 1 < 2 $\rightarrow$ PARE | 3 | 1 |
+
+**Resultado:** Quociente = `[1][1]` (3), Resto = `[1]` (1)
+
+
+## 5. A Máquina Universal e o Limite do Computável
+
+### 5.1 A Máquina Universal de Turing
+
+Turing provou que existe uma **Máquina de Turing Universal** (UTM) que pode simular **qualquer outra Máquina de Turing**.
+
+**Como funciona:**
+
+- A fita da UTM contém **duas coisas**:
+  1. A **descrição codificada** da máquina M a ser simulada (o "programa")
+  2. A **fita de entrada** de M
+
+- A UTM lê a descrição de M, decodifica suas regras e as aplica à fita de entrada
+
+> **🔬 Consequência:** Este é o modelo matemático do **computador de propósito geral**. Seu celular, seu notebook e o maior supercomputador do mundo são, essencialmente, Máquinas Universais de Turing com memória finita (mas enorme).
+
+
+### 5.2 O que é computável?
+
+A **Tese de Church-Turing** afirma:
+
+> Toda função que pode ser calculada por um algoritmo pode ser calculada por uma Máquina de Turing.
+
+**Em outras palavras:** A Máquina de Turing define o **limite absoluto da computação**.
+
+**O que está além desse limite?**
+
+- Problemas **indecidíveis** (ex: o Problema da Parada – saber se um programa para ou não)
+- Problemas com **complexidade exponencial** (ex: o Problema do Caixeiro Viajante)
+- Problemas que exigem **entrada infinita** ou **tempo infinito**
+
+
+
+### 5.3 Por que isso importa para você hoje?
+
+1. **Arquitetura de computadores:** O ciclo busca-decodifica-executa de uma CPU é uma implementação física da Máquina de Turing.
+
+2. **Linguagens de programação:** Qualquer linguagem (Python, Java, C) é **Turing-completa** – pode simular qualquer Máquina de Turing.
+
+3. **Limites teóricos:** Saber o que **não** pode ser computado é tão importante quanto saber o que pode.
+
+4. **Inteligência Artificial:** Redes neurais também são Turing-completas (dado tempo e memória infinitos).
+
+---
+## 6. Exercícios
+
+<details>
+<summary>📗 Exercício 1 — Inversor de Bits (fácil)</summary>
+
+**Enunciado:** Projete uma Máquina de Turing que inverta apenas os 3 primeiros bits e pare.
+
+**Fita inicial:** `[1][0][1][1][0][_]`  
+**Resultado esperado:** `[0][1][0][1][0][_]`
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Tabela de transição:**
+
+| Estado | Lê | Escreve | Move | Vai para |
+|--------|----|---------|------|----------|
+| $q_0$ | 1 | 0 | $\rightarrow$ | $q_1$ |
+| $q_0$ | 0 | 1 | $\rightarrow$ | $q_1$ |
+| $q_1$ | 1 | 0 | $\rightarrow$ | $q_2$ |
+| $q_1$ | 0 | 1 | $\rightarrow$ | $q_2$ |
+| $q_2$ | 1 | 0 | $\rightarrow$ | $q_3$ |
+| $q_2$ | 0 | 1 | $\rightarrow$ | $q_3$ |
+| $q_3$ | qualquer | (não escreve) | PARE | $q_{aceita}$ |
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Somador de 1 (médio)</summary>
+
+**Enunciado:** Execute a tabela de incremento para `[1][0][1][1][_]` (11 em binário). Qual o resultado?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resultado:** `[1][1][0][0]` (12 em binário)
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Subtração (difícil)</summary>
+
+**Enunciado:** Usando as regras de decremento, calcule $8 - 3$ e mostre o rastreio passo a passo.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resultado:** 5 (binário `[1][0][1]`)
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Multiplicação (desafio)</summary>
+
+**Enunciado:** Escreva um algoritmo em português estruturado (pseudocódigo) para multiplicar dois números usando apenas incremento e decremento.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+<pre>
+ALGORITMO Multiplicar(A, B)
+    resultado ← 0
+    contador ← A
+    ENQUANTO contador > 0 FAÇA
+        resultado ← resultado + B
+        contador ← contador - 1
+    FIM ENQUANTO
+    RETORNE resultado
+FIM ALGORITMO
+</pre><br>
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Reflexão (conceitual)</summary>
+
+**Enunciado:** "Se a Máquina de Turing é tão simples, por que não construímos uma gigante com papel e lápis para resolver todos os problemas do mundo?" Responda em 3 parágrafos.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+A Máquina de Turing é um modelo teórico, não uma máquina prática. Sua simplicidade é sua força conceitual, mas sua execução seria infinitamente lenta se implementada com papel e lápis. A complexidade dos problemas do mundo real exige velocidade, eficiência e praticidade.
+
+Além disso, a Máquina de Turing não resolve problemas por si só – ela apenas executa instruções. O "pensamento" está no programa, e programas úteis exigem engenharia, não apenas teoria. Construir uma máquina gigante não criaria novos algoritmos.
+
+Por fim, mesmo que construíssemos uma Máquina Universal de Turing física, ela ainda estaria sujeita aos limites da computabilidade: problemas indecidíveis permaneceriam indecidíveis, independentemente do tamanho da fita.
+
+</details>
+</details>
+
+
+## Resumo
+
+> A Máquina de Turing é o modelo matemático que define o limite do computável. Com poucos componentes – fita, cabeça, estados, regras e parada – ela é capaz de executar qualquer algoritmo. Tudo o que um computador faz, desde uma simples soma até uma rede neural profunda, pode ser reduzido a esses elementos fundamentais. A máquina não entende o que faz; apenas obedece às regras. A inteligência está no programa, não no hardware.

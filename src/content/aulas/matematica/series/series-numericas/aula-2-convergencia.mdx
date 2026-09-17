@@ -1,0 +1,170 @@
+# INTRODUÇÃO ÀS SÉRIES
+
+## AULA 2 – CONVERGÊNCIA DE SÉRIES E SÉRIE HARMÔNICA
+
+## 1. O que significa uma série convergir?
+
+Uma série **converge** quando a soma dos seus termos tende a um **valor finito** à medida que o número de termos aumenta.
+
+**Definição formal:**
+$$
+\sum_{n=1}^{\infty} a_n = \lim_{N \to \infty} S_N
+$$
+onde $S_N = a_1 + a_2 + \cdots + a_N$ é a soma parcial.
+
+Se esse limite **existe e é finito**, a série **converge**.  
+Se o limite **não existe** ou é **infinito**, a série **diverge**.
+
+## 2. Exemplo: Série Geométrica (Revisão)
+
+| Série | $r$ | Soma | Comportamento |
+|-------|---------|------|---------------|
+| $\sum \left( \frac{1}{2} \right)^n$ | 0.5 | 2 | ✅ **Converge** |
+| $\sum \left( -\frac{1}{2} \right)^n$ | -0.5 | $\frac{2}{3}$ | ✅ **Converge** |
+| $\sum 1^n$ | 1 | $\infty$ | ❌ **Diverge** |
+| $\sum 2^n$ | 2 | $\infty$ | ❌ **Diverge** |
+
+## 3. Série Harmônica (O Caso Clássico)
+
+### 3.1 Definição
+
+A **série harmônica** é definida como:
+
+$$
+\sum_{n=1}^{\infty} \frac{1}{n} = 1 + \frac{1}{2} + \frac{1}{3} + \frac{1}{4} + \frac{1}{5} + \cdots
+$$
+
+### 3.2 A Série Harmônica Diverge!
+
+Apesar dos termos $\frac{1}{n}$ tenderem a **zero**, a série **diverge** para infinito.
+
+**Demonstração intuitiva (agrupamento):**
+
+Agrupe os termos da seguinte forma:
+
+$$
+1 + \frac{1}{2} + \left( \frac{1}{3} + \frac{1}{4} \right) + \left( \frac{1}{5} + \frac{1}{6} + \frac{1}{7} + \frac{1}{8} \right) + \cdots
+$$
+
+Cada grupo tem soma **maior ou igual a $\frac{1}{2}$**:
+
+- $\frac{1}{3} + \frac{1}{4} > \frac{1}{4} + \frac{1}{4} = \frac{1}{2}$
+- $\frac{1}{5} + \frac{1}{6} + \frac{1}{7} + \frac{1}{8} > 4 \cdot \frac{1}{8} = \frac{1}{2}$
+
+Portanto, a soma total é infinita.
+
+**Conclusão:** A série harmônica **diverge**.
+
+## 4. Comparação: Série Harmônica vs Série Geométrica
+
+| Série | Termo geral | Comportamento |
+|-------|-------------|---------------|
+| Harmônica | $\frac{1}{n}$ | **Diverge** (lentamente) |
+| Geométrica ($r = 0.5$) | $\left( \frac{1}{2} \right)^n$ | **Converge** (rapidamente) |
+
+**Intuição:** A série harmônica decai **muito lentamente**, enquanto a série geométrica decai **exponencialmente rápido**.
+
+## 5. Por que isso é importante para projetos/ML?
+
+### 5.1 Erro Acumulado em Algoritmos
+
+Se o erro de um modelo decai como $\frac{1}{t}$, o erro total acumulado é **infinito** (série harmônica), indicando que o erro **nunca se estabiliza completamente**.
+
+**Exemplo:** Em SGD (Stochastic Gradient Descent), se a taxa de aprendizado decai como $\frac{1}{t}$, o erro acumulado pode divergir — o que exige ajustes na taxa de decaimento.
+
+### 5.2 Decaimento de Taxa de Aprendizado
+
+Em otimização, usamos frequentemente:
+
+$$
+\eta_t = \frac{\eta_0}{t}
+$$
+
+Isso gera uma série harmônica, que **diverge** lentamente. Isso pode ser **desejável** em alguns casos (para explorar mais), mas em outros pode **atrasar a convergência**.
+
+### 5.3 Projeto de Sistemas Estáveis
+
+Se um sistema tem ruído ou erro que decai como $\frac{1}{n}$, o erro total não é finito — o que pode indicar **instabilidade** ou necessidade de **regularização**.
+
+## 6. Exemplo Lúdico – A Cantina
+
+A cantina tem um estoque que decai como:
+
+$$
+1 + \frac{1}{2} + \frac{1}{3} + \frac{1}{4} + \cdots
+$$
+
+**Interpretação:** Mesmo que cada reposição seja menor, o **total acumulado é infinito** — o estoque nunca se esgota completamente, mas também nunca se estabiliza.
+
+## 7. Exercícios Propostos
+
+<details>
+<summary>📗 Exercício 1</summary>
+
+**Enunciado:** Classifique as séries como convergentes ou divergentes:
+
+a) $\sum_{n=1}^{\infty} \frac{1}{n^2}$
+
+b) $\sum_{n=1}^{\infty} \frac{1}{\sqrt{n}}$
+
+c) $\sum_{n=1}^{\infty} \frac{1}{n}$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\sum \frac{1}{n^2}$ → **Converge** (série $p$ com $p = 2 > 1$)
+
+b) $\sum \frac{1}{\sqrt{n}}$ → **Diverge** (série $p$ com $p = 0.5 \leq 1$)
+
+c) $\sum \frac{1}{n}$ → **Diverge** (série harmônica)
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2</summary>
+
+**Enunciado:** Compare as somas parciais $S_{10}$ e $S_{100}$ para:
+
+a) Série harmônica $\sum \frac{1}{n}$
+
+b) Série geométrica $\sum \left( \frac{1}{2} \right)^n$
+
+O que você observa?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $S_{10} \approx 2.93$, $S_{100} \approx 5.19$ → cresce lentamente
+
+b) $S_{10} \approx 1.998$, $S_{100} \approx 2$ → converge rapidamente para 2
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 (Aplicação)</summary>
+
+**Enunciado:** O erro de um modelo decai como $e_t = \frac{1}{t}$.
+
+a) O erro total $\sum_{t=1}^{\infty} e_t$ converge?
+
+b) O que isso significa para a estabilidade do modelo?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\sum_{t=1}^{\infty} \frac{1}{t}$ **diverge** (série harmônica)
+
+b) O erro total é infinito — o modelo nunca se estabiliza completamente.
+
+</details>
+</details>
+
+> *Uma série pode convergir mesmo que seus termos tendam a zero, mas a série harmônica prova que isso não é suficiente: a velocidade do decaimento é o que realmente importa.*

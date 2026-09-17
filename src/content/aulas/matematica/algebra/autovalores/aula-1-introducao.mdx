@@ -1,0 +1,267 @@
+
+# AUTOVALORES E AUTOVETORES
+
+## 1. Introdução
+
+### 1.1 O que são Autovalores e Autovetores?
+
+Dada uma matriz quadrada $A \in \mathbb{R}^{n \times n}$, um **autovetor** de $A$ é um vetor não nulo $\vec{v} \neq \vec{0}$ tal que:
+
+$$
+A \vec{v} = \lambda \vec{v}
+$$
+
+Onde $\lambda \in \mathbb{C}$ (ou $\mathbb{R}$) é chamado de **autovalor** associado a $\vec{v}$.
+
+**Interpretação geométrica:** Um autovetor é uma direção que **não muda** quando a transformação $A$ é aplicada. O vetor pode ser **esticado** ou **comprimido** (se $|\lambda| > 1$ ou $|\lambda| < 1$), ou **invertido** (se $\lambda < 0$), mas **sua direção permanece a mesma**.
+
+### 1.2 Exemplo Acadêmico Passo a Passo
+
+Seja:
+$$
+A = \begin{bmatrix} 2 & 1 \\ 1 & 2 \end{bmatrix}
+$$
+
+**Passo 1:** Encontrar um autovetor.
+
+Suponha que $\vec{v} = \begin{bmatrix} 1 \\ 1 \end{bmatrix}$.
+
+**Verificação:**
+$$
+A \vec{v} = \begin{bmatrix} 2 & 1 \\ 1 & 2 \end{bmatrix} \begin{bmatrix} 1 \\ 1 \end{bmatrix} = \begin{bmatrix} 2 \cdot 1 + 1 \cdot 1 \\ 1 \cdot 1 + 2 \cdot 1 \end{bmatrix} = \begin{bmatrix} 3 \\ 3 \end{bmatrix} = 3 \begin{bmatrix} 1 \\ 1 \end{bmatrix}
+$$
+
+**Conclusão:** $\vec{v} = \begin{bmatrix} 1 \\ 1 \end{bmatrix}$ é um autovetor com autovalor $\lambda = 3$.
+
+**Interpretação:** Quando aplicamos a matriz $A$ ao vetor $(1,1)$, ele é multiplicado por 3 (esticado) mas mantém a direção $(1,1)$.
+
+**Passo 2:** Encontrar outro autovetor.
+
+Suponha que $\vec{v} = \begin{bmatrix} 1 \\ -1 \end{bmatrix}$.
+
+**Verificação:**
+$$
+A \vec{v} = \begin{bmatrix} 2 & 1 \\ 1 & 2 \end{bmatrix} \begin{bmatrix} 1 \\ -1 \end{bmatrix} = \begin{bmatrix} 2 \cdot 1 + 1 \cdot (-1) \\ 1 \cdot 1 + 2 \cdot (-1) \end{bmatrix} = \begin{bmatrix} 1 \\ -1 \end{bmatrix} = 1 \begin{bmatrix} 1 \\ -1 \end{bmatrix}
+$$
+
+**Conclusão:** $\vec{v} = \begin{bmatrix} 1 \\ -1 \end{bmatrix}$ é um autovetor com autovalor $\lambda = 1$.
+
+**Interpretação:** Quando aplicamos a matriz $A$ ao vetor $(1,-1)$, ele **não muda** (é multiplicado por 1).
+
+## 2. Interpretação Geométrica
+
+### 2.1 Transformações Lineares e Autovetores
+
+Uma matriz $A$ representa uma **transformação linear**. Os autovetores são as **direções invariantes** dessa transformação.
+
+| Autovalor $\lambda$ | Efeito Geométrico |
+|-------------------------|-------------------|
+| $\lambda > 1$ | O vetor é **esticado** |
+| $0 < \lambda < 1$ | O vetor é **comprimido** |
+| $\lambda = 1$ | O vetor **não muda** (ponto fixo) |
+| $\lambda = 0$ | O vetor é **aniquilado** (levado ao zero) |
+| $\lambda < 0$ | O vetor é **invertido** (muda de sentido) |
+
+### 2.2 Exemplo Visual: Rotação e Escala
+
+**Matriz de rotação (ângulo $\theta$):**
+$$
+R = \begin{bmatrix} \cos\theta & -\sin\theta \\ \sin\theta & \cos\theta \end{bmatrix}
+$$
+
+**Autovalores:** $\lambda = \cos\theta \pm i\sin\theta = e^{\pm i\theta}$ (complexos)
+
+**Interpretação:** Uma rotação pura **não tem autovetores reais** (a menos que $\theta = 0$ ou $\theta = \pi$). As direções não são preservadas — tudo gira.
+
+## 3. Exemplos Lúdicos Aprimorados
+
+### 🍔 EXEMPLO 1 – A LANCHONETE (TRANSFORMAÇÃO DE INGREDIENTES)
+
+A lanchonete tem uma matriz que transforma quantidades de ingredientes:
+$$
+A = \begin{bmatrix} 2 & 1 \\ 1 & 2 \end{bmatrix}
+$$
+
+**Autovetor $(1,1)$ com $\lambda = 3$:** Se você tem 1 pão e 1 carne, a transformação resulta em 3 pães e 3 carnes — a proporção se mantém.
+
+**Autovetor $(1,-1)$ com $\lambda = 1$:** Se você tem 1 pão e -1 carne (uma "dívida" de carne), a transformação mantém essa proporção.
+
+**Interpretação:** A matriz $A$ age como um "multiplicador" que estica algumas direções e mantém outras.
+
+### 🧃 EXEMPLO 2 – A CANTINA (DIETA E CRESCIMENTO)
+
+A cantina tem uma matriz que transforma nutrientes:
+$$
+A = \begin{bmatrix} 1.1 & 0 \\ 0 & 0.9 \end{bmatrix}
+$$
+
+**Autovetor $(1,0)$ com $\lambda = 1.1$:** O açúcar cresce 10% a cada aplicação.
+
+**Autovetor $(0,1)$ com $\lambda = 0.9$:** O cálcio diminui 10% a cada aplicação.
+
+**Interpretação:** A matriz descreve um sistema que cresce em uma direção e encolhe em outra. Os autovalores mostram a taxa de crescimento/decrescimento.
+
+## 4. Aplicações em Machine Learning e Tese
+
+### 4.1 PCA (Análise de Componentes Principais)
+
+No PCA, os **autovetores** da matriz de covariância $\Sigma$ são os **componentes principais**, e os **autovalores** indicam a **variância** explicada por cada componente.
+
+$$
+\Sigma \vec{v} = \lambda \vec{v}
+$$
+
+**Interpretação:** Os autovetores são as direções de maior variância nos dados.
+
+### 4.2 PageRank (Google)
+
+O algoritmo PageRank usa o **autovetor principal** (associado ao maior autovalor) da matriz de transição da web para classificar páginas.
+
+### 4.3 Estabilidade de Sistemas Dinâmicos
+
+Em sistemas da forma $\vec{x}_{t+1} = A \vec{x}_t$, a estabilidade é determinada pelos autovalores:
+- Se $|\lambda_i| < 1$ para todos $i$ → sistema **converge** para zero.
+- Se $|\lambda_i| > 1$ para algum $i$ → sistema **diverge**.
+
+### 4.4 Análise de Convergência do FedAvg
+
+Em FL, a taxa de convergência do FedAvg está relacionada aos **autovalores** da Hessiana (matriz de segundas derivadas) da função de perda.
+
+$$
+\kappa = \frac{\lambda_{max}}{\lambda_{min}}
+$$
+
+**Interpretação:** Quanto menor o número de condição $\kappa$, mais rápida é a convergência.
+
+## 5. Resumo Estruturado
+
+| Conceito | Definição | Interpretação |
+|----------|-----------|---------------|
+| **Autovetor** | $A\vec{v} = \lambda\vec{v}$ | Direção que não muda |
+| **Autovalor** | $\lambda$ | Fator de escala na direção do autovetor |
+| **Espectro** | Conjunto de todos os autovalores | Caracteriza a matriz |
+| **Raio Espectral** | $\rho(A) = \max |\lambda_i|$ | Controla a estabilidade |
+
+## 6. Exercícios Propostos (Manuais)
+
+<details>
+<summary>📗 Exercício 1 (Verificação de Autovetor)</summary>
+
+**Enunciado:** Verifique se $\vec{v} = \begin{bmatrix} 2 \\ 1 \end{bmatrix}$ é autovetor de:
+$$
+A = \begin{bmatrix} 3 & 2 \\ 1 & 4 \end{bmatrix}
+$$
+
+Se sim, qual é o autovalor?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+$A\vec{v} = \begin{bmatrix} 3 & 2 \\ 1 & 4 \end{bmatrix} \begin{bmatrix} 2 \\ 1 \end{bmatrix} = \begin{bmatrix} 6 + 2 \\ 2 + 4 \end{bmatrix} = \begin{bmatrix} 8 \\ 6 \end{bmatrix}$
+
+$\lambda \vec{v} = \lambda \begin{bmatrix} 2 \\ 1 \end{bmatrix} = \begin{bmatrix} 2\lambda \\ \lambda \end{bmatrix}$
+
+Para ser autovetor, precisamos: $2\lambda = 8$ e $\lambda = 6$ → $\lambda = 4$ e $\lambda = 6$ → inconsistente.
+
+**Não é autovetor!**
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 (Interpretação Geométrica)</summary>
+
+**Enunciado:** A matriz:
+$$
+A = \begin{bmatrix} 2 & 0 \\ 0 & 0.5 \end{bmatrix}
+$$
+
+a) Encontre os autovetores.  
+b) Qual é o efeito geométrico da transformação?  
+c) O que os autovalores indicam?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) Autovetor $\vec{v}_1 = \begin{bmatrix} 1 \\ 0 \end{bmatrix}$ com $\lambda_1 = 2$.  
+Autovetor $\vec{v}_2 = \begin{bmatrix} 0 \\ 1 \end{bmatrix}$ com $\lambda_2 = 0.5$.
+
+b) A transformação estica o eixo x por fator 2 e comprime o eixo y por fator 0.5.
+
+c) $\lambda_1 = 2$ → estica; $\lambda_2 = 0.5$ → comprime.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 (Aplicação – Crescimento Populacional)</summary>
+
+**Enunciado:** Uma população evolui segundo:
+$$
+\vec{x}_{t+1} = A \vec{x}_t, \quad A = \begin{bmatrix} 1.2 & 0 \\ 0 & 0.8 \end{bmatrix}
+$$
+
+a) Qual é a taxa de crescimento em cada direção?  
+b) O que acontece a longo prazo?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\lambda_1 = 1.2$ (crescimento de 20% na direção 1), $\lambda_2 = 0.8$ (decrescimento de 20% na direção 2).
+
+b) A longo prazo, a população cresce exponencialmente na direção 1 e desaparece na direção 2.
+
+</details>
+</details>
+
+## 7. EXERCÍCIO COMPUTACIONAL
+
+<details>
+<summary>🐍 Ver código (Python/NumPy)</summary>
+
+```python
+import numpy as np
+
+A = np.array([[2, 1], [1, 2]])
+
+# Autovalores e autovetores
+autovalores, autovetores = np.linalg.eig(A)
+
+print("Autovalores:", autovalores)
+print("Autovetores (colunas):\n", autovetores)
+
+# Verificação: A @ v = lambda * v
+for i in range(len(autovalores)):
+    v = autovetores[:, i]
+    lam = autovalores[i]
+    print(f"Verificação para lambda={lam:.2f}:", A @ v, "vs", lam * v)
+```
+
+</details>
+
+<details>
+<summary>📝 Ver código (R)</summary>
+
+```r
+A <- matrix(c(2, 1, 1, 2), nrow=2)
+
+# Autovalores e autovetores
+eig <- eigen(A)
+print(eig$values)
+print(eig$vectors)
+
+# Verificação
+for (i in 1:length(eig$values)) {
+    print(A %*% eig$vectors[, i] - eig$values[i] * eig$vectors[, i])
+}
+```
+
+</details>
+
+> *Autovalores e autovetores são ferramentas fundamentais para entender o comportamento de transformações lineares. Eles revelam as **direções invariantes** e as **taxas de crescimento/decrescimento** de um sistema. São a base de PCA, PageRank, estabilidade de sistemas e análise de convergência em FL.*

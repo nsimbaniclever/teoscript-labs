@@ -1,0 +1,612 @@
+---
+title: "Componentes Internos — O Hardware que Executa Instruções e Armazena Dados"
+author: "TeoScript Labs"
+date: "2026-09-07"
+references:
+  - author: "Tanenbaum, . S."
+    title: "Organização Estruturada de Computadores"
+    year: 2013
+    publisher: "Pearson"
+    edition: "5th"
+    url: "https://www.pearson.com/..."
+
+  - author: "Stallings, W."
+    title: "Arquitetura e Organização de Computadores"
+    year: 2018
+    publisher: "Pearson"
+    edition: "10th"
+
+  - author: "Turing, A. M."
+    title: "On Computable Numbers, with an Application to the Entscheidungsproblem"
+    year: 1936
+    journal: "Proceedings of the London Mathematical Society"
+    edition: "10.1112/plms/s2-42.1.230"
+---
+
+# Componentes Internos 
+
+**Duração estimada:** 50 minutos (leitura) / 1h30 (com exercícios práticos)  <br>
+**Público-alvo:** Estudante com conhecimento da aula anterior (Máquina de Turing + Periféricos)  <br>
+**Método:** Dissecção conceitual com ponte para a prática (montagem virtual/física) <br>
+
+
+## Introdução
+
+Na aula passada, vimos os **periféricos** — a interface entre você e a máquina. Hoje, abrimos o gabinete e encontramos o verdadeiro **computador**: dentro do gabinete está a Máquina de Turing física. Vamos explorar cada componente interno, desde a CPU até a fonte de alimentação, entendendo como eles se comunicam e executam as instruções que fazem o computador funcionar.
+
+
+## 1. Dentro da Caixa Preta
+
+### 1.1 O Que Há Dentro do Gabinete?
+
+| Componente da Máquina de Turing | Componente Físico Correspondente |
+|--------------------------------|----------------------------------|
+| **Fita** (infinita) | RAM (memória de curto prazo) + HD/SSD (memória de longo prazo) |
+| **Cabeça de leitura/escrita** | CPU (processador) + barramentos |
+| **Estado interno** | Registradores internos da CPU + flags |
+| **Tabela de transição** | Microcódigo / Unidade de Controle (UC) |
+| **Alimentação** | Fonte de alimentação (energia elétrica) |
+| **Placa-mãe** | O "sistema nervoso" que conecta tudo |
+
+### 1.2 O Fluxo da Informação (Revisitado)
+
+Agora que conhecemos os periféricos *e* os internos, o ciclo fica completo:
+
+<div style="background: #0a0f1e; padding: 2rem 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Segoe UI', system-ui, sans-serif; max-width: 900px; margin: 1.5rem auto; text-align: center;">
+
+  <div style="color: #fbbf24; font-size: 1.1rem; font-weight: 700; margin-bottom: 1.2rem; letter-spacing: 1px;">
+    🔄 O CICLO COMPLETO DA INFORMAÇÃO
+  </div>
+
+  <div style="display: flex; gap: 0.6rem; margin-bottom: 0.8rem; flex-wrap: wrap; justify-content: center;">
+
+    <div style="flex: 0 1 140px; background: #1a3a5c; padding: 0.7rem 0.5rem; border-radius: 12px;">
+      <div style="color: #60a5fa; font-weight: 600; font-size: 0.8rem;">📥 ENTRADA</div>
+      <div style="color: #93c5fd; font-size: 0.6rem;">Teclado<br>Mouse<br>Webcam</div>
+    </div>
+
+    <div style="color: #fbbf24; font-size: 1.2rem; display: flex; align-items: center;">→</div>
+
+    <div style="flex: 0 1 420px; background: #1a1a2e; padding: 0.7rem 0.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
+      <div style="color: #a78bfa; font-weight: 600; font-size: 0.8rem;">⚙️ GABINETE (PROCESSAMENTO)</div>
+      <div style="display: flex; gap: 0.4rem; justify-content: center; flex-wrap: wrap; margin-top: 0.4rem;">
+        <span style="background: #2d1b69; color: #c4b5fd; padding: 0.15rem 0.6rem; border-radius: 8px; font-size: 0.6rem;">CPU</span>
+        <span style="background: #1a3a5c; color: #93c5fd; padding: 0.15rem 0.6rem; border-radius: 8px; font-size: 0.6rem;">RAM</span>
+        <span style="background: #1a5c3a; color: #6ee7b7; padding: 0.15rem 0.6rem; border-radius: 8px; font-size: 0.6rem;">HD/SSD</span>
+        <span style="background: #5c3a1a; color: #fcd34d; padding: 0.15rem 0.6rem; border-radius: 8px; font-size: 0.6rem;">Placa-mãe</span>
+      </div>
+    </div>
+
+    <div style="color: #fbbf24; font-size: 1.2rem; display: flex; align-items: center;">→</div>
+
+    <div style="flex: 0 1 140px; background: #1a5c3a; padding: 0.7rem 0.5rem; border-radius: 12px;">
+      <div style="color: #34d399; font-weight: 600; font-size: 0.8rem;">📤 SAÍDA</div>
+      <div style="color: #6ee7b7; font-size: 0.6rem;">Monitor<br>Impressora<br>Caixas de som</div>
+    </div>
+
+  </div>
+
+  <div style="margin-top: 0.8rem; padding-top: 0.8rem; border-top: 1px solid rgba(255,255,255,0.06);">
+    <div style="display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap;">
+      <span style="background: #5c1a1a; color: #fca5a5; padding: 0.2rem 0.8rem; border-radius: 20px; font-size: 0.6rem;">🔌 Fonte de alimentação</span>
+      <span style="background: #5c3a1a; color: #fcd34d; padding: 0.2rem 0.8rem; border-radius: 20px; font-size: 0.6rem;">🔗 Barramentos (PCIe, SATA, NVMe)</span>
+    </div>
+  </div>
+
+</div>
+
+
+## 2. Os Componentes Internos (Um a Um)
+
+### 2.1 A Placa-Mãe — O Sistema Nervoso Central
+
+| Característica | Descrição |
+|----------------|-----------|
+| **Função** | Conectar **todos** os componentes e permitir que eles se comuniquem |
+| **Formato** | ATX, Micro-ATX, Mini-ITX |
+| **Partes principais** | Soquete da CPU, slots de RAM, slots PCIe (placas), chipset, BIOS/UEFI |
+| **Conexões** | SATA (HD/SSD), USB (periféricos), HDMI/VGA (vídeo), áudio |
+
+**Analogia Acadêmica — A Cidade Digital**
+
+A placa-mãe é como uma **cidade**:
+- A **CPU** é a prefeitura (tomada de decisão)
+- A **RAM** são os escritórios (trabalho em andamento)
+- O **HD/SSD** é o arquivo morto (armazenamento)
+- Os **barramentos** são as ruas e avenidas
+- O **chipset** é o sistema de trânsito
+
+> **🔬 Observação:** A placa-mãe não processa — ela **interconecta**. Sem ela, a CPU não conversa com a RAM, e o HD não conversa com a CPU.
+
+
+### 2.2 A CPU (Processador) — O Cérebro
+
+| Característica | Descrição |
+|----------------|-----------|
+| **Função** | Executar instruções (o ciclo busca-decodifica-executa) |
+| **Fabricantes** | Intel (Core i3/i5/i7/i9), AMD (Ryzen 3/5/7/9) |
+| **Núcleos** | Múltiplos "cérebros" dentro do mesmo chip (ex: 8 núcleos) |
+| **Threads** | "Cérebros virtuais" (Hyper-Threading / SMT) |
+| **Clock** | Frequência (ex: 3.6 GHz = 3.6 bilhões de ciclos por segundo) |
+| **Cache** | Memória ultra-rápida dentro da CPU (L1, L2, L3) |
+
+**O Ciclo da CPU (relembrando a Máquina de Turing):**
+
+1. **BUSCA** → A CPU pega a próxima instrução da RAM
+2. **DECODIFICA** → A CPU interpreta o que a instrução significa
+3. **EXECUTA** → A CPU realiza a operação (soma, comparação, etc.)
+4. **ESCREVE** → A CPU guarda o resultado na RAM ou registrador
+5. **PRÓXIMO** → A CPU avança para a próxima instrução
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); max-width: 650px; margin: 1rem auto; text-align: center;">
+
+  <div style="color: #fbbf24; font-weight: 700; font-size: 0.9rem; margin-bottom: 1rem;">CICLO DA CPU</div>
+
+  <div style="display: flex; gap: 0.4rem; justify-content: center; flex-wrap: wrap;">
+
+    <div style="background: #1a3a5c; padding: 0.6rem 1rem; border-radius: 10px; min-width: 70px;">
+      <div style="color: #60a5fa; font-weight: 700; font-size: 0.9rem;">1</div>
+      <div style="color: #93c5fd; font-size: 0.6rem;">BUSCA</div>
+    </div>
+
+    <div style="color: #fbbf24; font-size: 1.2rem; display: flex; align-items: center;">→</div>
+
+    <div style="background: #2d1b69; padding: 0.6rem 1rem; border-radius: 10px; min-width: 70px;">
+      <div style="color: #a78bfa; font-weight: 700; font-size: 0.9rem;">2</div>
+      <div style="color: #c4b5fd; font-size: 0.6rem;">DECODIFICA</div>
+    </div>
+
+    <div style="color: #fbbf24; font-size: 1.2rem; display: flex; align-items: center;">→</div>
+
+    <div style="background: #1a5c3a; padding: 0.6rem 1rem; border-radius: 10px; min-width: 70px;">
+      <div style="color: #34d399; font-weight: 700; font-size: 0.9rem;">3</div>
+      <div style="color: #6ee7b7; font-size: 0.6rem;">EXECUTA</div>
+    </div>
+
+    <div style="color: #fbbf24; font-size: 1.2rem; display: flex; align-items: center;">→</div>
+
+    <div style="background: #5c3a1a; padding: 0.6rem 1rem; border-radius: 10px; min-width: 70px;">
+      <div style="color: #fcd34d; font-weight: 700; font-size: 0.9rem;">4</div>
+      <div style="color: #fde68a; font-size: 0.6rem;">ESCREVE</div>
+    </div>
+
+    <div style="color: #fbbf24; font-size: 1.2rem; display: flex; align-items: center;">→</div>
+
+    <div style="background: #5c1a1a; padding: 0.6rem 1rem; border-radius: 10px; min-width: 70px;">
+      <div style="color: #fca5a5; font-weight: 700; font-size: 0.9rem;">5</div>
+      <div style="color: #fecaca; font-size: 0.6rem;">PRÓXIMO</div>
+    </div>
+
+  </div>
+
+</div>
+
+**Analogia Acadêmica — O Escriba Elétrico**
+
+Lembra do escriba da primeira aula? A CPU é esse escriba, mas em **velocidade sobre-humana**:
+- O escriba lia uma palavra por segundo → A CPU lê **bilhões** por segundo
+- O escriba se movia lentamente → A CPU se move na velocidade da luz (eletricidade)
+
+> **🔬 Observação:** A CPU **não entende** o que está processando. Ela apenas executa instruções binárias — exatamente como o escriba da Máquina de Turing.
+
+
+### 2.3 A RAM (Memória de Acesso Aleatório) — O Quadro Branco
+
+| Característica | Descrição |
+|----------------|-----------|
+| **Função** | Armazenar temporariamente dados e instruções **em uso** |
+| **Tipos** | DDR3, DDR4, DDR5 (cada vez mais rápidos) |
+| **Capacidade** | 4GB, 8GB, 16GB, 32GB, 64GB |
+| **Velocidade** | MHz (ex: 3200 MHz) — frequência de acesso |
+| **Volatilidade** | **Perde** os dados quando desligada (volátil) |
+
+**Analogia Acadêmica — O Quadro Branco da Sala de Aula**
+
+- O quadro branco é onde você **rascunha** durante a aula (RAM)
+- O caderno é onde você **guarda** a matéria para sempre (HD/SSD)
+- Se alguém apagar o quadro (desligar o computador), o rascunho some (dados perdidos)
+
+> **💡 Insight:** A RAM é **mais rápida** que o HD/SSD, mas **menor** e **volátil**. Por isso, o computador carrega o programa da RAM para executar — e o salva no HD/SSD para guardar.
+
+**Fluxo de dados:**
+
+<div style="background: #0a0f1e; padding: 1.2rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.06); max-width: 500px; margin: 1rem auto; text-align: center;">
+
+  <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+
+    <div style="background: #1a5c3a; padding: 0.5rem; border-radius: 8px;">
+      <span style="color: #6ee7b7; font-weight: 600; font-size: 0.8rem;">💾 HD/SSD</span>
+      <span style="color: #93c5fd; font-size: 0.65rem; display: block;">(lento, grande, permanente)</span>
+    </div>
+
+    <div style="color: #fbbf24; font-size: 1.2rem;">⬇ CARREGA O PROGRAMA</div>
+
+    <div style="background: #1a3a5c; padding: 0.5rem; border-radius: 8px;">
+      <span style="color: #60a5fa; font-weight: 600; font-size: 0.8rem;">🧠 RAM</span>
+      <span style="color: #93c5fd; font-size: 0.65rem; display: block;">(rápida, média, temporária)</span>
+    </div>
+
+    <div style="color: #fbbf24; font-size: 1.2rem;">⬇ EXECUTA AS INSTRUÇÕES</div>
+
+    <div style="background: #2d1b69; padding: 0.5rem; border-radius: 8px;">
+      <span style="color: #a78bfa; font-weight: 600; font-size: 0.8rem;">⚡ CPU</span>
+      <span style="color: #c4b5fd; font-size: 0.65rem; display: block;">(ultrarrápida, pequena, temporária)</span>
+    </div>
+
+  </div>
+
+</div>
+
+
+### 2.4 O HD (Disco Rígido) e o SSD (Estado Sólido) — O Arquivo
+
+| Característica | HD (Mecânico) | SSD (Estado Sólido) |
+|----------------|---------------|---------------------|
+| **Função** | Armazenar dados **permanentemente** | Armazenar dados **permanentemente** |
+| **Tecnologia** | Discos magnéticos girando | Chips de memória flash |
+| **Velocidade** | Lento (100-200 MB/s) | Rápido (500-7000 MB/s) |
+| **Capacidade** | Grande (1TB-10TB) | Pequena a média (128GB-4TB) |
+| **Preço** | Barato (por GB) | Caro (por GB) |
+| **Durabilidade** | Sensível a quedas | Resistente a quedas |
+| **Ruído** | Faz barulho (gira) | Silencioso |
+
+**Analogia Acadêmica — A Biblioteca vs. O Caderno**
+
+- **HD:** Uma biblioteca gigante com um bibliotecário que anda devagar entre as estantes (disco girando). Leva tempo para achar o livro.
+- **SSD:** Um arquivo eletrônico onde você pesquisa por palavra-chave — instantâneo.
+
+> **💡 Insight:** O SSD é hoje o padrão para sistemas operacionais e programas. O HD é usado para arquivos grandes (fotos, vídeos) onde a velocidade não é tão crítica.
+
+### 2.5 A Placa de Vídeo (GPU) — O Artista Digital
+
+| Característica | Descrição |
+|----------------|-----------|
+| **Função** | Processar e renderizar **imagens, vídeos e gráficos** |
+| **Fabricantes** | NVIDIA (GeForce), AMD (Radeon), Intel (Arc) |
+| **Memória** | VRAM (ex: 4GB, 8GB, 12GB) — dedicada à GPU |
+| **Uso** | Jogos, edição de vídeo, 3D, IA (aprendizado de máquina) |
+
+**Analogia Acadêmica — O Pintor da Máquina**
+
+A CPU é o arquiteto que projeta a casa; a GPU é o pintor que desenha cada tijolo, cada cor e cada sombra. A CPU diz *"desenhe uma paisagem"* — a GPU desenha **cada pixel** dessa paisagem.
+
+> **🔬 Observação:** A GPU tem **centenas de núcleos** (a CPU tem 4-16). Cada núcleo é mais simples, mas juntos processam **milhões de pixels simultaneamente** — o que é ideal para gráficos.
+
+
+### 2.6 A Fonte de Alimentação — O Coração
+
+| Característica | Descrição |
+|----------------|-----------|
+| **Função** | Converter energia da tomada (110V/220V) em energia utilizável pelo computador (3.3V, 5V, 12V) |
+| **Potência** | 300W, 500W, 750W, 1000W+ (quanto maior, mais componentes suporta) |
+| **Certificações** | 80 Plus (Bronze, Prata, Ouro, Platina, Titânio) — eficiência energética |
+| **Conexões** | 24 pinos (placa-mãe), 8 pinos (CPU), PCIe (placa de vídeo), SATA (HD/SSD) |
+
+**Analogia Acadêmica — O Sistema Circulatório**
+
+- A fonte é o **coração** que bombeia energia para todo o corpo (computador)
+- Os cabos são as **veias e artérias** que levam a energia a cada componente
+- Uma fonte de má qualidade é como um coração fraco — o computador desliga ou queima componentes
+
+> **⚠️ Aviso:** Usar uma fonte de **baixa qualidade** pode destruir **todos** os componentes. É o componente mais subestimado e, ao mesmo tempo, o mais crítico.
+
+
+## 3. Interligação: Como Tudo se Comunica
+
+### 3.1 Os Barramentos — As Estradas Digitais
+
+| Barramento | Função | Velocidade |
+|------------|--------|------------|
+| **Front-Side Bus (FSB)** | CPU ↔ RAM (antigo) | 400-1600 MHz |
+| **PCIe (Peripheral Component Interconnect Express)** | Placa de vídeo, SSDs NVMe, placas de rede | 8-32 GB/s (PCIe 4.0/5.0) |
+| **SATA** | HD/SSD (antigos) | 6 Gb/s (SATA III) |
+| **NVMe (M.2)** | SSDs ultrarrápidos | 8 GB/s+ |
+
+**Analogia — As Rodovias da Informação:**
+
+- **PCIe:** Uma rodovia de 16 pistas (x16) — usada pela placa de vídeo
+- **SATA:** Uma estrada de 1 pista — usada por HDs e SSDs antigos
+- **NVMe:** Um trem-bala — usado por SSDs modernos
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); max-width: 700px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-weight: 700; font-size: 0.9rem; text-align: center; margin-bottom: 1rem;">🔗 BARramentos — VELOCIDADE COMPARATIVA</div>
+
+  <div style="display: flex; flex-direction: column; gap: 0.6rem;">
+
+    <div>
+      <div style="display: flex; justify-content: space-between; color: #93c5fd; font-size: 0.7rem; margin-bottom: 0.15rem;">
+        <span>🚀 PCIe 5.0 (x16)</span>
+        <span>~32 GB/s</span>
+      </div>
+      <div style="width: 100%; height: 14px; background: #1a1a2e; border-radius: 8px; overflow: hidden;">
+        <div style="width: 100%; height: 100%; background: linear-gradient(90deg, #a78bfa, #7c3aed); border-radius: 8px;"></div>
+      </div>
+    </div>
+
+    <div>
+      <div style="display: flex; justify-content: space-between; color: #93c5fd; font-size: 0.7rem; margin-bottom: 0.15rem;">
+        <span>⚡ NVMe (M.2)</span>
+        <span>~8 GB/s</span>
+      </div>
+      <div style="width: 100%; height: 14px; background: #1a1a2e; border-radius: 8px; overflow: hidden;">
+        <div style="width: 25%; height: 100%; background: linear-gradient(90deg, #34d399, #059669); border-radius: 8px;"></div>
+      </div>
+    </div>
+
+    <div>
+      <div style="display: flex; justify-content: space-between; color: #93c5fd; font-size: 0.7rem; margin-bottom: 0.15rem;">
+        <span>📀 SATA III</span>
+        <span>~0.6 GB/s</span>
+      </div>
+      <div style="width: 100%; height: 14px; background: #1a1a2e; border-radius: 8px; overflow: hidden;">
+        <div style="width: 2%; height: 100%; background: linear-gradient(90deg, #60a5fa, #2563eb); border-radius: 8px;"></div>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="color: #6b7280; font-size: 0.55rem; text-align: center; margin-top: 0.6rem;">
+    * Velocidades máximas teóricas — valores aproximados para comparação
+  </div>
+
+</div>
+
+### 3.2 O Chipset — O Controlador de Tráfego
+
+O chipset gerencia **como** os dados fluem entre a CPU, a RAM, os periféricos e o armazenamento.
+
+| Chipset | Função |
+|---------|--------|
+| **Ponte Norte (antigo)** | Controlava CPU ↔ RAM ↔ Placa de vídeo |
+| **Ponte Sul (antigo)** | Controlava periféricos (USB, SATA, áudio) |
+| **Chipset moderno** | Um único chip que gerencia tudo (comunicação direta com a CPU) |
+
+> **📌 Observação:** Nos processadores modernos, parte do chipset está **dentro da própria CPU** — o que torna tudo mais rápido.
+
+
+## 4. Exercícios
+
+<details>
+<summary>📗 Exercício 1 — Identificação de Componentes (fácil)</summary>
+
+**Enunciado:** Abra um computador (ou veja uma foto interna). Identifique:
+
+1. Onde fica a CPU (geralmente com um cooler enorme em cima)
+2. Onde estão os pentes de RAM (pequenas placas verticais)
+3. Onde está o HD/SSD (discos ou placas finas)
+4. Onde está a placa de vídeo (a maior placa, com ventiladores)
+5. Onde está a fonte de alimentação (geralmente em um canto)
+
+<details>
+<summary>💡 Dicas para identificar</summary>
+
+| Componente | Como identificar |
+|------------|------------------|
+| **CPU** | Fica sob um cooler (ventoinha) grande, no centro da placa-mãe |
+| **RAM** | Pentes longos e finos, verticais, com LEDs (às vezes) |
+| **HD** | Disco de metal de 3.5" (grande) ou 2.5" (pequeno), com etiqueta |
+| **SSD** | Placa fina de 2.5" (SATA) ou pequeno cartão (M.2) |
+| **Placa de vídeo** | Placa grande, horizontal, com ventoinhas e saídas (HDMI/DisplayPort) |
+| **Fonte** | Caixa metálica com ventilador, no canto superior/inferior |
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Ordem de Grandeza (médio)</summary>
+
+**Enunciado:** Ordene os seguintes componentes do **mais rápido** para o **mais lento** em termos de acesso a dados:
+
+- CPU Cache (L1)
+- RAM
+- SSD NVMe
+- HD (Disco Rígido)
+- CPU Cache (L3)
+- SSD SATA
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Do mais rápido para o mais lento:**
+
+1. **CPU Cache L1** (nanossegundos)
+2. **CPU Cache L3** (alguns nanossegundos)
+3. **RAM** (dezenas de nanossegundos)
+4. **SSD NVMe** (microssegundos)
+5. **SSD SATA** (milissegundos)
+6. **HD** (dezenas de milissegundos)
+
+**Diferença:** A CPU L1 é cerca de **1.000.000x** mais rápida que o HD.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Qual Componente Escolher? (médio)</summary>
+
+**Enunciado:** Você tem R$ 2.000 para melhorar seu computador. Qual upgrade você faria em cada cenário?
+
+| Cenário | Melhor upgrade |
+|---------|----------------|
+| **a)** O computador está lento ao abrir programas | |
+| **b)** O computador está lento ao jogar jogos | |
+| **c)** O computador não liga | |
+| **d)** O computador está sem espaço para fotos | |
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+| Cenário | Melhor upgrade | Justificativa |
+|---------|----------------|---------------|
+| **a)** Lento ao abrir programas | SSD (se tiver HD) ou mais RAM | O gargalo está no armazenamento ou memória |
+| **b)** Lento ao jogar jogos | Placa de vídeo (GPU) | Jogos exigem processamento gráfico |
+| **c)** Não liga | Fonte de alimentação (ou verificar) | Sem energia, nada funciona |
+| **d)** Sem espaço para fotos | HD ou SSD de maior capacidade | Armazenamento é a solução |
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Projeto: Monte um PC Virtualmente (desafio)</summary>
+
+**Objetivo:** Usar o site **PCPartPicker** (ou similar) para montar um computador do zero.
+
+**Passos:**
+
+1. Acesse [pcpartpicker.com](https://pcpartpicker.com) (ou use um simulador brasileiro como o "Monte seu PC" da Kabum/Pichau)
+2. Escolha:
+   - Uma **CPU** (ex: AMD Ryzen 5 7600 ou Intel Core i5-13400F)
+   - Uma **placa-mãe** compatível
+   - **RAM** (ex: 16GB DDR5)
+   - **Armazenamento** (ex: SSD NVMe 1TB)
+   - **Placa de vídeo** (ex: NVIDIA RTX 3060 ou AMD RX 6600)
+   - **Fonte** (ex: 650W 80 Plus Bronze)
+   - **Gabinete** (ex: ATX Mid-Tower)
+3. Verifique a **compatibilidade** dos componentes
+4. Calcule o **custo total**
+5. Justifique **cada escolha**
+
+**Exemplo de justificativa:**
+
+> "Escolhi o Ryzen 5 7600 porque oferece bom custo-benefício para jogos e produtividade. A placa-mãe B650 tem suporte para PCIe 5.0, o que permite um SSD NVMe ultrarrápido no futuro. A RTX 3060 é suficiente para jogos em 1080p. A fonte de 650W garante margem de segurança."
+
+<details>
+<summary>💡 Exemplo de build (R$ 6.000 - 8.000)</summary>
+
+| Componente | Modelo | Preço (aprox.) |
+|------------|--------|----------------|
+| CPU | AMD Ryzen 5 7600 | R$ 1.500 |
+| Placa-mãe | B650M (Micro-ATX) | R$ 1.200 |
+| RAM | 16GB (2x8GB) DDR5 5200MHz | R$ 600 |
+| SSD | NVMe 1TB PCIe 4.0 | R$ 500 |
+| Placa de vídeo | NVIDIA RTX 3060 12GB | R$ 2.200 |
+| Fonte | 650W 80 Plus Bronze | R$ 400 |
+| Gabinete | ATX Mid-Tower | R$ 300 |
+| **Total** | | **R$ 6.700** |
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Correspondência Conceitual (difícil)</summary>
+
+**Enunciado:** Relacione cada componente da Máquina de Turing (coluna A) com o componente físico correspondente (coluna B) e justifique.
+
+| Coluna A (Máquina de Turing) | Coluna B (Computador Real) |
+|------------------------------|----------------------------|
+| Fita | ( ) CPU |
+| Cabeça de leitura/escrita | ( ) RAM + HD/SSD |
+| Estado interno | ( ) Fonte de alimentação |
+| Tabela de transição | ( ) Placa-mãe |
+| Energia | ( ) Registradores + flags |
+| Conexões entre componentes | ( ) Microcódigo |
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+| Coluna A | Coluna B | Justificativa |
+|----------|----------|---------------|
+| Fita | **RAM + HD/SSD** | A fita armazena dados; RAM + HD armazenam dados |
+| Cabeça de leitura/escrita | **CPU** | A CPU lê, escreve e processa os dados |
+| Estado interno | **Registradores + flags** | A CPU mantém o estado atual da execução |
+| Tabela de transição | **Microcódigo** | O microcódigo define o que a CPU faz com cada instrução |
+| Energia | **Fonte de alimentação** | Sem energia, nada funciona |
+| Conexões entre componentes | **Placa-mãe** | A placa-mãe interconecta todos os componentes |
+
+</details>
+</details>
+
+
+## 5. Síntese: A Máquina de Turing Física
+
+### 5.1 A Jornada de uma Instrução
+
+Vamos rastrear uma instrução simples: **somar 2 + 3** no computador real.
+
+1. Você digita no teclado: "2 + 3 =" (entrada via USB)
+2. O dado vai para a RAM (via placa-mãe) — carregado pelo sistema operacional
+3. A CPU busca a instrução da RAM (ciclo de busca)
+4. A CPU decodifica: "é uma soma" (unidade de controle)
+5. A CPU executa: 2 + 3 = 5 (ALU — unidade lógica e aritmética)
+6. A CPU escreve o resultado na RAM (ciclo de escrita)
+7. A RAM envia o resultado para a placa de vídeo (via PCIe)
+8. A placa de vídeo renderiza o número "5" (via HDMI/DisplayPort)
+9. O monitor mostra "5" na tela (saída visual)
+10. Você vê o resultado.
+
+**Tempo total:** Menos de 1 milissegundo.
+
+> **🔬 Observação:** Cada passo acima corresponde a **uma ou mais instruções** da Máquina de Turing — mas na prática, são **bilhões de operações** por segundo.
+
+### 5.2 O Mapa Conceitual Final
+
+<div style="background: #0a0f1e; padding: 2rem 1rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); max-width: 850px; margin: 1.5rem auto; font-family: 'Segoe UI', system-ui, sans-serif; overflow-x: auto;">
+
+  <div style="color: #fbbf24; font-size: 1rem; font-weight: 700; text-align: center; margin-bottom: 1.2rem; letter-spacing: 0.5px;">
+    🧠 O COMPUTADOR — MÁQUINA DE TURING IMPLEMENTADA
+  </div>
+
+  <div style="display: flex; flex-direction: column; gap: 0.4rem;">
+
+    <!-- Entrada -->
+    <div style="display: flex; align-items: center; gap: 0.4rem; justify-content: center; flex-wrap: wrap;">
+      <div style="background: #1a3a5c; padding: 0.4rem 0.8rem; border-radius: 10px; min-width: 100px; text-align: center;">
+        <div style="color: #60a5fa; font-weight: 600; font-size: 0.65rem;">📥 ENTRADA</div>
+        <div style="color: #93c5fd; font-size: 0.5rem;">Teclado · Mouse · Webcam</div>
+      </div>
+      <div style="color: #fbbf24; font-size: 1rem;">→</div>
+
+      <!-- Processamento -->
+      <div style="background: #1a1a2e; padding: 0.4rem 0.8rem; border-radius: 10px; border: 1px solid rgba(255,255,255,0.05); min-width: 380px; text-align: center;">
+        <div style="color: #a78bfa; font-weight: 600; font-size: 0.65rem;">⚙️ PROCESSAMENTO (GABINETE)</div>
+        <div style="display: flex; gap: 0.3rem; justify-content: center; flex-wrap: wrap; margin-top: 0.2rem;">
+          <span style="background: #2d1b69; color: #c4b5fd; padding: 0.1rem 0.5rem; border-radius: 6px; font-size: 0.5rem;">CPU</span>
+          <span style="background: #1a3a5c; color: #93c5fd; padding: 0.1rem 0.5rem; border-radius: 6px; font-size: 0.5rem;">RAM</span>
+          <span style="background: #1a5c3a; color: #6ee7b7; padding: 0.1rem 0.5rem; border-radius: 6px; font-size: 0.5rem;">HD/SSD</span>
+          <span style="background: #5c3a1a; color: #fcd34d; padding: 0.1rem 0.5rem; border-radius: 6px; font-size: 0.5rem;">Placa-mãe</span>
+          <span style="background: #5c1a1a; color: #fca5a5; padding: 0.1rem 0.5rem; border-radius: 6px; font-size: 0.5rem;">Fonte</span>
+        </div>
+      </div>
+
+      <div style="color: #fbbf24; font-size: 1rem;">→</div>
+
+      <!-- Saída -->
+      <div style="background: #1a5c3a; padding: 0.4rem 0.8rem; border-radius: 10px; min-width: 100px; text-align: center;">
+        <div style="color: #34d399; font-weight: 600; font-size: 0.65rem;">📤 SAÍDA</div>
+        <div style="color: #6ee7b7; font-size: 0.5rem;">Monitor · Impressora · Caixas</div>
+      </div>
+    </div>
+
+    <div style="text-align: center; color: #4b5563; font-size: 0.55rem; margin-top: 0.6rem; border-top: 1px solid rgba(255,255,255,0.05); padding-top: 0.6rem;">
+      A Máquina de Turing em forma física — bilhões de operações por segundo
+    </div>
+
+  </div>
+
+</div>
+
+---
+
+## 6. Glossário Técnico
+
+| Termo | Definição |
+|-------|-----------|
+| **CPU** | Central Processing Unit — Executa instruções |
+| **RAM** | Random Access Memory — Memória volátil de curto prazo |
+| **HD** | Hard Disk — Disco magnético, armazenamento permanente |
+| **SSD** | Solid State Drive — Memória flash, armazenamento permanente e rápido |
+| **GPU** | Graphics Processing Unit — Processa gráficos e imagens |
+| **Placa-mãe** | Motherboard — Conecta todos os componentes |
+| **Fonte** | Power Supply — Fornece energia elétrica |
+| **Barramento** | Bus — Canal de comunicação entre componentes |
+| **PCIe** | Peripheral Component Interconnect Express — Barramento de alta velocidade |
+| **Chipset** | Controlador de fluxo de dados na placa-mãe |
+| **Cache** | Memória ultrarrápida dentro da CPU |
+| **Clock** | Frequência de operação da CPU (em Hz) |
+
+---
+
+## Resumo
+
+> **"O computador real é a Máquina de Turing em forma física. A CPU é a cabeça que lê e escreve; a RAM e o HD/SSD são a fita; a placa-mãe é o sistema de conexões; e a fonte é a energia que mantém tudo funcionando. Entender os componentes internos é entender como a abstração teórica se torna realidade concreta — e como bilhões de operações por segundo acontecem dentro de uma caixa de metal."**

@@ -1,0 +1,324 @@
+# UNIDADES DE MEDIDA
+
+## 1. INTRODUÇÃO
+
+Nas últimas dez aulas, estudamos como os processadores funcionam — desde o pipeline até o paralelismo em larga escala. Vimos como as instruções são executadas, como os dados são processados e como múltiplos processadores trabalham juntos.<br><br>
+
+Mas há uma pergunta fundamental que ainda não respondemos: **como medimos a informação?** Quando dizemos que um arquivo tem 10 MB, que um HD tem 1 TB, ou que uma rede transmite 1 Gbps, o que isso realmente significa?<br><br>
+
+As unidades de medida são a linguagem da computação. Elas nos permitem quantificar o tamanho dos dados, a capacidade de armazenamento, a velocidade de transmissão e a quantidade de memória. Sem elas, não poderíamos comparar dispositivos, planejar sistemas ou entender o escopo dos dados que manipulamos.<br><br>
+
+Pense nas unidades de medida como as **réguas e balanças do mundo digital**. Assim como usamos metros para medir distância e quilogramas para medir peso, usamos bits e bytes para medir informação. E assim como existem múltiplos de metros (quilômetros, centímetros), existem múltiplos de bytes (kilobytes, megabytes, gigabytes, terabytes, petabytes).<br><br>
+
+Nesta aula, vamos estudar as unidades de medida da computação: o bit, o byte e seus múltiplos. Vamos entender a diferença entre unidades decimais e binárias, e como elas são usadas em diferentes contextos.
+
+## 2. O BIT — A UNIDADE FUNDAMENTAL
+
+### 2.1 Definição
+
+> "Bit (Binary Digit) é a menor unidade de informação em computação, representando um valor binário: 0 ou 1, verdadeiro ou falso, ligado ou desligado."
+
+### 2.2 Características principais
+
+| Característica | Descrição |
+|---------|----------|
+| **Tamanho** | 1 bit (0 ou 1) |
+| **Representação física** | Tensão elétrica (0V = 0, 5V = 1) |
+| **Representação lógica** | Falso/Verdadeiro, Desligado/Ligado |
+| **Capacidade** | 2 valores possíveis |
+| **Símbolo** | b (minúsculo) |
+
+### 2.3 O que um bit pode representar?
+
+| Contexto | Exemplo |
+|---------|---------|
+| **Booleano** | Verdadeiro (1) ou Falso (0) |
+| **Estados** | Ligado (1) ou Desligado (0) |
+| **Sim/Não** | Sim (1) ou Não (0) |
+| **Decisão binária** | Escolha entre duas opções |
+
+### 2.4 A limitação de um único bit
+
+Com um único bit, só podemos representar **2 valores**:
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+0 → Desligado, Falso, Não
+1 → Ligado, Verdadeiro, Sim
+</pre>
+
+Para representar mais informações, precisamos de **combinações de bits**.
+
+## 3. O BYTE — A UNIDADE PRÁTICA
+
+### 3.1 Definição
+
+> "Byte é uma unidade de informação digital composta por 8 bits, que pode representar 256 valores diferentes (2⁸), sendo a unidade básica de armazenamento e transmissão de dados."
+
+### 3.2 Características principais
+
+| Característica | Descrição |
+|---------|----------|
+| **Tamanho** | 8 bits |
+| **Valores possíveis** | 256 (0 a 255) |
+| **Representação** | Caractere ASCII, número, etc. |
+| **Símbolo** | B (maiúsculo) |
+
+### 3.3 O que um byte pode representar?
+
+| Contexto | Exemplo |
+|---------|---------|
+| **Caractere ASCII** | 'A' = 65 = 0100 0001 |
+| **Número inteiro** | 0 a 255 |
+| **Cor (em imagens)** | 256 tons de uma cor |
+| **Instrução** | Parte de uma instrução de máquina |
+
+### 3.4 Por que 8 bits?
+
+Historicamente, o tamanho do byte variou (6, 7, 8 bits). O padrão de 8 bits foi estabelecido porque:
+
+1. **ASCII:** Usa 7 bits (128 caracteres) + 1 bit de paridade.
+2. **Potência de 2:** 8 = 2³, facilitando a organização em memória.
+3. **Praticidade:** Suficiente para representar números de 0 a 255.
+
+## 4. MÚLTIPLOS DO BYTE — UNIDADES DECIMAIS E BINÁRIAS
+
+### 4.1 O problema da confusão
+
+Historicamente, o prefixo "kilo" (K) significava 1024 em computação, mas no Sistema Internacional (SI) significa 1000. Isso causou muita confusão.
+
+**Exemplo:**
+- **Disco rígido:** Fabricante anuncia 1 TB = 1.000.000.000.000 bytes (decimal).
+- **Sistema operacional:** Mostra 931 GB porque usa 1 TB = 1.099.511.627.776 bytes (binário).
+
+### 4.2 A solução: Prefixos binários (IEC)
+
+Em 1998, a IEC (International Electrotechnical Commission) padronizou prefixos binários:
+
+| Prefixo | Símbolo | Fator (bytes) | Fator (potência) |
+|---------|---------|---------|---------|
+| **Kibi** | KiB | 1.024 | 2¹⁰ |
+| **Mebi** | MiB | 1.048.576 | 2²⁰ |
+| **Gibi** | GiB | 1.073.741.824 | 2³⁰ |
+| **Tebi** | TiB | 1.099.511.627.776 | 2⁴⁰ |
+| **Pebi** | PiB | 1.125.899.906.842.624 | 2⁵⁰ |
+
+### 4.3 Prefixos decimais (SI)
+
+| Prefixo | Símbolo | Fator (bytes) | Fator (potência) |
+|---------|---------|---------|---------|
+| **Kilo** | KB | 1.000 | 10³ |
+| **Mega** | MB | 1.000.000 | 10⁶ |
+| **Giga** | GB | 1.000.000.000 | 10⁹ |
+| **Tera** | TB | 1.000.000.000.000 | 10¹² |
+| **Peta** | PB | 1.000.000.000.000.000 | 10¹⁵ |
+
+### 4.4 Tabela comparativa completa
+
+| Nome (SI) | Símbolo (SI) | Valor (decimal) | Nome (IEC) | Símbolo (IEC) | Valor (binário) |
+|---------|---------|---------|---------|---------|---------|
+| Kilobyte | KB | 1.000 | Kibibyte | KiB | 1.024 |
+| Megabyte | MB | 1.000.000 | Mebibyte | MiB | 1.048.576 |
+| Gigabyte | GB | 1.000.000.000 | Gibibyte | GiB | 1.073.741.824 |
+| Terabyte | TB | 1.000.000.000.000 | Tebibyte | TiB | 1.099.511.627.776 |
+| Petabyte | PB | 1.000.000.000.000.000 | Pebibyte | PiB | 1.125.899.906.842.624 |
+
+### 4.5 Exemplo prático: HD de 1 TB
+
+| Sistema | Valor mostrado | Cálculo |
+|---------|---------|---------|
+| **Fabricante** | 1.000.000.000.000 bytes | 1 TB (decimal) |
+| **Windows** | 931 GB | 1.000.000.000.000 / 1.073.741.824 = 931 GiB |
+| **Linux/macOS** | 1.0 TB | Mostra 1.0 TB (decimal) |
+
+## 5. UNIDADES DE TRANSMISSÃO
+
+### 5.1 Bits por segundo (bps)
+
+Taxa de transmissão é medida em **bits por segundo** (bps), não bytes.
+
+| Unidade | Símbolo | Valor |
+|---------|---------|---------|
+| **Bits por segundo** | bps | 1 bit/s |
+| **Kilobits por segundo** | Kbps | 1.000 bps |
+| **Megabits por segundo** | Mbps | 1.000.000 bps |
+| **Gigabits por segundo** | Gbps | 1.000.000.000 bps |
+
+### 5.2 Conversão para bytes
+
+Para converter bits para bytes, divida por 8.
+
+| Taxa | Em bits | Em bytes |
+|---------|---------|---------|
+| **1 Mbps** | 1.000.000 bps | 125.000 B/s (125 KB/s) |
+| **100 Mbps** | 100.000.000 bps | 12.500.000 B/s (12.5 MB/s) |
+| **1 Gbps** | 1.000.000.000 bps | 125.000.000 B/s (125 MB/s) |
+
+### 5.3 Exemplo: Internet de 500 Mbps
+
+- **Velocidade:** 500 Mbps
+- **Em bytes:** 500 / 8 = 62.5 MB/s
+- **Arquivo de 1 GB:** 1.000 MB / 62.5 MB/s ≈ 16 segundos
+
+## 6. UNIDADES DE VELOCIDADE DE PROCESSADOR
+
+### 6.1 Hertz (Hz)
+
+A velocidade do processador é medida em **Hertz** (ciclos por segundo).
+
+| Unidade | Símbolo | Valor |
+|---------|---------|---------|
+| **Hertz** | Hz | 1 ciclo/s |
+| **Kilohertz** | KHz | 1.000 Hz |
+| **Megahertz** | MHz | 1.000.000 Hz |
+| **Gigahertz** | GHz | 1.000.000.000 Hz |
+| **Terahertz** | THz | 1.000.000.000.000 Hz |
+
+### 6.2 Exemplo: Processador de 4 GHz
+
+- 4 GHz = 4.000.000.000 ciclos por segundo
+- 4 bilhões de operações por segundo (em média)
+
+## 7. APLICAÇÕES REAIS
+
+| Contexto | Unidade típica | Exemplo |
+|---------|---------|---------|
+| **Tamanho de arquivo** | MB, GB | 10 MB, 1.5 GB |
+| **Capacidade de HD** | TB | 2 TB, 4 TB |
+| **Capacidade de SSD** | GB, TB | 512 GB, 1 TB |
+| **RAM** | GB | 8 GB, 16 GB, 32 GB |
+| **Velocidade de rede** | Mbps, Gbps | 500 Mbps, 1 Gbps |
+| **Velocidade de CPU** | GHz | 3.5 GHz, 4.0 GHz |
+| **Cache de CPU** | MB | 32 MB L3 cache |
+| **Taxa de transferência de dados** | GB/s | 50 GB/s (DDR5) |
+
+## 8. EXERCÍCIOS
+
+<details>
+<summary>📗 Exercício 1 — O que é um bit? (Fácil)</summary>
+
+**Enunciado:** Defina o que é um bit e quantos valores ele pode representar.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Bit (Binary Digit) é a menor unidade de informação em computação, representando um valor binário: 0 ou 1.
+
+**Valores possíveis:** 2 (0 e 1)
+
+**Explicação:** Um bit é o fundamento de toda a computação digital.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — O que é um byte? (Fácil)</summary>
+
+**Enunciado:** Defina o que é um byte e quantos valores ele pode representar.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Byte é uma unidade de informação digital composta por 8 bits.
+
+**Valores possíveis:** 2⁸ = 256 valores (0 a 255)
+
+**Explicação:** O byte é a unidade básica de armazenamento e transmissão de dados.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — KB vs KiB (Médio)</summary>
+
+**Enunciado:** Qual a diferença entre KB e KiB?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+- **KB (Kilobyte):** 1.000 bytes (decimal, SI)
+- **KiB (Kibibyte):** 1.024 bytes (binário, IEC)
+
+**Explicação:** KB é usado em contextos de SI (discos, taxas); KiB em contextos binários (memória, sistemas operacionais).
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Conversão de unidades (Médio)</summary>
+
+**Enunciado:** Converta 2.5 GB para MB e para KB (use valores decimais).
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+- 2.5 GB = 2.5 × 1.000 = 2.500 MB
+- 2.5 GB = 2.500 × 1.000 = 2.500.000 KB
+
+**Explicação:** 1 GB = 1.000 MB = 1.000.000 KB (decimal, SI)
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — HD de 1 TB (Médio)</summary>
+
+**Enunciado:** Um HD de 1 TB (decimal) aparece como quantos GB no Windows (que usa unidades binárias)?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** 1 TB = 1.000.000.000.000 bytes. No Windows: 1.000.000.000.000 / 1.073.741.824 ≈ 931 GiB.
+
+**Explicação:** O Windows mostra 931 GB (que na verdade são GiB).
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Mbps para MB/s (Médio)</summary>
+
+**Enunciado:** Uma conexão de internet de 500 Mbps tem qual velocidade máxima em MB/s?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** 500 Mbps / 8 = 62.5 MB/s
+
+**Explicação:** 1 byte = 8 bits. Divida a taxa em bits por 8 para obter a taxa em bytes.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — Tempo de download (Difícil)</summary>
+
+**Enunciado:** Quanto tempo leva para baixar um arquivo de 10 GB com uma conexão de 100 Mbps?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+1. 100 Mbps = 100 / 8 = 12.5 MB/s
+2. 10 GB = 10.000 MB
+3. Tempo = 10.000 / 12.5 = 800 segundos ≈ 13.3 minutos
+
+**Explicação:** Converta a velocidade para MB/s, divida o tamanho do arquivo pela velocidade.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — Ordenando unidades (Desafio)</summary>
+
+**Enunciado:** Ordene da menor para a maior: KB, TB, PB, MB, GB, KiB, TiB, MiB, GiB.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** KB < KiB < MB < MiB < GB < GiB < TB < TiB < PB
+
+**Explicação:** Em geral, os prefixos binários (KiB, MiB, GiB, TiB) são ligeiramente maiores que os decimais correspondentes (KB, MB, GB, TB).
+
+1 KB = 1.000 < 1 KiB = 1.024
+1 MB = 1.000.000 < 1 MiB = 1.048.576
+1 GB = 1.000.000.000 < 1 GiB = 1.073.741.824
+1 TB = 1.000.000.000.000 < 1 TiB = 1.099.511.627.776
+</details>
+</details>
+
+> Bit e byte são as unidades fundamentais da informação digital. O bit é o átomo — 0 ou 1. O byte é a molécula — 8 bits que formam um caractere. E seus múltiplos — KB, MB, GB, TB, PB — são as ferramentas que usamos para medir o tamanho do mundo digital, que hoje já ultrapassa os zettabytes. Entender as unidades de medida é essencial para qualquer profissional de computação. Saber a diferença entre bits e bytes, entre unidades decimais e binárias, e como converter entre elas, é fundamental para compreender especificações de hardware, planejar capacidade de armazenamento e estimar tempos de transferência.

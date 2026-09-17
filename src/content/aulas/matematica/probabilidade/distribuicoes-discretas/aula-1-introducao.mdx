@@ -1,0 +1,437 @@
+# Distribuições Discretas 
+
+### 1. O que são Distribuições Discretas?
+
+Uma **distribuição de probabilidade discreta** descreve o comportamento de uma variável aleatória que assume valores em um conjunto **finito ou infinito contável** (como 0, 1, 2, 3, ...). Essas distribuições são usadas para modelar **contagens** — número de sucessos, número de falhas, número de ocorrências em um intervalo, etc.
+
+**Analogia do dia a dia:**
+
+Imagine que você está em uma loja e quer saber quantos clientes entram por hora. Isso é uma variável discreta: não faz sentido falar em 2,5 clientes. Você só pode ter 0, 1, 2, 3, ... clientes. A distribuição discreta te diz qual a probabilidade de cada um desses números acontecer.
+
+### 2. Função de Probabilidade (FP) — $ P(X = x) $
+
+A **Função de Probabilidade** (também chamada de **função massa de probabilidade**) é a ferramenta que atribui uma probabilidade a cada valor possível da variável aleatória discreta.
+
+$$ p(x) = P(X = x) $$
+
+**Propriedades:**
+
+| Propriedade | O que significa | Por que é importante |
+| --- | --- | --- |
+| **1. $ 0 \leq p(x) \leq 1 $** | Cada probabilidade é um número entre 0 e 1. | Probabilidades negativas ou maiores que 1 não fazem sentido. |
+| **2. $ \sum_{x} p(x) = 1 $** | A soma de todas as probabilidades é 1. | Em algum valor, a variável sempre vai cair. |
+
+**Exemplo 1 — FP de um dado honesto:**
+
+Seja $ X $ o resultado de um lançamento de um dado honesto. Os valores possíveis são $ 1, 2, 3, 4, 5, 6 $, e cada um tem probabilidade $ 1/6 $.
+
+$$ P(X = x) = \frac{1}{6}, \quad x = 1, 2, 3, 4, 5, 6 $$
+
+Verificação da Propriedade 2: $ \sum_{x=1}^{6} 1/6 = 6/6 = 1 $ ✅
+
+**Exemplo 2 — FP válida ou inválida?**
+
+A função abaixo é uma FP válida?
+
+| $ x $ | 1 | 2 | 3 |
+| --- | --- | --- | --- |
+| $ p(x) $ | 0,3 | 0,3 | 0,5 |
+
+**Verificação:**
+- Propriedade 1: todos os valores estão entre 0 e 1 ✅
+- Propriedade 2: $ 0,3 + 0,3 + 0,5 = 1,1 \neq 1 $ ❌
+
+**Conclusão:** Não é uma FP válida, porque a soma excede 1.
+
+**Exemplo 3 — Função de Probabilidade a partir de uma fórmula:**
+
+A função de probabilidade de uma variável aleatória $ X $ é dada por:
+
+$$ P(X = x) = c \cdot x, \quad x = 1, 2, 3, 4 $$
+
+Encontre o valor de $ c $.
+
+**Resolução:**
+
+Usamos a Propriedade 2: a soma de todas as probabilidades é 1.
+
+$$ \sum_{x=1}^{4} c \cdot x = c \cdot (1 + 2 + 3 + 4) = c \cdot 10 = 1 $$
+
+$$ c = \frac{1}{10} $$
+
+**Resposta:** $ c = 0,1 $. Portanto, a FP é:
+
+| $ x $ | 1 | 2 | 3 | 4 |
+| --- | --- | --- | --- | --- |
+| $ P(X = x) $ | 0,1 | 0,2 | 0,3 | 0,4 |
+
+**Verificação:** $ 0,1 + 0,2 + 0,3 + 0,4 = 1,0 $ ✅
+
+### 3. Função de Distribuição (FD) — $ F(x) = P(X \leq x) $
+
+A **Função de Distribuição** (também chamada de **Função de Distribuição Acumulada — FDA**) acumula as probabilidades da FP. Ela responde à pergunta: "Qual a probabilidade de $ X $ ser **menor ou igual** a $ x $?"
+
+$$ F(x) = P(X \leq x) = \sum_{t \leq x} P(X = t) $$
+
+**Propriedades da FD:**
+
+| Propriedade | Significado |
+| --- | --- |
+| **1. $ 0 \leq F(x) \leq 1 $** | Probabilidade acumulada sempre entre 0 e 1. |
+| **2. $ F(x) $ é não decrescente** | Se $ a \leq b $, então $ F(a) \leq F(b) $. |
+| **3. $ \lim_{x \to -\infty} F(x) = 0 $** | Antes do menor valor, a probabilidade é zero. |
+| **4. $ \lim_{x \to +\infty} F(x) = 1 $** | Depois do maior valor, a probabilidade é 1. |
+| **5. $ F(x) $ é constante entre os valores possíveis** | Sobe apenas nos pontos onde há probabilidade positiva. |
+| **6. $ F(x) $ é contínua à direita** | $ F(x) = \lim_{t \to x^+} F(t) $. |
+
+**Analogia do dia a dia:**
+
+Imagine que você está numa fila de supermercado. A FP te diz "qual a chance de ter exatamente 3 pessoas na fila?". A FD te diz "qual a chance de ter **até 3** pessoas na fila?" (ou seja, 0, 1, 2 ou 3 pessoas).
+
+**Exemplo 4 — FD a partir da FP (Exemplo 3):**
+
+Usando a FP do Exemplo 3:
+
+| $ x $ | $ P(X = x) $ | $ F(x) = P(X \leq x) $ |
+| --- | --- | --- |
+| 1 | 0,1 | 0,1 |
+| 2 | 0,2 | 0,1 + 0,2 = 0,3 |
+| 3 | 0,3 | 0,3 + 0,3 = 0,6 |
+| 4 | 0,4 | 0,6 + 0,4 = 1,0 |
+
+**Tabela completa:**
+
+| $ x $ | $ F(x) $ |
+| --- | --- |
+| $ x < 1 $ | 0 |
+| $ 1 \leq x < 2 $ | 0,1 |
+| $ 2 \leq x < 3 $ | 0,3 |
+| $ 3 \leq x < 4 $ | 0,6 |
+| $ x \geq 4 $ | 1,0 |
+
+**Verificação das propriedades:**
+- $ F(2) = 0,3 $, $ F(3) = 0,6 $ → não decrescente ✅
+- $ \lim_{x \to -\infty} F(x) = 0 $ ✅
+- $ \lim_{x \to +\infty} F(x) = 1 $ ✅
+
+**Exemplo 5 — Cálculo de probabilidades com a FD:**
+
+Usando a FD do Exemplo 4, calcule:
+
+a) $ P(X \leq 2) $
+b) $ P(X = 3) $
+c) $ P(2 < X \leq 4) $
+
+**Resolução:**
+
+a) $ P(X \leq 2) = F(2) = 0,3 $
+
+b) $ P(X = 3) = F(3) - F(3^-) = 0,6 - 0,3 = 0,3 $
+
+c) $ P(2 < X \leq 4) = F(4) - F(2) = 1,0 - 0,3 = 0,7 $
+
+### 4. Valor Esperado (Média) — $ E[X] $
+
+O **Valor Esperado** (ou esperança) é a **média ponderada** dos valores possíveis, onde os pesos são as probabilidades. É o "centro de massa" da distribuição.
+
+$$ E[X] = \sum_{x} x \cdot P(X = x) $$
+
+**Analogia do dia a dia:**
+
+Imagine que você joga um jogo onde você pode ganhar R$ 10 com probabilidade 0,6 e R$ 0 com probabilidade 0,4. O valor esperado é o que você espera ganhar **em média** por jogo, se jogar muitas vezes.
+
+**Cálculo:** $ E[X] = 10 \cdot 0,6 + 0 \cdot 0,4 = 6 $ reais por jogo.
+
+**Exemplo 6 — Valor Esperado (Exemplo 3):**
+
+Usando a FP do Exemplo 3:
+
+| $ x $ | 1 | 2 | 3 | 4 |
+| --- | --- | --- | --- | --- |
+| $ P(X = x) $ | 0,1 | 0,2 | 0,3 | 0,4 |
+
+Calcule $ E[X] $.
+
+**Resolução:**
+$$ E[X] = 1 \cdot 0,1 + 2 \cdot 0,2 + 3 \cdot 0,3 + 4 \cdot 0,4 $$
+$$ E[X] = 0,1 + 0,4 + 0,9 + 1,6 = 3,0 $$
+
+**Interpretação:** Se repetíssemos o experimento muitas vezes, a média dos valores observados seria 3,0.
+
+**Exemplo 7 — Valor Esperado de uma função:**
+
+Usando a mesma FP, calcule $ E[2X + 1] $.
+
+**Resolução:**
+$$ E[2X + 1] = \sum (2x + 1) \cdot P(X = x) $$
+$$ = (2 \cdot 1 + 1) \cdot 0,1 + (2 \cdot 2 + 1) \cdot 0,2 + (2 \cdot 3 + 1) \cdot 0,3 + (2 \cdot 4 + 1) \cdot 0,4 $$
+$$ = 3 \cdot 0,1 + 5 \cdot 0,2 + 7 \cdot 0,3 + 9 \cdot 0,4 = 0,3 + 1,0 + 2,1 + 3,6 = 7,0 $$
+
+**Alternativa (usando linearidade):** $ E[2X + 1] = 2E[X] + 1 = 2 \cdot 3 + 1 = 7 $ ✅
+
+### 5. Variância — $ Var(X) $
+
+A **Variância** mede o **quanto os valores da variável aleatória se dispersam** em torno da média. Quanto maior a variância, mais "espalhados" estão os valores.
+
+$$ Var(X) = E[(X - \mu)^2] = \sum_{x} (x - \mu)^2 \cdot P(X = x) $$
+
+**Fórmula alternativa (mais fácil para cálculos):**
+$$ Var(X) = E[X^2] - (E[X])^2 $$
+
+onde:
+$$ E[X^2] = \sum_{x} x^2 \cdot P(X = x) $$
+
+**Desvio Padrão:**
+$$ \sigma = \sqrt{Var(X)} $$
+
+**Analogia do dia a dia:**
+
+Imagine dois jogos:
+
+- **Jogo A:** Você ganha exatamente R$ 5 sempre. (Variância = 0, sem dispersão).
+- **Jogo B:** Você ganha R$ 0 com probabilidade 0,5 e R$ 10 com probabilidade 0,5. (Variância alta, grande dispersão).
+
+Mesmo que o valor esperado de ambos seja R$ 5, o Jogo B é muito mais arriscado!
+
+**Exemplo 8 — Variância (Exemplo 3):**
+
+Usando a FP do Exemplo 3:
+
+| $ x $ | 1 | 2 | 3 | 4 |
+| --- | --- | --- | --- | --- |
+| $ P(X = x) $ | 0,1 | 0,2 | 0,3 | 0,4 |
+
+Calcule $ Var(X) $.
+
+**Resolução:**
+
+**Passo 1 — $ E[X] = 3,0 $ (calculado no Exemplo 6)**
+$$ [E[X]]^2 = 9,0 $$
+
+**Passo 2 — Calcular $ E[X^2] $:**
+$$ E[X^2] = 1^2 \cdot 0,1 + 2^2 \cdot 0,2 + 3^2 \cdot 0,3 + 4^2 \cdot 0,4 $$
+$$ E[X^2] = 1 \cdot 0,1 + 4 \cdot 0,2 + 9 \cdot 0,3 + 16 \cdot 0,4 $$
+$$ E[X^2] = 0,1 + 0,8 + 2,7 + 6,4 = 10,0 $$
+
+**Passo 3 — Calcular $ Var(X) $:**
+$$ Var(X) = E[X^2] - [E[X]]^2 = 10,0 - 9,0 = 1,0 $$
+
+**Desvio Padrão:** $ \sigma = \sqrt{1,0} = 1,0 $
+
+**Interpretação:** Os valores de $ X $ estão, em média, a 1 unidade de distância da média 3,0.
+
+### 6. Comparação com Variáveis Contínuas
+
+| Característica | **Discreta** | **Contínua** |
+| --- | --- | --- |
+| **Valores** | Contáveis (0, 1, 2, ...) | Intervalo contínuo |
+| **Probabilidade de valor exato** | $ P(X = x) $ **pode ser > 0** | $ P(X = x) = 0 $ |
+| **Função principal** | **Função de Probabilidade (FP)** $ p(x) $ | **Função Densidade (fdp)** $ f(x) $ |
+| **Cálculo de probabilidade** | **Soma:** $ \sum p(x) $ | **Integral:** $ \int f(x) dx $ |
+| **FDA** | $ F(x) = \sum_{t \leq x} p(t) $ (escada) | $ F(x) = \int_{-\infty}^{x} f(t) dt $ (curva) |
+| **Valor Esperado** | $ E[X] = \sum x \cdot p(x) $ | $ E[X] = \int x \cdot f(x) dx $ |
+| **Variância** | $ Var(X) = \sum (x-\mu)^2 p(x) $ | $ Var(X) = \int (x-\mu)^2 f(x) dx $ |
+
+### 7. Resumo — Variável Aleatória Discreta
+
+| Conceito | Fórmula |
+| --- | --- |
+| **Função de Probabilidade** | $ p(x) = P(X = x) $, com $ \sum p(x) = 1 $ |
+| **Função de Distribuição** | $ F(x) = P(X \leq x) = \sum_{t \leq x} p(t) $ |
+| **Recuperar FP da FD** | $ P(X = x) = F(x) - F(x^-) $ |
+| **Valor Esperado** | $ E[X] = \sum x \cdot p(x) $ |
+| **Valor Esperado de $ g(X) $** | $ E[g(X)] = \sum g(x) \cdot p(x) $ |
+| **Variância** | $ Var(X) = \sum (x - \mu)^2 \cdot p(x) = E[X^2] - [E[X]]^2 $ |
+| **Desvio Padrão** | $ \sigma = \sqrt{Var(X)} $ |
+
+## 📝 EXERCÍCIOS RESOLVIDOS
+
+<details>
+<summary>📗 Exercício 1 — Verificação de FP</summary>
+
+**Enunciado:** A função abaixo é uma FP válida?
+
+| $ x $ | -1 | 0 | 1 | 2 |
+| --- | --- | --- | --- | --- |
+| $ P(X = x) $ | 0,15 | 0,25 | 0,35 | 0,25 |
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**Passo 1 — Verificar Propriedade 1:**
+- Todos os valores estão entre 0 e 1 ✅
+
+**Passo 2 — Verificar Propriedade 2:**
+- Soma = $ 0,15 + 0,25 + 0,35 + 0,25 = 1,00 $ ✅
+
+**Conclusão:** É uma FP válida.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — FD</summary>
+
+**Enunciado:** Usando a FP do Exercício 1, construa a FD $ F(x) $ e calcule:
+
+a) $ P(X \leq 0) $
+b) $ P(X = 1) $
+c) $ P(-1 < X \leq 2) $
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**Passo 1 — Construir a FD:**
+
+| $ x $ | $ F(x) $ |
+| --- | --- |
+| $ x < -1 $ | 0 |
+| $ -1 \leq x < 0 $ | 0,15 |
+| $ 0 \leq x < 1 $ | 0,15 + 0,25 = 0,40 |
+| $ 1 \leq x < 2 $ | 0,40 + 0,35 = 0,75 |
+| $ x \geq 2 $ | 0,75 + 0,25 = 1,00 |
+
+**a) $ P(X \leq 0) = F(0) = 0,40 $**
+
+**b) $ P(X = 1) = F(1) - F(1^-) = 0,75 - 0,40 = 0,35 $**
+
+**c) $ P(-1 < X \leq 2) = F(2) - F(-1) = 1,00 - 0,15 = 0,85 $**
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Valor Esperado e Variância</summary>
+
+**Enunciado:** Usando la FP del Ejercicio 1, calcule:
+
+a) $ E[X] $
+b) $ E[X^2] $
+c) $ Var(X) $
+d) $ E[3X - 2] $
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**a) $ E[X] $:**
+$$ E[X] = (-1) \cdot 0,15 + 0 \cdot 0,25 + 1 \cdot 0,35 + 2 \cdot 0,25 $$
+$$ E[X] = -0,15 + 0 + 0,35 + 0,50 = 0,70 $$
+
+**b) $ E[X^2] $:**
+$$ E[X^2] = (-1)^2 \cdot 0,15 + 0^2 \cdot 0,25 + 1^2 \cdot 0,35 + 2^2 \cdot 0,25 $$
+$$ E[X^2] = 0,15 + 0 + 0,35 + 1,00 = 1,50 $$
+
+**c) $ Var(X) $:**
+$$ Var(X) = E[X^2] - [E[X]]^2 = 1,50 - (0,70)^2 = 1,50 - 0,49 = 1,01 $$
+
+**d) $ E[3X - 2] $:**
+$$ E[3X - 2] = 3E[X] - 2 = 3(0,70) - 2 = 2,10 - 2 = 0,10 $$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Função de Probabilidade com Parâmetro</summary>
+
+**Enunciado:** A função de probabilidade de $ X $ é:
+
+$$ P(X = x) = c \cdot x^2, \quad x = 1, 2, 3 $$
+
+a) Encontre $ c $.
+b) Calcule $ P(X \leq 2) $.
+c) Calcule $ E[X] $.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**a) Encontrar $ c $:**
+$$ \sum_{x=1}^{3} c \cdot x^2 = c \cdot (1^2 + 2^2 + 3^2) = c \cdot (1 + 4 + 9) = c \cdot 14 = 1 $$
+$$ c = \frac{1}{14} $$
+
+**Tabela:**
+
+| $ x $ | 1 | 2 | 3 |
+| --- | --- | --- | --- |
+| $ P(X = x) $ | 1/14 | 4/14 | 9/14 |
+
+**b) $ P(X \leq 2) $:**
+$$ P(X \leq 2) = P(X=1) + P(X=2) = \frac{1}{14} + \frac{4}{14} = \frac{5}{14} $$
+
+**c) $ E[X] $:**
+$$ E[X] = 1 \cdot \frac{1}{14} + 2 \cdot \frac{4}{14} + 3 \cdot \frac{9}{14} = \frac{1 + 8 + 27}{14} = \frac{36}{14} = \frac{18}{7} \approx 2,57 $$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Jogo de Azar</summary>
+
+**Enunciado:** Um jogo de azar tem a seguinte regra:
+
+- Você paga R$ 5 para jogar.
+- Você ganha R$ 20 se tirar um 6 em um dado honesto.
+- Você ganha R$ 10 se tirar um número par (2, 4, ou 6 — mas 6 já foi contado).
+
+Calcule o valor esperado do ganho líquido e decida se o jogo é justo.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**Passo 1 — Definir $ X $ = ganho líquido:**
+
+| Resultado | Prêmio | Ganho Líquido $ x $ | Probabilidade |
+| --- | --- | --- | --- |
+| 6 | R$ 20 | R$ 15 | 1/6 |
+| 2 ou 4 | R$ 10 | R$ 5 | 2/6 = 1/3 |
+| 1, 3 ou 5 | R$ 0 | - R$ 5 | 3/6 = 1/2 |
+
+**Passo 2 — Calcular $ E[X] $:**
+$$ E[X] = 15 \cdot \frac{1}{6} + 5 \cdot \frac{2}{6} + (-5) \cdot \frac{3}{6} $$
+$$ E[X] = \frac{15}{6} + \frac{10}{6} - \frac{15}{6} = \frac{10}{6} = \frac{5}{3} \approx 1,67 $$
+
+**Interpretação:** Em média, você ganha R$ 1,67 por jogada (lucro). Portanto, o jogo é **favorável ao jogador**!
+
+</details>
+</details>
+
+## 🎯 DESAFIO FINAL (Nível Pesquisa)
+
+**Enunciado:** Uma variável aleatória discreta $ X $ tem função de probabilidade:
+
+$$ P(X = k) = \binom{4}{k} \left( \frac{1}{2} \right)^4, \quad k = 0, 1, 2, 3, 4 $$
+
+a) Verifique que é uma FP válida (propriedades).
+b) Construa a FD $ F(x) $.
+c) Calcule $ P(X \leq 2) $.
+d) Calcule $ E[X] $.
+e) Calcule $ Var(X) $.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**a) Verificação:**
+- $ \sum_{k=0}^{4} \binom{4}{k} \left( \frac{1}{2} \right)^4 = \left( \frac{1}{2} \right)^4 \cdot 2^4 = 1 $ ✅
+- Todos os valores estão entre 0 e 1 ✅
+
+**b) FD:**
+
+| $ x $ | $ F(x) $ |
+| --- | --- |
+| $ x < 0 $ | 0 |
+| $ 0 \leq x < 1 $ | 1/16 |
+| $ 1 \leq x < 2 $ | 1/16 + 4/16 = 5/16 |
+| $ 2 \leq x < 3 $ | 5/16 + 6/16 = 11/16 |
+| $ 3 \leq x < 4 $ | 11/16 + 4/16 = 15/16 |
+| $ x \geq 4 $ | 15/16 + 1/16 = 1 |
+
+**c) $ P(X \leq 2) = F(2) = 11/16 $**
+
+**d) $ E[X] = \sum_{k=0}^{4} k \cdot \binom{4}{k} \left( \frac{1}{2} \right)^4 $**
+$$ E[X] = \frac{1}{16} (0 + 4 + 12 + 12 + 4) = \frac{32}{16} = 2 $$
+
+**e) $ E[X^2] = \frac{1}{16} (0 + 4 + 24 + 36 + 16) = \frac{80}{16} = 5 $**
+$$ Var(X) = 5 - 2^2 = 1 $$
+
+</details>
+
+> *As distribuições discretas são a base para modelar contagens e sucessos na ciência, engenharia e negócios. Entender a FP, a FD, o valor esperado e a variância é essencial para qualquer aplicação prática.*

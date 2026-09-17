@@ -1,0 +1,420 @@
+# ENDEREÇAMENTO POR REGISTRO
+
+## 1. INTRODUÇÃO
+
+Nas últimas três aulas, estudamos os modos de endereçamento que envolvem a memória: o direto (endereço fixo na instrução) e o indireto (endereço em um registrador). Vimos que acessar a memória é uma operação relativamente lenta — leva dezenas de nanossegundos.<br><br>
+
+Mas e se os dados já estiverem nos registradores? Os registradores são a memória mais rápida do computador — estão dentro da CPU e são acessados em cerca de 1 nanossegundo. Quando ambos os operandos de uma operação estão em registradores, a CPU pode executar a operação na velocidade máxima, sem precisar esperar pela memória.<br><br>
+
+É aí que entra o **endereçamento por registro**. Neste modo, todos os operandos estão em registradores. A CPU simplesmente lê os valores dos registradores, executa a operação e armazena o resultado em um registrador. Não há acesso à memória — apenas operações entre registradores.<br><br>
+
+Imagine que você está cozinhando e todos os ingredientes já estão sobre a mesa, ao alcance da mão. Você não precisa ir à geladeira ou à despensa — tudo está disponível imediatamente. É exatamente isso que o endereçamento por registro faz: mantém os dados nos registradores, onde são acessados na velocidade máxima.<br><br>
+
+Nesta aula, vamos estudar o endereçamento por registro: o que é, como funciona, quais operações usam esse modo, e por que é o modo mais rápido de todos.
+
+## 2. O QUE É ENDEREÇAMENTO POR REGISTRO?
+
+### 2.1 Definição
+
+> "Endereçamento por registro é um modo onde todos os operandos de uma instrução estão em registradores da CPU. A operação é executada inteiramente dentro da CPU, sem acesso à memória."
+
+### 2.2 Características principais
+
+| Característica | Descrição |
+|---------|----------|
+| **Onde estão os dados** | Em registradores da CPU |
+| **Acesso à memória** | Não — operação apenas entre registradores |
+| **Velocidade** | A mais rápida (1-2 nanossegundos) |
+| **Uso** | Operações aritméticas, lógicas e de deslocamento |
+| **Limitação** | Número limitado de registradores |
+
+### 2.3 Analogia
+
+O endereçamento por registro é como um **chef que tem todos os ingredientes já preparados em tigelas sobre a bancada**. Ele não precisa ir à geladeira ou à despensa — tudo está à mão. Ele pode misturar, temperar e cozinhar na velocidade máxima, sem interrupções.
+
+## 3. COMO FUNCIONA O ENDEREÇAMENTO POR REGISTRO?
+
+### 3.1 Estrutura da instrução
+
+Uma instrução com endereçamento por registro contém:
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+[CÓDIGO DA OPERAÇÃO] [REGISTRADOR DESTINO] [REGISTRADOR FONTE 1] [REGISTRADOR FONTE 2]
+</pre>
+
+**Exemplo (ARM):** `ADD R1, R2, R3`
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+ADD    R1,    R2,    R3
+Opcode Destino Fonte1 Fonte2
+</pre>
+
+### 3.2 Como a CPU executa
+
+1. A CPU busca a instrução da memória.
+2. A CPU decodifica a instrução.
+3. A CPU lê os valores dos registradores R2 e R3.
+4. A CPU executa a operação (soma).
+5. A CPU armazena o resultado no registrador R1.
+6. **Não há acesso à memória em nenhum momento.**
+
+### 3.3 Diagrama: Endereçamento por Registro
+
+<details>
+<summary> **Fluxo do endereçamento por registro**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+┌─────────────────────────────────────────────────────────────┐
+│                                                             │
+│   Instrução na memória:                                     │
+│   ┌─────────────────────────────────────────────────────┐  │
+│   │  ADD  │  R1  │  R2  │  R3  │                       │  │
+│   └─────────────────────────────────────────────────────┘  │
+│                          │                                  │
+│                          ▼                                  │
+│   ┌─────────────────────────────────────────────────────┐  │
+│   │  A CPU lê R2 e R3                                  │  │
+│   │  R2 = 5                                            │  │
+│   │  R3 = 10                                           │  │
+│   │                                                      │  │
+│   │  A CPU soma: 5 + 10 = 15                          │  │
+│   │                                                      │  │
+│   │  A CPU armazena o resultado em R1                  │  │
+│   │  R1 = 15                                           │  │
+│   │                                                      │  │
+│   │  SEM ACESSO À MEMÓRIA!                              │  │
+│   └─────────────────────────────────────────────────────┘  │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+    </pre>
+</details>
+
+### 3.4 Exemplo prático
+
+**Instrução:** `ADD R1, R2, R3`
+
+**Antes:** R2 = 5, R3 = 10
+**Depois:** R1 = 15
+
+A CPU somou os valores dos registradores sem acessar a memória.
+
+## 4. TIPOS DE INSTRUÇÕES COM ENDEREÇAMENTO POR REGISTRO
+
+### 4.1 Instruções aritméticas
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+ADD R1, R2, R3    ; R1 = R2 + R3
+SUB R4, R5, R6    ; R4 = R5 - R6
+MUL R7, R8, R9    ; R7 = R8 × R9
+DIV R10, R11, R12 ; R10 = R11 ÷ R12
+</pre>
+
+### 4.2 Instruções lógicas
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+AND R1, R2, R3    ; R1 = R2 & R3
+OR R4, R5, R6     ; R4 = R5 | R6
+XOR R7, R8, R9    ; R7 = R8 ^ R9
+</pre>
+
+### 4.3 Instruções de deslocamento
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+LSL R1, R2, R3    ; R1 = R2 << R3 (desloca R2 por R3 posições)
+LSR R4, R5, R6    ; R4 = R5 >> R6
+</pre>
+
+### 4.4 Instruções de comparação
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+CMP R1, R2        ; Compara R1 e R2 (atualiza flags)
+CMN R3, R4        ; Compara R3 e -R4
+</pre>
+
+### 4.5 Instruções de movimento
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+MOV R1, R2        ; R1 = R2 (copia R2 para R1)
+MVN R3, R4        ; R3 = ~R4 (inverte R4 e coloca em R3)
+</pre>
+
+## 5. POR QUE O ENDEREÇAMENTO POR REGISTRO É TÃO RÁPIDO?
+
+### 5.1 Comparação de velocidades
+
+| Tipo de acesso | Tempo aproximado | Comparação |
+|---------|---------|---------|
+| **Registrador** | 1 ns | 1x |
+| **Cache L1** | 1-2 ns | 1-2x |
+| **Cache L2** | 5-10 ns | 5-10x |
+| **Cache L3** | 10-20 ns | 10-20x |
+| **RAM (DRAM)** | 50-100 ns | 50-100x |
+
+### 5.2 Por que registradores são mais rápidos?
+
+1. **Proximidade:** Registradores estão dentro da CPU.
+2. **Sem barramento:** Não precisam atravessar o barramento de dados.
+3. **Sem controlador de memória:** Não precisam passar pelo controlador de memória.
+4. **Sem refresh:** Não precisam ser atualizados (como DRAM).
+5. **Circuito direto:** O caminho do sinal é curto e direto.
+
+### 5.3 O impacto no desempenho
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+Operação com endereçamento por registro:
+ADD R1, R2, R3
+Tempo: ~1 ns
+
+Operação com endereçamento direto:
+LDR R1, [0x1000]
+ADD R1, R1, #1
+STR R1, [0x1000]
+Tempo: ~100 ns + 1 ns + 100 ns = ~201 ns
+</pre>
+
+**Conclusão:** Operações com registradores são cerca de **100 vezes mais rápidas** que operações com memória.
+
+## 6. A ARQUITETURA LOAD/STORE
+
+### 6.1 O que é uma arquitetura Load/Store?
+
+A arquitetura **Load/Store** (ou RISC) é um design onde:
+
+- **Todas as operações aritméticas e lógicas** usam apenas registradores.
+- **Load e Store** são as únicas instruções que acessam a memória.
+
+### 6.2 Por que isso é importante?
+
+1. **Simplicidade:** Instruções são mais curtas e rápidas.
+2. **Previsibilidade:** O tempo de execução é mais previsível.
+3. **Pipeline:** Facilita o pipeline da CPU.
+4. **Otimização:** Compiladores podem otimizar melhor o uso de registradores.
+
+### 6.3 Exemplo: ARM é Load/Store
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+; ARM (Load/Store) — correto
+LDR R1, [R2]       ; Load da memória
+ADD R3, R1, R4     ; Operação com registradores
+STR R3, [R5]       ; Store na memória
+
+; ARM — INCORRETO (não existe)
+ADD R1, [R2], R4   ; Não pode misturar memória com registradores
+</pre>
+
+### 6.4 x86 não é puramente Load/Store
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+; x86 — permite misturar memória e registradores
+ADD EAX, [EBX]     ; Soma EAX com o valor da memória apontada por EBX
+</pre>
+
+## 7. VANTAGENS DO ENDEREÇAMENTO POR REGISTRO
+
+### 7.1 Velocidade máxima
+
+Operações entre registradores são as mais rápidas possíveis.
+
+### 7.2 Simplicidade
+
+Instruções são curtas e diretas, sem endereços complexos.
+
+### 7.3 Pipeline eficiente
+
+A CPU pode executar várias instruções em paralelo quando todas usam registradores.
+
+### 7.4 Compiladores otimizam
+
+Compiladores modernos tentam manter o máximo de dados possível em registradores.
+
+## 8. LIMITAÇÕES DO ENDEREÇAMENTO POR REGISTRO
+
+### 8.1 Número limitado de registradores
+
+| Arquitetura | Número de registradores |
+|---------|----------|
+| **ARM (32 bits)** | 16 registradores (R0-R15) |
+| **x86 (32 bits)** | 8 registradores (EAX, EBX, ECX, EDX, ESI, EDI, EBP, ESP) |
+| **x86 (64 bits)** | 16 registradores (RAX, RBX, RCX, RDX, RSI, RDI, RBP, RSP, R8-R15) |
+| **MIPS** | 32 registradores ($0-$31) |
+
+### 8.2 Registradores são escassos
+
+Programas complexos precisam de mais dados do que registradores disponíveis. O compilador precisa "derramar" dados para a memória (spilling).
+
+### 8.3 Custo de spilling
+
+Quando não há registradores suficientes, o compilador precisa:
+1. Armazenar dados na memória (STR).
+2. Liberar registradores.
+3. Carregar novos dados (LDR).
+4. Isso custa tempo e performance.
+
+## 9. APLICAÇÕES REAIS
+
+| Aplicação | Como usa endereçamento por registro |
+|---------|----------|
+| **Laços de repetição** | Contadores e acumuladores em registradores |
+| **Cálculos matemáticos** | Operações aritméticas em registradores |
+| **Manipulação de bits** | Operações lógicas em registradores |
+| **Condicionais** | Comparações em registradores |
+| **Compiladores** | Alocam variáveis locais em registradores |
+| **Jogos** | Física e cálculos em registradores |
+
+**Exemplo prático:** Um loop que soma 1000 números de um array:
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+MOV R1, #0        ; Soma em R1 (registrador)
+MOV R2, #0        ; Contador em R2 (registrador)
+LDR R3, =0x1000   ; Base do array em R3 (registrador)
+
+loop:
+LDR R4, [R3], #4  ; Carrega próximo elemento (endereço em registrador)
+ADD R1, R1, R4    ; Soma em registrador (endereçamento por registro)
+ADD R2, R2, #1    ; Incrementa contador (imediato)
+CMP R2, #1000     ; Comparação (imediato)
+BNE loop          ; Desvio condicional
+</pre>
+
+A maioria das operações do loop usa registradores — apenas LDR acessa a memória.
+
+## 10. EXERCÍCIOS
+
+<details>
+<summary>📗 Exercício 1 — O que é endereçamento por registro? (Fácil)</summary>
+
+**Enunciado:** Defina o que é endereçamento por registro em Assembly.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Endereçamento por registro é um modo onde todos os operandos de uma instrução estão em registradores da CPU. A operação é executada inteiramente dentro da CPU, sem acesso à memória.
+
+**Explicação:** É o modo mais rápido porque não há acesso à memória — apenas registradores.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Identificar endereçamento por registro (Fácil)</summary>
+
+**Enunciado:** Quais das seguintes instruções usam endereçamento por registro?
+1. `ADD R1, R2, R3`
+2. `ADD R1, R2, #5`
+3. `LDR R1, [R2]`
+4. `LDR R1, [0x1000]`
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** A instrução 1 usa endereçamento por registro.
+
+**Explicação:**
+1. `ADD R1, R2, R3` → Endereçamento por registro (todos os operandos são registradores)
+2. `ADD R1, R2, #5` → Endereçamento imediato (constante 5)
+3. `LDR R1, [R2]` → Endereçamento indireto (acesso à memória)
+4. `LDR R1, [0x1000]` → Endereçamento direto (acesso à memória)
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Valor de R1 (Fácil)</summary>
+
+**Enunciado:** Se R2 = 7 e R3 = 13, qual será o valor de R1 após `ADD R1, R2, R3`?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** R1 = 20
+
+**Explicação:** R1 = R2 + R3 = 7 + 13 = 20. Todos os operandos estão em registradores.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Sequência com registradores (Médio)</summary>
+
+**Enunciado:** Dado R2 = 10, R3 = 5, R4 = 2, qual será o valor de R1 após: `MUL R1, R2, R3` seguido de `SUB R1, R1, R4`?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** R1 = 48
+
+**Explicação:**
+1. `MUL R1, R2, R3` → R1 = 10 × 5 = 50
+2. `SUB R1, R1, R4` → R1 = 50 - 2 = 48
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Arquitetura Load/Store (Médio)</summary>
+
+**Enunciado:** O que é uma arquitetura Load/Store e por que ela é importante?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Arquitetura Load/Store é um design onde todas as operações aritméticas e lógicas usam apenas registradores, e Load e Store são as únicas instruções que acessam a memória.
+
+**Importância:**
+1. Instruções mais simples e rápidas.
+2. Pipeline mais eficiente.
+3. Compiladores podem otimizar melhor.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Trocar valores entre registradores (Médio)</summary>
+
+**Enunciado:** Escreva uma sequência de instruções Assembly para trocar os valores de R1 e R2 usando um registrador temporário.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+MOV R3, R1        ; R3 = R1 (guarda R1)
+MOV R1, R2        ; R1 = R2
+MOV R2, R3        ; R2 = R3 (valor original de R1)
+</pre>
+**Explicação:** Usa R3 como temporário para não perder nenhum valor.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — Expressão com registradores (Difícil)</summary>
+
+**Enunciado:** Escreva uma sequência de instruções Assembly para calcular: `R1 = (R2 + R3) × (R4 - R5)` usando apenas registradores.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+ADD R6, R2, R3    ; R6 = R2 + R3
+SUB R7, R4, R5    ; R7 = R4 - R5
+MUL R1, R6, R7    ; R1 = R6 × R7
+</pre>
+**Explicação:** Usa registradores temporários R6 e R7 para guardar os resultados intermediários.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — Spilling de registradores (Desafio)</summary>
+
+**Enunciado:** Explique o que é "spilling" de registradores e quando ele ocorre.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Spilling é quando o compilador precisa armazenar dados na memória porque não há registradores suficientes disponíveis.
+
+**Quando ocorre:**
+1. Quando uma função tem muitas variáveis locais.
+2. Quando há muitas operações intermediárias.
+3. Quando o número de variáveis ativas excede o número de registradores disponíveis.
+
+**Consequência:** O programa precisa usar instruções LDR e STR para acessar a memória, tornando-o mais lento.
+</details>
+</details>
+
+> O endereçamento por registro é o modo mais rápido de processar dados: todas as operações ocorrem dentro da CPU, entre registradores, sem acesso à memória. É a base da arquitetura Load/Store e o motivo pelo qual registradores são um recurso tão valioso que compiladores fazem de tudo para usá-los da melhor forma possível. O endereçamento por registro é o coração da computação eficiente. Manter os dados em registradores é a chave para o desempenho máximo, e entender por que isso é importante ajuda a compreender como compiladores, processadores e linguagens de programação são projetados para minimizar o acesso à memória.

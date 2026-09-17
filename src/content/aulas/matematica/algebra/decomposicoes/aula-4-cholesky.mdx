@@ -1,0 +1,407 @@
+# DECOMPOSIÇÃO DE CHOLESKY
+
+## 1. Definição
+
+### 1.1 O que é a Decomposição de Cholesky?
+
+A **decomposição de Cholesky** fatora uma matriz **simétrica definida positiva** $A \in \mathbb{R}^{n \times n}$ no produto:
+
+$$
+A = L \cdot L^T
+$$
+
+Onde:
+- $L$ é uma matriz **triangular inferior** (Lower).
+- $L^T$ é a transposta de $L$ (triangular superior).
+
+**Observação:** Esta decomposição é única e é aproximadamente **duas vezes mais eficiente** que a decomposição LU para matrizes simétricas definidas positivas.
+
+### 1.2 O que é uma Matriz Definida Positiva?
+
+Uma matriz simétrica $A \in \mathbb{R}^{n \times n}$ é **definida positiva** se:
+
+$$
+\vec{x}^T A \vec{x} > 0 \quad \text{para todo } \vec{x} \neq \vec{0}
+$$
+
+**Critérios equivalentes:**
+- Todos os **autovalores** são **positivos** ($\lambda_i > 0$).
+- Todos os **menores principais** são positivos.
+- Existe uma matriz $L$ tal que $A = LL^T$.
+
+### 1.3 Por que a Decomposição de Cholesky é Útil?
+
+| Vantagem | Descrição |
+|----------|-----------|
+| **Eficiência** | $O(n^3/3)$ operações (metade da LU $O(2n^3/3)$) |
+| **Estabilidade** | Mais estável que LU para matrizes definidas positivas |
+| **Simplicidade** | Não requer pivotação |
+| **Sistemas lineares** | Resolver $A\vec{x} = \vec{b}$ → $L\vec{y} = \vec{b}$ e $L^T\vec{x} = \vec{y}$ |
+| **Regressão linear** | $X^T X$ é sempre definida positiva (se $X$ tem colunas LI) |
+
+## 2. Cálculo da Decomposição de Cholesky
+
+### 2.1 Algoritmo
+
+Para cada coluna $j$ (de 1 a $n$):
+
+**Passo 1:** Calcular os elementos da diagonal:
+$$
+L_{jj} = \sqrt{a_{jj} - \sum_{k=1}^{j-1} L_{jk}^2}
+$$
+
+**Passo 2:** Para cada linha $i > j$:
+$$
+L_{ij} = \frac{1}{L_{jj}} \left( a_{ij} - \sum_{k=1}^{j-1} L_{ik} L_{jk} \right)
+$$
+
+### 2.2 Exemplo Acadêmico Passo a Passo
+
+Seja:
+$$
+A = \begin{bmatrix} 4 & 2 \\ 2 & 3 \end{bmatrix}
+$$
+
+**Verificação:** $A$ é simétrica e definida positiva? Sim (autovalores $\lambda_1 = 5, \lambda_2 = 2$).
+
+**Passo 1:** Calcular $L_{11}$:
+$$
+L_{11} = \sqrt{a_{11}} = \sqrt{4} = 2
+$$
+
+**Passo 2:** Calcular $L_{21}$:
+$$
+L_{21} = \frac{a_{21}}{L_{11}} = \frac{2}{2} = 1
+$$
+
+**Passo 3:** Calcular $L_{22}$:
+$$
+L_{22} = \sqrt{a_{22} - L_{21}^2} = \sqrt{3 - 1^2} = \sqrt{2}
+$$
+
+**Resultado:**
+$$
+L = \begin{bmatrix} 2 & 0 \\ 1 & \sqrt{2} \end{bmatrix}
+$$
+
+**Verificação:**
+$$
+L L^T = \begin{bmatrix} 2 & 0 \\ 1 & \sqrt{2} \end{bmatrix} \begin{bmatrix} 2 & 1 \\ 0 & \sqrt{2} \end{bmatrix} = \begin{bmatrix} 4 & 2 \\ 2 & 3 \end{bmatrix} = A ✓
+$$
+
+### 2.3 Exemplo 2: Matriz $3 \times 3$
+
+Seja:
+$$
+A = \begin{bmatrix}
+4 & 2 & 2 \\
+2 & 3 & 1 \\
+2 & 1 & 3
+\end{bmatrix}
+$$
+
+**Verificação:** $A$ é simétrica e definida positiva.
+
+**Passo 1:** Calcular $L_{11}$:
+$$
+L_{11} = \sqrt{a_{11}} = \sqrt{4} = 2
+$$
+
+**Passo 2:** Calcular $L_{21}$ e $L_{31}$:
+$$
+L_{21} = \frac{a_{21}}{L_{11}} = \frac{2}{2} = 1
+$$
+$$
+L_{31} = \frac{a_{31}}{L_{11}} = \frac{2}{2} = 1
+$$
+
+**Passo 3:** Calcular $L_{22}$:
+$$
+L_{22} = \sqrt{a_{22} - L_{21}^2} = \sqrt{3 - 1^2} = \sqrt{2}
+$$
+
+**Passo 4:** Calcular $L_{32}$:
+$$
+L_{32} = \frac{a_{32} - L_{31} L_{21}}{L_{22}} = \frac{1 - 1 \cdot 1}{\sqrt{2}} = 0
+$$
+
+**Passo 5:** Calcular $L_{33}$:
+$$
+L_{33} = \sqrt{a_{33} - L_{31}^2 - L_{32}^2} = \sqrt{3 - 1^2 - 0^2} = \sqrt{2}
+$$
+
+**Resultado:**
+$$
+L = \begin{bmatrix}
+2 & 0 & 0 \\
+1 & \sqrt{2} & 0 \\
+1 & 0 & \sqrt{2}
+\end{bmatrix}
+$$
+
+**Verificação:** $L L^T = A$ ✓
+
+## 3. Resolução de Sistemas com Cholesky
+
+### 3.1 Método
+
+Para resolver $A\vec{x} = \vec{b}$ com $A = LL^T$:
+
+**Passo 1:** Resolver $L\vec{y} = \vec{b}$ por **substituição progressiva**.
+**Passo 2:** Resolver $L^T\vec{x} = \vec{y}$ por **substituição regressiva**.
+
+### 3.2 Exemplo
+
+Usando a fatoração do exemplo anterior, resolva:
+$$
+A = \begin{bmatrix} 4 & 2 \\ 2 & 3 \end{bmatrix}, \quad \vec{b} = \begin{bmatrix} 6 \\ 5 \end{bmatrix}
+$$
+
+**Passo 1:** Resolver $L\vec{y} = \vec{b}$:
+$$
+\begin{bmatrix} 2 & 0 \\ 1 & \sqrt{2} \end{bmatrix} \begin{bmatrix} y_1 \\ y_2 \end{bmatrix} = \begin{bmatrix} 6 \\ 5 \end{bmatrix}
+$$
+
+- $2y_1 = 6 \Rightarrow y_1 = 3$
+- $y_1 + \sqrt{2}y_2 = 5 \Rightarrow 3 + \sqrt{2}y_2 = 5 \Rightarrow \sqrt{2}y_2 = 2 \Rightarrow y_2 = \sqrt{2}$
+
+**Passo 2:** Resolver $L^T\vec{x} = \vec{y}$:
+$$
+\begin{bmatrix} 2 & 1 \\ 0 & \sqrt{2} \end{bmatrix} \begin{bmatrix} x_1 \\ x_2 \end{bmatrix} = \begin{bmatrix} 3 \\ \sqrt{2} \end{bmatrix}
+$$
+
+- $\sqrt{2}x_2 = \sqrt{2} \Rightarrow x_2 = 1$
+- $2x_1 + x_2 = 3 \Rightarrow 2x_1 + 1 = 3 \Rightarrow x_1 = 1$
+
+**Solução:** $\vec{x} = \begin{bmatrix} 1 \\ 1 \end{bmatrix}$
+
+**Verificação:** $A\vec{x} = \begin{bmatrix} 4 & 2 \\ 2 & 3 \end{bmatrix} \begin{bmatrix} 1 \\ 1 \end{bmatrix} = \begin{bmatrix} 6 \\ 5 \end{bmatrix} = \vec{b}$ ✓
+
+## 4. Exemplos Lúdicos Aprimorados
+
+### 🍔 EXEMPLO 1 – A LANCHONETE (COVARIÂNCIA DE INGREDIENTES)
+
+A lanchonete tem uma matriz de covariância dos ingredientes:
+$$
+\Sigma = \begin{bmatrix} 4 & 2 \\ 2 & 3 \end{bmatrix}
+$$
+
+**Decomposição de Cholesky:** $\Sigma = LL^T$
+
+**Interpretação:** A decomposição "fatora" a covariância em termos de componentes independentes. $L$ mostra como os ingredientes se relacionam.
+
+**Aplicação:** Simular novos dados de estoque usando $L$.
+
+### 🧃 EXEMPLO 2 – A CANTINA (REGRESSÃO LINEAR ESTÁVEL)
+
+A cantina quer fazer regressão linear e precisa resolver:
+$$
+X^T X \vec{w} = X^T \vec{y}
+$$
+
+Como $X^T X$ é sempre definida positiva (se $X$ tem colunas LI), podemos usar Cholesky para resolver de forma estável e eficiente.
+
+**Vantagem:** Cholesky é mais rápido que LU para este tipo de problema.
+
+## 5. Aplicação na Tese: FL e Matrizes de Covariância
+
+### 5.1 Covariância Local em FL
+
+Em FL, cada cliente pode calcular uma **matriz de covariância local**:
+$$
+\Sigma_i = \frac{1}{n_i} \sum_{k=1}^{n_i} (\vec{x}_k - \vec{\mu}_i)(\vec{x}_k - \vec{\mu}_i)^T
+$$
+
+Como $\Sigma_i$ é simétrica e definida positiva (ou semidefinida positiva), podemos usar Cholesky para:
+- **Gerar dados sintéticos** localmente.
+- **Fazer regressão** local estável.
+- **Calcular distâncias de Mahalanobis** (detecção de outliers).
+
+### 5.2 Agregação de Covariâncias no Servidor
+
+O servidor pode agregar as covariâncias locais:
+$$
+\Sigma_{global} = \frac{1}{N} \sum_{i=1}^{N} \Sigma_i
+$$
+
+A decomposição de Cholesky de $\Sigma_{global}$ permite:
+- **PCA global** para redução de dimensionalidade.
+- **Análise de heterogeneidade** entre clientes.
+
+## 6. Exercícios Propostos (Manuais)
+
+<details>
+<summary>📗 Exercício 1 (Cholesky $2 \times 2$)</summary>
+
+**Enunciado:** Calcule a decomposição de Cholesky de:
+$$
+A = \begin{bmatrix} 9 & 3 \\ 3 & 5 \end{bmatrix}
+$$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+$$
+L = \begin{bmatrix} 3 & 0 \\ 1 & 2 \end{bmatrix}
+$$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 (Cholesky $3 \times 3$)</summary>
+
+**Enunciado:** Calcule a decomposição de Cholesky de:
+$$
+A = \begin{bmatrix}
+4 & 2 & 0 \\
+2 & 5 & 1 \\
+0 & 1 & 3
+\end{bmatrix}
+$$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+$$
+L = \begin{bmatrix}
+2 & 0 & 0 \\
+1 & 2 & 0 \\
+0 & 0.5 & \sqrt{2.75}
+\end{bmatrix}
+$$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 (Resolução com Cholesky)</summary>
+
+**Enunciado:** Usando a fatoração do Exercício 1, resolva $A\vec{x} = \vec{b}$ para:
+$$
+\vec{b} = \begin{bmatrix} 12 \\ 8 \end{bmatrix}
+$$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+$L\vec{y} = \vec{b}$:
+- $3y_1 = 12 \Rightarrow y_1 = 4$
+- $y_1 + 2y_2 = 8 \Rightarrow 4 + 2y_2 = 8 \Rightarrow y_2 = 2$
+
+$L^T\vec{x} = \vec{y}$:
+- $2x_2 = 2 \Rightarrow x_2 = 1$
+- $3x_1 + x_2 = 4 \Rightarrow 3x_1 + 1 = 4 \Rightarrow x_1 = 1$
+
+**Solução:** $\vec{x} = \begin{bmatrix} 1 \\ 1 \end{bmatrix}$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 (Verificação de Definida Positiva)</summary>
+
+**Enunciado:** Verifique se a matriz:
+$$
+A = \begin{bmatrix} 1 & 2 \\ 2 & 1 \end{bmatrix}
+$$
+é definida positiva. Justifique.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+$\det(A) = 1 \cdot 1 - 2 \cdot 2 = 1 - 4 = -3 < 0$ → **não é definida positiva** (tem um autovalor negativo).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 (Aplicação – Covariância)</summary>
+
+**Enunciado:** Uma matriz de covariância é:
+$$
+\Sigma = \begin{bmatrix} 2 & 1 \\ 1 & 2 \end{bmatrix}
+$$
+
+a) $\Sigma$ é simétrica?  
+b) $\Sigma$ é definida positiva?  
+c) Calcule a decomposição de Cholesky de $\Sigma$.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) Sim! $\Sigma = \Sigma^T$.
+
+b) Sim! $\det(\Sigma) = 4 - 1 = 3 > 0$ e $\Sigma_{11} = 2 > 0$ → definida positiva.
+
+c) $L = \begin{bmatrix} \sqrt{2} & 0 \\ \frac{1}{\sqrt{2}} & \sqrt{\frac{3}{2}} \end{bmatrix}$
+
+</details>
+</details>
+
+## 7. EXERCÍCIO COMPUTACIONAL
+
+<details>
+<summary>🐍 Ver código (Python/NumPy)</summary>
+
+```python
+import numpy as np
+from scipy.linalg import cholesky
+
+# Decomposição de Cholesky
+A = np.array([[4, 2, 2], [2, 3, 1], [2, 1, 3]])
+L = cholesky(A, lower=True)
+
+print("L:\n", L)
+
+# Verificação: L @ L.T = A
+print("L @ L.T:\n", L @ L.T)
+print("A:\n", A)
+
+# Resolver sistema com Cholesky
+b = np.array([8, 6, 6])
+
+# Método 1: usando L
+y = np.linalg.solve(L, b)
+x = np.linalg.solve(L.T, y)
+print("Solução:", x)
+
+# Método 2: usando scipy (mais direto)
+x2 = np.linalg.solve(A, b)
+print("Solução (verificação):", x2)
+```
+
+</details>
+
+<details>
+<summary>📝 Ver código (R)</summary>
+
+```r
+# Decomposição de Cholesky
+A <- matrix(c(4, 2, 2, 2, 3, 1, 2, 1, 3), nrow=3)
+L <- chol(A)  # Retorna a triangular superior
+
+print(L)
+
+# Verificação: t(L) %*% L = A
+print(t(L) %*% L)
+
+# Resolver sistema
+b <- c(8, 6, 6)
+x <- solve(A, b)
+print(x)
+```
+
+</details>
+
+> *A decomposição de Cholesky é a mais eficiente para matrizes simétricas definidas positivas. Ela é usada em regressão linear (equações normais), simulação de dados (geração de variáveis correlacionadas) e análise de covariância. Em FL, ela é especialmente útil para decompor matrizes de covariância locais e para resolver sistemas lineares de forma rápida e estável.*

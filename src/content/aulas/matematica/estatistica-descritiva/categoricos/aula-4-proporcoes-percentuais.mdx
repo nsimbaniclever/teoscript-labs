@@ -1,0 +1,705 @@
+# Proporções e Percentuais
+
+## 1. INTRODUÇÃO
+
+&emsp;&emsp;&emsp;Na aula anterior estudámos as **frequências marginais e conjuntas** — vimos que as frequências absolutas (números brutos) nos dizem **quantas** observações existem em cada categoria, mas não nos dizem **qual é a importância relativa** dessas categorias.<br>
+
+&emsp;&emsp;&emsp;Considera o seguinte problema prático:
+
+**Dois investigadores compararam as preferências de dois grupos:**
+
+**Grupo 1 (100 pessoas):**
+| | Produto A | Produto B |
+|---------|---------|---------|
+| Homens | 30 | 20 |
+| Mulheres | 25 | 25 |
+
+
+**Grupo 2 (1000 pessoas):**
+| | Produto A | Produto B |
+|---------|---------|---------|
+| Homens | 300 | 200 |
+| Mulheres | 250 | 250 |
+
+**Pergunta:** Em qual grupo os homens preferem mais o Produto A?
+
+&emsp;&emsp;&emsp;À primeira vista, parece que no **Grupo 2** os homens preferem mais o Produto A (300 vs. 30). Mas isto é **enganador**! O Grupo 2 tem **10 vezes mais pessoas** que o Grupo 1. As frequências absolutas **não são comparáveis** entre grupos de tamanhos diferentes.<br>
+
+&emsp;&emsp;&emsp;Para comparar **justamente**, precisamos de **proporções** ou **percentagens** — medidas relativas que eliminam o efeito do tamanho da amostra.
+
+**📌 Cálculo das percentagens:**
+
+**Grupo 1:**
+- Homens que preferem A: 30/50 = 60%
+- Mulheres que preferem A: 25/50 = 50%
+
+**Grupo 2:**
+- Homens que preferem A: 300/500 = 60%
+- Mulheres que preferem A: 250/500 = 50%
+
+&emsp;&emsp;&emsp;Agora vemos que **as percentagens são idênticas**! A preferência relativa é a mesma nos dois grupos. As frequências absolutas escondiam esta verdade.<br>
+
+&emsp;&emsp;&emsp;É precisamente aqui que entram as **proporções** e **percentagens** — as medidas que permitem **comparações justas** entre categorias e entre grupos.
+
+<details>
+<summary>📊 Ver a família das medidas relativas</summary>
+<style>
+.r{font:14px system-ui;text-align:center}
+.r b{display:inline-block;padding:4px 10px;background:#333;color:#fff;border-radius:6px}
+.r i{display:block;width:2px;height:18px;background:#333;margin:0 auto}
+.r em{display:flex;gap:8px;justify-content:center;position:relative;padding-top:18px}
+.r em::before{content:'';position:absolute;top:0;left:25%;right:25%;height:2px;background:#333}
+.r em span{flex:1;padding:8px;border:2px solid #333;border-radius:8px;max-width:140px}
+.r em span::before{content:'';position:absolute;top:-18px;left:50%;width:2px;height:18px;background:#333}
+.r em span{position:relative}
+</style>
+<div class="r">
+  <b>Medidas Relativas</b>
+  <i></i>
+  <em>
+    <span>Proporção<br>(0 a 1)</span>
+    <span>Percentagem<br>(0 a 100%)</span>
+    <span>Razão<br>(odds)</span>
+  </em>
+</div>
+</details>
+
+> **💡 Dica de Ouro:** As frequências absolutas dizem-te **quantos**. As proporções dizem-te **que fração do total**. As percentagens dizem-te **que fração em 100**. Para comparar grupos diferentes, usa sempre medidas relativas.
+
+**📌 Nota sobre dados agrupados:**
+
+As proporções e percentagens são calculadas a partir de **tabelas de contingência**. Podem ser obtidas a partir de:
+
+| Forma | O que tens | Exemplo |
+|---------|---------|---------|
+| **Dados brutos** | Lista de pares de categorias | (Masculino, A), (Feminino, B)... |
+| **Tabela de frequências dupla** | Cruzamento de duas categóricas | Género vs. Preferência |
+| **Tabela de contingência** | Tabela de dupla entrada | Linhas × Colunas |
+
+## 2. O QUE SÃO PROPORÇÕES?
+
+&emsp;&emsp;&emsp;Uma **proporção** é uma medida relativa que expressa a **fração** de observações numa categoria em relação ao total. É um número entre **0 e 1**.
+
+**📌 Definição formal:**
+
+> A proporção de uma categoria é o **quociente** entre a frequência dessa categoria e o **total** de observações.
+
+**📐 Fórmula:**
+
+$$
+\color{blue} p = \frac{f}{n}
+$$
+
+Onde:
+- **f** = frequência da categoria
+- **n** = total de observações
+- **p** = proporção (entre 0 e 1)
+
+**📌 Propriedades:**
+
+| Propriedade | Descrição |
+|---------|----------|
+| **Intervalo** | 0 ≤ p ≤ 1 |
+| **Soma** | A soma das proporções de todas as categorias é 1 |
+| **Adimensional** | Não tem unidade |
+| **Interpretação** | "Fração do total" |
+
+<center><details>
+<summary>**📌 Exemplo**</summary>
+
+| Categoria | Frequência | Proporção |
+|---------|---------|---------|
+| Masculino | 100 | 100/200 = 0,50 |
+| Feminino | 100 | 100/200 = 0,50 |
+| **Total** | **200** | **1,00** |
+
+> **🔍 Interpretação:** A proporção de homens é **0,50** — ou seja, metade da amostra é masculina. A proporção de mulheres é também **0,50**. A soma das proporções é **1,00**.
+</details></center>
+
+## 3. O QUE SÃO PERCENTAGENS?
+
+&emsp;&emsp;&emsp;Uma **percentagem** é uma proporção **multiplicada por 100**. Expressa a fração em termos de **partes por cem**.
+
+**📌 Definição formal:**
+
+> A percentagem de uma categoria é a proporção dessa categoria **multiplicada por 100**.
+
+**📐 Fórmula:**
+
+$$
+\color{blue} \% = p \times 100\% = \frac{f}{n} \times 100\%
+$$
+
+Onde:
+- **f** = frequência da categoria
+- **n** = total de observações
+- **%** = percentagem (entre 0% e 100%)
+
+**📌 Propriedades:**
+
+| Propriedade | Descrição |
+|---------|----------|
+| **Intervalo** | 0% ≤ % ≤ 100% |
+| **Soma** | A soma das percentagens de todas as categorias é 100% |
+| **Adimensional** | Não tem unidade |
+| **Interpretação** | "Partes por cem" |
+
+<center><details>
+<summary>**📌 Exemplo**</summary>
+
+| Categoria | Frequência | Proporção | Percentagem |
+|---------|---------|---------|---------|
+| Masculino | 100 | 0,50 | 50% |
+| Feminino | 100 | 0,50 | 50% |
+| **Total** | **200** | **1,00** | **100%** |
+
+> **🔍 Interpretação:** 50% da amostra é masculina e 50% é feminina. As percentagens somam 100%.
+</details></center>
+
+## 4. TIPOS DE PROPORÇÕES E PERCENTAGENS
+
+&emsp;&emsp;&emsp;Numa tabela de contingência, podemos calcular **três tipos** de proporções/percentagens:
+
+1. **Percentagens do total** — cada célula em relação ao total geral
+2. **Percentagens por linha** — cada célula em relação ao total da linha
+3. **Percentagens por coluna** — cada célula em relação ao total da coluna
+
+### 4.1 Percentagens do Total
+
+&emsp;&emsp;&emsp;As **percentagens do total** mostram a proporção de cada célula em relação ao **total geral** (n).
+
+**📐 Fórmula:**
+
+$$
+\color{blue} \%_{ij} = \frac{f_{ij}}{n} \times 100\%
+$$
+
+<center><details>
+<summary>**📌 Exemplo**</summary>
+
+| | Produto A | Produto B | Total |
+|---------|---------|---------|---------|
+| Masculino | **30%** | **20%** | 50% |
+| Feminino | **15%** | **35%** | 50% |
+| **Total** | 45% | 55% | 100% |
+
+**Cálculo:** (60/200) × 100% = 30%
+
+> **🔍 Interpretação:** 30% da amostra total são homens que preferem o Produto A. 35% são mulheres que preferem o Produto B. As percentagens do total somam 100%.
+</details></center>
+
+### 4.2 Percentagens por Linha
+
+&emsp;&emsp;&emsp;As **percentagens por linha** mostram a distribuição das colunas **dentro de cada linha**.
+
+**📐 Fórmula:**
+
+$$
+\color{blue} \%_{j|i} = \frac{f_{ij}}{f_{i\cdot}} \times 100\%
+$$
+
+Onde:
+- **fij** = frequência conjunta
+- **fi·** = frequência marginal da linha i
+
+<center><details>
+<summary>**📌 Exemplo**</summary>
+
+| | Produto A | Produto B | Total |
+|---------|---------|---------|---------|
+| Masculino | **60%** | **40%** | 100% |
+| Feminino | **30%** | **70%** | 100% |
+
+**Cálculo:** (60/100) × 100% = 60%
+
+> **🔍 Interpretação:** 60% dos homens preferem o Produto A e 40% preferem o Produto B. Entre as mulheres, 30% preferem o Produto A e 70% o Produto B. As percentagens por linha somam 100% em cada linha. **Há uma associação clara entre género e preferência.**
+</details></center>
+
+### 4.3 Percentagens por Coluna
+
+&emsp;&emsp;&emsp;As **percentagens por coluna** mostram a distribuição das linhas **dentro de cada coluna**.
+
+**📐 Fórmula:**
+
+$$
+\color{blue} \%_{i|j} = \frac{f_{ij}}{f_{\cdot j}} \times 100\%
+$$
+
+Onde:
+- **fij** = frequência conjunta
+- **f·j** = frequência marginal da coluna j
+
+<center><details>
+<summary>**📌 Exemplo**</summary>
+
+| | Produto A | Produto B |
+|---------|---------|---------|
+| Masculino | **66,7%** | **36,4%** |
+| Feminino | **33,3%** | **63,6%** |
+| **Total** | 100% | 100% |
+
+**Cálculo:** (60/90) × 100% = 66,7%
+
+> **🔍 Interpretação:** Entre as pessoas que preferem o Produto A, 66,7% são homens e 33,3% são mulheres. Entre as que preferem o Produto B, 36,4% são homens e 63,6% são mulheres. As percentagens por coluna somam 100% em cada coluna.
+</details></center>
+
+### 4.4 Quando Usar Cada Tipo
+
+| Tipo | Quando usar | Pergunta que responde |
+|---------|----------|---------|
+| **Do total** | Ver a distribuição global | "Que fração do total é esta célula?" |
+| **Por linha** | Comparar colunas dentro de cada linha | "Dentro desta linha, como se distribuem as colunas?" |
+| **Por coluna** | Comparar linhas dentro de cada coluna | "Dentro desta coluna, como se distribuem as linhas?" |
+
+**📌 Exemplo prático:**
+
+- **Do total:** "30% da amostra são homens que preferem A."
+- **Por linha:** "60% dos homens preferem A."
+- **Por coluna:** "66,7% dos que preferem A são homens."
+
+## 5. RAZÃO (ODDS)
+
+&emsp;&emsp;&emsp;A **razão** (ou **odds**) é outra medida relativa que expressa a **probabilidade de um evento** em relação à **probabilidade do evento complementar**.
+
+**📐 Fórmula:**
+
+$$
+\color{blue} \text{Odds} = \frac{p}{1 - p}
+$$
+
+Onde:
+- **p** = proporção do evento
+- **1 − p** = proporção do evento complementar
+
+<center><details>
+<summary>**📌 Exemplo**</summary>
+
+Se p = 0,60 (60% dos homens preferem o Produto A):
+
+$$
+\text{Odds} = \frac{0{,}60}{0{,}40} = 1{,}5
+$$
+
+> **🔍 Interpretação:** As probabilidades (odds) de um homem preferir o Produto A são **1,5 para 1** — ou seja, é 1,5 vezes mais provável preferir A do que B.
+</details></center>
+
+**📌 Razão de Odds (Odds Ratio):**
+
+&emsp;&emsp;&emsp;A **razão de odds** compara as odds de dois grupos:
+
+$$
+\color{blue} OR = \frac{\text{Odds}_1}{\text{Odds}_2}
+$$
+
+<center><details>
+<summary>**📌 Exemplo**</summary>
+
+- Homens: Odds = 60/40 = 1,5
+- Mulheres: Odds = 30/70 = 0,429
+
+$$
+OR = \frac{1{,}5}{0{,}429} = 3{,}5
+$$
+
+> **🔍 Interpretação:** As odds de um homem preferir o Produto A são **3,5 vezes maiores** que as odds de uma mulher preferir o Produto A.
+
+> **💡 Nota:** A razão de odds é muito usada em epidemiologia e regressão logística.
+</details></center>
+
+## 6. TABELAS DE PROPORÇÕES E PERCENTAGENS
+
+### 6.1 Tabela de Percentagens do Total
+
+| | Produto A | Produto B | Total |
+|---------|---------|---------|---------|
+| Masculino | 30% | 20% | 50% |
+| Feminino | 15% | 35% | 50% |
+| **Total** | 45% | 55% | 100% |
+
+> **🔍 Interpretação:** A tabela mostra a distribuição conjunta em percentagem do total. É útil para ver a **importância relativa** de cada combinação.
+
+### 6.2 Tabela de Percentagens por Linha
+
+| | Produto A | Produto B | Total |
+|---------|---------|---------|---------|
+| Masculino | 60% | 40% | 100% |
+| Feminino | 30% | 70% | 100% |
+
+> **🔍 Interpretação:** A tabela mostra a distribuição das preferências **dentro de cada género**. É útil para **comparar** as preferências entre homens e mulheres.
+
+### 6.3 Tabela de Percentagens por Coluna
+
+| | Produto A | Produto B |
+|---------|---------|---------|
+| Masculino | 66,7% | 36,4% |
+| Feminino | 33,3% | 63,6% |
+| **Total** | 100% | 100% |
+
+> **🔍 Interpretação:** A tabela mostra a distribuição do género **dentro de cada preferência**. É útil para **comparar** a composição de género entre os que preferem A e B.
+
+## 7. COMPARAÇÃO ENTRE TIPOS DE PERCENTAGENS
+
+| Aspeto | Do Total | Por Linha | Por Coluna |
+|---------|---------|---------|---------|
+| **Base** | n | fi· | f·j |
+| **Soma** | 100% | 100% por linha | 100% por coluna |
+| **Uso principal** | Distribuição global | Comparar colunas | Comparar linhas |
+| **Deteta associação?** | ❌ | ✅ | ✅ |
+| **Exemplo** | "30% são homens que preferem A" | "60% dos homens preferem A" | "66,7% dos que preferem A são homens" |
+
+> **🔍 Nota:** Para **detetar associação**, as percentagens por linha ou por coluna são mais úteis que as do total. As percentagens do total não revelam associação diretamente.
+
+## 8. INTERPRETAÇÃO DE ASSOCIAÇÃO
+
+&emsp;&emsp;&emsp;As percentagens por linha (ou por coluna) permitem **detetar associação** entre as variáveis.
+
+**📌 Regra:**
+
+| Padrão | Interpretação |
+|---------|----------|
+| **Percentagens por linha semelhantes** | **Sem associação** — as variáveis são independentes |
+| **Percentagens por linha diferentes** | **Com associação** — as variáveis estão relacionadas |
+
+<center><details>
+<summary>**📌 Exemplo 1 — Sem associação**</summary>
+
+| | Produto A | Produto B | Total |
+|---------|---------|---------|---------|
+| Masculino | 50% | 50% | 100% |
+| Feminino | 50% | 50% | 100% |
+
+> **🔍 Interpretação:** Não há associação — homens e mulheres têm a mesma preferência.
+</details></center>
+
+<center><details>
+<summary>**📌 Exemplo 2 — Com associação**</summary>
+
+| | Produto A | Produto B | Total |
+|---------|---------|---------|---------|
+| Masculino | 60% | 40% | 100% |
+| Feminino | 30% | 70% | 100% |
+
+> **🔍 Interpretação:** Há associação — homens preferem o Produto A, mulheres preferem o Produto B.
+</details></center>
+
+## 9. PROPORÇÕES E PERCENTAGENS EM PYTHON E R
+
+<details>
+<summary>🐍 Código Python — Proporções e Percentagens</summary>
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+import pandas as pd
+import numpy as np
+
+# Dados de exemplo
+dados = {
+    'genero': ['Masculino'] * 60 + ['Masculino'] * 40 + ['Feminino'] * 30 + ['Feminino'] * 70,
+    'preferencia': ['Produto A'] * 60 + ['Produto B'] * 40 + ['Produto A'] * 30 + ['Produto B'] * 70
+}
+
+df = pd.DataFrame(dados)
+
+# 1. TABELA DE CONTINGÊNCIA
+tabela = pd.crosstab(df['genero'], df['preferencia'])
+print("--- FREQUÊNCIAS ---")
+print(tabela)
+print()
+
+# 2. PROPORÇÕES DO TOTAL
+print("--- PROPORÇÕES DO TOTAL ---")
+prop_total = pd.crosstab(df['genero'], df['preferencia'], normalize='all')
+print(prop_total.round(4))
+print()
+
+# 3. PERCENTAGENS DO TOTAL
+print("--- PERCENTAGENS DO TOTAL ---")
+perc_total = prop_total * 100
+print(perc_total.round(2))
+print()
+
+# 4. PERCENTAGENS POR LINHA
+print("--- PERCENTAGENS POR LINHA ---")
+perc_linha = pd.crosstab(df['genero'], df['preferencia'], normalize='index') * 100
+print(perc_linha.round(2))
+print()
+
+# 5. PERCENTAGENS POR COLUNA
+print("--- PERCENTAGENS POR COLUNA ---")
+perc_coluna = pd.crosstab(df['genero'], df['preferencia'], normalize='columns') * 100
+print(perc_coluna.round(2))
+print()
+
+# 6. ODDS E ODDS RATIO
+print("--- ODDS E ODDS RATIO ---")
+odds_homem = 60 / 40
+print(f"Odds (homem prefere A): {odds_homem:.4f}")
+
+odds_mulher = 30 / 70
+print(f"Odds (mulher prefere A): {odds_mulher:.4f}")
+
+odds_ratio = odds_homem / odds_mulher
+print(f"Odds Ratio: {odds_ratio:.4f}")
+print()
+
+# 7. TABELA COMPLETA COM MARGINAIS E PERCENTAGENS
+print("--- TABELA COMPLETA ---")
+tabela_marg = pd.crosstab(df['genero'], df['preferencia'], margins=True)
+print(tabela_marg)
+print()
+
+print("--- PERCENTAGENS POR LINHA (com marginais) ---")
+perc_linha_marg = pd.crosstab(df['genero'], df['preferencia'], normalize='index') * 100
+print(perc_linha_marg.round(2))
+</pre>
+
+</details>
+
+<details>
+<summary>📊 Código R — Proporções e Percentagens</summary>
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+# Dados de exemplo
+dados <- data.frame(
+  genero = c(rep("Masculino", 60), rep("Masculino", 40),
+             rep("Feminino", 30), rep("Feminino", 70)),
+  preferencia = c(rep("Produto A", 60), rep("Produto B", 40),
+                  rep("Produto A", 30), rep("Produto B", 70))
+)
+
+# 1. TABELA DE CONTINGÊNCIA
+cat("--- FREQUÊNCIAS ---\n")
+tabela <- table(dados$genero, dados$preferencia)
+print(tabela)
+
+# 2. PROPORÇÕES DO TOTAL
+cat("\n--- PROPORÇÕES DO TOTAL ---\n")
+prop_total <- prop.table(tabela)
+print(round(prop_total, 4))
+
+# 3. PERCENTAGENS DO TOTAL
+cat("\n--- PERCENTAGENS DO TOTAL ---\n")
+perc_total <- prop.table(tabela) * 100
+print(round(perc_total, 2))
+
+# 4. PERCENTAGENS POR LINHA
+cat("\n--- PERCENTAGENS POR LINHA ---\n")
+perc_linha <- prop.table(tabela, margin = 1) * 100
+print(round(perc_linha, 2))
+
+# 5. PERCENTAGENS POR COLUNA
+cat("\n--- PERCENTAGENS POR COLUNA ---\n")
+perc_coluna <- prop.table(tabela, margin = 2) * 100
+print(round(perc_coluna, 2))
+
+# 6. ODDS E ODDS RATIO
+cat("\n--- ODDS E ODDS RATIO ---\n")
+odds_homem <- 60 / 40
+odds_mulher <- 30 / 70
+odds_ratio <- odds_homem / odds_mulher
+
+cat("Odds (homem prefere A):", odds_homem, "\n")
+cat("Odds (mulher prefere A):", odds_mulher, "\n")
+cat("Odds Ratio:", odds_ratio, "\n")
+
+# 7. TABELA COMPLETA COM MARGINAIS
+cat("\n--- TABELA COMPLETA COM MARGINAIS ---\n")
+tabela_marg <- addmargins(tabela)
+print(tabela_marg)
+
+# 8. PERCENTAGENS POR LINHA COM MARGINAIS
+cat("\n--- PERCENTAGENS POR LINHA ---\n")
+perc_linha_marg <- prop.table(tabela, margin = 1) * 100
+print(round(perc_linha_marg, 2))
+
+# 9. TESTE DO QUI-QUADRADO (prévia)
+cat("\n--- TESTE DO QUI-QUADRADO ---\n")
+teste <- chisq.test(tabela)
+print(teste)
+</pre>
+
+</details>
+
+## 10. VANTAGENS E DESVANTAGENS
+
+| Vantagens | Desvantagens |
+|---------|----------|
+| ✅ **Permitem comparações justas** entre grupos | ❌ **Podem ser enganadoras** se a base for pequena |
+| ✅ **Eliminam o efeito do tamanho da amostra** | ❌ **Perdem a informação absoluta** |
+| ✅ **Facilitam a interpretação** de associações | ❌ **Podem esconder frequências baixas** |
+| ✅ **Base para testes de independência** | ❌ **Requerem cuidado com a base** (linha, coluna, total) |
+| ✅ **Padronizam a comparação** entre categorias | ❌ **Não substituem as frequências absolutas** |
+
+## 11. QUANDO USAR PROPORÇÕES E PERCENTAGENS
+
+| Critério | Proporções/Percentagens |
+|---------|----------|
+| **Comparar grupos de tamanhos diferentes** | ✅ Único |
+| **Detetar associação** | ✅ Único |
+| **Comunicar resultados** | ✅ Único |
+| **Ver a distribuição relativa** | ✅ Único |
+| **Ver frequências absolutas** | ❌ Usar frequências |
+| **Amostras muito pequenas** | ❌ Cuidado (percentagens instáveis) |
+
+**Fluxo de Decisão:**
+
+1. Queres **comparar grupos** de tamanhos diferentes? → **Percentagens**
+2. Queres **detetar associação**? → **Percentagens por linha ou coluna**
+3. Queres **comunicar resultados**? → **Percentagens**
+4. Queres **ver a distribuição global**? → **Percentagens do total**
+5. Queres **ver frequências absolutas**? → **Frequências** (aula anterior)
+6. Queres **calcular odds**? → **Razão** (odds)
+
+## 12. EXERCÍCIOS
+
+<details>
+<summary>📗 Exercício 1 — Calcular percentagens do total</summary>
+
+**Enunciado:** Para a tabela abaixo, calcula as percentagens do total:
+
+| | X | Y | Total |
+|---|---|---|---|
+| A | 30 | 20 | 50 |
+| B | 20 | 30 | 50 |
+| **Total** | 50 | 50 | 100 |
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+| | X | Y | Total |
+|---|---|---|---|
+| A | 30% | 20% | 50% |
+| B | 20% | 30% | 50% |
+| **Total** | 50% | 50% | 100% |
+
+**Cálculo:** 30/100 = 30%, 20/100 = 20%, etc.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Calcular percentagens por linha</summary>
+
+**Enunciado:** Para a tabela abaixo, calcula as percentagens por linha e interpreta:
+
+| | X | Y | Total |
+|---|---|---|---|
+| A | 30 | 20 | 50 |
+| B | 20 | 30 | 50 |
+| **Total** | 50 | 50 | 100 |
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+| | X | Y | Total |
+|---|---|---|---|
+| A | 60% | 40% | 100% |
+| B | 40% | 60% | 100% |
+
+**Interpretação:** Há associação — A prefere X (60%), B prefere Y (60%).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Calcular percentagens por coluna</summary>
+
+**Enunciado:** Para a tabela abaixo, calcula as percentagens por coluna:
+
+| | X | Y | Total |
+|---|---|---|---|
+| A | 30 | 20 | 50 |
+| B | 20 | 30 | 50 |
+| **Total** | 50 | 50 | 100 |
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+| | X | Y |
+|---|---|---|
+| A | 60% | 40% |
+| B | 40% | 60% |
+| **Total** | 100% | 100% |
+
+**Interpretação:** Entre os que preferem X, 60% são A. Entre os que preferem Y, 60% são B.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Calcular odds</summary>
+
+**Enunciado:** Se 70% dos homens preferem o Produto A, calcula as odds.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+p = 0,70
+
+Odds = 0,70/0,30 = 2,33
+
+**Interpretação:** As odds de um homem preferir o Produto A são **2,33 para 1** — é 2,33 vezes mais provável preferir A do que B.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Odds Ratio</summary>
+
+**Enunciado:** Se as odds de um homem preferir A são 2,33 e as odds de uma mulher preferir A são 0,43, calcula a razão de odds.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+OR = 2,33/0,43 = 5,42
+
+**Interpretação:** As odds de um homem preferir o Produto A são **5,42 vezes maiores** que as odds de uma mulher preferir o Produto A.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Comparação de grupos</summary>
+
+**Enunciado:** Dois grupos têm as seguintes frequências. Compara-os usando percentagens.
+
+**Grupo 1:**
+| | A | B |
+|---|---|---|
+| X | 30 | 20 |
+| Y | 20 | 30 |
+
+**Grupo 2:**
+| | A | B |
+|---|---|---|
+| X | 300 | 200 |
+| Y | 200 | 300 |
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+**Percentagens por linha (Grupo 1):**
+- X: 60% A, 40% B
+- Y: 40% A, 60% B
+
+**Percentagens por linha (Grupo 2):**
+- X: 60% A, 40% B
+- Y: 40% A, 60% B
+
+**Conclusão:** As percentagens são **idênticas** nos dois grupos. As frequências absolutas eram diferentes (devido ao tamanho da amostra), mas a **estrutura relativa** é a mesma. Isto mostra a importância das percentagens para comparações justas.
+
+</details>
+</details>
+
+> As frequências absolutas dizem-te quantos. As percentagens dizem-te quão importante. Para comparar mundos diferentes, precisas da linguagem das proporções.

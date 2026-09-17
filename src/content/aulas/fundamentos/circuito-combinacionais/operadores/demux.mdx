@@ -1,0 +1,493 @@
+# Demultiplexador (DEMUX)
+
+## 1. Introdução
+
+Na aula anterior, aprendemos sobre o **Multiplexador (MUX)** — um circuito que seleciona uma entre várias entradas e a direciona para uma única saída. Agora, vamos estudar o seu **inverso**: o **Demultiplexador (DEMUX)**.<br><br>
+
+Enquanto o MUX pega várias entradas e produz uma saída, o DEMUX faz o oposto: **pega uma única entrada e a direciona para uma das várias saídas**, baseado em bits de seleção.
+
+**Analogia:** Pense no DEMUX como um **distribuidor de água** com uma torneira de entrada e vários canos de saída. Você pode abrir a torneira e direcionar a água para um cano específico, girando um seletor.
+
+O demultiplexador é usado em diversas aplicações importantes:
+
+- **Decodificadores de endereço** em memórias RAM
+- **Distribuição de dados** para múltiplos dispositivos
+- **Roteamento em sistemas de comunicação**
+- **Controle de displays** e periféricos
+- **Barramentos de dados** compartilhados
+
+Nesta aula, vamos aprender como os demultiplexadores funcionam, como construí-los a partir de portas lógicas, e como eles se relacionam com os multiplexadores.
+
+
+## 2. O Que é um Demultiplexador?
+
+### 2.1 Definição
+
+Um **Demultiplexador** (abreviado como **DEMUX**) é um circuito combinacional que:
+
+> **Direciona uma única entrada para uma entre 2ⁿ saídas, baseado em n bits de seleção.**
+
+### 2.2 Analogia
+
+Pense no DEMUX como uma **caixa de correio** inteligente:
+
+- Você tem uma entrada (a correspondência que chega).
+- Você tem várias saídas (as caixas de correio de cada morador).
+- Você usa um código (bits de seleção) para decidir em qual caixa a correspondência será depositada.
+- A correspondência sempre chega a **apenas uma** caixa por vez.
+
+### 2.3 Diagrama geral
+
+<details>
+<summary>🔧 Ver Diagrama Geral do DEMUX</summary>
+
+<div style="font-family: monospace; background: #111; padding: 2rem; border-radius: 12px; max-width: 500px; margin: auto; position: relative; height: 300px;">
+
+  <!-- Linha de entrada F -->
+  <div style="position: absolute; top: 135px; left: 60px; width: 120px; height: 2px; background: #fff;"></div>
+
+  <!-- Linhas de saída D -->
+  <div style="position: absolute; top: 65px; left: 300px; width: 90px; height: 2px; background: #fff;"></div>
+  <div style="position: absolute; top: 115px; left: 300px; width: 90px; height: 2px; background: #fff;"></div>
+  <div style="position: absolute; top: 165px; left: 300px; width: 90px; height: 2px; background: #fff;"></div>
+  <div style="position: absolute; top: 215px; left: 300px; width: 90px; height: 2px; background: #fff;"></div>
+
+  <!-- Linhas de seleção S (subindo) -->
+  <div style="position: absolute; top: 230px; left: 215px; width: 2px; height: 30px; background: #fff;"></div>
+  <div style="position: absolute; top: 230px; left: 255px; width: 2px; height: 30px; background: #fff;"></div>
+
+  <!-- Labels -->
+  <span style="position: absolute; top: 125px; left: 30px; color: #60a5fa; font-weight: bold; font-size: 1.1rem;">F</span>
+  
+  <span style="position: absolute; top: 55px; left: 400px; color: #34d399; font-weight: bold; font-size: 1.1rem;">D₀</span>
+  <span style="position: absolute; top: 105px; left: 400px; color: #34d399; font-weight: bold; font-size: 1.1rem;">D₁</span>
+  <span style="position: absolute; top: 155px; left: 400px; color: #34d399; font-weight: bold; font-size: 1.1rem;">D₂</span>
+  <span style="position: absolute; top: 205px; left: 400px; color: #34d399; font-weight: bold; font-size: 1.1rem;">D₃</span>
+
+  <span style="position: absolute; top: 265px; left: 205px; color: #fbbf24; font-weight: bold; font-size: 1rem;">S₁</span>
+  <span style="position: absolute; top: 265px; left: 245px; color: #fbbf24; font-weight: bold; font-size: 1rem;">S₀</span>
+
+  <!-- Bloco DEMUX -->
+  <div style="position: absolute; top: 40px; left: 180px; width: 120px; height: 190px; border: 2px solid #7c3aed; background: #2d1b69; border-radius: 4px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+    <div style="color: #a78bfa; font-weight: bold; font-size: 1.1rem;">DEMUX</div>
+    <div style="color: #8b5cf6; font-size: 0.8rem; margin-top: 0.3rem;">1→2ⁿ</div>
+  </div>
+
+</div>
+</details>
+
+
+## 3. Demultiplexador 1→2 (1 entrada, 1 bit de seleção)
+
+### 3.1 Definição
+
+Um DEMUX 1→2 tem:
+
+- **1 entrada:** F
+- **2 saídas:** D₀ e D₁
+- **1 bit de seleção:** S
+
+### 3.2 Tabela verdade
+
+| S | D₀ | D₁ |
+|---|----|----|
+| 0 | F  | 0  |
+| 1 | 0  | F  |
+
+### 3.3 Expressões lógicas
+
+> **D₀ = ¬S ∧ F**  
+> **D₁ = S ∧ F**
+
+### 3.4 Diagrama do DEMUX 1→2
+
+<details>
+<summary>🔧 Ver Diagrama do DEMUX 1→2</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 400px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">DEMUX 1→2</div>
+
+  <pre style="color: #93c5fd; font-size: 0.7rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+                ┌── AND ── D₀
+    S ── NOT────┤
+                │
+                ├── AND ── D₁
+    F ──────────┘
+  </pre>
+
+  <div style="margin-top: 0.8rem; padding-top: 0.8rem; border-top: 1px solid rgba(255,255,255,0.05); display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap;">
+    <span style="background: #1a3a5c; color: #93c5fd; padding: 0.15rem 0.6rem; border-radius: 12px; font-size: 0.55rem;">S=0 → D₀ = F</span>
+    <span style="background: #1a5c3a; color: #6ee7b7; padding: 0.15rem 0.6rem; border-radius: 12px; font-size: 0.55rem;">S=1 → D₁ = F</span>
+  </div>
+
+</div>
+</details>
+
+### 3.5 Exemplo prático
+
+**Qual a saída para S = 1, F = 1?**
+
+**Passo 1:** D₀ = ¬S ∧ F = 0 ∧ 1 = 0
+**Passo 2:** D₁ = S ∧ F = 1 ∧ 1 = 1
+
+**Resposta:** D₀ = 0, D₁ = 1 ✅
+
+
+## 4. Demultiplexador 1→4 (1 entrada, 2 bits de seleção)
+
+### 4.1 Definição
+
+Um DEMUX 1→4 tem:
+
+- **1 entrada:** F
+- **4 saídas:** D₀, D₁, D₂, D₃
+- **2 bits de seleção:** S₁, S₀
+
+### 4.2 Tabela verdade
+
+| S₁ | S₀ | D₀ | D₁ | D₂ | D₃ |
+|----|----|----|----|----|----|
+| 0 | 0 | F | 0 | 0 | 0 |
+| 0 | 1 | 0 | F | 0 | 0 |
+| 1 | 0 | 0 | 0 | F | 0 |
+| 1 | 1 | 0 | 0 | 0 | F |
+
+### 4.3 Expressões lógicas
+
+> **D₀ = ¬S₁ ∧ ¬S₀ ∧ F**  
+> **D₁ = ¬S₁ ∧ S₀ ∧ F**  
+> **D₂ = S₁ ∧ ¬S₀ ∧ F**  
+> **D₃ = S₁ ∧ S₀ ∧ F**
+
+### 4.4 Diagrama do DEMUX 1→4
+
+<details>
+<summary>🔧 Ver Diagrama do DEMUX 1→4</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 450px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">DEMUX 1→4</div>
+
+  <pre style="color: #93c5fd; font-size: 0.65rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+                ┌── AND ── D₀
+    S₀ ── NOT───┤
+                │
+                ├── AND ── D₁
+    S₁ ── NOT───┤
+                │
+                ├── AND ── D₂
+    S₀ ─────────┤
+                │
+    F ──────────┼── AND ── D₃
+                │
+    S₁ ─────────┘
+  </pre>
+
+  <div style="margin-top: 0.8rem; padding-top: 0.8rem; border-top: 1px solid rgba(255,255,255,0.05); display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap;">
+    <span style="background: #1a3a5c; color: #93c5fd; padding: 0.15rem 0.6rem; border-radius: 12px; font-size: 0.55rem;">00 → D₀</span>
+    <span style="background: #2d1b69; color: #c4b5fd; padding: 0.15rem 0.6rem; border-radius: 12px; font-size: 0.55rem;">01 → D₁</span>
+    <span style="background: #5c3a1a; color: #fde68a; padding: 0.15rem 0.6rem; border-radius: 12px; font-size: 0.55rem;">10 → D₂</span>
+    <span style="background: #5c1a1a; color: #fca5a5; padding: 0.15rem 0.6rem; border-radius: 12px; font-size: 0.55rem;">11 → D₃</span>
+  </div>
+
+</div>
+</details>
+
+### 4.5 Exemplo prático
+
+**Qual a saída para S₁ = 1, S₀ = 0, F = 1?**
+
+**Passo 1:** S₁ = 1, S₀ = 0 → seleciona D₂
+**Passo 2:** D₂ = S₁ ∧ ¬S₀ ∧ F = 1 ∧ 1 ∧ 1 = 1
+**Passo 3:** D₀ = 0, D₁ = 0, D₃ = 0
+
+**Resposta:** D₂ = 1 ✅
+
+
+## 5. Demultiplexador 1→8 (1 entrada, 3 bits de seleção)
+
+### 5.1 Definição
+
+Um DEMUX 1→8 tem:
+
+- **1 entrada:** F
+- **8 saídas:** D₀ a D₇
+- **3 bits de seleção:** S₂, S₁, S₀
+
+### 5.2 Tabela verdade
+
+| S₂ | S₁ | S₀ | D₀ | D₁ | D₂ | D₃ | D₄ | D₅ | D₆ | D₇ |
+|----|----|----|----|----|----|----|----|----|----|----|
+| 0 | 0 | 0 | F | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| 0 | 0 | 1 | 0 | F | 0 | 0 | 0 | 0 | 0 | 0 |
+| 0 | 1 | 0 | 0 | 0 | F | 0 | 0 | 0 | 0 | 0 |
+| 0 | 1 | 1 | 0 | 0 | 0 | F | 0 | 0 | 0 | 0 |
+| 1 | 0 | 0 | 0 | 0 | 0 | 0 | F | 0 | 0 | 0 |
+| 1 | 0 | 1 | 0 | 0 | 0 | 0 | 0 | F | 0 | 0 |
+| 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | F | 0 |
+| 1 | 1 | 1 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | F |
+
+### 5.3 Como construir um DEMUX 1→8
+
+Um DEMUX 1→8 pode ser construído usando **DEMUX 1→4** e **DEMUX 1→2** em cascata:
+
+<details>
+<summary>🔧 Ver Diagrama do DEMUX 1→8 em Cascata</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 500px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">DEMUX 1→8 (CASCATA)</div>
+
+  <pre style="color: #93c5fd; font-size: 0.6rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+                        ┌── DEMUX 1→2 ── D₀
+                        │  (S₂)      ── D₁
+    F ── DEMUX 1→2 ────┤
+         (S₂)          │
+                        └── DEMUX 1→2 ── D₂
+                           (S₂)      ── D₃
+
+                        ┌── DEMUX 1→2 ── D₄
+                        │  (S₂)      ── D₅
+    F ── DEMUX 1→2 ────┤
+         (S₂)          │
+                        └── DEMUX 1→2 ── D₆
+                           (S₂)      ── D₇
+  </pre>
+
+  <div style="margin-top: 0.8rem; padding-top: 0.8rem; border-top: 1px solid rgba(255,255,255,0.05); display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap;">
+    <span style="background: #2d1b69; color: #c4b5fd; padding: 0.15rem 0.6rem; border-radius: 12px; font-size: 0.55rem;">S₁S₀ seleciona o grupo</span>
+    <span style="background: #5c3a1a; color: #fde68a; padding: 0.15rem 0.6rem; border-radius: 12px; font-size: 0.55rem;">S₂ seleciona dentro do grupo</span>
+  </div>
+
+</div>
+</details>
+
+
+## 6. DEMUX Aplicado: Decodificador de Endereço
+
+### 6.1 O que é um decodificador de endereço?
+
+Um decodificador de endereço é um circuito que recebe um endereço (em binário) e ativa a linha de memória correspondente. Este é um uso prático e importante do DEMUX.
+
+### 6.2 Exemplo: Memória RAM com 4 posições
+
+<details>
+<summary>🔧 Ver Diagrama do Decodificador de Endereço</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 450px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">DECODIFICADOR DE ENDEREÇO (RAM 4 POSIÇÕES)</div>
+
+  <pre style="color: #93c5fd; font-size: 0.7rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+        Endereço        Linhas de memória ativadas
+        ┌─────────┐
+    A₀ ─┤         ├── Linha 0 (endereço 00)
+    A₁ ─┤ DEMUX   ├── Linha 1 (endereço 01)
+        │ 1→4     ├── Linha 2 (endereço 10)
+        │         ├── Linha 3 (endereço 11)
+        └─────────┘
+           ↑  ↑
+          A₁  A₀  (bits de endereço)
+  </pre>
+
+  <div style="margin-top: 0.8rem; padding-top: 0.8rem; border-top: 1px solid rgba(255,255,255,0.05); display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap;">
+    <span style="background: #1a3a5c; color: #93c5fd; padding: 0.15rem 0.6rem; border-radius: 12px; font-size: 0.55rem;">A₁A₀ = 00 → Linha 0</span>
+    <span style="background: #2d1b69; color: #c4b5fd; padding: 0.15rem 0.6rem; border-radius: 12px; font-size: 0.55rem;">A₁A₀ = 01 → Linha 1</span>
+    <span style="background: #5c3a1a; color: #fde68a; padding: 0.15rem 0.6rem; border-radius: 12px; font-size: 0.55rem;">A₁A₀ = 10 → Linha 2</span>
+    <span style="background: #5c1a1a; color: #fca5a5; padding: 0.15rem 0.6rem; border-radius: 12px; font-size: 0.55rem;">A₁A₀ = 11 → Linha 3</span>
+  </div>
+
+</div>
+</details>
+
+### 6.3 Tabela de endereçamento
+
+| Endereço (A₁,A₀) | Linha ativada |
+|------------------|---------------|
+| 00 | Linha 0 |
+| 01 | Linha 1 |
+| 10 | Linha 2 |
+| 11 | Linha 3 |
+
+### 6.4 O DEMUX na memória
+
+Em uma memória RAM, o DEMUX é usado para selecionar qual linha de memória será lida ou escrita:
+
+1. A CPU envia um endereço (por exemplo, `10`).
+2. O DEMUX ativa a linha correspondente (Linha 2).
+3. Os dados são lidos/escritos nessa linha.
+
+
+## 7. DEMUX vs MUX: Qual a Diferença?
+
+| Característica | MUX (Multiplexador) | DEMUX (Demultiplexador) |
+|----------------|---------------------|-------------------------|
+| **Direção** | Múltiplas → Uma | Uma → Múltiplas |
+| **Entradas** | 2ⁿ entradas | 1 entrada |
+| **Saídas** | 1 saída | 2ⁿ saídas |
+| **Seleção** | n bits | n bits |
+| **Analogia** | Seletor de canais | Distribuidor |
+| **Uso** | Selecionar dados | Distribuir dados |
+
+### 7.1 Diagrama comparativo
+
+<details>
+<summary>🔧 Ver Comparativo MUX vs DEMUX</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 500px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">MUX vs DEMUX</div>
+
+  <pre style="color: #93c5fd; font-size: 0.7rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    MUX (2ⁿ entradas → 1 saída):
+    D₀ ──┐
+    D₁ ──┤ MUX  ├── F
+    D₂ ──┤ 2ⁿ→1 │
+    D₃ ──┘      │
+             ↑  ↑
+            S₁  S₀
+
+    DEMUX (1 entrada → 2ⁿ saídas):
+    F ───┤ DEMUX ├── D₀
+         │ 1→2ⁿ ├── D₁
+         │      ├── D₂
+         │      ├── D₃
+             ↑  ↑
+            S₁  S₀
+  </pre>
+
+</div>
+</details>
+
+
+## 8. Aplicações Reais dos Demultiplexadores
+
+| Aplicação | Como usa o DEMUX |
+|-----------|------------------|
+| **Memória RAM** | Decodificador de endereço (seleciona a linha) |
+| **Distribuição de dados** | Envia dados para um dispositivo específico |
+| **Sistemas de comunicação** | Roteamento de sinais |
+| **Displays** | Ativa segmentos específicos |
+| **Periféricos** | Seleciona qual periférico recebe dados |
+| **Barramentos** | Controla acesso ao barramento |
+
+
+## 9. Exercícios
+
+<details>
+<summary>📗 Exercício 1 — DEMUX 1→2 (fácil)</summary>
+
+**Enunciado:** Um DEMUX 1→2 tem S = 0, F = 1. Quais são as saídas D₀ e D₁?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** D₀ = 1, D₁ = 0
+
+**Explicação:** Quando S = 0, a entrada é direcionada para D₀.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — DEMUX 1→2 (fácil)</summary>
+
+**Enunciado:** Um DEMUX 1→2 tem S = 1, F = 0. Quais são as saídas D₀ e D₁?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** D₀ = 0, D₁ = 0
+
+**Explicação:** Quando S = 1, a entrada é direcionada para D₁. Como F = 0, D₁ = 0.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — DEMUX 1→4 (médio)</summary>
+
+**Enunciado:** Um DEMUX 1→4 tem S₁ = 0, S₀ = 1, F = 1. Qual saída é ativada?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** D₁ = 1
+
+**Explicação:** S₁ = 0, S₀ = 1 → seleciona D₁.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — DEMUX 1→4 (médio)</summary>
+
+**Enunciado:** Um DEMUX 1→4 tem S₁ = 1, S₀ = 0, F = 1. Quais são as saídas?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** D₀ = 0, D₁ = 0, D₂ = 1, D₃ = 0
+
+**Explicação:** S₁ = 1, S₀ = 0 → seleciona D₂.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — DEMUX 1→8 (médio)</summary>
+
+**Enunciado:** Quantos bits de seleção tem um DEMUX 1→8?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** 3 bits
+
+**Explicação:** 2³ = 8, portanto precisamos de 3 bits de seleção.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Expressão do DEMUX 1→2 (médio)</summary>
+
+**Enunciado:** Quais são as expressões lógicas de um DEMUX 1→2?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** D₀ = ¬S ∧ F, D₁ = S ∧ F
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — DEMUX na memória (conceitual)</summary>
+
+**Enunciado:** Para que um DEMUX é usado em uma memória RAM?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** O DEMUX é usado como decodificador de endereço para selecionar qual linha da memória será ativada para leitura ou escrita.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — MUX vs DEMUX (conceitual)</summary>
+
+**Enunciado:** Qual a principal diferença entre um MUX e um DEMUX?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** O MUX seleciona uma entre várias entradas e envia para uma única saída. O DEMUX pega uma única entrada e a direciona para uma das várias saídas. São inversos um do outro.
+
+</details>
+</details>
+
+
+> **"O demultiplexador é o inverso do multiplexador: ele pega uma única entrada e a direciona para uma das várias saídas baseado em bits de seleção. Um DEMUX 1→2 tem 1 entrada, 2 saídas e 1 bit de seleção (D₀ = ¬S·F, D₁ = S·F). Um DEMUX 1→4 tem 4 saídas e 2 bits de seleção. Os demultiplexadores são usados como decodificadores de endereço em memórias RAM, para distribuição de dados para múltiplos dispositivos, e em diversas aplicações de roteamento e controle. Juntos, MUX e DEMUX formam a base do roteamento e distribuição de dados em sistemas digitais."**

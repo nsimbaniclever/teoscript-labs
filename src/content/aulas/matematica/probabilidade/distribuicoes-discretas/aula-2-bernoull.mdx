@@ -1,0 +1,449 @@
+# 📘 DISTRIBUIÇÃO DE BERNOULLI
+
+Definição, Analogias com Resolução Detalhada, Função de Probabilidade, Função de Distribuição, Valor Esperado, Variância, FGM, Propriedades Especiais, Aplicações Práticas, Exercícios Resolvidos Passo a Passo e Desafio Final
+
+### 1. O QUE É A DISTRIBUIÇÃO DE BERNOULLI?
+
+A distribuição de Bernoulli descreve um experimento com **apenas dois resultados possíveis**: sucesso (1) e falha (0). É o "tijolo fundamental" da probabilidade, porque muitas outras distribuições são construídas a partir dela.
+
+> **Definição:** Uma variável aleatória $X$ tem distribuição de Bernoulli com parâmetro $p$ (probabilidade de sucesso, $0 \leq p \leq 1$) se:
+>> $$ X = \begin{cases} 1, & \text{com probabilidade } p \quad (\text{Sucesso}) \\ 0, & \text{com probabilidade } 1-p \quad (\text{Falha}) \end{cases} $$
+
+**Notação:** $X \sim \text{Bernoulli}(p)$
+
+### 2. ANALOGIAS DO DIA A DIA COM RESOLUÇÃO DETALHADA
+
+---
+
+**Analogia 1 — "A Moeda Viciada"**
+
+Uma moeda é viciada com **70% de chance de dar cara** ($p = 0,7$). Definimos $X = 1$ se der cara (sucesso) e $X = 0$ se der coroa (falha).
+
+**Situação A: Probabilidade de dar cara**
+
+**Pergunta:** Qual a probabilidade de dar cara?
+
+**Resolução Passo a Passo:**
+
+- **Identificar o que queremos:** $P(X = 1)$
+- **Identificar o parâmetro:** $p = 0,7$
+- **Aplicar a definição:** $P(X = 1) = p$
+- **Substituir:** $P(X = 1) = 0,7$
+- **Converter para porcentagem:** $0,7 \times 100 = 70\%$
+
+**Resposta:** A probabilidade de dar cara é de **70%**.
+
+**Situação B: Probabilidade de dar coroa**
+
+**Pergunta:** Qual a probabilidade de dar coroa?
+
+**Resolução Passo a Passo:**
+
+- **Identificar o que queremos:** $P(X = 0)$
+- **Identificar o parâmetro:** $p = 0,7$
+- **Aplicar a definição:** $P(X = 0) = 1 - p$
+- **Substituir:** $P(X = 0) = 1 - 0,7 = 0,3$
+- **Converter para porcentagem:** $0,3 \times 100 = 30\%$
+
+**Resposta:** A probabilidade de dar coroa é de **30%**.
+
+---
+
+**Analogia 2 — "O Sensor de Alarme"**
+
+Um sensor de movimento tem **95% de chance de detectar um intruso** ($p = 0,95$).
+
+**Situação A: Probabilidade de detectar**
+
+**Resolução Passo a Passo:**
+
+- $P(X = 1) = p = 0,95 = 95\%$
+
+**Resposta:** 95%
+
+**Situação B: Probabilidade de não detectar**
+
+**Resolução Passo a Passo:**
+
+- $P(X = 0) = 1 - p = 1 - 0,95 = 0,05 = 5\%$
+
+**Resposta:** 5%
+
+---
+
+**Analogia 3 — "O Teste de Qualidade"**
+
+Uma máquina produz peças com **taxa de defeito de 2%** ($p = 0,02$).
+
+**Situação A: Probabilidade de uma peça ser defeituosa**
+
+**Resolução Passo a Passo:**
+
+- $P(X = 1) = p = 0,02 = 2\%$
+
+**Resposta:** 2%
+
+**Situação B: Probabilidade de uma peça ser boa**
+
+**Resolução Passo a Passo:**
+
+- $P(X = 0) = 1 - p = 1 - 0,02 = 0,98 = 98\%$
+
+**Resposta:** 98%
+
+---
+
+**Analogia 4 — "A Pesquisa Eleitoral"**
+
+Em uma pesquisa, cada eleitor tem **40% de chance de votar no candidato A** ($p = 0,4$).
+
+**Situação A: Probabilidade de votar em A**
+
+**Resolução:**
+- $P(X = 1) = 0,4 = 40\%$
+
+**Situação B: Probabilidade de não votar em A**
+
+**Resolução:**
+- $P(X = 0) = 0,6 = 60\%$
+
+---
+
+**Analogia 5 — "O Diagnóstico Médico"**
+
+Um teste para uma doença tem **98% de sensibilidade** ($p = 0,98$).
+
+**Situação A: Probabilidade de teste positivo (doente)**
+
+**Resolução:**
+- $P(X = 1) = 0,98 = 98\%$
+
+**Situação B: Probabilidade de teste negativo (falso negativo)**
+
+**Resolução:**
+- $P(X = 0) = 0,02 = 2\%$
+
+---
+
+### 3. FUNÇÃO DE PROBABILIDADE (FP)
+
+A função de probabilidade da Bernoulli é:
+
+$$ P(X = x) = p^x (1-p)^{1-x}, \quad x \in \{0, 1\} $$
+
+**Verificação da fórmula:**
+
+| Valor de $x$ | Substituição | Resultado | Significado |
+| --- | --- | --- | --- |
+| $x = 1$ (sucesso) | $p^1 (1-p)^0$ | $p$ | Probabilidade de sucesso |
+| $x = 0$ (falha) | $p^0 (1-p)^1$ | $1-p$ | Probabilidade de falha |
+
+**Exemplo Ilustrativo — Moeda Honesta ($p = 0,5$):**
+
+| $x$ | $P(X = x)$ | Cálculo | Probabilidade |
+| --- | --- | --- | --- |
+| 1 | $0,5^1 \cdot 0,5^0$ | $0,5 \cdot 1$ | 50% |
+| 0 | $0,5^0 \cdot 0,5^1$ | $1 \cdot 0,5$ | 50% |
+
+**Exemplo Ilustrativo — Sensor ($p = 0,95$):**
+
+| $x$ | $P(X = x)$ | Cálculo | Probabilidade |
+| --- | --- | --- | --- |
+| 1 | $0,95^1 \cdot 0,05^0$ | $0,95 \cdot 1$ | 95% |
+| 0 | $0,95^0 \cdot 0,05^1$ | $1 \cdot 0,05$ | 5% |
+
+**Propriedades da FP:**
+
+1. **$0 \leq P(X = x) \leq 1$:** Como $0 \leq p \leq 1$, tanto $p$ quanto $1-p$ estão entre 0 e 1 ✅
+2. **$\sum_{x} P(X = x) = 1$:** $(1-p) + p = 1$ ✅
+
+### 4. FUNÇÃO DE DISTRIBUIÇÃO (FD) — $F(x) = P(X \leq x)$
+
+A FD acumula as probabilidades da FP:
+
+$$ F(x) = P(X \leq x) = \begin{cases} 0, & x < 0 \\ 1-p, & 0 \leq x < 1 \\ 1, & x \geq 1 \end{cases} $$
+
+**Explicação dos 3 casos com exemplos:**
+
+| Caso | Condição | $F(x)$ | Exemplo Numérico | Significado |
+| --- | --- | --- | --- | --- |
+| **Caso 1** | $x < 0$ | 0 | $F(-0,5) = 0$ | A probabilidade de $X$ ser menor que -0,5 é zero (não há valores negativos). |
+| **Caso 2** | $0 \leq x < 1$ | $1-p$ | $F(0,5) = 1-p$ | A probabilidade de $X \leq 0,5$ é a probabilidade de falha. |
+| **Caso 3** | $x \geq 1$ | 1 | $F(1) = 1$, $F(2) = 1$ | A probabilidade de $X \leq 1$ é 1 (certeza). |
+
+**Exemplo Ilustrativo — Moeda Honesta ($p = 0,5$):**
+
+$$ F(x) = \begin{cases} 0, & x < 0 \\ 0,5, & 0 \leq x < 1 \\ 1, & x \geq 1 \end{cases} $$
+
+**Interpretação detalhada:**
+
+- $F(-1) = 0$: Não há probabilidade de $X$ ser ≤ -1.
+- $F(0) = 0,5$: A probabilidade de $X \leq 0$ (ou seja, sair coroa) é 0,5.
+- $F(0,7) = 0,5$: A probabilidade de $X \leq 0,7$ é 0,5.
+- $F(1) = 1$: A probabilidade de $X \leq 1$ é 1 (certeza).
+- $F(2) = 1$: A probabilidade de $X \leq 2$ é 1.
+
+**Exemplo Ilustrativo — Sensor de Alarme ($p = 0,95$):**
+
+$$ F(x) = \begin{cases} 0, & x < 0 \\ 0,05, & 0 \leq x < 1 \\ 1, & x \geq 1 \end{cases} $$
+
+**Interpretação:**
+- $F(-1) = 0$
+- $F(0) = 0,05$: A probabilidade de o sensor **não** detectar é 5%.
+- $F(0,5) = 0,05$
+- $F(1) = 1$
+
+### 5. RELAÇÃO ENTRE FP E FD
+
+| Direção | Fórmula | Exemplo ($p = 0,5$) |
+| --- | --- | --- |
+| **Da FP para a FD** | $F(x) = \sum_{t \leq x} P(X = t)$ | $F(0,5) = P(X=0) = 0,5$ |
+| **Da FD para a FP** | $P(X = x) = F(x) - F(x^-)$ | $P(X=1) = F(1) - F(1^-) = 1 - 0,5 = 0,5$ |
+
+### 6. VALOR ESPERADO (MÉDIA) — $E[X]$
+
+$$ E[X] = \sum_{x} x \cdot P(X = x) = 0 \cdot (1-p) + 1 \cdot p = p $$
+
+**Exemplo Ilustrativo 1 — Moeda Honesta ($p = 0,5$):**
+
+$E[X] = 0,5$. Em 100 lançamentos, espera-se 50 caras.
+
+**Exemplo Ilustrativo 2 — Sensor de Alarme ($p = 0,95$):**
+
+$E[X] = 0,95$. Em 100 detecções, espera-se 95 sucessos.
+
+**Exemplo Ilustrativo 3 — Teste de Qualidade ($p = 0,02$):**
+
+$E[X] = 0,02$. Em 100 peças, espera-se 2 defeituosas.
+
+### 7. VARIÂNCIA — $Var(X)$
+
+**Cálculo por definição:**
+$$ Var(X) = E[(X - \mu)^2] = (0-p)^2 (1-p) + (1-p)^2 p = p(1-p) $$
+
+**Cálculo pela fórmula alternativa:**
+$$ E[X^2] = 0^2 \cdot (1-p) + 1^2 \cdot p = p $$
+$$ Var(X) = E[X^2] - (E[X])^2 = p - p^2 = p(1-p) $$
+
+**Desvio Padrão:**
+$$ \sigma = \sqrt{p(1-p)} $$
+
+**Exemplo Ilustrativo 1 — Moeda Honesta ($p = 0,5$):**
+- $Var(X) = 0,5 \cdot 0,5 = 0,25$
+- $\sigma = 0,5$
+
+**Exemplo Ilustrativo 2 — Sensor de Alarme ($p = 0,95$):**
+- $Var(X) = 0,95 \cdot 0,05 = 0,0475$
+- $\sigma \approx 0,218$
+
+**Exemplo Ilustrativo 3 — Teste de Qualidade ($p = 0,02$):**
+- $Var(X) = 0,02 \cdot 0,98 = 0,0196$
+- $\sigma \approx 0,14$
+
+### 8. FUNÇÃO GERATRIZ DE MOMENTOS (FGM) — $M_X(t)$
+
+$$ M_X(t) = E[e^{tX}] = e^{t \cdot 0} \cdot (1-p) + e^{t \cdot 1} \cdot p = 1-p + p e^t $$
+
+**Exemplo Ilustrativo — Moeda Honesta ($p = 0,5$):**
+$$ M_X(t) = 0,5 + 0,5 e^t $$
+
+**Verificação — Geração dos momentos:**
+
+- $M_X'(t) = p e^t$
+- $E[X] = M_X'(0) = p$ ✅
+
+- $M_X''(t) = p e^t$
+- $E[X^2] = M_X''(0) = p$ ✅
+- $Var(X) = E[X^2] - [E[X]]^2 = p - p^2 = p(1-p)$ ✅
+
+### 9. PROPRIEDADES ESPECIAIS DA BERNOULLI
+
+| Propriedade | Fórmula | Explicação | Exemplo |
+| --- | --- | --- | --- |
+| **Soma de Bernoullis** | Soma de $n$ Bernoullis independentes com mesmo $p$ → **Binomial(n, p)** | A base da distribuição Binomial. | Jogar 10 moedas: número de caras é Binomial(10, 0,5). |
+| **Produto de Bernoullis** | $X_1 \cdot X_2 = 1$ apenas se ambos forem 1. | Modela a ocorrência simultânea de dois sucessos. | Dois sensores precisam detectar simultaneamente. |
+| **Complemento** | Se $X \sim \text{Bernoulli}(p)$, então $1-X \sim \text{Bernoulli}(1-p)$. | Troca sucesso com falha. | Se a chance de cara é 0,6, a chance de coroa é 0,4. |
+| **Variância Máxima** | $Var(X) \leq 1/4$, com igualdade em $p = 0,5$. | A máxima incerteza ocorre no caso simétrico. | Moeda honesta tem a maior variância possível. |
+| **Independência** | Se $X$ e $Y$ são Bernoullis independentes, $P(X=1, Y=1) = p_X \cdot p_Y$. | A probabilidade conjunta é o produto das marginais. | Dois sensores independentes detectam juntos com probabilidade $p_1 p_2$. |
+
+### 10. QUADRO RESUMO — BERNOULLI
+
+| Conceito | Fórmula |
+| --- | --- |
+| **Suporte** | $\{0, 1\}$ |
+| **FP** | $P(X = x) = p^x (1-p)^{1-x}$ |
+| **FD** | $F(x) = \begin{cases} 0, & x < 0 \\ 1-p, & 0 \leq x < 1 \\ 1, & x \geq 1 \end{cases}$ |
+| **Valor Esperado** | $E[X] = p$ |
+| **Variância** | $Var(X) = p(1-p)$ |
+| **FGM** | $M_X(t) = 1-p + p e^t$ |
+| **Soma de $n$ Bernoullis** | $\text{Binomial}(n, p)$ |
+
+### 11. APLICAÇÕES PRÁTICAS DA BERNOULLI
+
+| Área | Situação | Sucesso (X = 1) | Falha (X = 0) | $p$ |
+| --- | --- | --- | --- | --- |
+| **Jogos de Azar** | Lançamento de moeda | Cara | Coroa | 0,5 |
+| **Controle de Qualidade** | Inspeção de peça | Defeituosa | Boa | Taxa de defeito |
+| **Marketing** | Campanha publicitária | Cliente compra | Cliente não compra | Taxa de conversão |
+| **Pesquisa Eleitoral** | Entrevista com eleitor | Vota no candidato A | Não vota em A | Intenção de voto |
+| **Segurança** | Sensor de alarme | Sensor dispara | Sensor não dispara | Probabilidade de detecção |
+| **Medicina** | Teste diagnóstico | Teste positivo | Teste negativo | Sensibilidade do teste |
+| **Biologia** | Mutação genética | Gene mutado | Gene normal | Taxa de mutação |
+| **Engenharia** | Componente eletrônico | Componente falha | Componente funciona | Taxa de falha |
+
+## 📝 EXERCÍCIOS RESOLVIDOS PASSO A PASSO
+
+<details>
+<summary>📗 Exercício 1 — Bernoulli Básica</summary>
+
+**Enunciado:** Seja $X \sim \text{Bernoulli}(0,7)$.
+
+a) Calcule $P(X = 1)$.
+b) Calcule $P(X = 0)$.
+c) Calcule $P(X \leq 0,5)$.
+d) Calcule $E[X]$.
+e) Calcule $Var(X)$.
+f) Calcule $\sigma$.
+g) Calcule $M_X(t)$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**a) $P(X = 1)$:**
+- $P(X = 1) = p = 0,7$
+
+**b) $P(X = 0)$:**
+- $P(X = 0) = 1 - p = 0,3$
+
+**c) $P(X \leq 0,5)$:**
+- $P(X \leq 0,5) = F(0,5) = 1 - p = 0,3$
+
+**d) $E[X]$:**
+- $E[X] = p = 0,7$
+
+**e) $Var(X)$:**
+- $Var(X) = p(1-p) = 0,7 \cdot 0,3 = 0,21$
+
+**f) $\sigma$:**
+- $\sigma = \sqrt{0,21} \approx 0,458$
+
+**g) $M_X(t)$:**
+- $M_X(t) = 1-p + p e^t = 0,3 + 0,7 e^t$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Sensor de Alarme</summary>
+
+**Enunciado:** Um sensor de movimento tem probabilidade 0,92 de detectar um intruso.
+
+a) Qual a probabilidade de o sensor **não** detectar?
+b) Calcule $E[X]$ e $Var(X)$.
+c) Se você instalar 10 sensores independentes, qual o número esperado de detecções?
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**a) $P(X = 0) = 1 - 0,92 = 0,08$** (8%)
+
+**b) $E[X] = 0,92$, $Var(X) = 0,92 \cdot 0,08 = 0,0736$**
+
+**c) Número esperado de detecções:**
+- $E[\text{total}] = 10 \cdot p = 10 \cdot 0,92 = 9,2$ detecções esperadas.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Teste de Qualidade</summary>
+
+**Enunciado:** Uma máquina produz peças com taxa de defeito de 3%. Seja $X = 1$ se a peça é defeituosa.
+
+a) Qual a probabilidade de uma peça ser boa?
+b) Calcule $E[X]$ e $\sigma$.
+c) Qual a probabilidade de duas peças independentes serem **ambas** defeituosas?
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**a) $P(X = 0) = 1 - 0,03 = 0,97$** (97%)
+
+**b) $E[X] = 0,03$, $\sigma = \sqrt{0,03 \cdot 0,97} = \sqrt{0,0291} \approx 0,1706$**
+
+**c) $P(X_1 = 1, X_2 = 1) = 0,03 \cdot 0,03 = 0,0009 = 0,09\%$**
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Comparação de Variâncias</summary>
+
+**Enunciado:** Calcule $Var(X)$ para $p = 0,2$, $p = 0,5$ e $p = 0,8$. Em qual caso a variância é máxima?
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+| $p$ | $Var(X) = p(1-p)$ |
+| --- | --- |
+| 0,2 | $0,2 \cdot 0,8 = 0,16$ |
+| 0,5 | $0,5 \cdot 0,5 = 0,25$ |
+| 0,8 | $0,8 \cdot 0,2 = 0,16$ |
+
+**Máxima variância:** $p = 0,5$ (máxima incerteza).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — FGM e Momentos</summary>
+
+**Enunciado:** Seja $X \sim \text{Bernoulli}(0,4)$. Use a FGM para calcular $E[X]$ e $E[X^2]$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**FGM:** $M_X(t) = 0,6 + 0,4 e^t$
+
+- $M_X'(t) = 0,4 e^t$
+- $E[X] = M_X'(0) = 0,4$ ✅
+
+- $M_X''(t) = 0,4 e^t$
+- $E[X^2] = M_X''(0) = 0,4$ ✅
+
+</details>
+</details>
+
+## 🎯 DESAFIO FINAL
+
+**Enunciado:** Seja $X \sim \text{Bernoulli}(p)$.
+
+a) Prove que $E[X^3] = p$.
+b) Prove que o terceiro momento central é $E[(X-p)^3] = p(1-p)(1-2p)$.
+c) Use a FGM para mostrar que $Var(X) = p(1-p)$.
+d) Prove que $Var(X) \leq 1/4$ para qualquer $p \in [0,1]$.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**a) $E[X^3]$:**
+- Como $X$ só assume 0 ou 1, $X^3 = X$.
+- Portanto, $E[X^3] = E[X] = p$.
+
+**b) $E[(X-p)^3]$:**
+$$ E[(X-p)^3] = (0-p)^3 (1-p) + (1-p)^3 p $$
+$$ = -p^3 (1-p) + p(1-p)^3 = p(1-p)[(1-p)^2 - p^2] = p(1-p)(1-2p) $$
+
+**c) Usando a FGM:**
+- $M_X(t) = 1-p + p e^t$
+- $M_X''(0) = p$
+- $Var(X) = E[X^2] - [E[X]]^2 = p - p^2 = p(1-p)$ ✅
+
+**d) $Var(X) \leq 1/4$:**
+- $Var(X) = p(1-p) = -p^2 + p$
+- O máximo ocorre em $p = 0,5$, com valor $0,25$.
+- Portanto, $Var(X) \leq 1/4$ para todo $p \in [0,1]$.
+
+</details>
+
+> *A distribuição de Bernoulli é o tijolo fundamental da probabilidade. Dominar sua definição, analogias, propriedades, momentos e aplicações — com exemplos claros em cada tópico — é essencial para avançar para distribuições mais complexas.*

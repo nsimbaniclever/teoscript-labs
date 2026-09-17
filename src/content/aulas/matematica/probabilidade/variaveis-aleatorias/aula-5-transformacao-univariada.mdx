@@ -1,0 +1,310 @@
+# Transformação de Variáveis Aleatórias
+
+### 1. O que é uma Transformação de Variável Aleatória?
+
+Muitas vezes, estamos interessados não na variável original $X$, mas em uma **função** dela: $Y = g(X)$. Por exemplo:
+
+- $Y = X^2$ (área de um quadrado com lado aleatório)
+- $Y = e^X$ (crescimento exponencial de uma população aleatória)
+- $Y = \ln(X)$ (logaritmo de uma variável positiva)
+- $Y = \frac{1}{X}$ (recíproca de uma variável)
+
+> **O problema:** Dada a distribuição de $X$, qual é a distribuição de $Y = g(X)$?
+
+### 2. Método da Função de Distribuição (FDA)
+
+Este método funciona para **qualquer função** $g$, mesmo que não seja bijetora. A ideia é:
+
+1. Expressar a FDA de $Y$ em termos da FDA de $X$:
+   $$ F_Y(y) = P(Y \leq y) = P(g(X) \leq y) $$
+
+2. Resolver a inequação $g(X) \leq y$ para encontrar a região correspondente em $X$.
+
+3. Se $Y$ for contínua, derivar a FDA para obter a fdp:
+   $$ f_Y(y) = F_Y'(y) $$
+
+**Exemplo 1 — Transformação $Y = X^2$ com $X \sim \text{Uniforme}(-1, 1)$:**
+
+Seja $X \sim \text{Uniforme}(-1, 1)$, ou seja:
+$$ f_X(x) = \frac{1}{2}, \quad -1 \leq x \leq 1 $$
+
+Encontre a fdp de $Y = X^2$.
+
+**Resolução (Método da FDA):**
+
+**Passo 1 — FDA de $Y$:**
+$$ F_Y(y) = P(Y \leq y) = P(X^2 \leq y) $$
+
+Para $y < 0$: $F_Y(y) = 0$.
+
+Para $0 \leq y \leq 1$:
+$$ P(X^2 \leq y) = P(-\sqrt{y} \leq X \leq \sqrt{y}) = \int_{-\sqrt{y}}^{\sqrt{y}} \frac{1}{2} dx = \frac{1}{2} \cdot (2\sqrt{y}) = \sqrt{y} $$
+
+Para $y > 1$: $F_Y(y) = 1$.
+
+**Passo 2 — fdp de $Y$:**
+$$ f_Y(y) = F_Y'(y) = \frac{d}{dy} \sqrt{y} = \frac{1}{2\sqrt{y}}, \quad 0 < y < 1 $$
+
+**Resposta:**
+$$ f_Y(y) = \begin{cases} \frac{1}{2\sqrt{y}}, & 0 < y < 1 \\ 0, & \text{caso contrário} \end{cases} $$
+
+### 3. Método do Jacobiano (Transformação Monótona)
+
+Quando $Y = g(X)$ é uma função **bijetora** (monótona crescente ou decrescente), podemos usar uma fórmula direta:
+
+> **Fórmula do Jacobiano (univariado):**
+> $$ f_Y(y) = f_X(g^{-1}(y)) \cdot \left| \frac{d}{dy} g^{-1}(y) \right| $$
+
+**Onde:**
+- $g^{-1}(y)$ é a função inversa de $g$ (ou seja, $x = g^{-1}(y)$).
+- $\left| \frac{d}{dy} g^{-1}(y) \right|$ é o **valor absoluto da derivada da inversa**.
+
+**Exemplo 2 — Transformação linear $Y = aX + b$:**
+
+Seja $Y = aX + b$, com $a \neq 0$. Encontre a fdp de $Y$.
+
+**Resolução:**
+- $g(x) = a x + b$
+- Inversa: $x = g^{-1}(y) = \frac{y - b}{a}$
+- Derivada da inversa: $\frac{d}{dy} g^{-1}(y) = \frac{1}{a}$
+- $|\frac{d}{dy} g^{-1}(y)| = \frac{1}{|a|}$
+
+**Aplicando a fórmula:**
+$$ f_Y(y) = f_X\left( \frac{y - b}{a} \right) \cdot \frac{1}{|a|} $$
+
+**Caso particular — $X \sim N(\mu, \sigma^2)$, $Y = aX + b$:**
+$$ f_Y(y) = \frac{1}{\sqrt{2\pi} \cdot |a| \sigma} \exp\left( -\frac{1}{2} \left( \frac{y - b - a\mu}{a\sigma} \right)^2 \right) $$
+
+Ou seja, $Y \sim N(a\mu + b, a^2 \sigma^2)$. Isso mostra que a família Normal é fechada para transformações lineares.
+
+**Exemplo 3 — Transformação exponencial $Y = e^X$:**
+
+Seja $X$ com fdp $f_X(x)$. Encontre a fdp de $Y = e^X$.
+
+**Resolução:**
+- $g(x) = e^x$ (monótona crescente)
+- Inversa: $x = g^{-1}(y) = \ln(y)$, com $y > 0$
+- Derivada da inversa: $\frac{d}{dy} \ln(y) = \frac{1}{y}$
+- $|\frac{d}{dy} g^{-1}(y)| = \frac{1}{y}$
+
+**Aplicando a fórmula:**
+$$ f_Y(y) = f_X(\ln(y)) \cdot \frac{1}{y}, \quad y > 0 $$
+
+**Caso particular — $X \sim N(0, 1)$:**
+$$ f_Y(y) = \frac{1}{\sqrt{2\pi}} e^{-\frac{1}{2}(\ln y)^2} \cdot \frac{1}{y}, \quad y > 0 $$
+
+Esta é a distribuição **Log-Normal**.
+
+**Exemplo 4 — Transformação recíproca $Y = 1/X$:**
+
+Seja $X$ com fdp $f_X(x)$. Encontre a fdp de $Y = 1/X$.
+
+**Resolução:**
+- $g(x) = 1/x$ (monótona decrescente em $(0, \infty)$)
+- Inversa: $x = g^{-1}(y) = 1/y$, com $y \neq 0$
+- Derivada da inversa: $\frac{d}{dy} \frac{1}{y} = -\frac{1}{y^2}$
+- $|\frac{d}{dy} g^{-1}(y)| = \frac{1}{y^2}$
+
+**Aplicando a fórmula:**
+$$ f_Y(y) = f_X\left( \frac{1}{y} \right) \cdot \frac{1}{y^2}, \quad y \neq 0 $$
+
+### 4. Comparação entre os Métodos
+
+| Característica | Método da FDA | Método do Jacobiano |
+| --- | --- | --- |
+| **Tipo de função** | Qualquer função | Função bijetora (monótona) |
+| **Complexidade** | Pode ser trabalhoso | Mais direto |
+| **Exemplo** | $Y = X^2$ (não bijetora) | $Y = e^X$, $Y = 1/X$ |
+| **Passos** | 1. $F_Y(y) = P(g(X) \leq y)$ 2. Derivar | 1. Encontrar inversa 2. Derivar inversa 3. Aplicar fórmula |
+
+### 5. Transformação para Funções Não Monótonas
+
+Quando a função não é bijetora, o método do Jacobiano **não se aplica diretamente**. É necessário usar o método da FDA ou, alternativamente, o **método da soma de partes**.
+
+**Exemplo 5 — $Y = X^2$ com $X \sim N(0, 1)$:**
+
+**Resolução (método da FDA):**
+
+Para $y > 0$:
+$$ F_Y(y) = P(X^2 \leq y) = P(-\sqrt{y} \leq X \leq \sqrt{y}) $$
+$$ = \Phi(\sqrt{y}) - \Phi(-\sqrt{y}) = 2\Phi(\sqrt{y}) - 1 $$
+
+Derivando:
+$$ f_Y(y) = \frac{d}{dy} [2\Phi(\sqrt{y}) - 1] = 2 \cdot \phi(\sqrt{y}) \cdot \frac{1}{2\sqrt{y}} = \frac{\phi(\sqrt{y})}{\sqrt{y}} $$
+
+Onde $\phi(z) = \frac{1}{\sqrt{2\pi}} e^{-z^2/2}$ é a fdp da Normal padrão.
+
+Substituindo:
+$$ f_Y(y) = \frac{1}{\sqrt{2\pi}} e^{-y/2} \cdot \frac{1}{\sqrt{y}} = \frac{1}{\sqrt{2\pi y}} e^{-y/2}, \quad y > 0 $$
+
+Esta é a distribuição **Qui-Quadrado com 1 grau de liberdade**.
+
+### 6. Resumo — Transformação de Variáveis Aleatórias
+
+| Função $g(x)$ | Inversa $g^{-1}(y)$ | $\left| \frac{d}{dy} g^{-1}(y) \right|$ | Observação |
+| --- | --- | --- | --- |
+| $a x + b$ | $(y - b)/a$ | $1/|a|$ | Linear |
+| $e^x$ | $\ln(y)$ | $1/y$ | Log-Normal |
+| $x^2$ | $\pm\sqrt{y}$ | — | Não bijetora (usar FDA) |
+| $1/x$ | $1/y$ | $1/y^2$ | Recíproca |
+| $\ln(x)$ | $e^y$ | $e^y$ | Logarítmica |
+
+## 📝 EXERCÍCIOS RESOLVIDOS
+
+<details>
+<summary>📗 Exercício 1 — Transformação linear</summary>
+
+**Enunciado:** Seja $X$ com fdp $f_X(x) = 2x$, para $0 < x < 1$. Encontre a fdp de $Y = 2X + 1$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**Passo 1 — Identificar $g(x)$:**
+- $g(x) = 2x + 1$
+- Inversa: $x = (y - 1)/2$
+- Derivada da inversa: $1/2$
+
+**Passo 2 — Aplicar a fórmula:**
+$$ f_Y(y) = f_X\left( \frac{y - 1}{2} \right) \cdot \frac{1}{2} $$
+$$ f_Y(y) = 2 \cdot \frac{y - 1}{2} \cdot \frac{1}{2} = \frac{y - 1}{2} $$
+
+**Domínio de $y$:** $0 < x < 1 \Rightarrow 1 < y < 3$.
+
+**Resposta:**
+$$ f_Y(y) = \begin{cases} \frac{y - 1}{2}, & 1 < y < 3 \\ 0, & \text{caso contrário} \end{cases} $$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Transformação exponencial</summary>
+
+**Enunciado:** Seja $X \sim \text{Uniforme}(0, 1)$. Encontre a fdp de $Y = -\ln(X)$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**Passo 1 — Identificar $g(x)$:**
+- $g(x) = -\ln(x)$, monótona decrescente para $0 < x < 1$
+- Inversa: $x = e^{-y}$
+- Derivada da inversa: $\frac{d}{dy} e^{-y} = -e^{-y}$
+- $|\frac{d}{dy} g^{-1}(y)| = e^{-y}$
+
+**Passo 2 — Aplicar a fórmula:**
+$$ f_Y(y) = f_X(e^{-y}) \cdot e^{-y} $$
+
+**Domínio de $y$:** $0 < x < 1 \Rightarrow y > 0$.
+
+**Resposta:**
+$$ f_Y(y) = 1 \cdot e^{-y} = e^{-y}, \quad y > 0 $$
+
+Ou seja, $Y \sim \text{Exponencial}(\lambda = 1)$. Este é um resultado clássico: o negativo do log de uma Uniforme(0,1) é Exponencial.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Transformação recíproca</summary>
+
+**Enunciado:** Seja $X \sim \text{Uniforme}(1, 2)$. Encontre a fdp de $Y = 1/X$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**Passo 1 — Identificar $g(x)$:**
+- $g(x) = 1/x$, monótona decrescente
+- Inversa: $x = 1/y$
+- Derivada da inversa: $\frac{d}{dy} \frac{1}{y} = -\frac{1}{y^2}$
+- $|\frac{d}{dy} g^{-1}(y)| = \frac{1}{y^2}$
+
+**Passo 2 — Aplicar a fórmula:**
+$$ f_Y(y) = f_X\left( \frac{1}{y} \right) \cdot \frac{1}{y^2} $$
+
+**Domínio de $y$:** $1 < x < 2 \Rightarrow 1/2 < y < 1$.
+
+**Resposta:**
+$$ f_Y(y) = \begin{cases} \frac{1}{y^2}, & 1/2 < y < 1 \\ 0, & \text{caso contrário} \end{cases} $$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Transformação $Y = X^2$ (método da FDA)</summary>
+
+**Enunciado:** Seja $X$ com fdp $f_X(x) = 1$, para $-1 < x < 0$, e $f_X(x) = 0$, caso contrário. Encontre a fdp de $Y = X^2$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**Passo 1 — FDA de $Y$:**
+$$ F_Y(y) = P(X^2 \leq y) $$
+
+Para $y < 0$: $F_Y(y) = 0$.
+
+Para $0 \leq y \leq 1$:
+$$ P(X^2 \leq y) = P(-\sqrt{y} \leq X \leq \sqrt{y}) $$
+Como $X$ só é positivo em $-1 < x < 0$, temos:
+$$ P(-\sqrt{y} \leq X \leq \sqrt{y}) = \int_{-\sqrt{y}}^{0} 1 \, dx = \sqrt{y} $$
+
+Para $y > 1$: $F_Y(y) = 1$.
+
+**Passo 2 — fdp de $Y$:**
+$$ f_Y(y) = F_Y'(y) = \frac{d}{dy} \sqrt{y} = \frac{1}{2\sqrt{y}}, \quad 0 < y < 1 $$
+
+**Resposta:**
+$$ f_Y(y) = \begin{cases} \frac{1}{2\sqrt{y}}, & 0 < y < 1 \\ 0, & \text{caso contrário} \end{cases} $$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Transformação $Y = \sqrt{X}$</summary>
+
+**Enunciado:** Seja $X \sim \text{Exponencial}(\lambda)$, com $f_X(x) = \lambda e^{-\lambda x}$, $x > 0$. Encontre a fdp de $Y = \sqrt{X}$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**Passo 1 — Identificar $g(x)$:**
+- $g(x) = \sqrt{x}$, monótona crescente
+- Inversa: $x = y^2$
+- Derivada da inversa: $2y$
+
+**Passo 2 — Aplicar a fórmula:**
+$$ f_Y(y) = f_X(y^2) \cdot 2y = \lambda e^{-\lambda y^2} \cdot 2y, \quad y > 0 $$
+
+**Resposta:**
+$$ f_Y(y) = 2\lambda y e^{-\lambda y^2}, \quad y > 0 $$
+
+Esta é a distribuição **Rayleigh**, que aparece em problemas de sinais e ruídos.
+
+</details>
+</details>
+
+## 🎯 DESAFIO FINAL
+
+**Enunciado:** Seja $X \sim \text{Uniforme}(0, 1)$. Encontre a fdp de:
+- a) $Y = - \frac{1}{\lambda} \ln(1 - X)$
+- b) Identifique a distribuição de $Y$.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**a) Transformação:**
+- $g(x) = -\frac{1}{\lambda} \ln(1 - x)$, monótona crescente
+- Inversa: $x = 1 - e^{-\lambda y}$
+- Derivada da inversa: $\lambda e^{-\lambda y}$
+
+**Aplicando a fórmula:**
+$$ f_Y(y) = f_X(1 - e^{-\lambda y}) \cdot \lambda e^{-\lambda y} $$
+
+Como $f_X(x) = 1$ para $0 < x < 1$:
+$$ f_Y(y) = \lambda e^{-\lambda y}, \quad y > 0 $$
+
+**b) Identificação:** $Y \sim \text{Exponencial}(\lambda)$.
+
+**Resposta:** $f_Y(y) = \lambda e^{-\lambda y}$; $Y$ tem distribuição Exponencial com parâmetro $\lambda$.
+
+</details>
+
+> *A transformação de variáveis aleatórias é uma ferramenta poderosa para derivar distribuições de funções de variáveis conhecidas. O método da FDA funciona para qualquer função, enquanto o método do Jacobiano é mais direto para funções bijetoras.*

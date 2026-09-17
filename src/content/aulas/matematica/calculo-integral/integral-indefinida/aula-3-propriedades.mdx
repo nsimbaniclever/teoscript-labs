@@ -1,0 +1,353 @@
+# PROPRIEDADES DA INTEGRAL
+
+## 1. Propriedades da Integral Definida
+
+### 1.1 Linearidade
+
+Para constantes $a, b \in \mathbb{R}$ e funções integráveis $f, g$:
+
+$$
+\int_a^b (c_1 f(x) + c_2 g(x)) \, dx = c_1 \int_a^b f(x) \, dx + c_2 \int_a^b g(x) \, dx
+$$
+
+**Interpretação:** A integral "distribui" sobre soma e multiplicação por constante.
+
+### 1.2 Inversão dos Limites
+
+$$
+\int_b^a f(x) \, dx = -\int_a^b f(x) \, dx
+$$
+
+**Interpretação:** Inverter os limites de integração troca o sinal da integral.
+
+### 1.3 Integral com Limites Iguais
+
+$$
+\int_a^a f(x) \, dx = 0
+$$
+
+**Interpretação:** A área sob um ponto é zero.
+
+### 1.4 Aditividade
+
+Para $a < c < b$:
+
+$$
+\int_a^b f(x) \, dx = \int_a^c f(x) \, dx + \int_c^b f(x) \, dx
+$$
+
+**Interpretação:** A área total é a soma das áreas dos subintervalos.
+
+### 1.5 Comparação de Funções
+
+Se $f(x) \leq g(x)$ para todo $x \in [a, b]$, então:
+
+$$
+\int_a^b f(x) \, dx \leq \int_a^b g(x) \, dx
+$$
+
+**Interpretação:** Funções maiores têm integrais maiores.
+
+### 1.6 Valor Absoluto
+
+$$
+\left| \int_a^b f(x) \, dx \right| \leq \int_a^b |f(x)| \, dx
+$$
+
+## 2. Propriedades da Integral Indefinida
+
+### 2.1 Linearidade
+
+$$
+\int (c_1 f(x) + c_2 g(x)) \, dx = c_1 \int f(x) \, dx + c_2 \int g(x) \, dx
+$$
+
+### 2.2 Constante de Integração
+
+$$
+\int f(x) \, dx = F(x) + C
+$$
+
+**Interpretação:** A constante $C$ é **única** para toda a integral indefinida, mas **diferente** para cada integral.
+
+## 3. Integração por Partes
+
+### 3.1 Fórmula
+
+A integração por partes é a "regra do produto" da integração:
+
+$$
+\int u \, dv = uv - \int v \, du
+$$
+
+**Como escolher $u$ e $dv$:**
+
+| Tipo de Função | Escolha de $u$ |
+|----------------|-------------------|
+| Logarítmica ($\ln x$) | $u = \ln x$ |
+| Polinomial ($x^n$) | $u = x^n$ |
+| Exponencial ($e^x$) | $dv = e^x dx$ |
+| Trigonométrica ($\sin x, \cos x$) | $dv = \sin x \, dx$ ou $\cos x \, dx$ |
+
+**Regra prática (LIATE):**
+1. **L**ogarítmica
+2. **I**nversa trigonométrica
+3. **A**lgébrica (polinomial)
+4. **T**rigonométrica
+5. **E**xponencial
+
+### 3.2 Exemplo Acadêmico Passo a Passo
+
+Calcular:
+$$
+\int x e^x \, dx
+$$
+
+**Passo 1:** Escolher $u$ e $dv$:
+$$
+u = x \quad \Rightarrow \quad du = dx
+$$
+$$
+dv = e^x \, dx \quad \Rightarrow \quad v = e^x
+$$
+
+**Passo 2:** Aplicar a fórmula:
+$$
+\int x e^x \, dx = x e^x - \int e^x \, dx = x e^x - e^x + C
+$$
+
+**Resultado:** $\int x e^x \, dx = e^x(x - 1) + C$
+
+### 3.3 Exemplo 2: Produto de Polinômio e Seno
+
+Calcular:
+$$
+\int x \sin(x) \, dx
+$$
+
+**Passo 1:** Escolher $u$ e $dv$:
+$$
+u = x \quad \Rightarrow \quad du = dx
+$$
+$$
+dv = \sin(x) \, dx \quad \Rightarrow \quad v = -\cos(x)
+$$
+
+**Passo 2:** Aplicar a fórmula:
+$$
+\int x \sin(x) \, dx = -x \cos(x) - \int (-\cos(x)) \, dx = -x \cos(x) + \int \cos(x) \, dx
+$$
+
+**Resultado:** $\int x \sin(x) \, dx = -x \cos(x) + \sin(x) + C$
+
+### 3.4 Exemplo 3: Logaritmo
+
+Calcular:
+$$
+\int \ln(x) \, dx
+$$
+
+**Passo 1:** Escrever $\ln(x)$ como $1 \cdot \ln(x)$:
+$$
+u = \ln(x) \quad \Rightarrow \quad du = \frac{1}{x} \, dx
+$$
+$$
+dv = dx \quad \Rightarrow \quad v = x
+$$
+
+**Passo 2:** Aplicar a fórmula:
+$$
+\int \ln(x) \, dx = x \ln(x) - \int x \cdot \frac{1}{x} \, dx = x \ln(x) - \int 1 \, dx
+$$
+
+**Resultado:** $\int \ln(x) \, dx = x \ln(x) - x + C$
+
+## 4. Exemplos Lúdicos Aprimorados
+
+### 🍔 EXEMPLO 1 – A LANCHONETE (RECEITA TOTAL)
+
+A lanchonete tem receita marginal:
+$$
+R'(x) = x e^{-0.1x}
+$$
+
+**Receita total $R(x)$?**
+
+**Solução:** Integrar por partes.
+
+$u = x$, $dv = e^{-0.1x} dx$
+
+$du = dx$, $v = -10e^{-0.1x}$
+
+$$
+R(x) = \int x e^{-0.1x} \, dx = -10x e^{-0.1x} - \int (-10e^{-0.1x}) \, dx
+$$
+$$
+= -10x e^{-0.1x} + 10 \int e^{-0.1x} \, dx = -10x e^{-0.1x} - 100e^{-0.1x} + C
+$$
+
+**Interpretação:** A receita total é uma combinação de termos exponenciais.
+
+### 🧃 EXEMPLO 2 – A CANTINA (EFICIÊNCIA ACUMULADA)
+
+A cantina tem eficiência marginal:
+$$
+E'(t) = t \cos(t)
+$$
+
+**Eficiência total $E(t)$?**
+
+**Solução:** Integrar por partes.
+
+$u = t$, $dv = \cos(t) dt$
+
+$du = dt$, $v = \sin(t)$
+
+$$
+E(t) = \int t \cos(t) \, dt = t \sin(t) - \int \sin(t) \, dt = t \sin(t) + \cos(t) + C
+$$
+
+## 5. Aplicação na Tese: Integração por Partes em FL
+
+### 5.1 Análise de Erro Acumulado
+
+Em FL, o erro acumulado ao longo do tempo pode ser expresso como uma integral. A integração por partes ajuda a simplificar essas expressões.
+
+### 5.2 Derivada da Função de Perda
+
+Em algumas análises, a integral da derivada da perda aparece. A integração por partes permite relacionar a perda total com a perda final.
+
+## 6. Exercícios Propostos (Manuais)
+
+<details>
+<summary>📗 Exercício 1 (Propriedades Básicas)</summary>
+
+**Enunciado:** Use as propriedades da integral para calcular:
+
+a) $\int_0^2 (3x^2 + 2x) \, dx$ (use linearidade)
+
+b) $\int_0^1 x^2 \, dx + \int_1^2 x^2 \, dx$ (use aditividade)
+
+c) $\int_0^1 x \, dx + \int_1^0 x \, dx$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\int_0^2 3x^2 \, dx + \int_0^2 2x \, dx = 3\left[\frac{x^3}{3}\right]_0^2 + 2\left[\frac{x^2}{2}\right]_0^2 = 8 + 4 = 12$
+
+b) $\int_0^2 x^2 \, dx = \left[\frac{x^3}{3}\right]_0^2 = \frac{8}{3}$
+
+c) $\int_0^1 x \, dx + \int_1^0 x \, dx = \frac{1}{2} - \frac{1}{2} = 0$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 (Integração por Partes)</summary>
+
+**Enunciado:** Calcule as integrais indefinidas:
+
+a) $\int x e^{2x} \, dx$
+
+b) $\int x^2 \ln(x) \, dx$
+
+c) $\int e^x \sin(x) \, dx$ (dica: use integração por partes duas vezes)
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $u = x, dv = e^{2x} dx \Rightarrow du = dx, v = \frac{e^{2x}}{2}$
+
+$\int x e^{2x} dx = \frac{x e^{2x}}{2} - \int \frac{e^{2x}}{2} dx = \frac{x e^{2x}}{2} - \frac{e^{2x}}{4} + C$
+
+b) $u = \ln(x), dv = x^2 dx \Rightarrow du = \frac{1}{x} dx, v = \frac{x^3}{3}$
+
+$\int x^2 \ln(x) dx = \frac{x^3}{3} \ln(x) - \int \frac{x^2}{3} dx = \frac{x^3}{3} \ln(x) - \frac{x^3}{9} + C$
+
+c) $\int e^x \sin(x) dx = \frac{e^x(\sin(x) - \cos(x))}{2} + C$ (use integração por partes duas vezes)
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 (Aplicação – Custo)</summary>
+
+**Enunciado:** O custo marginal de uma empresa é $C'(x) = x \ln(x)$.
+
+a) Encontre o custo total $C(x)$.
+
+b) Se $C(1) = 10$, determine a constante de integração.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $C(x) = \int x \ln(x) dx = \frac{x^2}{2} \ln(x) - \frac{x^2}{4} + K$
+
+b) $C(1) = \frac{1}{2} \ln(1) - \frac{1}{4} + K = -\frac{1}{4} + K = 10 \Rightarrow K = 10.25$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 (Aplicação – FL)</summary>
+
+**Enunciado:** Em FL, o erro acumulado é:
+$$
+E(T) = \int_0^T t e^{-t} \, dt
+$$
+
+a) Calcule $E(T)$ usando integração por partes.
+
+b) Qual é o limite $\lim_{T \to \infty} E(T)$?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $E(T) = \int_0^T t e^{-t} dt = \left[-t e^{-t}\right]_0^T + \int_0^T e^{-t} dt = -T e^{-T} + \left[-e^{-t}\right]_0^T$
+
+$E(T) = -T e^{-T} - e^{-T} + 1 = 1 - e^{-T}(T + 1)$
+
+b) $\lim_{T \to \infty} E(T) = 1$
+
+</details>
+</details>
+
+## 7. 💻EXERCÍCIO COMPUTACIONAL
+
+<details>
+<summary>🐍 Ver código (Python/SymPy)</summary>
+
+```python
+import sympy as sp
+
+x = sp.Symbol('x')
+
+# Integração por partes
+f1 = x * sp.exp(x)
+print(f"∫x e^x dx = {sp.integrate(f1, x)}")
+
+f2 = x * sp.sin(x)
+print(f"∫x sin(x) dx = {sp.integrate(f2, x)}")
+
+f3 = sp.log(x)
+print(f"∫ln(x) dx = {sp.integrate(f3, x)}")
+
+f4 = x * sp.log(x)
+print(f"∫x ln(x) dx = {sp.integrate(f4, x)}")
+
+# Propriedades
+f5 = 3*x**2 + 2*x
+print(f"∫₀² (3x²+2x) dx = {sp.integrate(f5, (x, 0, 2))}")
+```
+
+</details>
+
+> *As propriedades da integral (linearidade, aditividade, inversão de limites, integração por partes) são ferramentas essenciais para simplificar e calcular integrais. A **integração por partes** é particularmente importante para integrar produtos de funções, como polinômios com exponenciais, senos, cossenos ou logaritmos.*

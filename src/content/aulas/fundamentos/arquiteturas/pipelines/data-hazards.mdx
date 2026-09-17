@@ -1,0 +1,438 @@
+# AULA 02 — CONFLITOS DE DADOS (DATA HAZARDS)
+
+## 1. INTRODUÇÃO
+
+Na aula anterior, estudamos o pipeline de 5 estágios e vimos como ele permite que várias instruções sejam executadas simultaneamente, aumentando o throughput do processador. Vimos que, em um pipeline ideal, uma instrução é concluída a cada ciclo.<br><br>
+
+Mas o mundo real não é tão simples. Há momentos em que o pipeline **precisa parar** — uma instrução não pode prosseguir porque depende de um resultado que ainda não foi calculado por uma instrução anterior. É como um operário em uma linha de montagem que não pode continuar porque a peça que ele precisa ainda está sendo feita pelo operário anterior.<br><br>
+
+Esses momentos de parada são chamados de **conflitos de dados (data hazards)**. Eles são a principal razão pela qual o pipeline real nunca atinge o desempenho teórico máximo.<br><br>
+
+Imagine que você está cozinhando várias receitas ao mesmo tempo. Uma receita diz "adicione o molho que você preparou na receita anterior". Se você ainda não terminou a receita anterior, você precisa esperar — não pode continuar. O pipeline da CPU enfrenta exatamente o mesmo problema.<br><br>
+
+Nesta aula, vamos estudar os conflitos de dados: o que são, como identificá-los, os diferentes tipos (RAW, WAR, WAW), e como o processador lida com eles usando técnicas como **stalls** e **forwarding**.
+
+## 2. O QUE SÃO CONFLITOS DE DADOS?
+
+### 2.1 Definição
+
+> "Conflito de dados (Data Hazard) é uma situação no pipeline onde uma instrução depende do resultado de uma instrução anterior que ainda não foi concluída, forçando o pipeline a parar (stall) ou utilizar técnicas de mitigação como forwarding."
+
+### 2.2 Características principais
+
+| Característica | Descrição |
+|---------|----------|
+| **O que causa** | Dependência entre instruções (uma precisa do resultado da outra) |
+| **Quando ocorre** | Quando a distância entre instruções é menor que o tempo de execução da instrução anterior |
+| **Consequência** | Pipeline stall (pausa) ou forwarding (encaminhamento) |
+| **Tipos** | RAW (Read After Write), WAR (Write After Read), WAW (Write After Write) |
+
+### 2.3 Analogia
+
+Os conflitos de dados são como **receitas de cozinha**:
+
+- **RAW (Read After Write):** "Adicione o molho que você preparou na receita anterior." Você precisa esperar o molho ficar pronto antes de adicioná-lo.
+- **WAR (Write After Read):** "Leia a quantidade de farinha, depois escreva o resultado na mesma variável." A ordem importa.
+- **WAW (Write After Write):** "Escreva o resultado na variável X, depois escreva outro resultado na mesma variável." A última escrita deve ser a que prevalece.
+
+## 3. OS TRÊS TIPOS DE CONFLITOS DE DADOS
+
+### 3.1 Tipos de dependências
+
+| Tipo | Nome | Descrição | Exemplo |
+|---------|---------|---------|---------|
+| **RAW** | Read After Write | Instrução lê um valor que uma instrução anterior vai escrever | `ADD R1, R2, R3` / `SUB R4, R1, R5` |
+| **WAR** | Write After Read | Instrução escreve em um local que uma instrução anterior leu | `SUB R4, R1, R5` / `ADD R1, R2, R3` |
+| **WAW** | Write After Write | Duas instruções escrevem no mesmo local | `ADD R1, R2, R3` / `SUB R1, R4, R5` |
+
+### 3.2 RAW — Read After Write (Verdadeira Dependência)
+
+O tipo mais comum e mais problemático.
+
+**Exemplo:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+Instrução 1: ADD R1, R2, R3    ; R1 = R2 + R3 (escreve em R1)
+Instrução 2: SUB R4, R1, R5    ; R4 = R1 - R5 (lê R1)
+</pre>
+
+**Problema:** A instrução 2 precisa do valor de R1, mas a instrução 1 ainda não terminou de escrevê-lo (está no estágio EX enquanto a instrução 2 está no ID).
+
+**Diagrama:**
+
+<details>
+<summary> **RAW hazard**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+Ciclo:  1    2    3    4    5    6
+I1:    [IF] [ID] [EX] [MEM] [WB]  ← R1 é escrito em WB
+I2:         [IF] [ID] [EX] [MEM] [WB]
+                   ↑
+            I2 precisa de R1 aqui,
+            mas I1 só vai escrever R1 em WB (ciclo 5)!
+    </pre>
+</details>
+
+### 3.3 WAR — Write After Read (Anti-Dependência)
+
+**Exemplo:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+Instrução 1: SUB R4, R1, R5    ; R4 = R1 - R5 (lê R1)
+Instrução 2: ADD R1, R2, R3    ; R1 = R2 + R3 (escreve em R1)
+</pre>
+
+**Problema:** A instrução 2 escreve em R1 antes que a instrução 1 tenha lido o valor antigo de R1.
+
+**Observação:** WAR é menos comum e geralmente não ocorre em pipelines in-order.
+
+### 3.4 WAW — Write After Write (Dependência de Saída)
+
+**Exemplo:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+Instrução 1: ADD R1, R2, R3    ; R1 = R2 + R3
+Instrução 2: SUB R1, R4, R5    ; R1 = R4 - R5
+</pre>
+
+**Problema:** As duas instruções escrevem em R1. O valor final deve ser da instrução 2.
+
+**Observação:** WAW também é menos comum e geralmente não ocorre em pipelines in-order.
+
+## 4. COMO O PIPELINE LIDA COM CONFLITOS DE DADOS?
+
+### 4.1 Método 1: Stalling (Pausa)
+
+A forma mais simples de lidar com data hazards é **parar o pipeline** até que o dado necessário esteja disponível.
+
+**Como funciona:**
+1. A CPU detecta que a instrução 2 precisa do resultado da instrução 1.
+2. A CPU insere "bolhas" (bubbles) no pipeline — estágios vazios.
+3. A instrução 2 fica presa no estágio ID até que o dado esteja disponível.
+4. Quando o dado está disponível, a instrução 2 prossegue.
+
+**Exemplo:**
+
+<details>
+<summary> **Stalling no pipeline**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+Ciclo:  1    2    3    4    5    6    7    8
+I1:    [IF] [ID] [EX] [MEM] [WB]
+I2:         [IF] [ID] [STALL] [STALL] [ID] [EX] [MEM] [WB]
+                                        ↑
+                              Esperou até R1 estar disponível
+    </pre>
+</details>
+
+**Desvantagem:** Perda de desempenho (ciclos desperdiçados).
+
+### 4.2 Método 2: Forwarding (Encaminhamento)
+
+O forwarding (ou bypass) é uma técnica que **envia o resultado diretamente** da saída de um estágio para a entrada de outro, sem esperar a escrita no registrador.
+
+**Como funciona:**
+1. O resultado da ULA no estágio EX é enviado diretamente para o estágio ID (ou EX) da próxima instrução.
+2. A instrução dependente recebe o valor **antes** de ser escrito no registrador.
+3. O pipeline não precisa parar.
+
+**Exemplo (com forwarding):**
+
+<details>
+<summary> **Forwarding no pipeline**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+Ciclo:  1    2    3    4    5    6
+I1:    [IF] [ID] [EX] [MEM] [WB]
+I2:         [IF] [ID] [EX] [MEM] [WB]
+                   ↑
+              Forwarding: resultado de I1 (EX) vai direto para I2 (EX)
+    </pre>
+</details>
+
+**Vantagem:** Sem stalls, pipeline continua cheio.
+
+### 4.3 Diagrama: Stalling vs Forwarding
+
+<details>
+<summary> **Comparação: Stalling vs Forwarding**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+SEM PIPELINE (5 estágios, sem otimização):
+I1:  IF → ID → EX → MEM → WB
+I2:       IF → ID → EX → MEM → WB
+                        ↑
+                   I2 espera I1 terminar
+
+COM STALLING:
+I1:  IF → ID → EX → MEM → WB
+I2:       IF → ID → STALL → STALL → ID → EX → MEM → WB
+                        ↑
+                   Esperou até WB de I1
+
+COM FORWARDING:
+I1:  IF → ID → EX → MEM → WB
+I2:       IF → ID → EX → MEM → WB
+                        ↑
+                   Forwarding: resultado vai direto
+    </pre>
+</details>
+
+## 5. EXEMPLOS PRÁTICOS
+
+### 5.1 Exemplo 1: RAW hazard simples
+
+**Código:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+ADD R1, R2, R3    ; I1: R1 = R2 + R3
+SUB R4, R1, R5    ; I2: R4 = R1 - R5 (depende de R1)
+</pre>
+
+**Sem forwarding:**
+
+<details>
+<summary> **Sem forwarding — stall**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+Ciclo: 1    2    3    4    5    6    7    8
+I1:   [IF] [ID] [EX] [MEM] [WB]
+I2:        [IF] [ID] [STALL] [STALL] [ID] [EX] [MEM] [WB]
+                     ↑            ↑
+               I2 precisa de R1   I2 espera 2 ciclos
+    </pre>
+</details>
+
+**Com forwarding:**
+
+<details>
+<summary> **Com forwarding — sem stall**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+Ciclo: 1    2    3    4    5    6
+I1:   [IF] [ID] [EX] [MEM] [WB]
+I2:        [IF] [ID] [EX] [MEM] [WB]
+                     ↑
+               Forwarding: R1 vai direto do EX de I1 para EX de I2
+    </pre>
+</details>
+
+### 5.2 Exemplo 2: RAW hazard com load
+
+**Código:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+LDR R1, [R2]      ; I1: R1 = valor em R2
+ADD R3, R1, R4    ; I2: R3 = R1 + R4 (depende de R1)
+</pre>
+
+**Problema:** O valor de R1 só está disponível após o estágio MEM de I1 (ciclo 4). Forwarding do estágio EX não funciona porque o dado vem da memória.
+
+**Solução:** Stalling + forwarding:
+
+<details>
+<summary> **Load-use hazard — stall necessário**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+Ciclo: 1    2    3    4    5    6    7
+I1:   [IF] [ID] [EX] [MEM] [WB]
+I2:        [IF] [ID] [STALL] [ID] [EX] [MEM] [WB]
+                     ↑
+               Espera 1 ciclo até MEM de I1
+    </pre>
+</details>
+
+### 5.3 Exemplo 3: Múltiplas dependências
+
+**Código:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+ADD R1, R2, R3    ; I1: R1 = R2 + R3
+SUB R2, R1, R4    ; I2: R2 = R1 - R4 (depende de R1)
+MUL R5, R2, R6    ; I3: R5 = R2 × R6 (depende de R2)
+</pre>
+
+**Dependências:**
+- I2 depende de I1 (RAW em R1)
+- I3 depende de I2 (RAW em R2)
+
+**Solução:** Forwarding em cadeia.
+
+## 6. DETECÇÃO DE DATA HAZARDS
+
+### 6.1 Como a CPU detecta conflitos
+
+A CPU usa a **unidade de detecção de hazards** para identificar conflitos:
+
+1. **Compara registradores:** Verifica se o registrador destino de uma instrução no pipeline é o mesmo que o registrador fonte de uma instrução posterior.
+2. **Verifica estágios:** Determina se o resultado já está disponível ou se é necessário stall.
+3. **Decide ação:** Stalling, forwarding, ou ambos.
+
+### 6.2 Tabela de decisão
+
+| Situação | Ação |
+|---------|---------|
+| Instrução em EX usa resultado de instrução em EX | Forwarding |
+| Instrução em EX usa resultado de instrução em MEM | Forwarding |
+| Instrução em EX usa resultado de instrução em WB | Sem ação (já está disponível) |
+| Instrução em ID usa resultado de instrução em EX | Stall + Forwarding |
+| Load → Instrução seguinte | Stall + Forwarding |
+
+## 7. APLICAÇÕES REAIS
+
+| Aplicação | Como lida com data hazards |
+|---------|----------|
+| **Processadores modernos** | Forwarding + Branch Prediction + Out-of-Order |
+| **Processadores simples (RISC)** | Stalling + Forwarding simples |
+| **Microcontroladores** | Pipeline com forwarding limitado |
+| **Processadores embarcados** | Pipeline simples, stall em conflitos |
+
+**Exemplo prático:** O compilador pode reordenar instruções para minimizar data hazards. Isso é chamado de **otimização de código**.
+
+## 8. EXERCÍCIOS
+
+<details>
+<summary>📗 Exercício 1 — O que é data hazard? (Fácil)</summary>
+
+**Enunciado:** Defina o que é um conflito de dados (data hazard) em um pipeline.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Data hazard é uma situação no pipeline onde uma instrução depende do resultado de uma instrução anterior que ainda não foi concluída, forçando o pipeline a parar (stall) ou utilizar técnicas de mitigação como forwarding.
+
+**Explicação:** É quando uma instrução precisa de um dado que ainda está sendo calculado por uma instrução anterior.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Tipos de data hazards (Fácil)</summary>
+
+**Enunciado:** Quais são os três tipos de data hazards? Cite um exemplo de cada.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+1. **RAW (Read After Write):** `ADD R1, R2, R3` / `SUB R4, R1, R5`
+2. **WAR (Write After Read):** `SUB R4, R1, R5` / `ADD R1, R2, R3`
+3. **WAW (Write After Write):** `ADD R1, R2, R3` / `SUB R1, R4, R5`
+
+**Explicação:** RAW é o mais comum e o único que realmente causa problemas em pipelines in-order.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Identificar RAW (Fácil)</summary>
+
+**Enunciado:** Identifique o data hazard no seguinte código:
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+I1: MUL R1, R2, R3
+I2: ADD R4, R1, R5
+</pre>
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** RAW (Read After Write) em R1.
+
+**Explicação:** I2 lê R1, e I1 escreve em R1. I2 precisa esperar I1 terminar de escrever R1.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Stalling (Médio)</summary>
+
+**Enunciado:** Explique o que é um stall no pipeline e quando ele ocorre.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Stall é uma pausa no pipeline onde uma ou mais instruções ficam "presas" em um estágio enquanto um conflito é resolvido.
+
+**Ocorre:** Quando uma instrução precisa de um resultado que ainda não está disponível (data hazard), especialmente quando o forwarding não é possível (ex: load seguido de uso imediato).
+
+**Explicação:** O stall insere "bolhas" (ciclos vazios) no pipeline, reduzindo o throughput.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Forwarding (Médio)</summary>
+
+**Enunciado:** Explique o que é forwarding (ou bypass) e como ele resolve data hazards.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Forwarding é uma técnica que envia o resultado diretamente da saída de um estágio do pipeline para a entrada de outro, sem esperar a escrita no registrador.
+
+**Como resolve:** Permite que uma instrução dependente receba o valor **antes** de ser escrito no registrador, evitando stalls.
+
+**Explicação:** O resultado do estágio EX (ou MEM) vai direto para o estágio ID (ou EX) da instrução seguinte.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Stalling vs Forwarding (Médio)</summary>
+
+**Enunciado:** Compare stalling e forwarding em termos de desempenho.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+- **Stalling:** Pausa o pipeline, inserindo bolhas. Perde ciclos de execução.
+- **Forwarding:** Envia o dado diretamente, sem pausar o pipeline. Não perde ciclos.
+
+**Conclusão:** Forwarding é preferível por manter o pipeline cheio e maximizar o throughput.
+
+**Explicação:** Stalling é usado quando forwarding não é possível (ex: após um load).
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — Load Use Hazard (Difícil)</summary>
+
+**Enunciado:** Por que um load (LDR) seguido de um uso imediato do valor carregado causa um stall mesmo com forwarding?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Porque o valor carregado só está disponível após o estágio **MEM** (acesso à memória). O forwarding tradicional envia dados do estágio **EX**, mas o dado do load vem da memória.
+
+**Solução:** O pipeline precisa stall por 1 ciclo até que o dado esteja disponível no estágio MEM, e então fazer forwarding para a instrução seguinte.
+
+**Explicação:** Esse é o chamado "load-use hazard" — uma das principais fontes de stalls em pipelines.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — Otimização de código (Desafio)</summary>
+
+**Enunciado:** Como um compilador pode reorganizar o seguinte código para minimizar data hazards?
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+LDR R1, [R2]      ; I1
+ADD R3, R1, R4    ; I2 (depende de R1)
+SUB R5, R6, R7    ; I3 (independente)
+MUL R8, R9, R10   ; I4 (independente)
+</pre>
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** O compilador pode mover instruções independentes entre o load e seu uso:
+
+**Antes:**
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+LDR R1, [R2]      ; I1
+ADD R3, R1, R4    ; I2 (depende de R1) ← stall aqui
+SUB R5, R6, R7    ; I3
+MUL R8, R9, R10   ; I4
+</pre>
+
+**Depois (reorganizado):**
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+LDR R1, [R2]      ; I1
+SUB R5, R6, R7    ; I3 (independente) ← executa enquanto espera o load
+MUL R8, R9, R10   ; I4 (independente) ← executa enquanto espera o load
+ADD R3, R1, R4    ; I2 (depende de R1) ← agora R1 já está disponível
+</pre>
+
+**Explicação:** Ao mover instruções independentes entre o load e seu uso, o compilador dá tempo para o load completar, reduzindo ou eliminando o stall.
+</details>
+</details>
+
+> Conflitos de dados são os principais vilões do pipeline. Quando uma instrução depende do resultado de outra, o pipeline precisa parar (stall) ou usar forwarding para passar o dado diretamente. O tipo mais comum é o RAW (Read After Write), e técnicas como forwarding e otimização de código são essenciais para manter o pipeline ocupado e o desempenho alto. Os conflitos de dados são uma das principais razões pelas quais o pipeline real nunca atinge o desempenho teórico máximo. Entender como eles funcionam e como são mitigados é essencial para compreender o design de processadores e a otimização de código em baixo nível.

@@ -1,0 +1,415 @@
+# ENDEREÇAMENTO BASE + DESLOCAMENTO
+
+## 1. INTRODUÇÃO
+
+Nas últimas quatro aulas, estudamos os modos de endereçamento básicos: imediato (constante na instrução), direto (endereço fixo), indireto (endereço em registrador) e por registro (operandos em registradores). Cada um tem seu uso, mas todos têm limitações quando precisamos acessar estruturas de dados mais complexas.<br><br>
+
+Como acessamos o terceiro elemento de um array? Como acessamos um campo específico de uma struct? Como percorremos uma lista de dados sequenciais? A resposta é o **endereçamento base + deslocamento**.<br><br>
+
+No endereçamento base + deslocamento, o endereço é calculado como a **soma de um registrador base** (que contém o endereço inicial) e um **deslocamento** (um valor constante ou em outro registrador). Isso permite acessar elementos de arrays, campos de structs e qualquer dado organizado sequencialmente na memória.<br><br>
+
+Imagine que você está em um hotel. O registrador base é o número do andar, e o deslocamento é o número do quarto. Para chegar ao quarto 305, você vai ao andar 3 (base) e caminha até o quarto 5 (deslocamento). O endereçamento base + deslocamento funciona exatamente assim.<br><br>
+
+Nesta aula, vamos estudar o endereçamento base + deslocamento: o que é, como funciona, como acessa arrays e structs, e por que é o modo mais versátil da computação.
+
+## 2. O QUE É ENDEREÇAMENTO BASE + DESLOCAMENTO?
+
+### 2.1 Definição
+
+> "Endereçamento base + deslocamento é um modo onde o endereço efetivo é calculado como a soma de um registrador base (que contém um endereço inicial) e um deslocamento (um valor constante ou um registrador), permitindo acesso a elementos de arrays, campos de structs e dados organizados sequencialmente."
+
+### 2.2 Características principais
+
+| Característica | Descrição |
+|---------|----------|
+| **Cálculo do endereço** | Base + Deslocamento |
+| **Base** | Registrador que contém o endereço inicial |
+| **Deslocamento** | Constante (imediata) ou outro registrador |
+| **Flexibilidade** | Muito alta — base pode mudar, deslocamento pode variar |
+| **Uso** | Arrays, structs, pilha, parâmetros de função |
+
+### 2.3 Analogia
+
+O endereçamento base + deslocamento é como um **mapa com coordenadas**. A base é o ponto de referência (ex: o centro da cidade), e o deslocamento é a distância a partir desse ponto (ex: 3 quarteirões ao norte, 2 ao leste). Juntos, eles localizam exatamente um ponto específico.
+
+## 3. COMO FUNCIONA O ENDEREÇAMENTO BASE + DESLOCAMENTO?
+
+### 3.1 Estrutura da instrução
+
+Uma instrução com endereçamento base + deslocamento contém:
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+[CÓDIGO DA OPERAÇÃO] [REGISTRADOR DESTINO] [REGISTRADOR BASE, DESLOCAMENTO]
+</pre>
+
+**Exemplo (ARM):** `LDR R1, [R2, #8]`
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+LDR    R1,    [R2, #8]
+Opcode Destino Base + Deslocamento
+</pre>
+
+### 3.2 Como a CPU executa
+
+1. A CPU busca a instrução da memória.
+2. A CPU decodifica a instrução.
+3. A CPU lê o valor do registrador base (R2).
+4. A CPU soma o deslocamento (#8) ao valor da base.
+5. A CPU acessa a memória no endereço calculado.
+6. A CPU carrega o valor para o registrador destino.
+
+**Cálculo do endereço:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+Endereço Efetivo = R2 + 8
+</pre>
+
+### 3.3 Diagrama: Endereçamento Base + Deslocamento
+
+<details>
+<summary> **Fluxo do endereçamento base + deslocamento**</summary>
+    <pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+┌─────────────────────────────────────────────────────────────┐
+│                                                             │
+│   Instrução na memória:                                     │
+│   ┌─────────────────────────────────────────────────────┐  │
+│   │  LDR  │  R1  │  [R2, #8]  │                       │  │
+│   └─────────────────────────────────────────────────────┘  │
+│                          │                                  │
+│                          ▼                                  │
+│   ┌─────────────────────────────────────────────────────┐  │
+│   │  R2 = 0x1000                                       │  │
+│   │  Deslocamento = 8                                  │  │
+│   │  Endereço Efetivo = 0x1000 + 8 = 0x1008          │  │
+│   │                                                      │  │
+│   │  Memória:                                           │  │
+│   │  0x1000: 10   ←─── array[0]                        │  │
+│   │  0x1004: 20   ←─── array[1]                        │  │
+│   │  0x1008: 30   ←─── array[2]  (R1 = 30)            │  │
+│   │  0x100C: 40   ←─── array[3]                        │  │
+│   └─────────────────────────────────────────────────────┘  │
+│                                                             │
+└─────────────────────────────────────────────────────────────┘
+    </pre>
+</details>
+
+### 3.4 Exemplo prático
+
+**Instrução:** `LDR R1, [R2, #8]`
+
+**Antes:** R2 = 0x1000, e a posição 0x1008 contém o valor 30.
+**Depois:** R1 = 30
+
+A CPU somou R2 (0x1000) com 8, acessou 0x1008 e carregou o valor.
+
+## 4. TIPOS DE DESLOCAMENTO
+
+### 4.1 Deslocamento imediato (constante)
+
+O deslocamento é um valor constante na instrução.
+
+**Exemplo:** `LDR R1, [R2, #4]`
+- Endereço = R2 + 4
+- Usado para acessar campos de structs ou elementos fixos de arrays.
+
+### 4.2 Deslocamento por registrador
+
+O deslocamento é o valor de outro registrador.
+
+**Exemplo:** `LDR R1, [R2, R3]`
+- Endereço = R2 + R3
+- Usado para acessar arrays com índice variável.
+
+### 4.3 Deslocamento com escala (indexado)
+
+O deslocamento é multiplicado por um fator (escala).
+
+**Exemplo:** `LDR R1, [R2, R3, LSL #2]`
+- Endereço = R2 + (R3 × 4)
+- Usado para acessar arrays onde cada elemento tem um tamanho fixo (ex: 4 bytes).
+
+### 4.4 Deslocamento negativo
+
+O deslocamento pode ser negativo.
+
+**Exemplo:** `LDR R1, [R2, #-4]`
+- Endereço = R2 - 4
+- Usado para acessar elementos anteriores em uma pilha ou array.
+
+## 5. ACESSANDO ARRAYS
+
+### 5.1 Array de inteiros (4 bytes por elemento)
+
+**Array na memória:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+0x1000: [0]   (4 bytes)
+0x1004: [1]   (4 bytes)
+0x1008: [2]   (4 bytes)
+0x100C: [3]   (4 bytes)
+</pre>
+
+**Acessando elementos:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+LDR R1, [R2, #0]    ; R1 = array[0]  (R2 = 0x1000)
+LDR R1, [R2, #4]    ; R1 = array[1]  (R2 = 0x1000 + 4)
+LDR R1, [R2, #8]    ; R1 = array[2]  (R2 = 0x1000 + 8)
+LDR R1, [R2, #12]   ; R1 = array[3]  (R2 = 0x1000 + 12)
+</pre>
+
+### 5.2 Percorrendo um array com deslocamento variável
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+MOV R3, #0         ; R3 = índice (0)
+MOV R4, #10        ; R4 = tamanho do array
+
+loop:
+LDR R1, [R2, R3, LSL #2]  ; R1 = array[R3] (R3 × 4)
+ADD R3, R3, #1            ; R3++
+CMP R3, R4                ; Compara com tamanho
+BNE loop                  ; Continua se não chegou ao fim
+</pre>
+
+**Explicação:** `LSL #2` multiplica o índice por 4, calculando o deslocamento correto para cada elemento.
+
+## 6. ACESSANDO STRUCTS
+
+### 6.1 Struct na memória
+
+Uma struct com campos de diferentes tamanhos:
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+struct Pessoa {
+    int idade;      // 4 bytes, offset 0
+    char nome[20];  // 20 bytes, offset 4
+    float altura;   // 4 bytes, offset 24
+};
+</pre>
+
+**Memória:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+0x1000: idade      (offset 0)
+0x1004: nome[0]    (offset 4)
+0x100C: nome[8]    (offset 12)
+0x1018: nome[20]   (offset 24)
+0x101C: altura     (offset 28)
+</pre>
+
+### 6.2 Acessando campos da struct
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+; R2 = endereço base da struct (0x1000)
+
+LDR R1, [R2, #0]     ; R1 = idade (offset 0)
+LDR R1, [R2, #24]    ; R1 = nome[20] (offset 24)
+LDR R1, [R2, #28]    ; R1 = altura (offset 28)
+</pre>
+
+### 6.3 Escrevendo em campos da struct
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+STR R1, [R2, #0]     ; idade = R1
+STR R3, [R2, #28]    ; altura = R3
+</pre>
+
+## 7. USANDO A PILHA (STACK)
+
+### 7.1 A pilha e o endereçamento base + deslocamento
+
+A pilha (stack) é uma região da memória usada para armazenar dados temporários. O registrador SP (Stack Pointer) aponta para o topo da pilha.
+
+**Acessando a pilha:**
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+; R13 (SP) = Stack Pointer
+LDR R1, [R13, #4]    ; R1 = valor 4 bytes acima do topo
+STR R2, [R13, #-4]   ; Armazena R2 4 bytes abaixo do topo (push)
+</pre>
+
+### 7.2 Frame pointer (FP)
+
+O registrador FP (Frame Pointer) aponta para o início do frame de uma função. O endereçamento base + deslocamento é usado para acessar parâmetros e variáveis locais.
+
+<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+; R11 (FP) = Frame Pointer
+LDR R1, [R11, #8]    ; R1 = primeiro parâmetro (offset 8)
+LDR R2, [R11, #-4]   ; R2 = variável local (offset -4)
+</pre>
+
+## 8. VANTAGENS DO ENDEREÇAMENTO BASE + DESLOCAMENTO
+
+### 8.1 Flexibilidade
+
+- A base pode ser alterada em tempo de execução.
+- O deslocamento pode ser constante ou variável.
+
+### 8.2 Suporte a estruturas de dados
+
+- Arrays (acesso sequencial e aleatório).
+- Structs (acesso a campos).
+- Pilha (push/pop).
+- Parâmetros de função (acesso via FP).
+
+### 8.3 Eficiência
+
+- O endereço é calculado pela CPU em um único ciclo (na maioria das arquiteturas).
+- Não precisa de múltiplas instruções para calcular o endereço.
+
+### 8.4 Código position-independent
+
+- Usando PC (Program Counter) como base, o código pode ser carregado em qualquer endereço.
+
+## 9. APLICAÇÕES REAIS
+
+| Aplicação | Como usa base + deslocamento |
+|---------|----------|
+| **Arrays** | Acessar elementos usando base + índice × tamanho |
+| **Structs** | Acessar campos usando base + offset fixo |
+| **Pilha (stack)** | Push/pop e acesso a variáveis locais |
+| **Parâmetros de função** | Acessar parâmetros via FP + offset |
+| **Código position-independent** | Usar PC + offset para acessar dados |
+| **Alocação dinâmica** | Acessar blocos de memória com base + deslocamento |
+
+**Exemplo prático:** Em um programa em C, quando você escreve `pessoa.idade = 25`, o compilador gera código como `STR R1, [R2, #0]`, onde R2 é o endereço da struct e #0 é o offset do campo idade.
+
+## 10. EXERCÍCIOS
+
+<details>
+<summary>📗 Exercício 1 — O que é base + deslocamento? (Fácil)</summary>
+
+**Enunciado:** Defina o que é endereçamento base + deslocamento em Assembly.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Endereçamento base + deslocamento é um modo onde o endereço efetivo é calculado como a soma de um registrador base (que contém um endereço inicial) e um deslocamento (um valor constante ou um registrador).
+
+**Explicação:** O endereço efetivo = Base + Deslocamento. Permite acesso a arrays, structs e pilha.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Identificar base + deslocamento (Fácil)</summary>
+
+**Enunciado:** Quais das seguintes instruções usam endereçamento base + deslocamento?
+1. `LDR R1, [R2, #4]`
+2. `LDR R1, [R2]`
+3. `LDR R1, [0x1000]`
+4. `LDR R1, [R2, R3]`
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** As instruções 1 e 4 usam endereçamento base + deslocamento.
+
+**Explicação:**
+1. `LDR R1, [R2, #4]` → Base + deslocamento imediato
+2. `LDR R1, [R2]` → Endereçamento indireto (deslocamento 0)
+3. `LDR R1, [0x1000]` → Endereçamento direto
+4. `LDR R1, [R2, R3]` → Base + deslocamento por registrador
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Acessando array (Fácil)</summary>
+
+**Enunciado:** R2 = 0x2000. Qual endereço é acessado por `LDR R1, [R2, #12]`?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** 0x200C (0x2000 + 12)
+
+**Explicação:** O endereço efetivo é R2 + 12 = 0x2000 + 0x000C = 0x200C.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Array de 4 bytes (Médio)</summary>
+
+**Enunciado:** R2 = 0x3000 é a base de um array de inteiros de 4 bytes. Que instrução acessa o elemento de índice 5?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** `LDR R1, [R2, #20]`
+
+**Explicação:** Índice 5 × 4 bytes = 20. Endereço efetivo = 0x3000 + 20 = 0x3014.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Percorrendo array (Médio)</summary>
+
+**Enunciado:** Escreva uma sequência de instruções Assembly para carregar o terceiro elemento de um array de inteiros de 4 bytes em R1, usando base + deslocamento.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** 
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+LDR R1, [R2, #8]   ; R1 = array[2] (R2 = base, 2 × 4 = 8)
+</pre>
+**Explicação:** O terceiro elemento (índice 2) está em base + 2 × 4 = base + 8.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Acessando struct (Médio)</summary>
+
+**Enunciado:** Uma struct tem campo1 em offset 0, campo2 em offset 8, campo3 em offset 16. R2 aponta para a struct. Escreva instruções para carregar campo1 e campo3 em R1 e R3.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+LDR R1, [R2, #0]   ; R1 = campo1 (offset 0)
+LDR R3, [R2, #16]  ; R3 = campo3 (offset 16)
+</pre>
+**Explicação:** Cada campo tem um offset fixo a partir do endereço base da struct.
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — Deslocamento variável (Difícil)</summary>
+
+**Enunciado:** R2 = base de um array de inteiros de 4 bytes, R3 = índice. Escreva uma instrução para carregar array[R3] em R1, usando deslocamento por registrador com escala.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** `LDR R1, [R2, R3, LSL #2]`
+
+**Explicação:** `LSL #2` multiplica o índice por 4 (tamanho de cada elemento). O endereço efetivo é R2 + (R3 × 4).
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — Soma de array (Desafio)</summary>
+
+**Enunciado:** Escreva uma sequência de instruções Assembly que percorra um array de 10 inteiros de 4 bytes começando em 0x4000 e some todos os elementos, colocando o resultado em R5.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+<pre style="color: white; background: #0a0f1e; padding: 0.5rem; border-radius: 6px; font-family: monospace; font-size: 0.8rem; border: 1px solid rgba(255,255,255,0.05); overflow-x: auto;">
+MOV R1, #0        ; R1 = contador
+MOV R5, #0        ; R5 = soma
+LDR R2, =0x4000   ; R2 = base do array
+
+loop:
+LDR R3, [R2, R1, LSL #2]  ; R3 = array[R1]
+ADD R5, R5, R3            ; R5 = R5 + R3
+ADD R1, R1, #1            ; R1++ (contador)
+CMP R1, #10               ; Compara com 10
+BNE loop                  ; Se não chegou ao fim, repete
+</pre>
+**Explicação:** O loop percorre o array usando base + (índice × 4), soma cada elemento e incrementa o contador até chegar a 10.
+</details>
+</details>
+
+> O endereçamento base + deslocamento é o modo mais versátil da computação. Ele permite acessar arrays, structs, pilha e parâmetros de função com eficiência e flexibilidade. Combinando um registrador base com um deslocamento fixo ou variável, a CPU pode acessar qualquer posição em estruturas de dados complexas com uma única instrução. Base + deslocamento é o modo de endereçamento que torna possível a programação em linguagens de alto nível. Arrays, structs, pilha, parâmetros — todos são implementados usando esse modo. É a ponte entre o mundo abstrato das estruturas de dados e o mundo físico da memória.

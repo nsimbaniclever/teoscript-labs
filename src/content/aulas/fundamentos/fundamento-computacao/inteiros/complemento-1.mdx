@@ -1,0 +1,407 @@
+#  Complemento de 1
+
+
+## 1. Introdução
+
+Na aula anterior, vimos o **Sinal-Magnitude** — a primeira tentativa de representar números negativos em binário. Ele era intuitivo: um bit para o sinal, os demais para a magnitude. Mas tinha dois problemas graves:
+
+1. **Dois zeros:** `+0` e `-0` desperdiçavam uma combinação e complicavam a lógica.
+2. **Subtração complexa:** Não era possível simplesmente somar números negativos; era preciso lógica condicional para lidar com os sinais.
+
+Os engenheiros da época precisavam de uma solução melhor. Eles perceberam que, se conseguissem fazer com que a **subtração fosse apenas uma soma com um número negativo**, a lógica do processador ficaria muito mais simples e rápida.
+
+Foi assim que nasceu o **Complemento de 1**. A ideia era genial: para negativar um número, bastava **inverter todos os seus bits** (0 vira 1, 1 vira 0). Com isso, a subtração se tornava uma soma.<br><br>
+
+Infelizmente o Complemento de 1 ainda tinha um defeito: **continuava tendo dois zeros**. Nesta aula, vamos estudar o Complemento de 1 — o que ele é, como funciona, suas vantagens e suas limitações, e por que ele foi substituído pelo Complemento de 2.
+
+
+## 2. O Que é o Complemento de 1?
+
+**Complemento de 1** (em inglês: *One's Complement*) é um sistema de representação de números negativos onde:
+
+> **Para negativar um número, invertemos todos os seus bits (0 → 1, 1 → 0).**
+
+### 2.1 Como funciona?
+
+**Regra do Complemento de 1:**
+- **Números positivos:** Representados da mesma forma que no binário normal.
+- **Números negativos:** Obtidos invertendo todos os bits do número positivo correspondente.
+
+**Exemplo com 4 bits:**
+
+| Número Positivo | Inversão (Negativo) |
+|-----------------|---------------------|
+| `0000` (+0) | `1111` (-0) |
+| `0001` (+1) | `1110` (-1) |
+| `0010` (+2) | `1101` (-2) |
+| `0011` (+3) | `1100` (-3) |
+| `0100` (+4) | `1011` (-4) |
+| `0101` (+5) | `1010` (-5) |
+| `0110` (+6) | `1001` (-6) |
+| `0111` (+7) | `1000` (-7) |
+
+**Observação:** O bit mais à esquerda (MSB) continua sendo o bit de sinal, mas agora ele é obtido naturalmente pela inversão:
+- MSB = 0 → positivo
+- MSB = 1 → negativo
+
+### 2.2 Como converter um número para Complemento de 1?
+
+**Para números positivos:**
+1. Converta o número para binário normal.
+2. Preencha com zeros à esquerda até completar o número de bits desejado.
+
+**Exemplo: +5 em 4 bits**
+- 5 em binário = `101` (3 bits)
+- Preencha com zero à esquerda → `0101`
+- **Resposta:** `0101`
+
+**Para números negativos:**
+1. Converta o valor absoluto para binário.
+2. Preencha com zeros à esquerda até completar o número de bits.
+3. **Inverta todos os bits** (0 → 1, 1 → 0).
+
+**Exemplo: -5 em 4 bits**
+- 5 em binário = `101` (3 bits)
+- Preencha com zero à esquerda → `0101`
+- Inverta todos os bits: `0101` → `1010`
+- **Resposta:** `1010`
+
+### 2.3 Faixa de valores no Complemento de 1
+
+Com **n bits**, o Complemento de 1 pode representar:
+
+- **Maior positivo:** `0` seguido de `(n-1)` uns = `2^(n-1) - 1`
+- **Menor negativo:** `1` seguido de `(n-1)` zeros = `-(2^(n-1) - 1)`
+
+| Bits | Faixa de valores |
+|------|------------------|
+| 4 bits | -7 a +7 |
+| 8 bits | -127 a +127 |
+| 16 bits | -32.767 a +32.767 |
+| 32 bits | -2.147.483.647 a +2.147.483.647 |
+
+**Atenção:** Assim como no Sinal-Magnitude, o Complemento de 1 **não representa** `-8` com 4 bits (a faixa é apenas -7 a +7).
+
+
+## 3. A Grande Vantagem: Subtração Vira Soma
+
+A principal inovação do Complemento de 1 é que a **subtração se torna uma soma**.
+
+### 3.1 Como funciona?
+
+Para subtrair `A - B`, basta:
+1. Representar A em Complemento de 1.
+2. Representar -B em Complemento de 1 (invertendo os bits de B).
+3. Somar A e -B normalmente.
+4. Se houver **overflow** (vai-um) na última soma, adicione 1 ao resultado (*end-around carry*).
+
+### 3.2 Exemplo prático: 3 - 2 com 4 bits
+
+**Passo 1:** Represente +3 em Complemento de 1
+- 3 em binário = `0011`
+
+**Passo 2:** Represente -2 em Complemento de 1
+- 2 em binário = `0010`
+- Inverta todos os bits → `1101` (-2)
+
+**Passo 3:** Some `0011` (+3) + `1101` (-2)
+
+<pre>
+  0 0 1 1  (+3)
++ 1 1 0 1  (-2)
+-----------
+  0 0 0 0  (resultado com carry)
+</pre>
+
+**Passo 4:** Complete a soma: `0000` (4 bits) + `1` (o carry) = `0001` (+1)
+
+**Resultado:** `0001` = +1 ✅
+
+### 3.3 Por que isso é uma grande vantagem?
+
+No Sinal-Magnitude, para subtrair `3 - 2`, o computador precisava:
+
+1. Verificar o sinal de 2 (positivo).
+2. Mudar o sinal de 2 para negativo.
+3. Lidar com a soma de números de sinais diferentes (complexo).
+
+No Complemento de 1, o computador só precisa:
+
+1. Inverter os bits de 2 (operação simples e rápida).
+2. Somar normalmente (operação simples).
+3. Adicionar o carry se houver.
+
+**Resultado:** A lógica de subtração fica **muito mais simples** e o processador pode executar subtrações **mais rápido**.
+
+
+## 4. O Problema dos Dois Zeros (Ainda Presente)
+
+Assim como no Sinal-Magnitude, o Complemento de 1 também tem **duas representações para o zero**:
+
+| Representação | Valor |
+|---------------|-------|
+| `0000` | **+0** (zero positivo) |
+| `1111` | **-0** (zero negativo) |
+
+### 4.1 Por que o problema persiste?
+
+A inversão de bits é uma operação simétrica: inverter `0000` (todos os bits 0) resulta em `1111` (todos os bits 1). Como o zero positivo é representado por `0000`, o zero negativo é inevitavelmente `1111`.
+
+### 4.2 Consequências do duplo zero
+
+1. **Comparação complicada:** O computador precisa comparar com `0000` **E** com `1111` para verificar se um número é zero.
+
+2. **Desperdício:** Uma combinação de bits é desperdiçada. Em 4 bits, são 16 combinações, mas apenas 15 valores únicos.
+
+3. **Operações inconsistentes:**
+   - `+0 + 1 = 1` → `0000 + 0001 = 0001` ✅
+   - `-0 + 1 = 1` → `1111 + 0001 = 0000` (com carry) → `0000 + 1 = 0001` ✅ (funciona com *end-around carry*)
+   - `+0 - 1 = -1` → `0000 + 1110 = 1110` ✅
+   - `-0 - 1 = -1` → `1111 + 1110 = 1101` + carry = `1110` ✅ (funciona, mas é complicado)
+
+4. **Número total de valores:** Apenas `2^(n-1) - 1` negativos e `2^(n-1) - 1` positivos (perde um valor).
+
+
+## 5. Complemento de 1 vs Sinal-Magnitude
+
+| Característica | Sinal-Magnitude | Complemento de 1 |
+|----------------|-----------------|------------------|
+| **Bit de sinal** | MSB (0 = +, 1 = -) | MSB (0 = +, 1 = -) |
+| **Negativo obtido por** | Inverter o sinal | Inverter todos os bits |
+| **Subtração** | Complexa (lógica condicional) | Simples (soma + end-around carry) |
+| **Dois zeros?** | Sim (`0000` e `1000`) | Sim (`0000` e `1111`) |
+| **Faixa (4 bits)** | -7 a +7 | -7 a +7 |
+| **Velocidade** | Mais lenta | Mais rápida |
+| **Usado hoje?** | Não | Não (apenas legado) |
+
+
+## 6. Onde o Complemento de 1 Foi Usado?
+
+O Complemento de 1 foi usado em alguns computadores importantes:
+
+| Computador | Ano | Sistema usado |
+|------------|-----|---------------|
+| **PDP-1** | 1959 | Complemento de 1 (versão posterior) |
+| **PDP-6** | 1963 | Complemento de 1 |
+| **PDP-10** | 1966 | Complemento de 1 |
+| **UNIVAC 1100/2200** | 1960s | Complemento de 1 |
+| **CDC 6600** | 1964 | Complemento de 1 |
+
+**Observação:** O PDP-1 e outros computadores da Digital Equipment Corporation (DEC) usaram Complemento de 1 por muitos anos. Foi apenas com o PDP-11 (1970) que a DEC migrou para o Complemento de 2.
+
+
+## 7. O End-Around Carry (O Detalhe Importante)
+
+Uma peculiaridade do Complemento de 1 é o **end-around carry** — quando há um carry (vai-um) na última soma, ele precisa ser adicionado de volta ao resultado.
+
+### 7.1 Por que isso acontece?
+
+No Complemento de 1, a soma de dois números pode gerar um carry que ultrapassa o número de bits. Esse carry precisa ser "reciclado" (adicionado de volta) para obter o resultado correto.
+
+### 7.2 Exemplo: 5 - 3 = 2
+
+**Passo 1:** +5 = `0101`
+**Passo 2:** -3 = inverso de `0011` = `1100`
+**Passo 3:** Some `0101 + 1100`:
+
+<pre>
+  0 1 0 1  (+5)
++ 1 1 0 0  (-3)
+-----------
+1 0 0 0 1  (carry)
+</pre>
+
+**Passo 4:** End-around carry: `0001` (4 bits) + `1` (carry) = `0010`
+
+**Resultado:** `0010` = +2 ✅
+
+### 7.3 Exemplo: 3 - 5 = -2
+
+**Passo 1:** +3 = `0011`
+**Passo 2:** -5 = inverso de `0101` = `1010`
+**Passo 3:** Some `0011 + 1010`:
+
+<pre>
+  0 0 1 1  (+3)
++ 1 0 1 0  (-5)
+-----------
+  1 1 0 1  (sem carry)
+</pre>
+
+**Resultado:** `1101` = -2 (em Complemento de 1) ✅
+
+### 7.4 O problema do end-around carry
+
+O end-around carry adiciona um passo extra à operação de soma. Embora seja simples, ele torna o circuito ligeiramente mais lento e complexo do que uma soma direta.
+
+
+## 8. Limitações do Complemento de 1
+
+| Limitação | Explicação |
+|-----------|------------|
+| **Dois zeros** | `0000` (+0) e `1111` (-0) desperdiçam uma combinação e complicam comparações |
+| **Faixa reduzida** | Com n bits, representa apenas `-(2^(n-1)-1)` a `+(2^(n-1)-1)` (perde um valor) |
+| **End-around carry** | Soma requer um passo extra para reciclar o carry |
+| **Não é usado hoje** | Todos os processadores modernos usam Complemento de 2 |
+
+> **🔬 Observação:** O Complemento de 1 foi um grande avanço em relação ao Sinal-Magnitude, mas o problema do duplo zero e o end-around carry ainda eram inconvenientes. Faltava um passo final para a solução definitiva.
+
+
+## 9. Exercícios
+
+<details>
+<summary>📗 Exercício 1 — Converter +3 para Complemento de 1 (fácil)</summary>
+
+**Enunciado:** Converta o número **+3** para Complemento de 1 usando 4 bits.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Passo 1:** 3 em binário = `11` (2 bits)
+
+**Passo 2:** Preencha com zeros → `0011`
+
+**Resposta:** `0011`
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Converter -3 para Complemento de 1 (fácil)</summary>
+
+**Enunciado:** Converta o número **-3** para Complemento de 1 usando 4 bits.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Passo 1:** 3 em binário = `0011`
+
+**Passo 2:** Inverta todos os bits → `1100`
+
+**Resposta:** `1100`
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Decodificar `1010` (fácil)</summary>
+
+**Enunciado:** Qual é o valor decimal da representação `1010` em Complemento de 1 (4 bits)?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Passo 1:** MSB = 1 → número negativo.
+
+**Passo 2:** Inverta os bits: `1010` → `0101`
+
+**Passo 3:** `0101` = 5
+
+**Resposta:** -5
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Faixa de valores com 5 bits (médio)</summary>
+
+**Enunciado:** Qual é a faixa de valores que pode ser representada em Complemento de 1 com 5 bits?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Passo 1:** n = 5 bits → maior positivo = `0 1111` = +15
+
+**Passo 2:** Menor negativo = `1 0000` = -15
+
+**Resposta:** -15 a +15 (ou `-(2^4 - 1)` a `+(2^4 - 1)`)
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Representações do zero (conceitual)</summary>
+
+**Enunciado:** Quais são as duas representações do zero em Complemento de 1 com 4 bits?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** `0000` (+0) e `1111` (-0)
+
+**Explicação:** O zero positivo tem todos os bits 0; o zero negativo é obtido invertendo todos os bits de `0000`, que resulta em `1111`.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Subtração com Complemento de 1 (médio)</summary>
+
+**Enunciado:** Calcule `4 - 2` usando Complemento de 1 com 4 bits. Mostre o passo a passo.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Passo 1:** +4 = `0100`
+
+**Passo 2:** -2 = inverso de `0010` = `1101`
+
+**Passo 3:** Some `0100` + `1101`:
+
+<pre>
+  0 1 0 0  (+4)
++ 1 1 0 1  (-2)
+-----------
+1 0 0 0 1  (carry)
+</pre>
+
+**Passo 4:** End-around carry: `0001` + `1` = `0010`
+
+**Resultado:** `0010` = +2 ✅
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — Subtração sem carry (médio)</summary>
+
+**Enunciado:** Calcule `3 - 5` usando Complemento de 1 com 4 bits. Mostre o passo a passo.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Passo 1:** +3 = `0011`
+
+**Passo 2:** -5 = inverso de `0101` = `1010`
+
+**Passo 3:** Some `0011` + `1010`:
+
+<pre>
+  0 0 1 1  (+3)
++ 1 0 1 0  (-5)
+-----------
+  1 1 0 1  (sem carry)
+</pre>
+
+**Resultado:** `1101` = -2 (em Complemento de 1) ✅
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — Complemento de 1 vs Sinal-Magnitude (conceitual)</summary>
+
+**Enunciado:** Qual a principal vantagem do Complemento de 1 sobre o Sinal-Magnitude?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** A subtração se torna uma operação de soma simples (com end-around carry), eliminando a necessidade de lógica condicional para lidar com sinais diferentes.
+
+**Explicação:** No Sinal-Magnitude, somar números de sinais diferentes exigia verificação de sinais, comparação de magnitudes e subtração. No Complemento de 1, basta inverter os bits do subtraendo e somar normalmente.
+
+</details>
+</details>
+
+
+> **"O Complemento de 1 foi um grande avanço em relação ao Sinal-Magnitude: a subtração se tornou uma soma simples com inversão de bits e end-around carry. Isso eliminou a necessidade de lógica condicional complexa para lidar com sinais. No entanto, o Complemento de 1 ainda tinha o problema dos dois zeros (+0 e -0), que desperdiçava uma combinação e complicava comparações. Além disso, o end-around carry adicionava um passo extra às operações. Essas limitações abriram caminho para o Complemento de 2 — a solução definitiva que usamos até hoje."**

@@ -1,0 +1,677 @@
+# <center>Desvio Padrão</center>
+
+## Introdução
+
+&emsp;&emsp;&emsp;Na aula anterior, estudámos a variância — uma medida que quantifica a dispersão dos dados em relação à média. No entanto, a variância apresenta uma limitação prática significativa: as suas unidades estão ao quadrado. Se os dados forem medidos em anos, a variância será expressa em anos²; se forem em kwanza, em kwanza². Esta característica torna a variância difícil de interpretar diretamente e pouco comunicável fora do contexto matemático. O desvio padrão resolve este problema de forma elegante: ***é simplesmente a raiz quadrada da variância***, o que o devolve à mesma unidade dos dados originais. Se os dados são em anos², o desvio padrão é em anos; se são em kg², é em kg. Esta propriedade confere-lhe interpretabilidade imediata — podemos afirmar, por exemplo, que "em média, cada idade se afasta da média em 4,92 anos", uma frase que qualquer pessoa compreende.<br><br>
+
+&emsp;&emsp;&emsp;Além da interpretabilidade, o desvio padrão partilha com a variância duas propriedades fundamentais: utiliza todos os dados no seu cálculo (ao contrário da amplitude total ou do IQR, que dependem apenas de valores extremos ou posições específicas) e penaliza desvios de maior magnitude (uma vez que deriva da soma dos quadrados dos desvios). Estas características tornam-no uma medida robusta e informativa da variabilidade global de um conjunto de dados.<br><br>
+
+&emsp;&emsp;&emsp;Por tudo isto, o desvio padrão é a medida de dispersão mais utilizada na estatística aplicada — não apenas por ser interpretável e comunicável, mas por constituir a linguagem padrão através da qual a variabilidade é descrita e comparada em praticamente todas as áreas do conhecimento. É precisamente esta compreensão que a presente aula se propõe aprofundar.<br><br>
+
+**Exemplo:**
+
+Considera o seguinte problema prático, **Dois conjuntos de dados com a mesma média (7):**
+- **Conjunto A:** `2, 5, 7, 9, 12` → Variância = 14,5 anos²
+- **Conjunto B:** `6, 7, 7, 7, 8` → Variância = 0,5 anos²
+
+**Pergunta:** Qual dos dois conjuntos tem maior dispersão? A variância diz-nos que A tem muito mais dispersão que B. Mas **quanto mais**? Em que unidades? **Não conseguimos responder diretamente com a variância.**, por isso precisamos de uma medida que:
+1. **Use todos os dados** (como a variância).
+2. **Penalize desvios grandes** (como a variância).
+3. **Esteja na mesma unidade dos dados** (para ser interpretável).
+
+&emsp;&emsp;&emsp;A solução é simples e elegante: **extrair a raiz quadrada da variância**. É aqui que entra o ***desvio-padrão***.
+
+<center><details>
+<summary>📊 As medidas de dispersão</summary>
+<style>
+.r{font:14px system-ui;text-align:center}
+.r b{display:inline-block;padding:4px 10px;background:#333;color:#fff;border-radius:6px}
+.r i{display:block;width:2px;height:18px;background:#333;margin:0 auto}
+.r em{display:flex;gap:8px;justify-content:center;position:relative;padding-top:18px}
+.r em::before{content:'';position:absolute;top:0;left:12.5%;right:12.5%;height:2px;background:#333}
+.r em span{flex:1;padding:8px;border:2px solid #333;border-radius:8px;max-width:120px}
+.r em span::before{content:'';position:absolute;top:-18px;left:50%;width:2px;height:18px;background:#333}
+.r em span{position:relative}
+</style>
+<div class="r">
+  <b>Medidas de Dispersão</b>
+  <i></i>
+  <em>
+    <span>Amplitude<br>Total</span>
+    <span>Amplitude<br>Interquartil</span>
+    <span>Desvio<br>Médio</span>
+    <span>Variância</span>
+    <span style="background-color: blue; color: white;">Desvio<br>Padrão</span>
+    <span>Coef. de<br>Variação</span>
+  </em>
+</div>
+</details></center>
+
+> **💡 Dica de Ouro:** O desvio-padrão é a **medida de dispersão mais usada no mundo**. Está em todo o lado — na medicina, na economia, no desporto, no machine learning. É a unidade original da variância.
+
+## O QUE É O DESVIO PADRÃO?
+
+&emsp;&emsp;&emsp;O **desvio-padrão** é a **raiz quadrada da variância**. Mede, em média, o quanto cada valor se afasta da média, **na mesma unidade dos dados originais**.<br><br>
+
+** Definição intuitiva:**
+
+- ***Desvio-padrão pequeno*** → Dados estão ***próximos*** da média (**homogéneos**).
+- ***Desvio-padrão grande*** → Dados estão ***espalhados*** em relação à média (**heterogéneos**).
+
+**📌 Porque é que o desvio-padrão é preferível à variância?**
+
+| Aspeto | Variância | Desvio-Padrão |
+|---------|---------|---------|
+| **Unidade** | Ao quadrado (anos²) | Original (anos) |
+| **Interpretação** | Difícil | Intuitiva |
+| **Comunicação** | Pouco prática | Universal |
+| **Base matemática** | ✅ Igual | ✅ Igual |
+
+**📌 Diferença entre População e Amostra:**
+
+| - | **População** | **Amostra** |
+|---------|---------|---------|
+| **Símbolo** | σ (sigma) | s |
+| **Fórmula** | <code>σ = √(Σ(xi − μ)² / N)</code> | <code>s = √(Σ(xi − x̄)² / (n−1))</code> |
+| **Denominador** | N | n−1 |
+| **Tipo** | Dados completos | Estimativa |
+
+
+### Desvio Padrão para Dados Brutos (Não Agrupados)
+
+**📐 Método do Desvio Padrão dos Dados Não Agrupados**
+
+- **1** --> Calcular a média x̄
+- **2** --> Calcular o desvio de cada valor: xi − x̄
+- **3** --> Elevar ao quadrado: (xi − x̄)²
+- **4** --> Somar todos os quadrados: Σ(xi − x̄)²
+- **5** --> Dividir por n−1 (amostra) ou N (população) → **variância**
+- **6** --> Extrair a raiz quadrada → **desvio-padrão**
+
+<details>
+<summary>📌 Exemplo do Desvio Padrão dos Dados Não Agrupados **(Amostral)**</summary>
+
+**Problema:** Calcular o desvio-padrão amostral das notas: `2, 5, 7, 9, 12`
+
+**Passo 1 — Média:**
+x̄ = (2 + 5 + 7 + 9 + 12) / 5 = 35/5 = 7
+
+**Passo 2 — Tabela de cálculo:**
+
+| xi | xi − x̄ | (xi − x̄)² |
+|---------|---------|---------|
+| 2 | −5 | 25 |
+| 5 | −2 | 4 |
+| 7 | 0 | 0 |
+| 9 | 2 | 4 |
+| 12 | 5 | 25 |
+| **Total** | **0** | **58** |
+
+**Passo 3 — Variância (amostral):**
+s² = 58 / (5 − 1) = 58/4 = 14,5
+
+**Passo 4 — Desvio-padrão:**
+
+$$
+s = \sqrt{14{,}5} \approx \mathbf{3{,}81}
+$$
+
+✅ O desvio-padrão amostral é **3,81**.
+
+> **🔍 Interpretação:** Em média, cada nota se afasta da média (7) em **3,81 pontos**. Isto significa que, tipicamente, os alunos tiveram notas que diferem da média em cerca de 3,81 pontos — para cima ou para baixo. Quanto maior o desvio-padrão, mais **espalhados** estão os dados.
+</details>
+
+<details>
+<summary>📌 Exemplo do Desvio Padrão dos Dados Não Agrupados **Populacional**</summary>
+
+**Problema:** Calcular o desvio-padrão populacional dos mesmos dados: `2, 5, 7, 9, 12`
+
+**Passo 1 — Média:** μ = 7 (igual)
+
+**Passo 2 — Soma dos quadrados:** 58 (igual)
+
+**Passo 3 — Variância (populacional):**
+σ² = 58/5 = 11,6
+
+**Passo 4 — Desvio-padrão:**
+
+$$
+\sigma = \sqrt{11{,}6} \approx \mathbf{3{,}41}
+$$
+
+✅ O desvio-padrão populacional é **3,41**.
+
+> **🔍 Interpretação:** Em média, cada nota se afasta da média (7) em **3,41 pontos**. O desvio-padrão populacional (3,41) é **menor** que o amostral (3,81) porque o denominador é maior (5 vs. 4).
+</details>
+
+<details>
+<summary>📌 Exemplo do Desvio Padrão dos Dados Não Agrupados **Populacional no R**</summary>
+```R
+- _Dados de exemplo (dados brutos)_
+notas <- c(2, 5, 7, 9, 12)
+
+- _Desvio Padrão Populacional_
+media <- mean(notas)
+n <- length(notas)
+
+- _Soma dos quadrados dos desvios_
+soma_quadrados <- sum((notas - media)^2)
+
+- _Variância populacional_
+var_pop <- soma_quadrados / n
+var_pop
+
+- _Desvio padrão populacional
+desvio_pop <- sqrt(var_pop)
+desvio_pop
+
+- _Alternativa com pacote_
+library(SciViews)
+pop.sd(notas)
+```
+</details>
+
+<details>
+<summary>📌 Exemplo do Desvio Padrão dos Dados Não Agrupados **Populacional no Python**</summary>
+
+```python
+import numpy as np
+
+- _Dados de exemplo (dados brutos)_
+notas = np.array([2, 5, 7, 9, 12])
+
+- _Desvio Padrão Populacional_
+media = np.mean(notas)
+n = len(notas)
+
+- _Soma dos quadrados dos desvios_
+soma_quadrados = np.sum((notas - media) ** 2)
+
+- _Variância populacional_
+var_pop = soma_quadrados / n
+print(var_pop)
+
+- _Desvio padrão populacional_
+desvio_pop = np.sqrt(var_pop)
+print(desvio_pop)
+
+- _Alternativa direta com NumPy_
+desvio_pop_np = np.std(notas, ddof=0)
+print(desvio_pop_np)
+```
+</details>
+
+<details>
+<summary>📌 Exemplo do Desvio Padrão dos Dados Não Agrupados **Amostral no R**</summary>
+```R
+- _Dados de exemplo (dados brutos)_
+notas <- c(2, 5, 7, 9, 12)
+
+- _Desvio Padrão Amostral_
+media <- mean(notas)
+n <- length(notas)
+
+- _Soma dos quadrados dos desvios_
+soma_quadrados <- sum((notas - media)^2)
+
+- _Variância amostral_
+var_amostral <- soma_quadrados / (n - 1)
+var_amostral
+
+- _Desvio padrão amostral_
+desvio_amostral <- sqrt(var_amostral)
+desvio_amostral
+
+- _Alternativa direta com R base_
+sd(notas)
+```
+</details>
+
+<details>
+<summary>📌Exemplo para Desvio Padrão dos Dados Não Agrupados **Amostral no Python**</summary>
+
+```python
+import numpy as np
+import pandas as pd
+
+- _Dados de exemplo (dados brutos)_
+notas = np.array([2, 5, 7, 9, 12])
+
+- _Desvio Padrão Amostral_
+media = np.mean(notas)
+n = len(notas)
+
+- _Soma dos quadrados dos desvios_
+soma_quadrados = np.sum((notas - media) ** 2)
+
+- _Variância amostral_
+var_amostral = soma_quadrados / (n - 1)
+print(var_amostral)
+
+- _Desvio padrão amostral_
+desvio_amostral = np.sqrt(var_amostral)
+print(desvio_amostral)
+
+- _Alternativa direta com NumPy_
+desvio_amostral_np = np.std(notas, ddof=1)
+print(desvio_amostral_np)
+
+- _Alternativa com Pandas_
+desvio_amostral_pd = pd.Series(notas).std()
+print(desvio_amostral_pd)
+```
+</details>
+
+### Desvio Padrão para Dados Agrupados por Lista
+
+&emsp;&emsp;&emsp;Quando os dados estão numa **tabela de frequências**, cada valor xi tem um peso fi. A fórmula adapta-se multiplicando cada desvio ao quadrado pela frequência.
+
+**📐 Fórmula do Desvio Padrão para Dados Agrupados por Lista**
+
+$$
+\color{blue} s = \sqrt{\frac{\sum_{i=1}^{k} f_i \cdot (x_i - \bar{x})^2}{n - 1}}
+$$
+
+Onde:
+- **xi** = cada valor distinto
+- **fi** = frequência desse valor
+- **x̄** = média
+- **n = Σfi** = total de dados
+- **k** = número de valores distintos
+
+<details>
+<summary>📌 Exemplo do Desvio Padrão para Dados Agrupados por Lista</summary>
+
+**Problema:** Calcular o desvio-padrão das notas de 9 alunos:
+
+| Valor (xi) | fi |
+|---------|---------|
+| 4 | 1 |
+| 5 | 2 |
+| 6 | 3 |
+| 7 | 2 |
+| 8 | 1 |
+| **Total** | **9** |
+
+**Passo 1 — Média:**
+x̄ = (4×1 + 5×2 + 6×3 + 7×2 + 8×1) / 9 = 54/9 = 6
+
+**Passo 2 — Tabela de cálculo:**
+
+| xi | fi | xi − x̄ | (xi − x̄)² | fi · (xi − x̄)² |
+|---------|---------|---------|---------|---------|
+| 4 | 1 | −2 | 4 | 4 |
+| 5 | 2 | −1 | 1 | 2 |
+| 6 | 3 | 0 | 0 | 0 |
+| 7 | 2 | 1 | 1 | 2 |
+| 8 | 1 | 2 | 4 | 4 |
+| **Total** | **9** | | | **12** |
+
+**Passo 3 — Variância (amostral):**
+s² = 12 / (9 − 1) = 12/8 = 1,5
+
+**Passo 4 — Desvio-padrão:**
+
+$$
+s = \sqrt{1{,}5} \approx \mathbf{1{,}22}
+$$
+
+✅ O desvio-padrão é **1,22**.
+
+> **🔍 Interpretação:** Em média, cada nota se afasta da média (6) em **1,22 pontos**. Isto indica que os dados são **muito concentrados** — a maioria das notas está próxima da média. Comparando com o exemplo anterior (desvio-padrão = 3,81), este conjunto é **muito mais homogéneo**.
+
+> **🔍 Verificação:** Se usarmos os dados soltos (4, 5, 5, 6, 6, 6, 7, 7, 8), a média é 6 e o desvio-padrão é 1,22. **Confere!**
+</details>
+
+### Desvio Padrão para Dados Agrupados por Intervalo
+
+&emsp;&emsp;&emsp;Quando os dados estão em **classes**, usamos o **ponto médio** de cada classe como representante xi. A fórmula é a mesma da lista, mas xi é o ponto médio.
+
+**📐 Fórmula do Desvio Padrão para Dados Agrupados por Intervalo**
+
+$$
+\color{blue} s = \sqrt{\frac{\sum_{i=1}^{k} f_i \cdot (x_i - \bar{x})^2}{n - 1}}
+$$
+
+Onde:
+- **xi** = **ponto médio** da classe: xi = (L_inf + L_sup) / 2
+- **fi** = frequência da classe
+- **x̄** = média (calculada com os pontos médios)
+- **n = Σfi** = total de dados
+
+<details>
+<summary>📌 Exemplo do Desvio Padrão para Dados Agrupados por Intervalo</summary>
+
+**Problema:** Calcular o desvio-padrão das notas de 20 alunos agrupadas:
+
+| Classe | Intervalo | fi |
+|---------|---------|-----|
+| 1 | [4, 8[ | 7 |
+| 2 | [8, 12[ | 5 |
+| 3 | [12, 16[ | 5 |
+| 4 | [16, 20] | 3 |
+| **Total** | | **20** |
+
+**Passo 1 — Pontos médios e média:**
+
+| Classe | xi | fi | xi · fi |
+|---------|---------|---------|---------|
+| 1 | 6 | 7 | 42 |
+| 2 | 10 | 5 | 50 |
+| 3 | 14 | 5 | 70 |
+| 4 | 18 | 3 | 54 |
+| **Total** | | **20** | **216** |
+
+$$
+\bar{x} = \frac{216}{20} = 10{,}8
+$$
+
+**Passo 2 — Tabela de cálculo:**
+
+| xi | fi | xi − x̄ | (xi − x̄)² | fi · (xi − x̄)² |
+|---------|---------|---------|---------|---------|
+| 6 | 7 | −4,8 | 23,04 | 161,28 |
+| 10 | 5 | −0,8 | 0,64 | 3,20 |
+| 14 | 5 | 3,2 | 10,24 | 51,20 |
+| 18 | 3 | 7,2 | 51,84 | 155,52 |
+| **Total** | **20** | | | **371,20** |
+
+**Passo 3 — Variância (amostral):**
+s² = 371,20 / (20 − 1) = 371,20/19 ≈ 19,54
+
+**Passo 4 — Desvio-padrão:**
+
+$$
+s = \sqrt{19{,}54} \approx \mathbf{4{,}42}
+$$
+
+✅ O desvio-padrão é **4,42**.
+
+> **🔍 Interpretação:** Em média, cada nota se afasta da média (10,8) em **4,42 pontos**. Isto indica uma **dispersão elevada** — as notas variam bastante em torno da média. Isto faz sentido: as notas variam de 4 a 20, uma faixa muito ampla.
+
+> **⚠️ Atenção:** Comparando com os dados não agrupados (desvio-padrão ≈ 4,39), há uma diferença — é o **erro de agrupamento**. Quanto mais finas forem as classes, menor o erro.
+</details>
+
+## A REGRA EMPÍRICA (68-95-99,7)
+
+&emsp;&emsp;&emsp;Para distribuições com formato de **sino** (normais ou aproximadamente normais), o desvio-padrão permite uma interpretação poderosa através da **Regra Empírica**:
+
+| Regra | Significado | Intervalo |
+|---------|---------|---------|
+| **68%** dos dados | Estão a **1 desvio padrão** da média | μ ± 1σ |
+| **95%** dos dados | Estão a **2 desvios padrão** da média | μ ± 2σ |
+| **99,7%** dos dados | Estão a **3 desvios padrão** da média | μ ± 3σ |
+
+<details>
+<summary>📌 Exemplo com as idades</summary>
+
+**Dados:** Idades com média 26,25 anos e desvio-padrão 4,92 anos
+
+- **68%** dos dados estão entre: 26,25 − 4,92 = 21,33 e 26,25 + 4,92 = 31,17
+- **95%** dos dados estão entre: 26,25 − 9,84 = 16,41 e 26,25 + 9,84 = 36,09
+- **99,7%** dos dados estão entre: 26,25 − 14,76 = 11,49 e 26,25 + 14,76 = 41,01
+
+> **🔍 Interpretação:** Se a distribuição das idades for aproximadamente normal, podemos afirmar com 95% de confiança que uma pessoa escolhida ao acaso tem entre **16,41 e 36,09 anos**. Isto é extraordinariamente útil em estatística inferencial.
+
+> **⚠️ Atenção:** A Regra Empírica só se aplica a distribuições **aproximadamente normais**. Para distribuições assimétricas ou com outliers, a regra pode não se verificar.
+</details></center>
+
+## 5. VANTAGENS E DESVANTAGENS DO DESVIO PADRÃO
+
+| Vantagens | Desvantagens |
+|---------|----------|
+| ✅ **Unidade original** dos dados (fácil interpretar) | ❌ **Sensível a outliers** (assim como a variância) |
+| ✅ **Usa todos os dados** (não apenas dois) | ❌ Cálculo mais trabalhoso que a amplitude |
+| ✅ **Base para muitas técnicas estatísticas** | ❌ Interpretação menos intuitiva para não estatísticos |
+| ✅ **Permite comparação** entre conjuntos | ❌ Depende da média (se a média não for representativa, o DP também não será) |
+| ✅ **Fundamental para a Regra Empírica** | ❌ Não pode ser usado para dados categóricos |
+| ✅ **Mesma unidade dos dados** — comunicável | ❌ Sensível à escala dos dados |
+
+## 6. INTERPRETAÇÃO DO DESVIO PADRÃO
+
+> **💡 O desvio-padrão é a medida de dispersão mais interpretável**
+
+&emsp;&emsp;&emsp;Ao contrário da variância, o desvio-padrão está na **mesma unidade dos dados**, o que o torna **diretamente interpretável**.
+
+**📌 Exemplos de interpretação:**
+
+| Contexto | Média | Desvio-Padrão | Interpretação |
+|---------|---------|---------|---------|
+| **Notas** | 7 | 1,22 | Em média, cada nota se afasta da média em 1,22 pontos |
+| **Idades** | 26,25 anos | 4,92 anos | Em média, cada idade se afasta da média em 4,92 anos |
+| **Salários** | 2000 kz | 300 kz | Em média, cada salário se afasta da média em 300 kz |
+| **Pesos** | 70 kg | 5 kg | Em média, cada peso se afasta da média em 5 kg |
+
+**📌 Comparação entre conjuntos:**
+
+| - | **Turma A** | **Turma B** |
+|---------|---------|---------|
+| **Média** | 7,0 | 7,0 |
+| **Desvio Padrão** | 0,8 | 2,5 |
+| **Característica** | Dados homogéneos | Dados heterogéneos |
+| **Interpretação** | Alunos com desempenho parecido | Alunos com desempenhos muito diferentes |
+
+**Conclusão:** Mesmo com a **mesma média**, a Turma A é **mais consistente** que a Turma B (menor desvio-padrão).
+
+## 7. COMPARAÇÃO COM AS MEDIDAS DAS AULAS ANTERIORES
+
+| Medida | Conjunto A (`2,5,7,9,12`) | Conjunto B (`6,7,7,7,8`) |
+|---------|---------|---------|
+| **Amplitude Total** | 10 | 2 |
+| **IQR** | 7 | 1 |
+| **Desvio Médio** | 2,8 | 0,4 |
+| **Variância** | 14,5 | 0,5 |
+| **Desvio Padrão** | **3,81** | **0,71** |
+
+> **🔍 Interpretação:** O Conjunto A tem um desvio-padrão de 3,81 (muito disperso), enquanto o Conjunto B tem 0,71 (muito concentrado). A diferença é **muito clara** com o desvio-padrão — ao contrário da amplitude total (10 vs. 2) que é menos informativa sobre a distribuição interna.
+
+## 8. QUANDO USAR O DESVIO PADRÃO
+
+| Critério | Desvio-Padrão |
+|---------|----------|
+| **Interpretação direta** | ✅ Único |
+| **Comunicação de resultados** | ✅ Único |
+| **Base para Regra Empírica** | ✅ Único |
+| **Base para inferência estatística** | ✅ (via variância) |
+| **Comparar variabilidade absoluta** | ✅ |
+| **Dados com outliers** | ❌ Sensível |
+| **Comparar conjuntos com médias diferentes** | ❌ Usar CV (próxima aula) |
+| **Dados categóricos** | ❌ Não se aplica |
+
+
+## 9. EXERCÍCIOS
+
+<details>
+<summary>📗 Exercício 1 — Desvio Padrão (Dados Brutos)</summary>
+
+**Enunciado:** Calcule o desvio-padrão amostral dos dados: 10, 12, 14, 16, 18
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+Média = 70/5 = 14
+
+| xi | xi − 14 | (xi − 14)² |
+|---------|---------|---------|
+| 10 | −4 | 16 |
+| 12 | −2 | 4 |
+| 14 | 0 | 0 |
+| 16 | 2 | 4 |
+| 18 | 4 | 16 |
+| **Total** | | **40** |
+
+**Variância:** s² = 40/4 = 10
+
+**Desvio-padrão:** s = √10 ≈ **3,16**
+
+**Interpretação:** Em média, cada valor se afasta da média (14) em **3,16 unidades**.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Desvio Padrão (Dados Agrupados por Lista)</summary>
+
+**Enunciado:** Calcule o desvio-padrão da tabela:
+
+| xi | fi |
+|---------|---------|
+| 5 | 2 |
+| 10 | 5 |
+| 15 | 3 |
+| **Total** | **10** |
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+Média = (5×2 + 10×5 + 15×3) / 10 = 105/10 = 10,5
+
+| xi | fi | (xi − 10,5)² | fi · (xi − 10,5)² |
+|---------|---------|---------|---------|
+| 5 | 2 | 30,25 | 60,5 |
+| 10 | 5 | 0,25 | 1,25 |
+| 15 | 3 | 20,25 | 60,75 |
+| **Total** | **10** | | **122,5** |
+
+**Variância:** s² = 122,5/9 ≈ 13,61
+
+**Desvio-padrão:** s = √13,61 ≈ **3,69**
+
+**Interpretação:** Em média, cada valor se afasta da média (10,5) em **3,69 unidades** — uma dispersão moderada.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Desvio Padrão (Dados Agrupados por Intervalo)</summary>
+
+**Enunciado:** Calcule o desvio-padrão das notas agrupadas:
+
+| Classe | Intervalo | fi |
+|---------|---------|-----|
+| 1 | [0, 4[ | 3 |
+| 2 | [4, 8[ | 7 |
+| 3 | [8, 12[ | 5 |
+| 4 | [12, 16] | 3 |
+| **Total** | | **18** |
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+Pontos médios: 2, 6, 10, 14
+
+Média = (2×3 + 6×7 + 10×5 + 14×3) / 18 = 140/18 ≈ 7,78
+
+| xi | fi | (xi − 7,78)² | fi · (xi − 7,78)² |
+|---------|---------|---------|---------|
+| 2 | 3 | 33,41 | 100,23 |
+| 6 | 7 | 3,17 | 22,19 |
+| 10 | 5 | 4,93 | 24,65 |
+| 14 | 3 | 38,69 | 116,07 |
+| **Total** | **18** | | **263,14** |
+
+**Variância:** s² = 263,14/17 ≈ 15,48
+
+**Desvio-padrão:** s = √15,48 ≈ **3,93**
+
+**Interpretação:** Em média, cada nota se afasta da média (7,78) em **3,93 pontos** — uma dispersão considerável.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Desvio Padrão Populacional vs. Amostral</summary>
+
+**Enunciado:** Para os dados `4, 6, 8, 10, 12`, calcule o desvio-padrão populacional e o amostral.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+Média = 8
+
+| xi | xi − 8 | (xi − 8)² |
+|---------|---------|---------|
+| 4 | −4 | 16 |
+| 6 | −2 | 4 |
+| 8 | 0 | 0 |
+| 10 | 2 | 4 |
+| 12 | 4 | 16 |
+| **Total** | | **40** |
+
+**Populacional:** σ² = 40/5 = 8, σ = √8 ≈ **2,83**
+
+**Amostral:** s² = 40/4 = 10, s = √10 ≈ **3,16**
+
+**Interpretação:** O desvio-padrão amostral (3,16) é **maior** que o populacional (2,83) devido ao denominador n−1. Isto reflete a correção de Bessel.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Regra Empírica</summary>
+
+**Enunciado:** Numa distribuição aproximadamente normal, a média é 50 e o desvio-padrão é 5. Qual o intervalo que contém 95% dos dados?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+95% dos dados estão a **2 desvios padrão** da média:
+
+μ ± 2σ = 50 ± 2 × 5 = 50 ± 10
+
+Intervalo: **40 a 60**
+
+**Interpretação:** Se a distribuição for aproximadamente normal, 95% dos dados estão entre 40 e 60.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Por que o Desvio-Padrão é preferível à Variância?</summary>
+
+**Enunciado:** Explique por que o desvio-padrão é preferível à variância para interpretar a dispersão dos dados.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+O desvio-padrão é preferível porque está na **mesma unidade** dos dados originais. Enquanto a variância está em **unidades ao quadrado** (ex: anos², R$²), o desvio-padrão está em **anos, kwanza, metros**, etc. — tornando a interpretação muito mais intuitiva e comunicável.
+
+**Exemplo:** Uma variância de 24,19 anos² não significa nada para a maioria das pessoas. Mas um desvio-padrão de 4,92 anos significa que, em média, as idades se afastam da média em 4,92 anos — uma informação clara e útil.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — Comparação de Dispersão</summary>
+
+**Enunciado:** Dois conjuntos de dados têm a mesma média (50). O conjunto A tem desvio-padrão 2 e o conjunto B tem desvio-padrão 8. O que podemos afirmar sobre os dados?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+O conjunto B tem **maior dispersão** que o conjunto A.
+
+- **Conjunto A (DP = 2):** Dados muito próximos da média (homogéneos). Em média, cada valor se afasta da média em apenas 2 unidades.
+- **Conjunto B (DP = 8):** Dados muito espalhados (heterogéneos). Em média, cada valor se afasta da média em 8 unidades.
+
+**Interpretação:** Embora ambos tenham a mesma média (50), os valores do conjunto B variam muito mais em torno dela. O desvio-padrão de B é 4 vezes maior que o de A.
+
+</details>
+</details>
+
+> A variância é o coração da estatística — bate ao quadrado. O desvio-padrão é a sua voz, que fala na língua dos dados originais. Sem ele, a dispersão seria um número incompreensível.
+

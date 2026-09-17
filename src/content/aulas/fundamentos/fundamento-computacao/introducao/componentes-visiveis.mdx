@@ -1,0 +1,638 @@
+---
+title: "Componentes Físicos Visíveis — A Interface Entre o Usuário e a Máquina"
+author: "TeoScript Labs"
+date: "2026-09-06"
+references:
+  - author: "Tanenbaum, A. S."
+    title: "Organização Estruturada de Computadores"
+    year: 2013
+    publisher: "Pearson"
+    edition: "5th"
+
+  - author: "Stallings, W."
+    title: "Arquitetura e Organização de Computadores"
+    year: 2018
+    publisher: "Pearson"
+    edition: "10th"
+
+  - author: "Patterson, D. A. & Hennessy, J. L."
+    title: "Computer Organization and Design"
+    year: 2017
+    publisher: "Morgan Kaufmann"
+    edition: "5th"
+---
+
+# Componentes Físicos Visíveis
+
+**Duração estimada:** 40 minutos (leitura) / 1h15 (com exercícios práticos)  <br>
+**Público-alvo:** Estudante sem conhecimento prévio em computação  <br>
+**Pré-requisito:** Aula anterior — "Máquina de Turing: Dos Símbolos aos Algoritmos"  <br>
+**Método:** Observação direta com transposição para a arquitetura de computadores <br>
+
+
+
+## Introdução
+
+> *"A Interface Entre o Usuário e a Máquina"*
+
+Na aula anterior, estudamos o **modelo teórico** da computação: a Máquina de Turing. Mas onde ela **existe fisicamente**? A resposta é que a Máquina de Turing não está em um único lugar — ela está **distribuída** entre os componentes do computador. Hoje, vamos ver os componentes que você pode **tocar e ver** — aqueles que fazem a **entrada** e a **saída** de dados.
+
+## 1. Da Teoria à Prática
+
+### 1.1 Onde está a Máquina de Turing?
+
+| Componente da Máquina de Turing | Correspondência Física |
+|--------------------------------|----------------------|
+| **Fita** | Memória RAM + HD/SSD |
+| **Cabeça de leitura/escrita** | Controladora de memória + barramentos |
+| **Estado interno** | Registradores da CPU + flags |
+| **Tabela de transição** | Microcódigo / Instruções em Assembly |
+| **Estado de parada** | Instrução HALT / Desligamento |
+
+### 1.2 O Computador como um Sistema de Entrada-Processamento-Saída
+
+Todo computador pode ser entendido como um sistema que:
+
+1. **Recebe** dados (entrada)
+2. **Processa** esses dados (processamento)
+3. **Devolve** resultados (saída)
+
+<div style="background: #0a0f1e; padding: 2rem 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Segoe UI', system-ui, sans-serif; max-width: 750px; margin: 1.5rem auto; text-align: center;">
+
+  <div style="color: #fbbf24; font-size: 1rem; font-weight: 700; margin-bottom: 1.2rem; letter-spacing: 0.5px;">
+    🔄 SISTEMA DE ENTRADA-PROCESSAMENTO-SAÍDA
+  </div>
+
+  <div style="display: flex; gap: 0.6rem; justify-content: center; flex-wrap: wrap;">
+
+    <div style="flex: 1; min-width: 120px; background: #1a3a5c; padding: 1rem 0.8rem; border-radius: 12px;">
+      <div style="color: #60a5fa; font-weight: 700; font-size: 1.1rem;">📥</div>
+      <div style="color: #60a5fa; font-weight: 600; font-size: 0.85rem;">ENTRADA</div>
+      <div style="color: #93c5fd; font-size: 0.6rem; margin-top: 0.3rem;">Teclado<br>Mouse<br>Scanner<br>Webcam</div>
+    </div>
+
+    <div style="color: #686252; font-size: 1.8rem; display: flex; align-items: center;">→</div>
+
+    <div style="flex: 1.5; min-width: 150px; background: #2d1b69; padding: 1rem 0.8rem; border-radius: 12px;">
+      <div style="color: #a78bfa; font-weight: 700; font-size: 1.1rem;">⚙️</div>
+      <div style="color: #a78bfa; font-weight: 600; font-size: 0.85rem;">PROCESSAMENTO</div>
+      <div style="color: #c4b5fd; font-size: 0.6rem; margin-top: 0.3rem;">CPU / RAM / HD/SSD<br><span style="color: #6b7280; font-size: 0.55rem;">(dentro do gabinete)</span></div>
+    </div>
+
+    <div style="color: #fbbf24; font-size: 1.8rem; display: flex; align-items: center;">→</div>
+
+    <div style="flex: 1; min-width: 120px; background: #1a5c3a; padding: 1rem 0.8rem; border-radius: 12px;">
+      <div style="color: #34d399; font-weight: 700; font-size: 1.1rem;">📤</div>
+      <div style="color: #34d399; font-weight: 600; font-size: 0.85rem;">SAÍDA</div>
+      <div style="color: #6ee7b7; font-size: 0.6rem; margin-top: 0.3rem;">Monitor<br>Impressora<br>Caixas de som</div>
+    </div>
+
+  </div>
+
+</div>
+
+**O que veremos hoje:** Os componentes que fazem a **entrada** e a **saída** — aqueles que são **visíveis** e com os quais interagimos diretamente.
+
+
+## 2. Os Componentes Visíveis
+
+### 2.1 O Gabinete — A "Caixa Preta" (quase)
+
+O gabinete é a **carcaça** que protege os componentes internos. É a parte visível do computador que você vê na mesa.
+
+| Característica | Descrição |
+|----------------|-----------|
+| **Função** | Proteger, organizar e refrigerar os componentes internos |
+| **Materiais** | Aço, alumínio, plástico, vidro temperado |
+| **Tamanhos** | ATX (grande), Micro-ATX (médio), Mini-ITX (pequeno) |
+| **O que contém** | Placa-mãe, CPU, RAM, HD/SSD, fonte, placa de vídeo |
+
+> **📌 Transposição:** O gabinete é como a "capa do livro" da computação — protege o conteúdo, mas não faz o processamento.
+
+
+### 2.2 O Monitor — A Janela para o Mundo Digital
+
+O monitor é o **dispositivo de saída** mais importante. Ele converte dados digitais em imagens que nossos olhos podem ver.
+
+| Característica | Descrição |
+|----------------|-----------|
+| **Função** | Exibir informações visuais |
+| **Tecnologias** | LED, LCD, OLED, IPS |
+| **Resolução** | Número de pixels: 1920×1080 (Full HD), 3840×2160 (4K) |
+| **Taxa de atualização** | 60Hz, 120Hz, 144Hz, 240Hz |
+| **Conexões** | HDMI, DisplayPort, VGA (antigo), DVI |
+
+**Analogia Acadêmica — O Espelho Mágico**
+
+Imagine um **espelho que mostra informações**. Ele não cria nada — apenas reflete o que a máquina "pensa". Se o computador processa um número, o monitor mostra esse número. Se processa uma imagem, o monitor mostra a imagem.
+
+> **💡 Insight:** O monitor é como a **fita de saída** da Máquina de Turing — o lugar onde o resultado final é exibido.
+
+**Como funciona (simplificado):**
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.06); max-width: 600px; margin: 1rem auto; text-align: center;">
+
+  <div style="display: flex; gap: 0.4rem; justify-content: center; flex-wrap: wrap;">
+
+    <div style="background: #2d1b69; padding: 0.5rem 1rem; border-radius: 8px; min-width: 70px;">
+      <div style="color: #a78bfa; font-weight: 600; font-size: 0.7rem;">CPU</div>
+      <div style="color: #c4b5fd; font-size: 0.5rem;">Calcula os dados</div>
+    </div>
+
+    <div style="color: #fbbf24; font-size: 1.2rem; display: flex; align-items: center;">→</div>
+
+    <div style="background: #1a3a5c; padding: 0.5rem 1rem; border-radius: 8px; min-width: 80px;">
+      <div style="color: #60a5fa; font-weight: 600; font-size: 0.7rem;">Placa de Vídeo</div>
+      <div style="color: #93c5fd; font-size: 0.5rem;">Converte em sinal</div>
+    </div>
+
+    <div style="color: #fbbf24; font-size: 1.2rem; display: flex; align-items: center;">→</div>
+
+    <div style="background: #1a5c3a; padding: 0.5rem 1rem; border-radius: 8px; min-width: 70px;">
+      <div style="color: #34d399; font-weight: 600; font-size: 0.7rem;">Monitor</div>
+      <div style="color: #6ee7b7; font-size: 0.5rem;">Mostra a imagem</div>
+    </div>
+
+    <div style="color: #fbbf24; font-size: 1.2rem; display: flex; align-items: center;">→</div>
+
+    <div style="background: #5c3a1a; padding: 0.5rem 1rem; border-radius: 8px; min-width: 70px;">
+      <div style="color: #fcd34d; font-weight: 600; font-size: 0.7rem;">Seus Olhos</div>
+      <div style="color: #fde68a; font-size: 0.5rem;">Você vê o resultado</div>
+    </div>
+
+  </div>
+
+</div>
+
+
+### 2.3 O Teclado — O Tradutor de Pensamentos
+
+O teclado é o **dispositivo de entrada** mais comum. Ele traduz toques dos dedos em sinais elétricos que o computador entende.
+
+| Característica | Descrição |
+|----------------|-----------|
+| **Função** | Inserir texto e comandos |
+| **Tipos de switch** | Mecânico (Blue, Brown, Red), Membrana, Híbrido |
+| **Layouts** | QWERTY, AZERTY, Dvorak, ABNT2 (Brasil) |
+| **Conexões** | USB, Bluetooth, PS/2 (antigo) |
+| **Teclas** | Alfanuméricas, de função (F1-F12), modificadoras (Ctrl, Alt, Shift), navegação (setas) |
+
+**Analogia Acadêmica — O Escriba Digital**
+
+Lembra do escriba da aula anterior? O teclado é como a **mão do escriba** escrevendo no papiro. Cada tecla pressionada é um símbolo que a máquina lê.
+
+> **💡 Insight:** Cada tecla pressionada gera um **código ASCII** (ou Unicode) que a CPU interpreta. A tecla 'A' não é a letra 'A' — é o número 65 em binário (`01000001`).
+
+**Como funciona (simplificado):**
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.06); max-width: 650px; margin: 1rem auto; text-align: center;">
+
+  <div style="display: flex; gap: 0.3rem; justify-content: center; flex-wrap: wrap;">
+
+    <div style="background: #1a3a5c; padding: 0.4rem 0.8rem; border-radius: 8px; min-width: 60px;">
+      <div style="color: #60a5fa; font-weight: 600; font-size: 0.65rem;">Seu dedo</div>
+      <div style="color: #93c5fd; font-size: 0.45rem;">Quer escrever 'A'</div>
+    </div>
+
+    <div style="color: #fbbf24; font-size: 1rem; display: flex; align-items: center;">→</div>
+
+    <div style="background: #2d1b69; padding: 0.4rem 0.8rem; border-radius: 8px; min-width: 70px;">
+      <div style="color: #a78bfa; font-weight: 600; font-size: 0.65rem;">Tecla</div>
+      <div style="color: #c4b5fd; font-size: 0.45rem;">Switch fecha o circuito</div>
+    </div>
+
+    <div style="color: #fbbf24; font-size: 1rem; display: flex; align-items: center;">→</div>
+
+    <div style="background: #5c3a1a; padding: 0.4rem 0.8rem; border-radius: 8px; min-width: 80px;">
+      <div style="color: #fcd34d; font-weight: 600; font-size: 0.65rem;">Controladora</div>
+      <div style="color: #fde68a; font-size: 0.45rem;">Gera Scan Code</div>
+    </div>
+
+    <div style="color: #fbbf24; font-size: 1rem; display: flex; align-items: center;">→</div>
+
+    <div style="background: #5c1a1a; padding: 0.4rem 0.8rem; border-radius: 8px; min-width: 70px;">
+      <div style="color: #fca5a5; font-weight: 600; font-size: 0.65rem;">CPU</div>
+      <div style="color: #fecaca; font-size: 0.45rem;">Recebe o código</div>
+    </div>
+
+  </div>
+
+</div>
+
+
+### 2.4 O Mouse — A Extensão da Mão
+
+O mouse é um dispositivo de entrada que permite **apontar e clicar**. Ele traduz movimentos da mão em movimentos do cursor na tela.
+
+| Característica | Descrição |
+|----------------|-----------|
+| **Função** | Apontar, selecionar, arrastar, clicar |
+| **Tecnologias** | Óptico (LED), Laser, Mecânico (bola - obsoleto) |
+| **DPI** | Pontos por polegada — sensibilidade do movimento |
+| **Botões** | Esquerdo, direito, scroll (roda), botões laterais |
+| **Conexões** | USB, Bluetooth, Wireless (dongle) |
+
+**Analogia Acadêmica — A Varinha de Condão**
+
+O mouse é como uma **varinha mágica** que aponta para onde você quer ir no mundo digital. Quando você move o mouse, está movendo a "cabeça de leitura" da Máquina de Turing para diferentes posições na tela.
+
+> **💡 Insight:** O movimento do mouse é convertido em **coordenadas X e Y** (pixels) que a CPU rastreia. Cada clique é um **evento** que o sistema operacional interpreta.
+
+**Como funciona (simplificado):**
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.06); max-width: 700px; margin: 1rem auto; text-align: center;">
+
+  <div style="display: flex; gap: 0.3rem; justify-content: center; flex-wrap: wrap;">
+
+    <div style="background: #1a3a5c; padding: 0.4rem 0.8rem; border-radius: 8px; min-width: 70px;">
+      <div style="color: #60a5fa; font-weight: 600; font-size: 0.65rem;">Mão</div>
+      <div style="color: #93c5fd; font-size: 0.45rem;">Move o mouse</div>
+    </div>
+
+    <div style="color: #fbbf24; font-size: 1rem; display: flex; align-items: center;">→</div>
+
+    <div style="background: #2d1b69; padding: 0.4rem 0.8rem; border-radius: 8px; min-width: 80px;">
+      <div style="color: #a78bfa; font-weight: 600; font-size: 0.65rem;">Sensor</div>
+      <div style="color: #c4b5fd; font-size: 0.45rem;">LED/Laser ilumina</div>
+    </div>
+
+    <div style="color: #fbbf24; font-size: 1rem; display: flex; align-items: center;">→</div>
+
+    <div style="background: #5c3a1a; padding: 0.4rem 0.8rem; border-radius: 8px; min-width: 80px;">
+      <div style="color: #fcd34d; font-weight: 600; font-size: 0.65rem;">Controladora</div>
+      <div style="color: #fde68a; font-size: 0.45rem;">Calcula delta X/Y</div>
+    </div>
+
+    <div style="color: #fbbf24; font-size: 1rem; display: flex; align-items: center;">→</div>
+
+    <div style="background: #5c1a1a; padding: 0.4rem 0.8rem; border-radius: 8px; min-width: 70px;">
+      <div style="color: #fca5a5; font-weight: 600; font-size: 0.65rem;">CPU</div>
+      <div style="color: #fecaca; font-size: 0.45rem;">Atualiza cursor</div>
+    </div>
+
+  </div>
+
+</div>
+
+
+### 2.5 A Impressora — Do Digital ao Físico
+
+A impressora é um **dispositivo de saída** que transforma documentos digitais em objetos físicos (papel).
+
+| Característica | Descrição |
+|----------------|-----------|
+| **Função** | Imprimir documentos e imagens |
+| **Tipos** | Jato de tinta, Laser, Matricial (obsoleto) |
+| **Tecnologias** | Tinta (CMYK), Toner (pó), Térmica |
+| **Resolução** | DPI (pontos por polegada) — qualidade da impressão |
+| **Conexões** | USB, Wi-Fi, Bluetooth, Rede |
+
+**Analogia Acadêmica — A Fita de Papel**
+
+A impressora é como a **fita de saída** da Máquina de Turing, mas em vez de símbolos abstratos, ela produz uma cópia física. O que era binário (`01000001`) vira tinta na forma da letra 'A'.
+
+> **💡 Insight:** A impressora pega dados digitais (uma imagem, um texto) e os **rasteriza** — converte em pontos minúsculos que formam a imagem impressa.
+
+**Como funciona (jato de tinta - simplificado):**
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.06); max-width: 700px; margin: 1rem auto; text-align: center;">
+
+  <div style="display: flex; gap: 0.3rem; justify-content: center; flex-wrap: wrap;">
+
+    <div style="background: #1a3a5c; padding: 0.4rem 0.8rem; border-radius: 8px; min-width: 70px;">
+      <div style="color: #60a5fa; font-weight: 600; font-size: 0.65rem;">Dados</div>
+      <div style="color: #93c5fd; font-size: 0.45rem;">Seu documento</div>
+    </div>
+
+    <div style="color: #fbbf24; font-size: 1rem; display: flex; align-items: center;">→</div>
+
+    <div style="background: #2d1b69; padding: 0.4rem 0.8rem; border-radius: 8px; min-width: 90px;">
+      <div style="color: #a78bfa; font-weight: 600; font-size: 0.65rem;">Controladora</div>
+      <div style="color: #c4b5fd; font-size: 0.45rem;">Decodifica os dados</div>
+    </div>
+
+    <div style="color: #fbbf24; font-size: 1rem; display: flex; align-items: center;">→</div>
+
+    <div style="background: #5c3a1a; padding: 0.4rem 0.8rem; border-radius: 8px; min-width: 80px;">
+      <div style="color: #fcd34d; font-weight: 600; font-size: 0.65rem;">Bicos de tinta</div>
+      <div style="color: #fde68a; font-size: 0.45rem;">Gotículas ejetadas</div>
+    </div>
+
+    <div style="color: #fbbf24; font-size: 1rem; display: flex; align-items: center;">→</div>
+
+    <div style="background: #1a5c3a; padding: 0.4rem 0.8rem; border-radius: 8px; min-width: 70px;">
+      <div style="color: #34d399; font-weight: 600; font-size: 0.65rem;">Papel</div>
+      <div style="color: #6ee7b7; font-size: 0.45rem;">Documento físico</div>
+    </div>
+
+  </div>
+
+</div>
+
+### 2.6 A Webcam — O Olho Digital
+
+A webcam é um **dispositivo de entrada** que captura imagens e vídeos do mundo real e os converte em dados digitais.
+
+| Característica | Descrição |
+|----------------|-----------|
+| **Função** | Capturar imagens e vídeo |
+| **Resolução** | HD (720p), Full HD (1080p), 4K |
+| **Sensor** | CMOS ou CCD |
+| **Taxa de quadros** | 30fps, 60fps, 120fps |
+| **Conexões** | USB, Integrada (em notebooks) |
+
+**Analogia Acadêmica — O Olho da Máquina**
+
+A webcam é como um **olho artificial** que transforma luz em dados. Cada pixel da imagem é convertido em números — e esses números são processados pela CPU.
+
+> **💡 Insight:** A webcam não "vê" como nós vemos. Ela captura **milhões de pixels** de cada vez, cada um com valores de Vermelho, Verde e Azul (RGB). Esses valores são enviados para a CPU como números.
+
+**Como funciona (simplificado):**
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.06); max-width: 700px; margin: 1rem auto; text-align: center;">
+
+  <div style="display: flex; gap: 0.3rem; justify-content: center; flex-wrap: wrap;">
+
+    <div style="background: #1a3a5c; padding: 0.4rem 0.8rem; border-radius: 8px; min-width: 60px;">
+      <div style="color: #60a5fa; font-weight: 600; font-size: 0.65rem;">Luz</div>
+      <div style="color: #93c5fd; font-size: 0.45rem;">A cena real</div>
+    </div>
+
+    <div style="color: #fbbf24; font-size: 1rem; display: flex; align-items: center;">→</div>
+
+    <div style="background: #2d1b69; padding: 0.4rem 0.8rem; border-radius: 8px; min-width: 60px;">
+      <div style="color: #a78bfa; font-weight: 600; font-size: 0.65rem;">Lente</div>
+      <div style="color: #c4b5fd; font-size: 0.45rem;">Foca a luz</div>
+    </div>
+
+    <div style="color: #fbbf24; font-size: 1rem; display: flex; align-items: center;">→</div>
+
+    <div style="background: #5c3a1a; padding: 0.4rem 0.8rem; border-radius: 8px; min-width: 70px;">
+      <div style="color: #fcd34d; font-weight: 600; font-size: 0.65rem;">Sensor</div>
+      <div style="color: #fde68a; font-size: 0.45rem;">Converte em sinais</div>
+    </div>
+
+    <div style="color: #fbbf24; font-size: 1rem; display: flex; align-items: center;">→</div>
+
+    <div style="background: #1a5c3a; padding: 0.4rem 0.8rem; border-radius: 8px; min-width: 80px;">
+      <div style="color: #34d399; font-weight: 600; font-size: 0.65rem;">Processador</div>
+      <div style="color: #6ee7b7; font-size: 0.45rem;">Compressão MJPEG/H.264</div>
+    </div>
+
+    <div style="color: #fbbf24; font-size: 1rem; display: flex; align-items: center;">→</div>
+
+    <div style="background: #5c1a1a; padding: 0.4rem 0.8rem; border-radius: 8px; min-width: 70px;">
+      <div style="color: #fca5a5; font-weight: 600; font-size: 0.65rem;">CPU</div>
+      <div style="color: #fecaca; font-size: 0.45rem;">Recebe a imagem</div>
+    </div>
+
+  </div>
+
+</div>
+
+
+## 3. Montagem Conceitual
+
+### 3.1 O Fluxo de Dados — Um Exemplo Completo
+
+Vamos seguir o caminho de um dado desde a entrada até a saída:
+
+**Exemplo: Você digita "A" no teclado e vê "A" no monitor**
+
+1. **ENTRADA (Teclado)**
+   - Você pressiona a tecla 'A'
+   - O switch fecha o circuito
+   - A controladora gera o Scan Code (código de tecla)
+   - O código é enviado via USB para a CPU
+
+2. **PROCESSAMENTO (CPU + RAM)**
+   - A CPU recebe o Scan Code
+   - O sistema operacional traduz: Scan Code → Caractere 'A'
+   - A CPU guarda o caractere na memória RAM
+   - A CPU envia o caractere para a placa de vídeo
+
+3. **SAÍDA (Monitor)**
+   - A placa de vídeo converte o caractere em pixels
+   - O monitor mostra o caractere 'A' na tela
+   - Você vê a letra 'A' no lugar certo
+
+**Tempo total:** Menos de 1 milissegundo.
+
+
+### 3.2 O Que é um Periférico?
+
+> **Definição:** Um **periférico** é qualquer dispositivo externo conectado ao computador que não faz parte da unidade central de processamento.
+
+| Tipo | Dispositivos | Função |
+|------|--------------|--------|
+| **Entrada** | Teclado, Mouse, Webcam, Scanner, Microfone | Inserir dados no computador |
+| **Saída** | Monitor, Impressora, Caixas de som, Projetor | Exibir resultados do computador |
+| **Misto** | Monitor Touchscreen, Impressora multifuncional | Tanto entrada quanto saída |
+
+### 3.3 Como Conectar Periféricos?
+
+**Conexões comuns:**
+
+| Tipo | Descrição | Exemplos |
+|------|-----------|----------|
+| **USB** | Universal Serial Bus — o mais comum | Teclado, mouse, webcam, impressora |
+| **HDMI** | High-Definition Multimedia Interface | Monitor, projetor, TV |
+| **DisplayPort** | Alternativa ao HDMI | Monitores de alta resolução |
+| **Bluetooth** | Conexão sem fio | Teclado, mouse, fones |
+| **Wi-Fi** | Rede sem fio | Impressora, scanner |
+| **VGA/DVI** | Conexões mais antigas para vídeo | Monitores antigos |
+
+**Passo a passo para conectar (projeto prático):**
+
+1. **Identifique** a porta no computador e no periférico
+2. **Conecte** o cabo adequado
+3. **Ligue** o periférico (se tiver alimentação própria)
+4. **Aguarde** o sistema operacional reconhecer o dispositivo
+5. **Instale** drivers (se necessário — hoje em dia, a maioria é plug-and-play)
+
+
+## 4. Exercícios
+
+<details>
+<summary>📗 Exercício 1 — Identifique os Periféricos (fácil)</summary>
+
+**Enunciado:** Olhe ao redor da sala ou da sua casa. Liste todos os periféricos que você vê, classificando-os como **entrada**, **saída** ou **misto**.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+| Dispositivo | Tipo | Justificativa |
+|-------------|------|---------------|
+| Monitor | Saída | Exibe informações |
+| Teclado | Entrada | Insere dados |
+| Mouse | Entrada | Insere dados (posição/clique) |
+| Impressora | Saída | Produz documentos físicos |
+| Webcam | Entrada | Captura imagem/vídeo |
+| Caixa de som | Saída | Produz áudio |
+| Scanner | Entrada | Digitaliza documentos |
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Rastreando a Informação (médio)</summary>
+
+**Enunciado:** Descreva o fluxo de dados quando você:
+- **a)** Tira uma foto com a webcam e a imprime
+- **b)** Escaneia um documento e salva no computador
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**a) Webcam → Impressora:**
+1. A webcam captura a imagem (entrada)
+2. Os dados vão para a CPU via USB
+3. A CPU processa a imagem (ajusta cores, tamanho)
+4. Os dados vão para a impressora via USB/Wi-Fi
+5. A impressora produz a foto em papel (saída)
+
+**b) Scanner → Computador:**
+1. O scanner digitaliza o documento (entrada)
+2. Os dados vão para a CPU via USB
+3. A CPU processa a imagem (OCR, se for texto)
+4. A CPU salva o arquivo no HD/SSD (armazenamento)
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Identificação de Portas (médio)</summary>
+
+**Enunciado:** Observe a parte traseira de um computador (ou uma foto dela). Identifique pelo menos 5 portas diferentes e diga qual periférico seria conectado em cada uma.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+| Porta | Cor/Forma | Periférico |
+|-------|-----------|------------|
+| USB | Retangular, preta/azul | Teclado, mouse, pendrive |
+| HDMI | Trapezoidal, fina | Monitor, TV |
+| Ethernet (RJ-45) | Quadrada, com clipe | Cabo de rede (internet) |
+| P2 (3.5mm) | Circular, verde | Caixa de som, fone |
+| VGA | Trapezoidal, azul | Monitor antigo |
+| DisplayPort | Trapezoidal, com canto | Monitor moderno |
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Comparação de Tecnologias (difícil)</summary>
+
+**Enunciado:** Compare teclado **mecânico** vs. **de membrana**. Quais as vantagens e desvantagens de cada um?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+| Característica | Mecânico | Membrana |
+|----------------|----------|----------|
+| **Sensação** | Tátil, com clique | Macia, silenciosa |
+| **Durabilidade** | 50-100 milhões de cliques | 5-10 milhões de cliques |
+| **Velocidade** | Resposta mais rápida | Resposta mais lenta |
+| **Preço** | Mais caro (R$ 200+) | Mais barato (R$ 30+) |
+| **Peso** | Mais pesado | Mais leve |
+| **Manutenção** | Teclas removíveis | Teclas fixas |
+| **Uso ideal** | Jogos, digitação intensa | Uso geral, escritório |
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Projeto: Conecte os Periféricos (prático)</summary>
+
+**Objetivo:** Conectar um computador do zero com todos os periféricos.
+
+**Materiais:**
+- Computador (gabinete ou notebook)
+- Monitor
+- Teclado
+- Mouse
+- Impressora (ou simular)
+- Cabos necessários
+
+**Passos:**
+1. Posicione o monitor ao lado do gabinete
+2. Conecte o monitor ao gabinete usando HDMI/DisplayPort/VGA
+3. Conecte o teclado e o mouse em portas USB
+4. Conecte a impressora em outra porta USB ou Wi-Fi
+5. Ligue o computador e o monitor
+6. Aguarde o sistema operacional iniciar
+7. Teste: abra um editor de texto e digite algo
+8. Teste: mova o mouse e veja o cursor se mover
+9. (Opcional) Imprima uma página de teste
+
+**Checklist de verificação:**
+
+| Item | Verificado? |
+|------|-------------|
+| Monitor ligado e com imagem | ☐ |
+| Teclado digitando caracteres | ☐ |
+| Mouse movendo o cursor | ☐ |
+| Impressora reconhecida pelo sistema | ☐ |
+
+</details>
+
+> **💡 Aprendizado fundamental:** O que você vê é apenas a **interface**. O verdadeiro "cérebro" está dentro do gabinete — e é isso que veremos na próxima aula.
+
+### 5.2 O Ciclo da Informação (Revisitado)
+
+<div style="background: #0a0f1e; padding: 2rem 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Segoe UI', system-ui, sans-serif; max-width: 750px; margin: 1.5rem auto; text-align: center;">
+
+  <div style="color: #fbbf24; font-size: 1rem; font-weight: 700; margin-bottom: 1.2rem; letter-spacing: 0.5px;">
+    🔄 O CICLO DA INFORMAÇÃO
+  </div>
+
+  <div style="display: flex; gap: 0.5rem; justify-content: center; flex-wrap: wrap;">
+
+    <div style="flex: 1; min-width: 100px; background: #1a3a5c; padding: 0.8rem 0.5rem; border-radius: 12px;">
+      <div style="color: #60a5fa; font-weight: 700; font-size: 0.8rem;">📥 ENTRADA</div>
+      <div style="color: #93c5fd; font-size: 0.55rem;">Teclado<br>Mouse<br>Webcam<br>Scanner</div>
+    </div>
+
+    <div style="color: #fbbf24; font-size: 1.5rem; display: flex; align-items: center;">→</div>
+
+    <div style="flex: 1.5; min-width: 130px; background: #2d1b69; padding: 0.8rem 0.5rem; border-radius: 12px;">
+      <div style="color: #a78bfa; font-weight: 700; font-size: 0.8rem;">⚙️ PROCESSAMENTO</div>
+      <div style="color: #c4b5fd; font-size: 0.55rem;">CPU<br>RAM<br>HD/SSD</div>
+    </div>
+
+    <div style="color: #fbbf24; font-size: 1.5rem; display: flex; align-items: center;">→</div>
+
+    <div style="flex: 1; min-width: 100px; background: #1a5c3a; padding: 0.8rem 0.5rem; border-radius: 12px;">
+      <div style="color: #34d399; font-weight: 700; font-size: 0.8rem;">📤 SAÍDA</div>
+      <div style="color: #6ee7b7; font-size: 0.55rem;">Monitor<br>Impressora<br>Caixas de som</div>
+    </div>
+
+  </div>
+
+  <div style="display: flex; gap: 1.5rem; justify-content: center; margin-top: 0.8rem; padding-top: 0.8rem; border-top: 1px solid rgba(255,255,255,0.05);">
+    <div style="color: #6b7280; font-size: 0.55rem;">↑ Usuário (entrada)</div>
+    <div style="color: #6b7280; font-size: 0.55rem;">↑ Processamento da informação</div>
+    <div style="color: #6b7280; font-size: 0.55rem;">↑ Usuário (saída)</div>
+  </div>
+
+</div>
+
+
+
+## 7. Glossário
+
+| Termo | Definição |
+|-------|-----------|
+| **Periférico** | Dispositivo externo conectado ao computador |
+| **Entrada** | Dispositivo que envia dados para o computador |
+| **Saída** | Dispositivo que recebe dados do computador |
+| **USB** | Universal Serial Bus — padrão de conexão |
+| **HDMI** | High-Definition Multimedia Interface — padrão de vídeo/áudio |
+| **DPI** | Dots Per Inch — medida de sensibilidade do mouse |
+| **Scan Code** | Código gerado ao pressionar uma tecla |
+| **Rasterização** | Conversão de dados digitais em pontos (pixels ou tinta) |
+| **Plug-and-Play** | Dispositivo que funciona sem instalação manual |
+
+## Resumo
+
+> "O computador é um sistema de entrada-processamento-saída. Os componentes visíveis são a interface entre o usuário e a máquina — eles traduzem o mundo físico para o mundo digital (entrada) e o mundo digital para o físico (saída). O verdadeiro processamento acontece dentro do gabinete, onde os componentes invisíveis executam as instruções que, na aula anterior, chamamos de Máquina de Turing."

@@ -1,0 +1,389 @@
+# ANOVA II e Regressão Múltipla
+
+## O que vamos aprender nesta aula?
+
+Nesta aula, vamos expandir nossos conhecimentos de ANOVA e regressão para situações mais complexas:
+
+1. **ANOVA de dois fatores (Two-Way ANOVA):** Analisa o efeito de dois fatores simultaneamente.
+2. **ANOVA com interação:** Verifica se o efeito de um fator depende do nível do outro.
+3. **Introdução à Regressão Linear Múltipla:** Modela a relação entre uma variável resposta e duas ou mais variáveis preditoras.
+
+## ANOVA de Dois Fatores (Two-Way ANOVA)
+
+A ANOVA de dois fatores é usada quando queremos analisar o efeito de **dois fatores** (variáveis categóricas) sobre uma variável resposta contínua.
+
+**Exemplo:** Queremos saber se o tipo de fertilizante (Fator A: 3 níveis) e a quantidade de água (Fator B: 3 níveis) afetam a produção de tomates.
+
+**Vantagens da Two-Way ANOVA:**
+
+- Permite testar o efeito de dois fatores simultaneamente.
+- Permite testar a **interação** entre os fatores (se o efeito de um depende do outro).
+- É mais eficiente que fazer duas ANOVAs separadas.
+
+**Modelo:**
+
+$$Y_{ijk} = \mu + \alpha_i + \beta_j + (\alpha\beta)_{ij} + \varepsilon_{ijk}$$
+
+onde:
+- $\mu$ é a média geral
+- $\alpha_i$ é o efeito do fator A no nível $i$
+- $\beta_j$ é o efeito do fator B no nível $j$
+- $(\alpha\beta)_{ij}$ é o efeito da interação
+- $\varepsilon_{ijk}$ é o erro
+
+**Decomposição da variância:**
+
+$SQT = SQA + SQB + SQA\times B + SQD$
+
+**Tabela ANOVA (Two-Way com interação):**
+
+| Fonte | $SQ$ | $GL$ | $QM$ | $F$ |
+| --- | --- | --- | --- | --- |
+| Fator A | $SQA$ | $a-1$ | $QMA = SQA/(a-1)$ | $QMA/QMD$ |
+| Fator B | $SQB$ | $b-1$ | $QMB = SQB/(b-1)$ | $QMB/QMD$ |
+| Interação $A\times B$ | $SQA\times B$ | $(a-1)(b-1)$ | $QMA\times B = SQA\times B/[(a-1)(b-1)]$ | $QMA\times B/QMD$ |
+| Erro | $SQD$ | $ab(n-1)$ | $QMD = SQD/[ab(n-1)]$ | — |
+| Total | $SQT$ | $abn-1$ | — | — |
+
+## Exemplo 1: Two-Way ANOVA (sem interação)
+
+Um experimento testa o efeito do tipo de combustível (A: 2 níveis) e da temperatura (B: 3 níveis) na eficiência de um motor. Cada combinação tem 2 réplicas.
+
+| | Temp 1 | Temp 2 | Temp 3 |
+| --- | --- | --- | --- |
+| Comb A | 30, 32 | 35, 37 | 40, 42 |
+| Comb B | 28, 30 | 33, 35 | 38, 40 |
+
+Calcule a Two-Way ANOVA ($\alpha = 0,05$).
+
+**Resolução:**
+
+1. Médias por célula:
+   - A,T1: $(30+32)/2 = 31$
+   - A,T2: $(35+37)/2 = 36$
+   - A,T3: $(40+42)/2 = 41$
+   - B,T1: $(28+30)/2 = 29$
+   - B,T2: $(33+35)/2 = 34$
+   - B,T3: $(38+40)/2 = 39$
+
+2. Médias do fator A:
+   - A: $(31+36+41)/3 = 36$
+   - B: $(29+34+39)/3 = 34$
+   - Média geral = 35
+
+3. Médias do fator B:
+   - T1: $(31+29)/2 = 30$
+   - T2: $(36+34)/2 = 35$
+   - T3: $(41+39)/2 = 40$
+   - Média geral = 35
+
+4. $SQA = 3 \cdot 2 \cdot (36-35)^2 + 3 \cdot 2 \cdot (34-35)^2 = 6 \cdot 1 + 6 \cdot 1 = 12$
+
+5. $SQB = 2 \cdot 2 \cdot (30-35)^2 + 2 \cdot 2 \cdot (35-35)^2 + 2 \cdot 2 \cdot (40-35)^2 = 4 \cdot 25 + 0 + 4 \cdot 25 = 100 + 100 = 200$
+
+6. $SQD$:
+   A,T1: $(30-31)^2+(32-31)^2 = 1+1=2$
+   A,T2: $(35-36)^2+(37-36)^2 = 1+1=2$
+   A,T3: $(40-41)^2+(42-41)^2 = 1+1=2$
+   B,T1: $(28-29)^2+(30-29)^2 = 1+1=2$
+   B,T2: $(33-34)^2+(35-34)^2 = 1+1=2$
+   B,T3: $(38-39)^2+(40-39)^2 = 1+1=2$
+   $SQD = 2+2+2+2+2+2 = 12$
+
+7. $SQT = 12 + 200 + 12 = 224$
+
+8. $GL$:
+   A: $2-1=1$; B: $3-1=2$; Interação: $1 \cdot 2=2$; Erro: $2 \cdot 3 \cdot (2-1)=6$; Total: $12-1=11$
+
+9. $QMA = 12/1=12$; $QMB = 200/2=100$; $QMD = 12/6=2$
+
+10. $F_A = 12/2=6$; $F_B = 100/2=50$
+
+11. Valores críticos: $F_{0,05, 1, 6} = 5,99$; $F_{0,05, 2, 6} = 5,14$
+
+12. $F_A = 6 > 5,99 \to$ Rejeitar $H_0$ para fator A
+    $F_B = 50 > 5,14 \to$ Rejeitar $H_0$ para fator B
+
+**Conclusão:** Ambos os fatores (combustível e temperatura) têm efeito significativo sobre a eficiência. Não há interação (não calculada porque não temos réplicas suficientes).
+
+## Exemplo 2: Two-Way ANOVA com Interação
+
+O mesmo exemplo, mas agora com uma tabela de totais e cálculos para interação:
+
+**Cálculo da interação:**
+
+A interação mede se o efeito do fator A depende do nível do fator B (ou vice-versa).
+
+No exemplo anterior, podemos ver que a diferença entre A e B é sempre 2 em todas as temperaturas:
+- T1: 31-29 = 2
+- T2: 36-34 = 2
+- T3: 41-39 = 2
+
+Isso sugere que **não há interação** (o efeito do combustível é o mesmo em todas as temperaturas).
+
+**Se houvesse interação**, a diferença variaria. Exemplo:
+
+| | Temp 1 | Temp 2 | Temp 3 |
+| --- | --- | --- | --- |
+| Comb A | 30 | 35 | 45 |
+| Comb B | 35 | 35 | 35 |
+
+Aqui, o combustível A é melhor na temperatura 3, pior na temperatura 1. Há interação.
+
+## Introdução à Regressão Linear Múltipla
+
+A regressão linear múltipla estende a regressão simples para **duas ou mais variáveis preditoras**.
+
+**Modelo:**
+
+$$Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \dots + \beta_k X_k + \varepsilon$$
+
+onde $k$ é o número de variáveis preditoras.
+
+**Interpretação dos coeficientes:**
+
+- $\beta_0$: Valor esperado de $Y$ quando todas as variáveis preditoras são zero.
+- $\beta_1$: Mudança esperada em $Y$ para cada unidade de aumento em $X_1$, mantendo as outras variáveis constantes (efeito parcial).
+
+**Exemplo:**
+
+$$\text{Preço} = 10 + 2 \cdot \text{Área} + 3 \cdot \text{Número de quartos}$$
+
+- Para cada m² adicional, o preço aumenta R$ 2.000 (mantendo o número de quartos constante).
+- Para cada quarto adicional, o preço aumenta R$ 3.000 (mantendo a área constante).
+
+## Estimação dos Coeficientes (MQO)
+
+Os coeficientes são estimados pelo método dos mínimos quadrados, minimizando:
+
+$$SSE = \sum (Y_i - \hat{Y}_i)^2 = \sum (Y_i - \beta_0 - \beta_1 X_{1i} - \beta_2 X_{2i} - \dots - \beta_k X_{ki})^2$$
+
+As soluções são obtidas resolvendo um sistema de equações normais ($k+1$ equações).
+
+## Exemplo 3: Regressão Múltipla
+
+Dados de 8 imóveis: preço ($Y$), área ($X_1$) e número de quartos ($X_2$):
+
+| Imóvel | $Y$ (preço) | $X_1$ (área) | $X_2$ (quartos) |
+| --- | --- | --- | --- |
+| 1 | 100 | 50 | 2 |
+| 2 | 120 | 60 | 2 |
+| 3 | 140 | 70 | 3 |
+| 4 | 160 | 80 | 3 |
+| 5 | 180 | 90 | 4 |
+| 6 | 200 | 100 | 4 |
+| 7 | 220 | 110 | 5 |
+| 8 | 240 | 120 | 5 |
+
+Estime o modelo de regressão múltipla.
+
+**Resolução:**
+
+Usando software ou cálculo matricial:
+
+$\hat{\beta}_0 = 0$, $\hat{\beta}_1 = 2$, $\hat{\beta}_2 = 0$
+
+**Equação:** $\hat{Y} = 0 + 2X_1 + 0X_2 = 2X_1$
+
+**Interpretação:** Neste caso, o número de quartos não adiciona informação adicional além da área, porque área e quartos são perfeitamente correlacionados.
+
+## $R^2$ Ajustado
+
+Na regressão múltipla, o $R^2$ sempre aumenta quando adicionamos variáveis (mesmo que irrelevantes). Por isso, usamos o $R^2$ ajustado:
+
+$$R^2_{aj} = 1 - \frac{SQE/(n-k-1)}{SQT/(n-1)}$$
+
+O $R^2$ ajustado penaliza a adição de variáveis irrelevantes.
+
+## Teste $F$ Global (Regressão Múltipla)
+
+Testa se **todas** as variáveis preditoras são irrelevantes:
+
+- $H_0: \beta_1 = \beta_2 = \dots = \beta_k = 0$
+- $H_1:$ Pelo menos um $\beta \ne 0$
+
+$$F = \frac{(SQT - SQE)/k}{SQE/(n-k-1)} = \frac{QMR}{QME}$$
+
+**Exemplo:** No modelo acima, $F$ seria muito alto, indicando que o modelo é significativo.
+
+## Teste $t$ para Coeficientes Individuais
+
+Para testar se um coeficiente específico é zero:
+
+$$t = \frac{\hat{\beta}_i}{SE(\hat{\beta}_i)} \sim t_{n-k-1}$$
+
+**Exemplo:** Testar se $\beta_1 = 0$ no modelo de imóveis.
+
+## Pressupostos da Regressão Múltipla
+
+Os mesmos da regressão simples:
+
+1. **Linearidade:** Relação linear entre $Y$ e cada $X$.
+2. **Independência:** Erros independentes.
+3. **Homocedasticidade:** Variância constante dos erros.
+4. **Normalidade:** Erros seguem distribuição Normal.
+5. **Multicolinearidade:** Variáveis preditoras não devem ser altamente correlacionadas.
+
+## Analogias
+
+### Analogia 1: A receita de bolo (ANOVA Two-Way)
+
+Fazer um bolo depende do forno (fator A) e do tempo de cozimento (fator B). A interação é se o forno afeta o tempo necessário (diferentes fornos podem precisar de diferentes tempos).
+
+### Analogia 2: O diagnóstico médico (Regressão Múltipla)
+
+Prever o risco de uma doença ($Y$) com base em idade ($X_1$), peso ($X_2$) e histórico familiar ($X_3$). Cada variável contribui com informação independente.
+
+### Analogia 3: O preço do carro
+
+O preço de um carro usado depende da idade, quilometragem e estado de conservação. A regressão múltipla permite estimar o efeito de cada fator separadamente.
+
+## Exercícios Resolvidos
+
+### Exercício 1 (Fácil)
+
+Em uma Two-Way ANOVA, $SQA = 40$, $SQB = 60$, $SQA\times B = 20$, $SQD = 80$. Calcule $R^2$.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$SQT = 40+60+20+80 = 200$
+$R^2 = (SQA+SQB+SQA\times B)/SQT = (40+60+20)/200 = 120/200 = 0,60$
+
+**Resposta:** 60%.
+
+</details>
+
+### Exercício 2 (Fácil/Médio)
+
+Em uma regressão múltipla com $k = 2$, $n = 30$, $SQE = 100$, $SQT = 300$. Calcule $R^2$ ajustado.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$R^2 = (300-100)/300 = 0,667$
+$R^2_{aj} = 1 - [100/(30-2-1)]/[300/(30-1)] = 1 - [100/27]/[300/29] = 1 - 3,704/10,345 = 1 - 0,358 = 0,642$
+
+**Resposta:** 64,2%.
+
+</details>
+
+### Exercício 3 (Médio)
+
+Em uma Two-Way ANOVA com $a = 3$, $b = 4$, $n = 3$ réplicas, calcule os $GL$ para interação.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$GL_{interação} = (a-1) \cdot (b-1) = 2 \cdot 3 = 6$
+
+**Resposta:** 6.
+
+</details>
+
+### Exercício 4 (Médio)
+
+Interprete o seguinte modelo: Preço = 50.000 + 100·Área — 500·Idade
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+- Para cada m² adicional, o preço aumenta R$ 100.
+- Para cada ano adicional de idade, o preço diminui R$ 500.
+- O intercepto (R$ 50.000) não tem interpretação prática (área zero e idade zero).
+
+**Resposta:** Área aumenta preço; idade diminui preço.
+
+</details>
+
+### Exercício 5 (Difícil)
+
+O que é multicolinearidade e por que ela é um problema?
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+Multicolinearidade ocorre quando duas ou mais variáveis preditoras são altamente correlacionadas. Isso é um problema porque:
+
+- Dificulta a interpretação dos coeficientes individuais.
+- Aumenta os erros padrão dos coeficientes.
+- Pode causar instabilidade nas estimativas.
+
+**Resposta:** Correlação alta entre preditores, causa instabilidade e dificulta interpretação.
+
+</details>
+
+## Desafio Final com Resolução Completa
+
+Uma imobiliária coletou dados de 12 imóveis para prever o preço ($Y$, em R$ 1000) com base na área ($X_1$, em m²) e idade ($X_2$, em anos):
+
+| $Y$ | $X_1$ | $X_2$ |
+| --- | --- | --- |
+| 200 | 80 | 5 |
+| 220 | 90 | 4 |
+| 240 | 100 | 3 |
+| 260 | 110 | 2 |
+| 280 | 120 | 1 |
+| 180 | 70 | 8 |
+| 190 | 75 | 7 |
+| 210 | 85 | 6 |
+| 230 | 95 | 5 |
+| 250 | 105 | 4 |
+| 270 | 115 | 3 |
+| 290 | 125 | 2 |
+
+a) Estime o modelo de regressão múltipla.
+
+b) Interprete os coeficientes.
+
+c) Calcule o $R^2$.
+
+d) Teste a significância global do modelo ($\alpha = 0,05$).
+
+e) Teste a significância de cada coeficiente ($\alpha = 0,05$).
+
+f) Preveja o preço de um imóvel com 100 m² e 4 anos de idade.
+
+<details>
+<summary>💡 Ver resolução completa</summary>
+
+a) Usando as fórmulas (ou software), obtemos:
+   $\hat{\beta}_0 = 100$, $\hat{\beta}_1 = 1,5$, $\hat{\beta}_2 = -5$
+
+   **Equação:** $\hat{Y} = 100 + 1,5X_1 - 5X_2$
+
+b) Interpretação:
+   - $\hat{\beta}_0 = 100$: Preço base de R$ 100.000 (não prático para $X_1=0$, $X_2=0$).
+   - $\hat{\beta}_1 = 1,5$: Para cada m² adicional, o preço aumenta R$ 1.500 (mantendo a idade constante).
+   - $\hat{\beta}_2 = -5$: Para cada ano adicional de idade, o preço diminui R$ 5.000 (mantendo a área constante).
+
+c) Cálculo do $R^2$:
+   $SQT = \sum (Y - \bar{Y})^2 = 13.200$
+   $SQE = \sum (Y - \hat{Y})^2 = 1.320$
+   $R^2 = 1 - 1320/13200 = 1 - 0,10 = 0,90$
+
+d) $F = \frac{(SQT - SQE)/k}{SQE/(n-k-1)} = \frac{(13200-1320)/2}{1320/9} = \frac{5940}{146,67} = 40,5$
+   $F_{0,05, 2, 9} = 4,26$
+   $F = 40,5 > 4,26 \to$ Rejeitar $H_0$
+
+e) Testes $t$:
+   $SE(\hat{\beta}_1) = 0,25$; $SE(\hat{\beta}_2) = 1,5$
+   $t_1 = 1,5/0,25 = 6,0$; $t_2 = -5/1,5 = -3,33$
+   $t_{0,025, 9} = 2,262$
+   $|t_1| = 6,0 > 2,262 \to \hat{\beta}_1$ significativo
+   $|t_2| = 3,33 > 2,262 \to \hat{\beta}_2$ significativo
+
+f) Para $X_1 = 100$, $X_2 = 4$:
+   $\hat{Y} = 100 + 1,5 \cdot 100 - 5 \cdot 4 = 100 + 150 - 20 = 230$
+
+**Respostas:**
+a) $\hat{Y} = 100 + 1,5X_1 - 5X_2$
+b) Área: $+$R$ 1.500/m²; Idade: $-$R$ 5.000/ano
+c) $R^2 = 90\%$
+d) $F = 40,5 \to$ rejeitar $H_0$ (modelo significativo)
+e) Ambos os coeficientes são significativos
+f) R$ 230.000
+
+</details>
+
+> *A regressão múltipla e a ANOVA de dois fatores nos ensinam que a realidade raramente é explicada por uma única variável — cada fator adiciona uma camada de compreensão, e a interação entre eles revela a complexidade do mundo.*

@@ -1,0 +1,490 @@
+# Multiplexador (MUX)
+
+## 1. Introdução
+
+Nas duas aulas anteriores, aprendemos a construir circuitos que realizam operações aritméticas: somadores e subtratores. Vimos como a ULA (Unidade Lógica e Aritmética) usa esses circuitos para executar operações matemáticas, portanto existe um problema: 
+- Como a ULA "escolhe" qual operação realizar? 
+- Como ela decide se vai somar ou subtrair? 
+- E como ela seleciona os dados corretos para enviar para o somador ou subtrator?
+
+A resposta está no **Multiplexador** (ou **MUX**) — um circuito combinacional que **seleciona** uma entre várias entradas e a envia para a saída, baseado em um conjunto de bits de seleção.
+
+O multiplexador é um dos circuitos mais importantes e onipresentes na computação. Ele é usado para:
+
+- Selecionar operandos na ULA
+- Rotear dados entre registradores
+- Escolher a próxima instrução em um processador
+- Selecionar canais em sistemas de comunicação
+- Implementar memórias e bancos de registradores
+
+Nesta aula, vamos aprender como os multiplexadores funcionam, como construí-los a partir de portas lógicas, e como eles são usados em sistemas computacionais.
+
+
+## 2. O Que é um Multiplexador?
+
+### 2.1 Definição
+
+Um **Multiplexador** (abreviado como **MUX**) é um circuito combinacional que:
+
+> **Seleciona uma entre 2ⁿ entradas e a direciona para uma única saída, baseado em n bits de seleção.**
+
+### 2.2 Analogia
+
+Pense no multiplexador como um **interruptor giratório** (como o seletor de canais de uma TV):
+
+- Você tem várias entradas (canais de TV).
+- Você gira o botão (bits de seleção) para escolher qual canal deseja assistir.
+- A saída é o canal selecionado.
+
+### 2.3 Diagrama geral
+
+<details>
+<summary>🔧 Ver Diagrama Geral do MUX</summary>
+
+<div style="font-family: monospace; background: #111; padding: 2rem; border-radius: 12px; max-width: 500px; margin: auto; position: relative; height: 300px;">
+
+  <!-- Linhas das entradas D -->
+  <div style="position: absolute; top: 60px; left: 100px; width: 100px; height: 2px; background: #fff;"></div>
+  <div style="position: absolute; top: 110px; left: 100px; width: 100px; height: 2px; background: #fff;"></div>
+  <div style="position: absolute; top: 160px; left: 100px; width: 100px; height: 2px; background: #fff;"></div>
+  <div style="position: absolute; top: 210px; left: 100px; width: 100px; height: 2px; background: #fff;"></div>
+
+  <!-- Linha de saída F -->
+  <div style="position: absolute; top: 135px; left: 320px; width: 100px; height: 2px; background: #fff;"></div>
+
+  <!-- Linhas de seleção S (subindo) -->
+  <div style="position: absolute; top: 250px; left: 200px; width: 2px; height: 40px; background: #fff;"></div>
+  <div style="position: absolute; top: 250px; left: 240px; width: 2px; height: 40px; background: #fff;"></div>
+  <div style="position: absolute; top: 230px; left: 200px; width: 42px; height: 2px; background: #fff;"></div>
+
+  <!-- Labels entradas -->
+  <span style="position: absolute; top: 50px; left: 40px; color: #60a5fa; font-weight: bold; font-size: 1.1rem;">D₀</span>
+  <span style="position: absolute; top: 100px; left: 40px; color: #60a5fa; font-weight: bold; font-size: 1.1rem;">D₁</span>
+  <span style="position: absolute; top: 150px; left: 40px; color: #60a5fa; font-weight: bold; font-size: 1.1rem;">D₂</span>
+  <span style="position: absolute; top: 200px; left: 40px; color: #60a5fa; font-weight: bold; font-size: 1.1rem;">D₃</span>
+
+  <!-- Labels seleção -->
+  <span style="position: absolute; top: 260px; left: 190px; color: #fbbf24; font-weight: bold; font-size: 1rem;">S₁</span>
+  <span style="position: absolute; top: 260px; left: 230px; color: #fbbf24; font-weight: bold; font-size: 1rem;">S₀</span>
+
+  <!-- Label saída -->
+  <span style="position: absolute; top: 120px; left: 430px; color: #34d399; font-weight: bold; font-size: 1.1rem;">F</span>
+
+  <!-- Bloco MUX -->
+  <div style="position: absolute; top: 40px; left: 200px; width: 120px; height: 190px; border: 2px solid #7c3aed; background: #2d1b69; border-radius: 4px; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+    <div style="color: #a78bfa; font-weight: bold; font-size: 1.1rem;">MUX</div>
+    <div style="color: #8b5cf6; font-size: 0.8rem; margin-top: 0.3rem;">2ⁿ→1</div>
+  </div>
+
+  <!-- Legenda -->
+  <div style="position: absolute; bottom: 10px; left: 50%; transform: translateX(-50%); color: #6b7280; font-size: 0.75rem; text-align: center;">
+    Saída = Dₛₑₗ (selecionado por S₁S₀)
+  </div>
+
+</div>
+</details>
+
+
+## 3. Multiplexador 2→1 (2 entradas, 1 bit de seleção)
+
+### 3.1 O mais simples dos MUX
+
+Um MUX 2→1 tem:
+
+- **2 entradas:** D₀ e D₁
+- **1 bit de seleção:** S
+- **1 saída:** F
+
+### 3.2 Tabela verdade
+
+| S | F |
+|---|----|
+| 0 | D₀ |
+| 1 | D₁ |
+
+### 3.3 Expressão lógica
+
+> **F = (¬S ∧ D₀) ∨ (S ∧ D₁)**
+
+### 3.4 Diagrama do MUX 2→1
+
+<details>
+<summary>🔧 Ver Diagrama do MUX 2→1</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 500px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">MUX 2→1</div>
+
+  <pre style="color: #93c5fd; font-size: 0.7rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    D₀ ────┐
+           │
+           ├── AND ──┐
+           │         │
+        S ─┼── NOT ──┘
+           │
+           │         ┌── OR ── F
+        S ─┼─────────┤
+           │         │
+           ├── AND ──┘
+    D₁ ────┘
+  </pre>
+
+  <div style="margin-top: 0.8rem; padding-top: 0.8rem; border-top: 1px solid rgba(255,255,255,0.05); display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap;">
+    <span style="background: #1a3a5c; color: #93c5fd; padding: 0.15rem 0.6rem; border-radius: 12px; font-size: 0.55rem;">S=0 → D₀</span>
+    <span style="background: #1a5c3a; color: #6ee7b7; padding: 0.15rem 0.6rem; border-radius: 12px; font-size: 0.55rem;">S=1 → D₁</span>
+  </div>
+
+</div>
+</details>
+
+### 3.5 Exemplo prático
+
+**Qual a saída para S = 1, D₀ = 0, D₁ = 1?**
+
+**Passo 1:** F = (¬S ∧ D₀) ∨ (S ∧ D₁)
+**Passo 2:** ¬S = 0
+**Passo 3:** F = (0 ∧ 0) ∨ (1 ∧ 1) = 0 ∨ 1 = **1**
+
+**Resposta:** F = 1 ✅
+
+
+## 4. Multiplexador 4→1 (4 entradas, 2 bits de seleção)
+
+### 4.1 Definição
+
+Um MUX 4→1 tem:
+
+- **4 entradas:** D₀, D₁, D₂, D₃
+- **2 bits de seleção:** S₁, S₀
+- **1 saída:** F
+
+### 4.2 Tabela verdade
+
+| S₁ | S₀ | F |
+|----|----|---|
+| 0 | 0 | D₀ |
+| 0 | 1 | D₁ |
+| 1 | 0 | D₂ |
+| 1 | 1 | D₃ |
+
+### 4.3 Expressão lógica
+
+> **F = (¬S₁ ∧ ¬S₀ ∧ D₀) ∨ (¬S₁ ∧ S₀ ∧ D₁) ∨ (S₁ ∧ ¬S₀ ∧ D₂) ∨ (S₁ ∧ S₀ ∧ D₃)**
+
+### 4.4 Diagrama do MUX 4→1
+
+<details>
+<summary>🔧 Ver Diagrama do MUX 4→1</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 500px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">MUX 4→1</div>
+
+  <pre style="color: #93c5fd; font-size: 0.65rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    D₀ ────┐
+           ├── AND ──┐
+    S₀ ───┼── NOT ──┤
+    S₁ ───┼── NOT ──┘
+           │
+           │         ┌── OR ── F
+    D₁ ────┤         │
+    S₀ ────┤── NOT ──┤
+    S₁ ────┼─────────┘
+           │
+    D₂ ────┤
+    S₀ ────┤
+    S₁ ────┤── NOT ──┤
+           │         │
+    D₃ ────┤         │
+           └─────────┘
+  </pre>
+
+  <div style="margin-top: 0.8rem; padding-top: 0.8rem; border-top: 1px solid rgba(255,255,255,0.05); display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap;">
+    <span style="background: #1a3a5c; color: #93c5fd; padding: 0.15rem 0.6rem; border-radius: 12px; font-size: 0.55rem;">S₁S₀=00 → D₀</span>
+    <span style="background: #2d1b69; color: #c4b5fd; padding: 0.15rem 0.6rem; border-radius: 12px; font-size: 0.55rem;">S₁S₀=01 → D₁</span>
+    <span style="background: #5c3a1a; color: #fde68a; padding: 0.15rem 0.6rem; border-radius: 12px; font-size: 0.55rem;">S₁S₀=10 → D₂</span>
+    <span style="background: #5c1a1a; color: #fca5a5; padding: 0.15rem 0.6rem; border-radius: 12px; font-size: 0.55rem;">S₁S₀=11 → D₃</span>
+  </div>
+
+</div>
+</details>
+
+### 4.5 Exemplo prático
+
+**Qual a saída para S₁ = 1, S₀ = 0, D₀ = 0, D₁ = 1, D₂ = 1, D₃ = 0?**
+
+**Passo 1:** S₁ = 1, S₀ = 0 → seleciona D₂
+**Passo 2:** F = D₂ = 1
+
+**Resposta:** F = 1 ✅
+
+
+## 5. Multiplexador 8→1 (8 entradas, 3 bits de seleção)
+
+### 5.1 Definição
+
+Um MUX 8→1 tem:
+
+- **8 entradas:** D₀ a D₇
+- **3 bits de seleção:** S₂, S₁, S₀
+- **1 saída:** F
+
+### 5.2 Tabela verdade
+
+| S₂ | S₁ | S₀ | F |
+|----|----|----|---|
+| 0 | 0 | 0 | D₀ |
+| 0 | 0 | 1 | D₁ |
+| 0 | 1 | 0 | D₂ |
+| 0 | 1 | 1 | D₃ |
+| 1 | 0 | 0 | D₄ |
+| 1 | 0 | 1 | D₅ |
+| 1 | 1 | 0 | D₆ |
+| 1 | 1 | 1 | D₇ |
+
+### 5.3 Como construir um MUX 8→1
+
+Um MUX 8→1 pode ser construído usando **MUX 4→1** e **MUX 2→1** em cascata:
+
+<details>
+<summary>🔧 Ver Diagrama do MUX 8→1 em Cascata</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 500px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">MUX 8→1 (CASCATA)</div>
+
+  <pre style="color: #93c5fd; font-size: 0.6rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    D₀ ──┐
+    D₁ ──┤ MUX 4→1 ├──┐
+    D₂ ──┤ (S₁,S₀)  │  │
+    D₃ ──┘          │  │
+                    │  ├── MUX 2→1 ── F
+    D₄ ──┐          │  │  (S₂)
+    D₅ ──┤ MUX 4→1 ├──┘
+    D₆ ──┤ (S₁,S₀)  │
+    D₇ ──┘          │
+  </pre>
+
+  <div style="margin-top: 0.8rem; padding-top: 0.8rem; border-top: 1px solid rgba(255,255,255,0.05); display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap;">
+    <span style="background: #2d1b69; color: #c4b5fd; padding: 0.15rem 0.6rem; border-radius: 12px; font-size: 0.55rem;">S₁S₀ seleciona dentro de cada grupo</span>
+    <span style="background: #5c3a1a; color: #fde68a; padding: 0.15rem 0.6rem; border-radius: 12px; font-size: 0.55rem;">S₂ seleciona o grupo</span>
+  </div>
+
+</div>
+</details>
+
+
+## 6. O MUX na ULA (Unidade Lógica e Aritmética)
+
+### 6.1 Como a ULA usa multiplexadores
+
+A ULA precisa realizar várias operações: soma, subtração, AND, OR, XOR, etc. O multiplexador é usado para **selecionar qual operação** será executada.
+
+<details>
+<summary>🔧 Ver Diagrama da ULA com MUX</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 550px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">ULA COM MUX</div>
+
+  <pre style="color: #93c5fd; font-size: 0.6rem; line-height: 1.6; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+        Operandos
+        ┌─────────┐
+    A ──┤         │
+        │ SOMADOR ├── Soma
+    B ──┤         │
+        └─────────┘
+
+        ┌─────────┐
+    A ──┤         │
+        │SUBTRATOR├── Subtração
+    B ──┤         │
+        └─────────┘
+
+        ┌─────────┐
+    A ──┤         │
+        │   AND   ├── AND
+    B ──┤         │
+        └─────────┘
+
+        ┌─────────┐
+    A ──┤         │
+        │   OR    ├── OR
+    B ──┤         │
+        └─────────┘
+
+        ┌─────────┐
+        │  MUX    ├── Resultado
+        │ 4→1     │
+        └─────────┘
+           ↑
+        Opcode (bits de seleção)
+  </pre>
+
+</div>
+</details>
+
+### 6.2 Exemplo: ULA com 4 operações
+
+| Opcode (S₁,S₀) | Operação |
+|----------------|----------|
+| 00 | Soma (A + B) |
+| 01 | Subtração (A - B) |
+| 10 | AND (A ∧ B) |
+| 11 | OR (A ∨ B) |
+
+
+## 7. Aplicações Reais dos Multiplexadores
+
+| Aplicação | Como usa o MUX |
+|-----------|----------------|
+| **ULA da CPU** | Seleciona a operação aritmética/lógica |
+| **Banco de registradores** | Seleciona qual registrador ler/escrever |
+| **Cache de memória** | Seleciona a linha de cache |
+| **Decodificação de instruções** | Seleciona a operação a executar |
+| **Comunicação de dados** | Multiplexação de sinais em um único canal |
+| **Roteamento de dados** | Switch em redes de computadores |
+| **Áudio e vídeo** | Seleção de canais (mixer) |
+| **Displays** | Seleção de segmentos em displays de 7 segmentos |
+
+
+## 8. Exercícios
+
+<details>
+<summary>📗 Exercício 1 — MUX 2→1 (fácil)</summary>
+
+**Enunciado:** Um MUX 2→1 tem S = 0, D₀ = 1, D₁ = 0. Qual é a saída?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** F = D₀ = 1
+
+**Explicação:** Quando S = 0, a saída é D₀.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — MUX 2→1 (fácil)</summary>
+
+**Enunciado:** Um MUX 2→1 tem S = 1, D₀ = 1, D₁ = 1. Qual é a saída?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** F = D₁ = 1
+
+**Explicação:** Quando S = 1, a saída é D₁.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — MUX 4→1 (médio)</summary>
+
+**Enunciado:** Um MUX 4→1 tem S₁ = 0, S₀ = 1. Qual entrada é selecionada?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** D₁
+
+**Explicação:** S₁ = 0, S₀ = 1 → seleciona D₁.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — MUX 4→1 (médio)</summary>
+
+**Enunciado:** Um MUX 4→1 tem S₁ = 1, S₀ = 0, D₀ = 0, D₁ = 1, D₂ = 1, D₃ = 0. Qual é a saída?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** F = D₂ = 1
+
+**Explicação:** S₁ = 1, S₀ = 0 → seleciona D₂.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — MUX 8→1 (médio)</summary>
+
+**Enunciado:** Quantos bits de seleção tem um MUX 8→1?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** 3 bits
+
+**Explicação:** 2³ = 8, portanto precisamos de 3 bits de seleção.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Expressão do MUX 2→1 (médio)</summary>
+
+**Enunciado:** Qual é a expressão lógica de um MUX 2→1?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** F = (¬S ∧ D₀) ∨ (S ∧ D₁)
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — ULA com MUX (desafio)</summary>
+
+**Enunciado:** Uma ULA tem as seguintes operações:
+- 00 = Soma
+- 01 = Subtração
+- 10 = AND
+- 11 = OR
+
+Qual operação é executada se o opcode for 11?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** OR
+
+**Explicação:** Opcode 11 = seleciona OR.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — Construir MUX 2→1 (desafio)</summary>
+
+**Enunciado:** Desenhe o diagrama de um MUX 2→1 usando portas AND, OR e NOT.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+<pre style="color: #93c5fd; font-size: 0.7rem; background: #0a0f1e; border: none; padding: 0; margin: 0;">
+D₀ ────┐
+       │
+       ├── AND ──┐
+       │         │
+    S ─┼── NOT ──┘
+       │
+       │         ┌── OR ── F
+    S ─┼─────────┤
+       │         │
+       ├── AND ──┘
+D₁ ────┘
+</pre>
+
+**Explicação:** Quando S = 0, D₀ passa (AND com ¬S = 1). Quando S = 1, D₁ passa (AND com S = 1).
+
+</details>
+</details>
+
+
+> **"O multiplexador é um circuito que seleciona uma entre várias entradas baseado em bits de seleção. Um MUX 2→1 tem 2 entradas e 1 bit de seleção (F = ¬S·D₀ + S·D₁). Um MUX 4→1 tem 4 entradas e 2 bits de seleção. Um MUX 8→1 tem 8 entradas e 3 bits de seleção. Os multiplexadores são onipresentes em computadores: na ULA para selecionar operações, em bancos de registradores para selecionar registradores, em roteamento de dados, e em inúmeras outras aplicações. Eles são a base do roteamento e da seleção de dados em circuitos digitais."**

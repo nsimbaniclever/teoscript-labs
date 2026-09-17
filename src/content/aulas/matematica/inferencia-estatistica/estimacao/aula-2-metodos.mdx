@@ -1,0 +1,422 @@
+# Métodos de Estimação
+
+## O que são Métodos de Estimação?
+
+Na aula anterior, vimos estimadores como a média amostral, a variância amostral e a proporção amostral. Mas como fazemos para encontrar estimadores quando os parâmetros não são tão simples? Como estimamos os parâmetros de uma distribuição Normal ($\mu$ e $\sigma^2$), de uma Poisson ($\lambda$), de uma Gama ($\alpha$ e $\beta$), ou de uma Weibull ($\beta$ e $\eta$)?
+
+Precisamos de **métodos gerais** que nos permitam obter estimadores para qualquer distribuição. Os dois métodos mais importantes são:
+
+1. **Método dos Momentos (MM)** - mais simples e intuitivo
+2. **Método da Máxima Verossimilhança (MLE)** - mais poderoso e amplamente utilizado
+
+Vamos estudar cada um deles em detalhe.
+
+## Método dos Momentos (MM)
+
+O Método dos Momentos é o mais antigo método de estimação. Sua ideia é simples: **igualamos os momentos teóricos (populacionais) aos momentos amostrais (empíricos)** e resolvemos para os parâmetros.
+
+**Passos do Método dos Momentos:**
+
+1. Calcular os momentos teóricos da distribuição ($E[X]$, $E[X^2]$, $E[X^3]$, ...) em função dos parâmetros.
+2. Calcular os momentos amostrais correspondentes ($\bar{X}$, $\frac{1}{n}\sum X_i^2$, $\frac{1}{n}\sum X_i^3$, ...).
+3. Igualar os momentos teóricos aos amostrais.
+4. Resolver o sistema de equações para os parâmetros.
+
+**Número de momentos necessários:** Se temos $k$ parâmetros, precisamos de $k$ equações ($k$ momentos).
+
+**Exemplo 1: Estimando $\mu$ e $\sigma^2$ para uma Normal pelo MM**
+
+Para $X \sim N(\mu, \sigma^2)$, temos:
+
+$E[X] = \mu$
+$E[X^2] = Var(X) + (E[X])^2 = \sigma^2 + \mu^2$
+
+Momentos amostrais:
+$\hat{\mu}_1 = \frac{1}{n}\sum X_i = \bar{X}$
+$\hat{\mu}_2 = \frac{1}{n}\sum X_i^2$
+
+Igualando:
+$\mu = \bar{X}$
+$\sigma^2 + \mu^2 = \frac{1}{n}\sum X_i^2$
+
+Resolvendo:
+$\hat{\mu}_{MM} = \bar{X}$
+$\hat{\sigma}^2_{MM} = \frac{1}{n}\sum X_i^2 - \bar{X}^2 = \frac{1}{n}\sum (X_i - \bar{X})^2$
+
+**Observação:** O estimador de variância pelo MM usa divisor $n$, não $n-1$. Portanto, é viesado.
+
+**Exemplo 2: Estimando $\lambda$ para uma Poisson pelo MM**
+
+Para $X \sim \text{Poisson}(\lambda)$, temos:
+
+$E[X] = \lambda$
+
+Momentos amostrais:
+$\hat{\mu}_1 = \bar{X}$
+
+Igualando:
+$\lambda = \bar{X}$
+
+$\hat{\lambda}_{MM} = \bar{X}$
+
+**Exemplo 3: Estimando $\alpha$ e $\beta$ para uma Gama pelo MM**
+
+Para $X \sim \text{Gama}(\alpha, \beta)$ (com parâmetro de taxa $\beta$), temos:
+
+$E[X] = \alpha/\beta$
+$E[X^2] = Var(X) + (E[X])^2 = \alpha/\beta^2 + \alpha^2/\beta^2 = \alpha(\alpha+1)/\beta^2$
+
+Igualando:
+$\bar{X} = \alpha/\beta$
+$\frac{1}{n}\sum X_i^2 = \alpha(\alpha+1)/\beta^2$
+
+Da primeira equação: $\alpha = \beta \cdot \bar{X}$
+
+Substituindo na segunda:
+$\frac{1}{n}\sum X_i^2 = \frac{\beta\bar{X}(\beta\bar{X} + 1)}{\beta^2} = \frac{\bar{X}(\beta\bar{X} + 1)}{\beta} = \bar{X}^2 + \frac{\bar{X}}{\beta}$
+
+$\beta = \frac{\bar{X}}{\frac{1}{n}\sum X_i^2 - \bar{X}^2} = \frac{\bar{X}}{S^2_{MM}}$
+
+$\alpha = \beta \cdot \bar{X} = \frac{\bar{X}^2}{S^2_{MM}}$
+
+**Exemplo 4: Estimando $p$ para uma Binomial pelo MM**
+
+Para $X \sim \text{Binomial}(m, p)$ com $m$ conhecido:
+
+$E[X] = mp$
+
+Igualando:
+$\bar{X} = mp$
+
+$\hat{p}_{MM} = \frac{\bar{X}}{m}$
+
+**Exemplo 5: Estimando $\theta$ para uma Uniforme(0, $\theta$) pelo MM**
+
+Para $X \sim \text{Uniforme}(0, \theta)$:
+
+$E[X] = \theta/2$
+
+Igualando:
+$\bar{X} = \theta/2$
+
+$\hat{\theta}_{MM} = 2\bar{X}$
+
+## Método da Máxima Verossimilhança (MLE)
+
+O Método da Máxima Verossimilhança é o método mais poderoso e amplamente utilizado em estatística. Sua ideia é: **encontrar os valores dos parâmetros que maximizam a probabilidade de observar os dados que realmente observamos.**
+
+**Passos do MLE:**
+
+1. Escrever a função de verossimilhança $L(\theta) = \prod f(x_i; \theta)$, que é a probabilidade conjunta dos dados em função dos parâmetros.
+2. Em geral, é mais fácil maximizar o log da verossimilhança: $\ell(\theta) = \log L(\theta) = \sum \log f(x_i; \theta)$.
+3. Derivar $\ell(\theta)$ em relação a cada parâmetro e igualar a zero.
+4. Resolver o sistema de equações para os parâmetros.
+5. Verificar que o ponto crítico é um máximo (segunda derivada negativa).
+
+**Por que o MLE é tão bom?**
+
+Os estimadores de máxima verossimilhança têm propriedades assintóticas excelentes:
+
+- **Consistência:** $\hat{\theta}_{MLE} \to \theta$ quando $n \to \infty$
+- **Eficiência assintótica:** entre todos os estimadores consistentes, o MLE tem a menor variância assintótica
+- **Normalidade assintótica:** $\hat{\theta}_{MLE} \approx N(\theta, I(\theta)^{-1})$, onde $I(\theta)$ é a informação de Fisher
+- **Invariança:** se $\hat{\theta}$ é MLE de $\theta$, então $g(\hat{\theta})$ é MLE de $g(\theta)$
+
+**Exemplo 1: MLE para $\mu$ de uma Normal ($\sigma$ conhecido)**
+
+Para $X \sim N(\mu, \sigma^2)$ com $\sigma$ conhecido:
+
+$f(x; \mu) = \frac{1}{\sigma\sqrt{2\pi}} \cdot \exp\left(-\frac{(x-\mu)^2}{2\sigma^2}\right)$
+
+$\ell(\mu) = \sum \log f(x_i; \mu) = \text{constante} - \frac{1}{2\sigma^2}\sum (x_i - \mu)^2$
+
+$\frac{d\ell}{d\mu} = \frac{1}{\sigma^2}\sum (x_i - \mu) = 0$
+
+$\sum (x_i - \mu) = 0 \to \sum x_i - n\mu = 0 \to \hat{\mu} = \bar{X}$
+
+**Exemplo 2: MLE para $\mu$ e $\sigma^2$ de uma Normal**
+
+$\ell(\mu, \sigma^2) = -\frac{n}{2}\log(2\pi) - \frac{n}{2}\log(\sigma^2) - \frac{1}{2\sigma^2}\sum (x_i - \mu)^2$
+
+Derivando em relação a $\mu$:
+$\frac{\partial \ell}{\partial \mu} = \frac{1}{\sigma^2}\sum (x_i - \mu) = 0 \to \hat{\mu} = \bar{X}$
+
+Derivando em relação a $\sigma^2$:
+$\frac{\partial \ell}{\partial \sigma^2} = -\frac{n}{2\sigma^2} + \frac{1}{2\sigma^4}\sum (x_i - \mu)^2 = 0$
+
+$\hat{\sigma}^2 = \frac{1}{n}\sum (x_i - \bar{X})^2$
+
+**Observação:** O MLE para $\sigma^2$ usa divisor $n$ (é viesado). O estimador não viesado usa $n-1$.
+
+**Exemplo 3: MLE para $\lambda$ de uma Poisson**
+
+Para $X \sim \text{Poisson}(\lambda)$:
+
+$P(X = x) = \frac{e^{-\lambda} \cdot \lambda^x}{x!}$
+
+$\ell(\lambda) = \sum \log\left[\frac{e^{-\lambda} \cdot \lambda^{x_i}}{x_i!}\right] = -n\lambda + \left(\sum x_i\right)\log(\lambda) - \sum \log(x_i!)$
+
+$\frac{d\ell}{d\lambda} = -n + \frac{\sum x_i}{\lambda} = 0$
+
+$\hat{\lambda} = \frac{\sum x_i}{n} = \bar{X}$
+
+**Exemplo 4: MLE para $p$ de uma Bernoulli**
+
+Para $X \sim \text{Bernoulli}(p)$:
+
+$P(X = x) = p^x \cdot (1-p)^{1-x}$
+
+$\ell(p) = \sum [x_i \log(p) + (1-x_i)\log(1-p)]$
+$= \left(\sum x_i\right)\log(p) + \left(n - \sum x_i\right)\log(1-p)$
+
+$\frac{d\ell}{dp} = \frac{\sum x_i}{p} - \frac{n - \sum x_i}{1-p} = 0$
+
+$\left(\sum x_i\right)(1-p) = \left(n - \sum x_i\right)p$
+$\sum x_i - p\sum x_i = np - p\sum x_i$
+$\sum x_i = np$
+$\hat{p} = \frac{\sum x_i}{n} = \bar{X}$
+
+**Exemplo 5: MLE para $\theta$ de uma Uniforme(0, $\theta$)**
+
+Para $X \sim \text{Uniforme}(0, \theta)$:
+
+$f(x; \theta) = \frac{1}{\theta}$ para $0 \le x \le \theta$, e $0$ caso contrário
+
+$L(\theta) = \left(\frac{1}{\theta}\right)^n$ para $0 \le \max(x_i) \le \theta$, e $0$ caso contrário
+
+Para maximizar $L(\theta)$, precisamos do menor $\theta$ possível que seja maior ou igual a todos os $x_i$. Portanto:
+
+$\hat{\theta} = \max(X_i)$
+
+## Comparação entre MM e MLE
+
+| Aspecto | MM | MLE |
+| --- | --- | --- |
+| **Facilidade** | Mais simples | Mais complexo |
+| **Propriedades** | Pode ser viesado | Consistente, eficiente, normal |
+| **Utilização** | Boa para valores iniciais | Padrão em estatística |
+| **Distribuição** | Nem sempre existe | Sempre existe (com condições) |
+| **Invariança** | Não necessariamente | Sim |
+
+## Propriedades Assintóticas dos MLEs
+
+Os MLEs têm propriedades assintóticas notáveis:
+
+**1. Consistência:** $\hat{\theta}_{MLE} \to \theta$ quando $n \to \infty$
+
+**2. Normalidade Assintótica:** $\hat{\theta}_{MLE} \approx N(\theta, I(\theta)^{-1})$
+
+onde $I(\theta)$ é a informação de Fisher:
+
+$I(\theta) = -E\left[\frac{\partial^2 \ell(\theta)}{\partial \theta^2}\right]$
+
+**3. Eficiência Assintótica:** O MLE atinge o limite inferior de Cramér-Rao (menor variância possível entre estimadores consistentes).
+
+**Exemplo de aplicação:**
+
+Para a média de uma Normal com $\sigma$ conhecido:
+
+$I(\mu) = n/\sigma^2$
+
+$\hat{\mu}_{MLE} \approx N(\mu, \sigma^2/n)$
+
+Isso confirma que $\bar{X}$ tem distribuição Normal com variância $\sigma^2/n$.
+
+### Analogia 1: O arqueiro e o alvo
+
+O MM é como um arqueiro que mira no centro do alvo baseado em onde suas flechas caíram em média. O MLE é como um arqueiro que ajusta sua mira para maximizar a probabilidade de acertar o centro, considerando todas as suas tentativas anteriores.
+
+### Analogia 2: A receita de bolo
+
+MM: Você ajusta a receita baseado na média das quantidades que deram certo no passado. MLE: Você ajusta a receita para maximizar a probabilidade de o bolo ficar perfeito, considerando todas as tentativas anteriores.
+
+### Analogia 3: O jogador de basquete
+
+MM: O jogador ajusta seu arremesso baseado na média de onde a bola caiu. MLE: O jogador ajusta seu arremesso para maximizar a probabilidade de acertar a cesta.
+
+### Analogia 4: O médico
+
+MM: O médico prescreve um tratamento baseado na média de respostas de pacientes anteriores. MLE: O médico prescreve o tratamento que maximiza a probabilidade de sucesso para aquele paciente específico.
+
+### Analogia 5: O engenheiro
+
+MM: O engenheiro ajusta o projeto baseado na média de desempenho de protótipos anteriores. MLE: O engenheiro ajusta o projeto para maximizar a probabilidade de desempenho ideal.
+
+## Exemplos Práticos com Cálculos Passo a Passo
+
+### Exemplo 1: MM para Uniforme(a, b)
+
+Para $X \sim \text{Uniforme}(a, b)$, com dois parâmetros:
+
+$E[X] = \frac{a+b}{2}$
+$E[X^2] = \frac{a^2 + ab + b^2}{3}$
+
+Igualando aos momentos amostrais:
+$\bar{X} = \frac{a+b}{2}$
+$\frac{1}{n}\sum X_i^2 = \frac{a^2 + ab + b^2}{3}$
+
+Resolvendo:
+$\hat{a} = \bar{X} - \sqrt{3} \cdot S_{MM}$
+$\hat{b} = \bar{X} + \sqrt{3} \cdot S_{MM}$
+
+onde $S_{MM} = \sqrt{\frac{1}{n}\sum X_i^2 - \bar{X}^2}$
+
+### Exemplo 2: MLE para Exponencial
+
+Para $X \sim \text{Exp}(\lambda)$:
+
+$f(x; \lambda) = \lambda e^{-\lambda x}$
+
+$\ell(\lambda) = n\log(\lambda) - \lambda\sum x_i$
+
+$\frac{d\ell}{d\lambda} = \frac{n}{\lambda} - \sum x_i = 0$
+
+$\hat{\lambda} = \frac{n}{\sum x_i} = \frac{1}{\bar{X}}$
+
+### Exemplo 3: MLE para Gama
+
+Para $X \sim \text{Gama}(\alpha, \beta)$ (com parâmetro de taxa $\beta$):
+
+$\ell(\alpha, \beta) = n\alpha\log(\beta) - n\log(\Gamma(\alpha)) + (\alpha-1)\sum\log(x_i) - \beta\sum x_i$
+
+As equações de verossimilhança não têm solução fechada. Precisamos resolver numericamente.
+
+### Exemplo 4: MM para Weibull
+
+Para $X \sim \text{Weibull}(\beta, \eta)$:
+
+$E[X] = \eta \cdot \Gamma(1 + 1/\beta)$
+$E[X^2] = \eta^2 \cdot \Gamma(1 + 2/\beta)$
+
+Igualando aos momentos amostrais, obtemos equações que precisam ser resolvidas numericamente.
+
+### Exemplo 5: MLE para distribuição t
+
+Para $X \sim t(\nu)$ ($\nu$ desconhecido):
+
+A verossimilhança não tem solução fechada. Precisamos usar métodos numéricos.
+
+## Exercícios Resolvidos
+
+### Exercício 1 (Fácil)
+
+Use MM para estimar $\lambda$ de uma Poisson a partir de uma amostra.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+Para Poisson, $E[X] = \lambda$. Igualando a $\bar{X}$: $\hat{\lambda} = \bar{X}$.
+
+**Resposta:** $\hat{\lambda} = \bar{X}$.
+
+</details>
+
+### Exercício 2 (Fácil/Médio)
+
+Use MLE para estimar $p$ de uma Binomial($m$, $p$) com $m$ conhecido.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+Para $X \sim \text{Binomial}(m, p)$: $f(x; p) = \binom{m}{x} p^x (1-p)^{m-x}$
+
+$\ell(p) = \text{constante} + \left(\sum x_i\right)\log(p) + \left(nm - \sum x_i\right)\log(1-p)$
+
+$\frac{d\ell}{dp} = \frac{\sum x_i}{p} - \frac{nm - \sum x_i}{1-p} = 0$
+
+$\hat{p} = \frac{\sum x_i}{nm} = \frac{\bar{X}}{m}$
+
+**Resposta:** $\hat{p} = \bar{X}/m$.
+
+</details>
+
+### Exercício 3 (Médio)
+
+Use MLE para estimar $\lambda$ de uma Exponencial a partir de uma amostra.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+Para $\text{Exp}(\lambda)$: $f(x; \lambda) = \lambda e^{-\lambda x}$
+
+$\ell(\lambda) = n\log(\lambda) - \lambda\sum x_i$
+
+$\frac{d\ell}{d\lambda} = \frac{n}{\lambda} - \sum x_i = 0 \to \hat{\lambda} = \frac{n}{\sum x_i} = \frac{1}{\bar{X}}$
+
+**Resposta:** $\hat{\lambda} = 1/\bar{X}$.
+
+</details>
+
+### Exercício 4 (Médio)
+
+Compare MM e MLE para a estimação de $\mu$ de uma Normal ($\sigma$ conhecido). Qual a diferença?
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+MM: $\hat{\mu} = \bar{X}$
+MLE: $\hat{\mu} = \bar{X}$
+
+**Resposta:** Ambos dão o mesmo resultado para este caso.
+
+</details>
+
+### Exercício 5 (Difícil)
+
+Para uma Uniforme(0, $\theta$), compare MM e MLE.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+MM: $\hat{\theta}_{MM} = 2\bar{X}$
+MLE: $\hat{\theta}_{MLE} = \max(X_i)$
+
+O MLE é mais eficiente (menor variância) que o MM para este caso.
+
+**Resposta:** MLE é melhor que MM para Uniforme.
+
+</details>
+
+## Desafio Final com Resolução Completa
+
+Uma amostra de 10 observações de uma distribuição Exponencial: 0,5; 1,2; 0,8; 1,5; 0,6; 0,9; 1,1; 0,7; 1,3; 1,0.
+
+a) Use MM para estimar $\lambda$.
+
+b) Use MLE para estimar $\lambda$.
+
+c) Compare os dois estimadores.
+
+d) Qual estimador você escolheria e por quê?
+
+e) Estime a média e a variância da distribuição usando os estimadores encontrados.
+
+<details>
+<summary>💡 Ver resolução completa</summary>
+
+a) Dados: $\sum X = 0,5+1,2+0,8+1,5+0,6+0,9+1,1+0,7+1,3+1,0 = 9,6$
+   $\bar{X} = 9,6/10 = 0,96$
+
+   Para $\text{Exp}(\lambda)$: $E[X] = 1/\lambda$
+   $\hat{\lambda}_{MM} = 1/\bar{X} = 1/0,96 = 1,0417$
+
+b) Para $\text{Exp}(\lambda)$: $\hat{\lambda}_{MLE} = 1/\bar{X} = 1,0417$ (mesmo valor)
+
+c) Para a distribuição Exponencial, MM e MLE dão o mesmo estimador para $\lambda$.
+
+d) Ambos são equivalentes neste caso. Qualquer um serve.
+
+e) $\hat{\mu} = 1/\hat{\lambda} = 0,96$
+   $\hat{\sigma}^2 = 1/\hat{\lambda}^2 = 0,9216$
+   $\hat{\sigma} = \sqrt{0,9216} = 0,96$
+
+**Respostas:**
+a) $\hat{\lambda}_{MM} = 1,0417$
+b) $\hat{\lambda}_{MLE} = 1,0417$
+c) São iguais para a Exponencial
+d) Qualquer um, são equivalentes
+e) $\hat{\mu} = 0,96$; $\hat{\sigma}^2 = 0,9216$; $\hat{\sigma} = 0,96$
+
+</details>
+
+> *O Método dos Momentos é a intuição transformada em equação; a Máxima Verossimilhança é a busca pelo parâmetro que mais provavelmente gerou os dados que vimos.*

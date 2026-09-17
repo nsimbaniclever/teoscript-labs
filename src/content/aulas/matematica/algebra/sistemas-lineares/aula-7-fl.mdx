@@ -1,0 +1,579 @@
+# SISTEMAS LINEARES E FEDERATED LEARNING (FL)
+
+## 1. Introdução
+
+### 1.1 Definição
+
+O **Federated Learning (FL)** é uma abordagem de aprendizado de máquina onde o modelo é treinado em **dispositivos descentralizados** (clientes) sem que os dados saiam dos dispositivos.
+
+**Fluxo básico do FL:**
+
+1. **Inicialização:** O servidor envia um modelo global $\vec{w}_0$ para todos os clientes.
+2. **Treino local:** Cada cliente treina o modelo com seus dados locais, obtendo um gradiente ou modelo atualizado.
+3. **Agregação:** O servidor coleta as atualizações dos clientes e as **combina** (geralmente por média ponderada) para formar um novo modelo global.
+4. **Iteração:** O processo se repete até a convergência.
+
+### 1.2 Representação Matemática do FL
+
+**Modelo global:**
+$$
+\vec{w}_{global}^{(t+1)} = \frac{1}{N} \sum_{i=1}^{N} \vec{w}_i^{(t)}
+$$
+
+Ou, com pesos $a_i$ (importância de cada cliente):
+$$
+\vec{w}_{global}^{(t+1)} = \sum_{i=1}^{N} a_i \vec{w}_i^{(t)}, \quad \sum_{i=1}^{N} a_i = 1
+$$
+
+**Observação:** Isso é uma **combinação linear** de vetores (vista na Aula 5 de Vetores).
+
+## 2. Sistemas Lineares no FL
+
+### 2.1 Agregação de Modelos como Sistema Linear
+
+A agregação no FL pode ser vista como um **sistema linear** onde o modelo global é a solução.
+
+**Problema:** Encontrar o modelo global $\vec{w}_{global}$ que é uma **média ponderada** dos modelos locais.
+
+$$
+\vec{w}_{global} = a_1 \vec{w}_1 + a_2 \vec{w}_2 + \cdots + a_N \vec{w}_N
+$$
+
+**Interpretação:** Os pesos $a_i$ são as incógnitas de um sistema linear se impusermos condições adicionais.
+
+### 2.2 Exemplo: Dois Clientes
+
+Suponha que dois clientes têm modelos:
+$$
+\vec{w}_1 = (2, 4, 1), \quad \vec{w}_2 = (3, 1, 5)
+$$
+
+**Caso 1:** Média simples ($a_1 = a_2 = 0.5$):
+$$
+\vec{w}_{global} = 0.5(2,4,1) + 0.5(3,1,5) = (2.5, 2.5, 3)
+$$
+
+**Caso 2:** Pesos personalizados (ex: $a_1 = 0.7$, $a_2 = 0.3$):
+$$
+\vec{w}_{global} = 0.7(2,4,1) + 0.3(3,1,5) = (2.3, 3.1, 2.2)
+$$
+
+**Interpretação:** A agregação é uma combinação linear dos modelos locais.
+
+## 3. Verificação de Consistência em FL
+
+### 3.1 O Problema
+
+Em FL, queremos garantir que os modelos locais são **consistentes** com o modelo global.
+
+**Teste:** Verificar se existe uma combinação linear dos modelos locais que iguala o modelo global.
+
+### 3.2 Exemplo: Sistema Linear para Verificação
+
+Suponha que temos 3 clientes e o modelo global:
+$$
+\vec{w}_1 = (1, 2), \quad \vec{w}_2 = (3, 4), \quad \vec{w}_3 = (5, 6), \quad \vec{w}_{global} = (3, 4)
+$$
+
+**Pergunta:** Existem pesos $a_1, a_2, a_3$ tais que:
+$$
+a_1(1,2) + a_2(3,4) + a_3(5,6) = (3,4)
+$$
+
+**Sistema:**
+$$
+\begin{cases}
+a_1 + 3a_2 + 5a_3 = 3 \\
+2a_1 + 4a_2 + 6a_3 = 4
+\end{cases}
+$$
+
+**Resolução (por eliminação):**
+
+Da primeira: $a_1 = 3 - 3a_2 - 5a_3$
+
+Substituindo na segunda:
+$$
+2(3 - 3a_2 - 5a_3) + 4a_2 + 6a_3 = 4
+$$
+$$
+6 - 6a_2 - 10a_3 + 4a_2 + 6a_3 = 4
+$$
+$$
+6 - 2a_2 - 4a_3 = 4
+$$
+$$
+-2a_2 - 4a_3 = -2
+$$
+$$
+a_2 + 2a_3 = 1
+$$
+
+**Solução:** $a_2 = 1 - 2a_3$, $a_1 = 3 - 3(1 - 2a_3) - 5a_3 = 3 - 3 + 6a_3 - 5a_3 = a_3$
+
+**Solução geral:** $(a_1, a_2, a_3) = (a_3, 1 - 2a_3, a_3)$
+
+**Exemplo:** $a_3 = 0 \Rightarrow (a_1, a_2, a_3) = (0, 1, 0)$ → $\vec{w}_{global} = \vec{w}_2$ ✓
+
+**Interpretação:** O modelo global é exatamente o modelo do cliente 2 → todos os outros clientes são redundantes ou maliciosos.
+
+## 4. Detecção de Clientes Maliciosos
+
+### 4.1 A Ideia
+
+Em FL, um cliente malicioso pode enviar um modelo que **não é consistente** com os outros.
+
+**Teste:** Se o sistema $\sum a_i \vec{w}_i = \vec{w}_{global}$ **não tem solução**, então há inconsistência.
+
+### 4.2 Exemplo: Cliente Malicioso
+
+Clientes:
+$$
+\vec{w}_1 = (1, 2), \quad \vec{w}_2 = (3, 4), \quad \vec{w}_3 = (100, 200) \quad \text{(malicioso)}
+$$
+Modelo global: $\vec{w}_{global} = (3, 4)$
+
+**Sistema:**
+$$
+\begin{cases}
+a_1 + 3a_2 + 100a_3 = 3 \\
+2a_1 + 4a_2 + 200a_3 = 4
+\end{cases}
+$$
+
+**Resolução:**
+
+Da primeira: $a_1 = 3 - 3a_2 - 100a_3$
+
+Substituindo na segunda:
+$$
+2(3 - 3a_2 - 100a_3) + 4a_2 + 200a_3 = 4
+$$
+$$
+6 - 6a_2 - 200a_3 + 4a_2 + 200a_3 = 4
+$$
+$$
+6 - 2a_2 = 4
+$$
+$$
+2a_2 = 2 \Rightarrow a_2 = 1
+$$
+
+**Solução:** $a_2 = 1$, $a_1 = 3 - 3(1) - 100a_3 = -100a_3$, $a_3$ livre.
+
+**Interpretação:** O sistema **tem solução** (ex: $a_3 = 0$, $a_1 = 0$, $a_2 = 1$).  
+O cliente malicioso é **ignorado** se $a_3 = 0$.
+
+## 5. Aplicações Práticas em FL
+
+### 5.1 FedAvg (Média Ponderada)
+
+O algoritmo mais comum em FL é o **FedAvg** (Média Federada):
+
+$$
+\vec{w}_{global}^{(t+1)} = \frac{1}{N} \sum_{i=1}^{N} \vec{w}_i^{(t)}
+$$
+
+**Interpretação:** É uma combinação linear com pesos $a_i = \frac{1}{N}$.
+
+### 5.2 FedProx (Regularização)
+
+O **FedProx** adiciona um termo de regularização para lidar com dados heterogêneos:
+
+$$
+\vec{w}_i^{(t+1)} = \arg\min_{\vec{w}} \left[ L_i(\vec{w}) + \frac{\mu}{2} \|\vec{w} - \vec{w}_{global}\|^2 \right]
+$$
+
+**Interpretação:** Cada cliente resolve um sistema linear (ou problema de otimização) que é uma combinação da perda local e da distância ao modelo global.
+
+### 5.3 Agregação Ponderada por Importância
+
+Em FL, clientes podem ter **pesos diferentes** com base na quantidade de dados:
+
+$$
+\vec{w}_{global} = \frac{\sum_{i=1}^{N} n_i \vec{w}_i}{\sum_{i=1}^{N} n_i}
+$$
+
+**Interpretação:** É uma combinação linear com pesos $a_i = \frac{n_i}{\sum n_j}$.
+
+## 6. Exemplos Lúdicos Aprimorados
+
+### 🍔 EXEMPLO 1 – A LANCHONETE (FL VERSÃO SIMPLES)
+
+Suponha que 3 lanchonetes (clientes) treinam modelos para prever o preço de sanduíches.
+
+**Modelos locais:**
+- Loja 1: $\vec{w}_1 = (2, 3)$ → (peso do pão, peso da carne)
+- Loja 2: $\vec{w}_2 = (4, 1)$
+- Loja 3: $\vec{w}_3 = (3, 2)$
+
+**FedAvg (média simples):**
+$$
+\vec{w}_{global} = \frac{1}{3}(2+4+3, 3+1+2) = \frac{1}{3}(9, 6) = (3, 2)
+$$
+
+**Interpretação:** O modelo global é a média dos modelos locais.
+
+### 🧃 EXEMPLO 2 – A CANTINA (DETECÇÃO DE CLIENTE MALICIOSO)
+
+A cantina tem 3 clientes com modelos:
+$$
+\vec{w}_1 = (1, 2), \quad \vec{w}_2 = (3, 4), \quad \vec{w}_3 = (100, 200) \quad \text{(malicioso)}
+$$
+
+O modelo global é a média simples:
+$$
+\vec{w}_{global} = \frac{1}{3}(1+3+100, 2+4+200) = \frac{1}{3}(104, 206) \approx (34.67, 68.67)
+$$
+
+**Problema:** O cliente malicioso distorceu a média.
+
+**Solução:** Usar agregação robusta (ex: mediana) ou **verificação de consistência** para identificar o cliente malicioso.
+
+## 7. Resumo Estruturado
+
+| Conceito | Definição | Aplicação em FL |
+|----------|-----------|-----------------|
+| **Agregação** | Combinação linear de modelos locais | FedAvg, FedProx |
+| **Consistência** | Verificação se $\sum a_i \vec{w}_i = \vec{w}_{global}$ | Detecção de clientes maliciosos |
+| **Pesos** | $a_i$ com $\sum a_i = 1$ | Importância de cada cliente |
+| **Sistema Linear** | $A\vec{a} = \vec{w}_{global}$ | Verificação de redundância |
+
+## 8. Exercícios Propostos (Manuais)
+
+<details>
+<summary>📗 Exercício 1 (FedAvg)</summary>
+
+**Enunciado:** Três clientes têm modelos:
+$$
+\vec{w}_1 = (2, 4, 1), \quad \vec{w}_2 = (3, 1, 5), \quad \vec{w}_3 = (1, 2, 3)
+$$
+
+Calcule o modelo global usando FedAvg (média simples).
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+$$
+\vec{w}_{global} = \frac{1}{3}((2+3+1), (4+1+2), (1+5+3)) = \frac{1}{3}(6, 7, 9) = \left(2, \frac{7}{3}, 3\right)
+$$
+
+**Solução:** $\vec{w}_{global} = \left(2, \frac{7}{3}, 3\right)$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 (Agregação Ponderada)</summary>
+
+**Enunciado:** Três clientes têm modelos e quantidades de dados:
+- Cliente 1: $\vec{w}_1 = (1, 2)$, $n_1 = 10$
+- Cliente 2: $\vec{w}_2 = (3, 4)$, $n_2 = 20$
+- Cliente 3: $\vec{w}_3 = (5, 6)$, $n_3 = 30$
+
+Calcule o modelo global com pesos proporcionais à quantidade de dados.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+$$
+\vec{w}_{global} = \frac{10(1,2) + 20(3,4) + 30(5,6)}{10+20+30} = \frac{(10,20) + (60,80) + (150,180)}{60} = \frac{(220, 280)}{60} \approx (3.67, 4.67)
+$$
+
+**Solução:** $\vec{w}_{global} \approx (3.67, 4.67)$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 (Verificação de Consistência)</summary>
+
+**Enunciado:** Clientes:
+$$
+\vec{w}_1 = (1, 2), \quad \vec{w}_2 = (3, 4), \quad \vec{w}_3 = (5, 6)
+$$
+Modelo global: $\vec{w}_{global} = (3, 4)$
+
+a) Existem pesos $a_1, a_2, a_3$ tais que $\sum a_i \vec{w}_i = \vec{w}_{global}$?  
+b) O que isso significa?  
+c) Qual cliente é mais importante?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) Sistema:
+$$
+a_1(1,2) + a_2(3,4) + a_3(5,6) = (3,4)
+$$
+
+Resolvendo (já feito no exemplo): $\vec{w}_{global} = \vec{w}_2$ → $a_1 = 0$, $a_2 = 1$, $a_3 = 0$.
+
+b) O modelo global é exatamente o modelo do cliente 2.
+
+c) Cliente 2 é o único que importa → os clientes 1 e 3 são redundantes.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 (Detecção de Cliente Malicioso)</summary>
+
+**Enunciado:** Clientes:
+$$
+\vec{w}_1 = (1, 2), \quad \vec{w}_2 = (3, 4), \quad \vec{w}_3 = (10, 20) \quad \text{(malicioso)}
+$$
+Modelo global: $\vec{w}_{global} = (2, 3)$
+
+a) O sistema $\sum a_i \vec{w}_i = \vec{w}_{global}$ tem solução?  
+b) O que isso indica?  
+c) Qual cliente pode ser malicioso?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) Sistema:
+$$
+a_1(1,2) + a_2(3,4) + a_3(10,20) = (2,3)
+$$
+
+Da primeira: $a_1 + 3a_2 + 10a_3 = 2$  
+Da segunda: $2a_1 + 4a_2 + 20a_3 = 3$
+
+Multiplicando a primeira por 2: $2a_1 + 6a_2 + 20a_3 = 4$  
+Subtraindo da segunda: $(2a_1 + 4a_2 + 20a_3) - (2a_1 + 6a_2 + 20a_3) = 3 - 4$  
+$-2a_2 = -1 \Rightarrow a_2 = 0.5$
+
+Da primeira: $a_1 + 3(0.5) + 10a_3 = 2 \Rightarrow a_1 + 1.5 + 10a_3 = 2 \Rightarrow a_1 + 10a_3 = 0.5$
+
+**O sistema tem solução** (ex: $a_3 = 0$, $a_1 = 0.5$, $a_2 = 0.5$).
+
+b) O cliente malicioso pode ser ignorado ($a_3 = 0$) ou detectado.
+
+c) O cliente 3 $(10,20)$ é suspeito — está distante dos outros.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 (Aplicação – Lanchonete)</summary>
+
+**Enunciado:** Três lanchonetes têm modelos:
+$$
+\vec{w}_1 = (1, 1), \quad \vec{w}_2 = (2, 2), \quad \vec{w}_3 = (3, 3)
+$$
+
+a) Calcule o modelo global por FedAvg.  
+b) Os clientes são consistentes entre si?  
+c) O que isso significa para a diversidade dos dados?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\vec{w}_{global} = \frac{1}{3}((1+2+3), (1+2+3)) = (2, 2)$
+
+b) Os clientes são **consistentes** porque todos são múltiplos de $(1,1)$.
+
+c) Os dados não são diversos — todos os clientes têm a mesma direção. A agregação não traz ganho.
+
+</details>
+</details>
+
+## 9. 💻 BÔNUS OPCIONAL – EXERCÍCIO COMPUTACIONAL
+
+<details>
+<summary>🐍 Python (NumPy) – Código Completo</summary>
+
+```python
+import numpy as np
+
+print("=" * 60)
+print("FEDERATED LEARNING - SISTEMAS LINEARES")
+print("=" * 60)
+
+# ------------------------------------------------------------
+# EXEMPLO 1: FedAvg (Média Simples)
+# ------------------------------------------------------------
+print("\n[1] FedAvg - Média Simples")
+print("-" * 40)
+
+w1 = np.array([2, 4, 1])
+w2 = np.array([3, 1, 5])
+w3 = np.array([1, 2, 3])
+
+print("Modelo Cliente 1:", w1)
+print("Modelo Cliente 2:", w2)
+print("Modelo Cliente 3:", w3)
+
+w_global = (w1 + w2 + w3) / 3
+print(f"\nModelo Global (FedAvg): {w_global}")
+print("✓ FedAvg calculado com sucesso!")
+
+# ------------------------------------------------------------
+# EXEMPLO 2: Agregação Ponderada
+# ------------------------------------------------------------
+print("\n[2] Agregação Ponderada por Quantidade de Dados")
+print("-" * 40)
+
+w1 = np.array([1, 2])
+w2 = np.array([3, 4])
+w3 = np.array([5, 6])
+n = np.array([10, 20, 30])
+
+print("Modelo Cliente 1:", w1, f"(n={n[0]})")
+print("Modelo Cliente 2:", w2, f"(n={n[1]})")
+print("Modelo Cliente 3:", w3, f"(n={n[2]})")
+
+total = np.sum(n)
+alpha = n / total
+print(f"\nPesos: a1 = {alpha[0]:.2f}, a2 = {alpha[1]:.2f}, a3 = {alpha[2]:.2f}")
+
+w_global = (n[0]*w1 + n[1]*w2 + n[2]*w3) / total
+print(f"\nModelo Global (ponderado): {w_global}")
+print("✓ Agregação ponderada calculada com sucesso!")
+
+# ------------------------------------------------------------
+# EXEMPLO 3: Verificação de Consistência
+# ------------------------------------------------------------
+print("\n[3] Verificação de Consistência")
+print("-" * 40)
+
+w1 = np.array([1, 2])
+w2 = np.array([3, 4])
+w3 = np.array([5, 6])
+w_global = np.array([3, 4])
+
+print("Modelo Cliente 1:", w1)
+print("Modelo Cliente 2:", w2)
+print("Modelo Cliente 3:", w3)
+print("Modelo Global:", w_global)
+
+A = np.column_stack([w1, w2, w3])
+print(f"\nMatriz A (colunas = modelos locais):\n{A}")
+
+a, residuals, rank, s = np.linalg.lstsq(A, w_global, rcond=None)
+
+print(f"\nPesos encontrados (mínimos quadrados):")
+print(f"a1 = {a[0]:.4f}")
+print(f"a2 = {a[1]:.4f}")
+print(f"a3 = {a[2]:.4f}")
+
+verificacao = A @ a
+print(f"\nVerificação A·a = {verificacao}")
+print(f"Modelo Global = {w_global}")
+print(f"Erro = {np.linalg.norm(verificacao - w_global):.2e}")
+
+print("\nInterpretação:")
+print(f"a2 = {a[1]:.4f} é o maior peso → Cliente 2 é o mais importante")
+
+# ------------------------------------------------------------
+# EXEMPLO 4: Detecção de Cliente Malicioso
+# ------------------------------------------------------------
+print("\n[4] Detecção de Cliente Malicioso")
+print("-" * 40)
+
+w1 = np.array([1, 2])
+w2 = np.array([3, 4])
+w3 = np.array([100, 200])
+w_global = np.array([3, 4])
+
+print("Modelo Cliente 1 (normal):", w1)
+print("Modelo Cliente 2 (normal):", w2)
+print("Modelo Cliente 3 (MALICIOSO):", w3)
+print("Modelo Global:", w_global)
+
+A_mal = np.column_stack([w1, w2, w3])
+a_mal, _, _, _ = np.linalg.lstsq(A_mal, w_global, rcond=None)
+
+print(f"\nPesos encontrados:")
+print(f"a1 = {a_mal[0]:.4f}")
+print(f"a2 = {a_mal[1]:.4f}")
+print(f"a3 = {a_mal[2]:.4f}")
+
+print("\nAnálise do Cliente 3 (malicioso):")
+if abs(a_mal[2]) < 1e-6:
+    print("✓ O cliente malicioso foi DETECTADO! Seu peso é aproximadamente zero.")
+else:
+    print(f"⚠ O cliente malicioso NÃO foi detectado. a3 = {a_mal[2]:.4f}")
+
+# ------------------------------------------------------------
+# EXEMPLO 5: Impacto do Cliente Malicioso
+# ------------------------------------------------------------
+print("\n[5] Impacto do Cliente Malicioso no FedAvg")
+print("-" * 40)
+
+w_global_normal = (w1 + w2) / 2
+print("Clientes 1 e 2 (sem malicioso):")
+print(f"  Modelo Global = {w_global_normal}")
+
+w_global_mal = (w1 + w2 + w3) / 3
+print("\nClientes 1, 2 e 3 (com malicioso):")
+print(f"  Modelo Global = {w_global_mal}")
+print(f"  Distorção = {np.linalg.norm(w_global_mal - w_global_normal):.2f}")
+print("\nConclusão: O cliente malicioso distorceu o modelo global!")
+```
+
+</details>
+
+<details>
+<summary>📝 R – Código Completo</summary>
+
+```r
+cat(rep("=", 60), "\n")
+cat("FEDERATED LEARNING - SISTEMAS LINEARES\n")
+cat(rep("=", 60), "\n")
+
+# ------------------------------------------------------------
+# EXEMPLO 1: FedAvg
+# ------------------------------------------------------------
+cat("\n[1] FedAvg - Média Simples\n")
+cat(rep("-", 40), "\n")
+
+w1 <- c(2, 4, 1)
+w2 <- c(3, 1, 5)
+w3 <- c(1, 2, 3)
+
+cat("Modelo Cliente 1:", w1, "\n")
+cat("Modelo Cliente 2:", w2, "\n")
+cat("Modelo Cliente 3:", w3, "\n")
+
+w_global <- (w1 + w2 + w3) / 3
+cat(sprintf("\nModelo Global (FedAvg): [%.2f, %.2f, %.2f]\n", w_global[1], w_global[2], w_global[3]))
+cat("✓ FedAvg calculado com sucesso!\n")
+
+# ------------------------------------------------------------
+# EXEMPLO 2: Agregação Ponderada
+# ------------------------------------------------------------
+cat("\n[2] Agregação Ponderada por Quantidade de Dados\n")
+cat(rep("-", 40), "\n")
+
+w1 <- c(1, 2)
+w2 <- c(3, 4)
+w3 <- c(5, 6)
+n <- c(10, 20, 30)
+
+cat("Modelo Cliente 1:", w1, sprintf("(n=%d)", n[1]), "\n")
+cat("Modelo Cliente 2:", w2, sprintf("(n=%d)", n[2]), "\n")
+cat("Modelo Cliente 3:", w3, sprintf("(n=%d)", n[3]), "\n")
+
+total <- sum(n)
+alpha <- n / total
+cat(sprintf("\nPesos: a1 = %.2f, a2 = %.2f, a3 = %.2f\n", alpha[1], alpha[2], alpha[3]))
+
+w_global <- (n[1]*w1 + n[2]*w2 + n[3]*w3) / total
+cat(sprintf("\nModelo Global (ponderado): [%.2f, %.2f]\n", w_global[1], w_global[2]))
+cat("✓ Agregação ponderada calculada com sucesso!\n")
+```
+
+</details>
+
+> *Sistemas lineares são a base matemática do Federated Learning. A agregação de modelos é uma combinação linear, e a verificação de consistência (solução de $\sum a_i \vec{w}_i = \vec{w}_{global}$) permite detectar clientes maliciosos e redundâncias. Esses conceitos são essenciais para sua tese.*

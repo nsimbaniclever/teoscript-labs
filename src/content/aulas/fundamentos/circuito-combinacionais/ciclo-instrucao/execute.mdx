@@ -1,0 +1,417 @@
+# Execução (Execute)
+
+## 1. Introdução
+
+Nas duas últimas aulas, percorremos as duas primeiras etapas do ciclo de instrução: a **Busca (Fetch)** , onde a CPU busca a instrução da memória, e a **Decodificação (Decode)** , onde a Unidade de Controle interpreta o que a instrução faz e gera os sinais de controle necessários.<br><br>
+
+Agora chegamos ao momento crucial — o momento em que a instrução é **efetivamente executada**. Esta é a etapa onde o "trabalho real" acontece: os dados são processados, as contas são feitas, as decisões são tomadas. <br><br>
+
+A **Execução (Execute)** é a terceira etapa do ciclo de instrução. É aqui que:
+
+- A **ULA** realiza operações aritméticas (soma, subtração) ou lógicas (AND, OR, XOR).
+- A CPU calcula endereços para saltos (JMP, CALL).
+- Comparações são feitas e as flags são atualizadas.
+
+Se as etapas anteriores foram sobre "preparar o terreno", a Execução é sobre "fazer acontecer". É o momento em que a CPU realmente processa os dados.
+
+Nesta aula, vamos explorar a Execução em detalhes: como a ULA funciona durante essa etapa, como os operandos são obtidos, como os resultados são gerados, e como as flags são atualizadas para instruções futuras.
+
+
+## 2. O Que é a Execução (Execute)?
+
+### 2.1 Definição
+
+A **Execução** (em inglês, *Execute*) é a terceira etapa do ciclo de instrução, onde:
+
+> **A ULA realiza a operação especificada pelo opcode, ou a CPU calcula um endereço de salto, utilizando os operandos fornecidos.**
+
+### 2.2 O que acontece durante a execução?
+
+| Tipo de instrução | O que acontece | Componentes envolvidos |
+|-------------------|----------------|----------------------|
+| **Aritmética/Lógica** | ULA executa a operação sobre os operandos | ULA, Registradores |
+| **Salto (JMP)** | PC recebe o endereço de destino | PC, UC |
+| **Salto condicional** | UC verifica flags, decide se salta | PC, UC, Flags |
+| **Leitura (LOAD)** | Memória é lida no endereço especificado | MAR, MBR, Memória |
+| **Escrita (STORE)** | Dado é escrito na memória | MAR, MBR, Memória |
+
+### 2.3 Analogia
+
+Pense na execução como o **momento em que a ação acontece**:
+
+<details>
+<summary>🔧 Ver Analogia da Execução</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 450px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">EXECUÇÃO — A AÇÃO</div>
+
+  <pre style="color: #93c5fd; font-size: 0.65rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    ┌─────────────────────────────────────────────────────┐
+    │                                                     │
+    │   PLANEJAMENTO (FETCH + DECODE)                    │
+    │   ┌─────────────────────────────────────────────┐   │
+    │   │  "Vou somar 5 e 3"                         │   │
+    │   └─────────────────────────────────────────────┘   │
+    │                         │                           │
+    │                         ▼                           │
+    │   AÇÃO (EXECUTE)                                   │
+    │   ┌─────────────────────────────────────────────┐   │
+    │   │  5 + 3 = 8                                 │   │
+    │   └─────────────────────────────────────────────┘   │
+    │                         │                           │
+    │                         ▼                           │
+    │   REGISTRO (WRITE-BACK)                            │
+    │   ┌─────────────────────────────────────────────┐   │
+    │   │  "Resultado 8 guardado em R0"              │   │
+    │   └─────────────────────────────────────────────┘   │
+    │                                                     │
+    └─────────────────────────────────────────────────────┘
+  </pre>
+
+</div>
+</details>
+
+### 2.4 Diagrama da Execução
+
+<details>
+<summary>🔧 Ver Diagrama da Execução</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 500px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">ETAPA DE EXECUÇÃO (EXECUTE)</div>
+
+  <pre style="color: #93c5fd; font-size: 0.5rem; line-height: 1.6; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    ┌─────────────────────────────────────────────────────────────────┐
+    │                                                                 │
+    │  SINAIS DE CONTROLE (da Decodificação)                         │
+    │     │                                                           │
+    │     ▼                                                           │
+    │  ┌─────────────────────────────────────────────────────────┐    │
+    │  │                   EXECUÇÃO                              │    │
+    │  │                                                         │    │
+    │  │  ┌─────────────────────────────────────────────────┐   │    │
+    │  │  │              LEITURA DE OPERANDOS              │   │    │
+    │  │  │                                                 │   │    │
+    │  │  │  Registradores: R1 = 5, R2 = 3                 │   │    │
+    │  │  └─────────────────────────────────────────────────┘   │    │
+    │  │                         │                               │    │
+    │  │                         ▼                               │    │
+    │  │  ┌─────────────────────────────────────────────────┐   │    │
+    │  │  │                   ULA                          │   │    │
+    │  │  │                                                 │   │    │
+    │  │  │  5 + 3 = 8                                     │   │    │
+    │  │  │                                                 │   │    │
+    │  │  │  Flags: Z=0, N=0, C=0, V=0                    │   │    │
+    │  │  └─────────────────────────────────────────────────┘   │    │
+    │  │                         │                               │    │
+    │  │                         ▼                               │    │
+    │  │  ┌─────────────────────────────────────────────────┐   │    │
+    │  │  │           RESULTADO GERADO                      │   │    │
+    │  │  │                                                 │   │    │
+    │  │  │  Resultado = 8                                  │   │    │
+    │  │  └─────────────────────────────────────────────────┘   │    │
+    │  │                                                         │    │
+    │  └─────────────────────────────────────────────────────────┘    │
+    │                              │                                  │
+    │                              ▼                                  │
+    │                    ┌─────────────────┐                        │
+    │                    │  RESULTADO      │                        │
+    │                    │  (para Write-back)│                      │
+    │                    └─────────────────┘                        │
+    │                                                                 │
+    └─────────────────────────────────────────────────────────────────┘
+  </pre>
+
+</div>
+</details>
+
+
+## 3. Tipos de Execução
+
+### 3.1 Instruções Aritméticas
+
+**Exemplo:** `ADD R0, R1, R2` (R0 = R1 + R2)
+
+<pre>
+PASSOS:
+1. ${\color{white}\text{UC: "Leia R1 e R2"}}$
+2. ${\color{white}\text{ULA: R1 + R2 = 5 + 3 = 8}}$
+3. ${\color{white}\text{ULA: Atualiza flags (Z=0, N=0, C=0, V=0)}}$ 
+4. ${\color{white}\text{Resultado = 8 (aguardando Write-back)}}$ 
+
+FLAGS:
+Z (Zero) = 0 (resultado não é zero)
+N (Negative) = 0 (resultado não é negativo)
+C (Carry) = 0 (não houve carry)
+V (Overflow) = 0 (não houve overflow)
+</pre>
+
+### 3.2 Instruções Lógicas
+
+**Exemplo:** `AND R0, R1, R2` (R0 = R1 AND R2)
+
+<pre>
+PASSOS:
+1. ${\color{white}\text{UC: "Leia R1 e R2"}}$ 
+2. ${\color{white}\text{ULA: R1 AND R2 = 0b0101 AND 0b0011 = 0b0001}}$ 
+3. ${\color{white}\text{ULA: Atualiza flags (Z=0, N=0, C=0, V=0)}}$ 
+4. ${\color{white}\text{Resultado = 1 (aguardando Write-back)}}$ 
+
+FLAGS:
+Z (Zero) = 0 (resultado não é zero)
+N (Negative) = 0 (resultado não é negativo)
+</pre>
+
+### 3.3 Instruções de Comparação
+
+**Exemplo:** `CMP R1, R2` (Compara R1 e R2)
+
+<pre>
+PASSOS:
+1. ${\color{white}\text{UC: "Leia R1 e R2"}}$ 
+2. ${\color{white}\text{ULA: R1 - R2 = 5 - 3 = 2}}$ 
+3. ${\color{white}\text{ULA: Atualiza flags (Z=0, N=0, C=0, V=0)}}$ 
+4. ${\color{white}\text{Nenhum resultado é escrito (apenas flags)
+}}$ 
+FLAGS:
+Z (Zero) = 0 (R1 ≠ R2)
+N (Negative) = 0 (R1 > R2)
+C (Carry) = 0
+V (Overflow) = 0
+</pre>
+
+### 3.4 Saltos Incondicionais
+
+**Exemplo:** `JMP 0x2000`
+
+<pre>
+PASSOS:
+1. UC: "Salto para 0x2000"
+2. PC = 0x2000 (sobrescreve o incremento do fetch)
+3. Nenhum resultado é escrito
+</pre>
+
+### 3.5 Saltos Condicionais
+
+**Exemplo:** `JE 0x2000` (Jump if Equal)
+
+<pre>
+PASSOS:
+1. ${\color{white}\text{UC: Verifica flag Z (Zero)}}$ 
+2. ${\color{white}\text{Se Z = 1: PC = 0x2000 (salta)}}$ 
+3. ${\color{white}\text{Se Z = 0: PC = PC + 1 (não salta)}}$ 
+4. ${\color{white}\text{Nenhum resultado é escrito}}$ 
+</pre>
+
+### 3.6 Instruções de Memória
+
+**LOAD (Leitura):** `LOAD R0, [0x1000]`
+
+<pre>
+PASSOS:
+1. ${\color{white}\text{UC: "Leia endereço 0x1000"}}$ 
+2. ${\color{white}\text{MAR = 0x1000}}$ 
+3. ${\color{white}\text{UC: RD = 1 (leitura)}}$ 
+4. ${\color{white}\text{Memória → MBR = 0x5A}}$ 
+5. ${\color{white}\text{Resultado = 0x5A (aguardando Write-back em R0)}}$ 
+</pre>
+
+**STORE (Escrita):** `STORE R0, [0x1000]`
+
+<pre>
+PASSOS:
+1. ${\color{white}\text{UC: "Escreva R0 no endereço 0x1000"}}$ 
+2. ${\color{white}\text{MAR = 0x1000}}$ 
+3. ${\color{white}\text{MBR = R0 = 0x5A}}$ 
+4. ${\color{white}\text{UC: WR = 1 (escrita)}}$ 
+5. ${\color{white}\text{Memória[0x1000] = 0x5A}}$ 
+</pre>
+
+
+## 4. As Flags da ULA Durante a Execução
+
+### 4.1 As flags e seu significado
+
+| Flag | Nome | Quando é 1 | Uso |
+|------|------|------------|-----|
+| **Z** | Zero | Resultado = 0 | Saltos condicionais (JE, JZ) |
+| **N** | Negative | Resultado < 0 (MSB = 1) | Saltos condicionais (JL, JN) |
+| **C** | Carry | Houve carry na soma (overflow unsigned) | Operações com números sem sinal |
+| **V** | Overflow | Overflow em Complemento de 2 | Operações com números com sinal |
+
+### 4.2 Exemplo: Atualização de flags
+
+<pre>
+Operação: ADD R0, R1, R2
+R1 = 0x7FFFFFFF (2.147.483.647)
+R2 = 0x00000001 (1)
+
+Resultado: 0x80000000 (-2.147.483.648)
+
+Flags:
+Z = 0 (resultado não é zero)
+N = 1 (resultado é negativo)
+C = 0 (não houve carry)
+V = 1 (overflow! positivo + positivo = negativo)
+</pre>
+
+
+## 5. Execução em Pipeline
+
+### 5.1 Execução paralela
+
+Em processadores com pipeline, a execução ocorre em paralelo:
+
+<pre>
+Ciclo 1: Fetch I1 | Decode -  | Execute - | Write -
+Ciclo 2: Fetch I2 | Decode I1 | Execute - | Write -
+Ciclo 3: Fetch I3 | Decode I2 | Execute I1| Write -
+Ciclo 4: Fetch I4 | Decode I3 | Execute I2| Write I1
+</pre>
+
+### 5.2 Hazards de execução
+
+| Tipo de Hazard | Descrição | Solução |
+|----------------|-----------|---------|
+| **Dados** | Instrução depende do resultado da anterior | Forwarding, Stalls |
+| **Controle** | Salto condicional | Branch Prediction |
+| **Estrutural** | Dois estágios competem pelo mesmo recurso | Pipeline design |
+
+
+## 6. Exercícios
+
+<details>
+<summary>📗 Exercício 1 — Definição (fácil)</summary>
+
+**Enunciado:** O que é a etapa de Execução (Execute) no ciclo de instrução?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** A Execução é a terceira etapa do ciclo de instrução, onde a ULA realiza a operação especificada pelo opcode, ou a CPU calcula um endereço de salto, utilizando os operandos fornecidos.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Operações (fácil)</summary>
+
+**Enunciado:** Que tipo de operações são realizadas durante a Execução?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Operações aritméticas (soma, subtração), lógicas (AND, OR, XOR), comparações, saltos (JMP, CALL), e operações de memória (LOAD, STORE).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Execução de ADD (médio)</summary>
+
+**Enunciado:** Descreva o que acontece durante a execução de `ADD R0, R1, R2` se R1 = 10 e R2 = 7.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+1. UC: "Leia R1 e R2" → R1 = 10, R2 = 7
+2. ULA: R1 + R2 = 10 + 7 = 17
+3. ULA: Atualiza flags (Z=0, N=0, C=0, V=0)
+4. Resultado = 17 (aguardando Write-back em R0)
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Execução de CMP (médio)</summary>
+
+**Enunciado:** O que acontece durante a execução de `CMP R1, R2` se R1 = 5 e R2 = 5?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+1. UC: "Leia R1 e R2" → R1 = 5, R2 = 5
+2. ULA: R1 - R2 = 5 - 5 = 0
+3. ULA: Atualiza flags (Z=1, N=0, C=0, V=0)
+4. Nenhum resultado é escrito (apenas flags)
+
+**Flag importante:** Z = 1 (indicando que R1 = R2)
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Flags na Execução (médio)</summary>
+
+**Enunciado:** Quais flags seriam atualizadas após a execução de `ADD R0, R1, R2` se R1 = 0xFFFFFFFF e R2 = 0x00000001?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Passo 1:** R1 = 0xFFFFFFFF (-1), R2 = 0x00000001 (1)
+**Passo 2:** Soma: 0xFFFFFFFF + 0x00000001 = 0x00000000 (com carry)
+**Passo 3:** Flags:
+- Z = 1 (resultado é zero)
+- N = 0 (resultado não é negativo)
+- C = 1 (houve carry)
+- V = 0 (não houve overflow em Complemento de 2)
+
+**Resposta:** Z=1, N=0, C=1, V=0
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Salto condicional (conceitual)</summary>
+
+**Enunciado:** Como funciona um salto condicional (JE) durante a Execução?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Durante a Execução de um JE (Jump if Equal):
+1. A UC verifica a flag Z (Zero).
+2. Se Z = 1 (última operação resultou em zero), o PC recebe o endereço de destino.
+3. Se Z = 0, o PC é incrementado normalmente (próxima instrução).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — LOAD vs ADD (conceitual)</summary>
+
+**Enunciado:** Qual a diferença na Execução entre uma instrução LOAD e uma instrução ADD?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+- **ADD:** A ULA realiza uma operação aritmética sobre operandos de registradores, gerando um resultado que será escrito em um registrador.
+- **LOAD:** A ULA não é usada para a operação principal. O MAR é carregado com um endereço, a memória é lida, e o dado é armazenado no MBR para ser escrito no registrador de destino.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — Pipeline e Execução (desafio)</summary>
+
+**Enunciado:** Explique como a Execução funciona em um processador com pipeline e quais problemas podem ocorrer.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Em um pipeline, a Execução ocorre em paralelo com as outras etapas (Fetch, Decode, Write-back). Isso permite que a CPU execute várias instruções simultaneamente.
+
+**Problemas (Hazards):**
+1. **Dependência de dados:** A instrução atual depende do resultado da anterior → o pipeline precisa esperar (stall) ou usar forwarding.
+2. **Dependência de controle:** Um salto condicional interrompe o fluxo → o pipeline precisa descartar instruções já buscadas (branch misprediction).
+3. **Dependência estrutural:** Dois estágios competem pelo mesmo recurso (ex: memória) → o pipeline precisa escalonar o acesso.
+
+</details>
+</details>
+
+
+> **"A Execução (Execute) é a terceira etapa do ciclo de instrução — o momento em que a operação efetiva é realizada. A ULA executa operações aritméticas e lógicas sobre os operandos, gerando resultados e atualizando flags (Zero, Negativo, Carry, Overflow). Instruções de salto alteram o PC para controlar o fluxo do programa. Instruções de memória (LOAD/STORE) transferem dados entre a CPU e a memória. Durante a execução, os sinais de controle gerados na decodificação são ativados, coordenando todos os componentes da CPU. Sem a execução, as instruções seriam apenas palavras sem efeito — é aqui que o processamento realmente acontece."**

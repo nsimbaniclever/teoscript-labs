@@ -1,0 +1,334 @@
+# Cache L1, L2, L3
+
+## 1. Introdução
+
+Na aula anterior, conhecemos o topo da hierarquia de memória: os **Registradores** — o armazenamento mais rápido do computador, localizado dentro da CPU, com acesso em apenas 1 ciclo de clock. Vimos que, embora sejam extremamente velozes, sua capacidade é minúscula. Logo abaixo dos registradores, na hierarquia, está a **Memória Cache** — um tipo especial de memória que serve como ponte entre a velocidade da CPU e a lentidão da RAM. A cache é um dos segredos do desempenho dos computadores modernos.<br><br>
+
+Pense na cache como a **gaveta de ferramentas ao lado da mesa do artesão**:
+
+- A mesa (registradores) tem as ferramentas que ele usa **agora**.
+- A gaveta (cache) tem as ferramentas que ele usa **frequentemente**.
+- O armário (RAM) tem todas as ferramentas, mas ele precisa se levantar para pegá-las.
+
+A cache é organizada em três níveis, cada um com diferentes tamanhos e velocidades:
+
+- **L1 (Nível 1):** A mais rápida e menor, dentro do núcleo da CPU.
+- **L2 (Nível 2):** Um pouco mais lenta e maior, ainda dentro da CPU.
+- **L3 (Nível 3):** Mais lenta e maior, compartilhada entre núcleos.
+
+Nesta aula, vamos explorar a Memória Cache — como ela funciona, como os três níveis se organizam, e como ela reduz drasticamente o tempo de acesso aos dados.
+
+
+## 2. O Que é a Memória Cache?
+
+### 2.1 Definição
+
+A **Memória Cache** é um tipo de memória de alta velocidade localizada entre a CPU e a RAM principal, que armazena cópias de dados e instruções frequentemente acessados para reduzir o tempo de acesso.
+
+### 2.2 Características
+
+| Característica | Descrição |
+|----------------|-----------|
+| **Localização** | Dentro da CPU (L1, L2, L3) |
+| **Velocidade** | Muito rápida (2-40 ciclos) |
+| **Capacidade** | KB a MB (L1: ~32KB, L2: ~256KB, L3: ~8MB) |
+| **Custo** | Caro (mas mais barato que registradores) |
+| **Tecnologia** | SRAM (Static RAM) |
+| **Volatilidade** | Volátil (perde dados sem energia) |
+| **Função** | Reduzir a latência entre CPU e RAM |
+
+### 2.3 Analogia
+
+Pense na cache como um **sistema de armazenamento em camadas**:
+
+<details>
+<summary>🔧 Ver Analogia da Cache</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 450px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">CACHE — A GAVETA DO ARTESÃO</div>
+
+  <pre style="color: #93c5fd; font-size: 0.6rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    ┌─────────────────────────────────────────────────────┐
+    │                                                     │
+    │   ESCRITÓRIO (CPU)                                 │
+    │                                                     │
+    │   ┌─────────────────────────────────────────────┐   │
+    │   │  MESA (REGISTRADORES)                      │   │
+    │   │  Ferramentas que estão sendo usadas AGORA │   │
+    │   └─────────────────────────────────────────────┘   │
+    │                         │                           │
+    │                         ▼                           │
+    │   ┌─────────────────────────────────────────────┐   │
+    │   │  GAVETA (CACHE L1)                         │   │
+    │   │  Ferramentas usadas neste MINUTO           │   │
+    │   └─────────────────────────────────────────────┘   │
+    │                         │                           │
+    │                         ▼                           │
+    │   ┌─────────────────────────────────────────────┐   │
+    │   │  ARMÁRIO (CACHE L2)                        │   │
+    │   │  Ferramentas usadas nesta HORA             │   │
+    │   └─────────────────────────────────────────────┘   │
+    │                         │                           │
+    │                         ▼                           │
+    │   ┌─────────────────────────────────────────────┐   │
+    │   │  ARQUIVO (CACHE L3)                        │   │
+    │   │  Ferramentas usadas neste DIA              │   │
+    │   └─────────────────────────────────────────────┘   │
+    │                         │                           │
+    │                         ▼                           │
+    │   ┌─────────────────────────────────────────────┐   │
+    │   │  ESTANTE (RAM)                             │   │
+    │   │  Todas as ferramentas do escritório        │   │
+    │   └─────────────────────────────────────────────┘   │
+    │                                                     │
+    └─────────────────────────────────────────────────────┘
+  </pre>
+
+</div>
+</details>
+
+
+## 3. Os Três Níveis de Cache
+
+### 3.1 Cache L1 — A Mais Rápida e Menor
+
+**Características:**
+
+| Característica | Valor Típico |
+|----------------|--------------|
+| **Capacidade** | ~32 KB (dados) + ~32 KB (instruções) |
+| **Tempo de acesso** | ~2-4 ciclos de clock |
+| **Localização** | Dentro de cada núcleo da CPU |
+| **Divisão** | Separada em L1-D (dados) e L1-I (instruções) |
+
+**Analogia:** A gaveta ao lado da mesa — tudo que você precisa está a um braço de distância.
+
+### 3.2 Cache L2 — O Equilíbrio
+
+**Características:**
+
+| Característica | Valor Típico |
+|----------------|--------------|
+| **Capacidade** | ~256 KB (por núcleo) |
+| **Tempo de acesso** | ~10 ciclos de clock |
+| **Localização** | Dentro do núcleo ou próximo a ele |
+
+**Analogia:** O armário na parede — um pouco mais longe, mas ainda próximo.
+
+### 3.3 Cache L3 — Compartilhada e Maior
+
+**Características:**
+
+| Característica | Valor Típico |
+|----------------|--------------|
+| **Capacidade** | ~8 MB (compartilhada entre todos os núcleos) |
+| **Tempo de acesso** | ~30-40 ciclos de clock |
+| **Localização** | Compartilhada entre todos os núcleos da CPU |
+
+**Analogia:** O arquivo no corredor — mais longe, mas ainda mais rápido que ir ao depósito.
+
+
+## 4. Como a Cache Funciona
+
+### 4.1 O princípio da localidade
+
+A cache funciona baseada em dois princípios:
+
+| Princípio | Descrição | Exemplo |
+|-----------|-----------|---------|
+| **Localidade Temporal** | Se um dado foi acessado, provavelmente será acessado novamente em breve | Variáveis em loops |
+| **Localidade Espacial** | Se um dado foi acessado, dados próximos a ele provavelmente serão acessados em breve | Arrays, instruções em sequência |
+
+### 4.2 O fluxo de acesso
+
+<details>
+<summary>🔧 Ver Fluxo de Acesso à Cache</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 450px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">FLUXO DE ACESSO À CACHE</div>
+
+  <pre style="color: #93c5fd; font-size: 0.6rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    ┌─────────────────────────────────────────────────────────────┐
+    │                                                             │
+    │  1. CPU tenta acessar um endereço de memória.              │
+    │                                                             │
+    │  2. Verifica se o dado está na CACHE L1.                   │
+    │     ┌─────────────────────────────────────────────────┐    │
+    │     │  Se SIM → HIT: retorna o dado em 2-4 ciclos    │    │
+    │     │  Se NÃO → MISS: verifica L2                     │    │
+    │     └─────────────────────────────────────────────────┘    │
+    │                                                             │
+    │  3. Verifica se o dado está na CACHE L2.                   │
+    │     ┌─────────────────────────────────────────────────┐    │
+    │     │  Se SIM → HIT: retorna o dado em ~10 ciclos    │    │
+    │     │  Se NÃO → MISS: verifica L3                     │    │
+    │     └─────────────────────────────────────────────────┘    │
+    │                                                             │
+    │  4. Verifica se o dado está na CACHE L3.                   │
+    │     ┌─────────────────────────────────────────────────┐    │
+    │     │  Se SIM → HIT: retorna o dado em ~30-40 ciclos │    │
+    │     │  Se NÃO → MISS: busca na RAM                    │    │
+    │     └─────────────────────────────────────────────────┘    │
+    │                                                             │
+    │  5. Busca na RAM (~50-100 ns).                             │
+    │                                                             │
+    │  6. O dado é carregado na cache (L1, L2, L3).              │
+    │                                                             │
+    └─────────────────────────────────────────────────────────────┘
+  </pre>
+
+</div>
+</details>
+
+### 4.3 Hit Rate e Miss Rate
+
+| Termo | Definição | Exemplo |
+|-------|-----------|---------|
+| **Hit** | O dado foi encontrado na cache | 95% das vezes |
+| **Miss** | O dado não foi encontrado na cache | 5% das vezes |
+| **Hit Rate** | Porcentagem de acessos que são HITs | 95% |
+| **Miss Rate** | Porcentagem de acessos que são MISSes | 5% |
+
+
+## 5. Políticas de Cache
+
+### 5.1 Mapeamento
+
+| Tipo | Descrição | Vantagem | Desvantagem |
+|------|-----------|----------|-------------|
+| **Mapeamento Direto** | Cada endereço só pode estar em uma posição | Simples | Pouca flexibilidade |
+| **Totalmente Associativo** | Qualquer endereço pode estar em qualquer posição | Flexível | Complexo |
+| **Conjunto Associativo** | Meio-termo (ex: 4-way associativo) | Balanceado | Moderadamente complexo |
+
+### 5.2 Substituição
+
+Quando a cache está cheia e um novo dado precisa ser carregado, a cache decide qual dado remover:
+
+| Política | Descrição |
+|----------|-----------|
+| **LRU** (Least Recently Used) | Remove o dado usado há mais tempo |
+| **FIFO** (First In, First Out) | Remove o dado mais antigo |
+| **Random** | Remove um dado aleatoriamente |
+
+
+## 6. Exercícios
+
+<details>
+<summary>📗 Exercício 1 — Definição (fácil)</summary>
+
+**Enunciado:** O que é a memória cache?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** A memória cache é um tipo de memória de alta velocidade localizada entre a CPU e a RAM principal, que armazena cópias de dados e instruções frequentemente acessados para reduzir o tempo de acesso.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Níveis de cache (fácil)</summary>
+
+**Enunciado:** Quais são os três níveis de cache?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** L1 (Nível 1), L2 (Nível 2) e L3 (Nível 3).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Capacidade L1 (fácil)</summary>
+
+**Enunciado:** Qual é a capacidade típica da cache L1?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** ~32 KB para dados + ~32 KB para instruções = ~64 KB total.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Tempo de acesso (médio)</summary>
+
+**Enunciado:** Qual é o tempo de acesso típico da cache L1?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** ~2-4 ciclos de clock.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Cache L3 (médio)</summary>
+
+**Enunciado:** Qual a diferença entre a cache L2 e a cache L3?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** A cache L2 é dedicada a um único núcleo da CPU (mais rápida, menor), enquanto a cache L3 é compartilhada entre todos os núcleos (mais lenta, maior).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Hit Rate (conceitual)</summary>
+
+**Enunciado:** O que é Hit Rate e por que ele é importante?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Hit Rate é a porcentagem de acessos à memória que encontram os dados na cache (ex: 95%). Quanto maior o Hit Rate, menos a CPU precisa acessar a RAM lenta, e melhor o desempenho do sistema.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — Localidade (conceitual)</summary>
+
+**Enunciado:** Explique os princípios de localidade temporal e espacial.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** 
+- **Localidade Temporal:** Se um dado foi acessado, provavelmente será acessado novamente em breve (ex: variáveis em loops).
+- **Localidade Espacial:** Se um dado foi acessado, dados próximos a ele provavelmente serão acessados em breve (ex: arrays, instruções em sequência).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — Hierarquia de cache (desafio)</summary>
+
+**Enunciado:** Organize L1, L2, L3 e RAM por velocidade e capacidade.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+| Nível | Velocidade | Capacidade |
+|-------|------------|------------|
+| **L1** | Mais rápida (2-4 ciclos) | Menor (~64 KB) |
+| **L2** | Rápida (~10 ciclos) | Média (~256 KB) |
+| **L3** | Moderada (~30-40 ciclos) | Maior (~8 MB) |
+| **RAM** | Lenta (~50-100 ns) | Muito maior (~16 GB) |
+
+**Padrão:** Quanto mais rápido, menor e mais caro. Quanto mais lento, maior e mais barato.
+
+</details>
+</details>
+
+
+## 7. Resumo
+
+> **"A memória cache é a camada intermediária entre a CPU e a RAM — ela armazena cópias de dados frequentemente acessados para reduzir o tempo de espera. A cache é organizada em três níveis: L1 (2-4 ciclos, ~32 KB), L2 (~10 ciclos, ~256 KB) e L3 (~30-40 ciclos, ~8 MB). Cada nível é maior e mais lento que o anterior, mas ainda muito mais rápido que a RAM. A cache funciona baseada nos princípios de localidade temporal (dados acessados serão acessados novamente) e localidade espacial (dados próximos serão acessados). Sem a cache, a CPU passaria a maior parte do tempo esperando pela RAM, e o desempenho do sistema seria drasticamente reduzido."**

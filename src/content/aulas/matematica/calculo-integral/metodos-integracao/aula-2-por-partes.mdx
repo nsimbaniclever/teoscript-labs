@@ -1,0 +1,406 @@
+# INTEGRAÇÃO POR PARTES
+
+## 1. Definição Formal
+
+### 1.1 O que é a Integração por Partes?
+
+A **integração por partes** é a "regra do produto" da integração. Ela permite integrar o produto de duas funções quando a integral direta não é possível.
+
+**Fórmula:**
+$$
+\int u \, dv = uv - \int v \, du
+$$
+
+**Onde:**
+- $u$ e $v$ são funções de $x$
+- $du = u'(x) \, dx$
+- $dv = v'(x) \, dx$
+
+### 1.2 De onde vem a fórmula?
+
+A integração por partes é derivada da **regra do produto** da derivação:
+$$
+(uv)' = u'v + uv'
+$$
+
+Integrando ambos os lados:
+$$
+uv = \int u'v \, dx + \int uv' \, dx
+$$
+
+Rearranjando:
+$$
+\int u \, dv = uv - \int v \, du
+$$
+
+## 2. Como Escolher $u$ e $dv$
+
+### 2.1 Regra Prática (LIATE)
+
+A escolha de $u$ e $dv$ é crucial. A regra **LIATE** ajuda a decidir:
+
+| Prioridade | Tipo de Função | Exemplo |
+|------------|----------------|---------|
+| **L** | Logarítmica | $\ln(x)$ |
+| **I** | Inversa trigonométrica | $\arcsin(x), \arctan(x)$ |
+| **A** | Algébrica (polinomial) | $x^n$ |
+| **T** | Trigonométrica | $\sin(x), \cos(x)$ |
+| **E** | Exponencial | $e^x$ |
+
+**Regra:** Escolha $u$ como a função que aparece **primeiro** na lista LIATE.
+
+### 2.2 Exemplos de Escolha
+
+| Integral | $u$ | $dv$ | Por quê? |
+|----------|---------|----------|----------|
+| $\int x e^x \, dx$ | $x$ | $e^x dx$ | $x$ é algébrica (A); $e^x$ é exponencial (E) |
+| $\int \ln(x) \, dx$ | $\ln(x)$ | $dx$ | Log (L) vem antes de algébrica (A) |
+| $\int x^2 \cos(x) \, dx$ | $x^2$ | $\cos(x) dx$ | Algébrica (A) vem antes de trigonométrica (T) |
+| $\int e^x \sin(x) \, dx$ | $e^x$ ou $\sin(x)$ | Qualquer um | Empatados, qualquer escolha funciona |
+
+## 3. Exemplos Acadêmicos Passo a Passo
+
+### 3.1 Exemplo 1: Produto de Polinômio e Exponencial
+
+$$
+\int x e^x \, dx
+$$
+
+**Passo 1:** Escolher $u$ e $dv$:
+- $u = x$ (A) → $du = dx$
+- $dv = e^x dx$ (E) → $v = e^x$
+
+**Passo 2:** Aplicar a fórmula:
+$$
+\int x e^x \, dx = x e^x - \int e^x \, dx
+$$
+
+**Passo 3:** Integrar:
+$$
+x e^x - e^x + C = e^x(x - 1) + C
+$$
+
+**Resultado:** $\int x e^x \, dx = e^x(x - 1) + C$
+
+### 3.2 Exemplo 2: Produto de Polinômio e Seno
+
+$$
+\int x \sin(x) \, dx
+$$
+
+**Passo 1:** Escolher $u$ e $dv$:
+- $u = x$ (A) → $du = dx$
+- $dv = \sin(x) dx$ (T) → $v = -\cos(x)$
+
+**Passo 2:** Aplicar a fórmula:
+$$
+\int x \sin(x) \, dx = -x \cos(x) - \int (-\cos(x)) \, dx
+$$
+$$
+= -x \cos(x) + \int \cos(x) \, dx
+$$
+
+**Passo 3:** Integrar:
+$$
+-x \cos(x) + \sin(x) + C
+$$
+
+**Resultado:** $\int x \sin(x) \, dx = -x \cos(x) + \sin(x) + C$
+
+### 3.3 Exemplo 3: Logaritmo
+
+$$
+\int \ln(x) \, dx
+$$
+
+**Passo 1:** Escrever $\ln(x)$ como $1 \cdot \ln(x)$:
+- $u = \ln(x)$ (L) → $du = \frac{1}{x} dx$
+- $dv = dx$ → $v = x$
+
+**Passo 2:** Aplicar a fórmula:
+$$
+\int \ln(x) \, dx = x \ln(x) - \int x \cdot \frac{1}{x} \, dx
+$$
+$$
+= x \ln(x) - \int 1 \, dx
+$$
+
+**Passo 3:** Integrar:
+$$
+x \ln(x) - x + C
+$$
+
+**Resultado:** $\int \ln(x) \, dx = x \ln(x) - x + C$
+
+### 3.4 Exemplo 4: Produto de Exponencial e Seno (Aplicação Dupla)
+
+$$
+\int e^x \sin(x) \, dx
+$$
+
+**Passo 1:** Escolher:
+- $u = e^x$ → $du = e^x dx$
+- $dv = \sin(x) dx$ → $v = -\cos(x)$
+
+**Passo 2:** Aplicar:
+$$
+\int e^x \sin(x) \, dx = -e^x \cos(x) + \int e^x \cos(x) \, dx
+$$
+
+**Passo 3:** Aplicar integração por partes novamente em $\int e^x \cos(x) \, dx$:
+- $u = e^x$ → $du = e^x dx$
+- $dv = \cos(x) dx$ → $v = \sin(x)$
+
+$$
+\int e^x \cos(x) \, dx = e^x \sin(x) - \int e^x \sin(x) \, dx
+$$
+
+**Passo 4:** Substituir:
+$$
+\int e^x \sin(x) \, dx = -e^x \cos(x) + e^x \sin(x) - \int e^x \sin(x) \, dx
+$$
+
+**Passo 5:** Isolar a integral:
+$$
+2 \int e^x \sin(x) \, dx = e^x(\sin(x) - \cos(x))
+$$
+
+**Resultado:** $\int e^x \sin(x) \, dx = \frac{e^x(\sin(x) - \cos(x))}{2} + C$
+
+### 3.5 Exemplo 5: Produto de Polinômio e Logaritmo
+
+$$
+\int x^2 \ln(x) \, dx
+$$
+
+**Passo 1:** Escolher $u$ e $dv$:
+- $u = \ln(x)$ (L) → $du = \frac{1}{x} dx$
+- $dv = x^2 dx$ (A) → $v = \frac{x^3}{3}$
+
+**Passo 2:** Aplicar:
+$$
+\int x^2 \ln(x) \, dx = \frac{x^3}{3} \ln(x) - \int \frac{x^3}{3} \cdot \frac{1}{x} \, dx
+$$
+$$
+= \frac{x^3}{3} \ln(x) - \frac{1}{3} \int x^2 \, dx
+$$
+
+**Passo 3:** Integrar:
+$$
+\frac{x^3}{3} \ln(x) - \frac{x^3}{9} + C
+$$
+
+**Resultado:** $\int x^2 \ln(x) \, dx = \frac{x^3}{3} \ln(x) - \frac{x^3}{9} + C$
+
+## 4. Exemplos Lúdicos Aprimorados
+
+### 🍔 EXEMPLO 1 – A LANCHONETE (CUSTO MARGINAL EXPONENCIAL)
+
+A lanchonete tem um custo marginal:
+$$
+C'(x) = x e^{-0.1x}
+$$
+
+**Custo total $C(x)$:**
+
+**Passo 1:** Escolher $u$ e $dv$:
+- $u = x$ → $du = dx$
+- $dv = e^{-0.1x} dx$ → $v = -10e^{-0.1x}$
+
+**Passo 2:** Aplicar a fórmula:
+$$
+C(x) = \int x e^{-0.1x} dx = -10x e^{-0.1x} - \int (-10e^{-0.1x}) dx
+$$
+$$
+= -10x e^{-0.1x} + 10 \int e^{-0.1x} dx
+$$
+
+**Passo 3:** Integrar:
+$$
+-10x e^{-0.1x} - 100e^{-0.1x} + K = -10e^{-0.1x}(x + 10) + K
+$$
+
+**Interpretação:** O custo total é uma combinação de termos exponenciais.
+
+### 🧃 EXEMPLO 2 – A CANTINA (EFICIÊNCIA ACUMULADA)
+
+A cantina tem eficiência marginal:
+$$
+E'(t) = t \cos(t)
+$$
+
+**Eficiência total $E(t)$:**
+
+**Passo 1:** Escolher $u$ e $dv$:
+- $u = t$ → $du = dt$
+- $dv = \cos(t) dt$ → $v = \sin(t)$
+
+**Passo 2:** Aplicar:
+$$
+E(t) = \int t \cos(t) dt = t \sin(t) - \int \sin(t) dt = t \sin(t) + \cos(t) + C
+$$
+
+### 📚 EXEMPLO 3 – A BIBLIOTECA (LEITURA ACUMULADA)
+
+A biblioteca tem uma taxa de leitura:
+$$
+R'(t) = \ln(t)
+$$
+
+**Leitura total acumulada $R(t)$:**
+
+**Passo 1:** Escrever $\ln(t)$ como $1 \cdot \ln(t)$:
+- $u = \ln(t)$ → $du = \frac{1}{t} dt$
+- $dv = dt$ → $v = t$
+
+**Passo 2:** Aplicar:
+$$
+R(t) = \int \ln(t) dt = t \ln(t) - \int dt = t \ln(t) - t + C
+$$
+
+## 5. Aplicação na Tese: Integração por Partes em FL
+
+### 5.1 Análise de Erro Acumulado
+
+Em FL, o erro acumulado pode ser expresso como:
+$$
+E(T) = \int_0^T t e^{-t} \, dt
+$$
+
+**Usando integração por partes:**
+$$
+E(T) = \left[ -t e^{-t} \right]_0^T + \int_0^T e^{-t} \, dt = -T e^{-T} + (1 - e^{-T})
+$$
+
+**Interpretação:** O erro total é $1 - e^{-T}(T + 1)$.
+
+### 5.2 Funções de Perda e Integração
+
+Em alguns modelos probabilísticos, a função de perda envolve integrais de produtos de funções (ex: $x e^{-x}$). A integração por partes simplifica essas expressões.
+
+## 6. Exercícios Propostos (Manuais)
+
+<details>
+<summary>📗 Exercício 1 (Produto de Polinômio e Exponencial)</summary>
+
+**Enunciado:** Calcule as integrais:
+
+a) $\int x e^{2x} \, dx$
+
+b) $\int x^2 e^x \, dx$ (dica: use integração por partes duas vezes)
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\int x e^{2x} dx = \frac{x e^{2x}}{2} - \frac{e^{2x}}{4} + C$
+
+b) $\int x^2 e^x dx = e^x(x^2 - 2x + 2) + C$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 (Produto de Polinômio e Trigonométrica)</summary>
+
+**Enunciado:** Calcule as integrais:
+
+a) $\int x \cos(x) \, dx$
+
+b) $\int x^2 \sin(x) \, dx$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\int x \cos(x) dx = x \sin(x) + \cos(x) + C$
+
+b) $\int x^2 \sin(x) dx = -x^2 \cos(x) + 2x \sin(x) + 2\cos(x) + C$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 (Logaritmos)</summary>
+
+**Enunciado:** Calcule as integrais:
+
+a) $\int x \ln(x) \, dx$
+
+b) $\int \ln(x)^2 \, dx$ (dica: use integração por partes duas vezes)
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\int x \ln(x) dx = \frac{x^2}{2} \ln(x) - \frac{x^2}{4} + C$
+
+b) $\int \ln(x)^2 dx = x \ln(x)^2 - 2x \ln(x) + 2x + C$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 (Aplicação – FL)</summary>
+
+**Enunciado:** O erro acumulado em FL é:
+$$
+E(T) = \int_0^T t e^{-t} \, dt
+$$
+
+a) Calcule $E(T)$ usando integração por partes.
+
+b) Qual é $\lim_{T \to \infty} E(T)$?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $E(T) = 1 - e^{-T}(T + 1)$
+
+b) $\lim_{T \to \infty} E(T) = 1$
+
+</details>
+</details>
+
+## 7. 💻EXERCÍCIO COMPUTACIONAL
+
+<details>
+<summary>🐍 Ver código (Python/SymPy)</summary>
+
+```python
+import sympy as sp
+
+x = sp.Symbol('x')
+
+# Produto de polinômio e exponencial
+f1 = x * sp.exp(2*x)
+print(f"∫x e^(2x) dx = {sp.integrate(f1, x)}")
+
+f2 = x**2 * sp.exp(x)
+print(f"∫x² e^x dx = {sp.integrate(f2, x)}")
+
+# Produto de polinômio e trigonométrica
+f3 = x * sp.cos(x)
+print(f"∫x cos(x) dx = {sp.integrate(f3, x)}")
+
+# Logaritmos
+f4 = x * sp.log(x)
+print(f"∫x ln(x) dx = {sp.integrate(f4, x)}")
+
+# Produto de exponencial e seno
+f5 = sp.exp(x) * sp.sin(x)
+print(f"∫e^x sin(x) dx = {sp.integrate(f5, x)}")
+
+# Verificação: derivada da primitiva
+F = sp.integrate(f1, x)
+print(f"Derivada da primitiva: {sp.diff(F, x)}")
+```
+
+</details>
+
+> *A integração por partes é uma ferramenta essencial para integrar produtos de funções. A escolha correta de $u$ e $dv$ (usando a regra LIATE) simplifica significativamente o processo. Este método é amplamente utilizado em probabilidade, processamento de sinais, análise de sistemas e otimização em Machine Learning.*

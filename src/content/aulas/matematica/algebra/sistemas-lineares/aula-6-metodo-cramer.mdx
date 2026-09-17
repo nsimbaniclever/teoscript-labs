@@ -1,0 +1,575 @@
+# MÉTODO DE CRAMER
+
+## 1. Definição Formal
+
+### 1.1 O que é o Método de Cramer?
+
+O **Método de Cramer** é uma técnica para resolver sistemas lineares $A\vec{x} = \vec{b}$ onde $A$ é **quadrada** ($n \times n$) e **invertível** ($\det(A) \neq 0$).
+
+A solução para cada incógnita $x_i$ é dada por:
+
+$$
+x_i = \frac{\det(A_i)}{\det(A)}
+$$
+
+Onde $A_i$ é a matriz obtida substituindo a **coluna i** de $A$ pelo vetor $\vec{b}$.
+
+### 1.2 Fórmula Geral para $n$ Incógnitas
+
+Para o sistema:
+$$
+\begin{cases}
+a_{11}x_1 + a_{12}x_2 + \cdots + a_{1n}x_n = b_1 \\
+a_{21}x_1 + a_{22}x_2 + \cdots + a_{2n}x_n = b_2 \\
+\vdots \\
+a_{n1}x_1 + a_{n2}x_2 + \cdots + a_{nn}x_n = b_n
+\end{cases}
+$$
+
+$$
+x_1 = \frac{\det(A_1)}{\det(A)}, \quad
+x_2 = \frac{\det(A_2)}{\det(A)}, \quad \ldots, \quad
+x_n = \frac{\det(A_n)}{\det(A)}
+$$
+
+Onde:
+- $A$ é a matriz dos coeficientes
+- $A_i$ é a matriz $A$ com a coluna $i$ substituída por $\vec{b}$
+
+## 2. Exemplos Acadêmicos Passo a Passo
+
+### 2.1 Exemplo 1: Sistema $2 \times 2$
+
+**Sistema:**
+$$
+\begin{cases}
+2x + 3y = 8 \\
+x - y = 1
+\end{cases}
+$$
+
+**Matriz dos coeficientes:**
+$$
+A = \begin{bmatrix} 2 & 3 \\ 1 & -1 \end{bmatrix}
+$$
+
+**Passo 1:** Calcular $\det(A)$:
+$$
+\det(A) = 2 \cdot (-1) - 3 \cdot 1 = -2 - 3 = -5
+$$
+
+**Passo 2:** Calcular $\det(A_1)$ (substituir coluna 1 por $\vec{b}$):
+$$
+A_1 = \begin{bmatrix} 8 & 3 \\ 1 & -1 \end{bmatrix}
+$$
+$$
+\det(A_1) = 8 \cdot (-1) - 3 \cdot 1 = -8 - 3 = -11
+$$
+
+**Passo 3:** Calcular $\det(A_2)$ (substituir coluna 2 por $\vec{b}$):
+$$
+A_2 = \begin{bmatrix} 2 & 8 \\ 1 & 1 \end{bmatrix}
+$$
+$$
+\det(A_2) = 2 \cdot 1 - 8 \cdot 1 = 2 - 8 = -6
+$$
+
+**Passo 4:** Calcular as incógnitas:
+$$
+x = \frac{\det(A_1)}{\det(A)} = \frac{-11}{-5} = \frac{11}{5} = 2.2
+$$
+$$
+y = \frac{\det(A_2)}{\det(A)} = \frac{-6}{-5} = \frac{6}{5} = 1.2
+$$
+
+**Solução:** $x = 2.2, y = 1.2$
+
+### 2.2 Exemplo 2: Sistema $3 \times 3$
+
+**Sistema:**
+$$
+\begin{cases}
+x + 2y + 3z = 10 \\
+2x + 3y + z = 13 \\
+3x + y + 2z = 11
+\end{cases}
+$$
+
+**Matriz dos coeficientes:**
+$$
+A = \begin{bmatrix}
+1 & 2 & 3 \\
+2 & 3 & 1 \\
+3 & 1 & 2
+\end{bmatrix}
+$$
+
+**Passo 1:** Calcular $\det(A)$:
+
+Já calculamos na Aula 5 de Matrizes: $\det(A) = 18$.
+
+(Verificação: $1(3\cdot2 - 1\cdot1) - 2(2\cdot2 - 1\cdot3) + 3(2\cdot1 - 3\cdot3) = 1(6-1) - 2(4-3) + 3(2-9) = 5 - 2 - 21 = -18$? Vamos recalcular com cuidado.)
+
+**Recálculo:**
+$$
+\det(A) = 1 \cdot (3 \cdot 2 - 1 \cdot 1) - 2 \cdot (2 \cdot 2 - 1 \cdot 3) + 3 \cdot (2 \cdot 1 - 3 \cdot 3)
+$$
+$$
+= 1 \cdot (6 - 1) - 2 \cdot (4 - 3) + 3 \cdot (2 - 9)
+$$
+$$
+= 1 \cdot 5 - 2 \cdot 1 + 3 \cdot (-7) = 5 - 2 - 21 = -18
+$$
+
+(Verificação com o exemplo anterior: a solução era $x = 20/9, y = 23/9, z = 8/9$. Se $\det(A) = -18$, os determinantes $A_i$ devem refletir isso.)
+
+**Passo 2:** Calcular $\det(A_1)$ (substituir coluna 1 por $\vec{b} = (10, 13, 11)$):
+$$
+A_1 = \begin{bmatrix}
+10 & 2 & 3 \\
+13 & 3 & 1 \\
+11 & 1 & 2
+\end{bmatrix}
+$$
+
+$$
+\det(A_1) = 10 \cdot (3 \cdot 2 - 1 \cdot 1) - 2 \cdot (13 \cdot 2 - 1 \cdot 11) + 3 \cdot (13 \cdot 1 - 3 \cdot 11)
+$$
+$$
+= 10 \cdot (6 - 1) - 2 \cdot (26 - 11) + 3 \cdot (13 - 33)
+$$
+$$
+= 10 \cdot 5 - 2 \cdot 15 + 3 \cdot (-20) = 50 - 30 - 60 = -40
+$$
+
+**Passo 3:** Calcular $\det(A_2)$ (substituir coluna 2 por $\vec{b}$):
+$$
+A_2 = \begin{bmatrix}
+1 & 10 & 3 \\
+2 & 13 & 1 \\
+3 & 11 & 2
+\end{bmatrix}
+$$
+
+$$
+\det(A_2) = 1 \cdot (13 \cdot 2 - 1 \cdot 11) - 10 \cdot (2 \cdot 2 - 1 \cdot 3) + 3 \cdot (2 \cdot 11 - 13 \cdot 3)
+$$
+$$
+= 1 \cdot (26 - 11) - 10 \cdot (4 - 3) + 3 \cdot (22 - 39)
+$$
+$$
+= 1 \cdot 15 - 10 \cdot 1 + 3 \cdot (-17) = 15 - 10 - 51 = -46
+$$
+
+**Passo 4:** Calcular $\det(A_3)$ (substituir coluna 3 por $\vec{b}$):
+$$
+A_3 = \begin{bmatrix}
+1 & 2 & 10 \\
+2 & 3 & 13 \\
+3 & 1 & 11
+\end{bmatrix}
+$$
+
+$$
+\det(A_3) = 1 \cdot (3 \cdot 11 - 13 \cdot 1) - 2 \cdot (2 \cdot 11 - 13 \cdot 3) + 10 \cdot (2 \cdot 1 - 3 \cdot 3)
+$$
+$$
+= 1 \cdot (33 - 13) - 2 \cdot (22 - 39) + 10 \cdot (2 - 9)
+$$
+$$
+= 1 \cdot 20 - 2 \cdot (-17) + 10 \cdot (-7) = 20 + 34 - 70 = -16
+$$
+
+**Passo 5:** Calcular as incógnitas:
+$$
+x = \frac{\det(A_1)}{\det(A)} = \frac{-40}{-18} = \frac{20}{9}
+$$
+$$
+y = \frac{\det(A_2)}{\det(A)} = \frac{-46}{-18} = \frac{23}{9}
+$$
+$$
+z = \frac{\det(A_3)}{\det(A)} = \frac{-16}{-18} = \frac{8}{9}
+$$
+
+**Solução:** $x = \frac{20}{9}, y = \frac{23}{9}, z = \frac{8}{9}$ ✓
+
+## 3. Exemplos Lúdicos Aprimorados
+
+### 🍔 EXEMPLO 1 – A LANCHONETE (PREÇOS POR CRAMER)
+
+A lanchonete quer descobrir o preço de cada ingrediente.
+
+**Sanduíches e preços:**
+- Hambúrguer: (1, 1, 0) → R$ 7,00
+- Queijo: (0, 0, 1) → R$ 3,00
+- Combo: (1, 1, 1) → R$ 20,00
+
+**Sistema:**
+$$
+\begin{cases}
+p + c = 7 \\
+q = 3 \\
+p + c + q = 20
+\end{cases}
+$$
+
+**Matriz:**
+$$
+A = \begin{bmatrix}
+1 & 1 & 0 \\
+0 & 0 & 1 \\
+1 & 1 & 1
+\end{bmatrix}
+$$
+
+**Passo 1:** $\det(A) = 0$ (já vimos que a matriz é singular).
+
+**Conclusão:** O método de Cramer **não pode** ser usado porque $\det(A) = 0$.
+
+**Interpretação:** O sistema é indeterminado — há infinitas combinações de preços que satisfazem as equações.
+
+### 🧃 EXEMPLO 2 – A CANTINA (PREÇO POR NUTRIENTE)
+
+A cantina quer descobrir o preço de cada nutriente.
+
+**Alimentos e preços:**
+- Suco: (10, 0, 50) → R$ 5,00
+- Leite: (5, 20, 0) → R$ 8,00
+- Bolo: (30, 0, 0) → R$ 12,00
+
+**Sistema:**
+$$
+\begin{cases}
+10a + 0c + 50v = 5 \\
+5a + 20c + 0v = 8 \\
+30a + 0c + 0v = 12
+\end{cases}
+$$
+
+**Matriz:**
+$$
+A = \begin{bmatrix}
+10 & 0 & 50 \\
+5 & 20 & 0 \\
+30 & 0 & 0
+\end{bmatrix}
+$$
+
+**Passo 1:** $\det(A) = -30000 \neq 0$ → o método pode ser usado.
+
+**Passo 2:** Calcular $\det(A_1), \det(A_2), \det(A_3)$ e depois $a, c, v$.
+
+**Interpretação:** Podemos determinar o preço de cada nutriente de forma única usando Cramer.
+
+## 4. Vantagens e Desvantagens do Método de Cramer
+
+| Vantagens | Desvantagens |
+|-----------|--------------|
+| Fórmula explícita para cada incógnita | Requer cálculo de $n+1$ determinantes |
+| Fácil de entender e aplicar | Muito caro computacionalmente para $n > 3$ |
+| Útil para sistemas pequenos (2×2, 3×3) | Só funciona para matrizes invertíveis |
+| Bom para fins didáticos | Instável numericamente para matrizes mal condicionadas |
+
+## 5. Quando Usar o Método de Cramer?
+
+| Situação | Recomendação |
+|----------|--------------|
+| Sistemas 2×2 ou 3×3 | ✅ **Recomendado** (fácil e rápido) |
+| Sistemas com $n > 4$ | ❌ **Não recomendado** (muito trabalhoso) |
+| Matrizes mal condicionadas | ❌ **Não recomendado** (instável) |
+| Fins didáticos | ✅ **Recomendado** (mostra a relação com determinantes) |
+
+## 6. Quando Fazer um Exercício Computacional?
+
+**Aqui faz MUITO sentido!** Porque:
+- Calcular determinantes manualmente para 3×3 é trabalhoso.
+- Computacionalmente, é trivial.
+- Ajuda a verificar contas manuais.
+- Mostra a limitação do método para sistemas maiores.
+
+## 7. Exercícios Propostos (Manuais)
+
+<details>
+<summary>📗 Exercício 1 (Cramer 2×2)</summary>
+
+**Enunciado:** Resolva o sistema usando o método de Cramer:
+
+$$
+\begin{cases}
+3x + 2y = 7 \\
+x - y = 1
+\end{cases}
+$$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+$A = \begin{bmatrix} 3 & 2 \\ 1 & -1 \end{bmatrix}, \quad \det(A) = 3 \cdot (-1) - 2 \cdot 1 = -3 - 2 = -5$
+
+$A_1 = \begin{bmatrix} 7 & 2 \\ 1 & -1 \end{bmatrix}, \quad \det(A_1) = 7 \cdot (-1) - 2 \cdot 1 = -7 - 2 = -9$
+
+$A_2 = \begin{bmatrix} 3 & 7 \\ 1 & 1 \end{bmatrix}, \quad \det(A_2) = 3 \cdot 1 - 7 \cdot 1 = 3 - 7 = -4$
+
+$x = \frac{-9}{-5} = \frac{9}{5} = 1.8, \quad y = \frac{-4}{-5} = \frac{4}{5} = 0.8$
+
+**Solução:** $x = 1.8, y = 0.8$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 (Cramer 3×3)</summary>
+
+**Enunciado:** Resolva o sistema usando o método de Cramer:
+
+$$
+\begin{cases}
+x + y + z = 6 \\
+2x - y + z = 3 \\
+x + 2y - z = 0
+\end{cases}
+$$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+$A = \begin{bmatrix} 1 & 1 & 1 \\ 2 & -1 & 1 \\ 1 & 2 & -1 \end{bmatrix}$
+
+**Passo 1:** $\det(A)$:
+$$
+\det(A) = 1((-1)(-1) - 1\cdot2) - 1(2(-1) - 1\cdot1) + 1(2\cdot2 - (-1)(1))
+$$
+$$
+= 1(1 - 2) - 1(-2 - 1) + 1(4 + 1)
+$$
+$$
+= 1(-1) - 1(-3) + 1(5) = -1 + 3 + 5 = 7
+$$
+
+**Passo 2:** $A_1$ (substituir coluna 1 por $\vec{b} = (6,3,0)$):
+$$
+A_1 = \begin{bmatrix} 6 & 1 & 1 \\ 3 & -1 & 1 \\ 0 & 2 & -1 \end{bmatrix}
+$$
+$$
+\det(A_1) = 6((-1)(-1) - 1\cdot2) - 1(3(-1) - 1\cdot0) + 1(3\cdot2 - (-1)(0))
+$$
+$$
+= 6(1 - 2) - 1(-3 - 0) + 1(6 - 0)
+$$
+$$
+= 6(-1) - 1(-3) + 1(6) = -6 + 3 + 6 = 3
+$$
+
+**Passo 3:** $A_2$ (substituir coluna 2 por $\vec{b}$):
+$$
+A_2 = \begin{bmatrix} 1 & 6 & 1 \\ 2 & 3 & 1 \\ 1 & 0 & -1 \end{bmatrix}
+$$
+$$
+\det(A_2) = 1(3(-1) - 1\cdot0) - 6(2(-1) - 1\cdot1) + 1(2\cdot0 - 3\cdot1)
+$$
+$$
+= 1(-3 - 0) - 6(-2 - 1) + 1(0 - 3)
+$$
+$$
+= 1(-3) - 6(-3) + 1(-3) = -3 + 18 - 3 = 12
+$$
+
+**Passo 4:** $A_3$ (substituir coluna 3 por $\vec{b}$):
+$$
+A_3 = \begin{bmatrix} 1 & 1 & 6 \\ 2 & -1 & 3 \\ 1 & 2 & 0 \end{bmatrix}
+$$
+$$
+\det(A_3) = 1((-1)(0) - 3\cdot2) - 1(2\cdot0 - 3\cdot1) + 6(2\cdot2 - (-1)(1))
+$$
+$$
+= 1(0 - 6) - 1(0 - 3) + 6(4 + 1)
+$$
+$$
+= 1(-6) - 1(-3) + 6(5) = -6 + 3 + 30 = 27
+$$
+
+**Passo 5:** $x = \frac{3}{7}, y = \frac{12}{7}, z = \frac{27}{7}$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 (Matriz Singular)</summary>
+
+**Enunciado:** Verifique se o método de Cramer pode ser usado para:
+
+$$
+\begin{cases}
+x + y = 3 \\
+2x + 2y = 6
+\end{cases}
+$$
+
+Justifique.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+$\det(A) = 1 \cdot 2 - 1 \cdot 2 = 2 - 2 = 0$
+
+**Não pode usar Cramer!** O sistema tem infinitas soluções.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 (Aplicação – Lanchonete)</summary>
+
+**Enunciado:** A lanchonete tem o sistema:
+
+$$
+\begin{cases}
+p + c = 7 \\
+q = 3 \\
+p + c + q = 20
+\end{cases}
+$$
+
+a) $\det(A)$ é igual a zero?  
+b) O método de Cramer pode ser usado?  
+c) O que isso significa?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\det(A) = 0$ (matriz singular).
+
+b) **Não!** O método de Cramer não pode ser usado.
+
+c) O sistema não tem solução única.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 (Aplicação – Preços)</summary>
+
+**Enunciado:** Uma loja vende três produtos:
+- Produto A: (1, 2, 0) → R$ 10,00
+- Produto B: (0, 1, 3) → R$ 15,00
+- Produto C: (2, 0, 1) → R$ 12,00
+
+Use Cramer para encontrar o preço de cada componente.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+Sistema:
+$$
+\begin{cases}
+1a + 2b + 0c = 10 \\
+0a + 1b + 3c = 15 \\
+2a + 0b + 1c = 12
+\end{cases}
+$$
+
+Matriz:
+$$
+A = \begin{bmatrix} 1 & 2 & 0 \\ 0 & 1 & 3 \\ 2 & 0 & 1 \end{bmatrix}, \quad \vec{b} = \begin{bmatrix} 10 \\ 15 \\ 12 \end{bmatrix}
+$$
+
+$\det(A) = 1(1\cdot1 - 3\cdot0) - 2(0\cdot1 - 3\cdot2) + 0 = 1(1) - 2(-6) = 1 + 12 = 13$
+
+$A_1 = \begin{bmatrix} 10 & 2 & 0 \\ 15 & 1 & 3 \\ 12 & 0 & 1 \end{bmatrix}$
+$$
+\det(A_1) = 10(1\cdot1 - 3\cdot0) - 2(15\cdot1 - 3\cdot12) + 0 = 10(1) - 2(15 - 36) = 10 - 2(-21) = 10 + 42 = 52
+$$
+
+$A_2 = \begin{bmatrix} 1 & 10 & 0 \\ 0 & 15 & 3 \\ 2 & 12 & 1 \end{bmatrix}$
+$$
+\det(A_2) = 1(15\cdot1 - 3\cdot12) - 10(0\cdot1 - 3\cdot2) + 0 = 1(15 - 36) - 10(0 - 6) = -21 - 10(-6) = -21 + 60 = 39
+$$
+
+$A_3 = \begin{bmatrix} 1 & 2 & 10 \\ 0 & 1 & 15 \\ 2 & 0 & 12 \end{bmatrix}$
+$$
+\det(A_3) = 1(1\cdot12 - 15\cdot0) - 2(0\cdot12 - 15\cdot2) + 10(0\cdot0 - 1\cdot2) = 1(12) - 2(0 - 30) + 10(0 - 2)
+$$
+$$
+= 12 - 2(-30) + 10(-2) = 12 + 60 - 20 = 52
+$$
+
+$a = \frac{52}{13} = 4, \quad b = \frac{39}{13} = 3, \quad c = \frac{52}{13} = 4$
+
+**Preços:** Componente A = R$ 4,00, B = R$ 3,00, C = R$ 4,00
+
+</details>
+</details>
+
+## 8. EXERCÍCIO COMPUTACIONAL
+
+<details>
+<summary>🐍 Ver código (Python/NumPy)</summary>
+
+```python
+import numpy as np
+
+# Cramer manual para 2x2
+A = np.array([[2, 3], [1, -1]])
+b = np.array([8, 1])
+
+det_A = np.linalg.det(A)
+
+# Substituir coluna 1
+A1 = A.copy()
+A1[:, 0] = b
+det_A1 = np.linalg.det(A1)
+
+# Substituir coluna 2
+A2 = A.copy()
+A2[:, 1] = b
+det_A2 = np.linalg.det(A2)
+
+x = det_A1 / det_A
+y = det_A2 / det_A
+print("Solução por Cramer:", x, y)
+
+# Verificação
+print("Verificação:", A @ np.array([x, y]))
+```
+
+</details>
+
+<details>
+<summary>📝 Ver código (R)</summary>
+
+```r
+# Cramer manual para 2x2
+A <- matrix(c(2, 1, 3, -1), nrow=2)
+b <- c(8, 1)
+
+det_A <- det(A)
+
+# Substituir coluna 1
+A1 <- A
+A1[, 1] <- b
+det_A1 <- det(A1)
+
+# Substituir coluna 2
+A2 <- A
+A2[, 2] <- b
+det_A2 <- det(A2)
+
+x <- det_A1 / det_A
+y <- det_A2 / det_A
+print(c(x, y))
+print(A %*% c(x, y))
+```
+
+</details>
+
+> *O método de Cramer é uma ferramenta elegante para resolver sistemas lineares pequenos (2×2 e 3×3) usando determinantes. Embora seja ineficiente para sistemas grandes, é excelente para fins didáticos e para entender a relação entre determinantes e soluções de sistemas lineares.*

@@ -1,0 +1,553 @@
+# Sistema Numérico Octal
+
+**Duração estimada:** 40 minutos (leitura) / 1h (com exercícios práticos)  <br>
+**Público-alvo:** Estudante com conhecimento básico de matemática e sistema binário <br>
+**Pré-requisito:** Sistema binário e sistema decimal <br>
+
+
+## 1. Conceito Básico
+
+O sistema octal é um sistema de numeração cuja **base é 8**. Isso significa que ele utiliza apenas **8 algarismos** para representar qualquer número:
+
+`0, 1, 2, 3, 4, 5, 6, 7`
+
+**Por que o "8"?**
+
+É uma potência de 2 ($8 = 2^3$). Isso cria uma relação mágica com o binário.
+
+Na história da computação, foi muito usado em computadores antigos (como o PDP-8) e ainda é útil para representar permissões de arquivos em sistemas Unix/Linux (como no comando `chmod 755`).
+
+**A Grande Vantagem:**
+
+Como $8 = 2^3$, cada dígito octal corresponde exatamente a um grupo de **3 bits**. É muito mais fácil para um humano ler `65` em octal do que `110101` em binário. É um "encurtador" de binário.
+
+## 2. A Tabela de Referência Octal → Binário (Decore!)
+
+Esta é a tabela mais importante para conversões. Cada número octal vira 3 bits.
+
+| Octal | Binário |
+|-------|---------|
+| 0 | 000 |
+| 1 | 001 |
+| 2 | 010 |
+| 3 | 011 |
+| 4 | 100 |
+| 5 | 101 |
+| 6 | 110 |
+| 7 | 111 |
+
+**Dica de memorização:** Veja que o binário segue a contagem normal de 0 a 7. Se você souber contar de 0 a 7 em binário, você sabe a tabela.
+
+## 3. Conversões (Sem e Com Vírgula)
+
+Vamos dominar 4 tipos de conversão, sempre usando a tabela acima.
+
+### 3.1 Conversão: Octal → Decimal (Base 8 → Base 10)
+
+**Método:** Multiplicar cada dígito octal pela potência de 8 correspondente à sua posição (da direita para esquerda, começando em 0) e somar tudo.
+
+**Valor das posições (da direita para esquerda):**
+
+| Posição | Potência | Valor |
+|---------|----------|-------|
+| 0 | $8^0$ | 1 |
+| 1 | $8^1$ | 8 |
+| 2 | $8^2$ | 64 |
+| 3 | $8^3$ | 512 |
+| 4 | $8^4$ | 4096 |
+
+**Exemplo 1: Converter $237_{(8)}$ para decimal**
+
+**Passo 1:** Identifique posições.
+- Octal: `2   3   7`
+- Posição: `2   1   0`
+
+**Passo 2:** Multiplique.
+- Dígito 0 (direita): $7 \times 8^0 = 7 \times 1 = 7$
+- Dígito 1 (meio): $3 \times 8^1 = 3 \times 8 = 24$
+- Dígito 2 (esquerda): $2 \times 8^2 = 2 \times 64 = 128$
+
+**Passo 3:** Some tudo: $7 + 24 + 128 = 159$
+
+**Resposta:** $237_{(8)} = 159$ em decimal ✅
+
+**Exemplo 2: Converter $1054_{(8)}$ para decimal**
+
+**Passo 1:**
+- Octal: `1   0   5   4`
+- Posição: `3   2   1   0`
+
+**Passo 2:**
+- $4 \times 8^0 = 4$
+- $5 \times 8^1 = 40$
+- $0 \times 8^2 = 0$
+- $1 \times 8^3 = 512$
+
+**Passo 3:** $4 + 40 + 0 + 512 = 556$
+
+**Resposta:** $1054_{(8)} = 556$ em decimal ✅
+
+### 3.2 Conversão: Decimal → Octal (Base 10 → Base 8)
+
+**Método:** Divisões sucessivas por 8. Pegue o número decimal e divida por 8 repetidamente, anotando os restos. O octal é lido de **baixo para cima** (do último resto para o primeiro).
+
+**Exemplo 1: Converter 159 para octal**
+
+**Passo 1:** Divida por 8 até dar 0.
+- $159 \div 8 = 19$, resto **7** (menos significativo - direita)
+- $19 \div 8 = 2$, resto **3**
+- $2 \div 8 = 0$, resto **2** (mais significativo - esquerda)
+
+**Passo 2:** Leia de baixo para cima: `2 3 7`
+
+**Resposta:** 159 em decimal = $237_{(8)}$ ✅ (provando a conversão anterior)
+
+**Exemplo 2: Converter 100 para octal**
+
+**Passo 1:**
+- $100 \div 8 = 12$, resto 4
+- $12 \div 8 = 1$, resto 4
+- $1 \div 8 = 0$, resto 1
+
+**Passo 2:** Leia de baixo: `1 4 4`
+
+**Resposta:** 100 em decimal = $144_{(8)}$ ✅
+
+### 3.3 Conversão: Octal → Binário (O Mais Importante!)
+
+**Método:** Use a tabela. Cada dígito octal vira 3 bits. Depois junte tudo.
+
+**Exemplo 1: Converter $237_{(8)}$ para binário**
+
+**Passo 1:** Converta cada dígito usando a tabela.
+- $2 = 010$
+- $3 = 011$
+- $7 = 111$
+
+**Passo 2:** Junte: `010 011 111`
+
+**Passo 3:** Tire o zero da esquerda: `10011111`
+
+**Resposta:** $237_{(8)} = 10011111_{(2)}$ ✅
+
+**Exemplo 2: Converter $65_{(8)}$ para binário**
+
+**Passo 1:**
+- $6 = 110$
+- $5 = 101$
+
+**Passo 2:** Junte: `110101`
+
+**Resposta:** $65_{(8)} = 110101_{(2)}$ ✅ (exatamente o exemplo do começo da aula)
+
+**Exemplo 3: Converter $4532_{(8)}$ para binário**
+
+**Passo 1:**
+- $4 = 100$
+- $5 = 101$
+- $3 = 011$
+- $2 = 010$
+
+**Passo 2:** Junte: `100101011010`
+
+**Resposta:** $4532_{(8)} = 100101011010_{(2)}$ ✅
+
+### 3.4 Conversão: Binário → Octal
+
+**Método:** O inverso do anterior.
+
+1. Agrupe os bits de **3 em 3**, começando da **direita para a esquerda** (parte inteira).
+2. Se sobrar 1 ou 2 bits no grupo da esquerda, complete com zeros à esquerda.
+3. Converta cada grupo de 3 bits para octal usando a tabela.
+
+**Exemplo 1: Converter $10011111_{(2)}$ para octal**
+
+**Passo 1:** Agrupe de 3 em 3 da direita.
+- `10 | 011 | 111` (sobraram 2 bits na esquerda)
+
+**Passo 2:** Complete o grupo da esquerda com zeros.
+- `010 | 011 | 111`
+
+**Passo 3:** Converta cada grupo.
+- $010_{(2)} = 2$
+- $011_{(2)} = 3$
+- $111_{(2)} = 7$
+
+**Resposta:** $10011111_{(2)} = 237_{(8)}$ ✅
+
+**Exemplo 2: Converter $110101_{(2)}$ para octal**
+
+**Passo 1:**
+- `110 | 101` (perfeito, dois grupos completos)
+
+**Passo 2:** Converta.
+- $110 = 6$
+- $101 = 5$
+
+**Resposta:** $110101_{(2)} = 65_{(8)}$ ✅
+
+**Exemplo 3: Converter $1010111010_{(2)}$ para octal**
+
+**Passo 1:** Agrupe da direita.
+- `1 | 010 | 111 | 010` (sobrou 1 bit)
+
+**Passo 2:** Complete o da esquerda com zeros.
+- `001 | 010 | 111 | 010`
+
+**Passo 3:** Converta.
+- $001 = 1$
+- $010 = 2$
+- $111 = 7$
+- $010 = 2$
+
+**Resposta:** $1010111010_{(2)} = 1272_{(8)}$ ✅
+
+## 4. Números com Vírgula no Octal
+
+**A regra de ouro para números com vírgula em QUALQUER base:**
+
+- **Parte inteira** (antes da vírgula): agrupa da **direita para a esquerda**.
+- **Parte fracionária** (depois da vírgula): agrupa da **esquerda para a direita**.
+- Se faltar bits em qualquer lado, completa com zeros (inteira à esquerda, fracionária à direita).
+
+### 4.1 Octal com Vírgula → Binário com Vírgula
+
+**Método:** Cada dígito octal vira 3 bits, mantendo a vírgula no mesmo lugar.
+
+**Exemplo 1: Converter $5,6_{(8)}$ para binário**
+
+**Passo 1 - Inteira (5):**
+- $5 = 101$
+
+**Passo 2 - Fracionária (6):**
+- $6 = 110$
+
+**Resposta:** $5,6_{(8)} = 101,110_{(2)}$ ✅
+
+**Exemplo 2: Converter $16,3_{(8)}$ para binário**
+
+**Passo 1 - Inteira (16):**
+- $1 = 001$
+- $6 = 110$
+- Inteira = `001110` → simplifica: `1110`
+
+**Passo 2 - Fracionária (3):**
+- $3 = 011$
+
+**Resposta:** $16,3_{(8)} = 1110,011_{(2)}$ ✅
+
+### 4.2 Binário com Vírgula → Octal com Vírgula
+
+**Método:** Agrupe os bits de 3 em 3.
+
+- **Parte inteira:** da direita para esquerda.
+- **Parte fracionária:** da esquerda para direita.
+- Complete com zeros quando necessário.
+
+**Exemplo 1: Converter $101,11_{(2)}$ para octal**
+
+**Passo 1 - Inteira (101):**
+- `101` = 5 (já tem 3 bits)
+
+**Passo 2 - Fracionária (11):**
+- `11` → falta 1 bit à direita → `110` = 6
+
+**Resposta:** $101,11_{(2)} = 5,6_{(8)}$ ✅
+
+**Exemplo 2: Converter $1110,011_{(2)}$ para octal**
+
+**Passo 1 - Inteira (1110):**
+- `1 | 110` (agrupe da direita)
+- Grupo da direita: `110` = 6
+- Grupo da esquerda: `1` → completa com zeros → `001` = 1
+- Inteira = 16
+
+**Passo 2 - Fracionária (011):**
+- Já tem 3 bits: `011` = 3
+
+**Resposta:** $1110,011_{(2)} = 16,3_{(8)}$ ✅
+
+**Exemplo 3: Converter $1101,001_{(2)}$ para octal**
+
+**Passo 1 - Inteira (1101):**
+- `1 | 101`
+- $101 = 5$
+- $1 → 001 = 1$
+- Inteira = 15
+
+**Passo 2 - Fracionária (001):**
+- $001 = 1$
+
+**Resposta:** $1101,001_{(2)} = 15,1_{(8)}$ ✅
+
+## 5. Operações Aritméticas no Octal
+
+As operações no octal seguem a mesma lógica do decimal, mas com uma diferença crucial: **quando a soma de uma coluna atinge 8, você vai 1 para a próxima casa.**
+
+### 5.1 Adição Octal
+
+**Regra de ouro:** "Soma normal, quando der 8 ou mais, subtrai 8 e vai 1".
+
+**Exemplo 1: $5_{(8)} + 3_{(8)}$**
+
+<pre>
+  5                 $\color{white}\text{5+3=8, escreve(0), vai(1)}$
++ 3
+-----
+1 0
+</pre>
+
+$5 + 3 = 8$. Como 8 é a base, escrevemos 0 e vai 1.
+
+**Resposta:** $5_{(8)} + 3_{(8)} = 10_{(8)}$ ✅ (que é 8 em decimal)
+
+**Exemplo 2: $17_{(8)} + 35_{(8)}$**
+
+<pre>
+  1 7               $\color{white}\text{12-8=4, vai(1), escreve(4)}$
++ 3 5               $\color{white}\text{1+3+1 = 5}$
+------
+5  4
+</pre>
+
+**Passo a passo:**
+- Coluna 1 (direita): $7 + 5 = 12$. $12 \ge 8$, então: $12 - 8 = 4$, vai 1.
+- Coluna 2 (esquerda): $1 + 3 + 1$(que veio) $= 5$. $5 < 8$, então escreve 5, vai 0.
+
+**Resposta:** $17_{(8)} + 35_{(8)} = 54_{(8)}$ ✅
+
+**Prova em decimal:** $17_{(8)}=15$, $35_{(8)}=29$, $15+29=44$. $54_{(8)}= 5\times8 + 4 = 44$. ✅
+
+**Exemplo 3: $276_{(8)} + 145_{(8)}$**
+
+<pre>
+  2 7 6
++ 1 4 5
+--------
+  4 1 1
+</pre>
+
+**Passo a passo:**
+- Coluna 1: $6 + 5 = 11$. $11 - 8 = 3$, vai 1.
+- Coluna 2: $7 + 4 + 1 = 12$. $12 - 8 = 4$, vai 1.
+- Coluna 3: $2 + 1 + 1 = 4$. $4 < 8$, escreve 4.
+
+**Resposta:** $276_{(8)} + 145_{(8)} = 443_{(8)}$ ✅
+
+**Prova:** $276_{(8)}=190$, $145_{(8)}=101$, total=291. $443_{(8)}=4\times64 + 4\times8 + 3 = 256+32+3=291$. ✅
+
+### 5.2 Subtração Octal
+
+**Regra de ouro:** Se o número de cima for menor que o de baixo, "empresta" 1 da casa à esquerda. Esse 1 emprestado **vale 8** na casa atual (e não 10 como no decimal).
+
+**Exemplo 1: $54_{(8)} - 17_{(8)}$**
+
+<pre>
+  5 4
+$\color{white}\text{-}$ 1 7
+------
+  3 5
+</pre>
+
+**Passo a passo:**
+- Coluna 1: $4 - 7$ = não dá! Empresta da coluna 2.
+- Coluna 2: $5$ vira $4$ (pois emprestou 1).
+- Coluna 1: $4 + 8 = 12$. Agora $12 - 7 = 5$. Escreve 5.
+- Coluna 2: $4 - 1 = 3$. Escreve 3.
+
+**Resposta:** $54_{(8)} - 17_{(8)} = 35_{(8)}$ ✅
+
+**Prova:** $54_{(8)}=44$, $17_{(8)}=15$, $44-15=29$. $35_{(8)}= 3\times8+5=29$. ✅
+
+**Exemplo 2: $100_{(8)} - 1_{(8)}$**
+
+<pre>
+  1 0 0
+$\color{white}\text{-}$  0 1
+--------
+  0 7 7
+</pre>
+
+**Passo a passo:**
+- Coluna 1: $0 - 1$ = não dá! Vai emprestar da coluna 2.
+- Coluna 2: $0 - 1$ também não dá! Vai emprestar da coluna 3.
+- Coluna 3: $1$ vira $0$. Coluna 2 recebe 8 (pois 1 vale 8 na posição dela).
+- Coluna 2: agora tem 8. Empresta 1 para coluna 1.
+- Coluna 2 vira 7.
+- Coluna 1 recebe 8 (pois 1 vale 8 na posição dela).
+- Coluna 1: $8 - 1 = 7$. Escreve 7.
+- Coluna 2: $7 - 0 = 7$. Escreve 7.
+- Coluna 3: $0 - 0 = 0$.
+
+**Resposta:** $100_{(8)} - 1_{(8)} = 77_{(8)}$ ✅
+
+**Prova:** $100_{(8)}=64$, $64-1=63$. $77_{(8)}=7\times8+7=63$. ✅
+
+## 6. Aplicações Reais do Octal
+
+### 6.1 Permissões de Arquivos no Linux
+
+No Linux, as permissões de arquivos são representadas por três números octais:
+- $4$ = Leitura (Read)
+- $2$ = Escrita (Write)
+- $1$ = Execução (Execute)
+
+Por exemplo, o comando `chmod 755 arquivo` significa:
+- `7` = $4+2+1$ (leitura, escrita e execução para o dono)
+- `5` = $4+1$ (leitura e execução para o grupo)
+- `5` = $4+1$ (leitura e execução para outros)
+
+### 6.2 Programas Antigos e Mainframes
+
+Em computadores antigos (como o PDP-8), o octal era a forma padrão de exibir dados porque era mais fácil de ler do que binário e não exigia letras (como o hexadecimal).
+
+### 6.3 Compressão de Dados
+
+Em alguns algoritmos de compressão, agrupar bits em grupos de 3 para convertê-los em octal pode economizar espaço em cabeçalhos de arquivos.
+
+## 7. Exercícios
+
+<details>
+<summary>📗 Exercício 1 — Octal → Decimal (fácil)</summary>
+
+**Enunciado:** Converta os seguintes números octais para decimal:
+- a) $45_{(8)}$
+- b) $127_{(8)}$
+- c) $1000_{(8)}$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**a)** $45_{(8)} = 4 \times 8 + 5 = 32 + 5 = 37$
+
+**b)** $127_{(8)} = 1 \times 64 + 2 \times 8 + 7 = 64 + 16 + 7 = 87$
+
+**c)** $1000_{(8)} = 1 \times 512 = 512$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Decimal → Octal (fácil)</summary>
+
+**Enunciado:** Converta os seguintes números decimais para octal:
+- a) 75
+- b) 128
+- c) 255
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**a)** 75 = $113_{(8)}$ (75 ÷ 8 = 9 r3, 9 ÷ 8 = 1 r1, 1 ÷ 8 = 0 r1 → 113)
+
+**b)** 128 = $200_{(8)}$ (128 ÷ 8 = 16 r0, 16 ÷ 8 = 2 r0, 2 ÷ 8 = 0 r2 → 200)
+
+**c)** 255 = $377_{(8)}$ (255 ÷ 8 = 31 r7, 31 ÷ 8 = 3 r7, 3 ÷ 8 = 0 r3 → 377)
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Octal → Binário (médio)</summary>
+
+**Enunciado:** Converta os seguintes números octais para binário:
+- a) $57_{(8)}$
+- b) $123_{(8)}$
+- c) $7654_{(8)}$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**a)** $57_{(8)} = 5(101) 7(111) = 101111_{(2)}$
+
+**b)** $123_{(8)} = 1(001) 2(010) 3(011) = 001010011_{(2)} = 1010011_{(2)}$
+
+**c)** $7654_{(8)} = 7(111) 6(110) 5(101) 4(100) = 111110101100_{(2)}$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Adição Octal (médio)</summary>
+
+**Enunciado:** Calcule:
+- a) $36_{(8)} + 45_{(8)}$
+- b) $177_{(8)} + 63_{(8)}$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**a)** $36_{(8)} + 45_{(8)} = 103_{(8)}$
+
+<pre>
+  3 6
++ 4 5
+-----
+1 0 3
+</pre>
+
+**b)** $177_{(8)} + 63_{(8)} = 262_{(8)}$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Subtração Octal (difícil)</summary>
+
+**Enunciado:** Calcule:
+- a) $72_{(8)} - 35_{(8)}$
+- b) $200_{(8)} - 77_{(8)}$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**a)** $72_{(8)} - 35_{(8)} = 35_{(8)}$
+
+<pre>
+  7 2
+$\color{white}\text{-}$ 3 5
+-----
+  3 5
+</pre>
+
+**b)** $200_{(8)} - 77_{(8)} = 101_{(8)}$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Binário com Vírgula → Octal (desafio)</summary>
+
+**Enunciado:** Converta $1011,011_{(2)}$ para octal.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Parte inteira (1011):**
+- `1 | 011`
+- $011 = 3$
+- $1 → 001 = 1$
+- Inteira = 13
+
+**Parte fracionária (011):**
+- `011` = 3
+
+**Resposta:** $1011,011_{(2)} = 13,3_{(8)}$ ✅
+
+</details>
+</details>
+
+## 8. Glossário
+
+| Termo | Definição |
+|-------|-----------|
+| **Octal** | Sistema numérico de base 8, usa algarismos de 0 a 7 |
+| **Base** | Número de algarismos disponíveis em um sistema numérico |
+| **Dígito octal** | Cada algarismo em um número octal (0-7) |
+| **Agrupamento** | Técnica de converter binário em octal agrupando bits de 3 em 3 |
+| **chmod** | Comando Linux para alterar permissões de arquivos usando octal |
+| **PDP-8** | Computador histórico que usava octal amplamente |
+
+## Resumo
+
+> "O sistema octal é o elo perdido entre o binário da máquina e o decimal do humano. Com base 8 e uma relação direta de 1 dígito para 3 bits, ele oferece uma forma compacta e legível de representar dados binários, especialmente em permissões de arquivos no Linux e em sistemas legados. Dominar o octal é dominar a arte de encurtar o binário sem perder sua essência."

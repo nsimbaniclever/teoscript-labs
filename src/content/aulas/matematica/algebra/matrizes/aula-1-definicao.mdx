@@ -1,0 +1,479 @@
+# MATRIZES
+
+## 1. Definição
+
+### 1.1 O que é uma Matriz?
+
+Uma **matriz** é um **arranjo retangular** de números (escalares) dispostos em **linhas** e **colunas**.
+
+$$
+A = \begin{bmatrix}
+a_{11} & a_{12} & \cdots & a_{1n} \\
+a_{21} & a_{22} & \cdots & a_{2n} \\
+\vdots & \vdots & \ddots & \vdots \\
+a_{m1} & a_{m2} & \cdots & a_{mn}
+\end{bmatrix}
+$$
+
+**Notação:**
+- $A \in \mathbb{R}^{m \times n}$ → matriz com $m$ linhas e $n$ colunas.
+- $a_{ij}$ é o elemento na **linha i** e **coluna j**.
+
+**Analogia com vetores:** Um vetor é uma matriz com **uma única linha** (vetor linha) ou **uma única coluna** (vetor coluna).
+
+### 1.2 Dimensão (Ordem) de uma Matriz
+
+A **dimensão** (ou ordem) de uma matriz é dada por:
+$$
+m \times n
+$$
+onde $m$ é o número de linhas e $n$ é o número de colunas.
+
+**Exemplo:**
+$$
+A = \begin{bmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \end{bmatrix}
+$$
+- $m = 2$ linhas
+- $n = 3$ colunas
+- **Dimensão:** $2 \times 3$
+
+## 2. Tipos de Matrizes
+
+### 2.1 Matriz Linha (Row Matrix)
+
+Matriz com **apenas uma linha** ($1 \times n$).
+
+**Exemplo:**
+$$
+A = \begin{bmatrix} 1 & 2 & 3 & 4 \end{bmatrix}
+$$
+
+**Interpretação:** É exatamente um **vetor linha** (que vimos nas aulas de vetores).
+
+### 2.2 Matriz Coluna (Column Matrix)
+
+Matriz com **apenas uma coluna** ($m \times 1$).
+
+**Exemplo:**
+$$
+A = \begin{bmatrix} 1 \\ 2 \\ 3 \end{bmatrix}
+$$
+
+**Interpretação:** É exatamente um **vetor coluna** (que vimos nas aulas de vetores).
+
+### 2.3 Matriz Quadrada (Square Matrix)
+
+Matriz com **mesmo número de linhas e colunas** ($n \times n$).
+
+**Exemplo:**
+$$
+A = \begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix}
+$$
+
+**Interpretação:** É uma matriz "quadrada". Muitas propriedades especiais se aplicam apenas a matrizes quadradas (determinante, inversa, autovalores).
+
+### 2.4 Matriz Diagonal (Diagonal Matrix)
+
+Matriz quadrada onde todos os elementos **fora da diagonal principal** são zero.
+
+$$
+A = \begin{bmatrix}
+d_1 & 0 & \cdots & 0 \\
+0 & d_2 & \cdots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \cdots & d_n
+\end{bmatrix}
+$$
+
+**Exemplo:**
+$$
+A = \begin{bmatrix} 2 & 0 & 0 \\ 0 & 3 & 0 \\ 0 & 0 & 5 \end{bmatrix}
+$$
+
+**Interpretação:** Apenas a diagonal principal tem números. Tudo o resto é zero.
+
+### 2.5 Matriz Identidade (Identity Matrix)
+
+Matriz diagonal onde **todos os elementos da diagonal principal são 1**.
+
+$$
+I_n = \begin{bmatrix}
+1 & 0 & \cdots & 0 \\
+0 & 1 & \cdots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \cdots & 1
+\end{bmatrix}
+$$
+
+**Exemplo (3×3):**
+$$
+I_3 = \begin{bmatrix} 1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{bmatrix}
+$$
+
+**Interpretação:** É o "elemento neutro" da multiplicação de matrizes:
+$$
+A \cdot I = I \cdot A = A
+$$
+
+**Analogia:** A identidade é para matrizes o que o número 1 é para números reais.
+
+### 2.6 Matriz Nula (Zero Matrix)
+
+Matriz onde **todos os elementos são zero**.
+
+**Exemplo:**
+$$
+0_{2\times3} = \begin{bmatrix} 0 & 0 & 0 \\ 0 & 0 & 0 \end{bmatrix}
+$$
+
+**Interpretação:** É o "elemento neutro" da soma de matrizes:
+$$
+A + 0 = A
+$$
+
+**Analogia:** A matriz nula é para matrizes o que o número 0 é para números reais.
+
+### 2.7 Matriz Triangular Superior e Inferior
+
+**Triangular Superior:** Todos os elementos **abaixo da diagonal principal são zero**.
+
+**Exemplo:**
+$$
+A = \begin{bmatrix} 1 & 2 & 3 \\ 0 & 4 & 5 \\ 0 & 0 & 6 \end{bmatrix}
+$$
+
+**Triangular Inferior:** Todos os elementos **acima da diagonal principal são zero**.
+
+**Exemplo:**
+$$
+A = \begin{bmatrix} 1 & 0 & 0 \\ 2 & 3 & 0 \\ 4 & 5 & 6 \end{bmatrix}
+$$
+
+**Interpretação:** Matrizes triangulares são úteis para resolver sistemas lineares (substituição progressiva/regressiva).
+
+### 2.8 Matriz Simétrica
+
+Matriz quadrada onde $A = A^T$ (é igual à sua transposta).  
+Ou seja: $a_{ij} = a_{ji}$ para todos $i, j$.
+
+**Exemplo:**
+$$
+A = \begin{bmatrix} 1 & 2 & 3 \\ 2 & 4 & 5 \\ 3 & 5 & 6 \end{bmatrix}
+$$
+
+**Interpretação:** A matriz é "espelhada" em relação à diagonal principal.
+
+**Aplicação em ML:** Matrizes de covariância são simétricas.
+
+### 2.9 Matriz Antissimétrica (ou Simétrica Alternada)
+
+Matriz quadrada onde $A = -A^T$.  
+Ou seja: $a_{ij} = -a_{ji}$ para todos $i, j$.  
+**Diagonal principal sempre zero.**
+
+**Exemplo:**
+$$
+A = \begin{bmatrix} 0 & 2 & -3 \\ -2 & 0 & 4 \\ 3 & -4 & 0 \end{bmatrix}
+$$
+
+## 3. Exemplos Lúdicos para Fixação
+
+### 🍔 EXEMPLO 1 – A LANCHONETE (MATRIZ DE INGREDIENTES)
+
+A lanchonete tem 3 sanduíches e 3 ingredientes. Podemos representar isso em uma **matriz 3×3**:
+
+| Sanduíche \ Ingrediente | Pão | Carne | Queijo |
+|-------------------------|-----|-------|--------|
+| Hambúrguer              | 1   | 1     | 0      |
+| Queijo                   | 0   | 0     | 1      |
+| Combo                    | 1   | 1     | 1      |
+
+**Matriz:**
+$$
+A = \begin{bmatrix}
+1 & 1 & 0 \\
+0 & 0 & 1 \\
+1 & 1 & 1
+\end{bmatrix}
+$$
+
+**Interpretação:**
+- Cada **linha** = um sanduíche.
+- Cada **coluna** = um ingrediente.
+- Cada número = quantidade do ingrediente no sanduíche.
+
+### 🧃 EXEMPLO 2 – A CANTINA (MATRIZ NUTRICIONAL)
+
+A cantina tem 3 alimentos e 3 nutrientes:
+
+| Alimento \ Nutriente | Açúcar | Cálcio | Vitamina C |
+|----------------------|--------|--------|------------|
+| Suco                 | 10     | 0      | 50         |
+| Leite                | 5      | 20     | 0          |
+| Bolo                 | 30     | 0      | 0          |
+
+**Matriz:**
+$$
+A = \begin{bmatrix}
+10 & 0 & 50 \\
+5 & 20 & 0 \\
+30 & 0 & 0
+\end{bmatrix}
+$$
+
+**Tipos:**
+- Matriz **quadrada** (3×3).
+- **Não** é diagonal, identidade, nula ou simétrica.
+
+### 📚 EXEMPLO 3 – A BIBLIOTECA (MATRIZ DE CONTEÚDO)
+
+A biblioteca tem 3 livros e 3 tipos de conteúdo:
+
+| Livro \ Conteúdo | Teoria | Exercícios | Figuras |
+|------------------|--------|------------|---------|
+| Matemática       | 10     | 5          | 0       |
+| História         | 8      | 0          | 12      |
+| Ciências         | 6      | 8          | 4       |
+
+**Matriz:**
+$$
+A = \begin{bmatrix}
+10 & 5 & 0 \\
+8 & 0 & 12 \\
+6 & 8 & 4
+\end{bmatrix}
+$$
+
+**Tipos:**
+- Matriz **quadrada** (3×3).
+- **Não** é diagonal, identidade, nula ou simétrica.
+
+### 🎨 EXEMPLO 4 – AS CORES (MATRIZ RGB)
+
+Uma imagem digital pode ser representada como uma matriz onde cada elemento é um pixel, e cada pixel é um vetor (R, G, B).
+
+Para uma imagem 2×2 pixels:
+
+| Pixel | Cor (R, G, B) |
+|-------|---------------|
+| (1,1) | (255, 0, 0)   |
+| (1,2) | (0, 255, 0)   |
+| (2,1) | (0, 0, 255)   |
+| (2,2) | (255, 255, 0) |
+
+**Matriz (representação compacta):**
+$$
+A = \begin{bmatrix}
+(255,0,0) & (0,255,0) \\
+(0,0,255) & (255,255,0)
+\end{bmatrix}
+$$
+
+**Interpretação:** Uma imagem é uma matriz onde cada elemento é um vetor de 3 coordenadas.
+
+### 🏀 EXEMPLO 5 – OS ESPORTES (MATRIZ DE DESEMPENHO)
+
+Três atletas e três modalidades:
+
+| Atleta \ Modalidade | Corrida | Natação | Ciclismo |
+|---------------------|---------|---------|----------|
+| Atleta 1            | 10      | 5       | 8        |
+| Atleta 2            | 7       | 9       | 6        |
+| Atleta 3            | 12      | 4       | 10       |
+
+**Matriz:**
+$$
+A = \begin{bmatrix}
+10 & 5 & 8 \\
+7 & 9 & 6 \\
+12 & 4 & 10
+\end{bmatrix}
+$$
+
+**Tipos:**
+- Matriz **quadrada** (3×3).
+- **Não** é diagonal, identidade, nula ou simétrica.
+
+## 4. Resumo dos Tipos de Matrizes
+
+| Tipo | Definição | Exemplo |
+|------|-----------|---------|
+| **Matriz Linha** | $1 \times n$ | $\begin{bmatrix}1 & 2 & 3\end{bmatrix}$ |
+| **Matriz Coluna** | $m \times 1$ | $\begin{bmatrix}1 \\ 2 \\ 3\end{bmatrix}$ |
+| **Matriz Quadrada** | $m = n$ | $\begin{bmatrix}1 & 2 \\ 3 & 4\end{bmatrix}$ |
+| **Matriz Diagonal** | $a_{ij} = 0$ para $i \neq j$ | $\begin{bmatrix}2 & 0 \\ 0 & 3\end{bmatrix}$ |
+| **Matriz Identidade** | Diagonal com 1's | $\begin{bmatrix}1 & 0 \\ 0 & 1\end{bmatrix}$ |
+| **Matriz Nula** | Todos os elementos são 0 | $\begin{bmatrix}0 & 0 \\ 0 & 0\end{bmatrix}$ |
+| **Matriz Simétrica** | $A = A^T$ | $\begin{bmatrix}1 & 2 \\ 2 & 3\end{bmatrix}$ |
+| **Matriz Antissimétrica** | $A = -A^T$ | $\begin{bmatrix}0 & 2 \\ -2 & 0\end{bmatrix}$ |
+| **Triangular Superior** | $a_{ij} = 0$ para $i > j$ | $\begin{bmatrix}1 & 2 \\ 0 & 3\end{bmatrix}$ |
+| **Triangular Inferior** | $a_{ij} = 0$ para $i < j$ | $\begin{bmatrix}1 & 0 \\ 2 & 3\end{bmatrix}$ |
+
+## 5. Aplicação Direta na Tese
+
+### 5.1 Representação de Dados
+
+Em Machine Learning, um **dataset** é representado como uma **matriz**:
+
+- Cada **linha** = uma amostra (exemplo)
+- Cada **coluna** = uma característica (feature)
+
+**Exemplo:** 100 clientes com 5 características cada → matriz $100 \times 5$.
+
+### 5.2 Pesos de Redes Neurais
+
+Em redes neurais, os **pesos** entre camadas são representados como **matrizes**.
+
+**Exemplo:** Uma camada com 4 entradas e 3 saídas tem uma matriz de pesos $4 \times 3$.
+
+### 5.3 Matriz de Covariância
+
+Em estatística, a matriz de covariância é **simétrica** e contém as variâncias e covariâncias entre características.
+
+**Exemplo:** Para $n$ características, a matriz de covariância é $n \times n$ e simétrica.
+
+## 6. Exercícios Propostos
+
+<details>
+<summary>📗 Exercício 1 (Identificação de Tipos)</summary>
+
+**Enunciado:** Classifique cada matriz abaixo quanto ao tipo:
+
+a) $A = \begin{bmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \end{bmatrix}$
+
+b) $B = \begin{bmatrix} 1 & 0 & 0 \\ 0 & 2 & 0 \\ 0 & 0 & 3 \end{bmatrix}$
+
+c) $C = \begin{bmatrix} 1 & 2 \\ 2 & 3 \end{bmatrix}$
+
+d) $D = \begin{bmatrix} 0 & 0 \\ 0 & 0 \end{bmatrix}$
+
+e) $E = \begin{bmatrix} 1 & 0 \\ 0 & 1 \end{bmatrix}$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $2 \times 3$ → **Matriz retangular** (não quadrada).
+
+b) **Matriz diagonal** (e também quadrada).
+
+c) **Matriz simétrica** (e quadrada).
+
+d) **Matriz nula** (e quadrada).
+
+e) **Matriz identidade** (e diagonal, e simétrica).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 (Identificação na Lanchonete)</summary>
+
+**Enunciado:** A lanchonete tem a seguinte matriz de ingredientes:
+$$
+A = \begin{bmatrix}
+1 & 1 & 0 \\
+0 & 0 & 1 \\
+1 & 1 & 1
+\end{bmatrix}
+$$
+
+a) Qual é a dimensão da matriz?  
+b) Ela é quadrada?  
+c) Ela é diagonal?  
+d) Ela é simétrica?  
+e) Qual o elemento $a_{23}$?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $3 \times 3$
+
+b) Sim! (3 linhas, 3 colunas)
+
+c) Não! (tem elementos fora da diagonal, como $a_{12} = 1$)
+
+d) Não! $a_{12} = 1$ mas $a_{21} = 0$ → $1 \neq 0$
+
+e) $a_{23} = 1$ (linha 2, coluna 3)
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 (Matriz Identidade)</summary>
+
+**Enunciado:** Escreva a matriz identidade $I_4$ de dimensão $4 \times 4$.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+$$
+I_4 = \begin{bmatrix}
+1 & 0 & 0 & 0 \\
+0 & 1 & 0 & 0 \\
+0 & 0 & 1 & 0 \\
+0 & 0 & 0 & 1
+\end{bmatrix}
+$$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 (Matriz Simétrica)</summary>
+
+**Enunciado:** A matriz:
+$$
+A = \begin{bmatrix}
+1 & 2 & 3 \\
+2 & 4 & 5 \\
+3 & 5 & 6
+\end{bmatrix}
+$$
+é simétrica? Justifique.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+Sim! Verificando:  
+- $a_{12} = 2$ e $a_{21} = 2$ ✓  
+- $a_{13} = 3$ e $a_{31} = 3$ ✓  
+- $a_{23} = 5$ e $a_{32} = 5$ ✓  
+
+Todos os elementos simétricos são iguais → **simétrica!**
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 (Aplicação – Dados)</summary>
+
+**Enunciado:** Você tem um dataset com 200 amostras e 15 características.
+
+a) Qual é a dimensão da matriz de dados?  
+b) Se você adicionar uma nova característica, qual será a nova dimensão?  
+c) Se você remover 50 amostras, qual será a nova dimensão?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $200 \times 15$
+
+b) $200 \times 16$ (uma coluna a mais)
+
+c) $150 \times 15$ (50 linhas a menos)
+
+</details>
+</details>
+
+> *Matrizes são a generalização natural dos vetores. Elas são a estrutura fundamental para representar dados, pesos de redes neurais e operações em Machine Learning. Dominar os tipos de matrizes é o primeiro passo para entender álgebra matricial.*

@@ -1,0 +1,373 @@
+
+# DIAGONALIZAÇÃO
+
+## 1. Definição Formal
+
+### 1.1 O que é Diagonalização?
+
+Uma matriz $A \in \mathbb{R}^{n \times n}$ é **diagonalizável** se existe uma matriz invertível $P$ e uma matriz diagonal $D$ tais que:
+
+$$
+A = P D P^{-1}
+$$
+
+Onde:
+- $P$ é a matriz cujas **colunas** são os **autovetores** de $A$.
+- $D$ é a matriz diagonal cujos elementos são os **autovalores** de $A$.
+
+**Interpretação:** A diagonalização "desacopla" a transformação em direções independentes (os autovetores).
+
+### 1.2 Condição para Diagonalização
+
+Uma matriz $A$ é diagonalizável se, e somente se, existem **$n$ autovetores linearmente independentes**.
+
+**Consequência:** Se todos os autovalores são **distintos**, a matriz é **sempre diagonalizável**.
+
+## 2. O Processo de Diagonalização
+
+### 2.1 Passo a Passo
+
+**Passo 1:** Calcular os autovalores $\lambda_1, \lambda_2, \ldots, \lambda_n$ de $A$.
+
+**Passo 2:** Para cada autovalor $\lambda_i$, encontrar um autovetor $\vec{v}_i$ resolvendo:
+$$
+(A - \lambda_i I) \vec{v}_i = \vec{0}
+$$
+
+**Passo 3:** Montar a matriz $P$ com os autovetores como colunas.
+
+**Passo 4:** Montar a matriz diagonal $D$ com os autovalores na diagonal.
+
+**Passo 5:** Verificar que $A = P D P^{-1}$.
+
+### 2.2 Exemplo Acadêmico Passo a Passo
+
+Seja:
+$$
+A = \begin{bmatrix} 2 & 1 \\ 1 & 2 \end{bmatrix}
+$$
+
+**Passo 1:** Autovalores (já calculados): $\lambda_1 = 3, \lambda_2 = 1$
+
+**Passo 2:** Autovetores:
+$$
+\vec{v}_1 = \begin{bmatrix} 1 \\ 1 \end{bmatrix}, \quad \vec{v}_2 = \begin{bmatrix} 1 \\ -1 \end{bmatrix}
+$$
+
+**Passo 3:** Matriz $P$:
+$$
+P = \begin{bmatrix} 1 & 1 \\ 1 & -1 \end{bmatrix}
+$$
+
+**Passo 4:** Matriz $D$:
+$$
+D = \begin{bmatrix} 3 & 0 \\ 0 & 1 \end{bmatrix}
+$$
+
+**Passo 5:** Calcular $P^{-1}$:
+$$
+\det(P) = 1 \cdot (-1) - 1 \cdot 1 = -2
+$$
+$$
+P^{-1} = \frac{1}{-2} \begin{bmatrix} -1 & -1 \\ -1 & 1 \end{bmatrix} = \begin{bmatrix} 0.5 & 0.5 \\ 0.5 & -0.5 \end{bmatrix}
+$$
+
+**Passo 6:** Verificar $A = P D P^{-1}$:
+$$
+P D P^{-1} = \begin{bmatrix} 1 & 1 \\ 1 & -1 \end{bmatrix} \begin{bmatrix} 3 & 0 \\ 0 & 1 \end{bmatrix} \begin{bmatrix} 0.5 & 0.5 \\ 0.5 & -0.5 \end{bmatrix} = \begin{bmatrix} 2 & 1 \\ 1 & 2 \end{bmatrix} ✓
+$$
+
+### 2.3 Exemplo 2: Matriz com Autovalores Distintos
+
+Seja:
+$$
+A = \begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix}
+$$
+
+**Passo 1:** Autovalores:
+$$
+\lambda^2 - 5\lambda - 2 = 0 \Rightarrow \lambda = \frac{5 \pm \sqrt{25 + 8}}{2} = \frac{5 \pm \sqrt{33}}{2}
+$$
+$$
+\lambda_1 \approx 5.37, \lambda_2 \approx -0.37
+$$
+
+**Passo 2:** Autovetores (para $\lambda_1$):
+$$
+A - \lambda_1 I = \begin{bmatrix} 1-5.37 & 2 \\ 3 & 4-5.37 \end{bmatrix} = \begin{bmatrix} -4.37 & 2 \\ 3 & -1.37 \end{bmatrix}
+$$
+Resolvendo: $-4.37x + 2y = 0 \Rightarrow y \approx 2.185x$  
+$\vec{v}_1 \approx \begin{bmatrix} 1 \\ 2.185 \end{bmatrix}$
+
+**Passo 3:** Matriz $P$:
+$$
+P = \begin{bmatrix} 1 & 1 \\ 2.185 & -0.185 \end{bmatrix}
+$$
+
+**Passo 4:** $D = \begin{bmatrix} 5.37 & 0 \\ 0 & -0.37 \end{bmatrix}$
+
+**Conclusão:** $A$ é diagonalizável.
+
+## 3. Potências de Matrizes via Diagonalização
+
+### 3.1 Fórmula para $A^k$
+
+Se $A = P D P^{-1}$, então:
+$$
+A^k = P D^k P^{-1}
+$$
+
+Onde:
+$$
+D^k = \begin{bmatrix}
+\lambda_1^k & 0 & \cdots & 0 \\
+0 & \lambda_2^k & \cdots & 0 \\
+\vdots & \vdots & \ddots & \vdots \\
+0 & 0 & \cdots & \lambda_n^k
+\end{bmatrix}
+$$
+
+### 3.2 Exemplo
+
+Para $A = \begin{bmatrix} 2 & 1 \\ 1 & 2 \end{bmatrix}$, temos $\lambda_1 = 3, \lambda_2 = 1$.
+
+Calcular $A^{10}$:
+$$
+A^{10} = P D^{10} P^{-1} = \begin{bmatrix} 1 & 1 \\ 1 & -1 \end{bmatrix} \begin{bmatrix} 3^{10} & 0 \\ 0 & 1^{10} \end{bmatrix} \begin{bmatrix} 0.5 & 0.5 \\ 0.5 & -0.5 \end{bmatrix}
+$$
+
+$$
+A^{10} = \begin{bmatrix} \frac{3^{10} + 1}{2} & \frac{3^{10} - 1}{2} \\ \frac{3^{10} - 1}{2} & \frac{3^{10} + 1}{2} \end{bmatrix} = \begin{bmatrix} 29525 & 29524 \\ 29524 & 29525 \end{bmatrix}
+$$
+
+## 4. Exemplos Lúdicos Aprimorados
+
+### 🍔 EXEMPLO 1 – A LANCHONETE (POTÊNCIA DA TRANSFORMAÇÃO)
+
+A lanchonete tem a matriz:
+$$
+A = \begin{bmatrix} 2 & 1 \\ 1 & 2 \end{bmatrix}
+$$
+
+**Diagonalização:** $A = P D P^{-1}$
+
+**Interpretação:** A transformação $A$ pode ser decomposta em:
+1. Mudança de base para a base dos autovetores ($P^{-1}$).
+2. Escala independente em cada direção ($D$).
+3. Volta para a base original ($P$).
+
+**Aplicação:** Para calcular $A^{10}$, em vez de multiplicar 10 vezes, usamos:
+$$
+A^{10} = P D^{10} P^{-1}
+$$
+
+### 🧃 EXEMPLO 2 – A CANTINA (EVOLUÇÃO DE NUTRIENTES)
+
+A cantina tem a matriz de evolução:
+$$
+A = \begin{bmatrix} 1.1 & 0 \\ 0 & 0.9 \end{bmatrix}
+$$
+
+**Diagonalização:** $A$ já é diagonal! $P = I, D = A$.
+
+**Interpretação:** Os nutrientes evoluem independentemente:
+- Açúcar cresce 10% a cada passo.
+- Cálcio diminui 10% a cada passo.
+
+**Aplicação:** Após 10 passos:
+$$
+A^{10} = \begin{bmatrix} 1.1^{10} & 0 \\ 0 & 0.9^{10} \end{bmatrix} \approx \begin{bmatrix} 2.59 & 0 \\ 0 & 0.35 \end{bmatrix}
+$$
+
+## 5. Condições para Diagonalização
+
+| Caso | Diagonalizável? | Exemplo |
+|------|----------------|---------|
+| **Autovalores distintos** | ✅ **Sempre** | $\begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix}$ |
+| **Autovalores repetidos, autovetores suficientes** | ✅ | $\begin{bmatrix} 2 & 0 \\ 0 & 2 \end{bmatrix}$ |
+| **Autovalores repetidos, autovetores insuficientes** | ❌ | $\begin{bmatrix} 2 & 1 \\ 0 & 2 \end{bmatrix}$ |
+
+## 6. Aplicação na Tese: FedAvg e Potências de Matrizes
+
+Em FL, a análise de convergência do FedAvg envolve a **potência** de matrizes.
+
+Se o sistema pode ser descrito por:
+$$
+\vec{w}_{t+1} = A \vec{w}_t
+$$
+
+Então:
+$$
+\vec{w}_t = A^t \vec{w}_0
+$$
+
+**Diagonalização:** $A = P D P^{-1}$, então $A^t = P D^t P^{-1}$.
+
+**Interpretação:** A convergência é determinada pelos autovalores:
+- Se $|\lambda_i| < 1$ para todos → sistema **converge**.
+- Se $|\lambda_i| > 1$ para algum → sistema **diverge**.
+
+## 7. Exercícios Propostos (Manuais)
+
+<details>
+<summary>📗 Exercício 1 (Diagonalização $2 \times 2$)</summary>
+
+**Enunciado:** Diagonalize a matriz:
+$$
+A = \begin{bmatrix} 3 & 2 \\ 2 & 3 \end{bmatrix}
+$$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+$\lambda_1 = 5, \lambda_2 = 1$
+
+$\vec{v}_1 = \begin{bmatrix} 1 \\ 1 \end{bmatrix}, \vec{v}_2 = \begin{bmatrix} 1 \\ -1 \end{bmatrix}$
+
+$P = \begin{bmatrix} 1 & 1 \\ 1 & -1 \end{bmatrix}, D = \begin{bmatrix} 5 & 0 \\ 0 & 1 \end{bmatrix}$
+
+$A = P D P^{-1}$ ✓
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 (Potência via Diagonalização)</summary>
+
+**Enunciado:** Para a matriz do Exercício 1, calcule $A^5$ usando diagonalização.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+$A^5 = P D^5 P^{-1} = \begin{bmatrix} 1 & 1 \\ 1 & -1 \end{bmatrix} \begin{bmatrix} 5^5 & 0 \\ 0 & 1^5 \end{bmatrix} \begin{bmatrix} 0.5 & 0.5 \\ 0.5 & -0.5 \end{bmatrix}$
+
+$5^5 = 3125$
+
+$A^5 = \begin{bmatrix} \frac{3125 + 1}{2} & \frac{3125 - 1}{2} \\ \frac{3125 - 1}{2} & \frac{3125 + 1}{2} \end{bmatrix} = \begin{bmatrix} 1563 & 1562 \\ 1562 & 1563 \end{bmatrix}$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 (Matriz Não Diagonalizável)</summary>
+
+**Enunciado:** A matriz:
+$$
+A = \begin{bmatrix} 2 & 1 \\ 0 & 2 \end{bmatrix}
+$$
+
+a) Calcule os autovalores.  
+b) Encontre os autovetores.  
+c) A matriz é diagonalizável? Justifique.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $\lambda = 2$ (repetido)
+
+b) $A - 2I = \begin{bmatrix} 0 & 1 \\ 0 & 0 \end{bmatrix} \rightarrow y = 0$, $x$ livre → $\vec{v} = \begin{bmatrix} 1 \\ 0 \end{bmatrix}$
+
+c) **Não!** Apenas um autovetor independente para um autovalor de multiplicidade 2.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 (Diagonalização $3 \times 3$)</summary>
+
+**Enunciado:** Diagonalize a matriz:
+$$
+A = \begin{bmatrix} 1 & 0 & 0 \\ 0 & 2 & 0 \\ 0 & 0 & 3 \end{bmatrix}
+$$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+A matriz já é diagonal! $P = I, D = A$.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 (Aplicação – Convergência)</summary>
+
+**Enunciado:** Uma matriz de evolução tem autovalores $\lambda_1 = 0.5, \lambda_2 = 0.8$.
+
+a) O sistema converge?  
+b) Qual é a taxa de convergência?  
+c) O que acontece se $\lambda_1 = 1.2, \lambda_2 = 0.8$?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) Sim! $|0.5| < 1$ e $|0.8| < 1$.
+
+b) A taxa de convergência é determinada pelo maior autovalor: $0.8$.
+
+c) Não converge! $|1.2| > 1$ → sistema diverge.
+
+</details>
+</details>
+
+## 8. EXERCÍCIO COMPUTACIONAL
+
+<details>
+<summary>🐍 Ver código (Python/NumPy)</summary>
+
+```python
+import numpy as np
+
+# Diagonalização
+A = np.array([[2, 1], [1, 2]])
+
+autovalores, autovetores = np.linalg.eig(A)
+P = autovetores
+D = np.diag(autovalores)
+
+# Verificação: A = P @ D @ inv(P)
+A_reconstruida = P @ D @ np.linalg.inv(P)
+print("A reconstruída:\n", A_reconstruida)
+
+# Potência via diagonalização
+A5 = P @ np.diag(autovalores ** 5) @ np.linalg.inv(P)
+print("A^5 via diagonalização:\n", A5)
+print("A^5 via potência direta:\n", np.linalg.matrix_power(A, 5))
+```
+
+</details>
+
+<details>
+<summary>📝 Ver código (R)</summary>
+
+```r
+# Diagonalização
+A <- matrix(c(2, 1, 1, 2), nrow=2)
+eig <- eigen(A)
+
+P <- eig$vectors
+D <- diag(eig$values)
+
+# Verificação: A = P %*% D %*% solve(P)
+A_reconstruida <- P %*% D %*% solve(P)
+print(A_reconstruida)
+
+# Potência via diagonalização
+A5 <- P %*% diag(eig$values^5) %*% solve(P)
+print(A5)
+print(A %*% A %*% A %*% A %*% A)
+```
+
+</details>
+
+> *A diagonalização é uma ferramenta poderosa que simplifica o cálculo de potências de matrizes e a análise de sistemas dinâmicos. Ela "desacopla" a transformação em direções independentes (os autovetores), cada uma com sua própria taxa de crescimento/decrescimento (os autovalores). Em FL, a diagonalização é usada para analisar a convergência do FedAvg.*
+

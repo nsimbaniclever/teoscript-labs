@@ -1,0 +1,434 @@
+
+#  OPERAÇÕES BÁSICAS EM MATRIZES
+
+## 1. Definições
+
+### 1.1 Soma de Matrizes
+
+Sejam $A, B \in \mathbb{R}^{m \times n}$ (mesma dimensão). A **soma** $A + B$ é definida como:
+
+$$
+(A + B)_{ij} = a_{ij} + b_{ij}
+$$
+
+Ou seja, **soma-se elemento a elemento**.
+
+**Condição:** As matrizes devem ter **a mesma dimensão** ($m \times n$).
+
+### 1.2 Subtração de Matrizes
+
+Sejam $A, B \in \mathbb{R}^{m \times n}$. A **subtração** $A - B$ é definida como:
+
+$$
+(A - B)_{ij} = a_{ij} - b_{ij}
+$$
+
+Ou seja, **subtrai-se elemento a elemento**.
+
+**Condição:** As matrizes devem ter **a mesma dimensão** ($m \times n$).
+
+### 1.3 Multiplicação por Escalar
+
+Seja $A \in \mathbb{R}^{m \times n}$ e $c \in \mathbb{R}$ um escalar. O **produto** $c \cdot A$ é definido como:
+
+$$
+(c \cdot A)_{ij} = c \cdot a_{ij}
+$$
+
+Ou seja, **multiplica-se cada elemento pelo escalar**.
+
+## 2. Exemplos Acadêmicos Passo a Passo
+
+### 2.1 Exemplo 1: Soma de Matrizes $A_{2\times2}$
+
+Sejam:
+$$
+A_{2\times2} = \begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix}, \quad
+B_{2\times2} = \begin{bmatrix} 5 & 6 \\ 7 & 8 \end{bmatrix}
+$$
+
+**Soma:**
+$$
+A_{2\times2} + B_{2\times2} = \begin{bmatrix} 1+5 & 2+6 \\ 3+7 & 4+8 \end{bmatrix} = \begin{bmatrix} 6 & 8 \\ 10 & 12 \end{bmatrix}
+$$
+
+### 2.2 Exemplo 2: Subtração de Matrizes $2 \times 2$
+
+$$
+A_{2\times2} - B_{2\times2} = \begin{bmatrix} 1-5 & 2-6 \\ 3-7 & 4-8 \end{bmatrix} = \begin{bmatrix} -4 & -4 \\ -4 & -4 \end{bmatrix}
+$$
+
+### 2.3 Exemplo 3: Multiplicação por Escalar $3 \times 3$
+
+Seja:
+$$
+A_{2\times2} = \begin{bmatrix}
+1 & 2 & 3 \\
+4 & 5 & 6 \\
+7 & 8 & 9
+\end{bmatrix}, \quad c = 2
+$$
+
+**Produto:**
+$$
+2A = \begin{bmatrix}
+2 \cdot 1 & 2 \cdot 2 & 2 \cdot 3 \\
+2 \cdot 4 & 2 \cdot 5 & 2 \cdot 6 \\
+2 \cdot 7 & 2 \cdot 8 & 2 \cdot 9
+\end{bmatrix} = \begin{bmatrix}
+2 & 4 & 6 \\
+8 & 10 & 12 \\
+14 & 16 & 18
+\end{bmatrix}
+$$
+
+### 2.4 Exemplo 4: Combinação de Operações
+
+Sejam:
+$$
+A = \begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix}, \quad
+B = \begin{bmatrix} 2 & 0 \\ 1 & 3 \end{bmatrix}
+$$
+
+Calcule $2A - 3B$:
+
+**Passo 1:** $2A = \begin{bmatrix} 2 & 4 \\ 6 & 8 \end{bmatrix}$  
+**Passo 2:** $3B = \begin{bmatrix} 6 & 0 \\ 3 & 9 \end{bmatrix}$  
+**Passo 3:** $2A - 3B = \begin{bmatrix} 2-6 & 4-0 \\ 6-3 & 8-9 \end{bmatrix} = \begin{bmatrix} -4 & 4 \\ 3 & -1 \end{bmatrix}$
+
+## 3. Propriedades das Operações com Matrizes
+
+| Propriedade | Fórmula |
+|-------------|---------|
+| **Comutativa** | $A + B = B + A$ |
+| **Associativa** | $(A + B) + C = A + (B + C)$ |
+| **Elemento Neutro** | $A + 0 = A$ (matriz nula) |
+| **Elemento Oposto** | $A + (-A) = 0$ |
+| **Distributiva (escalar sobre matriz)** | $c(A + B) = cA + cB$ |
+| **Distributiva (soma de escalares)** | $(c + d)A = cA + dA$ |
+| **Associativa mista** | $c(dA) = (cd)A$ |
+| **Elemento Neutro (escalar)** | $1 \cdot A = A$ |
+
+## 4. Exemplos Lúdicos Aprimorados
+
+### 🍔 EXEMPLO 1 – A LANCHONETE (SOMA DE PEDIDOS)
+
+A lanchonete tem dois pedidos em matrizes $3 \times 3$ (sanduíches × ingredientes):
+
+**Pedido 1:**
+$$
+P_1 = \begin{bmatrix}
+1 & 1 & 0 \\
+0 & 0 & 1 \\
+2 & 2 & 2
+\end{bmatrix}
+$$
+
+**Pedido 2:**
+$$
+P_2 = \begin{bmatrix}
+2 & 0 & 1 \\
+1 & 1 & 1 \\
+0 & 1 & 0
+\end{bmatrix}
+$$
+
+**Soma (pedido total):**
+$$
+P_1 + P_2 = \begin{bmatrix}
+1+2 & 1+0 & 0+1 \\
+0+1 & 0+1 & 1+1 \\
+2+0 & 2+1 & 2+0
+\end{bmatrix} = \begin{bmatrix}
+3 & 1 & 1 \\
+1 & 1 & 2 \\
+2 & 3 & 2
+\end{bmatrix}
+$$
+
+**Interpretação:** O pedido total combina os ingredientes de ambos os pedidos.
+
+### 🧃 EXEMPLO 2 – A CANTINA (MULTIPLICAÇÃO POR ESCALAR)
+
+A cantina tem a matriz nutricional:
+$$
+A = \begin{bmatrix}
+10 & 0 & 50 \\
+5 & 20 & 0 \\
+30 & 0 & 0
+\end{bmatrix}
+$$
+
+Se o preço de todos os alimentos **dobrar**, a nova matriz é:
+$$
+2A = \begin{bmatrix}
+20 & 0 & 100 \\
+10 & 40 & 0 \\
+60 & 0 & 0
+\end{bmatrix}
+$$
+
+**Interpretação:** Cada nutriente é multiplicado por 2 (ou o preço dobra).
+
+### 📚 EXEMPLO 3 – A BIBLIOTECA (SUBTRAÇÃO DE PLANOS DE ESTUDO)
+
+Um aluno tem dois planos de estudo:
+
+**Plano A:**
+$$
+A = \begin{bmatrix}
+10 & 5 & 0 \\
+8 & 0 & 12 \\
+6 & 8 & 4
+\end{bmatrix}
+$$
+
+**Plano B:**
+$$
+B = \begin{bmatrix}
+8 & 3 & 2 \\
+5 & 2 & 10 \\
+4 & 6 & 3
+\end{bmatrix}
+$$
+
+**Diferença (quanto A tem a mais que B):**
+$$
+A - B = \begin{bmatrix}
+10-8 & 5-3 & 0-2 \\
+8-5 & 0-2 & 12-10 \\
+6-4 & 8-6 & 4-3
+\end{bmatrix} = \begin{bmatrix}
+2 & 2 & -2 \\
+3 & -2 & 2 \\
+2 & 2 & 1
+\end{bmatrix}
+$$
+
+**Interpretação:** Valores negativos indicam que o Plano B tem mais daquele conteúdo.
+
+## 5. Quando Fazer um Exercício Computacional?
+
+**Aqui faz sentido!** Porque:
+- Soma, subtração e escalar são operações **triviais de implementar**.
+- Ajuda a fixar a ideia de que **matrizes são estruturas de dados**.
+- É um **primeiro contato** com programação numérica.
+
+Vou oferecer como **bônus opcional** no final dos exercícios.
+
+## 6. Exercícios Propostos (Manuais)
+
+<details>
+<summary>📗 Exercício 1 (Soma de Matrizes)</summary>
+
+**Enunciado:** Dadas:
+$$
+A = \begin{bmatrix} 2 & 4 \\ 6 & 8 \end{bmatrix}, \quad
+B = \begin{bmatrix} 1 & 3 \\ 5 & 7 \end{bmatrix}
+$$
+
+Calcule $A + B$.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+$$
+A + B = \begin{bmatrix} 3 & 7 \\ 11 & 15 \end{bmatrix}
+$$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 (Subtração de Matrizes)</summary>
+
+**Enunciado:** Dadas:
+$$
+A = \begin{bmatrix} 5 & 7 \\ 9 & 11 \end{bmatrix}, \quad
+B = \begin{bmatrix} 2 & 4 \\ 6 & 8 \end{bmatrix}
+$$
+
+Calcule $A - B$.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+$$
+A - B = \begin{bmatrix} 3 & 3 \\ 3 & 3 \end{bmatrix}
+$$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 (Multiplicação por Escalar)</summary>
+
+**Enunciado:** Dada:
+$$
+A = \begin{bmatrix} 1 & 2 & 3 \\ 4 & 5 & 6 \end{bmatrix}
+$$
+
+Calcule:
+a) $3A$  
+b) $-2A$  
+c) $\frac{1}{2}A$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $3A = \begin{bmatrix} 3 & 6 & 9 \\ 12 & 15 & 18 \end{bmatrix}$
+
+b) $-2A = \begin{bmatrix} -2 & -4 & -6 \\ -8 & -10 & -12 \end{bmatrix}$
+
+c) $\frac{1}{2}A = \begin{bmatrix} 0.5 & 1 & 1.5 \\ 2 & 2.5 & 3 \end{bmatrix}$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 (Combinação de Operações)</summary>
+
+**Enunciado:** Dadas:
+$$
+A = \begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix}, \quad
+B = \begin{bmatrix} 0 & 1 \\ 2 & 3 \end{bmatrix}
+$$
+
+Calcule:
+a) $2A + B$  
+b) $A - 3B$  
+c) $4A - 2B$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $2A + B = \begin{bmatrix} 2 & 4 \\ 6 & 8 \end{bmatrix} + \begin{bmatrix} 0 & 1 \\ 2 & 3 \end{bmatrix} = \begin{bmatrix} 2 & 5 \\ 8 & 11 \end{bmatrix}$
+
+b) $A - 3B = \begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix} - \begin{bmatrix} 0 & 3 \\ 6 & 9 \end{bmatrix} = \begin{bmatrix} 1 & -1 \\ -3 & -5 \end{bmatrix}$
+
+c) $4A - 2B = \begin{bmatrix} 4 & 8 \\ 12 & 16 \end{bmatrix} - \begin{bmatrix} 0 & 2 \\ 4 & 6 \end{bmatrix} = \begin{bmatrix} 4 & 6 \\ 8 & 10 \end{bmatrix}$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 (Propriedades – Verificação)</summary>
+
+**Enunciado:** Verifique a propriedade distributiva $c(A + B) = cA + cB$ para:
+$$
+A = \begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix}, \quad
+B = \begin{bmatrix} 5 & 6 \\ 7 & 8 \end{bmatrix}, \quad
+c = 2
+$$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+Lado esquerdo: $2(A+B) = 2\left(\begin{bmatrix} 1 & 2 \\ 3 & 4 \end{bmatrix} + \begin{bmatrix} 5 & 6 \\ 7 & 8 \end{bmatrix}\right) = 2\begin{bmatrix} 6 & 8 \\ 10 & 12 \end{bmatrix} = \begin{bmatrix} 12 & 16 \\ 20 & 24 \end{bmatrix}$
+
+Lado direito: $2A + 2B = \begin{bmatrix} 2 & 4 \\ 6 & 8 \end{bmatrix} + \begin{bmatrix} 10 & 12 \\ 14 & 16 \end{bmatrix} = \begin{bmatrix} 12 & 16 \\ 20 & 24 \end{bmatrix}$
+
+✓ Propriedade verificada.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 (Aplicação – Lanchonete)</summary>
+
+**Enunciado:** Uma lanchonete tem dois pedidos:
+
+**Pedido 1:**
+$$
+P_1 = \begin{bmatrix} 1 & 1 & 0 \\ 0 & 0 & 1 \\ 2 & 2 & 2 \end{bmatrix}
+$$
+
+**Pedido 2:**
+$$
+P_2 = \begin{bmatrix} 2 & 0 & 1 \\ 1 & 1 & 1 \\ 0 & 1 & 0 \end{bmatrix}
+$$
+
+a) Calcule o pedido total $P_1 + P_2$.  
+b) Se o restaurante **dobrar** todos os ingredientes do Pedido 1, qual é a nova matriz?  
+c) Qual é a diferença $P_1 - P_2$?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $P_1 + P_2 = \begin{bmatrix} 3 & 1 & 1 \\ 1 & 1 & 2 \\ 2 & 3 & 2 \end{bmatrix}$
+
+b) $2P_1 = \begin{bmatrix} 2 & 2 & 0 \\ 0 & 0 & 2 \\ 4 & 4 & 4 \end{bmatrix}$
+
+c) $P_1 - P_2 = \begin{bmatrix} -1 & 1 & -1 \\ -1 & -1 & 0 \\ 2 & 1 & 2 \end{bmatrix}$
+
+</details>
+</details>
+
+## 7. EXERCÍCIO COMPUTACIONAL
+
+**Objetivo:** Fixar o conceito de que matrizes são estruturas de dados e que operações são elementares.
+
+<details>
+<summary>🐍 Ver código (Python/NumPy)</summary>
+
+```python
+import numpy as np
+
+A = np.array([[1, 2], [3, 4]])
+B = np.array([[5, 6], [7, 8]])
+
+print("Soma:\n", A + B)
+print("Subtração:\n", A - B)
+print("Escalar (2*A):\n", 2 * A)
+```
+
+</details>
+
+<details>
+<summary>📝 Ver código (R)</summary>
+
+```r
+A <- matrix(c(1, 2, 3, 4), nrow=2, ncol=2)
+B <- matrix(c(5, 6, 7, 8), nrow=2, ncol=2)
+
+print("Soma:")
+print(A + B)
+print("Subtração:")
+print(A - B)
+print("Escalar (2*A):")
+print(2 * A)
+```
+
+</details>
+
+<details>
+<summary>📊 Ver instruções (Excel)</summary>
+
+|   | A | B |
+|---|---|---|
+| 1 | 1 | 2 |
+| 2 | 3 | 4 |
+
+|   | C | D |
+|---|---|---|
+| 1 | 5 | 6 |
+| 2 | 7 | 8 |
+
+- **Soma:** `=A1+C1` e arraste.
+- **Subtração:** `=A1-C1` e arraste.
+- **Escalar:** `=2*A1` e arraste.
+
+</details>
+
+> *Soma, subtração e multiplicação por escalar são operações elementares (elemento a elemento) e são a base para operações mais complexas como multiplicação de matrizes. Elas aparecem em FL (agregação de gradientes) e em pré-processamento de dados.*
+

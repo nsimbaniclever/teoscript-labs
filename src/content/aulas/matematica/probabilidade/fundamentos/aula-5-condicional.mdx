@@ -1,0 +1,470 @@
+# Probabilidade Condicional ( | )
+
+## 1. 🎯 O que é Probabilidade Condicional?
+
+> **Probabilidade Condicional** é a probabilidade de um evento ocorrer **dado que** outro evento já ocorreu.
+
+**Notação:** $P(A|B)$ — lê-se "probabilidade de A **dado** B".
+
+### Explicação
+
+Imagine que você está jogando um dado e alguém te dá uma informação: "o resultado é um número par". Com essa informação, a chance de ter saído o número 2 **aumenta** de $1/6$ para $1/3$, porque o espaço amostral se reduziu de 6 para 3 possibilidades (2, 4, 6).
+
+### Palavra-chave
+> **"DADO QUE"** — você já sabe que uma condição foi satisfeita.
+
+## 2. 📐 A Fórmula Fundamental
+
+### Definição Formal
+> **$P(A|B) = \frac{P(A \cap B)}{P(B)}$** , desde que $P(B) > 0$
+
+### Explicação da Fórmula
+- **Numerador** $P(A \cap B)$: probabilidade de **ambos** acontecerem.
+- **Denominador** $P(B)$: probabilidade do evento **condicionante** (o que já sabemos que ocorreu).
+- O denominador "reduz" o espaço amostral para apenas os casos onde B aconteceu.
+
+### Regra de Ouro
+> **A probabilidade condicional é uma "recalibragem" da probabilidade: você refaz o cálculo considerando apenas os casos em que B ocorreu.**
+
+### Exemplo 1.1 — Dado (par e número 2)
+
+**Enunciado:** Lança-se um dado. Sabendo que o resultado é **par**, qual a probabilidade de ter saído o número **2**?
+
+**Passo 1 — Identificar os eventos:**
+- A = sair **número 2** → $P(A) = 1/6$
+- B = sair **número par** = {2,4,6} → $P(B) = 3/6 = 1/2$
+
+**Passo 2 — Calcular a interseção:**
+- $A \cap B$ = sair **2 E par** = {2} → $P(A \cap B) = 1/6$
+
+**Passo 3 — Aplicar a fórmula:**
+> $P(A|B) = \frac{1/6}{3/6} = \frac{1}{3} \approx 33,3\%$
+
+**Resposta:** A probabilidade é **1/3** (33,3%). Compare com $P(A) = 1/6$: a informação "é par" **dobrou** a chance de ser 2!
+
+### Exemplo 1.2 — Dado (maior que 4 e par)
+
+**Enunciado:** Lança-se um dado. Sabendo que o resultado é **par**, qual a probabilidade de ser **maior que 4**?
+
+**Passo 1 — Identificar os eventos:**
+- A = sair **maior que 4** = {5,6} → $P(A) = 2/6 = 1/3$
+- B = sair **par** = {2,4,6} → $P(B) = 3/6 = 1/2$
+
+**Passo 2 — Calcular a interseção:**
+- $A \cap B$ = {6} → $P(A \cap B) = 1/6$
+
+**Passo 3 — Aplicar a fórmula:**
+> $P(A|B) = \frac{1/6}{3/6} = \frac{1}{3} \approx 33,3\%$
+
+**Resposta:** A probabilidade é **1/3** (33,3%). Comparando com $P(A) = 1/3$: neste caso, a informação "é par" **não alterou** a probabilidade! Isso indica que A e B são **independentes**.
+
+## 3. 🔍 Interpretação Geométrica
+
+### Visualização com Diagrama de Venn
+
+
+```text
+                    █████████████████████            █████████████████████
+                 ████                   ████     ████                     ████
+               ███                         ███  █                             ███
+             ██                               ██                                 ██
+            █                               █   █                                  █
+           █                               █     █                                  █
+          █                               █       █                                  █
+          █                              █          █                                 █
+          █             B               █    A∩B     █                A               █     
+          █                            █            █                                 █
+          █                              █         █                                  █
+           █                              █      █                                   █
+            █                              █    █                                   █
+             ██                              ███                                 ██
+               ███                         ███ █                              ███
+                 ████                   ████     ████                     ████
+                    █████████████████████            █████████████████████
+                  
+```
+
+**Para calcular $P(A|B)$:**
+- **Novo espaço amostral** = apenas a região de B.
+- **Evento de interesse** = a região onde A e B se sobrepõem ($A \cap B$).
+- **Fórmula visual:** $P(A|B) = \frac{\text{área de } A \cap B}{\text{área de } B}$.
+
+## 4. 📋 Casos Especiais da Probabilidade Condicional
+
+### Caso 1: Eventos Independentes
+> Se A e B são **independentes**, então $P(A|B) = P(A)$. Ou seja, saber que B ocorreu **não muda** a probabilidade de A.
+
+**Verificação:** $P(A|B) = \frac{P(A \cap B)}{P(B)} = \frac{P(A) \times P(B)}{P(B)} = P(A)$
+
+### Caso 2: Eventos Mutuamente Exclusivos
+> Se A e B são **mutuamente exclusivos**, então $P(A|B) = 0$. Ou seja, se B ocorreu, A **não pode** ter ocorrido.
+
+**Verificação:** $P(A|B) = \frac{P(A \cap B)}{P(B)} = \frac{0}{P(B)} = 0$
+
+### Caso 3: Evento Certo
+> Se B é o espaço amostral inteiro (B = Ω), então $P(A|B) = P(A)$.
+
+**Verificação:** $P(A|\Omega) = \frac{P(A \cap \Omega)}{P(\Omega)} = \frac{P(A)}{1} = P(A)$
+
+## 5. 💡 Exemplos Práticos
+
+### Exemplo 5.1 — Dado (condicional com múltiplos eventos)
+
+**Enunciado:** Lança-se um dado. Sabendo que o resultado é **maior que 3**, qual a probabilidade de ser **par**?
+
+**Passo 1 — Identificar os eventos:**
+- A = sair **par** = {2,4,6} → $P(A) = 3/6 = 1/2$
+- B = sair **maior que 3** = {4,5,6} → $P(B) = 3/6 = 1/2$
+
+**Passo 2 — Calcular a interseção:**
+- $A \cap B$ = {4,6} → $P(A \cap B) = 2/6 = 1/3$
+
+**Passo 3 — Aplicar a fórmula:**
+> $P(A|B) = \frac{1/3}{1/2} = \frac{2}{3} \approx 66,7\%$
+
+**Resposta:** A probabilidade é **2/3** (66,7%). Comparando com $P(A) = 1/2$, a informação "maior que 3" **aumentou** a chance de ser par.
+
+### Exemplo 5.2 — Urna com bolas (com reposição)
+
+**Enunciado:** Uma urna tem 4 bolas vermelhas e 6 azuis. Retira-se uma bola **com reposição**. Sabendo que a primeira bola foi vermelha, qual a probabilidade de a segunda ser vermelha?
+
+**Passo 1 — Identificar os eventos:**
+- A = 2ª bola é **vermelha** → $P(A) = 4/10 = 2/5$
+- B = 1ª bola é **vermelha** → $P(B) = 4/10 = 2/5$
+
+**Passo 2 — Verificar a independência:**
+- Como há **reposição**, o resultado da 1ª bola **não afeta** a 2ª. Portanto, são **independentes**.
+
+**Passo 3 — Aplicar a propriedade:**
+> $P(A|B) = P(A) = 2/5 = 40\%$
+
+**Resposta:** A probabilidade é **40%**.
+
+### Exemplo 5.3 — Urna com bolas (sem reposição)
+
+**Enunciado:** Uma urna tem 4 bolas vermelhas e 6 azuis. Retira-se uma bola **sem reposição**. Sabendo que a primeira bola foi vermelha, qual a probabilidade de a segunda ser vermelha?
+
+**Passo 1 — Identificar os eventos:**
+- A = 2ª bola é **vermelha**
+- B = 1ª bola é **vermelha**
+
+**Passo 2 — Calcular a condicional diretamente (já que é sem reposição):**
+- Após retirar uma vermelha, restam 3 vermelhas e 6 azuis (total 9).
+- $P(A|B) = 3/9 = 1/3 \approx 33,3\%$
+
+**Resposta:** A probabilidade é **1/3** (33,3%). Comparando com $P(A) = 4/10 = 40\%$, a informação "primeira foi vermelha" **diminuiu** a chance da segunda ser vermelha.
+
+### Exemplo 5.4 — Cartas sem reposição
+
+**Enunciado:** Retiram-se 2 cartas **sem reposição** de um baralho de 52. Sabendo que a primeira carta é um **Ás**, qual a probabilidade de a segunda ser um **Rei**?
+
+**Passo 1 — Identificar os eventos:**
+- A = 2ª carta é **Rei**
+- B = 1ª carta é **Ás**
+
+**Passo 2 — Calcular a condicional diretamente:**
+- Após retirar um Ás, restam 51 cartas, com 4 Reis.
+- $P(A|B) = 4/51 \approx 7,84\%$
+
+**Resposta:** A probabilidade é **4/51** (7,84%).
+
+### Exemplo 5.5 — Probabilidade condicional com dois dados
+
+**Enunciado:** Lançam-se dois dados (um vermelho e um azul). Sabendo que a **soma é 7**, qual a probabilidade de o dado vermelho ter saído **4**?
+
+**Passo 1 — Identificar os eventos:**
+- A = dado vermelho dá **4**
+- B = soma dos dados é **7**
+
+**Passo 2 — Listar o espaço amostral de B (soma 7):**
+- (1,6), (2,5), (3,4), (4,3), (5,2), (6,1) → 6 resultados
+
+**Passo 3 — Identificar $A \cap B$ (soma 7 E vermelho = 4):**
+- (4,3) → 1 resultado
+
+**Passo 4 — Aplicar a fórmula:**
+> $P(A|B) = \frac{1}{6} \approx 16,7\%$
+
+**Resposta:** A probabilidade é **1/6** (16,7%).
+
+### Exemplo 5.6 — Probabilidade condicional com duas moedas
+
+**Enunciado:** Lançam-se duas moedas. Sabendo que **pelo menos uma é cara**, qual a probabilidade de **ambas serem caras**?
+
+**Passo 1 — Identificar os eventos:**
+- A = ambas são **caras** = (C,C)
+- B = pelo menos uma é **cara** = (C,C), (C,K), (K,C)
+
+**Passo 2 — Contar os casos:**
+- $|B| = 3$
+- $|A \cap B| = 1$ (apenas C,C)
+
+**Passo 3 — Aplicar a fórmula:**
+> $P(A|B) = \frac{|A \cap B|}{|B|} = \frac{1}{3} \approx 33,3\%$
+
+**Resposta:** A probabilidade é **1/3** (33,3%).
+
+## 6. 📐 Regra da Multiplicação (A partir da Condicional)
+
+### Fórmula
+> A partir da definição $P(A|B) = \frac{P(A \cap B)}{P(B)}$, podemos escrever:
+
+> **$P(A \cap B) = P(B) \times P(A|B)$**
+
+### Explicação
+Esta é a **regra da multiplicação** para eventos dependentes. Ela permite calcular a interseção quando conhecemos uma probabilidade condicional.
+
+### Exemplo 6.1 — Dois reis sem reposição
+
+**Enunciado:** Qual a probabilidade de tirar **dois reis** ao retirar 2 cartas **sem reposição** de um baralho de 52?
+
+**Passo 1 — Identificar os eventos:**
+- B = 1ª carta é **Rei** → $P(B) = 4/52 = 1/13$
+- $A|B$ = 2ª carta é **Rei** dado que a 1ª foi Rei → $P(A|B) = 3/51 = 1/17$
+
+**Passo 2 — Aplicar a regra da multiplicação:**
+> $P(A \cap B) = 1/13 \times 1/17 = 1/221 \approx 0,45\%$
+
+**Resposta:** A probabilidade é **1/221** (0,45%).
+
+## 7. 🔗 Independência versus Dependência (Revisão)
+
+### Teste de Independência usando Condicional
+> **A e B são independentes se, e somente se:**
+> - $P(A|B) = P(A)$ **ou**
+> - $P(B|A) = P(B)$
+
+### Exemplo 7.1 — Verificando independência
+
+**Enunciado:** Lança-se um dado. Sejam:
+- A = sair **número par** = {2,4,6}
+- B = sair **número maior que 3** = {4,5,6}
+
+**Pergunta:** A e B são independentes?
+
+**Passo 1 — Calcular $P(A|B)$:**
+- B = {4,5,6} → 3 casos
+- $A \cap B$ = {4,6} → 2 casos
+- $P(A|B) = 2/3$
+
+**Passo 2 — Calcular $P(A)$:**
+- $P(A) = 3/6 = 1/2$
+
+**Passo 3 — Comparar:**
+- $P(A|B) = 2/3 \neq 1/2 = P(A)$
+- **Conclusão:** A e B são **DEPENDENTES**.
+
+## 8. 📋 Quadro Resumo — Probabilidade Condicional
+
+| Conceito | Fórmula | Quando usar |
+|----------|---------|-------------|
+| **Definição** | $P(A \mid B) = \dfrac{P(A \cap B)}{P(B)}$ | Sempre que precisar de condicional |
+| **Independentes** | $P(A \mid B) = P(A)$ | Quando um não afeta o outro |
+| **Mutuamente Exclusivos** | $P(A \mid B) = 0$ | Quando um impede o outro |
+| **Regra da Multiplicação** | $P(A \cap B) = P(B) \times P(A \mid B)$ | Para calcular interseções |
+
+## 9. 🧠 Macete de Ouro — Probabilidade Condicional
+
+| Pergunta | Resposta |
+|----------|----------|
+| **A pergunta contém "dado que" ou "sabendo que"?** | Use condicional $P(A|B)$ |
+| **O evento condicionante reduz o espaço amostral?** | SIM — B é seu novo universo |
+| **Quer saber se são independentes?** | Compare $P(A|B)$ com $P(A)$ |
+| **Quer calcular interseção?** | Use $P(A \cap B) = P(B) \times P(A|B)$ |
+
+## 10. 🗺️ Mapa Mental da Probabilidade Condicional
+
+```text
+PROBABILIDADE CONDICIONAL
+│
+├── 1. DEFINIÇÃO
+│   └── P(A|B) = probabilidade de A dado que B ocorreu
+│
+├── 2. FÓRMULA FUNDAMENTAL
+│   └── P(A|B) = P(A∩B) / P(B)
+│
+├── 3. CASOS ESPECIAIS
+│   ├── Independentes → P(A|B) = P(A)
+│   ├── Mutuamente Exclusivos → P(A|B) = 0
+│   └── Evento Certo → P(A|Ω) = P(A)
+│
+├── 4. REGRA DA MULTIPLICAÇÃO
+│   └── P(A∩B) = P(B) × P(A|B)
+│
+├── 5. APLICAÇÕES
+│   ├── Dados, moedas, cartas
+│   ├── Urnas com e sem reposição
+│   └── Situações com informação parcial
+│
+└── 6. TESTE DE INDEPENDÊNCIA
+    └── Comparar P(A|B) com P(A)
+```
+
+## 📝 Exercícios
+
+<details>
+<summary>📗 Exercício 1 — Dado (condicional básica)</summary>
+
+**Enunciado:** Lança-se um dado. Sabendo que o resultado é **maior que 2**, qual a probabilidade de ser **ímpar**?
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**Passo 1 — Identificar os eventos:**
+- A = sair **ímpar** = {1,3,5} → $P(A) = 3/6 = 1/2$
+- B = sair **maior que 2** = {3,4,5,6} → $P(B) = 4/6 = 2/3$
+
+**Passo 2 — Calcular a interseção:**
+- $A \cap B$ = {3,5} → $P(A \cap B) = 2/6 = 1/3$
+
+**Passo 3 — Aplicar a fórmula:**
+> $P(A|B) = \frac{1/3}{2/3} = \frac{1}{2} = 50\%$
+
+**Resposta:** A probabilidade é **50%**.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Urna com reposição</summary>
+
+**Enunciado:** Uma urna tem 3 bolas brancas e 7 pretas. Retira-se uma bola **com reposição**. Sabendo que a primeira foi branca, qual a probabilidade de a segunda ser branca?
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**Passo 1 — Identificar os eventos:**
+- A = 2ª bola é **branca** → $P(A) = 3/10$
+- B = 1ª bola é **branca** → $P(B) = 3/10$
+
+**Passo 2 — Verificar a independência:**
+- Com reposição, os eventos são **independentes**.
+
+**Passo 3 — Aplicar a propriedade:**
+> $P(A|B) = P(A) = 3/10 = 30\%$
+
+**Resposta:** A probabilidade é **30%**.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Urna sem reposição</summary>
+
+**Enunciado:** Uma urna tem 3 bolas brancas e 7 pretas. Retira-se uma bola **sem reposição**. Sabendo que a primeira foi branca, qual a probabilidade de a segunda ser branca?
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**Passo 1 — Identificar os eventos:**
+- A = 2ª bola é **branca**
+- B = 1ª bola é **branca**
+
+**Passo 2 — Calcular a condicional diretamente:**
+- Após retirar uma branca, restam 2 brancas e 7 pretas (total 9).
+- $P(A|B) = 2/9 \approx 22,2\%$
+
+**Resposta:** A probabilidade é **2/9** (22,2%).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Dois dados (condicional)</summary>
+
+**Enunciado:** Lançam-se dois dados. Sabendo que a **soma é 8**, qual a probabilidade de o primeiro dado ter saído **3**?
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**Passo 1 — Identificar os eventos:**
+- A = primeiro dado dá **3**
+- B = soma dos dados é **8**
+
+**Passo 2 — Listar B (soma 8):**
+- (2,6), (3,5), (4,4), (5,3), (6,2) → 5 resultados
+
+**Passo 3 — Identificar $A \cap B$ (soma 8 E primeiro = 3):**
+- (3,5) → 1 resultado
+
+**Passo 4 — Aplicar a fórmula:**
+> $P(A|B) = 1/5 = 20\%$
+
+**Resposta:** A probabilidade é **1/5** (20%).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Teste de independência</summary>
+
+**Enunciado:** Lança-se um dado. Sejam:
+- A = sair **número par** = {2,4,6}
+- B = sair **número ímpar** = {1,3,5}
+
+**Pergunta:** A e B são independentes?
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**Passo 1 — Calcular $P(A|B)$:**
+- $A \cap B = \emptyset$ → $P(A \cap B) = 0$
+- $P(A|B) = 0$
+
+**Passo 2 — Calcular $P(A)$:**
+- $P(A) = 3/6 = 1/2$
+
+**Passo 3 — Comparar:**
+- $0 \neq 1/2$
+- **Conclusão:** A e B são **DEPENDENTES** (na verdade, são mutuamente exclusivos).
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Regra da multiplicação (com condicional)</summary>
+
+**Enunciado:** Uma urna tem 5 bolas vermelhas e 5 azuis. Retiram-se **2 bolas sem reposição**. Qual a probabilidade de sair **duas vermelhas**?
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+**Passo 1 — Identificar os eventos:**
+- A = 2ª bola é **vermelha**
+- B = 1ª bola é **vermelha**
+
+**Passo 2 — Calcular $P(B)$ e $P(A|B)$:**
+- $P(B) = 5/10 = 1/2$
+- $P(A|B) = 4/9$
+
+**Passo 3 — Aplicar a regra da multiplicação:**
+> $P(A \cap B) = 1/2 \times 4/9 = 4/18 = 2/9 \approx 22,2\%$
+
+**Resposta:** A probabilidade é **2/9** (22,2%).
+
+</details>
+</details>
+
+## 🎯 Desafio Final
+
+**Enunciado:** Em uma sala, 60% das pessoas gostam de café, 40% gostam de chá, e 20% gostam de ambos. Se uma pessoa é escolhida aleatoriamente:
+
+- a) Qual a probabilidade de ela gostar de café, sabendo que gosta de chá?
+- b) Café e chá são independentes?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**a) $P(\text{Café | Chá})$:**
+- $P(C \cap T) = 20\% = 0,2$
+- $P(T) = 40\% = 0,4$
+- $P(C|T) = 0,2 / 0,4 = 0,5 = 50\%$
+
+**b) Teste de independência:**
+- $P(C) = 60\% = 0,6$
+- $P(C|T) = 0,5 \neq 0,6$
+- **Conclusão:** Café e chá são **DEPENDENTES**.
+
+</details>
+
+> *A probabilidade condicional é a ferramenta que nos permite atualizar nossas crenças à medida que recebemos novas informações — o primeiro passo para o raciocínio bayesiano.*

@@ -1,0 +1,404 @@
+# Testes para Médias I
+
+## O que vamos aprender nesta aula?
+
+Agora que já conhecemos os fundamentos dos testes de hipóteses, vamos aplicá-los para testar hipóteses sobre **médias populacionais**. Esta aula cobre:
+
+1. **Teste z para média** (variância populacional $\sigma^2$ conhecida)
+2. **Teste t para uma amostra** (variância populacional $\sigma^2$ desconhecida)
+3. **Teste t para duas amostras independentes** (comparação de duas médias)
+
+## Teste z para Média ($\sigma$ conhecido)
+
+Quando a variância populacional $\sigma^2$ é conhecida, usamos a distribuição Normal para testar hipóteses sobre a média $\mu$.
+
+**Estatística de teste:**
+
+>> $$Z = \frac{\bar{X} - \mu_0}{\sigma/\sqrt{n}}$$
+
+onde:
+- $\bar{X}$ é a média amostral
+- $\mu_0$ é o valor testado (sob $H_0$)
+- $\sigma$ é o desvio padrão populacional (conhecido)
+- $n$ é o tamanho da amostra
+
+**Regras de decisão:**
+
+| Tipo de teste | $H_1$ | Rejeitar $H_0$ se |
+| --- | --- | --- |
+| Bicaudal | $\mu \ne \mu_0$ | $\mid Z \mid > Z_{\alpha/2}$ |
+| Unilateral superior | $\mu > \mu_0$ | $Z > Z_{\alpha}$ |
+| Unilateral inferior | $\mu < \mu_0$ | $Z < -Z_{\alpha}$ |
+
+**Exemplo 1: Teste z bicaudal**
+
+Um fabricante afirma que suas lâmpadas duram em média 1000 horas. Sabe-se que $\sigma = 80$ horas. Uma amostra de 64 lâmpadas tem média 980 horas. Teste a afirmação com $\alpha = 0,05$.
+
+**Resolução:**
+
+1. $H_0: \mu = 1000$; $H_1: \mu \ne 1000$
+2. $\alpha = 0,05$ (bicaudal $\to Z_{0,025} = 1,96$)
+3. $Z = \frac{980 - 1000}{80/\sqrt{64}} = \frac{-20}{10} = -2,0$
+4. $\mid Z \mid = 2,0 > 1,96 \to$ Rejeitar $H_0$
+5. Conclusão: Há evidência de que a vida média das lâmpadas é diferente de 1000 horas.
+
+**Exemplo 2: Teste z unilateral superior**
+
+Um novo processo produtivo deve aumentar a vida média das lâmpadas. Sabe-se que $\sigma = 80$ horas. Uma amostra de 64 lâmpadas do novo processo tem média 1020 horas. Teste se houve aumento ($\alpha = 0,05$).
+
+**Resolução:**
+
+1. $H_0: \mu = 1000$; $H_1: \mu > 1000$
+2. $\alpha = 0,05$ (unilateral $\to Z_{0,05} = 1,645$)
+3. $Z = \frac{1020 - 1000}{80/\sqrt{64}} = \frac{20}{10} = 2,0$
+4. $Z = 2,0 > 1,645 \to$ Rejeitar $H_0$
+5. Conclusão: Há evidência de que o novo processo aumentou a vida média.
+
+**Exemplo 3: Teste z unilateral inferior**
+
+Uma máquina deve produzir peças com diâmetro médio de 5mm. Sabe-se que $\sigma = 0,2$mm. Uma amostra de 36 peças tem média 4,94mm. Teste se a máquina está produzindo peças menores ($\alpha = 0,01$).
+
+**Resolução:**
+
+1. $H_0: \mu = 5$; $H_1: \mu < 5$
+2. $\alpha = 0,01$ (unilateral $\to Z_{0,01} = 2,326$; região crítica: $Z < -2,326$)
+3. $Z = \frac{4,94 - 5}{0,2/\sqrt{36}} = \frac{-0,06}{0,0333} = -1,8$
+4. $Z = -1,8 > -2,326 \to$ Não rejeitar $H_0$
+5. Conclusão: Não há evidência suficiente de que a máquina está produzindo peças menores.
+
+**Exemplo 4: Teste z bicaudal (com p-valor)**
+
+Um teste z resulta em $Z = 2,5$. Encontre o p-valor para um teste bicaudal.
+
+**Resolução:**
+
+p-valor = $2 \cdot P(Z > 2,5) = 2 \cdot (1 - 0,9938) = 2 \cdot 0,0062 = 0,0124$
+
+**Interpretação:** Se $\alpha = 0,05$, rejeitamos $H_0$ ($0,0124 < 0,05$).
+
+**Exemplo 5: Teste z unilateral (com p-valor)**
+
+$Z = -1,8$ para um teste unilateral inferior. Encontre o p-valor.
+
+**Resolução:**
+
+p-valor = $P(Z < -1,8) = 0,0359$
+
+**Interpretação:** Se $\alpha = 0,05$, rejeitamos $H_0$ ($0,0359 < 0,05$).
+
+## Teste t para uma Amostra ($\sigma$ desconhecido)
+
+Quando a variância populacional $\sigma^2$ é desconhecida, usamos a distribuição $t$-Student com $n-1$ graus de liberdade.
+
+**Estatística de teste:**
+
+>> $$t = \frac{\bar{X} - \mu_0}{S/\sqrt{n}}$$
+
+onde $S$ é o desvio padrão amostral.
+
+**Regras de decisão:**
+
+| Tipo de teste | $H_1$ | Rejeitar $H_0$ se |
+| --- | --- | --- |
+| Bicaudal | $\mu \ne \mu_0$ | $\mid t \mid > t_{\alpha/2, n-1}$ |
+| Unilateral superior | $\mu > \mu_0$ | $t > t_{\alpha, n-1}$ |
+| Unilateral inferior | $\mu < \mu_0$ | $t < -t_{\alpha, n-1}$ |
+
+**Exemplo 1: Teste t para uma amostra (bicaudal)**
+
+Uma amostra de 25 elementos tem média 52 e desvio padrão 6. Teste se $\mu = 50$ ($\alpha = 0,05$).
+
+**Resolução:**
+
+1. $H_0: \mu = 50$; $H_1: \mu \ne 50$
+2. $\alpha = 0,05$; $\nu = 24$; $t_{0,025, 24} = 2,064$
+3. $t = \frac{52 - 50}{6/\sqrt{25}} = \frac{2}{1,2} = 1,667$
+4. $\mid t \mid = 1,667 < 2,064 \to$ Não rejeitar $H_0$
+5. Conclusão: Não há evidência suficiente para dizer que $\mu$ é diferente de 50.
+
+**Exemplo 2: Teste t para uma amostra (unilateral superior)**
+
+Uma amostra de 20 elementos tem média 35 e desvio padrão 4. Teste se $\mu > 33$ ($\alpha = 0,05$).
+
+**Resolução:**
+
+1. $H_0: \mu = 33$; $H_1: \mu > 33$
+2. $\alpha = 0,05$; $\nu = 19$; $t_{0,05, 19} = 1,729$
+3. $t = \frac{35 - 33}{4/\sqrt{20}} = \frac{2}{0,894} = 2,236$
+4. $t = 2,236 > 1,729 \to$ Rejeitar $H_0$
+5. Conclusão: Há evidência de que $\mu > 33$.
+
+**Exemplo 3: Teste t para uma amostra (unilateral inferior)**
+
+Uma amostra de 16 elementos tem média 45 e desvio padrão 5. Teste se $\mu < 48$ ($\alpha = 0,01$).
+
+**Resolução:**
+
+1. $H_0: \mu = 48$; $H_1: \mu < 48$
+2. $\alpha = 0,01$; $\nu = 15$; $t_{0,01, 15} = 2,602$; região: $t < -2,602$
+3. $t = \frac{45 - 48}{5/\sqrt{16}} = \frac{-3}{1,25} = -2,4$
+4. $t = -2,4 > -2,602 \to$ Não rejeitar $H_0$
+5. Conclusão: Não há evidência suficiente de que $\mu < 48$.
+
+**Exemplo 4: Teste t com p-valor**
+
+No exemplo 2, $t = 2,236$ com $\nu = 19$. Encontre o p-valor.
+
+**Resolução:**
+
+$P(t > 2,236) \approx 0,019$ (unilateral)
+
+**Interpretação:** Se $\alpha = 0,05$, rejeitamos $H_0$ ($0,019 < 0,05$).
+
+**Exemplo 5: Teste t (bicaudal) com p-valor**
+
+No exemplo 1, $t = 1,667$ com $\nu = 24$. Encontre o p-valor.
+
+**Resolução:**
+
+p-valor = $2 \cdot P(t > 1,667) \approx 2 \cdot 0,054 = 0,108$
+
+**Interpretação:** Se $\alpha = 0,05$, não rejeitamos $H_0$ ($0,108 > 0,05$).
+
+## Teste t para Duas Amostras Independentes
+
+Para comparar as médias de duas populações independentes, usamos o teste $t$ para duas amostras.
+
+### Caso 1: Variâncias iguais (teste $t$ com variância combinada)
+
+**Estatística de teste:**
+
+>> $$t = \frac{\bar{X}_1 - \bar{X}_2}{S_p \sqrt{\frac{1}{n_1} + \frac{1}{n_2}}}$$
+
+onde:
+
+>> $$S_p = \sqrt{\frac{(n_1-1)S_1^2 + (n_2-1)S_2^2}{n_1 + n_2 - 2}}$$
+
+**Graus de liberdade:** $\nu = n_1 + n_2 - 2$
+
+### Caso 2: Variâncias diferentes (teste $t$ de Welch)
+
+**Estatística de teste:**
+
+>> $$t = \frac{\bar{X}_1 - \bar{X}_2}{\sqrt{\frac{S_1^2}{n_1} + \frac{S_2^2}{n_2}}}$$
+
+**Graus de liberdade (aproximação de Welch):**
+
+>> $$\nu = \frac{\left(\frac{S_1^2}{n_1} + \frac{S_2^2}{n_2}\right)^2}{\frac{(S_1^2/n_1)^2}{n_1-1} + \frac{(S_2^2/n_2)^2}{n_2-1}}$$
+
+**Exemplo 1: Teste $t$ para duas amostras (variâncias iguais)**
+
+Duas amostras independentes:
+- $n_1 = 12$, $\bar{X}_1 = 50$, $S_1 = 4$
+- $n_2 = 15$, $\bar{X}_2 = 45$, $S_2 = 5$
+
+Teste se as médias são diferentes ($\alpha = 0,05$).
+
+**Resolução:**
+
+1. $H_0: \mu_1 = \mu_2$; $H_1: \mu_1 \ne \mu_2$
+2. $S_p = \sqrt{\frac{11 \cdot 16 + 14 \cdot 25}{12+15-2}} = \sqrt{\frac{176 + 350}{25}} = \sqrt{\frac{526}{25}} = 4,587$
+3. $t = \frac{50 - 45}{4,587 \cdot \sqrt{1/12 + 1/15}} = \frac{5}{4,587 \cdot 0,3873} = \frac{5}{1,777} = 2,814$
+4. $\nu = 25$; $t_{0,025, 25} = 2,060$
+5. $\mid t \mid = 2,814 > 2,060 \to$ Rejeitar $H_0$
+6. Conclusão: Há evidência de que as médias são diferentes.
+
+**Exemplo 2: Teste $t$ para duas amostras (variâncias diferentes)**
+
+Duas amostras:
+- $n_1 = 10$, $\bar{X}_1 = 30$, $S_1 = 6$
+- $n_2 = 15$, $\bar{X}_2 = 25$, $S_2 = 4$
+
+Teste se $\mu_1 > \mu_2$ ($\alpha = 0,05$).
+
+**Resolução:**
+
+1. $H_0: \mu_1 = \mu_2$; $H_1: \mu_1 > \mu_2$
+2. $t = \frac{30 - 25}{\sqrt{36/10 + 16/15}} = \frac{5}{\sqrt{3,6 + 1,067}} = \frac{5}{2,160} = 2,315$
+3. $\nu = \frac{(3,6+1,067)^2}{(3,6)^2/9 + (1,067)^2/14} = \frac{21,78}{12,96/9 + 1,138/14} = \frac{21,78}{1,44 + 0,0813} = \frac{21,78}{1,521} = 14,32 \approx 14$
+4. $t_{0,05, 14} = 1,761$
+5. $t = 2,315 > 1,761 \to$ Rejeitar $H_0$
+6. Conclusão: Há evidência de que $\mu_1 > \mu_2$.
+
+**Exemplo 3: Teste $t$ para duas amostras (unilateral inferior)**
+
+Duas amostras:
+- $n_1 = 20$, $\bar{X}_1 = 55$, $S_1 = 3$
+- $n_2 = 25$, $\bar{X}_2 = 57$, $S_2 = 4$
+
+Teste se $\mu_1 < \mu_2$ ($\alpha = 0,05$).
+
+**Resolução:**
+
+1. $H_0: \mu_1 = \mu_2$; $H_1: \mu_1 < \mu_2$
+2. $S_p = \sqrt{\frac{19 \cdot 9 + 24 \cdot 16}{20+25-2}} = \sqrt{\frac{171 + 384}{43}} = \sqrt{\frac{555}{43}} = \sqrt{12,907} = 3,593$
+3. $t = \frac{55 - 57}{3,593 \cdot \sqrt{1/20 + 1/25}} = \frac{-2}{3,593 \cdot 0,3} = \frac{-2}{1,078} = -1,855$
+4. $\nu = 43$; $t_{0,05, 43} = 1,681$; região: $t < -1,681$
+5. $t = -1,855 < -1,681 \to$ Rejeitar $H_0$
+6. Conclusão: Há evidência de que $\mu_1 < \mu_2$.
+
+**Exemplo 4: Teste $t$ para duas amostras com p-valor**
+
+No exemplo 1, $t = 2,814$ com $\nu = 25$. Encontre o p-valor.
+
+**Resolução:**
+
+p-valor = $2 \cdot P(t > 2,814) \approx 2 \cdot 0,0045 = 0,009$
+
+**Interpretação:** Se $\alpha = 0,05$, rejeitamos $H_0$ ($0,009 < 0,05$).
+
+**Exemplo 5: Comparação de variâncias antes do teste $t$**
+
+Antes de aplicar o teste $t$ para duas amostras, devemos verificar se as variâncias são iguais (usando o teste $F$). No exemplo 1, $S_1^2 = 16$, $S_2^2 = 25$.
+
+**Resolução:**
+
+$F = 25/16 = 1,5625$; $\nu_1 = 14$, $\nu_2 = 11$
+$F_{0,025, 14, 11} = 3,31$ (para teste bicaudal)
+$F = 1,5625 < 3,31 \to$ Não rejeitamos igualdade de variâncias.
+
+## Resumo: Quando Usar Cada Teste
+
+| Situação | Teste | Estatística | Distribuição |
+| --- | --- | --- | --- |
+| $\sigma$ conhecido | Teste z | $Z = (\bar{X} - \mu_0)/(\sigma/\sqrt{n})$ | Normal |
+| $\sigma$ desconhecido, 1 amostra | Teste t | $t = (\bar{X} - \mu_0)/(S/\sqrt{n})$ | $t(n-1)$ |
+| 2 amostras, variâncias iguais | Teste t | $t = (\bar{X}_1-\bar{X}_2)/(S_p\sqrt{1/n_1+1/n_2})$ | $t(n_1+n_2-2)$ |
+| 2 amostras, variâncias diferentes | Teste t (Welch) | $t = (\bar{X}_1-\bar{X}_2)/\sqrt{S_1^2/n_1+S_2^2/n_2}$ | $t(\nu)$ aproximado |
+
+## Analogias
+
+### Analogia 1: O cronômetro
+
+Testar uma média é como usar um cronômetro para verificar se o tempo médio de uma corrida é realmente o que o organizador afirma.
+
+### Analogia 2: A balança
+
+Testar duas médias é como comparar o peso médio de dois grupos de animais para ver se uma ração é melhor que a outra.
+
+### Analogia 3: O termômetro
+
+O teste $t$ é como um termômetro mais preciso que o teste $z$ quando não conhecemos a variabilidade da população.
+
+## Exercícios Resolvidos
+
+### Exercício 1 (Fácil)
+
+$\sigma = 10$, $n = 36$, $\bar{X} = 105$, $\mu_0 = 100$, $\alpha = 0,05$ (bicaudal). Teste z.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$Z = \frac{105 - 100}{10/\sqrt{36}} = \frac{5}{1,667} = 3,0$
+$Z_{0,025} = 1,96$
+$\mid Z \mid = 3,0 > 1,96 \to$ Rejeitar $H_0$
+
+**Resposta:** Rejeitar $H_0$. Há evidência de que $\mu \ne 100$.
+
+</details>
+
+### Exercício 2 (Fácil/Médio)
+
+$n = 20$, $\bar{X} = 45$, $S = 5$, $\mu_0 = 42$, $\alpha = 0,05$ (unilateral superior). Teste t.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$t = \frac{45 - 42}{5/\sqrt{20}} = \frac{3}{1,118} = 2,683$
+$\nu = 19$, $t_{0,05, 19} = 1,729$
+$t = 2,683 > 1,729 \to$ Rejeitar $H_0$
+
+**Resposta:** Rejeitar $H_0$. Há evidência de que $\mu > 42$.
+
+</details>
+
+### Exercício 3 (Médio)
+
+$n_1 = 10$, $\bar{X}_1 = 28$, $S_1 = 3$; $n_2 = 12$, $\bar{X}_2 = 25$, $S_2 = 4$. Teste se $\mu_1 > \mu_2$ ($\alpha = 0,05$), variâncias iguais.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$S_p = \sqrt{\frac{9 \cdot 9 + 11 \cdot 16}{10+12-2}} = \sqrt{\frac{81 + 176}{20}} = \sqrt{\frac{257}{20}} = 3,585$
+$t = \frac{28 - 25}{3,585 \cdot \sqrt{1/10 + 1/12}} = \frac{3}{3,585 \cdot 0,4282} = \frac{3}{1,535} = 1,954$
+$\nu = 20$, $t_{0,05, 20} = 1,725$
+$t = 1,954 > 1,725 \to$ Rejeitar $H_0$
+
+**Resposta:** Rejeitar $H_0$. Há evidência de que $\mu_1 > \mu_2$.
+
+</details>
+
+### Exercício 4 (Médio)
+
+$n = 25$, $\bar{X} = 80$, $S = 4$, $\mu_0 = 78$, $\alpha = 0,01$ (bicaudal). Teste t.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$t = \frac{80 - 78}{4/\sqrt{25}} = \frac{2}{0,8} = 2,5$
+$\nu = 24$, $t_{0,005, 24} = 2,797$
+$\mid t \mid = 2,5 < 2,797 \to$ Não rejeitar $H_0$
+
+**Resposta:** Não rejeitar $H_0$. Não há evidência suficiente de que $\mu \ne 78$.
+
+</details>
+
+### Exercício 5 (Difícil)
+
+$n_1 = 15$, $\bar{X}_1 = 100$, $S_1 = 5$; $n_2 = 20$, $\bar{X}_2 = 95$, $S_2 = 6$. Teste se $\mu_1 \ne \mu_2$ ($\alpha = 0,05$), variâncias diferentes.
+
+<details>
+<summary>💡 Ver resolução</summary>
+
+$t = \frac{100 - 95}{\sqrt{25/15 + 36/20}} = \frac{5}{\sqrt{1,667 + 1,8}} = \frac{5}{1,862} = 2,685$
+$\nu = \frac{(1,667+1,8)^2}{(1,667)^2/14 + (1,8)^2/19} = \frac{12,02}{2,778/14 + 3,24/19} = \frac{12,02}{0,1984 + 0,1705} = \frac{12,02}{0,3689} = 32,58 \approx 33$
+$t_{0,025, 33} = 2,035$
+$\mid t \mid = 2,685 > 2,035 \to$ Rejeitar $H_0$
+
+**Resposta:** Rejeitar $H_0$. Há evidência de que $\mu_1 \ne \mu_2$.
+
+</details>
+
+## Desafio Final com Resolução Completa
+
+Uma empresa quer comparar a eficiência de dois métodos de produção. O método A foi testado em 12 lotes com média de 85 peças/hora e desvio padrão de 4. O método B foi testado em 15 lotes com média de 82 peças/hora e desvio padrão de 5.
+
+a) Teste se o método A é mais eficiente que o método B ($\alpha = 0,05$), assumindo variâncias iguais.
+
+b) Qual o p-valor do teste?
+
+c) Teste se as variâncias são iguais ($\alpha = 0,05$).
+
+d) Se as variâncias forem diferentes, qual seria o resultado do teste?
+
+e) Interprete os resultados e dê uma recomendação para a empresa.
+
+<details>
+<summary>💡 Ver resolução completa</summary>
+
+a) $H_0: \mu_A = \mu_B$; $H_1: \mu_A > \mu_B$
+   $S_p = \sqrt{\frac{11 \cdot 16 + 14 \cdot 25}{12+15-2}} = \sqrt{\frac{176 + 350}{25}} = \sqrt{\frac{526}{25}} = 4,587$
+   $t = \frac{85 - 82}{4,587 \cdot \sqrt{1/12 + 1/15}} = \frac{3}{4,587 \cdot 0,3873} = \frac{3}{1,777} = 1,688$
+   $\nu = 25$; $t_{0,05, 25} = 1,708$
+   $t = 1,688 < 1,708 \to$ Não rejeitar $H_0$
+
+b) p-valor = $P(t > 1,688)$ com $\nu = 25 \approx 0,052$
+
+c) Teste F: $F = 25/16 = 1,5625$; $\nu_1 = 14$, $\nu_2 = 11$
+   $F_{0,025, 14, 11} = 3,36$; $F_{0,975, 14, 11} \approx 1/3,42 = 0,292$
+   $0,292 < 1,5625 < 3,36 \to$ Não rejeitar igualdade de variâncias
+
+d) Como as variâncias são iguais (não rejeitamos), usamos o teste do item (a).
+
+e) Não há evidência estatística suficiente ($\alpha = 0,05$) de que o método A é mais eficiente que o método B. O p-valor (0,052) está muito próximo de 0,05, sugerindo uma tendência, mas não conclusiva. A empresa pode considerar aumentar a amostra para obter mais poder ou testar o método A por mais tempo.
+
+**Respostas:**
+a) Não rejeitar $H_0$ (não há evidência de que $A > B$)
+b) p-valor $\approx 0,052$
+c) Não rejeitar igualdade de variâncias
+d) Mesmo resultado
+e) Não há evidência conclusiva; considerar aumentar a amostra
+
+</details>
+
+> *Testar médias é como usar uma régua para medir o que antes era apenas suposição — com o teste z e o teste t, transformamos incertezas em decisões baseadas em evidências.*

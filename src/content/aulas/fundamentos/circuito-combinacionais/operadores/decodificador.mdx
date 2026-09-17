@@ -1,0 +1,450 @@
+# Decodificador
+
+## 1. Introdução
+
+Nas aulas anteriores, aprendemos sobre o **Multiplexador (MUX)** — que seleciona uma entrada entre várias — e o **Demultiplexador (DEMUX)** — que direciona uma entrada para uma das várias saídas. Agora, vamos estudar o **Decodificador** — um circuito muito semelhante ao DEMUX, mas com uma diferença fundamental:
+
+> **Enquanto o DEMUX tem uma entrada de dados (F), o Decodificador tem apenas as entradas de seleção (endereço) e ativa exatamente uma saída para cada combinação.**
+
+O decodificador é um dos circuitos mais importantes na computação. Ele é a base de:
+
+- **Endereçamento de memória** (selecionar qual posição da RAM ler/escrever)
+- **Decodificação de instruções** (traduzir opcodes em sinais de controle)
+- **Controle de displays** (ativar segmentos em displays de 7 segmentos)
+- **Seleção de periféricos** (escolher qual dispositivo será acessado)
+
+Nesta aula, vamos aprender como os decodificadores funcionam, como construí-los a partir de portas lógicas, e como eles são usados em sistemas computacionais.
+
+
+## 2. O Que é um Decodificador?
+
+### 2.1 Definição
+
+Um **Decodificador** é um circuito combinacional que:
+
+> **Recebe n entradas (endereço binário) e ativa exatamente uma das 2ⁿ saídas correspondentes à combinação de entrada.**
+
+### 2.2 Analogia
+
+Pense no decodificador como um **interruptor de seleção de andar em um elevador**:
+
+- Você aperta o botão correspondente ao andar desejado (entrada binária).
+- O sistema ativa o motor que leva o elevador exatamente àquele andar (ativa a saída correspondente).
+- Apenas um andar é selecionado por vez.
+
+### 2.3 O Decodificador vs O DEMUX
+
+| Característica | DEMUX | Decodificador |
+|----------------|-------|---------------|
+| **Entrada de dados** | Sim (F) | Não |
+| **Entradas de seleção** | n bits | n bits |
+| **Saídas** | 2ⁿ (F direcionado para uma) | 2ⁿ (apenas uma ativa = 1) |
+| **Função** | Distribuir dados | Ativar uma saída |
+| **Analogia** | Distribuidor de água | Seletor de andar |
+
+### 2.4 Diagrama geral
+
+<details>
+<summary>🔧 Ver Diagrama Geral do Decodificador</summary>
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 450px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">DECODIFICADOR DE ENDEREÇO NA RAM</div>
+
+  <pre style="color: #93c5fd; font-size: 0.65rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    Endereço da CPU        Linhas de memória ativadas
+     ┌─────────────┐
+A₀ ─┤                             ├── Linha 0
+A₁ ─┤  DECOD.                  ├── Linha 1
+A₂ ─┤  3→8                      ├── Linha 2
+     │                                   ├── Linha 3
+     │                                   ├── Linha 4
+     │                                   ├── Linha 5
+     │                                   ├── Linha 6
+     │                                   ├── Linha 7
+     └─────────────┘
+  </pre>
+
+</div>
+
+</details>
+
+
+## 3. Decodificador 2→4 (2 entradas, 4 saídas)
+
+### 3.1 Definição
+
+Um decodificador 2→4 tem:
+
+- **2 entradas:** A₀ e A₁ (endereço)
+- **4 saídas:** Y₀, Y₁, Y₂, Y₃
+
+### 3.2 Tabela verdade
+
+| A₁ | A₀ | Y₀ | Y₁ | Y₂ | Y₃ |
+|----|----|----|----|----|----|
+| 0 | 0 | 1 | 0 | 0 | 0 |
+| 0 | 1 | 0 | 1 | 0 | 0 |
+| 1 | 0 | 0 | 0 | 1 | 0 |
+| 1 | 1 | 0 | 0 | 0 | 1 |
+
+### 3.3 Expressões lógicas
+
+> **Y₀ = ¬A₁ ∧ ¬A₀**  
+> **Y₁ = ¬A₁ ∧ A₀**  
+> **Y₂ = A₁ ∧ ¬A₀**  
+> **Y₃ = A₁ ∧ A₀**
+
+### 3.4 Diagrama do Decodificador 2→4
+
+<details>
+<summary>🔧 Ver Diagrama do Decodificador 2→4</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 400px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">DECODIFICADOR 2→4</div>
+
+  <pre style="color: #93c5fd; font-size: 0.65rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    A₀ ────── NOT ────┐
+                                           ├── AND ──── Y₀
+    A₁ ────── NOT ────┘
+
+    A₀ ───────────────┐
+                                           ├── AND ──── Y₁
+    A₁ ────── NOT ────┘
+
+    A₀ ────── NOT ────┐
+                                           ├── AND ──── Y₂
+    A₁ ───────────────┘
+
+    A₀ ───────────────┐
+                                           ├── AND ──── Y₃
+    A₁ ───────────────┘
+  </pre>
+
+  <div style="margin-top: 0.8rem; padding-top: 0.8rem; border-top: 1px solid rgba(255,255,255,0.05); display: flex; gap: 0.8rem; justify-content: center; flex-wrap: wrap;">
+    <span style="background: #1a3a5c; color: #93c5fd; padding: 0.15rem 0.6rem; border-radius: 12px; font-size: 0.55rem;">A₁A₀=00 → Y₀</span>
+    <span style="background: #2d1b69; color: #c4b5fd; padding: 0.15rem 0.6rem; border-radius: 12px; font-size: 0.55rem;">01 → Y₁</span>
+    <span style="background: #5c3a1a; color: #fde68a; padding: 0.15rem 0.6rem; border-radius: 12px; font-size: 0.55rem;">10 → Y₂</span>
+    <span style="background: #5c1a1a; color: #fca5a5; padding: 0.15rem 0.6rem; border-radius: 12px; font-size: 0.55rem;">11 → Y₃</span>
+  </div>
+
+</div>
+</details>
+
+### 3.5 Exemplo prático
+
+**Qual saída é ativada para A₁ = 1, A₀ = 0?**
+
+**Passo 1:** A₁ = 1, A₀ = 0 → endereço `10` = 2 em decimal
+**Passo 2:** Y₂ = A₁ ∧ ¬A₀ = 1 ∧ 1 = 1
+**Passo 3:** Y₀ = 0, Y₁ = 0, Y₃ = 0
+
+**Resposta:** Y₂ = 1 ✅
+
+
+## 4. Decodificador 3→8 (3 entradas, 8 saídas)
+
+### 4.1 Definição
+
+Um decodificador 3→8 tem:
+
+- **3 entradas:** A₀, A₁, A₂ (endereço)
+- **8 saídas:** Y₀ a Y₇
+
+### 4.2 Tabela verdade
+
+| A₂ | A₁ | A₀ | Saída ativa |
+|----|----|----|-------------|
+| 0 | 0 | 0 | Y₀ |
+| 0 | 0 | 1 | Y₁ |
+| 0 | 1 | 0 | Y₂ |
+| 0 | 1 | 1 | Y₃ |
+| 1 | 0 | 0 | Y₄ |
+| 1 | 0 | 1 | Y₅ |
+| 1 | 1 | 0 | Y₆ |
+| 1 | 1 | 1 | Y₇ |
+
+### 4.3 Exemplo prático
+
+**Qual saída é ativada para A₂ = 1, A₁ = 0, A₀ = 1?**
+
+**Passo 1:** A₂ = 1, A₁ = 0, A₀ = 1 → endereço `101` = 5 em decimal
+**Passo 2:** Y₅ é ativada
+
+**Resposta:** Y₅ = 1 ✅
+
+
+## 5. Decodificador 4→16 (4 entradas, 16 saídas)
+
+### 5.1 Definição
+
+Um decodificador 4→16 tem:
+
+- **4 entradas:** A₀, A₁, A₂, A₃ (endereço)
+- **16 saídas:** Y₀ a Y₁₅
+
+### 5.2 Exemplo prático
+
+**Qual saída é ativada para A₃ = 0, A₂ = 1, A₁ = 1, A₀ = 0?**
+
+**Passo 1:** Endereço = `0110` = 6 em decimal
+**Passo 2:** Y₆ é ativada
+
+**Resposta:** Y₆ = 1 ✅
+
+
+## 6. Decodificador como Endereçamento de Memória
+
+### 6.1 O problema
+
+Uma memória RAM tem várias posições (linhas). Como a CPU seleciona qual posição ler ou escrever?
+
+### 6.2 A solução: Decodificador de endereço
+
+A CPU envia um **endereço** (em binário) para o decodificador, que ativa a linha de memória correspondente.
+
+<details>
+<summary>🔧 Ver Diagrama do Decodificador na Memória</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 450px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">DECODIFICADOR DE ENDEREÇO NA RAM</div>
+
+  <pre style="color: #93c5fd; font-size: 0.65rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    Endereço da CPU        Linhas de memória ativadas
+     ┌─────────────┐
+A₀ ─┤                             ├── Linha 0
+A₁ ─┤  DECOD.                  ├── Linha 1
+A₂ ─┤  3→8                      ├── Linha 2
+     │                                   ├── Linha 3
+     │                                   ├── Linha 4
+     │                                   ├── Linha 5
+     │                                   ├── Linha 6
+     │                                   ├── Linha 7
+     └─────────────┘
+  </pre>
+
+</div>
+</details>
+
+### 6.3 Exemplo: 3 bits de endereço → 8 linhas de memória
+
+| Endereço (A₂,A₁,A₀) | Linha ativada |
+|---------------------|---------------|
+| 000 | Linha 0 |
+| 001 | Linha 1 |
+| 010 | Linha 2 |
+| 011 | Linha 3 |
+| 100 | Linha 4 |
+| 101 | Linha 5 |
+| 110 | Linha 6 |
+| 111 | Linha 7 |
+
+### 6.4 Memória com 16 posições
+
+Para endereçar 16 posições (0 a 15), precisamos de **4 bits de endereço** e um **decodificador 4→16**.
+
+```
+Endereço: A₃A₂A₁A₀
+0000 → Linha 0
+0001 → Linha 1
+0010 → Linha 2
+...
+1111 → Linha 15
+```
+
+
+## 7. Decodificador na ULA: Decodificação de Instruções
+
+### 7.1 Como a ULA decodifica instruções
+
+O decodificador é usado para traduzir o **opcode** (código da operação) em sinais de controle que ativam os circuitos corretos.
+
+**Exemplo: ULA com 4 operações**
+
+| Opcode (A₁,A₀) | Saída ativa | Operação |
+|----------------|-------------|----------|
+| 00 | Y₀ | Soma |
+| 01 | Y₁ | Subtração |
+| 10 | Y₂ | AND |
+| 11 | Y₃ | OR |
+
+<details>
+<summary>🔧 Ver Diagrama do Decodificador na ULA</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Courier New', monospace; max-width: 450px; margin: 1rem auto;">
+
+  <div style="color: #fbbf24; font-size: 0.8rem; font-weight: 700; text-align: center; margin-bottom: 0.8rem;">DECODIFICADOR NA ULA</div>
+
+  <pre style="color: #93c5fd; font-size: 0.65rem; line-height: 1.8; background: #0a0f1e; border: none; padding: 0; margin: 0; text-align: left; white-space: pre;">
+    Opcode da instrução        Sinal de controle
+    ┌─────────────┐
+A₀ ─┤                               ├── Y₀ → ativa somador
+A₁ ─┤  DECOD.                 ├── Y₁ → ativa subtrator
+    │  2→4                       ├── Y₂ → ativa AND
+    │                               ├── Y₃ → ativa OR
+    └─────────────┘
+  </pre>
+
+</div>
+</details>
+
+
+## 8. Decodificador em Displays de 7 Segmentos
+
+### 8.1 O problema
+
+Um display de 7 segmentos tem 7 LEDs (segmentos a, b, c, d, e, f, g). Para mostrar um dígito (0-9), precisamos ativar os segmentos corretos.
+
+### 8.2 A solução
+
+Um decodificador converte o dígito binário nos sinais de controle dos 7 segmentos.
+
+| Dígito | a | b | c | d | e | f | g |
+|--------|---|---|---|---|---|---|---|
+| 0 | 1 | 1 | 1 | 1 | 1 | 1 | 0 |
+| 1 | 0 | 1 | 1 | 0 | 0 | 0 | 0 |
+| 2 | 1 | 1 | 0 | 1 | 1 | 0 | 1 |
+| 3 | 1 | 1 | 1 | 1 | 0 | 0 | 1 |
+| 4 | 0 | 1 | 1 | 0 | 0 | 1 | 1 |
+| 5 | 1 | 0 | 1 | 1 | 0 | 1 | 1 |
+| 6 | 1 | 0 | 1 | 1 | 1 | 1 | 1 |
+| 7 | 1 | 1 | 1 | 0 | 0 | 0 | 0 |
+| 8 | 1 | 1 | 1 | 1 | 1 | 1 | 1 |
+| 9 | 1 | 1 | 1 | 1 | 0 | 1 | 1 |
+
+
+## 9. Exercícios
+
+<details>
+<summary>📗 Exercício 1 — Decodificador</summary>
+
+**Enunciado:** Um decodificador 2→4 tem A₁ = 0, A₀ = 0. Qual saída é ativada?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Y₀
+
+**Explicação:** A₁=0, A₀=0 → endereço 00 → Y₀ ativada.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Decodificador</summary>
+
+**Enunciado:** Um decodificador 2→4 tem A₁ = 1, A₀ = 1. Qual saída é ativada?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Y₃
+
+**Explicação:** A₁=1, A₀=1 → endereço 11 → Y₃ ativada.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Decodificador </summary>
+
+**Enunciado:** Um decodificador 3→8 tem A₂ = 0, A₁ = 1, A₀ = 0. Qual saída é ativada?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Y₂
+
+**Explicação:** A₂=0, A₁=1, A₀=0 → endereço 010 = 2 → Y₂ ativada.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Decodificador </summary>
+
+**Enunciado:** Um decodificador 3→8 tem A₂ = 1, A₁ = 0, A₀ = 1. Qual saída é ativada?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Y₅
+
+**Explicação:** A₂=1, A₁=0, A₀=1 → endereço 101 = 5 → Y₅ ativada.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Decodificador </summary>
+
+**Enunciado:** Um decodificador 4→16 tem A₃ = 0, A₂ = 1, A₁ = 1, A₀ = 0. Qual saída é ativada?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Y₆
+
+**Explicação:** Endereço 0110 = 6 → Y₆ ativada.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 6 — Expressão do Decodificador </summary>
+
+**Enunciado:** Qual é a expressão lógica de Y₂ em um decodificador 3→8?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** Y₂ = ¬A₂ ∧ A₁ ∧ ¬A₀
+
+**Explicação:** Y₂ é ativada quando A₂=0, A₁=1, A₀=0 → 010.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 7 — Decodificador na memória </summary>
+
+**Enunciado:** Para que um decodificador é usado em uma memória RAM?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** O decodificador é usado como decodificador de endereço para selecionar qual linha da memória será ativada para leitura ou escrita.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 8 — Decodificador na ULA </summary>
+
+**Enunciado:** Como um decodificador é usado na decodificação de instruções?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:** O decodificador traduz o opcode (código da operação) em sinais de controle que ativam o circuito correto na ULA (somador, subtrator, AND, OR, etc.).
+
+</details>
+</details>
+
+
+
+
+## 9. Resumo Comparativo: MUX, DEMUX e Decodificador
+
+| Característica | MUX | DEMUX | Decodificador |
+|----------------|-----|-------|---------------|
+| **Entradas** | 2ⁿ + n (dados + seleção) | 1 + n (dados + seleção) | n (seleção) |
+| **Saídas** | 1 | 2ⁿ | 2ⁿ |
+| **Entrada de dados?** | Sim (várias) | Sim (uma) | Não |
+| **Função** | Selecionar uma entrada | Direcionar dados para uma saída | Ativar uma saída |
+| **Analogia** | Seletor de canais | Distribuidor | Seletor de andar |
+
+
+
+> **"O decodificador é um circuito que recebe n entradas binárias (endereço) e ativa exatamente uma das 2ⁿ saídas correspondentes. Diferente do DEMUX, o decodificador não tem uma entrada de dados — apenas o endereço determina qual saída é ativada. Decodificadores são a base do endereçamento de memória RAM, da decodificação de instruções na ULA, e de inúmeras aplicações de seleção e controle em sistemas digitais. Um decodificador 2→4 ativa Y₀ para '00', Y₁ para '01', Y₂ para '10' e Y₃ para '11'. Um decodificador 3→8 ativa uma das 8 saídas para cada combinação de 3 bits de entrada."**

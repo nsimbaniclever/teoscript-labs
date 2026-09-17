@@ -1,0 +1,321 @@
+# REVISÃO DE FUNÇÕES
+
+## 1. Definição Formal
+
+### 1.1 O que é uma Função?
+
+Uma **função** $f: D \to C$ é uma regra que associa a **cada elemento** do domínio $D$ **exatamente um elemento** do contradomínio $C$.
+
+**Notação:**
+$$
+y = f(x)
+$$
+
+Onde:
+- $x$ é a **variável independente** (entrada).
+- $y$ é a **variável dependente** (saída).
+- $D$ é o **domínio** (valores permitidos para $x$).
+- $C$ é o **contradomínio** (valores possíveis para $y$).
+- **Imagem** é o conjunto de valores que $y$ realmente assume.
+
+### 1.2 Funções de Uma Variável
+
+Uma função de uma variável tem a forma:
+$$
+f: \mathbb{R} \to \mathbb{R}, \quad y = f(x)
+$$
+
+**Exemplos:**
+- $f(x) = x^2$ (parábola)
+- $f(x) = \sin(x)$ (seno)
+- $f(x) = e^x$ (exponencial)
+- $f(x) = \ln(x)$ (logaritmo natural)
+
+### 1.3 Funções de Várias Variáveis
+
+Uma função de várias variáveis tem a forma:
+$$
+f: \mathbb{R}^n \to \mathbb{R}, \quad y = f(x_1, x_2, \ldots, x_n)
+$$
+
+**Exemplos:**
+- $f(x, y) = x^2 + y^2$ (paraboloide)
+- $f(x, y) = \sin(x) \cos(y)$
+- $f(x_1, x_2, x_3) = x_1^2 + x_2^2 + x_3^2$ (esfera)
+
+**Importância em ML:** A função de perda $L(\vec{w})$ é uma função de várias variáveis (os pesos do modelo).
+
+## 2. Domínio, Contradomínio e Imagem
+
+### 2.1 Domínio
+
+O **domínio** de uma função é o conjunto de valores para os quais a função está **definida**.
+
+**Exemplos:**
+- $f(x) = \frac{1}{x}$ → domínio: $x \neq 0$
+- $f(x) = \sqrt{x}$ → domínio: $x \geq 0$
+- $f(x) = \ln(x)$ → domínio: $x > 0$
+- $f(x, y) = \sqrt{x^2 + y^2}$ → domínio: $\mathbb{R}^2$ (todo o plano)
+
+### 2.2 Contradomínio
+
+O **contradomínio** é o conjunto de **todos os valores possíveis** que a função poderia assumir (geralmente $\mathbb{R}$).
+
+### 2.3 Imagem
+
+A **imagem** é o conjunto de valores que a função **realmente assume**.
+
+**Exemplos:**
+- $f(x) = x^2$ → imagem: $[0, \infty)$
+- $f(x) = \sin(x)$ → imagem: $[-1, 1]$
+- $f(x) = e^x$ → imagem: $(0, \infty)$
+
+## 3. Funções Comuns e seus Gráficos
+
+### 3.1 Função Linear
+$$
+f(x) = ax + b
+$$
+- Gráfico: reta
+- Domínio: $\mathbb{R}$
+- Imagem: $\mathbb{R}$ (se $a \neq 0$)
+
+**Exemplo:** $f(x) = 2x + 1$
+
+### 3.2 Função Quadrática
+$$
+f(x) = ax^2 + bx + c
+$$
+- Gráfico: parábola
+- Domínio: $\mathbb{R}$
+- Imagem: depende do vértice
+
+**Exemplo:** $f(x) = x^2 - 4x + 3$
+
+### 3.3 Função Exponencial
+$$
+f(x) = a^x \quad (a > 0, a \neq 1)
+$$
+- Gráfico: crescimento/decrescimento exponencial
+- Domínio: $\mathbb{R}$
+- Imagem: $(0, \infty)$
+
+**Exemplo:** $f(x) = 2^x$
+
+### 3.4 Função Logarítmica
+$$
+f(x) = \log_a(x) \quad (a > 0, a \neq 1)
+$$
+- Gráfico: crescimento logarítmico
+- Domínio: $(0, \infty)$
+- Imagem: $\mathbb{R}$
+
+**Exemplo:** $f(x) = \ln(x)$
+
+### 3.5 Função Sigmóide (Importante em ML)
+$$
+f(x) = \frac{1}{1 + e^{-x}}
+$$
+- Gráfico: curva em S
+- Domínio: $\mathbb{R}$
+- Imagem: $(0, 1)$
+
+**Aplicação:** Função de ativação em redes neurais.
+
+## 4. Exemplos Lúdicos Aprimorados
+
+### 🍔 EXEMPLO 1 – A LANCHONETE (FUNÇÃO DE CUSTO)
+
+A lanchonete tem um custo de produção que depende do número de sanduíches $x$:
+$$
+C(x) = 2x + 50
+$$
+Onde:
+- $x$ = número de sanduíches (domínio: $x \geq 0$)
+- $C(x)$ = custo total (imagem: $[50, \infty)$)
+
+**Interpretação:** O custo fixo é R$ 50,00, e cada sanduíche custa R$ 2,00.
+
+### 🧃 EXEMPLO 2 – A CANTINA (FUNÇÃO DE PERDA)
+
+A cantina tem uma função de perda (erro) que depende de dois parâmetros:
+$$
+L(w_1, w_2) = (w_1 - 2)^2 + (w_2 - 3)^2
+$$
+
+**Domínio:** $\mathbb{R}^2$ (todos os valores possíveis de $w_1, w_2$)
+
+**Imagem:** $[0, \infty)$
+
+**Interpretação:** A perda é mínima (zero) quando $w_1 = 2$ e $w_2 = 3$.
+
+## 5. Aplicação na Tese: Funções no FL
+
+### 5.1 Função de Perda Global
+
+Em FL, a função de perda global é uma soma ponderada das perdas locais:
+$$
+L(\vec{w}) = \sum_{i=1}^{N} \alpha_i L_i(\vec{w})
+$$
+
+Onde:
+- $\vec{w}$ = parâmetros do modelo (domínio: $\mathbb{R}^p$)
+- $L_i(\vec{w})$ = perda local do cliente i
+
+### 5.2 Função de Ativação
+
+Em redes neurais, a função de ativação (ex: ReLU, sigmoide) é uma função não-linear aplicada a cada neurônio.
+
+**ReLU:**
+$$
+f(x) = \max(0, x)
+$$
+
+**Sigmóide:**
+$$
+f(x) = \frac{1}{1 + e^{-x}}
+$$
+
+## 6. Exercícios Propostos (Manuais)
+
+<details>
+<summary>📗 Exercício 1 (Domínio)</summary>
+
+**Enunciado:** Determine o domínio das seguintes funções:
+
+a) $f(x) = \frac{1}{x-2}$
+
+b) $g(x) = \sqrt{4 - x^2}$
+
+c) $h(x) = \ln(x^2 - 1)$
+
+d) $k(x, y) = \frac{1}{x^2 + y^2 - 1}$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $x \neq 2$ (denominador não pode ser zero)
+
+b) $4 - x^2 \geq 0 \Rightarrow -2 \leq x \leq 2$
+
+c) $x^2 - 1 > 0 \Rightarrow x < -1$ ou $x > 1$
+
+d) $x^2 + y^2 - 1 \neq 0 \Rightarrow x^2 + y^2 \neq 1$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 (Imagem)</summary>
+
+**Enunciado:** Determine a imagem das seguintes funções:
+
+a) $f(x) = x^2 + 1$
+
+b) $g(x) = -x^2 + 4$
+
+c) $h(x) = e^{-x}$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) $[1, \infty)$ (parábola com vértice em $(0,1)$)
+
+b) $(-\infty, 4]$ (parábola com vértice em $(0,4)$)
+
+c) $(0, \infty)$ (exponencial decrescente)
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 (Funções de Várias Variáveis)</summary>
+
+**Enunciado:** Identifique o domínio e a imagem:
+
+a) $f(x, y) = \sqrt{x^2 + y^2}$
+
+b) $f(x, y, z) = x^2 + y^2 + z^2$
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) Domínio: $\mathbb{R}^2$, Imagem: $[0, \infty)$
+
+b) Domínio: $\mathbb{R}^3$, Imagem: $[0, \infty)$
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 (Aplicação – Função de Perda)</summary>
+
+**Enunciado:** Uma função de perda é:
+$$
+L(w) = (w - 3)^2 + 5
+$$
+
+a) Qual é o domínio?  
+b) Qual é a imagem?  
+c) Onde a perda é mínima?  
+d) Qual é o valor mínimo da perda?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+a) Domínio: $\mathbb{R}$
+
+b) Imagem: $[5, \infty)$
+
+c) $w = 3$
+
+d) $L(3) = 5$
+
+</details>
+</details>
+
+## 7. 💻 BÔNUS OPCIONAL – EXERCÍCIO COMPUTACIONAL
+
+<details>
+<summary>🐍 Ver código (Python/Matplotlib)</summary>
+
+```python
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Função linear
+x = np.linspace(-10, 10, 100)
+y = 2*x + 1
+
+plt.plot(x, y, label='f(x) = 2x + 1')
+plt.xlabel('x')
+plt.ylabel('f(x)')
+plt.title('Função Linear')
+plt.grid()
+plt.legend()
+plt.show()
+
+# Função sigmoide
+x = np.linspace(-10, 10, 100)
+y = 1 / (1 + np.exp(-x))
+
+plt.plot(x, y, label='sigmoid(x)')
+plt.xlabel('x')
+plt.ylabel('sigmoid(x)')
+plt.title('Função Sigmóide')
+plt.grid()
+plt.legend()
+plt.show()
+```
+
+</details>
+
+> *Funções são a base de todo o cálculo diferencial. Em Machine Learning, a função de perda $L(\vec{w})$ é uma função de várias variáveis que queremos minimizar. Compreender domínio, contradomínio, imagem e os tipos básicos de funções é essencial para entender gradientes, otimização e redes neurais.*
