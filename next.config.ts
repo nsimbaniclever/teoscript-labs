@@ -6,12 +6,14 @@ const nextConfig: NextConfig = {
   experimental: {
     mdxRs: true,
   },
+  outputFileTracingIncludes: {
+    '/[modulo]/projetos': ['./src/content/projetos/**/*.md', './src/content/projetos/**/*.mdx'],
+    '/aula/[...slug]': ['./src/content/parts/**/*.mdx', './src/content/aulas/**/*.mdx'],
+  },
 };
 
 const withMDX = createMDX({
   options: {
-    // O mdxRs usa um formato diferente para plugins
-    // Use strings para os pacotes
     remarkPlugins: ['remark-math'],
     rehypePlugins: ['rehype-katex'],
   },
