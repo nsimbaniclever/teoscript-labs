@@ -1,763 +1,400 @@
-# Coeficiente de Spearman
+# <center> COEFICIENTE DE SPEARMAN (ρ)</center>
 
-## 1. INTRODUÇÃO
+## INTRODUÇÃO
 
-&emsp;&emsp;&emsp;Na aula anterior estudámos o **coeficiente de Pearson** — a medida padrão para quantificar a relação **linear** entre duas variáveis quantitativas. Vimos que ele é poderoso, mas tem **limitações sérias**:
+&emsp;&emsp;&emsp;Na Aula 3 estudámos o coeficiente de Pearson — a medida padrão da correlação linear. Vimos que é poderoso, mas tem **duas limitações sérias**:
 
-- **É sensível a outliers** — um único valor extremo pode distorcer completamente o r.
-- **Só detecta relações lineares** — uma relação curvilínea (monótona) pode ter r ≈ 0, mesmo sendo forte.
-- **Exige dados quantitativos** — não funciona para dados ordinais (rankings).
+- É **sensível a outliers** — um único ponto extremo pode distorcer tudo
+- Só mede relações **lineares** — se a relação for curva, o r engana-nos
 
-&emsp;&emsp;&emsp;Considera o seguinte problema prático:
+&emsp;&emsp;&emsp;Mas há situações em que estas limitações se tornam um problema real. Por exemplo:
 
-> **Dois conjuntos de dados com relação monótona, mas um tem um outlier extremo:**
+- Temos dados **ordinais** (rankings de sabor, classificações de satisfação)
+- Temos **outliers** que não podemos remover
+- A relação é **monótona mas não linear** (curva, mas sempre a subir ou sempre a descer)
 
-**Conjunto A (sem outlier):**
-| X | Y |
-|---------|---------|
-| 1 | 2 |
-| 2 | 4 |
-| 3 | 5 |
-| 4 | 8 |
-| 5 | 9 |
+&emsp;&emsp;&emsp;É precisamente aqui que entra o **coeficiente de Spearman** — a alternativa **não-paramétrica** ao Pearson.
 
-**Conjunto B (com outlier):**
-| X | Y |
-|---------|---------|
-| 1 | 2 |
-| 2 | 4 |
-| 3 | 5 |
-| 4 | 8 |
-| 5 | 100 |
+**Exemplo:** Imaginemos que dois juízes classificam 5 concorrentes num concurso de culinária. Não temos notas exatas — só a **ordem** de preferência:
 
-**Vamos calcular o coeficiente de Pearson para ambos:**
+| Concorrente | Juiz A | Juiz B |
+|-------------|--------|--------|
+| W | 1º | 2º |
+| X | 2º | 1º |
+| Y | 3º | 4º |
+| Z | 4º | 3º |
 
-| Conjunto | r de Pearson |
-|---------|---------|
-| **A** | ≈ 0,98 (correlação positiva forte) |
-| **B** | ≈ 0,75 (correlação positiva moderada) |
+&emsp;&emsp;&emsp;Como medimos a concordância entre os dois juízes? Não podemos calcular a média das posições nem o desvio-padrão das classificações — são **ordens**, não valores. É aqui que o Spearman entra.
 
-&emsp;&emsp;&emsp;Repara: o **outlier** (100) no Conjunto B **reduziu drasticamente** o r de Pearson. Mas a **relação monótona** entre X e Y é a **mesma** nos dois conjuntos — quando X aumenta, Y **sempre** aumenta. O outlier não muda a **ordem** dos dados, mas muda o **valor** do r.<br>
+> 💡 **Regra de Ouro:** Spearman usa **rankings**, não valores. Isto torna-o robusto a outliers e aplicável a dados ordinais. Mas perde informação — dois valores muito diferentes podem ter o mesmo rank.
 
-&emsp;&emsp;&emsp;Precisamos de uma medida que:
-1. **Seja robusta a outliers** — não seja distorcida por valores extremos.
-2. **Detete relações monótonas** — não apenas lineares.
-3. **Funcione com dados ordinais** — rankings, escalas de Likert, etc.
+> O **coeficiente de correlação de Spearman** (ρ, rô) é uma medida **não-paramétrica** que quantifica a **força** e a **direção** da **relação monótona** entre duas variáveis, usando os **rankings (postos)** em vez dos valores originais.
 
-&emsp;&emsp;&emsp;É precisamente aqui que entra o **coeficiente de correlação de Spearman** — a alternativa **não paramétrica** ao Pearson.
+&emsp;&emsp;&emsp;O ρ varia sempre entre **−1 e +1**, tal como o r de Pearson:
 
-<details>
-<summary>📊 Ver a família das medidas de associação</summary>
-<style>
-.r{font:14px system-ui;text-align:center}
-.r b{display:inline-block;padding:4px 10px;background:#333;color:#fff;border-radius:6px}
-.r i{display:block;width:2px;height:18px;background:#333;margin:0 auto}
-.r em{display:flex;gap:8px;justify-content:center;position:relative;padding-top:18px}
-.r em::before{content:'';position:absolute;top:0;left:25%;right:25%;height:2px;background:#333}
-.r em span{flex:1;padding:8px;border:2px solid #333;border-radius:8px;max-width:140px}
-.r em span::before{content:'';position:absolute;top:-18px;left:50%;width:2px;height:18px;background:#333}
-.r em span{position:relative}
-</style>
-<div class="r">
-  <b>Medidas de Associação</b>
-  <i></i>
-  <em>
-    <span>Pearson<br>(linear)</span>
-    <span>Spearman<br>(ordinal)</span>
-    <span>Kendall<br>(ordinal)</span>
-  </em>
-</div>
-</details>
+- **ρ = +1** → relação monótona positiva perfeita (rankings sempre a subir juntos)
+- **ρ = 0** → ausência de relação monótona
+- **ρ = −1** → relação monótona negativa perfeita (rankings sempre em sentidos opostos)
 
-> **💡 Dica de Ouro:** O coeficiente de Spearman é o **coeficiente de Pearson aplicado aos postos**. Em vez de usar os valores originais, usa a **ordem** dos valores. Isto torna-o **robusto a outliers** e capaz de detetar **relações monótonas**.
+&emsp;&emsp;&emsp;Quanto mais próximo de ±1, mais forte a concordância entre os rankings. O **sinal** indica a direção. A grande diferença em relação ao Pearson é que o Spearman **não assume linearidade** — só assume que a relação é **monótona** (sempre a subir ou sempre a descer).
 
-**📌 Nota sobre dados agrupados:**
+## PORQUE O SPEARMAN É IMPORTANTE?
 
-O coeficiente de Spearman pode ser calculado em três formas:
+O coeficiente de Spearman é importante por várias razões que vale a pena compreender.
 
-| Forma | O que tens | Exemplo |
-|---------|---------|---------|
-| **Dados brutos** | Pares de valores individuais | (1,2), (2,4), (3,5)... |
-| **Agrupados por lista** | Tabela de frequências dupla | Tabela de contingência |
-| **Agrupados por intervalo** | Classes + frequência | Tabela de dupla entrada |
+### 1. Funciona com dados ordinais
 
-## 2. O QUE É O COEFICIENTE DE SPEARMAN?
+&emsp;&emsp;&emsp;Muitas variáveis na vida real são **ordinais** — não têm valores exatos, só uma ordem. Exemplos: nível de satisfação (muito insatisfeito, insatisfeito, neutro, satisfeito, muito satisfeito), classificação de restaurantes (1 a 5 estrelas), rankings de qualquer tipo. O Pearson não funciona com estes dados. O Spearman sim.
 
-&emsp;&emsp;&emsp;O **coeficiente de correlação de Spearman** (ρ, ou rs) é uma medida **não paramétrica** que quantifica a **força** e a **direção** da **relação monótona** entre duas variáveis. Foi desenvolvido por **Charles Spearman** no início do século XX.
+### 2. É robusto a outliers
 
-**📌 Definição formal:**
+&emsp;&emsp;&emsp;Como o Spearman usa **rankings** em vez de valores, um outlier extremo passa a ser apenas "o maior" ou "o menor" — não distorce o cálculo. Isto torna-o ideal quando há valores extremos que não podemos remover.
 
-$$
-\color{blue} \rho = 1 - \frac{6 \sum_{i=1}^{n} d_i^2}{n(n^2 - 1)}
-$$
+### 3. Deteta relações monótonas não-lineares
+
+&emsp;&emsp;&emsp;Se a relação for uma curva sempre a subir (por exemplo, salário vs. anos de experiência), o Pearson dá um valor inferior ao real. O Spearman capta a relação corretamente porque só se interessa pela **ordem**.
+
+### 4. Não exige normalidade
+
+&emsp;&emsp;&emsp;O Spearman é **não-paramétrico** — não assume que os dados seguem uma distribuição normal. Isto torna-o aplicável em muito mais situações do que o Pearson.
+
+## FÓRMULA DE SPEARMAN
+
+### Fórmula principal
+
+$$\rho = 1 - \frac{6 \sum d_i^2}{n(n^2 - 1)}$$
 
 Onde:
 - **di** = diferença entre os postos de X e Y para cada par
 - **n** = número de pares
-- **ρ** = coeficiente de Spearman
-
-**📌 Definição alternativa:**
+- **Σdi²** = soma dos quadrados das diferenças
 
-&emsp;&emsp;&emsp;O coeficiente de Spearman é simplesmente o **coeficiente de Pearson aplicado aos postos** (rankings) em vez dos valores originais.
-
-$$
-\color{blue} \rho = r(\text{postos de } X, \text{postos de } Y)
-$$
-
-**📌 Propriedades do ρ:**
-
-| Propriedade | Descrição |
-|---------|----------|
-| **Intervalo** | −1 ≤ ρ ≤ +1 |
-| **Adimensional** | Não tem unidade |
-| **Simétrico** | ρ(X, Y) = ρ(Y, X) |
-| **Robusto a outliers** | Usa postos, não valores |
-| **Deteta relações monótonas** | Não precisa ser linear |
-| **Apropriado para dados ordinais** | Não exige normalidade |
-| **Menos poderoso que Pearson** | Se a relação for linear e sem outliers, Pearson é melhor |
-
-**📌 Interpretação do coeficiente:**
-
-| Valor de ρ | Interpretação |
-|---------|----------|
-| ρ = +1 | Correlação **positiva perfeita** (monótona) |
-| 0,7 ≤ ρ < 1 | Correlação **positiva forte** |
-| 0,3 ≤ ρ < 0,7 | Correlação **positiva moderada** |
-| 0 < ρ < 0,3 | Correlação **positiva fraca** |
-| ρ = 0 | **Ausência de correlação monótona** |
-| −0,3 < ρ < 0 | Correlação **negativa fraca** |
-| −0,7 < ρ ≤ −0,3 | Correlação **negativa moderada** |
-| −1 < ρ ≤ −0,7 | Correlação **negativa forte** |
-| ρ = −1 | Correlação **negativa perfeita** (monótona) |
-
-## 3. PASSO A PASSO
-
-### 3.1 Coeficiente de Spearman para Dados Brutos
-
-**📐 Método**
-
-| Passo | Descrição |
-|---------|----------|
-| **1** | Ordenar os valores de X e atribuir **postos** (1, 2, 3, ...) |
-| **2** | Ordenar os valores de Y e atribuir **postos** (1, 2, 3, ...) |
-| **3** | Calcular a diferença entre os postos: <code>di = posto_X − posto_Y</code> |
-| **4** | Elevar ao quadrado: <code>di²</code> |
-| **5** | Somar todos os quadrados: <code>Σ di²</code> |
-| **6** | Aplicar a fórmula: <code>ρ = 1 − (6 × Σ di²) / (n(n² − 1))</code> |
-
-> **⚠️ Nota sobre empates:** Quando há empates (valores iguais), atribui-se a **média dos postos** que seriam ocupados. Neste caso, a fórmula simplificada acima não é exata — deve-se usar o coeficiente de Pearson aplicado aos postos.
-
-<center><details>
-<summary>**📌 Exemplo Prático 1 — Sem Outliers**</summary>
-
-**Problema:** Calcular o coeficiente de Spearman para os dados:
-
-| X | Y |
-|---------|---------|
-| 1 | 2 |
-| 2 | 4 |
-| 3 | 5 |
-| 4 | 8 |
-| 5 | 9 |
-
-**Passo 1 — Atribuir postos:**
-
-| X | Posto X | Y | Posto Y |
-|---------|---------|---------|---------|
-| 1 | 1 | 2 | 1 |
-| 2 | 2 | 4 | 2 |
-| 3 | 3 | 5 | 3 |
-| 4 | 4 | 8 | 4 |
-| 5 | 5 | 9 | 5 |
-
-**Passo 2 — Calcular diferenças:**
-
-| Posto X | Posto Y | di | di² |
-|---------|---------|---------|---------|
-| 1 | 1 | 0 | 0 |
-| 2 | 2 | 0 | 0 |
-| 3 | 3 | 0 | 0 |
-| 4 | 4 | 0 | 0 |
-| 5 | 5 | 0 | 0 |
-| **Total** | | | **0** |
-
-**Passo 3 — Aplicar a fórmula:**
-
-$$
-\rho = 1 - \frac{6 \times 0}{5(25 - 1)} = 1 - 0 = \mathbf{1}
-$$
-
-✅ O coeficiente de Spearman é **1** — **correlação positiva perfeita**.
-
-> **🔍 Interpretação:** Existe uma **relação monótona positiva perfeita** entre X e Y. Isto significa que, quando X aumenta, Y **sempre** aumenta (não necessariamente de forma linear, mas de forma consistente). O valor ρ = 1 indica que a ordem dos dados é exatamente a mesma nas duas variáveis.
-</details></center>
-
-<center><details>
-<summary>**📌 Exemplo Prático 2 — Com Outlier**</summary>
-
-**Problema:** Calcular o coeficiente de Spearman para os dados com outlier:
-
-| X | Y |
-|---------|---------|
-| 1 | 2 |
-| 2 | 4 |
-| 3 | 5 |
-| 4 | 8 |
-| 5 | 100 |
-
-**Passo 1 — Atribuir postos:**
-
-| X | Posto X | Y | Posto Y |
-|---------|---------|---------|---------|
-| 1 | 1 | 2 | 1 |
-| 2 | 2 | 4 | 2 |
-| 3 | 3 | 5 | 3 |
-| 4 | 4 | 8 | 4 |
-| 5 | 5 | 100 | 5 |
-
-**Passo 2 — Calcular diferenças:**
-
-| Posto X | Posto Y | di | di² |
-|---------|---------|---------|---------|
-| 1 | 1 | 0 | 0 |
-| 2 | 2 | 0 | 0 |
-| 3 | 3 | 0 | 0 |
-| 4 | 4 | 0 | 0 |
-| 5 | 5 | 0 | 0 |
-| **Total** | | | **0** |
-
-**Passo 3 — Aplicar a fórmula:**
-
-$$
-\rho = 1 - \frac{6 \times 0}{5(25 - 1)} = 1 - 0 = \mathbf{1}
-$$
-
-✅ O coeficiente de Spearman é **1** — **correlação positiva perfeita**.
-
-> **🔍 Interpretação:** O outlier (100) **não afetou** o coeficiente de Spearman! A relação monótona entre X e Y é a mesma — quando X aumenta, Y sempre aumenta. O outlier não muda a **ordem** dos dados, então o Spearman permanece **1**. **Isto mostra a robustez do Spearman a outliers.**
-</details></center>
-
-<center><details>
-<summary>**📌 Exemplo Prático 3 — Correlação Negativa**</summary>
-
-**Problema:** Calcular o coeficiente de Spearman para os dados:
-
-| X | Y |
-|---------|---------|
-| 1 | 10 |
-| 2 | 8 |
-| 3 | 7 |
-| 4 | 4 |
-| 5 | 2 |
-
-**Passo 1 — Atribuir postos:**
-
-| X | Posto X | Y | Posto Y |
-|---------|---------|---------|---------|
-| 1 | 1 | 10 | 5 |
-| 2 | 2 | 8 | 4 |
-| 3 | 3 | 7 | 3 |
-| 4 | 4 | 4 | 2 |
-| 5 | 5 | 2 | 1 |
-
-**Passo 2 — Calcular diferenças:**
-
-| Posto X | Posto Y | di | di² |
-|---------|---------|---------|---------|
-| 1 | 5 | −4 | 16 |
-| 2 | 4 | −2 | 4 |
-| 3 | 3 | 0 | 0 |
-| 4 | 2 | 2 | 4 |
-| 5 | 1 | 4 | 16 |
-| **Total** | | | **40** |
-
-**Passo 3 — Aplicar a fórmula:**
-
-$$
-\rho = 1 - \frac{6 \times 40}{5(25 - 1)} = 1 - \frac{240}{120} = 1 - 2 = \mathbf{-1}
-$$
-
-✅ O coeficiente de Spearman é **−1** — **correlação negativa perfeita**.
-
-> **🔍 Interpretação:** Existe uma **relação monótona negativa perfeita** entre X e Y. Isto significa que, quando X aumenta, Y **sempre** diminui. O valor ρ = −1 indica que a ordem dos dados é exatamente inversa nas duas variáveis.
-</details></center>
-
-<center><details>
-<summary>**📌 Exemplo Prático 4 — Correlação Moderada**</summary>
-
-**Problema:** Calcular o coeficiente de Spearman para os dados:
-
-| X | Y |
-|---------|---------|
-| 1 | 5 |
-| 2 | 2 |
-| 3 | 8 |
-| 4 | 3 |
-| 5 | 7 |
-| 6 | 4 |
-| 7 | 9 |
-| 8 | 6 |
-
-**Passo 1 — Atribuir postos:**
-
-| X | Posto X | Y | Posto Y |
-|---------|---------|---------|---------|
-| 1 | 1 | 5 | 4 |
-| 2 | 2 | 2 | 1 |
-| 3 | 3 | 8 | 7 |
-| 4 | 4 | 3 | 2 |
-| 5 | 5 | 7 | 6 |
-| 6 | 6 | 4 | 3 |
-| 7 | 7 | 9 | 8 |
-| 8 | 8 | 6 | 5 |
-
-**Passo 2 — Calcular diferenças:**
-
-| Posto X | Posto Y | di | di² |
-|---------|---------|---------|---------|
-| 1 | 4 | −3 | 9 |
-| 2 | 1 | 1 | 1 |
-| 3 | 7 | −4 | 16 |
-| 4 | 2 | 2 | 4 |
-| 5 | 6 | −1 | 1 |
-| 6 | 3 | 3 | 9 |
-| 7 | 8 | −1 | 1 |
-| 8 | 5 | 3 | 9 |
-| **Total** | | | **50** |
-
-**Passo 3 — Aplicar a fórmula:**
-
-$$
-\rho = 1 - \frac{6 \times 50}{8(64 - 1)} = 1 - \frac{300}{504} = 1 - 0{,}595 = \mathbf{0{,}405}
-$$
-
-✅ O coeficiente de Spearman é **0,405** — **correlação positiva moderada**.
-
-> **🔍 Interpretação:** Existe uma **relação monótona positiva moderada** entre X e Y. Isto significa que há uma tendência para Y aumentar quando X aumenta, mas a relação não é perfeita — há alguma inconsistência na ordem. O valor ρ = 0,405 está na zona moderada (0,3 a 0,7).
-</details></center>
-
-### 3.2 Coeficiente de Spearman para Dados Agrupados por Lista
-
-&emsp;&emsp;&emsp;Quando os dados estão numa **tabela de frequências dupla**, o cálculo do Spearman torna-se mais complexo porque há **empates** (múltiplas observações com o mesmo valor). Neste caso, a fórmula simplificada não é exata — devemos usar o **coeficiente de Pearson aplicado aos postos**.
-
-**📐 Método**
-
-| Passo | Descrição |
-|---------|----------|
-| **1** | Expandir a tabela para a lista completa de pares (com repetições) |
-| **2** | Atribuir postos a X e Y (com média dos postos em caso de empate) |
-| **3** | Calcular o coeficiente de Pearson entre os postos |
-
-<center><details>
-<summary>**📌 Exemplo Prático**</summary>
-
-**Problema:** Calcular o coeficiente de Spearman para a tabela:
-
-| X \ Y | 10 | 20 | 30 | Total |
-|---------|---------|---------|---------|---------|
-| **5** | 2 | 1 | 0 | 3 |
-| **10** | 1 | 3 | 1 | 5 |
-| **15** | 0 | 1 | 2 | 3 |
-| **Total** | 3 | 5 | 3 | 11 |
-
-**Passo 1 — Expandir a tabela (11 pares):**
-
-| Par | X | Y |
-|---------|---------|---------|
-| 1 | 5 | 10 |
-| 2 | 5 | 10 |
-| 3 | 5 | 20 |
-| 4 | 10 | 10 |
-| 5 | 10 | 20 |
-| 6 | 10 | 20 |
-| 7 | 10 | 20 |
-| 8 | 10 | 30 |
-| 9 | 15 | 20 |
-| 10 | 15 | 30 |
-| 11 | 15 | 30 |
-
-**Passo 2 — Atribuir postos (com empates):**
-
-| Par | X | Posto X | Y | Posto Y |
-|---------|---------|---------|---------|---------|
-| 1 | 5 | 2 | 10 | 2 |
-| 2 | 5 | 2 | 10 | 2 |
-| 3 | 5 | 2 | 20 | 6 |
-| 4 | 10 | 6 | 10 | 2 |
-| 5 | 10 | 6 | 20 | 6 |
-| 6 | 10 | 6 | 20 | 6 |
-| 7 | 10 | 6 | 20 | 6 |
-| 8 | 10 | 6 | 30 | 10 |
-| 9 | 15 | 10 | 20 | 6 |
-| 10 | 15 | 10 | 30 | 10 |
-| 11 | 15 | 10 | 30 | 10 |
-
-> **🔍 Nota:** Os postos de X são: 5 → média dos postos 1,2,3 = 2; 10 → média dos postos 4,5,6,7,8 = 6; 15 → média dos postos 9,10,11 = 10.
-> Os postos de Y são: 10 → média dos postos 1,2,3 = 2; 20 → média dos postos 4,5,6,7,8 = 6; 30 → média dos postos 9,10,11 = 10.
-
-**Passo 3 — Calcular o coeficiente de Pearson entre os postos:**
-
-Média dos postos de X = 6
-Média dos postos de Y = 6
-
-| Posto X | Posto Y | (x − 6) | (y − 6) | Produto | (x−6)² | (y−6)² |
-|---------|---------|---------|---------|---------|---------|---------|
-| 2 | 2 | −4 | −4 | 16 | 16 | 16 |
-| 2 | 2 | −4 | −4 | 16 | 16 | 16 |
-| 2 | 6 | −4 | 0 | 0 | 16 | 0 |
-| 6 | 2 | 0 | −4 | 0 | 0 | 16 |
-| 6 | 6 | 0 | 0 | 0 | 0 | 0 |
-| 6 | 6 | 0 | 0 | 0 | 0 | 0 |
-| 6 | 6 | 0 | 0 | 0 | 0 | 0 |
-| 6 | 10 | 0 | 4 | 0 | 0 | 16 |
-| 10 | 6 | 4 | 0 | 0 | 16 | 0 |
-| 10 | 10 | 4 | 4 | 16 | 16 | 16 |
-| 10 | 10 | 4 | 4 | 16 | 16 | 16 |
-| **Total** | | | | **64** | **96** | **112** |
-
-$$
-\rho = \frac{64}{\sqrt{96} \cdot \sqrt{112}} = \frac{64}{9{,}80 \times 10{,}58} = \frac{64}{103{,}68} \approx \mathbf{0{,}617}
-$$
-
-✅ O coeficiente de Spearman é **0,617** — **correlação positiva moderada a forte**.
-
-> **🔍 Interpretação:** Existe uma **relação monótona positiva moderada a forte** entre X e Y. Isto significa que, em geral, quando X aumenta, Y também tende a aumentar. O valor ρ = 0,617 está na zona moderada-alta.
-</details></center>
-
-### 3.3 Coeficiente de Spearman para Dados Agrupados por Intervalo
-
-&emsp;&emsp;&emsp;Quando os dados estão em **classes**, usamos os **pontos médios** de cada classe como representantes xi e yj. O cálculo é idêntico ao da lista, mas com os pontos médios.
-
-<center><details>
-<summary>**📌 Exemplo Prático**</summary>
-
-**Problema:** Calcular o coeficiente de Spearman para a tabela de dupla entrada:
-
-| X \ Y | [0,10[ (5) | [10,20[ (15) | [20,30[ (25) | Total |
-|---------|---------|---------|---------|---------|
-| **[0,10[ (5)** | 4 | 2 | 0 | 6 |
-| **[10,20[ (15)** | 2 | 6 | 2 | 10 |
-| **[20,30[ (25)** | 0 | 2 | 4 | 6 |
-| **Total** | 6 | 10 | 6 | 22 |
-
-**Passo 1 — Expandir a tabela (22 pares):**
-
-| Par | X | Y |
-|---------|---------|---------|
-| 1-4 | 5 | 5 |
-| 5-6 | 5 | 15 |
-| 7-8 | 15 | 5 |
-| 9-14 | 15 | 15 |
-| 15-16 | 15 | 25 |
-| 17-18 | 25 | 15 |
-| 19-22 | 25 | 25 |
-
-**Passo 2 — Atribuir postos (com empates):**
-
-| Valor | Frequência | Postos | Média dos postos |
-|---------|---------|---------|---------|
-| X = 5 | 6 | 1-6 | 3,5 |
-| X = 15 | 10 | 7-16 | 11,5 |
-| X = 25 | 6 | 17-22 | 19,5 |
-
-| Valor | Frequência | Postos | Média dos postos |
-|---------|---------|---------|---------|
-| Y = 5 | 6 | 1-6 | 3,5 |
-| Y = 15 | 10 | 7-16 | 11,5 |
-| Y = 25 | 6 | 17-22 | 19,5 |
-
-**Passo 3 — Calcular o coeficiente de Pearson entre os postos:**
-
-Média dos postos de X = 11,5
-Média dos postos de Y = 11,5
-
-| Posto X | Posto Y | (x − 11,5) | (y − 11,5) | fij | fij · produto | fij(x−11,5)² | fij(y−11,5)² |
-|---------|---------|---------|---------|---------|---------|---------|---------|
-| 3,5 | 3,5 | −8 | −8 | 4 | 256 | 256 | 256 |
-| 3,5 | 11,5 | −8 | 0 | 2 | 0 | 128 | 0 |
-| 11,5 | 3,5 | 0 | −8 | 2 | 0 | 0 | 128 |
-| 11,5 | 11,5 | 0 | 0 | 6 | 0 | 0 | 0 |
-| 11,5 | 19,5 | 0 | 8 | 2 | 0 | 0 | 128 |
-| 19,5 | 11,5 | 8 | 0 | 2 | 0 | 128 | 0 |
-| 19,5 | 19,5 | 8 | 8 | 4 | 256 | 256 | 256 |
-| **Total** | | | | **22** | **512** | **768** | **768** |
-
-$$
-\rho = \frac{512}{\sqrt{768} \cdot \sqrt{768}} = \frac{512}{768} \approx \mathbf{0{,}667}
-$$
-
-✅ O coeficiente de Spearman é **0,667** — **correlação positiva moderada a forte**.
-
-> **🔍 Interpretação:** Existe uma **relação monótona positiva moderada a forte** entre as duas variáveis. O valor ρ = 0,667 é o mesmo que obtivemos com o Pearson no exemplo da aula anterior, porque neste caso a relação é **linear** e **sem outliers** — os dois coeficientes coincidem.
-</details></center>
-
-## 4. COMPARAÇÃO ENTRE PEARSON E SPEARMAN
-
-| Aspeto | Pearson | Spearman |
-|---------|---------|---------|
-| **O que mede** | Relação **linear** | Relação **monótona** |
-| **Dados** | Quantitativos | Quantitativos ou ordinais |
-| **Robustez a outliers** | ❌ Sensível | ✅ Robusto |
-| **Distribuição** | Assume normalidade | Não assume distribuição |
-| **Empates** | Não afetam | Requerem ajuste |
-| **Poder estatístico** | Maior (se linear) | Menor (mas mais robusto) |
-| **Interpretação** | Força da relação linear | Força da relação monótona |
-
-**📌 Quando os dois coincidem:**
-
-- Quando a relação é **linear** e **sem outliers**, Pearson e Spearman dão valores **próximos**.
-- Quando a relação é **monótona não linear** ou há **outliers**, Spearman é **mais adequado**.
-
-**📌 Exemplo comparativo:**
-
-| Conjunto | Pearson (r) | Spearman (ρ) |
-|---------|---------|---------|
-| **A (linear, sem outliers)** | 0,98 | 1,00 |
-| **B (linear, com outlier)** | 0,75 | 1,00 |
-| **C (monótona não linear)** | 0,85 | 0,95 |
-| **D (não monótona)** | 0,20 | 0,10 |
-
-> **🔍 Interpretação:** No Conjunto B, o outlier reduziu o Pearson (0,75) mas não afetou o Spearman (1,00). No Conjunto C, a relação não linear reduziu o Pearson (0,85) mas o Spearman manteve-se alto (0,95). **Spearman é mais robusto e mais adequado para relações monótonas.**
-
-## 5. CÁLCULO DO SPEARMAN EM PYTHON E R
+### O que a fórmula faz
+
+A fórmula compara **duas coisas**:
+
+- **Diferenças entre rankings** (numerador): quanto os rankings de X e Y **divergem**
+- **Número de pares** (denominador): escala o valor para ficar entre −1 e +1
+
+Se as diferenças forem pequenas (rankings concordam), **ρ é alto**. Se forem grandes (rankings divergem), **ρ é baixo**. Se forem máximas (rankings opostos), **ρ é −1**.
+
+### Cálculo dos postos
+
+&emsp;&emsp;&emsp;Antes de aplicar a fórmula, precisamos de **converter os valores em postos**. O posto é a **posição** de cada valor quando ordenamos do menor para o maior.
+
+**Exemplo:** Valores [10, 25, 15, 30, 20]
+
+- Ordenados: 10, 15, 20, 25, 30
+- Postos: 1, 2, 3, 4, 5
+- Atribuição: 10→1, 15→2, 20→3, 25→4, 30→5
+
+&emsp;&emsp;&emsp;Se houver **empates**, atribui-se a **média dos postos**. Por exemplo, dois valores iguais na 2ª e 3ª posição recebem ambos o posto 2,5.
+
+## CÁLCULO PASSO A PASSO
+
+Vamos calcular o ρ para o exemplo dos dois juízes.
+
+### Passo 1 — Dados originais
+
+| Concorrente | Juiz A | Juiz B |
+|-------------|--------|--------|
+| W | 1 | 2 |
+| X | 2 | 1 |
+| Y | 3 | 4 |
+| Z | 4 | 3 |
+
+### Passo 2 — Calcular as diferenças entre postos
+
+| Concorrente | Posto A | Posto B | d = A − B | d² |
+|-------------|---------|---------|-----------|-----|
+| W | 1 | 2 | −1 | 1 |
+| X | 2 | 1 | +1 | 1 |
+| Y | 3 | 4 | −1 | 1 |
+| Z | 4 | 3 | +1 | 1 |
+| | | | | **Σd² = 4** |
+
+### Passo 3 — Aplicar a fórmula
+
+$$\rho = 1 - \frac{6 \times 4}{4(4^2 - 1)} = 1 - \frac{24}{4 \times 15} = 1 - \frac{24}{60} = 1 - 0{,}4 = +0{,}6$$
+
+### ✅ Conclusão
+
+**ρ = +0,6** → correlação **positiva**, **moderada**.
+
+Os dois juízes concordam **parcialmente**. Há uma tendência para classificarem os concorrentes de forma semelhante, mas com algumas divergências.
+
+## INTERPRETAÇÃO DO ρ
+
+### 1. Direção
+
+- **ρ > 0** → positiva (rankings sobem juntos)
+- **ρ < 0** → negativa (rankings em sentidos opostos)
+- **ρ ≈ 0** → nula (sem relação monótona)
+
+### 2. Força
+
+| ρ | Força |
+|-----|-------|
+| 0,00 — 0,19 | Muito fraca |
+| 0,20 — 0,39 | Fraca |
+| 0,40 — 0,59 | Moderada |
+| 0,60 — 0,79 | Forte |
+| 0,80 — 1,00 | Muito forte |
+
+&emsp;&emsp;&emsp;A escala é idêntica à do Pearson — o que muda é o **significado**: no Spearman, mede a concordância dos rankings; no Pearson, mede a relação linear dos valores.
+
+### 3. Exemplos visuais
+
+<style>
+.scatter-grid{font:14px system-ui;background:#f8f9fa;padding:2vw;border-radius:8px;display:grid;grid-template-columns:repeat(3,1fr);gap:2vw;max-width:100%}
+.scatter-grid .g{text-align:center}
+.scatter-grid .g div{margin-bottom:1vh;color:#333;font-weight:500;white-space:nowrap;font-size:clamp(11px,1.4vw,14px)}
+.scatter-grid .p{width:100%;aspect-ratio:1.3;position:relative;margin:0 auto}
+.scatter-grid .p span{position:absolute;width:7px;height:7px;background:#333;border-radius:50%;transform:translate(-50%,-50%)}
+@media(max-width:700px){.scatter-grid{grid-template-columns:1fr 1fr;gap:3vh}}
+@media(max-width:450px){.scatter-grid{grid-template-columns:1fr}}
+</style>
+<div class="scatter-grid">
+  <div class="g">
+    <div>ρ = +0,9 (forte positiva)</div>
+    <div class="p">
+      <span style="left:15%;top:20%"></span>
+      <span style="left:30%;top:35%"></span>
+      <span style="left:45%;top:48%"></span>
+      <span style="left:60%;top:62%"></span>
+      <span style="left:75%;top:75%"></span>
+      <span style="left:88%;top:88%"></span>
+    </div>
+  </div>
+  <div class="g">
+    <div>ρ = +0,5 (moderada)</div>
+    <div class="p">
+      <span style="left:20%;top:15%"></span>
+      <span style="left:35%;top:35%"></span>
+      <span style="left:50%;top:25%"></span>
+      <span style="left:40%;top:55%"></span>
+      <span style="left:65%;top:50%"></span>
+      <span style="left:75%;top:70%"></span>
+      <span style="left:55%;top:80%"></span>
+      <span style="left:85%;top:85%"></span>
+    </div>
+  </div>
+  <div class="g">
+    <div>ρ = 0 (nula)</div>
+    <div class="p">
+      <span style="left:50%;top:15%"></span>
+      <span style="left:30%;top:30%"></span>
+      <span style="left:70%;top:30%"></span>
+      <span style="left:15%;top:45%"></span>
+      <span style="left:85%;top:45%"></span>
+      <span style="left:25%;top:60%"></span>
+      <span style="left:75%;top:60%"></span>
+      <span style="left:45%;top:75%"></span>
+      <span style="left:55%;top:75%"></span>
+    </div>
+  </div>
+  <div class="g">
+    <div>ρ = −0,9 (forte negativa)</div>
+    <div class="p">
+      <span style="left:12%;top:20%"></span>
+      <span style="left:25%;top:32%"></span>
+      <span style="left:38%;top:45%"></span>
+      <span style="left:52%;top:58%"></span>
+      <span style="left:68%;top:72%"></span>
+      <span style="left:85%;top:88%"></span>
+    </div>
+  </div>
+  <div class="g">
+    <div>Curva monótona (Pearson falha)</div>
+    <div class="p">
+      <span style="left:10%;top:85%"></span>
+      <span style="left:25%;top:60%"></span>
+      <span style="left:40%;top:42%"></span>
+      <span style="left:55%;top:30%"></span>
+      <span style="left:70%;top:22%"></span>
+      <span style="left:85%;top:18%"></span>
+    </div>
+  </div>
+  <div class="g">
+    <div>ρ = +1 (perfeita)</div>
+    <div class="p">
+      <span style="left:10%;top:15%"></span>
+      <span style="left:28%;top:32%"></span>
+      <span style="left:46%;top:50%"></span>
+      <span style="left:64%;top:68%"></span>
+      <span style="left:82%;top:85%"></span>
+    </div>
+  </div>
+</div>
+
+&emsp;&emsp;&emsp;Cada gráfico mostra uma situação diferente. No Spearman, o que importa não é a forma exata da nuvem de pontos, mas sim se os **rankings** sobem ou descem juntos. Repara no gráfico da **curva monótona** — o Pearson daria um valor baixo, mas o Spearman capta a relação corretamente.
+
+## PROPRIEDADES DO ρ
+
+O ρ tem várias propriedades matemáticas que vale a pena conhecer, porque nos ajudam a interpretá-lo corretamente.
+
+### 1. Intervalo
+
+&emsp;&emsp;&emsp;O ρ está **sempre** entre −1 e +1. Tal como o Pearson, nunca sai deste intervalo.
+
+### 2. Adimensional
+
+&emsp;&emsp;&emsp;O ρ **não tem unidade**. É apenas um número puro. Isto permite-nos comparar correlações entre variáveis completamente diferentes.
+
+### 3. Simétrico
+
+&emsp;&emsp;&emsp;ρ(X, Y) = ρ(Y, X). A correlação entre X e Y é igual à correlação entre Y e X.
+
+### 4. Robusto a outliers
+
+&emsp;&emsp;&emsp;Como usa **rankings**, um outlier extremo passa a ser apenas "o maior" ou "o menor" — não distorce o cálculo. Esta é a sua maior vantagem sobre o Pearson.
+
+### 5. Deteta relações monótonas
+
+&emsp;&emsp;&emsp;O Spearman capta qualquer relação **monótona** — linear ou não. Só não capta relações **não-monótonas** (ex: curva em U).
+
+### 6. Não exige normalidade
+
+&emsp;&emsp;&emsp;O Spearman é **não-paramétrico** — não assume distribuição normal. Isto torna-o aplicável em muito mais situações do que o Pearson.
+
+## PEARSON VS SPEARMAN — COMPARAÇÃO
+
+Vale a pena comparar os dois coeficientes lado a lado para percebermos quando usar cada um.
+
+| Critério | Pearson | Spearman |
+|----------|---------|----------|
+| **Tipo de dados** | Quantitativos | Ordinais ou quantitativos |
+| **Relação** | Linear | Monótona |
+| **Usa** | Valores reais | Rankings |
+| **Outliers** | Sensível | Robusto |
+| **Normalidade** | Exige | Não exige |
+| **Informação** | Usa toda | Perde alguma |
+| **Interpretação** | Relação linear | Concordância de rankings |
+
+**Regra prática:** Se o scatterplot mostra uma linha reta e não há outliers → **Pearson**. Se mostra uma curva ou há outliers → **Spearman**. Em dúvida, calculamos os dois e comparamos.
+
+
+Usamos Spearman quando:
+
+- Temos **dados ordinais** (rankings, classificações, escalas de Likert)
+- Há **outliers** que não podemos remover
+- A relação é **monótona mas não linear**
+- A amostra é **pequena** e não podemos assumir normalidade
+- Queremos uma medida **robusta** e **não-paramétrica**
+
+
+Não usamos Spearman quando:
+
+- A relação é **não-monótona** (ex: curva em U) → nenhum dos dois funciona bem
+- Temos **variáveis nominais** → usamos V de Cramér ou Qui-quadrado
+- Queremos a **magnitude exata** da relação linear → usamos Pearson
+- A amostra é **muito grande** e os dados são normais → Pearson é mais eficiente
+
 
 <details>
-<summary>🐍 Código Python — Coeficiente de Spearman</summary>
+<summary>📌 Exemplo Prático </summary>
 
-<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+**Problema:** Calcular o ρ entre o ranking de sabor de 5 pizzas (X) e o ranking de preço (Y).
+
+| Pizza | Ranking Sabor (X) | Ranking Preço (Y) |
+|-------|-------------------|-------------------|
+| A | 1 | 3 |
+| B | 2 | 1 |
+| C | 3 | 2 |
+| D | 4 | 5 |
+| E | 5 | 4 |
+
+### Passo 1 — Calcular as diferenças
+
+| Pizza | Posto X | Posto Y | d = X − Y | d² |
+|-------|---------|---------|-----------|-----|
+| A | 1 | 3 | −2 | 4 |
+| B | 2 | 1 | +1 | 1 |
+| C | 3 | 2 | +1 | 1 |
+| D | 4 | 5 | −1 | 1 |
+| E | 5 | 4 | +1 | 1 |
+| | | | | **Σd² = 8** |
+
+### Passo 2 — Aplicar a fórmula
+
+$$\rho = 1 - \frac{6 \times 8}{5(5^2 - 1)} = 1 - \frac{48}{5 \times 24} = 1 - \frac{48}{120} = 1 - 0{,}4 = +0{,}6$$
+
+### ✅ Conclusão
+
+**ρ = +0,6** → correlação **positiva**, **moderada**.
+
+Há uma tendência para as pizzas mais saborosas serem também as mais caras, mas com algumas exceções notáveis (a pizza A é a mais saborosa mas só a 3ª mais cara).
+
+</details>
+
+<details>
+<summary>📌 Exemplo Prático usando Python</summary>
+```python
 import numpy as np
-import pandas as pd
-from scipy.stats import spearmanr, pearsonr
+from scipy.stats import spearmanr
 
-# Dados: X e Y
-X = [1, 2, 3, 4, 5, 6, 7, 8]
-Y = [5, 2, 8, 3, 7, 4, 9, 6]
+- _Dados de exemplo: Rankings de dois juízes_
+X = [1, 2, 3, 4, 5]
+Y = [3, 1, 2, 5, 4]
 
-# 1. CÁLCULO COM SCIPY
+- _1. CÁLCULO COM SCIPY_
 rho, p_value = spearmanr(X, Y)
 print(f"Spearman (SciPy): {rho:.4f}")
 print(f"p-value: {p_value:.4e}")
 
-# 2. CÁLCULO COM PANDAS
+- _2. CÁLCULO COM PANDAS_
+import pandas as pd
 df = pd.DataFrame({'X': X, 'Y': Y})
 rho_pandas = df['X'].corr(df['Y'], method='spearman')
 print(f"Spearman (Pandas): {rho_pandas:.4f}")
 
-# 3. COMPARAÇÃO COM PEARSON
+- _3. COMPARAÇÃO COM PEARSON_
+from scipy.stats import pearsonr
 r_pearson, _ = pearsonr(X, Y)
 print(f"\nPearson: {r_pearson:.4f}")
 print(f"Spearman: {rho:.4f}")
-
-# 4. EXEMPLO COM OUTLIER
-X_out = [1, 2, 3, 4, 5]
-Y_out = [2, 4, 5, 8, 100]
-
-r_pearson_out, _ = pearsonr(X_out, Y_out)
-rho_out, _ = spearmanr(X_out, Y_out)
-
-print(f"\n--- COM OUTLIER ---")
-print(f"Pearson: {r_pearson_out:.4f}")
-print(f"Spearman: {rho_out:.4f}")
-
-# 5. MATRIZ DE CORRELAÇÃO DE SPEARMAN
-df_completo = pd.DataFrame({
-    'X': X,
-    'Y': Y,
-    'Z': [8, 7, 6, 7, 8, 6, 7, 8]
-})
-matriz_spearman = df_completo.corr(method='spearman')
-print("\nMatriz de Correlação de Spearman:")
-print(matriz_spearman)
-
-# 6. HEATMAP
-import seaborn as sns
-import matplotlib.pyplot as plt
-
-plt.figure(figsize=(8, 6))
-sns.heatmap(matriz_spearman, annot=True, cmap='coolwarm', vmin=-1, vmax=1)
-plt.title('Matriz de Correlação de Spearman')
-plt.show()
-</pre>
+```
 
 </details>
 
 <details>
-<summary>📊 Código R — Coeficiente de Spearman</summary>
+<summary>📌 Exemplo Prático usando R</summary>
 
-<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
-# Dados: X e Y
-X <- c(1, 2, 3, 4, 5, 6, 7, 8)
-Y <- c(5, 2, 8, 3, 7, 4, 9, 6)
+```r
+- _Dados de exemplo: Rankings de dois juízes_
+X <- c(1, 2, 3, 4, 5)
+Y <- c(3, 1, 2, 5, 4)
 
-# 1. CÁLCULO BÁSICO
+- _1. CÁLCULO BÁSICO DO rho_
 rho <- cor(X, Y, method = "spearman")
 cat("Spearman:", rho, "\n")
 
-# 2. TESTE DE SIGNIFICÂNCIA
+- _2. TESTE DE SIGNIFICÂNCIA (inclui p-value)_
 teste <- cor.test(X, Y, method = "spearman")
 print(teste)
 
-# 3. COMPARAÇÃO COM PEARSON
+- _3. COMPARAÇÃO COM PEARSON_
 r_pearson <- cor(X, Y, method = "pearson")
 cat("\nPearson:", r_pearson, "\n")
 cat("Spearman:", rho, "\n")
-
-# 4. EXEMPLO COM OUTLIER
-X_out <- c(1, 2, 3, 4, 5)
-Y_out <- c(2, 4, 5, 8, 100)
-
-r_pearson_out <- cor(X_out, Y_out, method = "pearson")
-rho_out <- cor(X_out, Y_out, method = "spearman")
-
-cat("\n--- COM OUTLIER ---\n")
-cat("Pearson:", r_pearson_out, "\n")
-cat("Spearman:", rho_out, "\n")
-
-# 5. MATRIZ DE CORRELAÇÃO DE SPEARMAN
-df <- data.frame(
-  X = X,
-  Y = Y,
-  Z = c(8, 7, 6, 7, 8, 6, 7, 8)
-)
-matriz_spearman <- cor(df, method = "spearman")
-print(matriz_spearman)
-
-# 6. HEATMAP
-library(ggplot2)
-library(reshape2)
-
-melted_corr <- melt(matriz_spearman)
-ggplot(melted_corr, aes(x = Var1, y = Var2, fill = value)) +
-  geom_tile() +
-  geom_text(aes(label = round(value, 2)), color = "white") +
-  scale_fill_gradient2(low = "blue", mid = "white", high = "red",
-                       midpoint = 0, limits = c(-1, 1)) +
-  labs(title = "Matriz de Correlação de Spearman", x = "", y = "") +
-  theme_minimal()
-</pre>
+```
 
 </details>
 
-## 6. VANTAGENS E DESVANTAGENS
-
-| Vantagens | Desvantagens |
-|---------|----------|
-| ✅ **Robusto a outliers** | ❌ **Perde informação** (usa postos em vez de valores) |
-| ✅ **Deteta relações monótonas** | ❌ **Menos poderoso** que Pearson se a relação for linear |
-| ✅ **Funciona com dados ordinais** | ❌ **Requer ajuste** para empates |
-| ✅ **Não assume normalidade** | ❌ **Não indica a inclinação** da relação |
-| ✅ **Adimensional** — sem unidade | ❌ **Não implica causalidade** |
-| ✅ **Varie entre −1 e +1** — interpretável | ❌ **Empates reduzem a precisão** |
-
-## 7. QUANDO USAR O COEFICIENTE DE SPEARMAN
-
-| Critério | Spearman |
-|---------|----------|
-| **Dados ordinais** | ✅ Único |
-| **Outliers** | ✅ Único |
-| **Relação monótona não linear** | ✅ Único |
-| **Distribuição não normal** | ✅ Único |
-| **Amostras pequenas** | ✅ Único |
-| **Relação linear sem outliers** | ❌ Usar Pearson |
-| **Dados quantitativos com distribuição normal** | ❌ Usar Pearson |
-
-**Fluxo de Decisão:**
-
-1. Os dados são **ordinais**? → **Spearman**
-2. Há **outliers**? → **Spearman**
-3. A relação é **monótona não linear**? → **Spearman**
-4. A distribuição **não é normal**? → **Spearman**
-5. A relação é **linear** e **sem outliers**? → **Pearson**
-6. Em dúvida? → Calcula **ambos** e compara!
-
-## 8. EXERCÍCIOS
+## EXERCÍCIOS
 
 <details>
-<summary>📗 Exercício 1 — Spearman (Sem Outliers)</summary>
+<summary>📗 Exercício 1 — Calcular o ρ de Spearman</summary>
 
-**Enunciado:** Calcule o coeficiente de Spearman para os dados:
+**Enunciado:** Calcule o coeficiente de Spearman para os dados abaixo.
 
 | X | Y |
-|---------|---------|
-| 1 | 3 |
-| 2 | 5 |
-| 3 | 7 |
-| 4 | 9 |
-| 5 | 11 |
-
-<details>
-<summary>💡 Ver resposta</summary>
-
-**Resposta:**
-
-Postos de X: 1, 2, 3, 4, 5
-Postos de Y: 1, 2, 3, 4, 5
-
-| Posto X | Posto Y | di | di² |
-|---------|---------|---------|---------|
-| 1 | 1 | 0 | 0 |
-| 2 | 2 | 0 | 0 |
-| 3 | 3 | 0 | 0 |
-| 4 | 4 | 0 | 0 |
-| 5 | 5 | 0 | 0 |
-| **Total** | | | **0** |
-
-ρ = 1 − (6 × 0) / (5 × 24) = **1**
-
-**Interpretação:** Correlação positiva perfeita.
-
-</details>
-</details>
-
-<details>
-<summary>📗 Exercício 2 — Spearman (Com Outlier)</summary>
-
-**Enunciado:** Calcule o coeficiente de Spearman para os dados:
-
-| X | Y |
-|---------|---------|
+|---|---|
 | 1 | 2 |
 | 2 | 4 |
 | 3 | 5 |
-| 4 | 8 |
-| 5 | 100 |
-
-<details>
-<summary>💡 Ver resposta</summary>
-
-**Resposta:**
-
-Postos de X: 1, 2, 3, 4, 5
-Postos de Y: 1, 2, 3, 4, 5
-
-| Posto X | Posto Y | di | di² |
-|---------|---------|---------|---------|
-| 1 | 1 | 0 | 0 |
-| 2 | 2 | 0 | 0 |
-| 3 | 3 | 0 | 0 |
-| 4 | 4 | 0 | 0 |
-| 5 | 5 | 0 | 0 |
-| **Total** | | | **0** |
-
-ρ = 1 − (6 × 0) / (5 × 24) = **1**
-
-**Interpretação:** Correlação positiva perfeita. O outlier (100) **não afetou** o Spearman — isto mostra a robustez do coeficiente.
-
-</details>
-</details>
-
-<details>
-<summary>📗 Exercício 3 — Spearman (Correlação Negativa)</summary>
-
-**Enunciado:** Calcule o coeficiente de Spearman para os dados:
-
-| X | Y |
-|---------|---------|
-| 1 | 10 |
-| 2 | 8 |
-| 3 | 7 |
 | 4 | 4 |
-| 5 | 2 |
+| 5 | 5 |
 
 <details>
 <summary>💡 Ver resposta</summary>
@@ -765,100 +402,101 @@ Postos de Y: 1, 2, 3, 4, 5
 **Resposta:**
 
 Postos de X: 1, 2, 3, 4, 5
-Postos de Y: 5, 4, 3, 2, 1
 
-| Posto X | Posto Y | di | di² |
-|---------|---------|---------|---------|
-| 1 | 5 | −4 | 16 |
-| 2 | 4 | −2 | 4 |
-| 3 | 3 | 0 | 0 |
-| 4 | 2 | 2 | 4 |
-| 5 | 1 | 4 | 16 |
-| **Total** | | | **40** |
+Postos de Y: 2, 4, 5, 4, 5 → com empates: 4→4,5; 5→4,5
 
-ρ = 1 − (6 × 40) / (5 × 24) = 1 − 240/120 = **−1**
+| Posto X | Posto Y | d | d² |
+|---------|---------|---|-----|
+| 1 | 2 | −1 | 1 |
+| 2 | 4,5 | −2,5 | 6,25 |
+| 3 | 4,5 | −1,5 | 2,25 |
+| 4 | 4,5 | −0,5 | 0,25 |
+| 5 | 4,5 | +0,5 | 0,25 |
+| | | | **Σd² = 10** |
 
-**Interpretação:** Correlação negativa perfeita.
+ρ = 1 − (6 × 10) / (5 × 24) = 1 − 60/120 = 1 − 0,5 = **0,5**
 
-</details>
-</details>
-
-<details>
-<summary>📗 Exercício 4 — Comparação Pearson vs Spearman</summary>
-
-**Enunciado:** Para os dados do Exercício 2 (com outlier), calcula o Pearson e compara com o Spearman. O que concluis?
-
-<details>
-<summary>💡 Ver resposta</summary>
-
-**Resposta:**
-
-**Pearson:**
-
-x̄ = 3, ȳ = 23,8
-
-| xi | yi | xi − 3 | yi − 23,8 | Produto | (xi−3)² | (yi−23,8)² |
-|---------|---------|---------|---------|---------|---------|---------|
-| 1 | 2 | −2 | −21,8 | 43,6 | 4 | 475,24 |
-| 2 | 4 | −1 | −19,8 | 19,8 | 1 | 392,04 |
-| 3 | 5 | 0 | −18,8 | 0 | 0 | 353,44 |
-| 4 | 8 | 1 | −15,8 | −15,8 | 1 | 249,64 |
-| 5 | 100 | 2 | 76,2 | 152,4 | 4 | 5806,44 |
-| **Total** | | | | **200,0** | **10** | **7276,80** |
-
-r = 200 / (√10 × √7276,80) = 200 / (3,16 × 85,30) = 200/269,55 ≈ **0,742**
-
-**Spearman:** ρ = 1
-
-**Conclusão:** O outlier (100) **reduziu** o Pearson para 0,742, mas **não afetou** o Spearman (1,00). Isto mostra que o **Spearman é mais robusto a outliers** que o Pearson.
+**Interpretação:** Correlação positiva moderada.
 
 </details>
 </details>
 
 <details>
-<summary>📗 Exercício 5 — Relação Monótona Não Linear</summary>
+<summary>📗 Exercício 2 — Interpretar o ρ</summary>
 
-**Enunciado:** Os dados abaixo têm uma relação monótona não linear. Calcula Pearson e Spearman e compara.
-
-| X | Y |
-|---------|---------|
-| 1 | 1 |
-| 2 | 4 |
-| 3 | 9 |
-| 4 | 16 |
-| 5 | 25 |
+**Enunciado:** Um estudo encontrou ρ = −0,85 entre o ranking de satisfação e o ranking de reclamações. O que podes concluir?
 
 <details>
 <summary>💡 Ver resposta</summary>
 
 **Resposta:**
 
-**Pearson:**
+ρ = −0,85 indica uma **correlação negativa forte** entre os rankings. Isto significa que:
+- Quando a satisfação sobe no ranking, as reclamações descem no ranking.
+- Há uma **concordância inversa forte** entre as duas classificações.
+- A relação é **forte** (|ρ| > 0,7).
 
-x̄ = 3, ȳ = 11
-
-| xi | yi | xi − 3 | yi − 11 | Produto | (xi−3)² | (yi−11)² |
-|---------|---------|---------|---------|---------|---------|---------|
-| 1 | 1 | −2 | −10 | 20 | 4 | 100 |
-| 2 | 4 | −1 | −7 | 7 | 1 | 49 |
-| 3 | 9 | 0 | −2 | 0 | 0 | 4 |
-| 4 | 16 | 1 | 5 | 5 | 1 | 25 |
-| 5 | 25 | 2 | 14 | 28 | 4 | 196 |
-| **Total** | | | | **60** | **10** | **374** |
-
-r = 60 / (√10 × √374) = 60 / (3,16 × 19,34) = 60/61,11 ≈ **0,982**
-
-**Spearman:**
-
-Postos de X: 1, 2, 3, 4, 5
-Postos de Y: 1, 2, 3, 4, 5
-
-ρ = 1
-
-**Conclusão:** A relação é **monótona** (quando X aumenta, Y sempre aumenta), mas **não linear** (é quadrática). O Pearson é alto (0,982), mas o Spearman é **perfeito** (1,00). O Spearman capta melhor a relação monótona.
+**Interpretação prática:** Clientes mais satisfeitos tendem a fazer menos reclamações.
 
 </details>
 </details>
 
-> O Pearson mede a força da relação linear. O Spearman mede a força da relação monótona. Quando os dados têm outliers ou não são lineares, o Spearman é a voz da robustez.
+<details>
+<summary>📗 Exercício 3 — Pearson vs Spearman</summary>
 
+**Enunciado:** Porque é que o Spearman é preferível ao Pearson quando há outliers?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+O Spearman é preferível porque usa **rankings** em vez de valores. Um outlier extremo passa a ser apenas "o maior" ou "o menor" — não distorce o cálculo.
+
+**Exemplo:** No conjunto `1, 2, 3, 4, 100`, o valor 100 é apenas o 5º posto. No Pearson, o 100 distorceria a média e o desvio-padrão, alterando drasticamente o r.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Empates no Spearman</summary>
+
+**Enunciado:** Como se calculam os postos quando há empates? Dá um exemplo.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+Quando há empates, atribui-se a **média dos postos** que seriam ocupados.
+
+**Exemplo:** Valores `10, 20, 20, 30, 40`
+
+- Ordenados: 10, 20, 20, 30, 40
+- Postos: 1, 2, 3, 4, 5
+- Empate nos valores 20 (posições 2 e 3) → ambos recebem (2+3)/2 = **2,5**
+- Resultado: 10→1, 20→2,5, 20→2,5, 30→4, 40→5
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Relação monótona não-linear</summary>
+
+**Enunciado:** Porque é que o Pearson falha numa relação monótona não-linear, mas o Spearman não?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+O Pearson mede a **relação linear** — se a relação for uma curva (mesmo que sempre a subir), o Pearson dá um valor inferior ao real.
+
+O Spearman mede a **concordância dos rankings** — como os rankings sobem sempre juntos, o Spearman capta a relação corretamente.
+
+**Exemplo:** Numa curva `y = x²` (para x > 0), o Pearson pode dar 0,85, mas o Spearman dá 1,0 porque a ordem é sempre respeitada.
+
+</details>
+</details>
+
+> Em resumo: o coeficiente de Spearman é a alternativa robusta ao Pearson. Usa rankings em vez de valores, o que o torna resistente a outliers e aplicável a dados ordinais. Capta relações monótonas que o Pearson não consegue ver. Mas perde informação — quando os dados são de boa qualidade e a relação é linear, o Pearson continua a ser a melhor escolha. Em dúvida, calculamos os dois e comparamos.

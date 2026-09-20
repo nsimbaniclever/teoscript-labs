@@ -1,623 +1,397 @@
-# Correlação Parcial
+# <center>CORRELAÇÃO VS CAUSALIDADE</center>
 
-## 1. INTRODUÇÃO
+### INTRODUÇÃO
 
-&emsp;&emsp;&emsp;Nas aulas anteriores estudámos o **coeficiente de Pearson** (correlação linear) e o **coeficiente de Spearman** (correlação monótona). Ambos medem a relação entre **duas variáveis**. Mas há um problema fundamental que nenhum deles resolve: **o que acontece quando existe uma terceira variável a influenciar ambas?**<br>
+&emsp;&emsp;&emsp;Nas aulas anteriores estudámos como medir a correlação entre duas variáveis. Vimos o coeficiente de Pearson, o coeficiente de Spearman, e aprendemos a interpretar os valores de r e ρ. Vimos também que a correlação nos diz se duas variáveis andam juntas, para que lado, e com que força. Mas há um erro que atravessa toda a estatística e que precisamos de enfrentar de frente: **assumir que correlação implica causalidade**. Este erro é tão comum que tem um nome em latim — *cum hoc ergo propter hoc* ("com isto, portanto por causa disto"). E é tão perigoso que aparece em jornais, em decisões políticas, em diagnósticos médicos e em estratégias de negócio.<br><br>
 
-&emsp;&emsp;&emsp;Considera o seguinte problema prático:
+&emsp;&emsp;&emsp;**Exemplo clássico:** Num estudo, verificou-se que o consumo de sorvete e o número de afogamentos têm uma correlação de r = 0,95. Uma correlação fortíssima. Será que comer sorvete causa afogamentos? **Não.** A explicação é muito mais simples: quando está calor, as pessoas comem mais sorvete **e** vão mais à praia. A variável que causa ambas é a **temperatura**. O sorvete e os afogamentos estão correlacionados, mas não há relação causal direta entre eles.<br><br>
 
-> **Um investigador quer saber se o consumo de café está relacionado com o risco de doença cardíaca. Recolheu dados de 100 pessoas:**
+&emsp;&emsp;&emsp;Este é o tipo de armadilha que precisamos de aprender a evitar. Nesta aula, vamos estudar a diferença entre correlação e causalidade, os quatro cenários possíveis quando duas variáveis estão correlacionadas, o conceito de variável de confusão, e as três condições necessárias para estabelecer causalidade. Antes de avançarmos, precisamos de perceber exatamente o que significa cada termo.
 
- - **Correlação entre café (X) e doença cardíaca (Y):** r = 0,45 (moderada)
+> A **causalidade** é uma relação em que uma variável (a causa) produz um efeito noutra variável (o efeito). A **correlação** é apenas uma medida de associação — não nos diz **nada** sobre a direção da causa.
 
- **Conclusão precipitada:** "O café aumenta o risco de doença cardíaca!"
+&emsp;&emsp;&emsp;É fundamental perceber a diferença:
 
- **Mas há uma terceira variável:** o **tabagismo** (Z).
- - Pessoas que bebem mais café tendem a fumar mais.
- - Pessoas que fumam mais têm maior risco de doença cardíaca.
+- **Correlação** → "X e Y andam juntos"
+- **Causalidade** → "X faz Y acontecer"
 
- **A correlação entre café e doença cardíaca pode ser espúria** — causada pelo tabagismo!
+&emsp;&emsp;&emsp;São coisas completamente diferentes. Uma correlação forte pode existir sem qualquer relação causal. E uma relação causal pode existir sem correlação forte (se houver outras variáveis a interferir). Vejamos um exemplo para clarificar. Se medirmos o número de horas de sol e o número de gelados vendidos, encontramos uma correlação forte. Mas será que o sol **causa** a venda de gelados? Sim, provavelmente. Agora, se medirmos o número de gelados vendidos e o número de afogamentos, também encontramos uma correlação forte. Mas será que os gelados **causam** afogamentos? Não. A causa é a temperatura, que influencia ambos. Este erro é comum por várias razões que vale a pena compreender.<br><br>
 
-&emsp;&emsp;&emsp;Este é o problema da **variável de confusão** (confounder). Quando há uma terceira variável Z que influencia **ambas** X e Y, a correlação entre X e Y pode ser **inflacionada** ou **mascarada** por Z.<br>
+**1. O cérebro humano procura padrões**
 
-&emsp;&emsp;&emsp;Precisamos de uma medida que:
-1. **Controle o efeito de Z** — isole a relação entre X e Y.
-2. **Remova a influência da variável de confusão**.
-3. **Revele a correlação "pura"** entre X e Y, livre de Z.
+&emsp;&emsp;&emsp;Estamos programados para encontrar padrões. Quando vemos duas coisas a acontecer juntas, o nosso cérebro grita "uma causa a outra!". Esta é uma tendência natural — mas em estatística, é uma armadilha.<br><br>
 
-&emsp;&emsp;&emsp;É precisamente aqui que entra a **correlação parcial** — a medida que quantifica a relação entre duas variáveis **após remover o efeito de uma terceira**.
+**2. A correlação é fácil de calcular, a causalidade não**
+
+&emsp;&emsp;&emsp;Calcular uma correlação é simples: temos os dados, aplicamos a fórmula, obtemos um número. Estabelecer causalidade exige **experiências controladas**, **estudos longitudinais** e **muito mais cuidado**. É muito mais fácil ficar pela correlação.<br><br>
+
+**3. A comunicação simplifica tudo**
+
+&emsp;&emsp;&emsp;Quando um jornal diz "estudo revela que X está ligado a Y", está a simplificar. O estudo original provavelmente falava de correlação, mas a manchete sugere causalidade. Esta simplificação é perigosa.<br><br>
+
+**4. Confundimos sequência temporal com causa**
+
+&emsp;&emsp;&emsp;Se X acontece antes de Y, tendemos a assumir que X causou Y. Mas a ordem temporal **não é suficiente** para estabelecer causalidade. Muitas coisas acontecem antes de outras sem as causar.
+
+### OS CENÁRIOS POSSÍVEIS
+
+&emsp;&emsp;&emsp;Quando duas variáveis estão correlacionadas, há **quatro cenários possíveis**. Precisamos de considerar todos antes de tirar conclusões.
+
+**1. X causa Y**
+
+&emsp;&emsp;&emsp;A variável X influencia diretamente a variável Y. Este é o cenário que queremos provar quando falamos de causalidade.
+**Exemplo:** Fumar causa cancro do pulmão.<br><br>
+
+**2. Y causa X**
+
+&emsp;&emsp;&emsp;A variável Y influencia diretamente a variável X. A direção da causa é a oposta da que podíamos supor.
+
+**Exemplo:** As pessoas com cancro tendem a fumar menos (porque estão doentes). Se medirmos "fumar" e "cancro" ao mesmo tempo, podemos encontrar uma correlação negativa — mas a causa é o cancro, não o contrário.<br><br>
+
+**3. Z causa ambos (variável de confusão)**
+
+&emsp;&emsp;&emsp;Uma terceira variável (Z) causa tanto X como Y. A correlação entre X e Y é **espúria** — não há relação causal direta entre eles.
+
+**Exemplo:** A temperatura causa o consumo de sorvete e os afogamentos. O sorvete e os afogamentos estão correlacionados, mas nenhum causa o outro.<br><br>
+
+**4. Coincidência**
+
+&emsp;&emsp;&emsp;As duas variáveis não têm qualquer relação — a correlação é puro acaso. Isto acontece especialmente com **amostras pequenas** ou quando **testamos muitas combinações** de variáveis.
+
+**Exemplo:** O número de filmes do Nicolas Cage e o número de afogamentos em piscinas. Correlação alta — mas pura coincidência.
+
+<center><details>
+<summary>Diagrama dos Cenários</summary> 
+
+```mermaid
+flowchart TD
+    A["Correlação entre X e Y"] --> B{"Qual é a causa?"}
+    B -->|"X → Y"| C["X causa Y"]
+    B -->|"Y → X"| D["Y causa X"]
+    B -->|"Z → X e Z → Y"| E["Z causa ambos"]
+    B -->|"Nenhuma"| F["Coincidência"]
+    
+    style A fill:#333,color:#fff,stroke:#333,stroke-width:2px
+    style C fill:#d4edda,stroke:#28a745
+    style D fill:#d1ecf1,stroke:#17a2b8
+    style E fill:#fff3cd,stroke:#ffc107
+    style F fill:#f8d7da,stroke:#dc3545
+```
+</details></center>
+
+###  VARIÁVEIS DE CONFUSÃO
+
+&emsp;&emsp;&emsp;A **variável de confusão** (ou *confounding variable*) é uma terceira variável que causa tanto X como Y, criando uma correlação espúria.
+
+**Exemplo visual:**
+
+```mermaid
+flowchart TD
+    T["🌡️ Temperatura"] --> S["🍦 Consumo de sorvete"]
+    T --> A["🏊 Afogamentos"]
+    
+    style T fill:#fff3cd,stroke:#ffc107,stroke-width:2px
+    style S fill:#d1ecf1,stroke:#17a2b8,stroke-width:2px
+    style A fill:#f8d7da,stroke:#dc3545,stroke-width:2px
+```
+
+&emsp;&emsp;&emsp;A temperatura causa **ambas**. O sorvete e os afogamentos estão correlacionados, mas não há relação causal direta entre eles.
+
+**Outros exemplos de variáveis de confusão:**
+
+- **Nível socioeconómico** → causa tanto "ter livros em casa" como "melhores notas na escola"
+- **Idade** → causa tanto "consumo de medicamentos" como "problemas de saúde"
+- **Genética** → causa tanto "altura" como "peso"
+
+**Como detetar uma variável de confusão:**
+
+- Perguntamos: "Existe uma terceira variável que possa causar ambas?"
+- Controlamos essa variável (correlação parcial)
+- Se a correlação desaparecer, era espúria
+
+
+### CORRELAÇÃO ESPÚRIA
+
+&emsp;&emsp;&emsp;A **correlação espúria** é uma correlação que parece significativa mas é causada por outra coisa — variável de confusão, coincidência ou erro de amostragem.
+
+**Exemplos famosos:**
+
+- **Nicolas Cage vs. Afogamentos** → correlação alta, mas pura coincidência
+- **Vendas de gelados vs. Afogamentos** → variável de confusão (temperatura)
+- **Número de bombeiros vs. Danos de incêndio** → variável de confusão (tamanho do incêndio)
+
+**Porque é perigosa:**
+
+- Pode levar a decisões erradas
+- Pode gerar teorias falsas
+- Pode ser usada para manipular opiniões
+
+**Como evitar:**
+
+- Vemos sempre o scatterplot
+- Pensamos em variáveis de confusão
+- Não assumimos causalidade sem experiência controlada
+- Desconfiamos de correlações "perfeitas demais"
+
+
+### COMO ESTABELECER CAUSALIDADE
+
+&emsp;&emsp;&emsp;Se a correlação não basta, o que é preciso para estabelecer causalidade? A resposta tem **três pilares**.
+
+**1. Correlação**
+
+&emsp;&emsp;&emsp;Primeiro, é preciso que exista uma **correlação** entre X e Y. Sem correlação, não há causalidade a estabelecer. Mas a correlação é apenas o **primeiro passo**.
+
+**2. Ordem temporal**
+
+&emsp;&emsp;&emsp;A causa tem de **preceder** o efeito. Se X causa Y, então X tem de acontecer **antes** de Y. Isto exige **estudos longitudinais** — medir as variáveis ao longo do tempo.
+
+**3. Ausência de variáveis de confusão**
+
+&emsp;&emsp;&emsp;É preciso **eliminar** a possibilidade de uma terceira variável estar a causar ambas. Isto exige **experiências controladas** — manipular X e ver se Y muda, mantendo tudo o resto constante.
+
+**4. O padrão-ouro: RCT**
+
+&emsp;&emsp;&emsp;O **ensaio clínico randomizado** (RCT — *Randomized Controlled Trial*) é o padrão-ouro para estabelecer causalidade. Os participantes são **aleatoriamente** atribuídos a grupos (tratamento vs. controlo), eliminando variáveis de confusão.
+
+**Exemplo:** Para provar que um medicamento causa melhoria, damos o medicamento a um grupo e um placebo a outro, e comparamos. A randomização garante que não há variáveis de confusão.
+
+
+### 7. EXEMPLOS CLÁSSICOS
+
+#### 7.1 Sorvete e afogamentos
+
+- **Correlação:** r = 0,95
+- **Variável de confusão:** temperatura
+- **Conclusão:** não há causalidade direta
+
+#### 7.2 Fumar e cancro
+
+- **Correlação:** r = 0,7 (forte)
+- **Ordem temporal:** fumar precede o cancro (estudos longitudinais)
+- **Variáveis de confusão:** controladas em estudos
+- **Conclusão:** há causalidade estabelecida
+
+#### 7.3 Número de bombeiros e danos de incêndio
+
+- **Correlação:** r = 0,8 (forte)
+- **Variável de confusão:** tamanho do incêndio (causa mais bombeiros e mais danos)
+- **Conclusão:** não há causalidade direta — o tamanho do incêndio causa ambos
+
+#### 7.4 Nicolas Cage e afogamentos
+
+- **Correlação:** r = 0,67
+- **Explicação:** pura coincidência
+- **Conclusão:** correlação espúria
+
+
+## 8. REGRAS PARA EVITAR O ERRO
+
+&emsp;&emsp;&emsp;Para evitarmos o erro de confundir correlação com causalidade, seguimos estas regras.
+
+**Regra 1 — Nunca assumimos causalidade só com correlação.** A correlação é o ponto de partida, não o ponto de chegada.
+
+**Regra 2 — Procuramos variáveis de confusão.** Perguntamos sempre: "Existe uma terceira variável que possa causar ambas?"
+
+**Regra 3 — Verificamos a ordem temporal.** A causa tem de preceder o efeito. Isto exige estudos longitudinais.
+
+**Regra 4 — Usamos desenho experimental.** O RCT é o padrão-ouro para estabelecer causalidade.
+
+**Regra 5 — Consideramos o contexto.** A plausibilidade biológica, física ou social importa. Uma correlação entre duas variáveis sem qualquer mecanismo plausível é suspeita.
+
+**Regra 6 — Desconfiamos de correlações "perfeitas demais".** Se r = 0,99, é provável que haja algo errado — ou uma variável de confusão, ou um erro de cálculo.
+
+
+&emsp;&emsp;&emsp;Nem sempre precisamos de estabelecer causalidade. Há situações em que a correlação **por si só** é suficiente.
+
+**Quando queremos prever, não explicar:** Se queremos prever Y a partir de X, basta que haja correlação. Não precisamos de saber **porquê**.
+
+**Quando a causalidade é óbvia:** Se X é "altura" e Y é "peso", a correlação basta — a causalidade é evidente e não precisa de ser provada.
+
+**Quando a experiência não é possível:** Em muitas áreas (economia, sociologia, epidemiologia), não podemos fazer RCTs. A correlação é o melhor que temos.
+
+**Quando queremos apenas explorar:** Na análise exploratória de dados, a correlação é suficiente para identificar padrões e gerar hipóteses.
+
+
+
+## 11. EXEMPLO PRÁTICO COMPLETO
+
+**Problema:** Um estudo encontrou uma correlação de r = 0,85 entre o número de horas que os alunos passam em bibliotecas e as suas notas finais. Podemos concluir que estudar em bibliotecas causa melhores notas?
+
+**Análise:**
+
+1. **Correlação:** Sim, r = 0,85 é forte.
+2. **Ordem temporal:** Não sabemos se os alunos vão à biblioteca **antes** ou **depois** de tirarem boas notas.
+3. **Variáveis de confusão:** Várias possibilidades:
+   - **Motivação** → alunos motivados vão mais à biblioteca **e** estudam mais
+   - **Nível socioeconómico** → alunos com mais recursos têm acesso a bibliotecas **e** mais apoio em casa
+   - **Inteligência** → alunos mais inteligentes podem preferir bibliotecas **e** tirar melhores notas
+4. **Conclusão:** Não podemos concluir causalidade. A correlação pode ser explicada por uma ou mais variáveis de confusão.
+
+**Para estabelecer causalidade:** Precisaríamos de um RCT — atribuir aleatoriamente alunos a "usar biblioteca" vs. "não usar biblioteca" e comparar as notas. Mas isto seria antiético e impraticável.
+
+### Exemplo Prático usando Python
 
 <details>
-<summary>📊 Ver a família das medidas de associação</summary>
-<style>
-.r{font:14px system-ui;text-align:center}
-.r b{display:inline-block;padding:4px 10px;background:#333;color:#fff;border-radius:6px}
-.r i{display:block;width:2px;height:18px;background:#333;margin:0 auto}
-.r em{display:flex;gap:8px;justify-content:center;position:relative;padding-top:18px}
-.r em::before{content:'';position:absolute;top:0;left:25%;right:25%;height:2px;background:#333}
-.r em span{flex:1;padding:8px;border:2px solid #333;border-radius:8px;max-width:140px}
-.r em span::before{content:'';position:absolute;top:-18px;left:50%;width:2px;height:18px;background:#333}
-.r em span{position:relative}
-</style>
-<div class="r">
-  <b>Medidas de Associação</b>
-  <i></i>
-  <em>
-    <span>Pearson<br>(linear)</span>
-    <span>Spearman<br>(ordinal)</span>
-    <span>Parcial<br>(controlo)</span>
-  </em>
-</div>
-</details>
-
-> **💡 Dica de Ouro:** A correlação parcial responde à pergunta: **"Qual é a relação entre X e Y quando removemos o efeito de Z?"** É como "limpar" a influência de uma terceira variável.
-
-## 2. O QUE É A CORRELAÇÃO PARCIAL?
-
-&emsp;&emsp;&emsp;A **correlação parcial** mede a relação entre duas variáveis (X e Y) **após remover o efeito linear de uma terceira variável** (Z). Em outras palavras, mede a correlação entre X e Y **quando Z é mantida constante**.
-
-**📌 Definição formal:**
-
-$$
-\color{blue} r_{XY \cdot Z} = \frac{r_{XY} - r_{XZ} \cdot r_{YZ}}{\sqrt{(1 - r_{XZ}^2)(1 - r_{YZ}^2)}}
-$$
-
-Onde:
-- **rXY** = correlação simples entre X e Y
-- **rXZ** = correlação simples entre X e Z
-- **rYZ** = correlação simples entre Y e Z
-- **rXY·Z** = correlação parcial entre X e Y, controlando Z
-
-**📌 Interpretação:**
-
-| Valor de rXY·Z | Interpretação |
-|---------|----------|
-| rXY·Z = rXY | Z **não afeta** a relação entre X e Y |
-| rXY·Z < rXY | Z **inflaciona** a relação entre X e Y (parte da correlação era devida a Z) |
-| rXY·Z > rXY | Z **mascara** a relação entre X e Y (a correlação real é mais forte) |
-| rXY·Z ≈ 0 | A correlação entre X e Y era **totalmente devida a Z** (correlação espúria) |
-
-**📌 Relação com a regressão linear:**
-
-&emsp;&emsp;&emsp;A correlação parcial está intimamente ligada à **regressão linear múltipla**. Os **coeficientes de regressão parcial** medem o efeito de cada variável independente no Y, controlando as outras. A correlação parcial é a versão **estandardizada** desses coeficientes.
-
-## 3. PASSO A PASSO
-
-### 3.1 Correlação Parcial para Dados Brutos
-
-**📐 Método**
-
-| Passo | Descrição |
-|---------|----------|
-| **1** | Calcular rXY (correlação simples entre X e Y) |
-| **2** | Calcular rXZ (correlação simples entre X e Z) |
-| **3** | Calcular rYZ (correlação simples entre Y e Z) |
-| **4** | Aplicar a fórmula: <code>rXY·Z = (rXY − rXZ × rYZ) / √((1 − rXZ²)(1 − rYZ²))</code> |
-
-<center><details>
-<summary>**📌 Exemplo Prático 1 — Correlação Espúria**</summary>
-
-**Problema:** Um investigador quer saber se o consumo de café (X) está relacionado com doença cardíaca (Y), controlando o tabagismo (Z). Os dados de 100 pessoas revelaram:
-
-| Correlação | Valor |
-|---------|---------|
-| rXY (café vs. doença) | 0,45 |
-| rXZ (café vs. tabagismo) | 0,60 |
-| rYZ (tabagismo vs. doença) | 0,70 |
-
-**Passo 1 — Aplicar a fórmula:**
-
-$$
-r_{XY \cdot Z} = \frac{0{,}45 - (0{,}60 \times 0{,}70)}{\sqrt{(1 - 0{,}60^2)(1 - 0{,}70^2)}}
-$$
-
-$$
-r_{XY \cdot Z} = \frac{0{,}45 - 0{,}42}{\sqrt{(1 - 0{,}36)(1 - 0{,}49)}}
-$$
-
-$$
-r_{XY \cdot Z} = \frac{0{,}03}{\sqrt{0{,}64 \times 0{,}51}} = \frac{0{,}03}{\sqrt{0{,}3264}} = \frac{0{,}03}{0{,}571} \approx \mathbf{0{,}053}
-$$
-
-✅ A correlação parcial é **0,053** — **quase nula**.
-
-> **🔍 Interpretação:** Quando controlamos o **tabagismo** (Z), a correlação entre **café** (X) e **doença cardíaca** (Y) cai de **0,45** para **0,053** — praticamente zero. Isto significa que a correlação original era **quase totalmente espúria** — devida ao tabagismo. O café **não** está diretamente relacionado com a doença cardíaca; a associação aparente era causada pelo facto de que pessoas que bebem mais café também tendem a fumar mais.
-</details></center>
-
-<center><details>
-<summary>**📌 Exemplo Prático 2 — Correlação Mascarada**</summary>
-
-**Problema:** Um investigador quer saber se o exercício (X) está relacionado com a saúde (Y), controlando a idade (Z). Os dados revelaram:
-
-| Correlação | Valor |
-|---------|---------|
-| rXY (exercício vs. saúde) | 0,20 |
-| rXZ (exercício vs. idade) | −0,50 |
-| rYZ (idade vs. saúde) | −0,60 |
-
-**Passo 1 — Aplicar a fórmula:**
-
-$$
-r_{XY \cdot Z} = \frac{0{,}20 - (-0{,}50 \times -0{,}60)}{\sqrt{(1 - (-0{,}50)^2)(1 - (-0{,}60)^2)}}
-$$
-
-$$
-r_{XY \cdot Z} = \frac{0{,}20 - 0{,}30}{\sqrt{(1 - 0{,}25)(1 - 0{,}36)}}
-$$
-
-$$
-r_{XY \cdot Z} = \frac{-0{,}10}{\sqrt{0{,}75 \times 0{,}64}} = \frac{-0{,}10}{\sqrt{0{,}48}} = \frac{-0{,}10}{0{,}693} \approx \mathbf{-0{,}144}
-$$
-
-✅ A correlação parcial é **−0,144** — **negativa fraca**.
-
-> **🔍 Interpretação:** Quando controlamos a **idade** (Z), a correlação entre **exercício** (X) e **saúde** (Y) muda de **+0,20** para **−0,144**. Isto é surpreendente! A correlação original era **positiva fraca**, mas após controlar a idade, torna-se **negativa fraca**. Isto significa que a idade **mascarava** a relação real. Pessoas mais velhas tendem a fazer menos exercício e a ter pior saúde — a idade criava uma correlação positiva artificial entre exercício e saúde.
-
-> **⚠️ Nota:** Este exemplo é **ilustrativo** e pode não refletir a realidade. O importante é entender que a correlação parcial pode **revelar relações mascaradas** por uma terceira variável.
-</details></center>
-
-### 3.2 Correlação Parcial para Dados Agrupados por Lista
-
-&emsp;&emsp;&emsp;Quando os dados estão numa **tabela de frequências dupla**, calculamos primeiro os coeficientes de correlação simples (usando as frequências) e depois aplicamos a fórmula da correlação parcial.
-
-<center><details>
-<summary>**📌 Exemplo Prático**</summary>
-
-**Problema:** Calcular a correlação parcial entre X e Y, controlando Z, a partir da tabela:
-
-| X \ Y | 10 | 20 | Total | Z (média) |
-|---------|---------|---------|---------|---------|
-| **5** | 2 | 1 | 3 | 2 |
-| **10** | 1 | 3 | 4 | 5 |
-| **Total** | 3 | 4 | 7 | |
-
-**Passo 1 — Calcular rXY:**
-
-Já calculámos na aula anterior: rXY ≈ 0,417
-
-**Passo 2 — Calcular rXZ e rYZ:**
-
-Precisamos dos valores de Z para cada par. Suponhamos que Z tem os seguintes valores:
-
-| Par | X | Y | Z |
-|---------|---------|---------|---------|
-| 1 | 5 | 10 | 2 |
-| 2 | 5 | 10 | 2 |
-| 3 | 5 | 20 | 3 |
-| 4 | 10 | 10 | 4 |
-| 5 | 10 | 20 | 5 |
-| 6 | 10 | 20 | 5 |
-| 7 | 10 | 20 | 6 |
-
-Calculando rXZ e rYZ:
-
-x̄ = 7,86, z̄ = 3,86
-
-rXZ ≈ 0,95
-
-rYZ ≈ 0,55
-
-**Passo 3 — Aplicar a fórmula:**
-
-$$
-r_{XY \cdot Z} = \frac{0{,}417 - (0{,}95 \times 0{,}55)}{\sqrt{(1 - 0{,}95^2)(1 - 0{,}55^2)}}
-$$
-
-$$
-r_{XY \cdot Z} = \frac{0{,}417 - 0{,}5225}{\sqrt{(1 - 0{,}9025)(1 - 0{,}3025)}}
-$$
-
-$$
-r_{XY \cdot Z} = \frac{-0{,}1055}{\sqrt{0{,}0975 \times 0{,}6975}} = \frac{-0{,}1055}{\sqrt{0{,}068}} = \frac{-0{,}1055}{0{,}261} \approx \mathbf{-0{,}404}
-$$
-
-✅ A correlação parcial é **−0,404** — **negativa moderada**.
-
-> **🔍 Interpretação:** Quando controlamos Z, a correlação entre X e Y muda de **+0,417** para **−0,404**. Isto significa que Z estava a **inflacionar** a correlação positiva entre X e Y. A relação real entre X e Y, livre de Z, é **negativa moderada**.
-</details></center>
-
-### 3.3 Correlação Parcial para Dados Agrupados por Intervalo
-
-&emsp;&emsp;&emsp;Quando os dados estão em **classes**, usamos os **pontos médios** de cada classe como representantes xi, yj, zk. O cálculo é idêntico ao da lista.
-
-<center><details>
-<summary>**📌 Exemplo Prático**</summary>
-
-**Problema:** Calcular a correlação parcial entre X e Y, controlando Z, a partir da tabela:
-
-| X \ Y | [0,10[ (5) | [10,20[ (15) | [20,30[ (25) | Total | Z (média) |
-|---------|---------|---------|---------|---------|---------|
-| **[0,10[ (5)** | 4 | 2 | 0 | 6 | 3 |
-| **[10,20[ (15)** | 2 | 6 | 2 | 10 | 8 |
-| **[20,30[ (25)** | 0 | 2 | 4 | 6 | 12 |
-| **Total** | 6 | 10 | 6 | 22 | |
-
-**Passo 1 — Calcular rXY:**
-
-Já calculámos na aula anterior: rXY ≈ 0,667
-
-**Passo 2 — Calcular rXZ e rYZ:**
-
-Suponhamos que Z tem os seguintes valores médios por classe:
-
-| X | Z |
-|---------|---------|
-| 5 | 3 |
-| 15 | 8 |
-| 25 | 12 |
-
-Calculando rXZ:
-
-x̄ = 15, z̄ = 7,67
-
-rXZ ≈ 0,98
-
-Calculando rYZ:
-
-rYZ ≈ 0,85
-
-**Passo 3 — Aplicar a fórmula:**
-
-$$
-r_{XY \cdot Z} = \frac{0{,}667 - (0{,}98 \times 0{,}85)}{\sqrt{(1 - 0{,}98^2)(1 - 0{,}85^2)}}
-$$
-
-$$
-r_{XY \cdot Z} = \frac{0{,}667 - 0{,}833}{\sqrt{(1 - 0{,}9604)(1 - 0{,}7225)}}
-$$
-
-$$
-r_{XY \cdot Z} = \frac{-0{,}166}{\sqrt{0{,}0396 \times 0{,}2775}} = \frac{-0{,}166}{\sqrt{0{,}011}} = \frac{-0{,}166}{0{,}105} \approx \mathbf{-1{,}58}
-$$
-
-> **⚠️ Atenção:** O valor rXY·Z = −1,58 é **impossível** (fora do intervalo [−1, 1]). Isto indica que os valores de rXZ e rYZ que supusemos são **inconsistentes** com a estrutura dos dados. Na prática, a correlação parcial deve estar sempre entre −1 e +1. Este exemplo é **ilustrativo** e mostra que é preciso ter cuidado com os valores usados.
-</details></center>
-
-## 4. CORRELAÇÃO PARCIAL DE ORDEM SUPERIOR
-
-&emsp;&emsp;&emsp;A correlação parcial pode ser estendida para **controlar múltiplas variáveis**. Por exemplo, a correlação parcial entre X e Y, controlando Z e W, é denotada por rXY·ZW.
-
-**📐 Fórmula (para duas variáveis de controlo):**
-
-$$
-\color{blue} r_{XY \cdot ZW} = \frac{r_{XY \cdot Z} - r_{XW \cdot Z} \cdot r_{YW \cdot Z}}{\sqrt{(1 - r_{XW \cdot Z}^2)(1 - r_{YW \cdot Z}^2)}}
-$$
-
-**📌 Interpretação:**
-
-&emsp;&emsp;&emsp;A correlação parcial de ordem superior remove o efeito de **múltiplas variáveis de confusão**. É muito usada em epidemiologia e ciências sociais.
-
-## 5. CORRELAÇÃO PARCIAL VS CORRELAÇÃO SIMPLES
-
-| Aspeto | Correlação Simples | Correlação Parcial |
-|---------|---------|---------|
-| **O que mede** | Relação entre X e Y | Relação entre X e Y **após remover Z** |
-| **Controla variáveis?** | ❌ Não | ✅ Sim |
-| **Deteta confundimento?** | ❌ Não | ✅ Sim |
-| **Interpretação** | Força da relação bruta | Força da relação "pura" |
-| **Uso em ML** | Feature selection inicial | Deteção de multicolinearidade |
-
-**📌 Exemplo comparativo:**
-
-| Cenário | rXY | rXY·Z | Interpretação |
-|---------|---------|---------|---------|
-| **Sem confundimento** | 0,70 | 0,68 | Z não afeta a relação |
-| **Confundimento total** | 0,45 | 0,05 | Z explica quase toda a relação |
-| **Confundimento parcial** | 0,45 | 0,25 | Z explica parte da relação |
-| **Supressão** | 0,20 | −0,14 | Z mascara a relação real |
-
-## 6. CÁLCULO DA CORRELAÇÃO PARCIAL EM PYTHON E R
-
-<details>
-<summary>🐍 Código Python — Correlação Parcial</summary>
-
-<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+<summary>📌 Exemplo Prático usando Python</summary>
+```python
 import numpy as np
 import pandas as pd
-from scipy.stats import pearsonr
-
-# Dados de exemplo: X (café), Y (doença), Z (tabagismo)
-np.random.seed(42)
-n = 100
-Z = np.random.normal(0, 1, n)  # Tabagismo
-X = 0.6 * Z + np.random.normal(0, 0.8, n)  # Café (influenciado por Z)
-Y = 0.7 * Z + np.random.normal(0, 0.8, n)  # Doença (influenciada por Z)
-
-df = pd.DataFrame({'X': X, 'Y': Y, 'Z': Z})
-
-# 1. CORRELAÇÕES SIMPLES
-r_XY = df['X'].corr(df['Y'])
-r_XZ = df['X'].corr(df['Z'])
-r_YZ = df['Y'].corr(df['Z'])
-
-print("--- CORRELAÇÕES SIMPLES ---")
-print(f"r(X,Y) = {r_XY:.4f}")
-print(f"r(X,Z) = {r_XZ:.4f}")
-print(f"r(Y,Z) = {r_YZ:.4f}")
-
-# 2. CORRELAÇÃO PARCIAL (fórmula manual)
-r_XY_Z = (r_XY - r_XZ * r_YZ) / np.sqrt((1 - r_XZ**2) * (1 - r_YZ**2))
-print(f"\n--- CORRELAÇÃO PARCIAL ---")
-print(f"r(X,Y|Z) = {r_XY_Z:.4f}")
-
-# 3. FUNÇÃO REUTILIZÁVEL
-def correlacao_parcial(df, x, y, z):
-    """
-    Calcula a correlação parcial entre x e y, controlando z.
-    """
-    r_xy = df[x].corr(df[y])
-    r_xz = df[x].corr(df[z])
-    r_yz = df[y].corr(df[z])
-    r_xy_z = (r_xy - r_xz * r_yz) / np.sqrt((1 - r_xz**2) * (1 - r_yz**2))
-    return r_xy_z
-
-# 4. USANDO A FUNÇÃO
-r_parcial = correlacao_parcial(df, 'X', 'Y', 'Z')
-print(f"\nCorrelação parcial (função): {r_parcial:.4f}")
-
-# 5. COMPARAÇÃO
-print("\n--- COMPARAÇÃO ---")
-print(f"Correlação simples r(X,Y): {r_XY:.4f}")
-print(f"Correlação parcial r(X,Y|Z): {r_XY_Z:.4f}")
-print(f"Diferença: {r_XY - r_XY_Z:.4f}")
-
-# 6. VISUALIZAÇÃO
+from scipy.stats import pearsonr, spearmanr
 import matplotlib.pyplot as plt
-import seaborn as sns
 
-fig, axes = plt.subplots(1, 3, figsize=(15, 4))
+- _Dados de exemplo: Consumo de sorvete e afogamentos ao longo de 12 meses_
+np.random.seed(42)
+temperatura = np.random.normal(25, 5, 12)  # _Temperatura média mensal (°C)_
+sorvete = 50 + 15 * temperatura + np.random.normal(0, 20, 12)  # _Consumo de sorvete_
+afogamentos = 5 + 2 * temperatura + np.random.normal(0, 5, 12)  # _Número de afogamentos_
 
-axes[0].scatter(df['X'], df['Y'], alpha=0.6)
-axes[0].set_xlabel('X (Café)')
-axes[0].set_ylabel('Y (Doença)')
-axes[0].set_title(f'r = {r_XY:.3f}')
+- _1. CORRELAÇÃO SIMPLES ENTRE SORVETE E AFOGAMENTOS_
+r_sorvete_afog, p_sorvete_afog = pearsonr(sorvete, afogamentos)
+print(f"Correlação Sorvete vs Afogamentos (Pearson): r = {r_sorvete_afog:.4f}, p = {p_sorvete_afog:.4e}")
 
-axes[1].scatter(df['X'], df['Z'], alpha=0.6)
-axes[1].set_xlabel('X (Café)')
-axes[1].set_ylabel('Z (Tabagismo)')
-axes[1].set_title(f'r = {r_XZ:.3f}')
+- _2. CORRELAÇÃO CONTROLANDO PELA TEMPERATURA (CORRELAÇÃO PARCIAL)_
+- _Resíduos de sorvete após remover efeito da temperatura_
+resid_sorvete = sorvete - np.polyval(np.polyfit(temperatura, sorvete, 1), temperatura)
+resid_afog = afogamentos - np.polyval(np.polyfit(temperatura, afogamentos, 1), temperatura)
+r_parcial, p_parcial = pearsonr(resid_sorvete, resid_afog)
+print(f"Correlação Parcial (controlando temperatura): r = {r_parcial:.4f}, p = {p_parcial:.4e}")
 
-axes[2].scatter(df['Y'], df['Z'], alpha=0.6)
-axes[2].set_xlabel('Y (Doença)')
-axes[2].set_ylabel('Z (Tabagismo)')
-axes[2].set_title(f'r = {r_YZ:.3f}')
+- _3. VISUALIZAÇÃO_
+fig, axes = plt.subplots(1, 2, figsize=(12, 5))
+
+- _Scatterplot sorvete vs afogamentos_
+axes[0].scatter(sorvete, afogamentos, color='#dc3545', alpha=0.7)
+axes[0].set_xlabel('Consumo de Sorvete')
+axes[0].set_ylabel('Afogamentos')
+axes[0].set_title(f'Sorvete vs Afogamentos (r = {r_sorvete_afog:.2f})')
+axes[0].grid(True, alpha=0.3)
+
+- _Scatterplot temperatura vs sorvete e afogamentos_
+axes[1].scatter(temperatura, sorvete, color='#17a2b8', alpha=0.7, label='Sorvete')
+axes[1].scatter(temperatura, afogamentos * 10, color='#dc3545', alpha=0.7, label='Afogamentos (x10)')
+axes[1].set_xlabel('Temperatura (°C)')
+axes[1].set_ylabel('Valor')
+axes[1].set_title('Temperatura vs Sorvete e Afogamentos')
+axes[1].legend()
+axes[1].grid(True, alpha=0.3)
 
 plt.tight_layout()
 plt.show()
-</pre>
 
+- _4. INTERPRETAÇÃO_
+print("\n--- INTERPRETAÇÃO ---")
+print(f"A correlação bruta entre sorvete e afogamentos é {r_sorvete_afog:.2f} (forte).")
+print(f"Após controlar pela temperatura, a correlação cai para {r_parcial:.2f} (fraca).")
+print("Conclusão: A temperatura é uma variável de confusão.")
+print("O sorvete e os afogamentos estão correlacionados, mas não há causalidade direta.")
+```
 </details>
 
-<details>
-<summary>📊 Código R — Correlação Parcial</summary>
-
-<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
-# Dados de exemplo
-set.seed(42)
-n <- 100
-Z <- rnorm(n)                    # Tabagismo
-X <- 0.6 * Z + rnorm(n, 0, 0.8)  # Café
-Y <- 0.7 * Z + rnorm(n, 0, 0.8)  # Doença
-
-df <- data.frame(X = X, Y = Y, Z = Z)
-
-# 1. CORRELAÇÕES SIMPLES
-r_XY <- cor(df$X, df$Y)
-r_XZ <- cor(df$X, df$Z)
-r_YZ <- cor(df$Y, df$Z)
-
-cat("--- CORRELAÇÕES SIMPLES ---\n")
-cat("r(X,Y) =", r_XY, "\n")
-cat("r(X,Z) =", r_XZ, "\n")
-cat("r(Y,Z) =", r_YZ, "\n")
-
-# 2. CORRELAÇÃO PARCIAL (fórmula manual)
-r_XY_Z <- (r_XY - r_XZ * r_YZ) / sqrt((1 - r_XZ^2) * (1 - r_YZ^2))
-cat("\n--- CORRELAÇÃO PARCIAL ---\n")
-cat("r(X,Y|Z) =", r_XY_Z, "\n")
-
-# 3. FUNÇÃO REUTILIZÁVEL
-correlacao_parcial <- function(df, x, y, z) {
-  r_xy <- cor(df[[x]], df[[y]])
-  r_xz <- cor(df[[x]], df[[z]])
-  r_yz <- cor(df[[y]], df[[z]])
-  r_xy_z <- (r_xy - r_xz * r_yz) / sqrt((1 - r_xz^2) * (1 - r_yz^2))
-  return(r_xy_z)
-}
-
-# 4. USANDO A FUNÇÃO
-r_parcial <- correlacao_parcial(df, "X", "Y", "Z")
-cat("\nCorrelação parcial (função):", r_parcial, "\n")
-
-# 5. PACOTE ppcor (alternativa)
-# install.packages("ppcor")
-library(ppcor)
-
-resultado <- pcor.test(df$X, df$Y, df$Z)
-print(resultado)
-
-# 6. VISUALIZAÇÃO
-par(mfrow = c(1, 3))
-plot(df$X, df$Y, main = paste("r =", round(r_XY, 3)),
-     xlab = "X (Café)", ylab = "Y (Doença)")
-plot(df$X, df$Z, main = paste("r =", round(r_XZ, 3)),
-     xlab = "X (Café)", ylab = "Z (Tabagismo)")
-plot(df$Y, df$Z, main = paste("r =", round(r_YZ, 3)),
-     xlab = "Y (Doença)", ylab = "Z (Tabagismo)")
-</pre>
-
-</details>
-
-## 7. VANTAGENS E DESVANTAGENS
-
-| Vantagens | Desvantagens |
-|---------|----------|
-| ✅ **Controla variáveis de confusão** | ❌ **Requer conhecer a variável de confusão** |
-| ✅ **Revela correlações espúrias** | ❌ **Assume relações lineares** |
-| ✅ **Deteta supressão** | ❌ **Sensível a outliers** (como o Pearson) |
-| ✅ **Base para regressão múltipla** | ❌ **Pode introduzir multicolinearidade** |
-| ✅ **Usada em epidemiologia e ML** | ❌ **Requer amostra grande** para estabilidade |
-
-## 8. QUANDO USAR A CORRELAÇÃO PARCIAL
-
-| Critério | Correlação Parcial |
-|---------|----------|
-| **Suspeita de variável de confusão** | ✅ Único |
-| **Correlação simples parece inflacionada** | ✅ Único |
-| **Correlação simples parece mascarada** | ✅ Único |
-| **Preparação para regressão múltipla** | ✅ Único |
-| **Deteção de multicolinearidade** | ✅ Único |
-| **Sem suspeita de confusão** | ❌ Usar correlação simples |
-| **Variáveis não lineares** | ❌ Usar Spearman parcial ou outras técnicas |
-
-**Fluxo de Decisão:**
-
-1. Suspeitas de **variável de confusão**? → **Correlação parcial**
-2. A correlação simples **parece inflacionada**? → **Correlação parcial**
-3. A correlação simples **parece mascarada**? → **Correlação parcial**
-4. Vais fazer **regressão múltipla**? → **Correlação parcial**
-5. Não há suspeita de confusão? → **Correlação simples** (Pearson ou Spearman)
-
-## 9. EXERCÍCIOS
+## EXERCÍCIOS
 
 <details>
-<summary>📗 Exercício 1 — Correlação Parcial (Cálculo)</summary>
+<summary>📗 Exercício 1 — Identificar o cenário (Fácil)</summary>
 
-**Enunciado:** Dadas as correlações simples:
+**Enunciado:** Para cada situação, identifique qual dos quatro cenários se aplica:
 
-- rXY = 0,60
-- rXZ = 0,50
-- rYZ = 0,40
-
-Calcula a correlação parcial rXY·Z.
+a) Um estudo encontra correlação entre "número de televisores por casa" e "esperança de vida".  
+b) Um estudo encontra correlação entre "consumo de tabaco" e "cancro do pulmão".  
+c) Um estudo encontra correlação entre "número de filmes do Nicolas Cage" e "afogamentos em piscinas".  
+d) Um estudo encontra correlação entre "horas de estudo" e "notas em exames".
 
 <details>
 <summary>💡 Ver resposta</summary>
 
-**Resposta:**
+a) **Variável de confusão (Z causa ambos):** O nível socioeconómico causa tanto mais televisores como maior esperança de vida.
 
-$$
-r_{XY \cdot Z} = \frac{0{,}60 - (0{,}50 \times 0{,}40)}{\sqrt{(1 - 0{,}50^2)(1 - 0{,}40^2)}}
-$$
+b) **X causa Y:** O tabaco causa cancro do pulmão (estabelecido por estudos longitudinais e experimentais).
 
-$$
-r_{XY \cdot Z} = \frac{0{,}60 - 0{,}20}{\sqrt{(1 - 0{,}25)(1 - 0{,}16)}} = \frac{0{,}40}{\sqrt{0{,}75 \times 0{,}84}} = \frac{0{,}40}{\sqrt{0{,}63}} = \frac{0{,}40}{0{,}794} \approx \mathbf{0{,}504}
-$$
+c) **Coincidência:** Pura coincidência estatística, sem relação causal.
 
-**Interpretação:** A correlação parcial (0,504) é **menor** que a correlação simples (0,60). Isto significa que Z **inflaciona parcialmente** a relação entre X e Y — parte da correlação era devida a Z.
+d) **X causa Y (provavelmente):** Estudar causa melhores notas, mas é preciso controlar variáveis de confusão (motivação, inteligência).
 
 </details>
 </details>
 
 <details>
-<summary>📗 Exercício 2 — Correlação Espúria</summary>
+<summary>📗 Exercício 2 — Variável de confusão (Médio)</summary>
 
-**Enunciado:** Um estudo encontrou rXY = 0,70 entre consumo de chocolate (X) e felicidade (Y). Suspeita-se que a renda (Z) seja uma variável de confusão. Sabendo que rXZ = 0,80 e rYZ = 0,75, calcula a correlação parcial e interpreta.
+**Enunciado:** Um estudo encontra uma correlação forte entre "venda de gelados" e "número de afogamentos". Identifique a variável de confusão e explique porque a correlação é espúria.
 
 <details>
 <summary>💡 Ver resposta</summary>
 
-**Resposta:**
+**Variável de confusão:** Temperatura.
 
-$$
-r_{XY \cdot Z} = \frac{0{,}70 - (0{,}80 \times 0{,}75)}{\sqrt{(1 - 0{,}80^2)(1 - 0{,}75^2)}}
-$$
-
-$$
-r_{XY \cdot Z} = \frac{0{,}70 - 0{,}60}{\sqrt{(1 - 0{,}64)(1 - 0{,}5625)}} = \frac{0{,}10}{\sqrt{0{,}36 \times 0{,}4375}} = \frac{0{,}10}{\sqrt{0{,}1575}} = \frac{0{,}10}{0{,}397} \approx \mathbf{0{,}252}
-$$
-
-**Interpretação:** A correlação parcial (0,252) é **muito menor** que a correlação simples (0,70). Isto significa que a **renda** (Z) explica grande parte da correlação entre chocolate e felicidade. A relação real entre chocolate e felicidade é **fraca** — a associação aparente era **quase totalmente espúria**.
+**Explicação:** Quando está calor, as pessoas compram mais gelados **e** vão mais à praia (onde se afogam). A temperatura causa ambas as variáveis. A correlação entre gelados e afogamentos é espúria — não há relação causal direta entre eles.
 
 </details>
 </details>
 
 <details>
-<summary>📗 Exercício 3 — Supressão</summary>
+<summary>📗 Exercício 3 — Estabelecer causalidade (Médio)</summary>
 
-**Enunciado:** Dadas as correlações:
-
-- rXY = 0,20
-- rXZ = −0,50
-- rYZ = −0,60
-
-Calcula a correlação parcial e interpreta.
+**Enunciado:** Quais são as três condições necessárias para estabelecer causalidade? Explique cada uma.
 
 <details>
 <summary>💡 Ver resposta</summary>
 
-**Resposta:**
+**1. Correlação:** É preciso que exista uma associação entre X e Y. Sem correlação, não há causalidade a estabelecer.
 
-$$
-r_{XY \cdot Z} = \frac{0{,}20 - (-0{,}50 \times -0{,}60)}{\sqrt{(1 - (-0{,}50)^2)(1 - (-0{,}60)^2)}}
-$$
+**2. Ordem temporal:** A causa tem de preceder o efeito. X tem de acontecer antes de Y. Isto exige estudos longitudinais.
 
-$$
-r_{XY \cdot Z} = \frac{0{,}20 - 0{,}30}{\sqrt{(1 - 0{,}25)(1 - 0{,}36)}} = \frac{-0{,}10}{\sqrt{0{,}75 \times 0{,}64}} = \frac{-0{,}10}{\sqrt{0{,}48}} = \frac{-0{,}10}{0{,}693} \approx \mathbf{-0{,}144}
-$$
-
-**Interpretação:** A correlação parcial (−0,144) é **diferente** da correlação simples (+0,20). Houve uma **inversão de sinal** — a correlação simples era positiva fraca, mas após controlar Z, torna-se negativa fraca. Isto é um caso de **supressão** — Z estava a **mascarar** a relação real entre X e Y.
+**3. Ausência de variáveis de confusão:** É preciso eliminar a possibilidade de uma terceira variável estar a causar ambas. Isto exige experiências controladas ou randomização (RCT).
 
 </details>
 </details>
 
 <details>
-<summary>📗 Exercício 4 — Comparação de Cenários</summary>
+<summary>📗 Exercício 4 — RCT (Médio)</summary>
 
-**Enunciado:** Para cada cenário, indica se Z inflaciona, mascara ou não afeta a relação entre X e Y:
-
-a) rXY = 0,70, rXY·Z = 0,68
-
-b) rXY = 0,45, rXY·Z = 0,05
-
-c) rXY = 0,20, rXY·Z = −0,14
-
-d) rXY = 0,60, rXY·Z = 0,35
+**Enunciado:** O que é um RCT e porque é considerado o padrão-ouro para estabelecer causalidade?
 
 <details>
 <summary>💡 Ver resposta</summary>
 
-**Resposta:**
+**RCT (Randomized Controlled Trial):** É um estudo em que os participantes são **aleatoriamente** atribuídos a grupos (tratamento vs. controlo).
 
-a) **Não afeta** — a correlação parcial (0,68) é próxima da simples (0,70).
-
-b) **Confundimento total** — a correlação parcial (0,05) é quase zero. Z explica quase toda a relação.
-
-c) **Supressão** — a correlação parcial (−0,14) tem sinal oposto à simples (+0,20). Z mascara a relação real.
-
-d) **Confundimento parcial** — a correlação parcial (0,35) é menor que a simples (0,60), mas não zero. Z explica parte da relação.
+**Porque é o padrão-ouro:** A randomização garante que não há variáveis de confusão — os grupos são estatisticamente equivalentes em todas as variáveis, exceto a que está a ser testada. Assim, qualquer diferença no resultado pode ser atribuída à intervenção.
 
 </details>
 </details>
 
 <details>
-<summary>📗 Exercício 5 — Correlação Parcial de Ordem Superior</summary>
+<summary>📗 Exercício 5 — Correlação espúria (Difícil)</summary>
 
-**Enunciado:** Um estudo quer saber se o exercício (X) está relacionado com a saúde (Y), controlando idade (Z) e dieta (W). Sabendo que:
-
-- rXY·Z = 0,50
-- rXW·Z = 0,30
-- rYW·Z = 0,40
-
-Calcula rXY·ZW.
+**Enunciado:** Encontre um exemplo de correlação espúria (real ou inventado) e explique porque é espúria.
 
 <details>
 <summary>💡 Ver resposta</summary>
 
-**Resposta:**
+**Exemplo:** Correlação entre "número de bombeiros num incêndio" e "danos causados pelo incêndio".
 
-$$
-r_{XY \cdot ZW} = \frac{0{,}50 - (0{,}30 \times 0{,}40)}{\sqrt{(1 - 0{,}30^2)(1 - 0{,}40^2)}}
-$$
+**Porque é espúria:** O tamanho do incêndio é a variável de confusão. Incêndios maiores atraem mais bombeiros **e** causam mais danos. Não são os bombeiros que causam os danos — pelo contrário, eles tentam minimizá-los.
 
-$$
-r_{XY \cdot ZW} = \frac{0{,}50 - 0{,}12}{\sqrt{(1 - 0{,}09)(1 - 0{,}16)}} = \frac{0{,}38}{\sqrt{0{,}91 \times 0{,}84}} = \frac{0{,}38}{\sqrt{0{,}7644}} = \frac{0{,}38}{0{,}874} \approx \mathbf{0{,}435}
-$$
-
-**Interpretação:** Após controlar idade e dieta, a correlação entre exercício e saúde é **0,435** — ainda moderada. Isto significa que o exercício tem um efeito **real** na saúde, independente da idade e da dieta.
+**Outro exemplo:** Correlação entre "consumo de chocolate" e "número de prémios Nobel por país". Países mais ricos consomem mais chocolate e têm mais prémios Nobel. A riqueza é a variável de confusão.
 
 </details>
 </details>
 
-> A correlação simples diz-te que duas variáveis caminham juntas. A correlação parcial pergunta: "E se uma terceira variável estiver a puxar os cordelinhos?" Só controlando as variáveis de confusão é que descobres a verdadeira relação.
+<details>
+<summary>📗 Exercício 6 — Quando a correlação basta (Difícil)</summary>
 
+**Enunciado:** Em que situações a correlação por si só é suficiente, sem necessidade de estabelecer causalidade?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+A correlação é suficiente quando:
+
+1. **Queremos prever, não explicar:** Se o objetivo é prever Y a partir de X, basta a correlação.
+2. **A causalidade é óbvia:** Ex: altura e peso — a causalidade é evidente.
+3. **A experiência não é possível:** Em economia, sociologia, epidemiologia, não podemos fazer RCTs.
+4. **Queremos apenas explorar:** Na análise exploratória, a correlação identifica padrões e gera hipóteses.
+
+</details>
+</details>

@@ -1,127 +1,14 @@
-# Coeficiente de Pearson
+# COEFICIENTE DE PEARSON (r)
 
-## 1. INTRODUÇÃO
+## INTRODUÇÃO
 
-&emsp;&emsp;&emsp;Na aula anterior estudámos o **diagrama de dispersão (scatterplot)** — a ferramenta visual que revela o que os números escondem. Vimos que o Quarteto de Anscombe mostra que **quatro conjuntos com estatísticas idênticas podem ter formas completamente diferentes**. Aprendemos a olhar para um scatterplot e identificar direção, força, forma, outliers e grupos.<br>
+&emsp;&emsp;&emsp;Bem como sabemos que correlação mede a força e a direção da relação entre duas variáveis. Vimos também que o scatterplot mostra visualmente o padrão antes de qualquer cálculo. Agora chegou o momento de **quantificar** tudo isso. Como transformar o que vemos no gráfico num número que possamos comparar, interpretar e comunicar?
 
-&emsp;&emsp;&emsp;Mas há um problema: **o olho humano não quantifica**. Olhar para um scatterplot diz-nos que "parece haver uma relação positiva forte", mas não nos diz **quão forte** é essa relação. Precisamos de um **número** que quantifique a força e a direção da relação linear.<br>
+&emsp;&emsp;&emsp;A resposta é o **coeficiente de correlação de Pearson** — o mais usado e o mais importante de todos os coeficientes de correlação.
 
-&emsp;&emsp;&emsp;Considera o seguinte problema prático:
+**Exemplo:** Voltemos ao professor com as horas de estudo e as notas.
 
-> **Dois professores querem comparar a relação entre horas de estudo e notas nas suas turmas:**
-| Turma A | Turma B |
-|---------|---------|
-| Relação visual: "parece forte" | Relação visual: "parece moderada" |
-| Mas **quão forte**? | Mas **quão moderada**? |
-| **Não sabemos quantificar!** | **Não sabemos quantificar!** |
-
-&emsp;&emsp;&emsp;Precisamos de uma medida que:
-1. **Quantifique** a força da relação linear.
-2. **Indique a direção** (positiva ou negativa).
-3. **Seja adimensional** (sem unidade).
-4. **Varie entre −1 e +1** (para ser interpretável).
-
-&emsp;&emsp;&emsp;É precisamente aqui que entra o **coeficiente de correlação de Pearson** — a medida que quantifica a relação linear entre duas variáveis quantitativas.
-
-<details>
-<summary>📊 Ver a família das medidas de associação</summary>
-<style>
-.r{font:14px system-ui;text-align:center}
-.r b{display:inline-block;padding:4px 10px;background:#333;color:#fff;border-radius:6px}
-.r i{display:block;width:2px;height:18px;background:#333;margin:0 auto}
-.r em{display:flex;gap:8px;justify-content:center;position:relative;padding-top:18px}
-.r em::before{content:'';position:absolute;top:0;left:25%;right:25%;height:2px;background:#333}
-.r em span{flex:1;padding:8px;border:2px solid #333;border-radius:8px;max-width:140px}
-.r em span::before{content:'';position:absolute;top:-18px;left:50%;width:2px;height:18px;background:#333}
-.r em span{position:relative}
-</style>
-<div class="r">
-  <b>Medidas de Associação</b>
-  <i></i>
-  <em>
-    <span>Pearson<br>(linear)</span>
-    <span>Spearman<br>(ordinal)</span>
-    <span>Kendall<br>(ordinal)</span>
-  </em>
-</div>
-</details>
-
-> **💡 Dica de Ouro:** O coeficiente de Pearson é o **padrão-ouro** para medir correlação linear. Mas lembra-te: ele só detecta relações **lineares**. Se a relação for curvilínea, o r pode ser enganador.
-
-
-## 2. O QUE É O COEFICIENTE DE PEARSON?
-
-&emsp;&emsp;&emsp;O **coeficiente de correlação de Pearson** (r) é uma medida que quantifica a **força** e a **direção** da **relação linear** entre duas variáveis quantitativas. Foi desenvolvido por **Karl Pearson** no final do século XIX.
-
-**📌 Definição formal:**
-
-$$
-\color{blue} r = \frac{\text{covariância}(X, Y)}{\text{desvio-padrão}(X) \cdot \text{desvio-padrão}(Y)}
-$$
-
-**📌 Fórmula completa:**
-
-$$
-\color{blue} r = \frac{\sum_{i=1}^{n} (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum_{i=1}^{n} (x_i - \bar{x})^2} \cdot \sqrt{\sum_{i=1}^{n} (y_i - \bar{y})^2}}
-$$
-
-Onde:
-- **xi, yi** = pares de valores
-- **x̄, ȳ** = médias de cada variável
-- **n** = número de pares
-
-**📌 Fórmula alternativa (mais prática para cálculo manual):**
-
-$$
-\color{blue} r = \frac{n \sum x_i y_i - \sum x_i \sum y_i}{\sqrt{\left[ n \sum x_i^2 - (\sum x_i)^2 \right] \cdot \left[ n \sum y_i^2 - (\sum y_i)^2 \right]}}
-$$
-
-**📌 Propriedades do r:**
-
-| Propriedade | Descrição |
-|---------|----------|
-| **Intervalo** | −1 ≤ r ≤ +1 |
-| **Adimensional** | Não tem unidade |
-| **Simétrico** | r(X, Y) = r(Y, X) |
-| **Invariante a transformações lineares** | r(aX + b, cY + d) = r(X, Y) se a, c > 0 |
-| **Sensível a outliers** | Um valor extremo pode distorcer o r |
-| **Só mede relação linear** | Relações não lineares podem ter r ≈ 0 |
-
-**📌 Interpretação do coeficiente:**
-
-| Valor de r | Interpretação |
-|---------|----------|
-| r = +1 | Correlação **positiva perfeita** |
-| 0,7 ≤ r < 1 | Correlação **positiva forte** |
-| 0,3 ≤ r < 0,7 | Correlação **positiva moderada** |
-| 0 < r < 0,3 | Correlação **positiva fraca** |
-| r = 0 | **Ausência de correlação linear** |
-| −0,3 < r < 0 | Correlação **negativa fraca** |
-| −0,7 < r ≤ −0,3 | Correlação **negativa moderada** |
-| −1 < r ≤ −0,7 | Correlação **negativa forte** |
-| r = −1 | Correlação **negativa perfeita** |
-
-## 3. PASSO A PASSO
-
-### 3.1 Coeficiente de Pearson para Dados Brutos
-
-**📐 Método**
-
-| Passo | Descrição |
-|---------|----------|
-| **1** | Calcular a média de X e de Y |
-| **2** | Calcular os desvios (xi − x̄) e (yi − ȳ) |
-| **3** | Calcular o produto dos desvios (xi − x̄)(yi − ȳ) |
-| **4** | Calcular os quadrados dos desvios (xi − x̄)² e (yi − ȳ)² |
-| **5** | Somar todas as colunas |
-| **6** | Aplicar a fórmula |
-
-<center><details>
-<summary>**📌 Exemplo Prático 1 — Horas de Estudo vs. Notas**</summary>
-
-**Problema:** Calcular a correlação entre horas de estudo (X) e notas (Y):
-
-| Aluno | X | Y |
+| Aluno | Horas de estudo (X) | Nota (Y) |
 |---------|---------|---------|
 | 1 | 1 | 4 |
 | 2 | 2 | 5 |
@@ -134,456 +21,392 @@ $$
 | 9 | 9 | 16 |
 | 10 | 10 | 17 |
 
-**Passo 1 — Médias:**
-x̄ = (1+2+3+4+5+6+7+8+9+10) / 10 = 55/10 = 5,5
-ȳ = (4+5+7+8+10+11+13+14+16+17) / 10 = 105/10 = 10,5
+&emsp;&emsp;&emsp;O scatterplot mostra uma reta ascendente clara. Mas quão forte é essa relação? O **r de Pearson** dá-nos a resposta exata.
 
-**Passo 2 — Tabela de cálculo:**
+> 💡 **Regra de Ouro:** Pearson só mede relações **lineares**. Se o scatterplot mostrar uma curva, o Pearson pode enganar-nos. Nesse caso, devemos usar Spearman. Esta é uma das limitações mais importantes que precisamos de ter sempre presente.
 
-| xi | yi | xi − x̄ | yi − ȳ | (xi − x̄)(yi − ȳ) | (xi − x̄)² | (yi − ȳ)² |
-|---------|---------|---------|---------|---------|---------|---------|
-| 1 | 4 | −4,5 | −6,5 | 29,25 | 20,25 | 42,25 |
-| 2 | 5 | −3,5 | −5,5 | 19,25 | 12,25 | 30,25 |
-| 3 | 7 | −2,5 | −3,5 | 8,75 | 6,25 | 12,25 |
-| 4 | 8 | −1,5 | −2,5 | 3,75 | 2,25 | 6,25 |
-| 5 | 10 | −0,5 | −0,5 | 0,25 | 0,25 | 0,25 |
-| 6 | 11 | 0,5 | 0,5 | 0,25 | 0,25 | 0,25 |
-| 7 | 13 | 1,5 | 2,5 | 3,75 | 2,25 | 6,25 |
-| 8 | 14 | 2,5 | 3,5 | 8,75 | 6,25 | 12,25 |
-| 9 | 16 | 3,5 | 5,5 | 19,25 | 12,25 | 30,25 |
-| 10 | 17 | 4,5 | 6,5 | 29,25 | 20,25 | 42,25 |
-| **Total** | | | | **122,5** | **82,5** | **182,5** |
 
-**Passo 3 — Aplicar a fórmula:**
+>> O **coeficiente de correlação de Pearson** (r) é uma medida que quantifica a **força** e a **direção** da **relação linear** entre **duas variáveis quantitativas**.
 
-$$
-r = \frac{122{,}5}{\sqrt{82{,}5} \cdot \sqrt{182{,}5}} = \frac{122{,}5}{9{,}08 \times 13{,}51} = \frac{122{,}5}{122{,}7} \approx \mathbf{0{,}999}
-$$
+O r varia sempre entre **−1 e +1**:
 
-✅ A correlação é **0,999** — uma **correlação positiva quase perfeita**.
+- **r = +1** → relação linear positiva perfeita (todos os pontos numa reta ascendente)
+- **r = 0** → ausência de relação linear
+- **r = −1** → relação linear negativa perfeita (todos os pontos numa reta descendente)
 
-> **🔍 Interpretação:** Existe uma **relação linear positiva muito forte** entre horas de estudo e notas. Isto significa que, à medida que as horas de estudo aumentam, as notas tendem a aumentar de forma quase proporcional. O valor r = 0,999 está muito próximo de +1, indicando que os pontos estão quase perfeitamente alinhados numa reta ascendente. **99,8% da variabilidade das notas é explicada pelas horas de estudo** (coeficiente de determinação R² = r² ≈ 0,998).
-</details></center>
+&emsp;&emsp;&emsp;Quanto mais próximo de ±1, mais forte a relação linear. O **sinal** indica a direção. Esta escala é fundamental porque nos dá uma medida **universal** — podemos comparar correlações entre estudos completamente diferentes.
 
-<center><details>
-<summary>**📌 Exemplo Prático 2 — Correlação Negativa**</summary>
+## PORQUE O PEARSON É IMPORTANTE?
 
-**Problema:** Calcular a correlação entre preço (X) e quantidade vendida (Y):
+O coeficiente de Pearson é importante por várias razões que vale a pena compreender.
 
-| X | Y |
-|---------|---------|
-| 1 | 10 |
-| 2 | 9 |
-| 3 | 8 |
-| 4 | 7 |
-| 5 | 6 |
-| 6 | 5 |
-| 7 | 4 |
-| 8 | 3 |
-| 9 | 2 |
-| 10 | 1 |
+### 1. É o coeficiente padrão
 
-**Passo 1 — Médias:**
-x̄ = 5,5
-ȳ = 5,5
+&emsp;&emsp;&emsp;Quando alguém diz "a correlação entre X e Y é 0,75", está quase sempre a falar de **Pearson**. É a linguagem universal da correlação. Isto acontece porque o Pearson foi o primeiro coeficiente formalizado e continua a ser o mais usado em todas as áreas científicas.
 
-**Passo 2 — Tabela de cálculo:**
+### 2. Usa todos os dados
 
-| xi | yi | xi − x̄ | yi − ȳ | (xi − x̄)(yi − ȳ) | (xi − x̄)² | (yi − ȳ)² |
-|---------|---------|---------|---------|---------|---------|---------|
-| 1 | 10 | −4,5 | 4,5 | −20,25 | 20,25 | 20,25 |
-| 2 | 9 | −3,5 | 3,5 | −12,25 | 12,25 | 12,25 |
-| 3 | 8 | −2,5 | 2,5 | −6,25 | 6,25 | 6,25 |
-| 4 | 7 | −1,5 | 1,5 | −2,25 | 2,25 | 2,25 |
-| 5 | 6 | −0,5 | 0,5 | −0,25 | 0,25 | 0,25 |
-| 6 | 5 | 0,5 | −0,5 | −0,25 | 0,25 | 0,25 |
-| 7 | 4 | 1,5 | −1,5 | −2,25 | 2,25 | 2,25 |
-| 8 | 3 | 2,5 | −2,5 | −6,25 | 6,25 | 6,25 |
-| 9 | 2 | 3,5 | −3,5 | −12,25 | 12,25 | 12,25 |
-| 10 | 1 | 4,5 | −4,5 | −20,25 | 20,25 | 20,25 |
-| **Total** | | | | **−82,5** | **82,5** | **82,5** |
+&emsp;&emsp;&emsp;Ao contrário do Spearman (que usa rankings), o Pearson usa os **valores reais** de cada observação. Não perde informação. Isto significa que o Pearson é mais **sensível** a pequenas variações nos dados — o que é uma vantagem quando os dados são de boa qualidade, mas uma desvantagem quando há outliers.
 
-**Passo 3 — Aplicar a fórmula:**
+### 3. É a base da regressão linear
 
-$$
-r = \frac{-82{,}5}{\sqrt{82{,}5} \cdot \sqrt{82{,}5}} = \frac{-82{,}5}{82{,}5} = \mathbf{-1}
-$$
+&emsp;&emsp;&emsp;O r de Pearson está diretamente ligado à regressão. O **r²** (coeficiente de determinação) diz-nos que percentagem da variação de Y é explicada por X. Esta ligação é fundamental para qualquer análise preditiva.
 
-✅ A correlação é **−1** — uma **correlação negativa perfeita**.
+### 4. Tem interpretação geométrica
 
-> **🔍 Interpretação:** Existe uma **relação linear negativa perfeita** entre preço e quantidade vendida. Isto significa que, quando o preço aumenta, a quantidade vendida diminui de forma perfeitamente proporcional. O valor r = −1 indica que os pontos estão perfeitamente alinhados numa reta descendente. **100% da variabilidade da quantidade vendida é explicada pelo preço** (R² = 1).
-</details></center>
+&emsp;&emsp;&emsp;O r é o **cosseno do ângulo** entre duas variáveis no espaço. Isto dá-lhe propriedades matemáticas úteis em análises avançadas, como a análise fatorial ou a análise de componentes principais.
 
-<center><details>
-<summary>**📌 Exemplo Prático 3 — Correlação Moderada**</summary>
+## FÓRMULA DE PEARSON 
 
-**Problema:** Calcular a correlação entre X e Y:
+### Fórmula principal
 
-| X | Y |
-|---------|---------|
-| 1 | 5 |
-| 2 | 2 |
-| 3 | 8 |
-| 4 | 3 |
-| 5 | 7 |
-| 6 | 4 |
-| 7 | 9 |
-| 8 | 6 |
-
-**Passo 1 — Médias:**
-x̄ = 4,5
-ȳ = 5,5
-
-**Passo 2 — Tabela de cálculo:**
-
-| xi | yi | xi − x̄ | yi − ȳ | (xi − x̄)(yi − ȳ) | (xi − x̄)² | (yi − ȳ)² |
-|---------|---------|---------|---------|---------|---------|---------|
-| 1 | 5 | −3,5 | −0,5 | 1,75 | 12,25 | 0,25 |
-| 2 | 2 | −2,5 | −3,5 | 8,75 | 6,25 | 12,25 |
-| 3 | 8 | −1,5 | 2,5 | −3,75 | 2,25 | 6,25 |
-| 4 | 3 | −0,5 | −2,5 | 1,25 | 0,25 | 6,25 |
-| 5 | 7 | 0,5 | 1,5 | 0,75 | 0,25 | 2,25 |
-| 6 | 4 | 1,5 | −1,5 | −2,25 | 2,25 | 2,25 |
-| 7 | 9 | 2,5 | 3,5 | 8,75 | 6,25 | 12,25 |
-| 8 | 6 | 3,5 | 0,5 | 1,75 | 12,25 | 0,25 |
-| **Total** | | | | **17,00** | **42,00** | **42,00** |
-
-**Passo 3 — Aplicar a fórmula:**
-
-$$
-r = \frac{17{,}00}{\sqrt{42{,}00} \cdot \sqrt{42{,}00}} = \frac{17{,}00}{42{,}00} \approx \mathbf{0{,}405}
-$$
-
-✅ A correlação é **0,405** — uma **correlação positiva moderada**.
-
-> **🔍 Interpretação:** Existe uma **relação linear positiva moderada** entre X e Y. O valor r = 0,405 está na zona moderada (0,3 a 0,7). Isto significa que há uma tendência para Y aumentar quando X aumenta, mas a relação não é forte — há muita variabilidade não explicada. Apenas **16,4% da variabilidade de Y é explicada por X** (R² = 0,405² ≈ 0,164).
-</details></center>
-
-### 3.2 Coeficiente de Pearson para Dados Agrupados por Lista
-
-&emsp;&emsp;&emsp;Quando os dados estão numa **tabela de frequências dupla** (tabela de contingência), usamos as frequências conjuntas.
-
-**📐 Fórmula**
-
-$$
-\color{blue} r = \frac{n \sum f_{ij} x_i y_j - \sum f_{ij} x_i \sum f_{ij} y_j}{\sqrt{\left[ n \sum f_{ij} x_i^2 - (\sum f_{ij} x_i)^2 \right] \cdot \left[ n \sum f_{ij} y_j^2 - (\sum f_{ij} y_j)^2 \right]}}
-$$
+$$r = \frac{\sum (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum (x_i - \bar{x})^2} \cdot \sqrt{\sum (y_i - \bar{y})^2}}$$
 
 Onde:
-- **fij** = frequência conjunta do par (xi, yj)
-- **n = Σfij** = total de pares
+- **xi, yi** = cada par de valores
+- **x̄, ȳ** = médias de cada variável
+- **Σ** = soma de todos os pares
 
-<center><details>
-<summary>**📌 Exemplo Prático**</summary>
+### Fórmula alternativa
 
-**Problema:** Calcular a correlação da tabela de contingência:
+$$r = \frac{n \sum x_i y_i - \sum x_i \sum y_i}{\sqrt{\left[ n \sum x_i^2 - (\sum x_i)^2 \right] \cdot \left[ n \sum y_i^2 - (\sum y_i)^2 \right]}}$$
 
-| X \ Y | 10 | 20 | 30 | Total |
-|---------|---------|---------|---------|---------|
-| **5** | 2 | 1 | 0 | 3 |
-| **10** | 1 | 3 | 1 | 5 |
-| **15** | 0 | 1 | 2 | 3 |
-| **Total** | 3 | 5 | 3 | 11 |
+Onde **n** = número de pares.
 
-**Passo 1 — Calcular as médias ponderadas:**
+> Esta segunda fórmula é mais prática para calcular à mão, porque evita calcular os desvios individualmente. No entanto, a primeira fórmula é mais **intuitiva** — mostra-nos exatamente o que o r está a medir.
 
-x̄ = (5 × 3 + 10 × 5 + 15 × 3) / 11 = (15 + 50 + 45) / 11 = 110/11 = 10
 
-ȳ = (10 × 3 + 20 × 5 + 30 × 3) / 11 = (30 + 100 + 90) / 11 = 220/11 = 20
+A fórmula compara **duas coisas**:
 
-**Passo 2 — Tabela de cálculo:**
+- **Covariação** (numerador): quanto X e Y variam **juntos**
+- **Variabilidade individual** (denominador): quanto X e Y variam **sozinhos**
 
-| xi | yj | fij | (xi − 10) | (yj − 20) | fij(xi − x̄)(yj − ȳ) |
-|---------|---------|---------|---------|---------|---------|
-| 5 | 10 | 2 | −5 | −10 | 100 |
-| 5 | 20 | 1 | −5 | 0 | 0 |
-| 10 | 10 | 1 | 0 | −10 | 0 |
-| 10 | 20 | 3 | 0 | 0 | 0 |
-| 10 | 30 | 1 | 0 | 10 | 0 |
-| 15 | 20 | 1 | 5 | 0 | 0 |
-| 15 | 30 | 2 | 5 | 10 | 100 |
-| **Total** | | **11** | | | **200** |
+Se a covariação for grande em relação à variabilidade individual, **r é alto**. Se for pequena, **r é baixo**. Esta lógica é a chave para entender porque o r funciona.
 
-**Passo 3 — Cálculo dos desvios quadrados:**
+## CÁLCULO PASSO A PASSO
 
-| xi | fij | fij(xi − x̄)² |
-|---------|---------|---------|
-| 5 | 3 | 3 × 25 = 75 |
-| 10 | 5 | 5 × 0 = 0 |
-| 15 | 3 | 3 × 25 = 75 |
-| **Total** | **11** | **150** |
+Vamos calcular o r para o exemplo das horas de estudo.
 
-| yj | fij | fij(yj − ȳ)² |
-|---------|---------|---------|
-| 10 | 3 | 3 × 100 = 300 |
-| 20 | 5 | 5 × 0 = 0 |
-| 30 | 3 | 3 × 100 = 300 |
-| **Total** | **11** | **600** |
+### Passo 1 — Calcular as médias
 
-**Passo 4 — Aplicar a fórmula:**
+$$\bar{x} = \frac{1+2+3+4+5+6+7+8+9+10}{10} = \frac{55}{10} = 5{,}5$$
 
-$$
-r = \frac{200}{\sqrt{150} \cdot \sqrt{600}} = \frac{200}{12{,}25 \times 24{,}49} = \frac{200}{300} \approx \mathbf{0{,}667}
-$$
+$$\bar{y} = \frac{4+5+7+8+10+11+13+14+16+17}{10} = \frac{105}{10} = 10{,}5$$
 
-✅ A correlação é **0,667** — uma **correlação positiva moderada a forte**.
+### Passo 2 — Calcular os desvios
 
-> **🔍 Interpretação:** Existe uma **relação linear positiva moderada a forte** entre X e Y. Isto significa que, em geral, quando X aumenta, Y também tende a aumentar, mas a relação não é tão forte como no exemplo anterior. **44,4% da variabilidade de Y é explicada por X** (R² = 0,667² ≈ 0,444).
-</details></center>
+| Aluno | x | y | (x − x̄) | (y − ȳ) |
+|---------|---|----|---------|---------|
+| 1 | 1 | 4 | −4,5 | −6,5 |
+| 2 | 2 | 5 | −3,5 | −5,5 |
+| 3 | 3 | 7 | −2,5 | −3,5 |
+| 4 | 4 | 8 | −1,5 | −2,5 |
+| 5 | 5 | 10 | −0,5 | −0,5 |
+| 6 | 6 | 11 | +0,5 | +0,5 |
+| 7 | 7 | 13 | +1,5 | +2,5 |
+| 8 | 8 | 14 | +2,5 | +3,5 |
+| 9 | 9 | 16 | +3,5 | +5,5 |
+| 10 | 10 | 17 | +4,5 | +6,5 |
 
-### 3.3 Coeficiente de Pearson para Dados Agrupados por Intervalo
+### Passo 3 — Calcular produtos e quadrados
 
-&emsp;&emsp;&emsp;Quando os dados estão em **classes**, usamos os **pontos médios** de cada classe como representantes xi e yj.
+| (x−x̄)(y−ȳ) | (x−x̄)² | (y−ȳ)² |
+|-------------|--------|--------|
+| +29,25 | 20,25 | 42,25 |
+| +19,25 | 12,25 | 30,25 |
+| +8,75 | 6,25 | 12,25 |
+| +3,75 | 2,25 | 6,25 |
+| +0,25 | 0,25 | 0,25 |
+| +0,25 | 0,25 | 0,25 |
+| +3,75 | 2,25 | 6,25 |
+| +8,75 | 6,25 | 12,25 |
+| +19,25 | 12,25 | 30,25 |
+| +29,25 | 20,25 | 42,25 |
+| **Σ = 122,5** | **Σ = 82,5** | **Σ = 182,5** |
 
-<center><details>
-<summary>**📌 Exemplo Prático**</summary>
+### Passo 4 — Aplicar a fórmula
 
-**Problema:** Calcular a correlação da tabela de dupla entrada:
+$$r = \frac{122{,}5}{\sqrt{82{,}5 \times 182{,}5}} = \frac{122{,}5}{\sqrt{15\,056{,}25}} = \frac{122{,}5}{122{,}7} \approx +0{,}998$$
 
-| X \ Y | [0,10[ (5) | [10,20[ (15) | [20,30[ (25) | Total |
-|---------|---------|---------|---------|---------|
-| **[0,10[ (5)** | 4 | 2 | 0 | 6 |
-| **[10,20[ (15)** | 2 | 6 | 2 | 10 |
-| **[20,30[ (25)** | 0 | 2 | 4 | 6 |
-| **Total** | 6 | 10 | 6 | 22 |
+### ✅ Conclusão
 
-**Passo 1 — Médias ponderadas:**
+**r ≈ +0,998** → correlação **positiva**, **muito forte**.
 
-x̄ = (5 × 6 + 15 × 10 + 25 × 6) / 22 = (30 + 150 + 150) / 22 = 330/22 = 15
+Quem estuda mais tende a tirar melhores notas, e a relação é quase perfeita. O valor tão próximo de +1 indica que os pontos estão quase perfeitamente alinhados numa reta ascendente.
 
-ȳ = (5 × 6 + 15 × 10 + 25 × 6) / 22 = 330/22 = 15
+## INTERPRETAÇÃO DO r
 
-**Passo 2 — Tabela de cálculo:**
+### 1. Direção
 
-| xi | yj | fij | (xi − 15) | (yj − 15) | fij(xi − x̄)(yj − ȳ) |
-|---------|---------|---------|---------|---------|---------|
-| 5 | 5 | 4 | −10 | −10 | 400 |
-| 5 | 15 | 2 | −10 | 0 | 0 |
-| 15 | 5 | 2 | 0 | −10 | 0 |
-| 15 | 15 | 6 | 0 | 0 | 0 |
-| 15 | 25 | 2 | 0 | 10 | 0 |
-| 25 | 15 | 2 | 10 | 0 | 0 |
-| 25 | 25 | 4 | 10 | 10 | 400 |
-| **Total** | | **22** | | | **800** |
+- **r > 0** → positiva (X↑ → Y↑)
+- **r < 0** → negativa (X↑ → Y↓)
+- **r ≈ 0** → nula (sem relação linear)
 
-**Passo 3 — Cálculo dos desvios quadrados:**
+### 2. Força
 
-| xi | fij | fij(xi − 15)² |
-|---------|---------|---------|
-| 5 | 6 | 6 × 100 = 600 |
-| 15 | 10 | 10 × 0 = 0 |
-| 25 | 6 | 6 × 100 = 600 |
-| **Total** | **22** | **1200** |
+| r | Força |
+|-----|-------|
+| 0,00 — 0,19 | Muito fraca |
+| 0,20 — 0,39 | Fraca |
+| 0,40 — 0,59 | Moderada |
+| 0,60 — 0,79 | Forte |
+| 0,80 — 1,00 | Muito forte |
 
-| yj | fij | fij(yj − 15)² |
-|---------|---------|---------|
-| 5 | 6 | 6 × 100 = 600 |
-| 15 | 10 | 10 × 0 = 0 |
-| 25 | 6 | 6 × 100 = 600 |
-| **Total** | **22** | **1200** |
+Esta escala é uma **convenção** — diferentes autores usam ligeiras variações. O importante é perceber que a força aumenta à medida que |r| se aproxima de 1.
 
-**Passo 4 — Aplicar a fórmula:**
+### 3. Exemplos visuais
 
-$$
-r = \frac{800}{\sqrt{1200} \cdot \sqrt{1200}} = \frac{800}{1200} \approx \mathbf{0{,}667}
-$$
+<style>
+.scatter-grid{font:14px system-ui;background:#f8f9fa;padding:2vw;border-radius:8px;display:grid;grid-template-columns:repeat(3,1fr);gap:2vw;max-width:100%}
+.scatter-grid .g{text-align:center}
+.scatter-grid .g div{margin-bottom:1vh;color:#333;font-weight:500;white-space:nowrap;font-size:clamp(11px,1.4vw,14px)}
+.scatter-grid .p{width:100%;aspect-ratio:1.3;position:relative;margin:0 auto}
+.scatter-grid .p span{position:absolute;width:7px;height:7px;background:#333;border-radius:50%;transform:translate(-50%,-50%)}
+@media(max-width:700px){.scatter-grid{grid-template-columns:1fr 1fr;gap:3vh}}
+@media(max-width:450px){.scatter-grid{grid-template-columns:1fr}}
+</style>
+<div class="scatter-grid">
+  <div class="g">
+    <div>r = +0,9 (forte positiva)</div>
+    <div class="p">
+      <span style="left:15%;top:20%"></span>
+      <span style="left:30%;top:35%"></span>
+      <span style="left:45%;top:48%"></span>
+      <span style="left:60%;top:62%"></span>
+      <span style="left:75%;top:75%"></span>
+      <span style="left:88%;top:88%"></span>
+    </div>
+  </div>
+  <div class="g">
+    <div>r = +0,5 (moderada)</div>
+    <div class="p">
+      <span style="left:20%;top:15%"></span>
+      <span style="left:35%;top:35%"></span>
+      <span style="left:50%;top:25%"></span>
+      <span style="left:40%;top:55%"></span>
+      <span style="left:65%;top:50%"></span>
+      <span style="left:75%;top:70%"></span>
+      <span style="left:55%;top:80%"></span>
+      <span style="left:85%;top:85%"></span>
+    </div>
+  </div>
+  <div class="g">
+    <div>r = 0 (nula)</div>
+    <div class="p">
+      <span style="left:50%;top:15%"></span>
+      <span style="left:30%;top:30%"></span>
+      <span style="left:70%;top:30%"></span>
+      <span style="left:15%;top:45%"></span>
+      <span style="left:85%;top:45%"></span>
+      <span style="left:25%;top:60%"></span>
+      <span style="left:75%;top:60%"></span>
+      <span style="left:45%;top:75%"></span>
+      <span style="left:55%;top:75%"></span>
+    </div>
+  </div>
+  <div class="g">
+    <div>r = −0,9 (forte negativa)</div>
+    <div class="p">
+      <span style="left:12%;top:20%"></span>
+      <span style="left:25%;top:32%"></span>
+      <span style="left:38%;top:45%"></span>
+      <span style="left:52%;top:58%"></span>
+      <span style="left:68%;top:72%"></span>
+      <span style="left:85%;top:88%"></span>
+    </div>
+  </div>
+  <div class="g">
+    <div>r = −0,5 (moderada negativa)</div>
+    <div class="p">
+      <span style="left:20%;top:15%"></span>
+      <span style="left:40%;top:20%"></span>
+      <span style="left:30%;top:40%"></span>
+      <span style="left:55%;top:45%"></span>
+      <span style="left:45%;top:60%"></span>
+      <span style="left:70%;top:65%"></span>
+      <span style="left:60%;top:80%"></span>
+      <span style="left:80%;top:85%"></span>
+    </div>
+  </div>
+  <div class="g">
+    <div>r = +1 (perfeita)</div>
+    <div class="p">
+      <span style="left:10%;top:15%"></span>
+      <span style="left:28%;top:32%"></span>
+      <span style="left:46%;top:50%"></span>
+      <span style="left:64%;top:68%"></span>
+      <span style="left:82%;top:85%"></span>
+    </div>
+  </div>
+</div>
 
-✅ A correlação é **0,667** — uma **correlação positiva moderada a forte**.
+Cada gráfico mostra uma situação diferente. Quanto mais os pontos se aproximam de uma linha reta, mais próximo de ±1 é o r. Quando os pontos estão dispersos sem padrão, o r aproxima-se de zero.
 
-> **🔍 Interpretação:** Existe uma **relação linear positiva moderada a forte** entre as duas variáveis. Os pontos médios das classes foram usados como representantes, o que introduz alguma imprecisão (erro de agrupamento).
-</details></center>
+## PROPRIEDADES DO r
 
-## 4. COEFICIENTE DE DETERMINAÇÃO (R²)
+O r tem várias propriedades matemáticas que vale a pena conhecer, porque nos ajudam a interpretá-lo corretamente.
 
-&emsp;&emsp;&emsp;O **coeficiente de determinação** (R²) é o quadrado do coeficiente de Pearson. Representa a **proporção da variabilidade de Y** que é explicada por X.
+### 1. Intervalo
 
-**📐 Fórmula:**
+&emsp;&emsp;&emsp;O r está **sempre** entre −1 e +1. Nunca sai deste intervalo. Esta é uma garantia matemática que nos permite comparar correlações entre estudos diferentes.
 
-$$
-\color{blue} R^2 = r^2
-$$
+### 2. Adimensional
 
-**📌 Interpretação:**
+&emsp;&emsp;&emsp;O r **não tem unidade**. Não é "0,8 kg" nem "0,8 cm". É apenas um número puro. Isto significa que podemos comparar correlações entre variáveis completamente diferentes.
 
-| R² | Interpretação |
-|---------|----------|
-| R² = 1 | 100% da variabilidade de Y é explicada por X |
-| R² = 0,81 | 81% da variabilidade de Y é explicada por X |
-| R² = 0,25 | 25% da variabilidade de Y é explicada por X |
-| R² = 0 | 0% da variabilidade de Y é explicada por X |
+### 3. Simétrico
 
-**📌 Exemplo:**
+&emsp;&emsp;&emsp;r(X, Y) = r(Y, X). A correlação entre X e Y é igual à correlação entre Y e X. Isto significa que não importa qual variável é a independente — o r é o mesmo.
 
-Com r = 0,999:
-R² = 0,999² ≈ 0,998
+### 4. Sensível a outliers
 
-> **🔍 Interpretação:** **99,8% da variabilidade das notas é explicada pelas horas de estudo.** Apenas 0,2% é devida a outros fatores (ou aleatoriedade).
+&emsp;&emsp;&emsp;Um único ponto extremo pode alterar drasticamente o r. **Vemos sempre o scatterplot antes de confiar no r.** Um outlier pode fazer com que um r = 0,9 passe para r = 0,3 — ou vice-versa.
 
-## 5. INTERPRETAÇÃO DO COEFICIENTE DE PEARSON
+### 5. Só mede relações lineares
 
-> **💡 O coeficiente de Pearson quantifica a força e a direção da relação linear**
+Se a relação for curva, o r pode ser ≈ 0 mesmo havendo uma relação forte. Isto é uma limitação fundamental que precisamos de ter sempre em mente.
 
-**📌 Exemplos de interpretação:**
+### 6. Não é afetado por transformações lineares
 
-| Contexto | r | R² | Interpretação |
-|---------|---------|---------|---------|
-| **Horas de estudo vs. notas** | +0,999 | 0,998 | Correlação positiva quase perfeita |
-| **Altura vs. peso** | +0,75 | 0,56 | Correlação positiva forte |
-| **Temperatura vs. consumo de energia** | −0,85 | 0,72 | Correlação negativa forte |
-| **Preço vs. procura** | −0,60 | 0,36 | Correlação negativa moderada |
-| **Cor do cabelo vs. inteligência** | 0 | 0 | Sem correlação linear |
+Se multiplicarmos X por 2 e somarmos 10, o r não muda. O r é **invariante** a mudanças de escala e origem. Isto significa que podemos medir X em metros ou centímetros — o r é o mesmo.
 
-**📌 O que o r NÃO diz:**
+## r² — COEFICIENTE DE DETERMINAÇÃO
 
-| Limitação | Explicação |
-|---------|----------|
-| **Não implica causalidade** | X e Y podem estar correlacionados por uma terceira variável |
-| **Não detecta relações não lineares** | Uma curva em U pode ter r ≈ 0 |
-| **É sensível a outliers** | Um único ponto extremo pode distorcer o r |
-| **Não indica a inclinação** | r mede a força, não a inclinação da reta |
-| **Não é uma proporção** | r = 0,5 não significa "50% de relação" |
+O **r²** é o quadrado do r. Diz-nos **que percentagem da variação de Y é explicada por X**.
 
-## 6. CÁLCULO DO R EM PYTHON E R
+**Fórmula:**
+
+$$r^2 = r \times r$$
+
+**Exemplo:** Se r = 0,8, então r² = 0,64.
+
+**Interpretação:** 64% da variação de Y é explicada por X. Os restantes 36% devem-se a outros fatores.
+
+**Porque é importante:**
+- r = 0,5 parece moderado, mas r² = 0,25 significa que só 25% da variação é explicada
+- r = 0,9 parece forte, e r² = 0,81 significa 81% explicado
+- O r² é mais **honesto** sobre o poder explicativo
+
+O r² é especialmente útil em contextos de **regressão** e **machine learning**, onde queremos saber quanto do comportamento de Y é capturado pelo modelo.
+
+
+Usamos Pearson quando:
+
+- Temos **duas variáveis quantitativas** (intervalar ou razão)
+- A relação é **linear** (confirmamos no scatterplot)
+- **Não há outliers** fortes
+- As variáveis seguem aproximadamente uma **distribuição normal**
+- Queremos uma medida **padrão** e **comparável** entre estudos
+
+
+Não usamos Pearson quando:
+
+- **As variáveis são ordinais** → usamos Spearman
+- **Há outliers** fortes → usamos Spearman
+- A relação é **não-linear** (curva) → usamos Spearman ou outros
+- A relação é **monótona mas não linear** → usamos Spearman
+- Temos **variáveis nominais** → usamos V de Cramér ou Qui-quadrado
+- A amostra é **muito pequena** → cuidado com a instabilidade
+
 
 <details>
-<summary>🐍 Código Python — Coeficiente de Pearson</summary>
+<summary>📌 Exemplo Prático</summary>
 
-<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
+**Problema:** Calcular o r entre o preço de um produto (X) e a quantidade vendida (Y).
+
+| Semana | Preço (X) | Quantidade (Y) |
+|---------|---------|---------|
+| 1 | 10 | 100 |
+| 2 | 12 | 90 |
+| 3 | 14 | 75 |
+| 4 | 16 | 60 |
+| 5 | 18 | 50 |
+
+### Passo 1 — Médias
+
+$$\bar{x} = \frac{10+12+14+16+18}{5} = 14$$
+
+$$\bar{y} = \frac{100+90+75+60+50}{5} = 75$$
+
+### Passo 2 — Desvios e produtos
+
+| x | y | (x−x̄) | (y−ȳ) | (x−x̄)(y−ȳ) | (x−x̄)² | (y−ȳ)² |
+|---|---|-------|-------|-------------|--------|--------|
+| 10 | 100 | −4 | +25 | −100 | 16 | 625 |
+| 12 | 90 | −2 | +15 | −30 | 4 | 225 |
+| 14 | 75 | 0 | 0 | 0 | 0 | 0 |
+| 16 | 60 | +2 | −15 | −30 | 4 | 225 |
+| 18 | 50 | +4 | −25 | −100 | 16 | 625 |
+| | | | | **Σ = −260** | **Σ = 40** | **Σ = 1700** |
+
+### Passo 3 — Fórmula
+
+$$r = \frac{-260}{\sqrt{40 \times 1700}} = \frac{-260}{\sqrt{68\,000}} = \frac{-260}{260{,}8} \approx -0{,}997$$
+
+### ✅ Conclusão
+
+**r ≈ −0,997** → correlação **negativa**, **muito forte**.
+
+Quando o preço sobe, a quantidade vendida desce quase perfeitamente. Esta é uma relação típica da lei da procura em economia.
+
+</details>
+
+<details>
+<summary>📌 Exemplo Prático usando Python</summary>
+```python
 import numpy as np
-import pandas as pd
 from scipy.stats import pearsonr
 
-# Dados: Horas de estudo vs. Notas
-horas = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-notas = [4, 5, 7, 8, 10, 11, 13, 14, 16, 17]
+- _Dados de exemplo: Horas de estudo (X) e Notas (Y)_
+X = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+Y = [4, 5, 7, 8, 10, 11, 13, 14, 16, 17]
 
-# 1. CÁLCULO COM NUMPY
-r_numpy = np.corrcoef(horas, notas)[0, 1]
+- _1. CÁLCULO COM NUMPY_
+r_numpy = np.corrcoef(X, Y)[0, 1]
 print(f"Pearson (NumPy): {r_numpy:.4f}")
 
-# 2. CÁLCULO COM SCIPY (inclui p-value)
-r_scipy, p_value = pearsonr(horas, notas)
+- _2. CÁLCULO COM SCIPY (inclui p-value)_
+r_scipy, p_value = pearsonr(X, Y)
 print(f"Pearson (SciPy): {r_scipy:.4f}")
 print(f"p-value: {p_value:.4e}")
 
-# 3. CÁLCULO COM PANDAS
-df = pd.DataFrame({'horas': horas, 'notas': notas})
-r_pandas = df['horas'].corr(df['notas'])
-print(f"Pearson (Pandas): {r_pandas:.4f}")
-
-# 4. COEFICIENTE DE DETERMINAÇÃO
-r2 = r_numpy ** 2
-print(f"R²: {r2:.4f}")
-
-# 5. MATRIZ DE CORRELAÇÃO (para múltiplas variáveis)
-df_completo = pd.DataFrame({
-    'horas': horas,
-    'notas': notas,
-    'sono': [8, 7, 6, 7, 8, 6, 7, 8, 6, 7]
-})
-matriz_corr = df_completo.corr()
-print("\nMatriz de Correlação:")
-print(matriz_corr)
-
-# 6. HEATMAP DA MATRIZ DE CORRELAÇÃO
-import seaborn as sns
-import matplotlib.pyplot as plt
-
-plt.figure(figsize=(8, 6))
-sns.heatmap(matriz_corr, annot=True, cmap='coolwarm', vmin=-1, vmax=1)
-plt.title('Matriz de Correlação')
-plt.show()
-</pre>
-
+- _3. COEFICIENTE DE DETERMINAÇÃO (r²)_
+r2 = r_scipy ** 2
+print(f"r²: {r2:.4f}")
+```
 </details>
 
 <details>
-<summary>📊 Código R — Coeficiente de Pearson</summary>
+<summary>**📌 Exemplo Prático**</summary>
+```r
+- _Dados de exemplo: Horas de estudo (X) e Notas (Y)_
+X <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
+Y <- c(4, 5, 7, 8, 10, 11, 13, 14, 16, 17)
 
-<pre style="color: white; background: #0a0f1e; padding: 1rem; border-radius: 8px; font-family: monospace; font-size: 0.85rem; border: 1px solid rgba(255,255,255,0.08); overflow-x: auto;">
-# Dados: Horas de estudo vs. Notas
-horas <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
-notas <- c(4, 5, 7, 8, 10, 11, 13, 14, 16, 17)
-
-# 1. CÁLCULO BÁSICO
-r <- cor(horas, notas, method = "pearson")
+- _1. CÁLCULO BÁSICO DO r_
+r <- cor(X, Y, method = "pearson")
 cat("Pearson:", r, "\n")
 
-# 2. TESTE DE SIGNIFICÂNCIA
-teste <- cor.test(horas, notas, method = "pearson")
+- _2. TESTE DE SIGNIFICÂNCIA (inclui p-value)_
+teste <- cor.test(X, Y, method = "pearson")
 print(teste)
 
-# 3. COEFICIENTE DE DETERMINAÇÃO
+- _3. COEFICIENTE DE DETERMINAÇÃO (r²)_
 r2 <- r^2
-cat("R²:", r2, "\n")
+cat("r²:", r2, "\n")
 
-# 4. MATRIZ DE CORRELAÇÃO
-df <- data.frame(
-  horas = horas,
-  notas = notas,
-  sono = c(8, 7, 6, 7, 8, 6, 7, 8, 6, 7)
-)
-matriz_corr <- cor(df, method = "pearson")
-print(matriz_corr)
-
-# 5. HEATMAP DA MATRIZ DE CORRELAÇÃO
-library(ggplot2)
-library(reshape2)
-
-melted_corr <- melt(matriz_corr)
-ggplot(melted_corr, aes(x = Var1, y = Var2, fill = value)) +
-  geom_tile() +
-  geom_text(aes(label = round(value, 2)), color = "white") +
-  scale_fill_gradient2(low = "blue", mid = "white", high = "red",
-                       midpoint = 0, limits = c(-1, 1)) +
-  labs(title = "Matriz de Correlação", x = "", y = "") +
-  theme_minimal()
-</pre>
-
+```
 </details>
 
-## 7. VANTAGENS E DESVANTAGENS
-
-| Vantagens | Desvantagens |
-|---------|----------|
-| ✅ **Usa todos os dados** | ❌ **Sensível a outliers** |
-| ✅ **Medida padrão** — amplamente usada | ❌ **Só detecta relações lineares** |
-| ✅ **Adimensional** — sem unidade | ❌ **Não implica causalidade** |
-| ✅ **Varie entre −1 e +1** — interpretável | ❌ **Pode ser enganador** com relações não lineares |
-| ✅ **Base para R²** | ❌ **Assume normalidade** para testes de significância |
-| ✅ **Simétrico** — r(X,Y) = r(Y,X) | ❌ **Não indica a inclinação** da reta |
-
-## 8. QUANDO USAR O COEFICIENTE DE PEARSON
-
-| Critério | Pearson |
-|---------|----------|
-| **Duas variáveis quantitativas** | ✅ Único |
-| **Relação linear** | ✅ Único |
-| **Sem outliers** | ✅ Ideal |
-| **Distribuição aproximadamente normal** | ✅ Ideal |
-| **Dados ordinais** | ❌ Usar Spearman |
-| **Relação não linear** | ❌ Usar Spearman |
-| **Outliers** | ❌ Usar Spearman |
-| **Variáveis categóricas** | ❌ Usar qui-quadrado |
-
-**Fluxo de Decisão:**
-
-1. Tens **duas variáveis quantitativas**? → **Pearson**
-2. A relação é **linear**? → **Pearson**
-3. Há **outliers**? → **Spearman**
-4. A relação é **monótona não linear**? → **Spearman**
-5. Os dados são **ordinais**? → **Spearman**
-6. Queres **interpretação probabilística**? → **Kendall**
-
-## 9. EXERCÍCIOS
+## 13. EXERCÍCIOS
 
 <details>
-<summary>📗 Exercício 1 — Pearson (Dados Brutos)</summary>
+<summary>📗 Exercício 1 — Calcular o r de Pearson</summary>
 
-**Enunciado:** Calcule a correlação entre X e Y:
+**Enunciado:** Calcule o coeficiente de Pearson para os dados abaixo.
 
 | X | Y |
-|---------|---------|
+|---|---|
 | 1 | 2 |
 | 2 | 4 |
 | 3 | 5 |
@@ -595,10 +418,10 @@ ggplot(melted_corr, aes(x = Var1, y = Var2, fill = value)) +
 
 **Resposta:**
 
-x̄ = 3, ȳ = 4
+Média X = 3, Média Y = 4
 
 | xi | yi | xi − 3 | yi − 4 | Produto | (xi−3)² | (yi−4)² |
-|---------|---------|---------|---------|---------|---------|---------|
+|-----|-----|---------|---------|---------|---------|---------|
 | 1 | 2 | −2 | −2 | 4 | 4 | 4 |
 | 2 | 4 | −1 | 0 | 0 | 1 | 0 |
 | 3 | 5 | 0 | 1 | 0 | 0 | 1 |
@@ -614,62 +437,7 @@ r = 6 / (√10 × √6) = 6 / (3,16 × 2,45) = 6 / 7,74 ≈ **0,775**
 </details>
 
 <details>
-<summary>📗 Exercício 2 — Pearson (Dados Agrupados por Lista)</summary>
-
-**Enunciado:** Calcule a correlação da tabela:
-
-| X \ Y | 10 | 20 | Total |
-|---------|---------|---------|---------|
-| **5** | 2 | 1 | 3 |
-| **10** | 1 | 3 | 4 |
-| **Total** | 3 | 4 | 7 |
-
-<details>
-<summary>💡 Ver resposta</summary>
-
-**Resposta:**
-
-x̄ = (5 × 3 + 10 × 4) / 7 = 55/7 ≈ 7,86
-
-ȳ = (10 × 3 + 20 × 4) / 7 = 110/7 ≈ 15,71
-
-| xi | yj | fij | (xi − 7,86) | (yj − 15,71) | fij · produto |
-|---------|---------|---------|---------|---------|---------|
-| 5 | 10 | 2 | −2,86 | −5,71 | 32,66 |
-| 5 | 20 | 1 | −2,86 | 4,29 | −12,27 |
-| 10 | 10 | 1 | 2,14 | −5,71 | −12,22 |
-| 10 | 20 | 3 | 2,14 | 4,29 | 27,54 |
-| **Total** | | **7** | | | **35,71** |
-
-Σ fij(xi − x̄)² = 42,86
-Σ fij(yj − ȳ)² = 171,40
-
-r = 35,71 / (√42,86 × √171,40) = 35,71 / (6,55 × 13,09) = 35,71 / 85,74 ≈ **0,417**
-
-**Interpretação:** Correlação positiva moderada.
-
-</details>
-</details>
-
-<details>
-<summary>📗 Exercício 3 — Coeficiente de Determinação</summary>
-
-**Enunciado:** Se r = 0,8, qual é o R²? O que significa?
-
-<details>
-<summary>💡 Ver resposta</summary>
-
-**Resposta:**
-
-R² = 0,8² = 0,64
-
-**Interpretação:** 64% da variabilidade de Y é explicada por X. Os restantes 36% são devidos a outros fatores ou aleatoriedade.
-
-</details>
-</details>
-
-<details>
-<summary>📗 Exercício 4 — Interpretação do r</summary>
+<summary>📗 Exercício 2 — Interpretar o r</summary>
 
 **Enunciado:** Um estudo encontrou r = −0,82 entre o preço de um produto e a quantidade vendida. O que podes concluir?
 
@@ -680,49 +448,62 @@ R² = 0,8² = 0,64
 
 r = −0,82 indica uma **correlação negativa forte**. Isto significa que:
 - Quando o preço aumenta, a quantidade vendida tende a **diminuir**.
-- Quando o preço diminui, a quantidade vendida tende a **aumentar**.
 - A relação é **forte** (|r| > 0,7).
-- R² = 0,82² ≈ 0,67 → **67% da variabilidade da quantidade vendida é explicada pelo preço**.
+- r² = 0,82² ≈ 0,67 → **67% da variação da quantidade vendida é explicada pelo preço**.
 
 </details>
 </details>
 
 <details>
-<summary>📗 Exercício 5 — Limitações do r</summary>
+<summary>📗 Exercício 3 — Calcular o r²</summary>
 
-**Enunciado:** Dois conjuntos de dados têm r = 0,82. O Conjunto A tem uma relação linear típica. O Conjunto B tem uma relação curvilínea. O r conta a mesma história para ambos? Justifique.
-
-<details>
-<summary>💡 Ver resposta</summary>
-
-**Resposta:**
-
-**Não!** O r de Pearson **só mede relações lineares**. Se o Conjunto B tem uma relação curvilínea, o r = 0,82 pode ser **enganador** — ele está a medir a força da relação **linear** (que pode ser fraca), não da relação **curvilínea** (que pode ser forte).
-
-**Exemplo:** Uma curva em U pode ter r ≈ 0, mesmo com uma relação forte. O r não detecta esta relação.
-
-**Lição:** Nunca confies apenas no r. Visualiza sempre o scatterplot primeiro.
-
-</details>
-</details>
-
-<details>
-<summary>📗 Exercício 6 — Correlação não implica causalidade</summary>
-
-**Enunciado:** Um estudo encontrou r = 0,95 entre o consumo de sorvete e o número de afogamentos. Podemos concluir que comer sorvete causa afogamentos? Justifique.
+**Enunciado:** Se r = 0,8, qual é o r²? O que significa?
 
 <details>
 <summary>💡 Ver resposta</summary>
 
 **Resposta:**
 
-**Não!** Correlação **não implica causalidade**. Neste caso, a variável de confusão é a **temperatura**:
-- Quando está mais calor, as pessoas comem mais sorvete.
-- Quando está mais calor, as pessoas vão mais à praia e nadam mais, aumentando o risco de afogamento.
+r² = 0,8² = **0,64**
 
-A temperatura causa **ambas** as variáveis. O sorvete e os afogamentos estão correlacionados, mas não há relação causal direta entre eles.
+**Interpretação:** 64% da variação de Y é explicada por X. Os restantes 36% devem-se a outros fatores ou aleatoriedade.
 
 </details>
 </details>
 
-> O coeficiente de Pearson é a régua que mede a relação linear entre duas variáveis. Mas como todas as réguas, só mede o que foi feita para medir — e o mundo nem sempre é linear.
+<details>
+<summary>📗 Exercício 4 — Propriedades do r</summary>
+
+**Enunciado:** Se multiplicarmos todos os valores de X por 3, o que acontece ao r?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+O r **não muda**. O coeficiente de Pearson é **invariante a transformações lineares**. Multiplicar X por 3 é uma transformação linear (mudança de escala), e o r permanece o mesmo.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Quando NÃO usar Pearson</summary>
+
+**Enunciado:** Em que situações NÃO devemos usar o coeficiente de Pearson?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Resposta:**
+
+Não devemos usar Pearson quando:
+- As variáveis são **ordinais** → usar Spearman
+- Há **outliers** fortes → usar Spearman
+- A relação é **não-linear** (curva) → usar Spearman
+- Temos **variáveis nominais** → usar V de Cramér
+- A amostra é **muito pequena**
+
+</details>
+</details>
+
+> Em resumo: o coeficiente de Pearson é a medida padrão da correlação linear. Dá-nos um número entre −1 e +1 que resume força e direção. É poderoso, mas exige pressupostos — vemos sempre o scatterplot antes de confiar no r. A sua ligação ao r² torna-o fundamental para qualquer análise preditiva.
