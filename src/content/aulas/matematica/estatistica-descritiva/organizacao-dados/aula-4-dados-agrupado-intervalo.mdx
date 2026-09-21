@@ -18,17 +18,17 @@
 
 &emsp;&emsp;&emsp;Em contrapartida, ganhamos algo essencial: a capacidade de visualizar a forma da distribuição mesmo quando lidamos com milhares de dados. O agrupamento permite identificar padrões, concentrações, assimetrias e dispersões que seriam impossíveis de detetar numa listagem exaustiva de valores. É através dele que a macro-visão do fenómeno em estudo se revela. O agrupamento por intervalos de classe é importante porque:
 
-- Torna os dados interpretáveis — uma tabela com centenas de valores distintos é ilegível; uma tabela com 5 a 10 classes é imediatamente compreensível;
+1. Torna os dados interpretáveis — uma tabela com centenas de valores distintos é ilegível; uma tabela com 5 a 10 classes é imediatamente compreensível;
 
-- Revela a estrutura da distribuição — permite identificar onde os dados se concentram e onde são mais escassos;
+2. Revela a estrutura da distribuição — permite identificar onde os dados se concentram e onde são mais escassos;
 
-- Viabiliza representações gráficas — histogramas e polígonos de frequência só são possíveis com dados agrupados;
+3. Viabiliza representações gráficas — histogramas e polígonos de frequência só são possíveis com dados agrupados;
 
-- Permite o cálculo de medidas estatísticas — a média, a mediana e o desvio padrão podem ser estimados a partir das classes;
+4. Permite o cálculo de medidas estatísticas — a média, a mediana e o desvio padrão podem ser estimados a partir das classes.
 
-- Facilita a comparação entre conjuntos — dois grupos distintos podem ser comparados rapidamente através das suas distribuições de frequência.
+5. Facilita a comparação entre conjuntos — dois grupos distintos podem ser comparados rapidamente através das suas distribuições de frequência.
 
-> **🚨 ATENÇÃO: NÃO É POSSÍVEL CRIAR INTERVALOS DE CLASSE PARA VARIÁVEIS QUALITATIVAS**
+> <center>***🚨 ATENÇÃO: NÃO É POSSÍVEL CRIAR INTERVALOS DE CLASSE PARA VARIÁVEIS QUALITATIVAS***</center>
 
 &emsp;&emsp;&emsp; Intervalos de classe exigem matemática contínua — subtração, soma, ordenação numérica. Eles funcionam exclusivamente para Variáveis Quantitativas Contínuas (altura, peso, temperatura, salário). <br><br>
 
@@ -257,6 +257,126 @@ Onde: **A2:A21** são os dados brutos e **E2:E6** são os limites superiores (1,
 > **📌 Conclusão:** Agrupar em intervalos de classe é a técnica que permite **resumir grandes volumes de dados contínuos**. Perdemos o dado exato, mas ganhamos a capacidade de **enxergar a distribuição como um todo** — a **macro-visão** que os dados brutos não nos dão.
 >
 > **Lembre-se:** Esta técnica é **exclusiva para Variáveis Quantitativas Contínuas**. Para qualitativas, a contagem simples de categorias continua sendo a única abordagem possível.
+
+## <center>O caminho de volta: da tabela por intervalos para os dados aproximados</center>
+
+&emsp;&emsp;&emsp;Suponhamos que precisarmos de fazer o **caminho inverso**? E se recebermos apenas a tabela — sem os dados originais — e precisarmos de calcular a média, o desvio padrão, ou até reconstruir uma lista de valores?
+
+&emsp;&emsp;&emsp;Este é um cenário muito comum na prática. Muitas vezes, os dados chegam até nós já resumidos em tabelas: relatórios governamentais, estudos publicados, bases de dados antigas. Os valores individuais perderam-se, mas a tabela permaneceu. A pergunta é: **é possível voltar aos dados?**
+
+&emsp;&emsp;&emsp;A resposta é: **sim, mas de forma aproximada**. Nesta aula, vamos aprender a reconstruir dados brutos a partir de uma tabela por intervalos, executando **4 passos** simples. Veremos o que se ganha e o que se perde nesse processo, e entenderemos porque a reconstrução é uma **aproximação controlada** — não uma recuperação fiel.
+
+> 💡 **Regra de Ouro:** A tabela por intervalos **resume**; a reconstrução **aproxima**; os dados brutos **detalham**. Cada um tem o seu lugar — e saber transitar entre eles é o que permite trabalhar com dados em qualquer formato que cheguem até você.
+
+
+## 1. O QUE TEMOS NO INÍCIO
+
+&emsp;&emsp;&emsp;Suponha que você recebeu **apenas** a tabela abaixo. Não há planilha com os valores originais. Não há lista de números. Só a tabela.
+
+| Classe | Intervalo | Frequência ($f_i$) |
+|--------|-----------|---------------------|
+| 1 | [10; 20[ | 3 |
+| 2 | [20; 30[ | 5 |
+| 3 | [30; 40[ | 7 |
+| 4 | [40; 50[ | 3 |
+| 5 | [50; 60[ | 2 |
+| **Total** | | **20** |
+
+&emsp;&emsp;&emsp;O que sabemos?
+
+- Sabemos que **3 dados** caíram entre 10 e 20.
+- Sabemos que **5 dados** caíram entre 20 e 30.
+- Sabemos que **7 dados** caíram entre 30 e 40.
+- E assim por diante.
+
+&emsp;&emsp;&emsp;Mas **não sabemos quais valores são**. Não sabemos se os 3 dados da primeira classe são 11, 15 e 19 — ou 10, 12 e 14. Não sabemos se há um 17 e um 19 na classe [10; 20[, ou se todos os valores estão concentrados perto de 15.
+
+&emsp;&emsp;&emsp;A reconstrução é possível, mas é **aproximada**. Vamos executá-la em **4 passos**.
+
+
+## 2. PASSO 1 — CALCULAR O PONTO MÉDIO DE CADA CLASSE
+
+&emsp;&emsp;&emsp;O ponto médio é o valor que **representará** todos os dados daquela classe. É a melhor estimativa que temos para cada valor individual, dado que só conhecemos o intervalo.
+
+$$\bar{x}_i = \frac{L_i + L_s}{2}$$
+
+&emsp;&emsp;&emsp;Onde $L_i$ é o limite inferior e $L_s$ é o limite superior da classe.
+
+| Classe | Intervalo | Ponto Médio ($x_i$) |
+|--------|-----------|---------------------|
+| 1 | [10; 20[ | (10 + 20) / 2 = **15** |
+| 2 | [20; 30[ | (20 + 30) / 2 = **25** |
+| 3 | [30; 40[ | (30 + 40) / 2 = **35** |
+| 4 | [40; 50[ | (40 + 50) / 2 = **45** |
+| 5 | [50; 60[ | (50 + 60) / 2 = **55** |
+
+&emsp;&emsp;&emsp;Agora temos um valor representativo para cada classe. Em vez de "3 dados entre 10 e 20", passamos a ter "3 dados iguais a 15". É uma simplificação, mas é a melhor que podemos fazer com a informação disponível.
+
+## 3. PASSO 2 — MULTIPLICAR O PONTO MÉDIO PELA FREQUÊNCIA
+
+&emsp;&emsp;&emsp;Cada classe contribui com uma "soma aproximada": o ponto médio repetido tantas vezes quantas forem a sua frequência.
+
+$$x_i \cdot f_i$$
+
+| Classe | Intervalo | $x_i$ | $f_i$ | $x_i \cdot f_i$ |
+|--------|-----------|-------|-------|-----------------|
+| 1 | [10; 20[ | 15 | 3 | 45 |
+| 2 | [20; 30[ | 25 | 5 | 125 |
+| 3 | [30; 40[ | 35 | 7 | 245 |
+| 4 | [40; 50[ | 45 | 3 | 135 |
+| 5 | [50; 60[ | 55 | 2 | 110 |
+| **Total** | | | **20** | **660** |
+
+&emsp;&emsp;&emsp;A soma total é **660**. Este é o valor que usaríamos para calcular a média aproximada.
+
+
+## 4. PASSO 3 — CALCULAR A MÉDIA APROXIMADA
+
+&emsp;&emsp;&emsp;A média aproximada é calculada dividindo a soma total pelo número de dados.
+
+$$\bar{x} \approx \frac{\sum x_i \cdot f_i}{n} = \frac{660}{20} = \boxed{33}$$
+
+&emsp;&emsp;&emsp;A média aproximada dos dados originais é **33**. Esse é o valor que melhor representa o conjunto, dado que só temos a tabela.
+
+> **🔬 Observação:** A média real dos dados originais pode ser ligeiramente diferente de 33 — mas, na ausência dos valores individuais, 33 é a nossa melhor estimativa.
+
+
+## 5. PASSO 4 — RECONSTRUIR A LISTA DE DADOS (APROXIMADA)
+
+&emsp;&emsp;&emsp;Agora vem a parte prática: **transformar a tabela de volta em uma lista de 20 valores**. Para isso, repetimos o ponto médio de cada classe tantas vezes quantas forem a sua frequência.
+
+| Classe | Ponto Médio ($x_i$) | Frequência ($f_i$) | Dados reconstruídos |
+|--------|---------------------|--------------------|---------------------|
+| 1 | 15 | 3 | 15, 15, 15 |
+| 2 | 25 | 5 | 25, 25, 25, 25, 25 |
+| 3 | 35 | 7 | 35, 35, 35, 35, 35, 35, 35 |
+| 4 | 45 | 3 | 45, 45, 45 |
+| 5 | 55 | 2 | 55, 55 |
+
+**Lista reconstruída (20 valores):**
+
+$$15, 15, 15, 25, 25, 25, 25, 25, 35, 35, 35, 35, 35, 35, 35, 45, 45, 45, 55, 55$$
+
+> **📌 O que acabamos de fazer:** Substituímos cada classe pelo seu ponto médio, repetido $f_i$ vezes. O resultado **não são os dados originais** — é uma **reconstrução aproximada** deles. Mas, para efeitos de cálculo estatístico, essa lista se comporta como se fosse o conjunto original.
+
+## 6. VERIFICAÇÃO — A MÉDIA DA LISTA RECONSTRUÍDA
+
+&emsp;&emsp;&emsp;Vamos verificar se a lista reconstruída produz a mesma média que calculamos no Passo 3.
+
+$$\bar{x} = \frac{15 \cdot 3 + 25 \cdot 5 + 35 \cdot 7 + 45 \cdot 3 + 55 \cdot 2}{20} = \frac{660}{20} = 33$$
+
+&emsp;&emsp;&emsp;A média da lista reconstruída é **exatamente a mesma** que calculamos no Passo 3 — o que confirma que os dois caminhos são equivalentes. A lista reconstruída é uma forma de "materializar" os dados que a tabela representa.
+
+## 7. RESUMO DOS PASSOS
+
+| Passo | O que fazer | Fórmula | Resultado no exemplo |
+|-------|-------------|---------|----------------------|
+| **1** | Calcular o ponto médio de cada classe | $(L_i + L_s) / 2$ | 15, 25, 35, 45, 55 |
+| **2** | Multiplicar ponto médio pela frequência | $x_i \cdot f_i$ | 45, 125, 245, 135, 110 |
+| **3** | Somar e dividir pelo total | $\bar{x} \approx \frac{\sum x_i f_i}{n}$ | **33** |
+| **4** | Repetir o ponto médio $f_i$ vezes | — | Lista de 20 valores |
+
+> **📌 Conclusão:** Com **apenas a tabela por intervalos**, executamos **4 passos** e obtivemos: (a) a média aproximada e (b) uma lista reconstruída de dados. O que **não** é possível recuperar é o valor exato de cada observação original — por exemplo, se havia um 17 e um 19 na classe [10; 20[, ambos foram substituídos por 15. A reconstrução é, portanto, uma **aproximação controlada**, não uma recuperação fiel.
 
 ## 📝 Exercícios
 

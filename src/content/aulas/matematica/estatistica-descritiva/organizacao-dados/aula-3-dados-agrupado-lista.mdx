@@ -103,12 +103,13 @@ Dados brutos: `a, b, c, D, w, w, w, F, d, s, d, f, a, a, a, b, b, b, b, c, c, D,
 
 <summary>📊 Exemplo no R</summary>
 ```R
-#### Criar o vetor com os dados
+- _Criar o vetor com os dados_
 dados <- c("a", "b", "c", "D", "w", "w", "w", "F", "d", "s", "d", "f",
            "a", "a", "a", "b", "b", "b", "b", "c", "c", "D", "D", "w")
 
 sum(dados == "w")
------------------------------
+
+<hr>
 
 library(dplyr)
 
@@ -168,19 +169,15 @@ Dados brutos: `Bom, Ruim, Ótimo, Regular, Bom, Ruim, Ótimo, Bom, Regular, Regu
 <details>
 <summary>📊 Exemplo no Excel</summary>
 ```text
-A (Nível)
-Bom
-Ruim
-Ótimo
-Regular
-Bom
-Ruim
-Ótimo
-Bom
-Regular
-Regular
+Bom, Ruim, Ótimo, Regular, Bom, Ruim, Ótimo, Bom, Regular, Regular
 
-=PROCV(A2; {"Ruim"\1; "Regular"\2; "Bom"\3; "Ótimo"\4}; 2; FALSO)
+|Nível	| Fórmula	| Resultado|
+|-------|----------|----------------|
+| Bom	| =CONT.SE(A:A; "Bom") | 3 |
+| Ruim | =CONT.SE(A:A; "Ruim") | 2 |
+| Ótimo	| =CONT.SE(A:A; "Ótimo") | 2 |
+| Regular| =CONT.SE(A:A; "Regular") | 3 |
+| **Total** | - | **10** |
 ```
 </details>
 
@@ -211,18 +208,10 @@ Regular
 ```python
   import pandas as pd
 
-  dados = pd.DataFrame({
-      "nivel": ["Bom", "Ruim", "Ótimo", "Regular", "Bom",
+  dados = ["Bom", "Ruim", "Ótimo", "Regular", "Bom",
                 "Ruim", "Ótimo", "Bom", "Regular", "Regular"]
-  })
 
-  ordem = ["Ruim", "Regular", "Bom", "Ótimo"]
-
-  dados["nivel"] = pd.Categorical(dados["nivel"], categories=ordem, ordered=True)
-
-  dados = dados.sort_values("nivel")
-
-  print(dados)
+ print(dados.count("Regular"))
 ```
 
 </details>
@@ -350,7 +339,8 @@ dados <- c(1,58; 1,62; 1,70; 1,58; 1,75; 1,62; 1,80; 1,58; 1,62)
 
 sum(dados == "1.58")
 
------------------------------------
+<hr>
+
 library(dplyr)
 
 dados <- data.frame(numero = c(1,58; 1,62; 1,70; 1,58; 1,75; 1,62; 1,80; 1,58; 1,62))
