@@ -244,7 +244,7 @@ Onde: **A2:A21** são os dados brutos e **E2:E6** são os limites superiores (1,
 </details>
 
 
-## 📝 Resumo 
+### 📝 Resumo 
 
 | Conceito | Fórmula | Exemplo (n=20, AT=0,33) |
 |----------|---------|--------------------------|
@@ -258,7 +258,7 @@ Onde: **A2:A21** são os dados brutos e **E2:E6** são os limites superiores (1,
 >
 > **Lembre-se:** Esta técnica é **exclusiva para Variáveis Quantitativas Contínuas**. Para qualitativas, a contagem simples de categorias continua sendo a única abordagem possível.
 
-## <center>O caminho de volta: da tabela por intervalos para os dados aproximados</center>
+## <center>Tabela por intervalos para os dados aproximados</center>
 
 &emsp;&emsp;&emsp;Suponhamos que precisarmos de fazer o **caminho inverso**? E se recebermos apenas a tabela — sem os dados originais — e precisarmos de calcular a média, o desvio padrão, ou até reconstruir uma lista de valores?
 
@@ -269,7 +269,7 @@ Onde: **A2:A21** são os dados brutos e **E2:E6** são os limites superiores (1,
 > 💡 **Regra de Ouro:** A tabela por intervalos **resume**; a reconstrução **aproxima**; os dados brutos **detalham**. Cada um tem o seu lugar — e saber transitar entre eles é o que permite trabalhar com dados em qualquer formato que cheguem até você.
 
 
-## 1. O QUE TEMOS NO INÍCIO
+### Dados iniciais
 
 &emsp;&emsp;&emsp;Suponha que você recebeu **apenas** a tabela abaixo. Não há planilha com os valores originais. Não há lista de números. Só a tabela.
 
@@ -294,11 +294,14 @@ Onde: **A2:A21** são os dados brutos e **E2:E6** são os limites superiores (1,
 &emsp;&emsp;&emsp;A reconstrução é possível, mas é **aproximada**. Vamos executá-la em **4 passos**.
 
 
-## 2. PASSO 1 — CALCULAR O PONTO MÉDIO DE CADA CLASSE
+<details>
+<summary>Passo 01 - Cálculo do ponto médio </summary>
 
 &emsp;&emsp;&emsp;O ponto médio é o valor que **representará** todos os dados daquela classe. É a melhor estimativa que temos para cada valor individual, dado que só conhecemos o intervalo.
 
-$$\bar{x}_i = \frac{L_i + L_s}{2}$$
+$$
+\bar{x}_i = \frac{L_i + L_s}{2}
+$$
 
 &emsp;&emsp;&emsp;Onde $L_i$ é o limite inferior e $L_s$ é o limite superior da classe.
 
@@ -311,12 +314,16 @@ $$\bar{x}_i = \frac{L_i + L_s}{2}$$
 | 5 | [50; 60[ | (50 + 60) / 2 = **55** |
 
 &emsp;&emsp;&emsp;Agora temos um valor representativo para cada classe. Em vez de "3 dados entre 10 e 20", passamos a ter "3 dados iguais a 15". É uma simplificação, mas é a melhor que podemos fazer com a informação disponível.
+</details>
 
-## 3. PASSO 2 — MULTIPLICAR O PONTO MÉDIO PELA FREQUÊNCIA
+<details>
+<summary>Passo 2 - Multiplicar o ponto Médio pela Frequência</summary>
 
 &emsp;&emsp;&emsp;Cada classe contribui com uma "soma aproximada": o ponto médio repetido tantas vezes quantas forem a sua frequência.
 
-$$x_i \cdot f_i$$
+$$
+x_i \cdot f_i
+$$
 
 | Classe | Intervalo | $x_i$ | $f_i$ | $x_i \cdot f_i$ |
 |--------|-----------|-------|-------|-----------------|
@@ -328,20 +335,24 @@ $$x_i \cdot f_i$$
 | **Total** | | | **20** | **660** |
 
 &emsp;&emsp;&emsp;A soma total é **660**. Este é o valor que usaríamos para calcular a média aproximada.
+</details>
 
-
-## 4. PASSO 3 — CALCULAR A MÉDIA APROXIMADA
+<details>
+<summary>Passo 3 - Cálculo da Média aproximada</summary>
 
 &emsp;&emsp;&emsp;A média aproximada é calculada dividindo a soma total pelo número de dados.
 
-$$\bar{x} \approx \frac{\sum x_i \cdot f_i}{n} = \frac{660}{20} = \boxed{33}$$
+$$
+\bar{x} \approx \frac{\sum x_i \cdot f_i}{n} = \frac{660}{20} = \boxed{33}
+$$
 
 &emsp;&emsp;&emsp;A média aproximada dos dados originais é **33**. Esse é o valor que melhor representa o conjunto, dado que só temos a tabela.
 
 > **🔬 Observação:** A média real dos dados originais pode ser ligeiramente diferente de 33 — mas, na ausência dos valores individuais, 33 é a nossa melhor estimativa.
+</details>
 
-
-## 5. PASSO 4 — RECONSTRUIR A LISTA DE DADOS (APROXIMADA)
+<details>
+<summary>Passo 4 - Reconstruir a lista de Dados</summary>
 
 &emsp;&emsp;&emsp;Agora vem a parte prática: **transformar a tabela de volta em uma lista de 20 valores**. Para isso, repetimos o ponto médio de cada classe tantas vezes quantas forem a sua frequência.
 
@@ -355,15 +366,20 @@ $$\bar{x} \approx \frac{\sum x_i \cdot f_i}{n} = \frac{660}{20} = \boxed{33}$$
 
 **Lista reconstruída (20 valores):**
 
-$$15, 15, 15, 25, 25, 25, 25, 25, 35, 35, 35, 35, 35, 35, 35, 45, 45, 45, 55, 55$$
+$$
+15, 15, 15, 25, 25, 25, 25, 25, 35, 35, 35, 35, 35, 35, 35, 45, 45, 45, 55, 55
+$$
 
 > **📌 O que acabamos de fazer:** Substituímos cada classe pelo seu ponto médio, repetido $f_i$ vezes. O resultado **não são os dados originais** — é uma **reconstrução aproximada** deles. Mas, para efeitos de cálculo estatístico, essa lista se comporta como se fosse o conjunto original.
+</details>
 
 ## 6. VERIFICAÇÃO — A MÉDIA DA LISTA RECONSTRUÍDA
 
 &emsp;&emsp;&emsp;Vamos verificar se a lista reconstruída produz a mesma média que calculamos no Passo 3.
 
-$$\bar{x} = \frac{15 \cdot 3 + 25 \cdot 5 + 35 \cdot 7 + 45 \cdot 3 + 55 \cdot 2}{20} = \frac{660}{20} = 33$$
+$$
+\bar{x} = \frac{15 \cdot 3 + 25 \cdot 5 + 35 \cdot 7 + 45 \cdot 3 + 55 \cdot 2}{20} = \frac{660}{20} = 33
+$$
 
 &emsp;&emsp;&emsp;A média da lista reconstruída é **exatamente a mesma** que calculamos no Passo 3 — o que confirma que os dois caminhos são equivalentes. A lista reconstruída é uma forma de "materializar" os dados que a tabela representa.
 
