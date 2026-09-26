@@ -1,16 +1,14 @@
-# Curtose
+# <center>Curtose</center>
 
-## 1. INTRODUÇÃO
+## Introdução
 
-&emsp;&emsp;&emsp;Na aula anterior estudámos a **assimetria** — a medida que nos diz **para que lado** a distribuição está "puxada". Mas há uma outra característica igualmente importante que nenhuma medida estudada até agora responde: **"Qual é o 'pico' da distribuição? As caudas são pesadas ou leves?"**<br>
+&emsp;&emsp;&emsp;A assimetria responde à pergunta "para que lado a distribuição está puxada?". Mas nenhuma medida estudada até agora responde a uma pergunta igualmente importante: "Qual é o 'pico' da distribuição? As caudas são pesadas ou leves?" Considera o seguinte problema prático.
 
-&emsp;&emsp;&emsp;Considera o seguinte problema prático:
+**Três distribuições com a mesma média (0) e o mesmo desvio-padrão (1):**
 
-> **Três distribuições com a mesma média (0) e o mesmo desvio-padrão (1):**
->
-> - **Distribuição A:** Mesocúrtica (normal) — pico moderado, caudas moderadas
-> - **Distribuição B:** Leptocúrtica — pico alto, caudas leves
-> - **Distribuição C:** Platicúrtica — pico baixo, caudas pesadas
+- **Distribuição A:** Mesocúrtica (normal) — pico moderado, caudas moderadas
+- **Distribuição B:** Leptocúrtica — pico alto, caudas leves
+- **Distribuição C:** Platicúrtica — pico baixo, caudas pesadas
 
 **Vamos calcular as medidas que já conhecemos:**
 
@@ -25,7 +23,7 @@
 - A **Distribuição B** (leptocúrtica) tem um **pico alto** e **caudas leves** — os dados concentram-se muito no centro.
 - A **Distribuição C** (platicúrtica) tem um **pico baixo** e **caudas pesadas** — os dados estão mais distribuídos pelos extremos.
 
-&emsp;&emsp;&emsp;Precisamos de uma medida que quantifique o **grau de "pico"** e o **peso das caudas** da distribuição.
+&emsp;&emsp;&emsp;Precisamos, por isso, de uma medida que quantifique o **grau de "pico"** e o **peso das caudas** da distribuição — algo que a média, o desvio-padrão e a assimetria, sozinhos, não conseguem captar.
 
 <details>
 <summary>📊 Ver a família das medidas de forma</summary>
@@ -51,80 +49,11 @@
 
 > **💡 Dica de Ouro:** A assimetria diz-te para que lado a distribuição está "puxada". A curtose diz-te quão "pontiaguda" ou "achatada" é a distribuição — e quão pesadas são as caudas.
 
-## 2. O QUE É A CURTOSE?
+## Tipos de curtose
 
-&emsp;&emsp;&emsp;A **curtose** (ou *kurtosis*) mede o **grau de "pico"** (concentração central) e o **peso das caudas** de uma distribuição. Compara a forma da distribuição com a **distribuição normal** (que é a referência).
+&emsp;&emsp;&emsp;A **curtose** (ou *kurtosis*) mede o **grau de "pico"** (concentração central) e o **peso das caudas** de uma distribuição. Compara a forma da distribuição com a **distribuição normal**, que serve de referência. Existem três tipos de curtose que importa conhecer: a mesocúrtica, a leptocúrtica e a platicúrtica. Cada uma descreve uma forma diferente de distribuição, e a sua identificação depende da comparação com a distribuição normal.<br><br>
 
-**📌 Tipos de curtose:**
-
-| Tipo | Descrição | Comparação com a Normal |
-|---------|---------|---------|
-| **Mesocúrtica** | Pico moderado, caudas moderadas | Igual à normal |
-| **Leptocúrtica** | Pico alto, caudas leves | Mais "pontiaguda" que a normal |
-| **Platicúrtica** | Pico baixo, caudas pesadas | Mais "achatada" que a normal |
-
-**📌 Visualização em HTML+CSS:**
-
-<div style="background: #0a0f1e; padding: 2rem 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); font-family: 'Segoe UI', system-ui, sans-serif; max-width: 700px; margin: 1.5rem auto; text-align: center;">
-
-  <div style="color: #fbbf24; font-size: 1rem; font-weight: 700; margin-bottom: 1.2rem; letter-spacing: 0.5px;">
-    📊 TIPOS DE CURTOSE
-  </div>
-
-  <!-- LEPTOCÚRTICA -->
-  <div style="background: #1a1a2e; padding: 1rem; border-radius: 12px; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.05);">
-    <div style="color: #fca5a5; font-weight: 600; font-size: 0.8rem; margin-bottom: 0.6rem;">LEPTOCÚRTICA (K &gt; 0)</div>
-    <div style="display: flex; align-items: flex-end; justify-content: center; gap: 3px; height: 80px;">
-      <div style="width: 8px; height: 5px; background: #2d1b69; border-radius: 2px;"></div>
-      <div style="width: 8px; height: 10px; background: #2d1b69; border-radius: 2px;"></div>
-      <div style="width: 8px; height: 25px; background: #5c1a1a; border-radius: 2px;"></div>
-      <div style="width: 8px; height: 50px; background: #5c1a1a; border-radius: 2px;"></div>
-      <div style="width: 8px; height: 80px; background: #a78bfa; border-radius: 2px;"></div>
-      <div style="width: 8px; height: 50px; background: #5c1a1a; border-radius: 2px;"></div>
-      <div style="width: 8px; height: 25px; background: #5c1a1a; border-radius: 2px;"></div>
-      <div style="width: 8px; height: 10px; background: #2d1b69; border-radius: 2px;"></div>
-      <div style="width: 8px; height: 5px; background: #2d1b69; border-radius: 2px;"></div>
-    </div>
-    <div style="color: #6b7280; font-size: 0.6rem; margin-top: 0.5rem;">Pico alto · Caudas leves</div>
-  </div>
-
-  <!-- MESOCÚRTICA -->
-  <div style="background: #1a1a2e; padding: 1rem; border-radius: 12px; margin-bottom: 1rem; border: 1px solid rgba(255,255,255,0.05);">
-    <div style="color: #6ee7b7; font-weight: 600; font-size: 0.8rem; margin-bottom: 0.6rem;">MESOCÚRTICA (K ≈ 0) — Normal</div>
-    <div style="display: flex; align-items: flex-end; justify-content: center; gap: 3px; height: 80px;">
-      <div style="width: 8px; height: 8px; background: #1a3a5c; border-radius: 2px;"></div>
-      <div style="width: 8px; height: 20px; background: #1a3a5c; border-radius: 2px;"></div>
-      <div style="width: 8px; height: 45px; background: #2d1b69; border-radius: 2px;"></div>
-      <div style="width: 8px; height: 65px; background: #2d1b69; border-radius: 2px;"></div>
-      <div style="width: 8px; height: 80px; background: #a78bfa; border-radius: 2px;"></div>
-      <div style="width: 8px; height: 65px; background: #2d1b69; border-radius: 2px;"></div>
-      <div style="width: 8px; height: 45px; background: #2d1b69; border-radius: 2px;"></div>
-      <div style="width: 8px; height: 20px; background: #1a3a5c; border-radius: 2px;"></div>
-      <div style="width: 8px; height: 8px; background: #1a3a5c; border-radius: 2px;"></div>
-    </div>
-    <div style="color: #6b7280; font-size: 0.6rem; margin-top: 0.5rem;">Pico moderado · Caudas moderadas</div>
-  </div>
-
-  <!-- PLATICÚRTICA -->
-  <div style="background: #1a1a2e; padding: 1rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.05);">
-    <div style="color: #fca5a5; font-weight: 600; font-size: 0.8rem; margin-bottom: 0.6rem;">PLATICÚRTICA (K &lt; 0)</div>
-    <div style="display: flex; align-items: flex-end; justify-content: center; gap: 3px; height: 80px;">
-      <div style="width: 8px; height: 20px; background: #5c1a1a; border-radius: 2px;"></div>
-      <div style="width: 8px; height: 35px; background: #5c1a1a; border-radius: 2px;"></div>
-      <div style="width: 8px; height: 50px; background: #2d1b69; border-radius: 2px;"></div>
-      <div style="width: 8px; height: 60px; background: #2d1b69; border-radius: 2px;"></div>
-      <div style="width: 8px; height: 65px; background: #a78bfa; border-radius: 2px;"></div>
-      <div style="width: 8px; height: 60px; background: #2d1b69; border-radius: 2px;"></div>
-      <div style="width: 8px; height: 50px; background: #2d1b69; border-radius: 2px;"></div>
-      <div style="width: 8px; height: 35px; background: #5c1a1a; border-radius: 2px;"></div>
-      <div style="width: 8px; height: 20px; background: #5c1a1a; border-radius: 2px;"></div>
-    </div>
-    <div style="color: #6b7280; font-size: 0.6rem; margin-top: 0.5rem;">Pico baixo · Caudas pesadas</div>
-  </div>
-
-</div>
-
-**📌 Coeficiente de Curtose de Pearson:**
+**📐Fórmula do Coeficiente de Curtose de Pearson:**
 
 $$
 \color{blue} K = \frac{\sum (x_i - \bar{x})^4}{n \cdot s^4} - 3
@@ -134,19 +63,9 @@ Onde:
 - **xi** = cada valor
 - **x̄** = média
 - **s** = desvio-padrão
-- **n** = número de dados
+- **n** = número de dados<br><br>
 
-**📌 Interpretação:**
-
-| K | Tipo | Significado |
-|---------|---------|---------|
-| K = 0 | **Mesocúrtica** | Igual à normal |
-| K > 0 | **Leptocúrtica** | Pico alto, caudas leves |
-| K < 0 | **Platicúrtica** | Pico baixo, caudas pesadas |
-
-> **💡 Nota:** O "-3" na fórmula serve para **normalizar** o coeficiente. Na distribuição normal, o quociente é 3, então K = 0. Este ajuste é chamado de **excesso de curtose**.
-
-**📌 Curtose de Moors (alternativa robusta):**
+**📐Fórmula do Curtose de Moors (alternativa robusta):**
 
 $$
 \color{blue} K_M = \frac{(E_7 - E_5) + (E_3 - E_1)}{E_6 - E_2}
@@ -156,91 +75,447 @@ Onde E1, ..., E7 são os **octis** (dividem os dados em 8 partes iguais).
 
 > **💡 Vantagem:** A curtose de Moors usa octis, que são **robustos a outliers**.
 
-## 3. PASSO A PASSO
+**📌 Interpretação:**
 
-### 3.1 Curtose para Dados Brutos (Não Agrupados)
+- K = 0 --> **Mesocúrtica** (Igual à normal) 
+- K > 0 --> **Leptocúrtica** (Pico alto, caudas leves)
+- K < 0 --> **Platicúrtica** (Pico baixo, caudas pesadas)
+
+> **💡 Nota:** O "-3" na fórmula serve para **normalizar** o coeficiente. Na distribuição normal, o quociente é 3, então K = 0. Este ajuste é chamado de **excesso de curtose**.
+
+
+### 1. Curtose para Dados Brutos (Não Agrupados)
 
 **📐 Método**
 
-| Passo | Descrição |
-|---------|----------|
-| **1** | Calcular a média x̄ |
-| **2** | Calcular o desvio-padrão s |
-| **3** | Para cada valor, calcular (xi − x̄)⁴ |
-| **4** | Somar todos os valores: Σ(xi − x̄)⁴ |
-| **5** | Dividir por n · s⁴ |
-| **6** | Subtrair 3: <code>K = (Σ(xi − x̄)⁴ / (n · s⁴)) − 3</code> |
+- **1** --> Calcular a média x̄
+- **2** --> Calcular o desvio-padrão s
+- **3** --> Para cada valor, calcular <code>(xi − x̄)⁴</code>
+- **4** --> Somar todos os valores: <code>Σ(xi − x̄)⁴</code>
+- **5** --> Dividir por <code>n · s⁴</code>
+- **6** --> Subtrair 3: <code>K = (Σ(xi − x̄)⁴ / (n · s⁴)) − 3</code><br><br>
 
-<center><details>
-<summary>**📌 Exemplo Prático 1 — Distribuição Mesocúrtica (Normal)**</summary>
 
-**Problema:** Calcular a curtose dos dados: `2, 4, 4, 4, 5, 5, 5, 5, 5, 6, 6, 6, 7, 7, 8` (aproximação de uma normal)
+&emsp;&emsp;&emsp;A **mesocúrtica** é o caso de referência — a distribuição que serve de padrão para todas as outras. O exemplo mais clássico é a **distribuição normal**, também conhecida como curva de Gauss ou curva em sino. Imagine a altura de todos os homens adultos de um país: a maioria concentra-se em torno da média (por exemplo, 1,75 m), e há cada vez menos pessoas à medida que nos afastamos desse valor — tanto para baixo (1,60 m) como para cima (1,90 m). A forma resultante é um **sino equilibrado**: pico moderado, caudas que descaem suavemente para os dois lados.
+
+&emsp;&emsp;&emsp;O que distingue a mesocúrtica das outras curtoses é precisamente o **equilíbrio**. A leptocúrtica tem um pico mais alto e caudas mais leves — os dados estão mais concentrados no centro. A platicúrtica tem um pico mais baixo e caudas mais pesadas — os dados estão mais dispersos pelos extremos. A mesocúrtica fica **no meio**: não é nem demasiado pontiaguda nem demasiado achatada.<br><br>
+
+
+**📌 Exemplos típicos de mesocúrtica:**
+ - Alturas de uma população homogénea
+ - Erros de medição em instrumentos calibrados
+ - Notas de uma turma com desempenho médio consistente
+ - Pesos de recém-nascidos numa mesma semana de gestação
+
+<details>
+<summary>📌 Exemplo da Curtose para Dados Não Agrupados (Mesocúrtica)</summary>
+
+**Problema:** Calcular a curtose dos dados: `1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11`
 
 **Passo 1 — Média:**
-x̄ = (2+4+4+4+5+5+5+5+5+6+6+6+7+7+8) / 15 = 80/15 ≈ 5,33
+$$ \bar{x} = \frac{(1+2+3+4+5+6+7+8+9+10+11)}{11} = \frac{66}{11} = 6 $$
 
-**Passo 2 — Desvio-padrão:**
-s ≈ 1,54
+**Passo 2 — Desvio-padrão (amostral):**
 
-**Passo 3 — Tabela de cálculo (parcial):**
-
-| xi | xi − 5,33 | (xi − 5,33)⁴ |
+| xi | xi − 6 | (xi − 6)² |
 |---------|---------|---------|
-| 2 | −3,33 | 123,45 |
-| 4 | −1,33 | 3,13 |
-| 4 | −1,33 | 3,13 |
-| 4 | −1,33 | 3,13 |
-| 5 | −0,33 | 0,01 |
-| 5 | −0,33 | 0,01 |
-| 5 | −0,33 | 0,01 |
-| 5 | −0,33 | 0,01 |
-| 5 | −0,33 | 0,01 |
-| 6 | 0,67 | 0,20 |
-| 6 | 0,67 | 0,20 |
-| 6 | 0,67 | 0,20 |
-| 7 | 1,67 | 7,78 |
-| 7 | 1,67 | 7,78 |
-| 8 | 2,67 | 50,79 |
-| **Total** | | **200,05** |
+| 1 | −5 | 25 |
+| 2 | −4 | 16 |
+| 3 | −3 | 9 |
+| 4 | −2 | 4 |
+| 5 | −1 | 1 |
+| 6 | 0 | 0 |
+| 7 | 1 | 1 |
+| 8 | 2 | 4 |
+| 9 | 3 | 9 |
+| 10 | 4 | 16 |
+| 11 | 5 | 25 |
+| **Total** | - | **110** |
 
-**Passo 4 — Cálculo:**
-200,05 / (15 × 1,54⁴) = 200,05 / (15 × 5,62) = 200,05 / 84,3 ≈ 2,37
+$$ s^2 = \frac{110}{10} = 11 \qquad s = \sqrt{11} \approx 3{,}32 $$
 
-K = 2,37 − 3 = **−0,63**
+**Passo 3 — Tabela de cálculo (desvios à quarta potência):**
 
-✅ A curtose é **−0,63** — **platicúrtica** (ligeiramente).
+| xi | xi − 6 | (xi − 6)⁴ |
+|---------|---------|---------|
+| 1 | −5 | 625 |
+| 2 | −4 | 256 |
+| 3 | −3 | 81 |
+| 4 | −2 | 16 |
+| 5 | −1 | 1 |
+| 6 | 0 | 0 |
+| 7 | 1 | 1 |
+| 8 | 2 | 16 |
+| 9 | 3 | 81 |
+| 10 | 4 | 256 |
+| 11 | 5 | 625 |
+| **Total** | - | **1958** |
 
-> **🔍 Interpretação:** O coeficiente de curtose é negativo (−0,63), indicando que a distribuição é **platicúrtica** — tem um pico mais baixo e caudas mais pesadas que a distribuição normal. Isto significa que há mais dados nos extremos do que seria esperado numa normal.
-</details></center>
+**Passo 4 — Cálculo da curtose:**
 
-<center><details>
-<summary>**📌 Exemplo Prático 2 — Distribuição Leptocúrtica**</summary>
+$$
+K = \frac{\sum (x_i - \bar{x})^4}{n \times s^4} - 3
+$$
 
-**Problema:** Calcular a curtose dos dados: `4, 4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6, 6, 7` (pico alto)
+**Parte A — Numerador:**
+$$ \sum (x_i - \bar{x})^4 = 1958 $$
 
-**Passo 1 — Média:** x̄ = 5
+**Parte B — Denominador:**
+$$ n \times s^4 = 11 \times (3{,}32)^4 = 11 \times 121{,}55 = 1337{,}05 $$
 
-**Passo 2 — Desvio-padrão:** s ≈ 0,76
+**Parte C — Divisão:**
+$$ \frac{1958}{1337{,}05} \approx 1{,}464 $$
 
-**Passo 3 — Cálculo:** K ≈ **1,5**
+**Parte D — Subtrair 3:**
+$$ K = 1{,}464 - 3 = -1{,}536 $$
 
-✅ A curtose é **1,5** — **leptocúrtica**.
+❌ **Resultado: −1,536 — Platicúrtica** (ainda não é mesocúrtica).
 
-> **🔍 Interpretação:** O coeficiente de curtose é positivo (1,5), indicando que a distribuição é **leptocúrtica** — tem um pico mais alto e caudas mais leves que a normal. Isto significa que os dados estão mais concentrados no centro e há menos valores extremos.
-</details></center>
+> **🔍 Nota:** Uma progressão aritmética perfeitamente uniforme tem caudas pesadas e pico baixo — é platicúrtica. Para obter mesocúrtica, os dados precisam de se concentrar mais no centro, seguindo aproximadamente uma distribuição normal. Com poucos dados, é difícil obter K ≈ 0.
 
-### 3.2 Curtose para Dados Agrupados por Lista
+<div style="background:#0a0f1e;padding:2rem 1.5rem;border-radius:16px;border:1px solid rgba(255,255,255,0.08);font-family:'Segoe UI',system-ui,sans-serif;max-width:700px;margin:1.5rem auto;text-align:center;">
+
+  <div style="color:#fbbf24;font-size:1rem;font-weight:700;margin-bottom:1.2rem;letter-spacing:0.5px;">
+    📊 CURTOSE — PLATICÚRTICA (K = −1,54)
+  </div>
+
+  <div style="display:flex;justify-content:center;gap:1.5rem;margin-bottom:1rem;font-size:0.7rem;">
+    <span style="color:#4a9eff;">▬ Exemplo (K = −1,54)</span>
+    <span style="color:#6b7280;">▬ Normal (K = 0)</span>
+  </div>
+
+  <div style="position:relative;height:120px;display:flex;align-items:flex-end;justify-content:center;gap:4px;padding:0 1rem;">
+
+    <div style="width:24px;height:8px;background:#4a9eff;border-radius:3px 3px 0 0;opacity:0.9;"></div>
+    <div style="width:24px;height:14px;background:#4a9eff;border-radius:3px 3px 0 0;opacity:0.9;"></div>
+    <div style="width:24px;height:24px;background:#4a9eff;border-radius:3px 3px 0 0;opacity:0.9;"></div>
+    <div style="width:24px;height:38px;background:#4a9eff;border-radius:3px 3px 0 0;opacity:0.9;"></div>
+    <div style="width:24px;height:58px;background:#4a9eff;border-radius:3px 3px 0 0;opacity:0.9;"></div>
+    <div style="width:24px;height:72px;background:#4a9eff;border-radius:3px 3px 0 0;opacity:0.9;"></div>
+    <div style="width:24px;height:58px;background:#4a9eff;border-radius:3px 3px 0 0;opacity:0.9;"></div>
+    <div style="width:24px;height:38px;background:#4a9eff;border-radius:3px 3px 0 0;opacity:0.9;"></div>
+    <div style="width:24px;height:24px;background:#4a9eff;border-radius:3px 3px 0 0;opacity:0.9;"></div>
+    <div style="width:24px;height:14px;background:#4a9eff;border-radius:3px 3px 0 0;opacity:0.9;"></div>
+    <div style="width:24px;height:8px;background:#4a9eff;border-radius:3px 3px 0 0;opacity:0.9;"></div>
+
+  </div>
+
+  <div style="position:relative;margin-top:-95px;height:95px;display:flex;align-items:flex-end;justify-content:center;gap:4px;padding:0 1rem;pointer-events:none;">
+    <div style="width:24px;height:5px;border-bottom:2px solid #6b7280;opacity:0.5;"></div>
+    <div style="width:24px;height:15px;border-bottom:2px solid #6b7280;opacity:0.5;"></div>
+    <div style="width:24px;height:30px;border-bottom:2px solid #6b7280;opacity:0.5;"></div>
+    <div style="width:24px;height:55px;border-bottom:2px solid #6b7280;opacity:0.5;"></div>
+    <div style="width:24px;height:80px;border-bottom:2px solid #6b7280;opacity:0.5;"></div>
+    <div style="width:24px;height:95px;border-bottom:2px solid #6b7280;opacity:0.5;"></div>
+    <div style="width:24px;height:80px;border-bottom:2px solid #6b7280;opacity:0.5;"></div>
+    <div style="width:24px;height:55px;border-bottom:2px solid #6b7280;opacity:0.5;"></div>
+    <div style="width:24px;height:30px;border-bottom:2px solid #6b7280;opacity:0.5;"></div>
+    <div style="width:24px;height:15px;border-bottom:2px solid #6b7280;opacity:0.5;"></div>
+    <div style="width:24px;height:5px;border-bottom:2px solid #6b7280;opacity:0.5;"></div>
+  </div>
+
+  <div style="display:flex;justify-content:center;gap:4px;margin-top:0.5rem;padding:0 1rem;">
+    <span style="width:24px;color:#93c5fd;font-size:0.55rem;">1</span>
+    <span style="width:24px;color:#93c5fd;font-size:0.55rem;">2</span>
+    <span style="width:24px;color:#93c5fd;font-size:0.55rem;">3</span>
+    <span style="width:24px;color:#93c5fd;font-size:0.55rem;">4</span>
+    <span style="width:24px;color:#93c5fd;font-size:0.55rem;">5</span>
+    <span style="width:24px;color:#93c5fd;font-size:0.55rem;">6</span>
+    <span style="width:24px;color:#93c5fd;font-size:0.55rem;">7</span>
+    <span style="width:24px;color:#93c5fd;font-size:0.55rem;">8</span>
+    <span style="width:24px;color:#93c5fd;font-size:0.55rem;">9</span>
+    <span style="width:24px;color:#93c5fd;font-size:0.55rem;">10</span>
+    <span style="width:24px;color:#93c5fd;font-size:0.55rem;">11</span>
+  </div>
+
+  <div style="margin-top:1rem;font-size:0.7rem;">
+    <div style="color:#4a9eff;font-weight:600;">K = −1,54 → Platicúrtica</div>
+    <div style="color:#6b7280;font-size:0.6rem;margin-top:0.3rem;">Pico mais baixo e caudas mais pesadas que a normal</div>
+  </div>
+
+</div>
+
+</details>
+
+&emsp;&emsp;&emsp;A **leptocúrtica** é o caso em que a distribuição tem um **pico alto** e **caudas leves** — é mais "pontiaguda" que a normal. Imagine uma turma onde quase todos os alunos tiraram exatamente a mesma nota (por exemplo, 14 valores), e apenas dois ou três tiveram notas ligeiramente diferentes. A distribuição resultante tem um pico muito alto no centro e caudas que descaem rapidamente para os lados. Os dados estão **muito concentrados** em torno da média, e os valores extremos são raros.
+
+&emsp;&emsp;&emsp;O que distingue a leptocúrtica das outras curtoses é precisamente esta **concentração central**. A mesocúrtica tem um pico moderado e caudas moderadas — como a normal. A platicúrtica tem um pico baixo e caudas pesadas — os dados estão mais dispersos pelos extremos. A leptocúrtica fica **acima da normal**: tem um pico mais alto e caudas mais leves.<br><br>
+
+
+**📌 Exemplos típicos de leptocúrtica:**
+ - Notas de uma turma com desempenho muito uniforme
+ - Tempos de entrega de uma empresa com processos muito padronizados
+ - Erros de medição em instrumentos de alta precisão
+ - Retornos de investimentos de baixo risco
+
+
+<details>
+<summary>📌 Exemplo da Curtose para Dados Não Agrupados (Leptocúrtica)</summary>
+
+**Problema:** Calcular a curtose dos dados: `4, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 5, 6`
+
+**Passo 1 — Média:**
+$$ \bar{x} = \frac{(4+5+5+5+5+5+5+5+5+5+5+5+5+5+6)}{15} = \frac{75}{15} = 5 $$
+
+**Passo 2 — Desvio-padrão (amostral):**
+
+| xi | xi − 5 | (xi − 5)² |
+|---------|---------|---------|
+| 4 | −1 | 1 |
+| 5 | 0 | 0 |
+| 5 | 0 | 0 |
+| 5 | 0 | 0 |
+| 5 | 0 | 0 |
+| 5 | 0 | 0 |
+| 5 | 0 | 0 |
+| 5 | 0 | 0 |
+| 5 | 0 | 0 |
+| 5 | 0 | 0 |
+| 5 | 0 | 0 |
+| 5 | 0 | 0 |
+| 5 | 0 | 0 |
+| 5 | 0 | 0 |
+| 6 | 1 | 1 |
+| **Total** | - | **2** |
+
+$$ s^2 = \frac{2}{14} \approx 0{,}143 \qquad s = \sqrt{0{,}143} \approx 0{,}378 $$
+
+**Passo 3 — Tabela de cálculo (desvios à quarta potência):**
+
+| xi | xi − 5 | (xi − 5)⁴ |
+|---------|---------|---------|
+| 4 | −1 | 1 |
+| 5 | 0 | 0 |
+| 5 | 0 | 0 |
+| 5 | 0 | 0 |
+| 5 | 0 | 0 |
+| 5 | 0 | 0 |
+| 5 | 0 | 0 |
+| 5 | 0 | 0 |
+| 5 | 0 | 0 |
+| 5 | 0 | 0 |
+| 5 | 0 | 0 |
+| 5 | 0 | 0 |
+| 5 | 0 | 0 |
+| 5 | 0 | 0 |
+| 6 | 1 | 1 |
+| **Total** | - | **2** |
+
+**Passo 4 — Cálculo da curtose:**
+
+$$
+K = \frac{\sum (x_i - \bar{x})^4}{n \times s^4} - 3
+$$
+
+**Parte A — Numerador:**
+$$ \sum (x_i - \bar{x})^4 = 2 $$
+
+**Parte B — Denominador:**
+$$ n \times s^4 = 15 \times (0{,}378)^4 = 15 \times 0{,}0204 = 0{,}306 $$
+
+**Parte C — Divisão:**
+$$ \frac{2}{0{,}306} \approx 6{,}54 $$
+
+**Parte D — Subtrair 3:**
+$$ K = 6{,}54 - 3 = 3{,}54 $$
+
+✅ A curtose é **+3,54** — **leptocúrtica** (pico alto, caudas leves).
+
+> **🔍 Interpretação:** O valor positivo e elevado indica que a distribuição tem um pico muito alto e caudas leves. Quase todos os valores estão concentrados no centro (5), com apenas dois valores extremos (4 e 6).
+
+<div style="background:#0a0f1e;padding:2rem 1.5rem;border-radius:16px;border:1px solid rgba(255,255,255,0.08);font-family:'Segoe UI',system-ui,sans-serif;max-width:700px;margin:1.5rem auto;text-align:center;">
+
+  <div style="color:#fbbf24;font-size:1rem;font-weight:700;margin-bottom:1.2rem;letter-spacing:0.5px;">
+    📊 CURTOSE — LEPTOCÚRTICA (K = +3,54)
+  </div>
+
+  <div style="display:flex;justify-content:center;gap:1.5rem;margin-bottom:1rem;font-size:0.7rem;">
+    <span style="color:#4caf50;">▬ Exemplo (K = +3,54)</span>
+    <span style="color:#6b7280;">▬ Normal (K = 0)</span>
+  </div>
+
+  <div style="position:relative;height:120px;display:flex;align-items:flex-end;justify-content:center;gap:6px;padding:0 1rem;">
+
+    <div style="width:30px;height:10px;background:#4caf50;border-radius:3px 3px 0 0;opacity:0.9;"></div>
+    <div style="width:30px;height:20px;background:#4caf50;border-radius:3px 3px 0 0;opacity:0.9;"></div>
+    <div style="width:30px;height:35px;background:#4caf50;border-radius:3px 3px 0 0;opacity:0.9;"></div>
+    <div style="width:30px;height:80px;background:#4caf50;border-radius:3px 3px 0 0;opacity:0.9;"></div>
+    <div style="width:30px;height:120px;background:#4caf50;border-radius:3px 3px 0 0;opacity:0.9;"></div>
+    <div style="width:30px;height:80px;background:#4caf50;border-radius:3px 3px 0 0;opacity:0.9;"></div>
+    <div style="width:30px;height:35px;background:#4caf50;border-radius:3px 3px 0 0;opacity:0.9;"></div>
+    <div style="width:30px;height:20px;background:#4caf50;border-radius:3px 3px 0 0;opacity:0.9;"></div>
+    <div style="width:30px;height:10px;background:#4caf50;border-radius:3px 3px 0 0;opacity:0.9;"></div>
+
+  </div>
+
+  <div style="position:relative;margin-top:-95px;height:95px;display:flex;align-items:flex-end;justify-content:center;gap:6px;padding:0 1rem;pointer-events:none;">
+    <div style="width:30px;height:5px;border-bottom:2px solid #6b7280;opacity:0.5;"></div>
+    <div style="width:30px;height:25px;border-bottom:2px solid #6b7280;opacity:0.5;"></div>
+    <div style="width:30px;height:55px;border-bottom:2px solid #6b7280;opacity:0.5;"></div>
+    <div style="width:30px;height:85px;border-bottom:2px solid #6b7280;opacity:0.5;"></div>
+    <div style="width:30px;height:85px;border-bottom:2px solid #6b7280;opacity:0.5;"></div>
+    <div style="width:30px;height:55px;border-bottom:2px solid #6b7280;opacity:0.5;"></div>
+    <div style="width:30px;height:25px;border-bottom:2px solid #6b7280;opacity:0.5;"></div>
+    <div style="width:30px;height:5px;border-bottom:2px solid #6b7280;opacity:0.5;"></div>
+    <div style="width:30px;height:5px;border-bottom:2px solid #6b7280;opacity:0.5;"></div>
+  </div>
+
+  <div style="display:flex;justify-content:center;gap:6px;margin-top:0.5rem;padding:0 1rem;">
+    <span style="width:30px;color:#93c5fd;font-size:0.6rem;">4</span>
+    <span style="width:30px;color:#93c5fd;font-size:0.6rem;">5</span>
+    <span style="width:30px;color:#93c5fd;font-size:0.6rem;">5</span>
+    <span style="width:30px;color:#93c5fd;font-size:0.6rem;">5</span>
+    <span style="width:30px;color:#93c5fd;font-size:0.6rem;">5</span>
+    <span style="width:30px;color:#93c5fd;font-size:0.6rem;">5</span>
+    <span style="width:30px;color:#93c5fd;font-size:0.6rem;">5</span>
+    <span style="width:30px;color:#93c5fd;font-size:0.6rem;">5</span>
+    <span style="width:30px;color:#93c5fd;font-size:0.6rem;">6</span>
+  </div>
+
+  <div style="margin-top:1rem;font-size:0.7rem;">
+    <div style="color:#4caf50;font-weight:600;">K = +3,54 → Leptocúrtica</div>
+    <div style="color:#6b7280;font-size:0.6rem;margin-top:0.3rem;">Pico mais alto e caudas mais leves que a normal</div>
+  </div>
+
+</div>
+
+</details>
+
+&emsp;&emsp;&emsp;A **platicúrtica** é o caso em que a distribuição tem um **pico baixo** e **caudas pesadas** — é mais "achatada" que a normal. Imagine uma turma onde as notas estão muito espalhadas: alguns alunos tiraram 5, outros 10, outros 15, outros 20, e há poucos alunos com a mesma nota. A distribuição resultante tem um pico baixo no centro e caudas que se estendem lentamente para os lados. Os dados estão **muito dispersos** pelos extremos, e os valores extremos são mais frequentes do que na normal.
+
+&emsp;&emsp;&emsp;O que distingue a platicúrtica das outras curtoses é precisamente esta **dispersão acentuada**. A mesocúrtica tem um pico moderado e caudas moderadas — como a normal. A leptocúrtica tem um pico alto e caudas leves — os dados estão concentrados no centro. A platicúrtica fica **abaixo da normal**: tem um pico mais baixo e caudas mais pesadas.<br><br>
+
+**📌 Exemplos típicos de platicúrtica:**
+ - Notas de uma turma com desempenho muito heterogéneo
+ - Tempos de entrega de uma empresa com processos inconsistentes
+ - Salários de uma empresa com grande disparidade entre o topo e a base
+ - Retornos de investimentos de alto risco
+
+
+<details>
+<summary>📌 Exemplo da Curtose para Dados Não Agrupados (Platicúrtica)</summary>
+
+**Problema:** Calcular a curtose dos dados: `3, 4, 5, 5, 5, 6, 7`
+
+**Passo 1 — Média:**
+$$ \bar{x} = \frac{(3+4+5+5+5+6+7)}{7} = \frac{35}{7} = 5 $$
+
+**Passo 2 — Desvio-padrão (amostral):**
+
+| xi | xi − 5 | (xi − 5)² |
+|---------|---------|---------|
+| 3 | −2 | 4 |
+| 4 | −1 | 1 |
+| 5 | 0 | 0 |
+| 5 | 0 | 0 |
+| 5 | 0 | 0 |
+| 6 | 1 | 1 |
+| 7 | 2 | 4 |
+| **Total** | - | **10** |
+
+$$ s^2 = \frac{10}{6} \approx 1{,}67 \qquad s = \sqrt{1{,}67} \approx 1{,}29 $$
+
+**Passo 3 — Tabela de cálculo (desvios à quarta potência):**
+
+| xi | xi − 5 | (xi − 5)⁴ |
+|---------|---------|---------|
+| 3 | −2 | 16 |
+| 4 | −1 | 1 |
+| 5 | 0 | 0 |
+| 5 | 0 | 0 |
+| 5 | 0 | 0 |
+| 6 | 1 | 1 |
+| 7 | 2 | 16 |
+| **Total** | - | **34** |
+
+**Passo 4 — Cálculo da curtose:**
+
+$$
+K = \frac{\sum (x_i - \bar{x})^4}{n \times s^4} - 3
+$$
+
+**Parte A — Numerador:**
+$$ \sum (x_i - \bar{x})^4 = 34 $$
+
+**Parte B — Denominador:**
+$$ n \times s^4 = 7 \times (1{,}29)^4 = 7 \times 2{,}77 = 19{,}39 $$
+
+**Parte C — Divisão:**
+$$ \frac{34}{19{,}39} \approx 1{,}75 $$
+
+**Parte D — Subtrair 3:**
+$$ K = 1{,}75 - 3 = -1{,}25 $$
+
+✅ A curtose é **−1,25** — **platicúrtica** (pico baixo, caudas pesadas).
+
+> **🔍 Interpretação:** O valor negativo indica que a distribuição tem um pico mais baixo e caudas mais pesadas que a normal. Os valores extremos (3 e 7) contribuem para este resultado.
+
+<div style="background:#0a0f1e;padding:2rem 1.5rem;border-radius:16px;border:1px solid rgba(255,255,255,0.08);font-family:'Segoe UI',system-ui,sans-serif;max-width:700px;margin:1.5rem auto;text-align:center;">
+
+  <div style="color:#fbbf24;font-size:1rem;font-weight:700;margin-bottom:1.2rem;letter-spacing:0.5px;">
+    📊 CURTOSE — PLATICÚRTICA (K = −1,25)
+  </div>
+
+  <div style="display:flex;justify-content:center;gap:1.5rem;margin-bottom:1rem;font-size:0.7rem;">
+    <span style="color:#4a9eff;">▬ Exemplo (K = −1,25)</span>
+    <span style="color:#6b7280;">▬ Normal (K = 0)</span>
+  </div>
+
+  <div style="position:relative;height:120px;display:flex;align-items:flex-end;justify-content:center;gap:6px;padding:0 1rem;">
+
+    <div style="width:30px;height:15px;background:#4a9eff;border-radius:3px 3px 0 0;opacity:0.9;"></div>
+    <div style="width:30px;height:35px;background:#4a9eff;border-radius:3px 3px 0 0;opacity:0.9;"></div>
+    <div style="width:30px;height:55px;background:#4a9eff;border-radius:3px 3px 0 0;opacity:0.9;"></div>
+    <div style="width:30px;height:65px;background:#4a9eff;border-radius:3px 3px 0 0;opacity:0.9;"></div>
+    <div style="width:30px;height:65px;background:#4a9eff;border-radius:3px 3px 0 0;opacity:0.9;"></div>
+    <div style="width:30px;height:55px;background:#4a9eff;border-radius:3px 3px 0 0;opacity:0.9;"></div>
+    <div style="width:30px;height:35px;background:#4a9eff;border-radius:3px 3px 0 0;opacity:0.9;"></div>
+    <div style="width:30px;height:15px;background:#4a9eff;border-radius:3px 3px 0 0;opacity:0.9;"></div>
+
+  </div>
+
+  <div style="position:relative;margin-top:-95px;height:95px;display:flex;align-items:flex-end;justify-content:center;gap:6px;padding:0 1rem;pointer-events:none;">
+    <div style="width:30px;height:5px;border-bottom:2px solid #6b7280;opacity:0.5;"></div>
+    <div style="width:30px;height:25px;border-bottom:2px solid #6b7280;opacity:0.5;"></div>
+    <div style="width:30px;height:55px;border-bottom:2px solid #6b7280;opacity:0.5;"></div>
+    <div style="width:30px;height:85px;border-bottom:2px solid #6b7280;opacity:0.5;"></div>
+    <div style="width:30px;height:85px;border-bottom:2px solid #6b7280;opacity:0.5;"></div>
+    <div style="width:30px;height:55px;border-bottom:2px solid #6b7280;opacity:0.5;"></div>
+    <div style="width:30px;height:25px;border-bottom:2px solid #6b7280;opacity:0.5;"></div>
+    <div style="width:30px;height:5px;border-bottom:2px solid #6b7280;opacity:0.5;"></div>
+  </div>
+
+  <div style="display:flex;justify-content:center;gap:6px;margin-top:0.5rem;padding:0 1rem;">
+    <span style="width:30px;color:#93c5fd;font-size:0.6rem;">3</span>
+    <span style="width:30px;color:#93c5fd;font-size:0.6rem;">4</span>
+    <span style="width:30px;color:#93c5fd;font-size:0.6rem;">5</span>
+    <span style="width:30px;color:#93c5fd;font-size:0.6rem;">5</span>
+    <span style="width:30px;color:#93c5fd;font-size:0.6rem;">5</span>
+    <span style="width:30px;color:#93c5fd;font-size:0.6rem;">6</span>
+    <span style="width:30px;color:#93c5fd;font-size:0.6rem;">7</span>
+  </div>
+
+  <div style="margin-top:1rem;font-size:0.7rem;">
+    <div style="color:#4a9eff;font-weight:600;">K = −1,25 → Platicúrtica</div>
+    <div style="color:#6b7280;font-size:0.6rem;margin-top:0.3rem;">Pico mais baixo e caudas mais pesadas que a normal</div>
+  </div>
+
+</div>
+
+</details>
+
+### 2. Curtose para Dados Agrupados por Lista
 
 &emsp;&emsp;&emsp;Quando os dados estão numa **tabela de frequências**, usamos as frequências na fórmula.
 
-**📐 Fórmula**
+**📐 Fórmula do Curtose para Dados Agrupados por Lista**
 
 $$
 \color{blue} K = \frac{\sum f_i \cdot (x_i - \bar{x})^4}{n \cdot s^4} - 3
 $$
 
-<center><details>
-<summary>**📌 Exemplo Prático**</summary>
+<details>
+<summary>📌 Exemplo do Curtose para Dados Agrupados por Lista</summary>
 
 **Problema:** Calcular a curtose da tabela:
 
@@ -276,20 +551,21 @@ K = 1,80 − 3 = **−1,20**
 ✅ A curtose é **−1,20** — **platicúrtica**.
 
 > **🔍 Interpretação:** A distribuição é **platicúrtica** — tem um pico baixo e caudas pesadas. Há mais dados nos extremos (4 e 8) do que seria esperado numa normal.
-</details></center>
+</details>
 
-### 3.3 Curtose para Dados Agrupados por Intervalo
+### 3. Curtose para Dados Agrupados por Intervalo
 
 &emsp;&emsp;&emsp;Quando os dados estão em **classes**, usamos os **pontos médios** de cada classe.
 
-**📐 Fórmula**
+**📐 Fórmula do Curtose para Dados Agrupados por Intervalo**
 
 $$
 \color{blue} K = \frac{\sum f_i \cdot (x_i - \bar{x})^4}{n \cdot s^4} - 3
 $$
 
-<center><details>
-<summary>**📌 Exemplo Prático**</summary>
+
+<details>
+<summary>📌 Exemplo do Curtose para Dados Agrupados por Intervalo</summary>
 
 **Problema:** Calcular a curtose das notas agrupadas:
 
@@ -323,58 +599,9 @@ K = 1,61 − 3 = **−1,39**
 ✅ A curtose é **−1,39** — **platicúrtica**.
 
 > **🔍 Interpretação:** A distribuição é **platicúrtica** — tem um pico baixo e caudas pesadas. Há mais dados nos extremos do que seria esperado numa normal.
-</details></center>
+</details>
 
-## 4. VANTAGENS E DESVANTAGENS
-
-| Medida | Vantagens | Desvantagens |
-|---------|----------|----------|
-| **Pearson** | ✅ Usa todos os dados; informação completa | ❌ Sensível a outliers (eleva à quarta potência) |
-| **Moors** | ✅ Robusto a outliers (usa octis) | ❌ Mais complexo de calcular |
-
-## 5. INTERPRETAÇÃO DA CURTOSE
-
-> **💡 A curtose diz-te quão "pontiaguda" ou "achatada" é a distribuição**
-
-**📌 Exemplos de interpretação:**
-
-| Contexto | K | Interpretação |
-|---------|---------|---------|
-| **Retornos financeiros** | +2,5 | Leptocúrtica — pico alto, caudas leves |
-| **Alturas** | 0 | Mesocúrtica — próximo da normal |
-| **Salários** | −1,2 | Platicúrtica — pico baixo, caudas pesadas |
-| **Notas** | −1,39 | Platicúrtica — pico baixo, caudas pesadas |
-
-**📌 Regra prática:**
-
-| K | Interpretação |
-|---------|----------|
-| K ≈ 0 | Distribuição **mesocúrtica** (normal) |
-| K > 0 | Distribuição **leptocúrtica** (pico alto) |
-| K < 0 | Distribuição **platicúrtica** (pico baixo) |
-
-> **⚠️ Atenção:** Em finanças, a curtose é frequentemente **positiva** (leptocúrtica) — os retornos têm picos altos e caudas pesadas. Isto é importante para a gestão de risco.
-
-## 6. QUANDO USAR A CURTOSE
-
-| Critério | Curtose |
-|---------|----------|
-| **Verificar se a distribuição é normal** | ✅ Único |
-| **Detectar caudas pesadas** | ✅ Único |
-| **Análise de risco financeiro** | ✅ Único |
-| **Base para testes de normalidade** | ✅ Único |
-| **Dados com outliers** | ✅ Moors (robusto) |
-| **Interpretação absoluta da dispersão** | ❌ Usar desvio-padrão |
-
-**Fluxo de Decisão:**
-
-1. Queres saber se a distribuição é **normal**? → **Curtose**
-2. Queres detectar **caudas pesadas**? → **Curtose**
-3. Queres analisar **risco financeiro**? → **Curtose**
-4. Os dados têm **outliers**? → **Moors** (robusto)
-5. Queres **informação completa**? → **Pearson**
-
-## 7. EXERCÍCIOS
+## EXERCÍCIOS
 
 <details>
 <summary>📗 Exercício 1 — Curtose (Dados Brutos)</summary>

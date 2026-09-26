@@ -2,7 +2,7 @@
 
 ## Introdução
 
-&emsp;&emsp;&emsp;Na aula anterior estudámos as **medidas de dispersão absolutas mais simples**: a Amplitude Total, o IQR e o Desvio Médio. Cada uma tem limitações importantes:
+&emsp;&emsp;&emsp;A Amplitude Total, o IQR e o Desvio Médio são as medidas de dispersão absolutas mais simples. Mas cada uma tem limitações importantes:
 
 - A **Amplitude Total** usa apenas 2 valores (máximo e mínimo) e é **muito sensível a outliers**.
 - O **IQR** ignora os 50% extremos dos dados — só olha para a zona central.
@@ -11,29 +11,50 @@
 &emsp;&emsp;&emsp;Considera o seguinte problema prático:
 
 **Dois conjuntos com a mesma amplitude (10):**
+
 - **Conjunto A:** `0, 10, 10, 10, 10, 10`
 - **Conjunto B:** `0, 1, 2, 3, 4, 10`
 
-**Vamos calcular as medidas de dispersão da aula anterior:**
-
-| Medida | Conjunto A | Conjunto B |
-|---------|---------|---------|
-| **Amplitude Total** | 10 | 10 |
-| **IQR** | 0 | 3 |
-| **Desvio Médio** | 1,67 | 3,33 |
-
-&emsp;&emsp;&emsp;Repara: a **Amplitude Total** é **exatamente igual** (10) para os dois conjuntos. Se usássemos apenas esta medida, concluiríamos que têm a mesma dispersão. Mas isso é **falso**!
-
-- O **Conjunto A** é **homogéneo** — quase todos os valores são 10 (só um é 0).
-- O **Conjunto B** é **heterogéneo** — os valores estão bem distribuídos (0, 1, 2, 3, 4, 10).<br><br>
-
-&emsp;&emsp;&emsp;O IQR e o Desvio Médio já revelam alguma diferença, mas nenhum deles é **ideal**, O **IQR** ignora os extremos (0 e 10), que são precisamente a informação mais importante aqui e O **Desvio Médio** usa valor absoluto, o que dificulta generalizações matemáticas. Precisamos de uma medida que:
+&emsp;&emsp;&emsp;Repara: a **Amplitude Total** é **exatamente igual** (10) para os dois conjuntos. Se usássemos apenas esta medida, concluiríamos que têm a mesma dispersão. Mas isso é **falso**! O **Conjunto A** é **homogéneo** — quase todos os valores são 10 (só um é 0).Enquando o **Conjunto B** é **heterogéneo** — os valores estão bem distribuídos (0, 1, 2, 3, 4, 10). Podemos concluir que o IQR e o Desvio Médio já revelam alguma diferença, mas nenhum deles é **ideal**. O **IQR** ignora os extremos (0 e 10), que são precisamente a informação mais importante aqui, e o **Desvio Médio** usa valor absoluto, o que dificulta generalizações matemáticas. Precisamos de uma medida que:
 
 1. **Use todos os dados** (como o Desvio Médio).
 2. **Penalize desvios grandes** (para distinguir A de B).
 3. **Seja tratável algebricamente** (para servir de base a toda a estatística inferencial).
 
-***É precisamente aqui que entra a **variância** — a medida de dispersão mais importante da estatística.***
+***É precisamente aqui que entra a variância — a medida de dispersão mais importante da estatística.***
+
+## Definição da variância
+
+&emsp;&emsp;&emsp;A **variância** é a média dos quadrados dos desvios de cada valor em relação à média do conjunto. Mede quão longe, em média, os dados estão da média aritmética — mas ao quadrado.
+
+&emsp;&emsp;&emsp;Porque ao quadrado? Porque se somássemos os desvios simples, os positivos e os negativos anular-se-iam, dando sempre zero. Elevar ao quadrado resolve esse problema: todos os desvios passam a ser positivos, e os valores mais afastados da média ganham um peso ainda maior. É precisamente isso que queremos: **penalizar mais os afastamentos grandes**.
+
+## Fórmula da variância
+
+&emsp;&emsp;&emsp;Formalmente, para uma **população** de $N$ elementos, a variância é:
+
+$$
+\sigma^2 = \frac{\sum_{i=1}^{N} (x_i - \mu)^2}{N}
+$$
+
+&emsp;&emsp;&emsp;E para uma **amostra** de $n$ elementos, a variância é:
+
+$$
+s^2 = \frac{\sum_{i=1}^{n} (x_i - \bar{x})^2}{n - 1}
+$$
+
+> **🔑 Ideia central:** A variância é a **distância média ao quadrado** entre cada dado e a média. Quanto maior a variância, mais espalhados estão os dados; quanto menor, mais concentrados em torno da média.
+
+&emsp;&emsp;&emsp;Há uma limitação importante na variância: como os desvios são elevados ao quadrado, a unidade de medida também fica ao quadrado. Se os dados estão em metros, a variância está em **metros quadrados** ($m^2$). Se estão em euros, a variância está em **euros quadrados** (€²). Isto torna a variância difícil de interpretar diretamente — ninguém diz "a altura média é 1,70 m e a variância é 0,0025 m²". É precisamente aqui que entra o **desvio padrão**: ele é simplesmente a **raiz quadrada da variância**, e devolve-nos à unidade original dos dados.
+
+$$
+s = \sqrt{s^2}
+$$
+
+> **📌 Conclusão:** A variância é a medida de dispersão **mais importante** da Estatística — é a base para o desvio padrão, para a inferência estatística, para a ANOVA, para a regressão e para praticamente todos os métodos avançados. Mas, por estar ao quadrado, não é diretamente interpretável. O desvio padrão resolve esse problema: é a mesma informação, mas na unidade original dos dados.
+
+> **💡 Dica de Ouro:** A variância é a **base de toda a estatística inferencial** — ANOVA, regressão, testes de hipóteses, machine learning. Sem ela, não há estatística moderna.
+
 
 <center><details>
 <summary>📊 As medidas de dispersão</summary>
@@ -60,23 +81,6 @@
   </em>
 </div>
 </details></center>
-
-> **💡 Dica de Ouro:** A variância é a **base de toda a estatística inferencial** — ANOVA, regressão, testes de hipóteses, machine learning. Sem ela, não há estatística moderna.
-
-&emsp;&emsp;&emsp;A **variância** é a **média dos quadrados dos desvios** de cada valor em relação à média do conjunto. Mede quão longe, em média, os dados estão da média aritmética — mas **ao quadrado**.<br><br>
-
-<center>**📌 Diferença entre População e Amostra:**</center>
-
-| - | **População** | **Amostra** |
-|---------|---------|---------|
-| **Símbolo** | σ² (sigma ao quadrado) | s² |
-| **Fórmula** | <code>σ² = Σ(xi − μ)² / N</code> | <code>s² = Σ(xi − x̄)² / (n−1)</code> |
-| **Denominador** | N (tamanho da população) | n−1 (graus de liberdade) |
-| **Tipo** | Dados completos | Estimativa |
-
-> **💡 Por que n−1 na amostra?** Usamos n−1 (graus de liberdade) para corrigir o **viés** da estimativa — a tendência de subestimar a variância populacional quando usamos uma amostra. É o **fator de correção de Bessel**. Sem esta correção, a variância amostral seria sistematicamente **menor** que a verdadeira variância populacional.
-
-
 ### Variância para Dados Brutos (Não Agrupados)
 
 **📐 Método para Dados Brutos (Não Agrupados)**
@@ -173,29 +177,31 @@ pop.var(notas)
 
 ```python
 import numpy as np
-import pandas as pd
 
-- _Dados de exemplo (dados brutos)_
 notas = np.array([2, 5, 7, 9, 12])
 
 - _Variância Amostral_
 var_amostral = np.var(notas, ddof=1)
 print(var_amostral)
 
-# Alternativa com Pandas
-var_amostral_pd = pd.Series(notas).var()
-print(var_amostral_pd)
-
 - _Variância Populacional_
 var_populacional = np.var(notas, ddof=0)
 print(var_populacional)
+```
 
-- _Alternativa com Pandas_
-var_populacional_pd = pd.Series(notas).var(ddof=0)
-print(var_populacional_pd)
+**Alternativa com Pandas**
+
+```python
+import pandas as pd
+notas = np.array([2, 5, 7, 9, 12])
+
+var_amostral = pd.Series(notas).var()
+print(var_amostral)
+
+var_populacional = pd.Series(notas).var(ddof=0)
+print(var_populacional)
 ```
 </details>
-
 
 
 ### Variância para Dados Agrupados por Lista
@@ -322,17 +328,15 @@ $$
 > **⚠️ Atenção:** Comparando com os dados não agrupados (variância ≈ 19,26), há uma diferença — é o **erro de agrupamento**. Quanto mais finas forem as classes, menor o erro.
 </details></center>
 
-## 4. VANTAGENS E DESVANTAGENS DA VARIÂNCIA
+## Vantagens e Desvantagens Da Variância
 
-| Vantagens | Desvantagens |
-|---------|----------|
-| ✅ **Usa todos os dados** (não apenas dois) | ❌ **Unidade ao quadrado** — difícil de interpretar |
-| ✅ **Penaliza desvios grandes** (por elevar ao quadrado) | ❌ **Sensível a outliers** (o quadrado amplifica o efeito) |
-| ✅ **Base para outras medidas** (desvio-padrão, ANOVA, regressão) | ❌ O quadrado torna os valores grandes e menos intuitivos |
-| ✅ **Algebricamente tratável** (diferenciável, somável) | ❌ Não pode ser negativa (sempre ≥ 0) |
-| ✅ **Permite comparação** entre conjuntos | ❌ Depende da média (se a média não for representativa, a variância também não) |
+&emsp;&emsp;&emsp;A variância apresenta vantagens e desvantagens que importa conhecer. Do lado das vantagens, destaca-se o facto de **usar todos os dados** do conjunto, ao contrário da Amplitude Total, que só olha para dois valores. Além disso, **penaliza desvios grandes** — precisamente por elevar ao quadrado — o que a torna particularmente sensível a afastamentos importantes da média. É também a **base para outras medidas e métodos**: o desvio padrão, a ANOVA, a regressão e praticamente toda a estatística inferencial assentam na variância. Finalmente, é **algebricamente tratável** — é diferenciável e somável, o que permite generalizações matemáticas que o Desvio Médio, com o seu valor absoluto, não permite. A variância **permite ainda comparação** entre conjuntos de dados, desde que estejam na mesma unidade.
 
-## 5. INTERPRETAÇÃO DA VARIÂNCIA
+&emsp;&emsp;&emsp;Do lado das desvantagens, a mais evidente é a **unidade ao quadrado** — se os dados estão em metros, a variância está em metros quadrados, o que a torna difícil de interpretar diretamente. É também **sensível a outliers**, porque o quadrado amplifica o efeito de valores extremos. O quadrado torna ainda os valores **grandes e menos intuitivos**, sobretudo quando os desvios são pequenos. A variância **nunca pode ser negativa** (é sempre ≥ 0), o que é uma consequência matemática mas também uma limitação conceptual. Por fim, **depende da média** — se a média não for representativa do conjunto, a variância também não será.
+
+> **📌 Síntese:** A variância é uma medida poderosa e algebricamente elegante, mas paga um preço por isso: a interpretação difícil e a sensibilidade a outliers. É precisamente para resolver esses dois problemas que surge o **desvio padrão** — a raiz quadrada da variância, que devolve a unidade original e facilita a leitura dos resultados.
+
+## Interpretação da Variância 
 
 > **⚠️ A variância é difícil de interpretar diretamente**
 
@@ -346,39 +350,42 @@ $$
 
 **💡 Solução:** O **Desvio Padrão** (próxima aula) é a raiz quadrada da variância, trazendo a unidade de volta à escala original.
 
-### 📊 Comparação
 
-| Medida | Valor | Unidade |
-|---------|---------|---------|
-| **Variância:** | 14,5 | (unidade ao quadrado) |
-| **Desvio Padrão:** | √14,5 = 3,81 | (unidade original) |
+<center><details>
+<summary>Guia de aplicação da variância</summary>
+```mermaid
+  flowchart TD
+    A["📊 Variância"] --> B{Quando usar?}
+    
+    B --> C["✅ Sim"]
+    B --> D["❌ Não"]
+    
+    C --> C1["Base para inferência estatística"]
+    C --> C2["Base para desvio-padrão"]
+    C --> C3["Base para ANOVA, regressão, ML"]
+    C --> C4["Comparar variabilidade absoluta"]
+    
+    D --> D1["Dados com outliers"]
+    D --> D2["Interpretação direta"]
+    D --> D3["Dados categóricos"]
+    
+    style A fill:#1a3a5e,stroke:#4a9eff,color:#4a9eff
+    style B fill:#2a2a3e,stroke:#8a8a9a,color:#e0e0e0
+    style C fill:#1a3a1a,stroke:#4caf50,color:#4caf50
+    style D fill:#3a1a1a,stroke:#e74c3c,color:#e74c3c
+    style C1 fill:#0d1b0d,stroke:#4caf50,color:#4caf50
+    style C2 fill:#0d1b0d,stroke:#4caf50,color:#4caf50
+    style C3 fill:#0d1b0d,stroke:#4caf50,color:#4caf50
+    style C4 fill:#0d1b0d,stroke:#4caf50,color:#4caf50
+    style D1 fill:#1b0d0d,stroke:#e74c3c,color:#e74c3c
+    style D2 fill:#1b0d0d,stroke:#e74c3c,color:#e74c3c
+    style D3 fill:#1b0d0d,stroke:#e74c3c,color:#e74c3c
+```
+</details>
+</center>
 
-## 6. COMPARAÇÃO COM AS MEDIDAS DA AULA ANTERIOR
 
-| Medida | Conjunto A (0,10,10,10,10,10) | Conjunto B (0,1,2,3,4,10) |
-|---------|---------|---------|
-| **Amplitude Total** | 10 | 10 |
-| **IQR** | 0 | 3 |
-| **Desvio Médio** | 1,67 | 3,33 |
-| **Variância** | **16,67** | **12,67** |
-
-> **🔍 Nota:** Repara que a variância do Conjunto A (16,67) é **maior** que a do Conjunto B (12,67)! Isto acontece porque o Conjunto A tem **cinco valores iguais a 10** e **um valor 0** — o desvio de 10 em relação à média (8,33) é enorme, e ao quadrado amplifica-se. Já o Conjunto B tem valores mais distribuídos, com desvios menores. **A variância penaliza severamente desvios extremos.**
-
-## 7. QUANDO USAR A VARIÂNCIA
-
-| Critério | Variância |
-|---------|----------|
-| **Base para inferência estatística** | ✅ Única |
-| **Base para desvio-padrão** | ✅ Única |
-| **Base para ANOVA, regressão, ML** | ✅ Única |
-| **Comparar variabilidade absoluta** | ✅ |
-| **Dados com outliers** | ❌ Sensível |
-| **Interpretação direta** | ❌ Difícil (unidade ao quadrado) |
-| **Dados categóricos** | ❌ Não se aplica |
-
-
-
-## 8. EXERCÍCIOS
+## EXERCÍCIOS
 
 <details>
 <summary>📗 Exercício 1 — Variância (Dados Brutos)</summary>

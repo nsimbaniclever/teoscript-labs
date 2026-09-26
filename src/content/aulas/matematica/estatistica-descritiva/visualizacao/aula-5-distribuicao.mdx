@@ -1,738 +1,1481 @@
-# Distribuição na Estatística Descritiva
+# <center>Gráficos de Distribuição</center>
 
-## 1. 🎯 Identidade do Conceito
+## Introdução
 
-### 1.1 O que é uma Distribuição Estatística?
+&emsp;&emsp;&emsp;Imagina que és o professor de uma turma de 40 alunos e recebes as notas do exame final. Tens 40 números: 8, 9, 10, 10, 11, 11, 11, 12, 12, 12, 13, 13, 13, 13, 14, 14, 14, 14, 15, 15, 15, 15, 15, 16, 16, 16, 17, 17, 18, 18, 18, 19, 19, 20 e por aí adiante. Agora pergunta-te: **como se distribuem estas notas? A maioria está perto da média ou espalhada? Há muitos alunos com notas baixas? Há outliers?** Com uma lista de 40 números, é quase impossível responder. Com um histograma, vês a forma da distribuição imediatamente. Com um boxplot, vês a mediana, os quartis e os outliers num único olhar.<br><br>
 
-Uma **distribuição estatística** é a forma como os valores de um conjunto de dados se **organizam e se espalham** ao longo de uma escala.
+&emsp;&emsp;&emsp;Agora imagina que queres comparar a distribuição das notas de duas turmas diferentes. Com dois histogramas lado a lado, vês qual é mais consistente, qual tem mais outliers, qual tem a mediana mais alta. **A mesma informação, mas compreendida em segundos.** É isto que os **gráficos de distribuição** fazem: mostram como os valores de uma variável se espalham. E é por isso que esta aula existe — depois de aprenderes a comparar, a mostrar proporções e a ver tendências, precisas de saber mostrar **distribuições**.
 
-**A pergunta que ela responde:**
+> 💡 **Regra de Ouro:** Um gráfico de distribuição não compara categorias, não mostra proporções e não mostra tendências. Mostra a **forma** como os valores de uma variável se distribuem. Serve para responder à pergunta *"como se espalham os dados?"* — e o eixo Y é quase sempre a frequência.
 
-> **"Como os meus dados se comportam?"**
 
-### 1.2 Para que serve?
+## O que é um Gráfico de Distribuição?
 
-| **Situação** | **Exemplo** |
-| ---- | ---- |
-| Resumir um grande conjunto de dados | 1000 idades em um gráfico |
-| Identificar padrões | "Os dados são simétricos?" |
-| Detectar anomalias | "Há valores estranhos?" |
-| Escolher a melhor análise | "Posso usar a média ou preciso da mediana?" |
+> Um **gráfico de distribuição** é uma representação visual que mostra **como os valores de uma variável se distribuem** — onde se concentram, como se espalham, se são simétricos ou assimétricos, e se há valores extremos (outliers).
 
-### 1.3 O que uma Distribuição Revela?
+&emsp;&emsp;&emsp;Os gráficos de distribuição são diferentes dos gráficos de comparação, de proporção e de tendência. Num gráfico de comparação, cada barra é uma categoria. Num gráfico de proporção, as partes somam 100%. Num gráfico de tendência, o eixo X é o tempo. Num gráfico de distribuição, o eixo X é a **variável em estudo** (notas, alturas, salários) e o eixo Y é a **frequência** (quantas vezes cada valor aparece).<br><br>
 
-```text
-┌─────────────────────────────────────────────────────┐
-│                  DISTRIBUIÇÃO                       │
-└─────────────────────────────────────────────────────┘
-                        │
-        ┌───────────────┼───────────────┐
-        ▼               ▼               ▼
-┌───────────────┐ ┌───────────────┐ ┌───────────────┐
-│    CENTRO     │ │   DISPERSÃO   │ │    FORMA      │
-├───────────────┤ ├───────────────┤ ├───────────────┤
-│ Onde os dados │ │ Quanto os     │ │ Como os dados │
-│ se concentram?│ │ dados variam? │ │ se distribuem?│
-├───────────────┤ ├───────────────┤ ├───────────────┤
-│ Média         │ │ Amplitude     │ │ Simétrica     │
-│ Mediana       │ │ Variância     │ │ Assimétrica   │
-│ Moda          │ │ Desvio Padrão │ │ Bimodal       │
-│ Quartis       │ │ IIQ           │ │ Uniforme      │
-└───────────────┘ └───────────────┘ └───────────────┘
-```
-
-## 2. 📊 Tipos de Distribuição
-
-### 2.1 Distribuição de Frequências
-
-**O que é:** Organização dos dados em **classes ou categorias** com suas respectivas frequências.
-
-**Exemplo:**
-
-| Idade | Frequência |
-| ---- | ----: |
-| 18-25 | 15 |
-| 26-33 | 25 |
-| 34-41 | 30 |
-| 42-49 | 20 |
-| 50-57 | 8 |
-| 58-65 | 2 |
-
-**Para que serve:** É a base para construir histogramas e polígonos de frequência.
-
-### 2.2 Distribuição de Probabilidade
-
-**O que é:** Distribuição **teórica** que descreve a probabilidade de cada valor ocorrer.
-
-**Exemplos:**
-- **Normal** (curva em sino)
-- **Binomial** (sucesso/fracasso)
-- **Poisson** (eventos raros)
-
-**Para que serve:** Modelar fenômenos aleatórios e fazer previsões.
-
-### 2.3 Distribuição Amostral
-
-**O que é:** Distribuição de uma **estatística** (ex: média) calculada a partir de muitas amostras.
-
-**Para que serve:** Base da inferência estatística (intervalos de confiança, testes de hipótese).
-
-## 3. 📋 Distribuição de Frequências (O Coração da Descritiva)
-
-### 3.1 O que é?
-
-É a organização de dados brutos em **classes** (intervalos) com suas respectivas **frequências**.
-
-```text
-DADOS BRUTOS
-    │
-    ▼
-┌─────────────────────────────────────────────────────┐
-│                DISTRIBUIÇÃO DE FREQUÊNCIAS          │
-├─────────────┬─────────────┬─────────────┬───────────┤
-│   CLASSE    │  FREQUÊNCIA  │  FREQUÊNCIA  │FREQUÊNCIA │
-│             │   ABSOLUTA   │   RELATIVA   │ ACUMULADA │
-├─────────────┼─────────────┼─────────────┼───────────┤
-│  18 - 25    │     15      │    15%       │    15     │
-│  26 - 33    │     25      │    25%       │    40     │
-│  34 - 41    │     30      │    30%       │    70     │
-│  42 - 49    │     20      │    20%       │    90     │
-│  50 - 57    │      8      │     8%       │    98     │
-│  58 - 65    │      2      │     2%       │   100     │
-└─────────────┴─────────────┴─────────────┴───────────┘
-```
-
-### 3.2 Elementos da Distribuição de Frequências
-
-| **Elemento** | **O que é** | **Exemplo** |
-| ---- | ---- | ---- |
-| **Classe** | Intervalo de valores | 18 - 25 |
-| **Limite Inferior** | Menor valor da classe | 18 |
-| **Limite Superior** | Maior valor da classe | 25 |
-| **Frequência Absoluta** | Número de elementos na classe | 15 |
-| **Frequência Relativa** | Proporção (%) | 15 / 100 = 15% |
-| **Frequência Acumulada** | Soma das frequências até aquela classe | 15 + 25 = 40 |
-
-### 3.3 Como Construir (Passo a Passo)
-
-**Passo 1:** Ordene os dados.
-
-**Passo 2:** Determine o número de classes (k).
-- Regra de Sturges: **k = 1 + 3,3 × log₁₀(n)**
-- Exemplo: n = 100 → k ≈ 1 + 3,3 × 2 = 7,6 → 8 classes
-
-**Passo 3:** Calcule a amplitude de cada classe.
-- Amplitude = (Maior - Menor) / k
-
-**Passo 4:** Defina os limites de cada classe.
-
-**Passo 5:** Conte a frequência em cada classe.
-
-**Passo 6:** Calcule as frequências relativa e acumulada.
-
-## 4. 📊 Representações Gráficas da Distribuição
-
-### 4.1 Histograma
-
-**O que é:** Gráfico de barras **encostadas** que mostra a distribuição de uma variável contínua.
-
-```text
-Frequência
-  │
-20 ┼
-  │          ██████
-15 ┼          ██████    ██████
-  │          ██████    ██████
-10 ┼    ████████████    ██████
-  │    ████████████    ██████
- 5 ┼    ████████████    ██████    ██████
-  │    ████████████    ██████    ██████    ██████
- 0 ┼────████████████────██████────██████────██████────
-      18-25        26-33   34-41   42-49   50-57   58-65
-                ↓
-            BARRAS ENCOSTADAS (sem espaço!)
-```
-
-### 4.2 Polígono de Frequência
-
-**O que é:** Versão com **pontos** (nos pontos médios das classes) **unidos por linhas**.
-
-### 4.3 Boxplot (Gráfico de Caixa)
-
-**O que é:** Resumo da distribuição em **5 números**: mínimo, Q1, mediana, Q3, máximo.
-
-```text
-Idade
-  │
-60 ┼
-  │                        o      (outlier)
-50 ┼    ┌─────┐      ┌─────┐
-  │    │     │      │     │
-40 ┼    │  ── │      │ ──  │      ┌─────┐
-  │    │     │      │     │      │     │
-30 ┼    │     │      │     │      │  ── │
-  │    │     │      │     │      │     │
-20 ┼    └─────┘      └─────┘      └─────┘
-  │   ──┴───  ──────┴──────  ─────┴──────
-       Depto A      Depto B      Depto C
-```
-
-### 4.4 Curva de Densidade
-
-**O que é:** Suavização da forma da distribuição.
-
-## 5. 📐 Características de uma Distribuição
-
-### 5.1 Centro
-
-**Onde os dados se concentram?**
-
-| **Medida** | **O que é** |
-| ---- | ---- |
-| **Média** | Ponto de equilíbrio |
-| **Mediana** | Valor central (50%) |
-| **Moda** | Valor mais frequente |
-
-### 5.2 Dispersão
-
-**Quanto os dados variam?**
-
-| **Medida** | **O que é** |
-| ---- | ---- |
-| **Amplitude** | Máximo - Mínimo |
-| **Variância** | Média dos desvios ao quadrado |
-| **Desvio Padrão** | Raiz da variância |
-| **Intervalo Interquartil (IIQ)** | Q3 - Q1 (50% centrais) |
-
-### 5.3 Forma
-
-**Como os dados se distribuem?**
-
-| **Forma** | **Característica** | **Exemplo** |
-| ---- | ---- | ---- |
-| **Simétrica** | Média = Mediana = Moda | Altura de adultos |
-| **Assimétrica Positiva** | Cauda à direita, Média > Mediana | Salários |
-| **Assimétrica Negativa** | Cauda à esquerda, Média < Mediana | Idade de aposentadoria |
-| **Bimodal** | Dois picos | Altura de homens e mulheres |
-| **Uniforme** | Todas as classes com frequência semelhante | Lançamento de dado |
-
-### 5.4 Outliers
-
-**Valores que fogem ao padrão.**
-
-**Como identificar:**
-- Visualmente (boxplot)
-- Estatisticamente: Z-score > 3 ou < -3
-- Pelo IIQ: Q1 - 1,5×IIQ ou Q3 + 1,5×IIQ
-
-## 6. 🎨 Formas da Distribuição (Detalhado)
-
-### 6.1 Distribuição Simétrica
-
-```text
-  │      ██
-  │    ██████
-  │  ██████████
-  │ ████████████
-  └──────────────────
-  Média = Mediana = Moda
-```
-
-**Exemplo:** Altura de adultos, QI.
-
-**Interpretação:** Os dados se distribuem igualmente em ambos os lados do centro.
-
-### 6.2 Assimétrica Positiva (à Direita)
-
-```text
-  │        ██
-  │      ██████
-  │    ██████████
-  │  ██████████████
-  │ ██████████████████
-  └──────────────────────────
-  Moda < Mediana < Média
-```
-
-**Exemplo:** Salários, renda familiar.
-
-**Interpretação:** A maioria dos dados está concentrada na esquerda, mas há uma cauda longa à direita (poucos valores muito altos).
-
-### 6.3 Assimétrica Negativa (à Esquerda)
-
-```text
-  │          ██
-  │        ██████
-  │      ██████████
-  │    ████████████
-  │  ████████████████
-  └────────────────────
-  Média < Mediana < Moda
-```
-
-**Exemplo:** Idade de aposentadoria, tempo de vida útil de produtos.
-
-**Interpretação:** A maioria dos dados está concentrada na direita, mas há uma cauda longa à esquerda (poucos valores muito baixos).
-
-### 6.4 Bimodal
-
-```text
-  │    ██      ██
-  │  ██████  ██████
-  │ ████████████████
-  └──────────────────
-```
-
-**Exemplo:** Altura de uma população com homens e mulheres misturados.
-
-**Interpretação:** Os dados vêm de **duas populações diferentes** — é um sinal de que os dados podem precisar ser separados.
-
-### 6.5 Uniforme
-
-```text
-  │ ████████████████
-  │ ████████████████
-  │ ████████████████
-  └──────────────────
-```
-
-**Exemplo:** Lançamento de um dado honesto.
-
-**Interpretação:** Todos os valores têm frequência semelhante. Não há concentração em nenhum valor específico.
-
-## 7. 📊 Medidas que Descrevem a Distribuição
-
-### 7.1 Medidas de Posição
-
-| **Medida** | **O que é** | **Exemplo** |
-| ---- | ---- | ---- |
-| **Média** | Ponto de equilíbrio | 26,25 anos |
-| **Mediana** | Valor central (50%) | 25,5 anos |
-| **Moda** | Valor mais frequente | 9 (nota) |
-| **Quartis** | Dividem em 4 partes | Q1=22, Q2=27, Q3=35 |
-| **Percentis** | Dividem em 100 partes | P90=45 anos |
-
-
-### 7.2 Medidas de Dispersão
-
-| **Medida** | **O que é** | **Exemplo** |
-| ---- | ---- | ---- |
-| **Amplitude** | Máximo - Mínimo | 35 - 18 = 17 anos |
-| **Variância** | Média dos desvios ao quadrado | 45,2 |
-| **Desvio Padrão** | Raiz da variância | 6,7 anos |
-| **IIQ** | Q3 - Q1 | 35 - 22 = 13 anos |
-
-
-### 7.3 Medidas de Forma
-
-| **Medida** | **O que é** | **Interpretação** |
-| ---- | ---- | ---- |
-| **Assimetria (Skewness)** | Mede o grau de assimetria | $0 = simétrica; >0 = positiva; <0 = negativa$ |
-| **Curtose** | Mede o achatamento | $0 = normal; >0 = mais pontiaguda; <0 = mais achatada$ |
-
-### 7.4 Medidas de Posição Relativa
-
-**Escore z (padronização):**
-
-```text
-z = (x - x̄) / s
-```
-
-**Interpretação:**
-- z = 0 → valor igual à média
-- z = 1 → valor 1 desvio padrão acima da média
-- z = -1 → valor 1 desvio padrão abaixo da média
-
-**Exemplo:** Nota 8 em uma prova com média 6 e desvio padrão 1,5.
-
-$z = (8 - 6) / 1,5 = 1,33$
-
-
-→ O aluno está 1,33 desvios padrão acima da média.
-
-## 8. 🔔 Distribuição Normal (A Mais Importante)
-
-### 8.1 O que é a Distribuição Normal?
-
-É uma distribuição **teórica** em forma de **sino**, completamente descrita por dois parâmetros:
-
-- **Média (μ)** → define o centro
-- **Desvio Padrão (σ)** → define a dispersão
-
-```text
-  │      ██
-  │    ██████
-  │  ██████████
-  │ ████████████
-  └──────────────────
-     μ-3σ μ-2σ μ-σ  μ  μ+σ μ+2σ μ+3σ
-```
-
-### 8.2 Propriedades da Distribuição Normal
-
-| **Propriedade** | **O que significa** |
-| ---- | ---- |
-| **Simétrica** | Média = Mediana = Moda |
-| **68-95-99,7%** | 68% dos dados estão a ±1σ; 95% a ±2σ; 99,7% a ±3σ |
-| **Infinitas curvas** | Cada média e desvio padrão gera uma curva diferente |
-| **Teorema Central do Limite** | Médias amostrais tendem à normal |
-
-**Exemplo da regra 68-95-99,7%:**
-
-```text
-
-  │      ██
-  │    ██████
-  │  ██████████
-  │ ████████████
-  └──────────────────
-     μ-3σ μ-2σ μ-σ  μ  μ+σ μ+2σ μ+3σ
-     │    │    │    │    │    │    │
-     └────┴────┴────┴────┴────┴────┘
-     99,7% dos dados estão aqui
-          └────┴────┴────┴────┘
-           95% dos dados estão aqui
-              └────┴────┘
-               68% dos dados estão aqui
-```
-
-### 8.3 Por que a Normal é Importante?
-
-1. **Muitos fenômenos seguem a normal:** altura, peso, QI, erros de medição.
-2. **Base para testes estatísticos:** t-test, ANOVA, regressão.
-3. **Teorema Central do Limite:** qualquer distribuição, com amostras grandes, tende à normal.
-4. **Fácil de trabalhar:** cálculos simples e bem conhecidos.
-
-### 8.4 Como Verificar a Normalidade?
-
-| **Método** | **O que fazer** |
-| ---- | ---- |
-| **Histograma** | Ver se tem forma de sino |
-| **Boxplot** | Ver se é simétrica |
-| **Q-Q Plot** | Ver se os pontos seguem a linha diagonal |
-| **Teste de Shapiro-Wilk** | Teste estatístico (p > 0,05 → normal) |
-
-**Q-Q Plot:**
-
-```text
-
-Valores observados
-  │
-  │        ●
-  │       ● ●
-  │      ●   ●
-  │     ●     ●
-  │    ●       ●
-  │   ●         ●
-  └──────────────────
-       Valores esperados (normal)
-  Se os pontos seguem a linha, os dados são normais.
-```
-
-## 9. 🌳 Árvore de Decisão: Como Descrever uma Distribuição
-
-```text
-
-┌─────────────────────────────────────────────────────┐
-│              COMO DESCREVER A DISTRIBUIÇÃO?         │
-└─────────────────────────────────────────────────────┘
-                        │
-                        ▼
-┌─────────────────────────────────────────────────────┐
-│ 1. QUAL O CENTRO?                                   │
-│    - Média (se simétrica)                          │
-│    - Mediana (se assimétrica)                     │
-└─────────────────────────────────────────────────────┘
-                        │
-                        ▼
-┌─────────────────────────────────────────────────────┐
-│ 2. QUAL A DISPERSÃO?                               │
-│    - Desvio Padrão (se simétrica)                  │
-│    - IIQ (se assimétrica)                         │
-└─────────────────────────────────────────────────────┘
-                        │
-                        ▼
-┌─────────────────────────────────────────────────────┐
-│ 3. QUAL A FORMA?                                   │
-│    - Simétrica? Assimétrica? Bimodal? Uniforme?   │
-└─────────────────────────────────────────────────────┘
-                        │
-                        ▼
-┌─────────────────────────────────────────────────────┐
-│ 4. HÁ OUTLIERS?                                    │
-│    - Sim? Identifique e decida o que fazer         │
-└─────────────────────────────────────────────────────┘
-```
-
-## 10. 💻 Código Python e R
+&emsp;&emsp;&emsp;Existem dois tipos principais de gráficos de distribuição: **histograma** e **boxplot**. Cada um tem o seu contexto ideal.
 
 <details>
-<summary>🐍 Código Python — Explorando a Distribuição</summary>
+<summary>📊 Mapa dos Gráficos de Distribuição</summary>
 
-```python
-import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-from scipy import stats
+```mermaid
+flowchart TD
+    A["📊 GRÁFICOS DE DISTRIBUIÇÃO"] --> B["Histograma"]
+    A --> C["Boxplot"]
 
-# Dados
-np.random.seed(42)
-dados = np.random.normal(50, 10, 100)  # Normal com média 50, desvio 10
+    B --> B1["Forma da distribuição<br/>Frequência por intervalo"]
+    C --> C1["Mediana e quartis<br/>Outliers e comparação"]
 
-# Criar DataFrame
-df = pd.DataFrame(dados, columns=['valores'])
-
-# 1. ESTATÍSTICAS DESCRITIVAS
-print("--- ESTATÍSTICAS DESCRITIVAS ---")
-print(df['valores'].describe())
-
-# 2. MEDIDAS DE POSIÇÃO
-print("\n--- MEDIDAS DE POSIÇÃO ---")
-print(f"Média: {df['valores'].mean():.2f}")
-print(f"Mediana: {df['valores'].median():.2f}")
-print(f"Moda: {df['valores'].mode().tolist()}")
-
-# 3. MEDIDAS DE DISPERSÃO
-print("\n--- MEDIDAS DE DISPERSÃO ---")
-print(f"Desvio Padrão: {df['valores'].std():.2f}")
-print(f"Variância: {df['valores'].var():.2f}")
-print(f"Amplitude: {df['valores'].max() - df['valores'].min():.2f}")
-
-# 4. QUARTIS E PERCENTIS
-q1 = df['valores'].quantile(0.25)
-q2 = df['valores'].quantile(0.50)
-q3 = df['valores'].quantile(0.75)
-print(f"\n--- QUARTIS ---")
-print(f"Q1: {q1:.2f}")
-print(f"Q2: {q2:.2f}")
-print(f"Q3: {q3:.2f}")
-print(f"IIQ: {q3 - q1:.2f}")
-
-# 5. TESTE DE NORMALIDADE
-shapiro = stats.shapiro(df['valores'])
-print(f"\n--- TESTE DE NORMALIDADE ---")
-print(f"Shapiro-Wilk: p = {shapiro.pvalue:.4f}")
-if shapiro.pvalue > 0.05:
-    print("Os dados são normalmente distribuídos (p > 0.05)")
-else:
-    print("Os dados NÃO são normalmente distribuídos (p ≤ 0.05)")
-
-# 6. GRÁFICOS
-fig, axes = plt.subplots(1, 3, figsize=(15, 4))
-
-# Histograma
-axes[0].hist(df['valores'], bins=10, color='skyblue', edgecolor='black')
-axes[0].set_title('Histograma')
-axes[0].set_xlabel('Valor')
-axes[0].set_ylabel('Frequência')
-
-# Boxplot
-axes[1].boxplot(df['valores'], patch_artist=True, 
-                boxprops=dict(facecolor='skyblue'))
-axes[1].set_title('Boxplot')
-axes[1].set_ylabel('Valor')
-
-# Q-Q Plot
-stats.probplot(df['valores'], dist="norm", plot=axes[2])
-axes[2].set_title('Q-Q Plot')
-
-plt.tight_layout()
-plt.show()
+    style A fill:#333,color:#fff,stroke:#333,stroke-width:2px
+    style B fill:#cfe2ff,stroke:#0d6efd,stroke-width:2px
+    style C fill:#d4edda,stroke:#28a745,stroke-width:2px
 ```
 </details>
 
+### Histograma
+
+#### O que é?
+
+> Um **histograma** é um gráfico de distribuição em que o eixo X é dividido em **intervalos** (classes) e a altura de cada barra representa a **frequência** (número de observações) nesse intervalo.
+
+&emsp;&emsp;&emsp;O histograma é o gráfico de distribuição mais comum. É como um gráfico de barras, mas com uma diferença fundamental: as barras são **coladas umas às outras**, porque representam intervalos contínuos, não categorias separadas. A forma do histograma revela a distribuição dos dados.
+
+#### Quando usar?
+
+- Quando queres ver a **forma da distribuição**
+- Quando queres identificar **onde se concentram** os valores
+- Quando queres detetar **assimetria** ou **bimodalidade**
+- Quando tens **muitos dados** (mais de 30 observações)
+
+#### Exemplo visual
+
 <details>
-<summary>📊 Código R — Explorando a Distribuição</summary>
+<summary>📊 Histograma — Distribuição das Notas de uma Turma</summary>
 
-```r
-library(ggplot2)
-library(dplyr)
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); max-width: 750px; margin: 1rem auto; font-family: 'Segoe UI', system-ui, sans-serif;">
 
-# Dados
-set.seed(42)
-dados <- rnorm(100, mean = 50, sd = 10)
+  <div style="color: #fbbf24; font-weight: 700; font-size: 0.9rem; text-align: center; margin-bottom: 1.5rem;">Distribuição das Notas de uma Turma</div>
 
-# 1. ESTATÍSTICAS DESCRITIVAS
-cat("--- ESTATÍSTICAS DESCRITIVAS ---\n")
-summary(dados)
+  <div style="display: flex; align-items: flex-end; justify-content: center; gap: 0; height: 200px; padding: 0 1rem; border-bottom: 2px solid #4b5563; border-left: 2px solid #4b5563;">
 
-# 2. MEDIDAS DE POSIÇÃO
-cat("\n--- MEDIDAS DE POSIÇÃO ---\n")
-cat("Média:", mean(dados), "\n")
-cat("Mediana:", median(dados), "\n")
+    <div style="width: 50px; height: 20px; background: #0d6efd; opacity: 0.75; border-right: 1px solid #0a0f1e;"></div>
+    <div style="width: 50px; height: 40px; background: #0d6efd; opacity: 0.75; border-right: 1px solid #0a0f1e;"></div>
+    <div style="width: 50px; height: 80px; background: #0d6efd; opacity: 0.75; border-right: 1px solid #0a0f1e;"></div>
+    <div style="width: 50px; height: 120px; background: #0d6efd; opacity: 0.75; border-right: 1px solid #0a0f1e;"></div>
+    <div style="width: 50px; height: 100px; background: #0d6efd; opacity: 0.75; border-right: 1px solid #0a0f1e;"></div>
+    <div style="width: 50px; height: 60px; background: #0d6efd; opacity: 0.75; border-right: 1px solid #0a0f1e;"></div>
+    <div style="width: 50px; height: 30px; background: #0d6efd; opacity: 0.75;"></div>
 
-# Moda (função manual)
-calcular_moda <- function(x) {
-  freq <- table(x)
-  max_freq <- max(freq)
-  as.numeric(names(freq[freq == max_freq]))
-}
-cat("Moda:", calcular_moda(dados)[1], "\n")
+  </div>
 
-# 3. MEDIDAS DE DISPERSÃO
-cat("\n--- MEDIDAS DE DISPERSÃO ---\n")
-cat("Desvio Padrão:", sd(dados), "\n")
-cat("Variância:", var(dados), "\n")
-cat("Amplitude:", max(dados) - min(dados), "\n")
+  <div style="display: flex; justify-content: center; gap: 0; padding: 0.3rem 1rem 0; color: #6b7280; font-size: 0.55rem;">
+    <span style="width: 50px; text-align: center;">0-5</span>
+    <span style="width: 50px; text-align: center;">5-10</span>
+    <span style="width: 50px; text-align: center;">10-12</span>
+    <span style="width: 50px; text-align: center;">12-14</span>
+    <span style="width: 50px; text-align: center;">14-16</span>
+    <span style="width: 50px; text-align: center;">16-18</span>
+    <span style="width: 50px; text-align: center;">18-20</span>
+  </div>
 
-# 4. QUARTIS
-q <- quantile(dados, c(0.25, 0.50, 0.75))
-cat("\n--- QUARTIS ---\n")
-cat("Q1:", q[1], "\n")
-cat("Q2:", q[2], "\n")
-cat("Q3:", q[3], "\n")
-cat("IIQ:", q[3] - q[1], "\n")
+</div>
 
-# 5. TESTE DE NORMALIDADE
-shapiro <- shapiro.test(dados)
-cat("\n--- TESTE DE NORMALIDADE ---\n")
-cat("Shapiro-Wilk: p =", shapiro$p.value, "\n")
-if (shapiro$p.value > 0.05) {
-  cat("Os dados são normalmente distribuídos (p > 0.05)\n")
-} else {
-  cat("Os dados NÃO são normalmente distribuídos (p ≤ 0.05)\n")
-}
-
-# 6. GRÁFICOS
-df <- data.frame(valores = dados)
-
-# Histograma + curva de densidade
-ggplot(df, aes(x = valores)) +
-  geom_histogram(aes(y = after_stat(density)), 
-                 bins = 10, fill = "skyblue", color = "black") +
-  geom_density(color = "red", size = 1.2) +
-  labs(title = "Histograma + Curva de Densidade",
-       x = "Valor", y = "Densidade") +
-  theme_minimal()
-
-# Boxplot
-ggplot(df, aes(y = valores)) +
-  geom_boxplot(fill = "skyblue", color = "black") +
-  labs(title = "Boxplot", y = "Valor") +
-  theme_minimal()
-
-# Q-Q Plot
-qqnorm(dados)
-qqline(dados, col = "red", lwd = 2)
-title("Q-Q Plot")
-```
 </details>
 
-## 📝 Frase de Fixação
+**Interpretação:** A maioria das notas concentra-se entre 12 e 14 — é aí que está a barra mais alta. Há poucas notas muito baixas (0-5) e poucas muito altas (18-20). A distribuição é aproximadamente simétrica, com um pico central.
 
-> *"Distribuição é a forma, centro e espalhamento dos dados — o mapa que mostra onde estão os valores, como se comportam e o que é normal ou estranho."*
+#### Como construir um histograma
 
-## 📝 Exercícios — Foco na Interpretação
+**Passo 1 — Definir as classes (intervalos)**
+
+&emsp;&emsp;&emsp;Divide o intervalo dos dados em classes. Por exemplo, se as notas vão de 0 a 20, podes usar classes de 2 em 2: 0-2, 2-4, 4-6, ..., 18-20. O número de classes depende do número de dados — regra prática: entre 5 e 20 classes.
+
+**Passo 2 — Contar as frequências**
+
+&emsp;&emsp;&emsp;Conta quantas observações caem em cada classe.
+
+**Passo 3 — Desenhar as barras**
+
+&emsp;&emsp;&emsp;Cada barra tem a altura proporcional à frequência. As barras são coladas umas às outras.
+
+#### Formas típicas de histogramas
+
+| Forma | Descrição | Exemplo |
+|-------|-----------|---------|
+| **Simétrica** | Os dados distribuem-se igualmente em torno do centro | Alturas de pessoas |
+| **Assimétrica à direita** | Cauda longa à direita | Salários (maioria ganha pouco, poucos ganham muito) |
+| **Assimétrica à esquerda** | Cauda longa à esquerda | Notas de um exame fácil |
+| **Bimodal** | Dois picos | Alturas de homens e mulheres juntos |
+| **Uniforme** | Todas as classes com frequência semelhante | Lançamento de um dado |
 
 <details>
-<summary>📗 Exercício 1</summary>
+<summary>📊 Histograma Simétrico — Alturas de Pessoas</summary>
 
-**Enunciado:** Para cada situação abaixo, identifique qual característica da distribuição é mais relevante analisar:
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); max-width: 700px; margin: 1rem auto; font-family: 'Segoe UI', system-ui, sans-serif;">
 
-a) Salários de uma empresa
+  <div style="color: #fbbf24; font-weight: 700; font-size: 0.9rem; text-align: center; margin-bottom: 0.5rem;">Distribuição Simétrica</div>
+  <div style="color: #6b7280; font-size: 0.6rem; text-align: center; margin-bottom: 1.5rem;">Alturas de pessoas — os dados distribuem-se igualmente em torno do centro</div>
 
-b) Altura de 1000 pessoas
+  <div style="display: flex; align-items: flex-end; justify-content: center; gap: 0; height: 200px; padding: 0 1rem; border-bottom: 2px solid #4b5563; border-left: 2px solid #4b5563;">
 
-c) Notas de uma prova com dois picos
+    <div style="width: 45px; height: 30px; background: #0d6efd; opacity: 0.75; border-right: 1px solid #0a0f1e;"></div>
+    <div style="width: 45px; height: 70px; background: #0d6efd; opacity: 0.75; border-right: 1px solid #0a0f1e;"></div>
+    <div style="width: 45px; height: 120px; background: #0d6efd; opacity: 0.75; border-right: 1px solid #0a0f1e;"></div>
+    <div style="width: 45px; height: 160px; background: #0d6efd; opacity: 0.75; border-right: 1px solid #0a0f1e;"></div>
+    <div style="width: 45px; height: 120px; background: #0d6efd; opacity: 0.75; border-right: 1px solid #0a0f1e;"></div>
+    <div style="width: 45px; height: 70px; background: #0d6efd; opacity: 0.75; border-right: 1px solid #0a0f1e;"></div>
+    <div style="width: 45px; height: 30px; background: #0d6efd; opacity: 0.75;"></div>
 
-d) Tempo de espera em uma fila
+  </div>
 
-e) Lançamento de um dado
+  <div style="display: flex; justify-content: center; gap: 0; padding: 0.3rem 1rem 0; color: #6b7280; font-size: 0.55rem;">
+    <span style="width: 45px; text-align: center;">150</span>
+    <span style="width: 45px; text-align: center;">155</span>
+    <span style="width: 45px; text-align: center;">160</span>
+    <span style="width: 45px; text-align: center;">165</span>
+    <span style="width: 45px; text-align: center;">170</span>
+    <span style="width: 45px; text-align: center;">175</span>
+    <span style="width: 45px; text-align: center;">180</span>
+  </div>
+
+  <div style="color: #6ee7b7; font-size: 0.6rem; text-align: center; margin-top: 0.8rem;">
+    ✅ Pico central, caudas simétricas
+  </div>
+
+</div>
+
+</details>
+
+<details>
+<summary>📊 Histograma Assimétrico à Direita — Salários</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); max-width: 700px; margin: 1rem auto; font-family: 'Segoe UI', system-ui, sans-serif;">
+
+  <div style="color: #fbbf24; font-weight: 700; font-size: 0.9rem; text-align: center; margin-bottom: 0.5rem;">Assimétrica à Direita</div>
+  <div style="color: #6b7280; font-size: 0.6rem; text-align: center; margin-bottom: 1.5rem;">Salários — maioria ganha pouco, poucos ganham muito</div>
+
+  <div style="display: flex; align-items: flex-end; justify-content: center; gap: 0; height: 200px; padding: 0 1rem; border-bottom: 2px solid #4b5563; border-left: 2px solid #4b5563;">
+
+    <div style="width: 45px; height: 160px; background: #0d6efd; opacity: 0.75; border-right: 1px solid #0a0f1e;"></div>
+    <div style="width: 45px; height: 120px; background: #0d6efd; opacity: 0.75; border-right: 1px solid #0a0f1e;"></div>
+    <div style="width: 45px; height: 70px; background: #0d6efd; opacity: 0.75; border-right: 1px solid #0a0f1e;"></div>
+    <div style="width: 45px; height: 40px; background: #0d6efd; opacity: 0.75; border-right: 1px solid #0a0f1e;"></div>
+    <div style="width: 45px; height: 20px; background: #0d6efd; opacity: 0.75; border-right: 1px solid #0a0f1e;"></div>
+    <div style="width: 45px; height: 10px; background: #0d6efd; opacity: 0.75; border-right: 1px solid #0a0f1e;"></div>
+    <div style="width: 45px; height: 5px; background: #0d6efd; opacity: 0.75;"></div>
+
+  </div>
+
+  <div style="display: flex; justify-content: center; gap: 0; padding: 0.3rem 1rem 0; color: #6b7280; font-size: 0.55rem;">
+    <span style="width: 45px; text-align: center;">1k</span>
+    <span style="width: 45px; text-align: center;">2k</span>
+    <span style="width: 45px; text-align: center;">3k</span>
+    <span style="width: 45px; text-align: center;">4k</span>
+    <span style="width: 45px; text-align: center;">5k</span>
+    <span style="width: 45px; text-align: center;">6k</span>
+    <span style="width: 45px; text-align: center;">7k+</span>
+  </div>
+
+  <div style="color: #f87171; font-size: 0.6rem; text-align: center; margin-top: 0.8rem;">
+    ⚠️ Cauda longa à direita
+  </div>
+
+</div>
+
+</details>
+
+<details>
+<summary>📊 Histograma Assimétrico à Esquerda — Notas de Exame Fácil</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); max-width: 700px; margin: 1rem auto; font-family: 'Segoe UI', system-ui, sans-serif;">
+
+  <div style="color: #fbbf24; font-weight: 700; font-size: 0.9rem; text-align: center; margin-bottom: 0.5rem;">Assimétrica à Esquerda</div>
+  <div style="color: #6b7280; font-size: 0.6rem; text-align: center; margin-bottom: 1.5rem;">Notas de um exame fácil — cauda longa à esquerda</div>
+
+  <div style="display: flex; align-items: flex-end; justify-content: center; gap: 0; height: 200px; padding: 0 1rem; border-bottom: 2px solid #4b5563; border-left: 2px solid #4b5563;">
+
+    <div style="width: 45px; height: 5px; background: #0d6efd; opacity: 0.75; border-right: 1px solid #0a0f1e;"></div>
+    <div style="width: 45px; height: 10px; background: #0d6efd; opacity: 0.75; border-right: 1px solid #0a0f1e;"></div>
+    <div style="width: 45px; height: 20px; background: #0d6efd; opacity: 0.75; border-right: 1px solid #0a0f1e;"></div>
+    <div style="width: 45px; height: 40px; background: #0d6efd; opacity: 0.75; border-right: 1px solid #0a0f1e;"></div>
+    <div style="width: 45px; height: 70px; background: #0d6efd; opacity: 0.75; border-right: 1px solid #0a0f1e;"></div>
+    <div style="width: 45px; height: 120px; background: #0d6efd; opacity: 0.75; border-right: 1px solid #0a0f1e;"></div>
+    <div style="width: 45px; height: 160px; background: #0d6efd; opacity: 0.75;"></div>
+
+  </div>
+
+  <div style="display: flex; justify-content: center; gap: 0; padding: 0.3rem 1rem 0; color: #6b7280; font-size: 0.55rem;">
+    <span style="width: 45px; text-align: center;">0-5</span>
+    <span style="width: 45px; text-align: center;">5-10</span>
+    <span style="width: 45px; text-align: center;">10-12</span>
+    <span style="width: 45px; text-align: center;">12-14</span>
+    <span style="width: 45px; text-align: center;">14-16</span>
+    <span style="width: 45px; text-align: center;">16-18</span>
+    <span style="width: 45px; text-align: center;">18-20</span>
+  </div>
+
+  <div style="color: #f87171; font-size: 0.6rem; text-align: center; margin-top: 0.8rem;">
+    ⚠️ Cauda longa à esquerda
+  </div>
+
+</div>
+
+</details>
+
+<details>
+<summary>📊 Histograma Bimodal — Alturas de Homens e Mulheres</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); max-width: 700px; margin: 1rem auto; font-family: 'Segoe UI', system-ui, sans-serif;">
+
+  <div style="color: #fbbf24; font-weight: 700; font-size: 0.9rem; text-align: center; margin-bottom: 0.5rem;">Bimodal</div>
+  <div style="color: #6b7280; font-size: 0.6rem; text-align: center; margin-bottom: 1.5rem;">Alturas de homens e mulheres juntos — dois picos</div>
+
+  <div style="display: flex; align-items: flex-end; justify-content: center; gap: 0; height: 200px; padding: 0 1rem; border-bottom: 2px solid #4b5563; border-left: 2px solid #4b5563;">
+
+    <div style="width: 45px; height: 30px; background: #0d6efd; opacity: 0.75; border-right: 1px solid #0a0f1e;"></div>
+    <div style="width: 45px; height: 130px; background: #0d6efd; opacity: 0.75; border-right: 1px solid #0a0f1e;"></div>
+    <div style="width: 45px; height: 160px; background: #0d6efd; opacity: 0.75; border-right: 1px solid #0a0f1e;"></div>
+    <div style="width: 45px; height: 120px; background: #0d6efd; opacity: 0.75; border-right: 1px solid #0a0f1e;"></div>
+    <div style="width: 45px; height: 20px; background: #0d6efd; opacity: 0.75; border-right: 1px solid #0a0f1e;"></div>
+    <div style="width: 45px; height: 60px; background: #0d6efd; opacity: 0.75; border-right: 1px solid #0a0f1e;"></div>
+    <div style="width: 45px; height: 140px; background: #0d6efd; opacity: 0.75; border-right: 1px solid #0a0f1e;"></div>
+    <div style="width: 45px; height: 160px; background: #0d6efd; opacity: 0.75; border-right: 1px solid #0a0f1e;"></div>
+    <div style="width: 45px; height: 100px; background: #0d6efd; opacity: 0.75;"></div>
+
+  </div>
+
+  <div style="display: flex; justify-content: center; gap: 0; padding: 0.3rem 1rem 0; color: #6b7280; font-size: 0.55rem;">
+    <span style="width: 45px; text-align: center;">145</span>
+    <span style="width: 45px; text-align: center;">150</span>
+    <span style="width: 45px; text-align: center;">155</span>
+    <span style="width: 45px; text-align: center;">160</span>
+    <span style="width: 45px; text-align: center;">165</span>
+    <span style="width: 45px; text-align: center;">170</span>
+    <span style="width: 45px; text-align: center;">175</span>
+    <span style="width: 45px; text-align: center;">180</span>
+    <span style="width: 45px; text-align: center;">185</span>
+  </div>
+
+  <div style="color: #fcd34d; font-size: 0.6rem; text-align: center; margin-top: 0.8rem;">
+    ⚠️ Dois picos — um para mulheres (155-160) e outro para homens (175-180)
+  </div>
+
+</div>
+
+</details>
+
+<details>
+<summary>📊 Histograma Uniforme — Lançamento de um Dado</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); max-width: 700px; margin: 1rem auto; font-family: 'Segoe UI', system-ui, sans-serif;">
+
+  <div style="color: #fbbf24; font-weight: 700; font-size: 0.9rem; text-align: center; margin-bottom: 0.5rem;">Uniforme</div>
+  <div style="color: #6b7280; font-size: 0.6rem; text-align: center; margin-bottom: 1.5rem;">Lançamento de um dado — todas as classes com frequência semelhante</div>
+
+  <div style="display: flex; align-items: flex-end; justify-content: center; gap: 0; height: 200px; padding: 0 1rem; border-bottom: 2px solid #4b5563; border-left: 2px solid #4b5563;">
+
+    <div style="width: 55px; height: 100px; background: #0d6efd; opacity: 0.75; border-right: 1px solid #0a0f1e;"></div>
+    <div style="width: 55px; height: 100px; background: #0d6efd; opacity: 0.75; border-right: 1px solid #0a0f1e;"></div>
+    <div style="width: 55px; height: 100px; background: #0d6efd; opacity: 0.75; border-right: 1px solid #0a0f1e;"></div>
+    <div style="width: 55px; height: 100px; background: #0d6efd; opacity: 0.75; border-right: 1px solid #0a0f1e;"></div>
+    <div style="width: 55px; height: 100px; background: #0d6efd; opacity: 0.75; border-right: 1px solid #0a0f1e;"></div>
+    <div style="width: 55px; height: 100px; background: #0d6efd; opacity: 0.75;"></div>
+
+  </div>
+
+  <div style="display: flex; justify-content: center; gap: 0; padding: 0.3rem 1rem 0; color: #6b7280; font-size: 0.55rem;">
+    <span style="width: 55px; text-align: center;">1</span>
+    <span style="width: 55px; text-align: center;">2</span>
+    <span style="width: 55px; text-align: center;">3</span>
+    <span style="width: 55px; text-align: center;">4</span>
+    <span style="width: 55px; text-align: center;">5</span>
+    <span style="width: 55px; text-align: center;">6</span>
+  </div>
+
+  <div style="color: #6ee7b7; font-size: 0.6rem; text-align: center; margin-top: 0.8rem;">
+    ✅ Todas as barras com a mesma altura
+  </div>
+
+</div>
+
+</details>
+
+#### Resumo Visual das 5 Formas
+
+<details>
+<summary>📊 Comparação das 5 Formas de Histograma</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); max-width: 900px; margin: 1rem auto; font-family: 'Segoe UI', system-ui, sans-serif;">
+
+  <div style="color: #fbbf24; font-weight: 700; font-size: 0.9rem; text-align: center; margin-bottom: 1.5rem;">As 5 Formas Típicas de Histograma</div>
+
+  <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+
+    <div style="flex: 0 1 160px; background: #1a1a2e; border-radius: 10px; padding: 0.8rem; border: 1px solid rgba(255,255,255,0.05); text-align: center;">
+      <div style="color: #6ee7b7; font-weight: 600; font-size: 0.65rem; margin-bottom: 0.5rem;">SIMÉTRICA</div>
+      <div style="display: flex; align-items: flex-end; justify-content: center; gap: 0; height: 60px;">
+        <div style="width: 12px; height: 15px; background: #0d6efd; opacity: 0.75;"></div>
+        <div style="width: 12px; height: 30px; background: #0d6efd; opacity: 0.75;"></div>
+        <div style="width: 12px; height: 50px; background: #0d6efd; opacity: 0.75;"></div>
+        <div style="width: 12px; height: 60px; background: #0d6efd; opacity: 0.75;"></div>
+        <div style="width: 12px; height: 50px; background: #0d6efd; opacity: 0.75;"></div>
+        <div style="width: 12px; height: 30px; background: #0d6efd; opacity: 0.75;"></div>
+        <div style="width: 12px; height: 15px; background: #0d6efd; opacity: 0.75;"></div>
+      </div>
+    </div>
+
+    <div style="flex: 0 1 160px; background: #1a1a2e; border-radius: 10px; padding: 0.8rem; border: 1px solid rgba(255,255,255,0.05); text-align: center;">
+      <div style="color: #f87171; font-weight: 600; font-size: 0.65rem; margin-bottom: 0.5rem;">ASSIM. DIREITA</div>
+      <div style="display: flex; align-items: flex-end; justify-content: center; gap: 0; height: 60px;">
+        <div style="width: 12px; height: 60px; background: #0d6efd; opacity: 0.75;"></div>
+        <div style="width: 12px; height: 45px; background: #0d6efd; opacity: 0.75;"></div>
+        <div style="width: 12px; height: 30px; background: #0d6efd; opacity: 0.75;"></div>
+        <div style="width: 12px; height: 18px; background: #0d6efd; opacity: 0.75;"></div>
+        <div style="width: 12px; height: 10px; background: #0d6efd; opacity: 0.75;"></div>
+        <div style="width: 12px; height: 5px; background: #0d6efd; opacity: 0.75;"></div>
+        <div style="width: 12px; height: 2px; background: #0d6efd; opacity: 0.75;"></div>
+      </div>
+    </div>
+
+    <div style="flex: 0 1 160px; background: #1a1a2e; border-radius: 10px; padding: 0.8rem; border: 1px solid rgba(255,255,255,0.05); text-align: center;">
+      <div style="color: #f87171; font-weight: 600; font-size: 0.65rem; margin-bottom: 0.5rem;">ASSIM. ESQUERDA</div>
+      <div style="display: flex; align-items: flex-end; justify-content: center; gap: 0; height: 60px;">
+        <div style="width: 12px; height: 2px; background: #0d6efd; opacity: 0.75;"></div>
+        <div style="width: 12px; height: 5px; background: #0d6efd; opacity: 0.75;"></div>
+        <div style="width: 12px; height: 10px; background: #0d6efd; opacity: 0.75;"></div>
+        <div style="width: 12px; height: 18px; background: #0d6efd; opacity: 0.75;"></div>
+        <div style="width: 12px; height: 30px; background: #0d6efd; opacity: 0.75;"></div>
+        <div style="width: 12px; height: 45px; background: #0d6efd; opacity: 0.75;"></div>
+        <div style="width: 12px; height: 60px; background: #0d6efd; opacity: 0.75;"></div>
+      </div>
+    </div>
+
+    <div style="flex: 0 1 160px; background: #1a1a2e; border-radius: 10px; padding: 0.8rem; border: 1px solid rgba(255,255,255,0.05); text-align: center;">
+      <div style="color: #fcd34d; font-weight: 600; font-size: 0.65rem; margin-bottom: 0.5rem;">BIMODAL</div>
+      <div style="display: flex; align-items: flex-end; justify-content: center; gap: 0; height: 60px;">
+        <div style="width: 12px; height: 12px; background: #0d6efd; opacity: 0.75;"></div>
+        <div style="width: 12px; height: 50px; background: #0d6efd; opacity: 0.75;"></div>
+        <div style="width: 12px; height: 60px; background: #0d6efd; opacity: 0.75;"></div>
+        <div style="width: 12px; height: 40px; background: #0d6efd; opacity: 0.75;"></div>
+        <div style="width: 12px; height: 10px; background: #0d6efd; opacity: 0.75;"></div>
+        <div style="width: 12px; height: 30px; background: #0d6efd; opacity: 0.75;"></div>
+        <div style="width: 12px; height: 55px; background: #0d6efd; opacity: 0.75;"></div>
+      </div>
+    </div>
+
+    <div style="flex: 0 1 160px; background: #1a1a2e; border-radius: 10px; padding: 0.8rem; border: 1px solid rgba(255,255,255,0.05); text-align: center;">
+      <div style="color: #6ee7b7; font-weight: 600; font-size: 0.65rem; margin-bottom: 0.5rem;">UNIFORME</div>
+      <div style="display: flex; align-items: flex-end; justify-content: center; gap: 0; height: 60px;">
+        <div style="width: 12px; height: 55px; background: #0d6efd; opacity: 0.75;"></div>
+        <div style="width: 12px; height: 55px; background: #0d6efd; opacity: 0.75;"></div>
+        <div style="width: 12px; height: 55px; background: #0d6efd; opacity: 0.75;"></div>
+        <div style="width: 12px; height: 55px; background: #0d6efd; opacity: 0.75;"></div>
+        <div style="width: 12px; height: 55px; background: #0d6efd; opacity: 0.75;"></div>
+        <div style="width: 12px; height: 55px; background: #0d6efd; opacity: 0.75;"></div>
+        <div style="width: 12px; height: 55px; background: #0d6efd; opacity: 0.75;"></div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+</details>
+
+### Boxplot (Diagrama de Caixa)
+
+#### O que é?
+
+> Um **boxplot** é um gráfico de distribuição que resume cinco medidas num único desenho: o **mínimo**, o **primeiro quartil (Q1)**, a **mediana (Q2)**, o **terceiro quartil (Q3)** e o **máximo**. Os outliers são desenhados como pontos isolados.
+
+&emsp;&emsp;&emsp;O boxplot é uma das ferramentas mais poderosas da estatística descritiva. Num único desenho, vês a mediana, a dispersão, a simetria e os outliers. É especialmente útil para **comparar distribuições** entre grupos.
+
+#### O que é um Quartil?
+
+> Um **quartil** divide os dados ordenados em **4 partes iguais**. Cada parte contém 25% dos dados.
+
+- **Q1** (primeiro quartil) → 25% dos dados estão abaixo dele
+- **Q2** (segundo quartil = mediana) → 50% dos dados estão abaixo dele
+- **Q3** (terceiro quartil) → 75% dos dados estão abaixo dele
+
+<details>
+<summary>📊 Divisão dos Dados em 4 Partes Iguais</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); max-width: 750px; margin: 1rem auto; font-family: 'Segoe UI', system-ui, sans-serif;">
+
+  <div style="color: #fbbf24; font-weight: 700; font-size: 0.9rem; text-align: center; margin-bottom: 1.5rem;">Divisão dos Dados em 4 Partes Iguais</div>
+
+  <div style="display: flex; gap: 0.3rem; justify-content: center;">
+
+    <div style="flex: 1; background: #1a3a5c; padding: 0.8rem 0.3rem; border-radius: 8px 0 0 8px; text-align: center;">
+      <span style="color: #93c5fd; font-size: 0.6rem;">25% dos dados</span>
+    </div>
+
+    <div style="flex: 1; background: #2d1b69; padding: 0.8rem 0.3rem; text-align: center;">
+      <span style="color: #c4b5fd; font-size: 0.6rem;">25% dos dados</span>
+    </div>
+
+    <div style="flex: 1; background: #2d1b69; padding: 0.8rem 0.3rem; text-align: center;">
+      <span style="color: #c4b5fd; font-size: 0.6rem;">25% dos dados</span>
+    </div>
+
+    <div style="flex: 1; background: #1a3a5c; padding: 0.8rem 0.3rem; border-radius: 0 8px 8px 0; text-align: center;">
+      <span style="color: #93c5fd; font-size: 0.6rem;">25% dos dados</span>
+    </div>
+
+  </div>
+
+  <div style="display: flex; justify-content: space-between; margin-top: 0.8rem; padding: 0 0.3rem;">
+    <span style="color: #60a5fa; font-size: 0.65rem; font-weight: 700;">Mínimo</span>
+    <span style="color: #60a5fa; font-size: 0.65rem; font-weight: 700;">Q1</span>
+    <span style="color: #60a5fa; font-size: 0.65rem; font-weight: 700;">Q2 (Mediana)</span>
+    <span style="color: #60a5fa; font-size: 0.65rem; font-weight: 700;">Q3</span>
+    <span style="color: #60a5fa; font-size: 0.65rem; font-weight: 700;">Máximo</span>
+  </div>
+
+</div>
+
+</details>
+
+#### Anatomia de um boxplot
+
+```mermaid
+flowchart LR
+    A["Mínimo"] --> B["Q1"]
+    B --> C["Mediana"]
+    C --> D["Q3"]
+    D --> E["Máximo"]
+    
+    style A fill:#e3f2fd,stroke:#0d6efd
+    style B fill:#cfe2ff,stroke:#0d6efd
+    style C fill:#0d6efd,color:#fff,stroke:#0d6efd
+    style D fill:#cfe2ff,stroke:#0d6efd
+    style E fill:#e3f2fd,stroke:#0d6efd
+```
+
+| Elemento | Significado |
+|----------|-------------|
+| **Mínimo** | O menor valor (excluindo outliers) |
+| **Q1** | 25% dos dados estão abaixo deste valor |
+| **Mediana (Q2)** | 50% dos dados estão abaixo deste valor |
+| **Q3** | 75% dos dados estão abaixo deste valor |
+| **Máximo** | O maior valor (excluindo outliers) |
+| **Outliers** | Pontos fora do intervalo [Q1 − 1,5×IQR, Q3 + 1,5×IQR] |
+
+&emsp;&emsp;&emsp;O **IQR** (intervalo interquartil) é a distância entre Q3 e Q1: IQR = Q3 − Q1. É uma medida de dispersão robusta.
+
+### Explicação Detalhada do Boxplot — Ponto por Ponto
+
+&emsp;&emsp;&emsp;Vamos explicar cada elemento do boxplot com **gráficos visuais** e **exemplos concretos**. Vamos usar um conjunto de dados simples para que possas ver exatamente onde cada ponto fica.
+
+#### Os Dados de Exemplo
+
+&emsp;&emsp;&emsp;Imagina que tens as notas de **11 alunos**:
+
+| Aluno | Nota |
+|-------|------|
+| 1 | 4 |
+| 2 | 6 |
+| 3 | 7 |
+| 4 | 8 |
+| 5 | 9 |
+| 6 | 10 |
+| 7 | 12 |
+| 8 | 13 |
+| 9 | 15 |
+| 10 | 18 |
+| 11 | 20 |
+
+**Passo 1 — Ordenar os dados (do menor para o maior):**
+
+`4, 6, 7, 8, 9, 10, 12, 13, 15, 18, 20`
+
+Temos **n = 11** valores.
+
+#### Elemento 1 — Mínimo
+
+> O **mínimo** é o **menor valor** do conjunto de dados — **excluindo outliers**.
+
+**No nosso exemplo:**
+
+- Dados ordenados: `4, 6, 7, 8, 9, 10, 12, 13, 15, 18, 20`
+- O menor valor é **4**
+- Como não há outliers (vamos verificar depois), o mínimo é **4**
+
+<details>
+<summary>📊 Mínimo = 4</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); max-width: 700px; margin: 1rem auto; font-family: 'Segoe UI', system-ui, sans-serif;">
+
+  <div style="color: #fbbf24; font-weight: 700; font-size: 0.85rem; text-align: center; margin-bottom: 1.2rem;">Mínimo = 4</div>
+
+  <div style="position: relative; height: 40px; border-bottom: 2px solid #4b5563; margin: 0 1rem;">
+
+    <div style="position: absolute; left: 0; bottom: -5px; width: 14px; height: 14px; background: #0d6efd; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 0; bottom: -25px; transform: translateX(-50%); color: #60a5fa; font-size: 0.65rem; font-weight: 700;">4</span>
+
+    <div style="position: absolute; left: 10%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 10%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">6</span>
+
+    <div style="position: absolute; left: 20%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 20%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">7</span>
+
+    <div style="position: absolute; left: 30%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 30%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">8</span>
+
+    <div style="position: absolute; left: 40%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 40%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">9</span>
+
+    <div style="position: absolute; left: 50%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 50%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">10</span>
+
+    <div style="position: absolute; left: 60%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 60%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">12</span>
+
+    <div style="position: absolute; left: 70%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 70%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">13</span>
+
+    <div style="position: absolute; left: 80%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 80%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">15</span>
+
+    <div style="position: absolute; left: 90%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 90%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">18</span>
+
+    <div style="position: absolute; left: 100%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 100%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">20</span>
+
+  </div>
+
+</div>
+
+</details>
+
+O mínimo é o **primeiro ponto** da linha — o valor 4.
+
+#### Elemento 2 — Q1 (Primeiro Quartil)
+
+> O **Q1** é o valor abaixo do qual estão **25% dos dados**. É a fronteira entre o primeiro quarto e o resto.
+
+**Como calcular Q1 (com n = 11):**
+
+- Posição de Q1 = (n + 1) × 0,25 = (11 + 1) × 0,25 = 12 × 0,25 = **3ª posição**
+- O 3º valor nos dados ordenados é **7**
+
+**Verificação:** 25% de 11 = 2,75. Aproximadamente 3 valores estão abaixo de Q1. Os valores abaixo de 7 são: 4, 6 → 2 valores. O Q1 está entre o 2º e o 3º valor.
+
+<details>
+<summary>📊 Q1 = 7 → 25% dos dados estão abaixo</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); max-width: 700px; margin: 1rem auto; font-family: 'Segoe UI', system-ui, sans-serif;">
+
+  <div style="color: #fbbf24; font-weight: 700; font-size: 0.85rem; text-align: center; margin-bottom: 1.2rem;">Q1 = 7 → 25% dos dados estão abaixo</div>
+
+  <div style="position: relative; height: 40px; border-bottom: 2px solid #4b5563; margin: 0 1rem;">
+
+    <div style="position: absolute; left: 0; top: -30px; width: 20%; height: 30px; background: rgba(13,110,253,0.15); border-bottom: 1px dashed #60a5fa;"></div>
+
+    <div style="position: absolute; left: 0; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 0; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">4</span>
+
+    <div style="position: absolute; left: 10%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 10%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">6</span>
+
+    <div style="position: absolute; left: 20%; bottom: -8px; width: 14px; height: 14px; background: #0d6efd; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 20%; bottom: -25px; transform: translateX(-50%); color: #60a5fa; font-size: 0.65rem; font-weight: 700;">7</span>
+
+    <div style="position: absolute; left: 30%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 30%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">8</span>
+
+    <div style="position: absolute; left: 40%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 40%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">9</span>
+
+    <div style="position: absolute; left: 50%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 50%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">10</span>
+
+    <div style="position: absolute; left: 60%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 60%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">12</span>
+
+    <div style="position: absolute; left: 70%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 70%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">13</span>
+
+    <div style="position: absolute; left: 80%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 80%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">15</span>
+
+    <div style="position: absolute; left: 90%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 90%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">18</span>
+
+    <div style="position: absolute; left: 100%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 100%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">20</span>
+
+  </div>
+
+  <div style="color: #60a5fa; font-size: 0.6rem; text-align: center; margin-top: 0.5rem;">
+    25% dos dados estão abaixo de Q1 = 7
+  </div>
+
+</div>
+
+</details>
+
+O Q1 = **7**. Os valores 4 e 6 estão abaixo dele (25% dos dados).
+
+#### Elemento 3 — Mediana (Q2)
+
+> A **mediana** é o valor que divide os dados em **duas metades iguais**. 50% dos dados estão abaixo, 50% estão acima.
+
+**Como calcular a mediana (com n = 11):**
+
+- Posição da mediana = (n + 1) / 2 = (11 + 1) / 2 = **6ª posição**
+- O 6º valor nos dados ordenados é **10**
+
+<details>
+<summary>📊 Mediana = 10 → 50% dos dados estão abaixo e 50% acima</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); max-width: 700px; margin: 1rem auto; font-family: 'Segoe UI', system-ui, sans-serif;">
+
+  <div style="color: #fbbf24; font-weight: 700; font-size: 0.85rem; text-align: center; margin-bottom: 1.2rem;">Mediana = 10 → 50% dos dados estão abaixo e 50% acima</div>
+
+  <div style="position: relative; height: 40px; border-bottom: 2px solid #4b5563; margin: 0 1rem;">
+
+    <div style="position: absolute; left: 0; top: -30px; width: 50%; height: 30px; background: rgba(13,110,253,0.15); border-bottom: 1px dashed #60a5fa;"></div>
+    <div style="position: absolute; left: 50%; top: -30px; width: 50%; height: 30px; background: rgba(13,110,253,0.08); border-bottom: 1px dashed #60a5fa;"></div>
+
+    <div style="position: absolute; left: 0; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 0; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">4</span>
+
+    <div style="position: absolute; left: 10%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 10%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">6</span>
+
+    <div style="position: absolute; left: 20%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 20%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">7</span>
+
+    <div style="position: absolute; left: 30%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 30%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">8</span>
+
+    <div style="position: absolute; left: 40%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 40%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">9</span>
+
+    <div style="position: absolute; left: 50%; bottom: -8px; width: 14px; height: 14px; background: #0d6efd; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 50%; bottom: -25px; transform: translateX(-50%); color: #60a5fa; font-size: 0.65rem; font-weight: 700;">10</span>
+
+    <div style="position: absolute; left: 60%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 60%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">12</span>
+
+    <div style="position: absolute; left: 70%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 70%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">13</span>
+
+    <div style="position: absolute; left: 80%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 80%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">15</span>
+
+    <div style="position: absolute; left: 90%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 90%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">18</span>
+
+    <div style="position: absolute; left: 100%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 100%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">20</span>
+
+  </div>
+
+  <div style="display: flex; justify-content: space-between; padding: 0 1rem; margin-top: 0.5rem;">
+    <span style="color: #60a5fa; font-size: 0.6rem;">50% dos dados</span>
+    <span style="color: #60a5fa; font-size: 0.6rem;">50% dos dados</span>
+  </div>
+
+</div>
+
+</details>
+
+A mediana = **10**. Cinco valores estão abaixo (4, 6, 7, 8, 9) e cinco estão acima (12, 13, 15, 18, 20).
+
+#### Elemento 4 — Q3 (Terceiro Quartil)
+
+> O **Q3** é o valor abaixo do qual estão **75% dos dados**. É a fronteira entre os três primeiros quartos e o último.
+
+**Como calcular Q3 (com n = 11):**
+
+- Posição de Q3 = (n + 1) × 0,75 = (11 + 1) × 0,75 = 12 × 0,75 = **9ª posição**
+- O 9º valor nos dados ordenados é **15**
+
+<details>
+<summary>📊 Q3 = 15 → 75% dos dados estão abaixo</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); max-width: 700px; margin: 1rem auto; font-family: 'Segoe UI', system-ui, sans-serif;">
+
+  <div style="color: #fbbf24; font-weight: 700; font-size: 0.85rem; text-align: center; margin-bottom: 1.2rem;">Q3 = 15 → 75% dos dados estão abaixo</div>
+
+  <div style="position: relative; height: 40px; border-bottom: 2px solid #4b5563; margin: 0 1rem;">
+
+    <div style="position: absolute; left: 0; top: -30px; width: 80%; height: 30px; background: rgba(13,110,253,0.12); border-bottom: 1px dashed #60a5fa;"></div>
+
+    <div style="position: absolute; left: 0; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 0; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">4</span>
+
+    <div style="position: absolute; left: 10%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 10%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">6</span>
+
+    <div style="position: absolute; left: 20%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 20%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">7</span>
+
+    <div style="position: absolute; left: 30%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 30%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">8</span>
+
+    <div style="position: absolute; left: 40%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 40%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">9</span>
+
+    <div style="position: absolute; left: 50%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 50%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">10</span>
+
+    <div style="position: absolute; left: 60%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 60%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">12</span>
+
+    <div style="position: absolute; left: 70%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 70%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">13</span>
+
+    <div style="position: absolute; left: 80%; bottom: -8px; width: 14px; height: 14px; background: #0d6efd; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 80%; bottom: -25px; transform: translateX(-50%); color: #60a5fa; font-size: 0.65rem; font-weight: 700;">15</span>
+
+    <div style="position: absolute; left: 90%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 90%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">18</span>
+
+    <div style="position: absolute; left: 100%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 100%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">20</span>
+
+  </div>
+
+  <div style="color: #60a5fa; font-size: 0.6rem; text-align: center; margin-top: 0.5rem;">
+    75% dos dados estão abaixo de Q3 = 15
+  </div>
+
+</div>
+
+</details>
+
+O Q3 = **15**. Oito valores estão abaixo dele (4, 6, 7, 8, 9, 10, 12, 13) — 75% dos dados.
+
+#### Elemento 5 — Máximo
+
+> O **máximo** é o **maior valor** do conjunto de dados — **excluindo outliers**.
+
+**No nosso exemplo:**
+
+- Dados ordenados: `4, 6, 7, 8, 9, 10, 12, 13, 15, 18, 20`
+- O maior valor é **20**
+- Como não há outliers (vamos verificar a seguir), o máximo é **20**
+
+<details>
+<summary>📊 Máximo = 20</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); max-width: 700px; margin: 1rem auto; font-family: 'Segoe UI', system-ui, sans-serif;">
+
+  <div style="color: #fbbf24; font-weight: 700; font-size: 0.85rem; text-align: center; margin-bottom: 1.2rem;">Máximo = 20</div>
+
+  <div style="position: relative; height: 40px; border-bottom: 2px solid #4b5563; margin: 0 1rem;">
+
+    <div style="position: absolute; left: 0; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 0; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">4</span>
+
+    <div style="position: absolute; left: 10%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 10%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">6</span>
+
+    <div style="position: absolute; left: 20%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 20%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">7</span>
+
+    <div style="position: absolute; left: 30%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 30%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">8</span>
+
+    <div style="position: absolute; left: 40%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 40%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">9</span>
+
+    <div style="position: absolute; left: 50%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 50%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">10</span>
+
+    <div style="position: absolute; left: 60%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 60%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">12</span>
+
+    <div style="position: absolute; left: 70%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 70%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">13</span>
+
+    <div style="position: absolute; left: 80%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 80%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">15</span>
+
+    <div style="position: absolute; left: 90%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 90%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">18</span>
+
+    <div style="position: absolute; left: 100%; bottom: -8px; width: 14px; height: 14px; background: #0d6efd; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 100%; bottom: -25px; transform: translateX(-50%); color: #60a5fa; font-size: 0.65rem; font-weight: 700;">20</span>
+
+  </div>
+
+</div>
+
+</details>
+
+O máximo = **20**. É o último ponto da linha.
+
+#### Elemento 6 — Outliers
+
+> Um **outlier** é um valor que está **muito afastado** dos restantes. Por convenção, considera-se outlier qualquer valor fora do intervalo:
+>
+> **[Q1 − 1,5×IQR, Q3 + 1,5×IQR]**
+>
+> Onde **IQR = Q3 − Q1** (intervalo interquartil).
+
+**No nosso exemplo:**
+
+- Q1 = 7
+- Q3 = 15
+- IQR = Q3 − Q1 = 15 − 7 = **8**
+- Limite inferior = Q1 − 1,5×IQR = 7 − 1,5×8 = 7 − 12 = **−5**
+- Limite superior = Q3 + 1,5×IQR = 15 + 1,5×8 = 15 + 12 = **27**
+
+**Conclusão:** Nenhum valor está abaixo de −5 ou acima de 27. **Não há outliers.**
+
+<details>
+<summary>📊 Zona de Outliers e Zona Normal</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); max-width: 700px; margin: 1rem auto; font-family: 'Segoe UI', system-ui, sans-serif;">
+
+  <div style="color: #fbbf24; font-weight: 700; font-size: 0.85rem; text-align: center; margin-bottom: 1.5rem;">Zona de Outliers e Zona Normal</div>
+
+  <div style="display: flex; align-items: center; gap: 0;">
+
+    <div style="flex: 0 0 15%; background: #5c1a1a; padding: 0.8rem 0.3rem; border-radius: 6px 0 0 6px; text-align: center;">
+      <span style="color: #f87171; font-size: 0.6rem; font-weight: 600;">Outliers</span>
+    </div>
+
+    <div style="flex: 1; background: #1a5c3a; padding: 0.8rem 0.3rem; text-align: center;">
+      <span style="color: #6ee7b7; font-size: 0.6rem; font-weight: 600;">Zona Normal (sem outliers)</span>
+    </div>
+
+    <div style="flex: 0 0 10%; background: #5c1a1a; padding: 0.8rem 0.3rem; border-radius: 0 6px 6px 0; text-align: center;">
+      <span style="color: #f87171; font-size: 0.6rem; font-weight: 600;">Outliers</span>
+    </div>
+
+  </div>
+
+  <div style="display: flex; justify-content: space-between; margin-top: 0.5rem; padding: 0 0.3rem;">
+    <span style="color: #f87171; font-size: 0.6rem;">−5</span>
+    <span style="color: #6b7280; font-size: 0.6rem;">Zona onde todos os dados estão</span>
+    <span style="color: #f87171; font-size: 0.6rem;">27</span>
+  </div>
+
+  <div style="color: #6ee7b7; font-size: 0.6rem; text-align: center; margin-top: 1rem;">
+    ✅ Nenhum valor está abaixo de −5 ou acima de 27 → não há outliers
+  </div>
+
+</div>
+
+</details>
+
+**Exemplo com outlier:** Imagina que adicionamos um aluno com nota **30** (impossível, mas serve de exemplo):
+
+- Dados: `4, 6, 7, 8, 9, 10, 12, 13, 15, 18, 20, 30`
+- Q1 = 7, Q3 = 16,5, IQR = 9,5
+- Limite superior = 16,5 + 1,5×9,5 = 16,5 + 14,25 = **30,75**
+- O valor 30 está **dentro** do limite (30 < 30,75) → **não é outlier**
+
+**Agora com 50:**
+
+- Dados: `4, 6, 7, 8, 9, 10, 12, 13, 15, 18, 20, 50`
+- Q1 = 7, Q3 = 16,5, IQR = 9,5
+- Limite superior = 16,5 + 1,5×9,5 = **30,75**
+- O valor 50 está **fora** do limite (50 > 30,75) → **é outlier**
+
+<details>
+<summary>📊 Exemplo com Outlier (50)</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); max-width: 700px; margin: 1rem auto; font-family: 'Segoe UI', system-ui, sans-serif;">
+
+  <div style="color: #fbbf24; font-weight: 700; font-size: 0.85rem; text-align: center; margin-bottom: 1.2rem;">Exemplo com Outlier (50)</div>
+
+  <div style="position: relative; height: 40px; border-bottom: 2px solid #4b5563; margin: 0 1rem;">
+
+    <div style="position: absolute; left: 0; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 0; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">4</span>
+
+    <div style="position: absolute; left: 8%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 8%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">6</span>
+
+    <div style="position: absolute; left: 16%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 16%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">7</span>
+
+    <div style="position: absolute; left: 24%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 24%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">8</span>
+
+    <div style="position: absolute; left: 32%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 32%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">9</span>
+
+    <div style="position: absolute; left: 40%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 40%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">10</span>
+
+    <div style="position: absolute; left: 48%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 48%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">12</span>
+
+    <div style="position: absolute; left: 56%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 56%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">13</span>
+
+    <div style="position: absolute; left: 64%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 64%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">15</span>
+
+    <div style="position: absolute; left: 72%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 72%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">18</span>
+
+    <div style="position: absolute; left: 80%; bottom: -4px; width: 8px; height: 8px; background: #4b5563; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 80%; bottom: -25px; transform: translateX(-50%); color: #6b7280; font-size: 0.55rem;">20</span>
+
+    <div style="position: absolute; left: 95%; bottom: -8px; width: 14px; height: 14px; background: #dc3545; border-radius: 50%; transform: translateX(-50%);"></div>
+    <span style="position: absolute; left: 95%; bottom: -25px; transform: translateX(-50%); color: #f87171; font-size: 0.65rem; font-weight: 700;">50</span>
+
+  </div>
+
+  <div style="color: #f87171; font-size: 0.6rem; text-align: center; margin-top: 0.5rem;">
+    ⚠️ O valor 50 é um outlier (está acima do limite superior de 30,75)
+  </div>
+
+</div>
+
+</details>
+
+O valor 50 é um **outlier** porque está acima do limite superior (30,75). No boxplot, aparece como um **ponto isolado** acima do bigode.
+
+#### O Boxplot Completo
+
+&emsp;&emsp;&emsp;Agora que já sabes cada elemento, vê o boxplot completo com todos os pontos:
+
+<details>
+<summary>📊 Boxplot Completo — Notas de 11 Alunos</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); max-width: 750px; margin: 1rem auto; font-family: 'Segoe UI', system-ui, sans-serif;">
+
+  <div style="color: #fbbf24; font-weight: 700; font-size: 0.9rem; text-align: center; margin-bottom: 1.5rem;">Boxplot Completo — Notas de 11 Alunos</div>
+
+  <div style="display: flex; justify-content: center; align-items: flex-end; gap: 0.3rem; height: 200px; padding: 0 1rem;">
+
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.3rem;">
+      <div style="position: relative; width: 80px; height: 180px;">
+
+        <div style="position: absolute; left: 50%; top: 5%; width: 2px; height: 95%; background: #60a5fa; transform: translateX(-50%);"></div>
+
+        <div style="position: absolute; left: 25%; top: 5%; width: 50%; height: 2px; background: #60a5fa;"></div>
+
+        <div style="position: absolute; left: 25%; top: 45%; width: 50%; height: 2px; background: #60a5fa;"></div>
+
+        <div style="position: absolute; left: 25%; top: 45%; width: 50%; height: 40%; background: #1e3a5f; border: 2px solid #60a5fa; border-radius: 4px;"></div>
+
+        <div style="position: absolute; left: 25%; top: 65%; width: 50%; height: 2px; background: #60a5fa;"></div>
+
+        <div style="position: absolute; left: 25%; top: 95%; width: 50%; height: 2px; background: #60a5fa;"></div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div style="display: flex; justify-content: space-between; padding: 0 1rem; margin-top: 0.5rem;">
+    <span style="color: #60a5fa; font-size: 0.6rem;">Mínimo: 4</span>
+    <span style="color: #60a5fa; font-size: 0.6rem;">Q1: 7</span>
+    <span style="color: #60a5fa; font-size: 0.6rem;">Mediana: 10</span>
+    <span style="color: #60a5fa; font-size: 0.6rem;">Q3: 15</span>
+    <span style="color: #60a5fa; font-size: 0.6rem;">Máximo: 20</span>
+  </div>
+
+</div>
+
+</details>
+
+**Legenda visual:**
+
+| Elemento | Valor | O que significa |
+|----------|-------|-----------------|
+| **Mínimo** | 4 | O menor valor (excluindo outliers) |
+| **Q1** | 7 | 25% dos dados estão abaixo de 7 |
+| **Mediana** | 10 | 50% dos dados estão abaixo de 10 |
+| **Q3** | 15 | 75% dos dados estão abaixo de 15 |
+| **Máximo** | 20 | O maior valor (excluindo outliers) |
+| **IQR** | 8 | Q3 − Q1 = 15 − 7 = 8 |
+| **Outliers** | Nenhum | Nenhum valor fora de [−5, 27] |
+
+#### Resumo Visual
+
+<details>
+<summary>📊 Anatomia Completa de um Boxplot</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); max-width: 750px; margin: 1rem auto; font-family: 'Segoe UI', system-ui, sans-serif;">
+
+  <div style="color: #fbbf24; font-weight: 700; font-size: 0.9rem; text-align: center; margin-bottom: 1.5rem;">Anatomia Completa de um Boxplot</div>
+
+  <div style="position: relative; height: 200px; padding: 0 1rem;">
+
+    <div style="position: absolute; left: 5%; bottom: 0; width: 90%; height: 2px; background: #4b5563;"></div>
+
+    <div style="position: absolute; left: 10%; bottom: 0; width: 2px; height: 80%; background: #60a5fa;"></div>
+    <div style="position: absolute; left: 8%; bottom: 80%; width: 4%; height: 2px; background: #60a5fa;"></div>
+
+    <div style="position: absolute; left: 30%; bottom: 0; width: 2px; height: 80%; background: #60a5fa;"></div>
+    <div style="position: absolute; left: 28%; bottom: 80%; width: 4%; height: 2px; background: #60a5fa;"></div>
+
+    <div style="position: absolute; left: 60%; bottom: 0; width: 2px; height: 80%; background: #60a5fa;"></div>
+    <div style="position: absolute; left: 58%; bottom: 80%; width: 4%; height: 2px; background: #60a5fa;"></div>
+
+    <div style="position: absolute; left: 85%; bottom: 0; width: 2px; height: 80%; background: #60a5fa;"></div>
+    <div style="position: absolute; left: 83%; bottom: 80%; width: 4%; height: 2px; background: #60a5fa;"></div>
+
+    <div style="position: absolute; left: 30%; bottom: 30%; width: 30%; height: 40%; background: #1e3a5f; border: 2px solid #60a5fa; border-radius: 4px;"></div>
+    <div style="position: absolute; left: 30%; bottom: 48%; width: 30%; height: 2px; background: #60a5fa;"></div>
+
+    <div style="position: absolute; left: 10%; bottom: 0; width: 20%; height: 2px; background: #60a5fa; border-top: 1px dashed #60a5fa;"></div>
+    <div style="position: absolute; left: 60%; bottom: 0; width: 25%; height: 2px; background: #60a5fa; border-top: 1px dashed #60a5fa;"></div>
+
+  </div>
+
+  <div style="display: flex; justify-content: space-between; padding: 0 1rem; margin-top: 0.5rem;">
+    <span style="color: #60a5fa; font-size: 0.6rem; font-weight: 700;">Mínimo</span>
+    <span style="color: #60a5fa; font-size: 0.6rem; font-weight: 700;">Q1</span>
+    <span style="color: #60a5fa; font-size: 0.6rem; font-weight: 700;">Mediana (Q2)</span>
+    <span style="color: #60a5fa; font-size: 0.6rem; font-weight: 700;">Q3</span>
+    <span style="color: #60a5fa; font-size: 0.6rem; font-weight: 700;">Máximo</span>
+  </div>
+
+</div>
+
+</details>
+
+#### Quando usar?
+
+- Quando queres **comparar distribuições** entre grupos
+- Quando queres **detetar outliers**
+- Quando queres ver a **mediana e os quartis**
+- Quando tens **muitos dados** e queres um resumo visual
+
+#### Exemplo visual
+
+<details>
+<summary>📊 Boxplot — Distribuição das Notas por Turma</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); max-width: 750px; margin: 1rem auto; font-family: 'Segoe UI', system-ui, sans-serif;">
+
+  <div style="color: #fbbf24; font-weight: 700; font-size: 0.9rem; text-align: center; margin-bottom: 1.5rem;">Distribuição das Notas por Turma</div>
+
+  <div style="display: flex; justify-content: center; align-items: flex-end; gap: 3rem; height: 200px; padding: 0 1rem;">
+
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.3rem;">
+      <div style="position: relative; width: 60px; height: 160px;">
+
+        <div style="position: absolute; left: 50%; top: 5%; width: 2px; height: 30%; background: #60a5fa; transform: translateX(-50%);"></div>
+
+        <div style="position: absolute; left: 25%; top: 5%; width: 50%; height: 2px; background: #60a5fa;"></div>
+
+        <div style="position: absolute; left: 25%; top: 35%; width: 50%; height: 40%; background: #1e3a5f; border: 2px solid #60a5fa; border-radius: 4px;"></div>
+
+        <div style="position: absolute; left: 25%; top: 55%; width: 50%; height: 2px; background: #60a5fa;"></div>
+
+        <div style="position: absolute; left: 50%; top: 75%; width: 2px; height: 25%; background: #60a5fa; transform: translateX(-50%);"></div>
+
+        <div style="position: absolute; left: 25%; top: 95%; width: 50%; height: 2px; background: #60a5fa;"></div>
+
+      </div>
+      <span style="color: #93c5fd; font-size: 0.7rem;">Turma A</span>
+    </div>
+
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.3rem;">
+      <div style="position: relative; width: 60px; height: 160px;">
+
+        <div style="position: absolute; left: 50%; top: 10%; width: 2px; height: 25%; background: #6ee7b7; transform: translateX(-50%);"></div>
+
+        <div style="position: absolute; left: 25%; top: 10%; width: 50%; height: 2px; background: #6ee7b7;"></div>
+
+        <div style="position: absolute; left: 25%; top: 35%; width: 50%; height: 40%; background: #1a3a2e; border: 2px solid #6ee7b7; border-radius: 4px;"></div>
+
+        <div style="position: absolute; left: 25%; top: 55%; width: 50%; height: 2px; background: #6ee7b7;"></div>
+
+        <div style="position: absolute; left: 50%; top: 75%; width: 2px; height: 15%; background: #6ee7b7; transform: translateX(-50%);"></div>
+
+        <div style="position: absolute; left: 25%; top: 90%; width: 50%; height: 2px; background: #6ee7b7;"></div>
+
+      </div>
+      <span style="color: #6ee7b7; font-size: 0.7rem;">Turma B</span>
+    </div>
+
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.3rem;">
+      <div style="position: relative; width: 60px; height: 160px;">
+
+        <div style="position: absolute; left: 50%; top: 0%; width: 2px; height: 35%; background: #fcd34d; transform: translateX(-50%);"></div>
+
+        <div style="position: absolute; left: 25%; top: 0%; width: 50%; height: 2px; background: #fcd34d;"></div>
+
+        <div style="position: absolute; left: 25%; top: 25%; width: 50%; height: 40%; background: #3a2e1a; border: 2px solid #fcd34d; border-radius: 4px;"></div>
+
+        <div style="position: absolute; left: 25%; top: 45%; width: 50%; height: 2px; background: #fcd34d;"></div>
+
+        <div style="position: absolute; left: 50%; top: 65%; width: 2px; height: 25%; background: #fcd34d; transform: translateX(-50%);"></div>
+
+        <div style="position: absolute; left: 25%; top: 90%; width: 50%; height: 2px; background: #fcd34d;"></div>
+
+        <div style="position: absolute; left: 50%; top: 95%; width: 8px; height: 8px; background: #f87171; border-radius: 50%; transform: translateX(-50%);"></div>
+
+      </div>
+      <span style="color: #fcd34d; font-size: 0.7rem;">Turma C</span>
+    </div>
+
+  </div>
+
+</div>
+
+</details>
+
+**Interpretação:** A Turma B tem a mediana mais alta (15) e a menor dispersão — é a mais consistente. A Turma A tem a mediana em 14 e um outlier acima. A Turma C tem a mediana em 13, maior dispersão e um outlier abaixo. Os boxplots permitem comparar as três turmas num único olhar.
+
+### Como interpretar um boxplot
+
+| Observação | Significado |
+|------------|-------------|
+| **Caixa larga** | Grande dispersão entre Q1 e Q3 |
+| **Caixa estreita** | Pouca dispersão entre Q1 e Q3 |
+| **Mediana ao centro** | Distribuição simétrica |
+| **Mediana à esquerda** | Distribuição assimétrica à direita |
+| **Mediana à direita** | Distribuição assimétrica à esquerda |
+| **Bigodes longos** | Valores extremos afastados |
+| **Pontos isolados** | Outliers |
+
+### Histograma vs. Boxplot — Qual Escolher?
+
+| Critério | Histograma | Boxplot |
+|----------|-----------|---------|
+| **Foco** | Forma da distribuição | Mediana e quartis |
+| **Outliers** | Difícil de ver | Claramente visível |
+| **Comparação entre grupos** | Difícil | Excelente |
+| **Frequências** | Mostra | Não mostra |
+| **Simetria** | Mostra | Mostra |
+| **Uso comum** | Análise exploratória | Comparação de grupos |
+
+**Regra prática:** Se queres ver a **forma** da distribuição → **histograma**. Se queres **comparar grupos** ou **detetar outliers** → **boxplot**. Em análise exploratória, usam-se os dois em conjunto.
+
+---
+
+## Erros Comuns em Gráficos de Distribuição
+
+### 1. Número errado de classes no histograma
+
+&emsp;&emsp;&emsp;Poucas classes escondem a forma; muitas classes criam ruído. **Solução:** Usa entre 5 e 20 classes, dependendo do número de dados.
+
+### 2. Barras separadas no histograma
+
+&emsp;&emsp;&emsp;O histograma representa intervalos contínuos, por isso as barras devem estar coladas. **Solução:** Cola as barras umas às outras.
+
+### 3. Eixo Y truncado no histograma
+
+&emsp;&emsp;&emsp;Começar o eixo Y em 5 em vez de 0 distorce a perceção das frequências. **Solução:** Começa sempre em 0.
+
+### 4. Boxplot sem contexto
+
+&emsp;&emsp;&emsp;Um boxplot sozinho não diz nada sem título, rótulos e escala. **Solução:** Inclui sempre os sete elementos da anatomia.
+
+### 5. Confundir histograma com gráfico de barras
+
+&emsp;&emsp;&emsp;O histograma mostra distribuição de uma variável quantitativa; o gráfico de barras compara categorias. **Solução:** Lembra-te: histograma = barras coladas; barras = barras separadas.
+
+### 6. Falta de título e rótulos
+
+&emsp;&emsp;&emsp;Um gráfico sem título, sem rótulos, sem fonte é inútil. **Solução:** Inclui sempre os sete elementos da anatomia.
+
+
+## Exemplo Prático
+
+&emsp;&emsp;&emsp;Vamos construir um histograma e um boxplot passo a passo.
+
+**Dados:** Notas de 20 alunos.
+
+Nota: `8 10 11 12 12 13 13 14 14 14`<br>
+Nota: `15 15 15 16 16 17 17 18 19 20`<br><br>
+
+**Passo 1 — Calcular as medidas**
+
+- Mínimo: 8
+- Q1: 12
+- Mediana: 14,5
+- Q3: 16,5
+- Máximo: 20
+- IQR: 16,5 − 12 = 4,5
+- Limite inferior: 12 − 1,5×4,5 = 5,25
+- Limite superior: 16,5 + 1,5×4,5 = 23,25
+- Outliers: nenhum (todos os valores estão entre 5,25 e 23,25)
+
+**Passo 2 — Construir o histograma**
+
+<details>
+<summary>📊 Histograma — Distribuição das Notas de 20 Alunos</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); max-width: 750px; margin: 1rem auto; font-family: 'Segoe UI', system-ui, sans-serif;">
+
+  <div style="color: #fbbf24; font-weight: 700; font-size: 0.9rem; text-align: center; margin-bottom: 1.5rem;">Distribuição das Notas de 20 Alunos</div>
+
+  <div style="display: flex; align-items: flex-end; justify-content: center; gap: 0; height: 200px; padding: 0 1rem; border-bottom: 2px solid #4b5563; border-left: 2px solid #4b5563;">
+
+    <div style="width: 50px; height: 20px; background: #0d6efd; opacity: 0.75; border-right: 1px solid #0a0f1e;"></div>
+    <div style="width: 50px; height: 60px; background: #0d6efd; opacity: 0.75; border-right: 1px solid #0a0f1e;"></div>
+    <div style="width: 50px; height: 100px; background: #0d6efd; opacity: 0.75; border-right: 1px solid #0a0f1e;"></div>
+    <div style="width: 50px; height: 120px; background: #0d6efd; opacity: 0.75; border-right: 1px solid #0a0f1e;"></div>
+    <div style="width: 50px; height: 80px; background: #0d6efd; opacity: 0.75; border-right: 1px solid #0a0f1e;"></div>
+    <div style="width: 50px; height: 40px; background: #0d6efd; opacity: 0.75;"></div>
+
+  </div>
+
+  <div style="display: flex; justify-content: center; gap: 0; padding: 0.3rem 1rem 0; color: #6b7280; font-size: 0.55rem;">
+    <span style="width: 50px; text-align: center;">8-10</span>
+    <span style="width: 50px; text-align: center;">10-12</span>
+    <span style="width: 50px; text-align: center;">12-14</span>
+    <span style="width: 50px; text-align: center;">14-16</span>
+    <span style="width: 50px; text-align: center;">16-18</span>
+    <span style="width: 50px; text-align: center;">18-20</span>
+  </div>
+
+</div>
+
+</details>
+
+**Passo 3 — Construir o boxplot**
+
+<details>
+<summary>📊 Boxplot — Notas de 20 Alunos</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); max-width: 750px; margin: 1rem auto; font-family: 'Segoe UI', system-ui, sans-serif;">
+
+  <div style="color: #fbbf24; font-weight: 700; font-size: 0.9rem; text-align: center; margin-bottom: 1.5rem;">Boxplot das Notas de 20 Alunos</div>
+
+  <div style="display: flex; justify-content: center; align-items: flex-end; height: 200px; padding: 0 1rem;">
+
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.3rem;">
+      <div style="position: relative; width: 80px; height: 180px;">
+
+        <div style="position: absolute; left: 50%; top: 0%; width: 2px; height: 25%; background: #60a5fa; transform: translateX(-50%);"></div>
+
+        <div style="position: absolute; left: 25%; top: 0%; width: 50%; height: 2px; background: #60a5fa;"></div>
+
+        <div style="position: absolute; left: 25%; top: 25%; width: 50%; height: 40%; background: #1e3a5f; border: 2px solid #60a5fa; border-radius: 4px;"></div>
+
+        <div style="position: absolute; left: 25%; top: 45%; width: 50%; height: 2px; background: #60a5fa;"></div>
+
+        <div style="position: absolute; left: 50%; top: 65%; width: 2px; height: 35%; background: #60a5fa; transform: translateX(-50%);"></div>
+
+        <div style="position: absolute; left: 25%; top: 100%; width: 50%; height: 2px; background: #60a5fa;"></div>
+
+      </div>
+      <span style="color: #93c5fd; font-size: 0.7rem;">Notas</span>
+    </div>
+
+  </div>
+
+</div>
+
+</details>
+
+**Passo 4 — Interpretar**
+
+O histograma mostra que a maioria das notas se concentra entre 12 e 16 — a distribuição é aproximadamente simétrica. O boxplot mostra que a mediana é 14,5, o Q1 é 12 e o Q3 é 16,5. Não há outliers. A distribuição é relativamente consistente.
+
+---
+
+## Exercícios
+
+<details>
+<summary>📗 Exercício 1 — Identificar o tipo de gráfico de distribuição (Fácil)</summary>
+
+**Enunciado:** Para cada situação, indica se usarias histograma ou boxplot:
+
+a) Ver a forma da distribuição dos salários de uma empresa
+
+b) Comparar a distribuição das notas de 4 turmas
+
+c) Detetar outliers nas alturas de 100 pessoas
+
+d) Ver se a distribuição das idades é simétrica ou assimétrica
+
+e) Comparar a mediana dos tempos de espera em 3 hospitais
 
 <details>
 <summary>💡 Ver resposta</summary>
 
-**Resposta:**
+a) **Histograma** — ver a forma da distribuição
 
-a) **Forma** (assimétrica positiva), **centro** (mediana), **outliers** (diretor)
+b) **Boxplot** — comparar distribuições entre grupos
 
-b) **Forma** (simétrica), **centro** (média), **dispersão** (desvio padrão)
+c) **Boxplot** — detetar outliers
 
-c) **Forma** (bimodal) → pode indicar duas turmas diferentes
+d) **Histograma** — ver simetria
 
-d) **Forma** (assimétrica positiva), **outliers** (quem esperou muito)
-
-e) **Forma** (uniforme)
+e) **Boxplot** — comparar medianas entre grupos
 
 </details>
 </details>
 
 <details>
-<summary>📗 Exercício 2</summary>
+<summary>📗 Exercício 2 — Detetar erros (Médio)</summary>
 
-**Enunciado:** O que significa uma distribuição bimodal e o que ela pode indicar sobre os dados?
-
-<details>
-<summary>💡 Ver resposta</summary>
-
-**Resposta:**
-
-Uma distribuição bimodal tem **dois picos** (duas modas). Isso geralmente indica que os dados vêm de **duas populações diferentes** que foram misturadas. Por exemplo, altura de homens e mulheres juntos, ou notas de duas turmas diferentes na mesma prova.
-
-**Implicação:** Pode ser necessário separar os dados em dois grupos para uma análise mais adequada.
-
-</details>
-</details>
+**Enunciado:** Observa o gráfico abaixo e identifica três erros de visualização.
 
 <details>
-<summary>📗 Exercício 3</summary>
+<summary>📊 Gráfico com erros</summary>
 
-**Enunciado:** Qual é a regra 68-95-99,7% da distribuição normal e o que ela significa?
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); max-width: 650px; margin: 1rem auto; font-family: 'Segoe UI', system-ui, sans-serif;">
 
-<details>
-<summary>💡 Ver resposta</summary>
+  <div style="color: #fbbf24; font-weight: 700; font-size: 0.9rem; text-align: center; margin-bottom: 1.5rem;">Gráfico 1</div>
 
-**Resposta:**
+  <div style="display: flex; align-items: flex-end; justify-content: center; gap: 0.5rem; height: 180px; padding: 0 1rem; border-bottom: 2px solid #4b5563; border-left: 2px solid #4b5563;">
 
-A regra 68-95-99,7% afirma que em uma distribuição normal:
+    <div style="width: 40px; height: 60px; background: #ff0000; opacity: 0.8; border-radius: 2px;"></div>
+    <div style="width: 40px; height: 70px; background: #00ff00; opacity: 0.8; border-radius: 2px;"></div>
+    <div style="width: 40px; height: 55px; background: #0000ff; opacity: 0.8; border-radius: 2px;"></div>
+    <div style="width: 40px; height: 75px; background: #ffff00; opacity: 0.8; border-radius: 2px;"></div>
+    <div style="width: 40px; height: 50px; background: #ff00ff; opacity: 0.8; border-radius: 2px;"></div>
+    <div style="width: 40px; height: 65px; background: #00ffff; opacity: 0.8; border-radius: 2px;"></div>
 
-- **68%** dos dados estão a **±1 desvio padrão** da média
-- **95%** dos dados estão a **±2 desvios padrão** da média
-- **99,7%** dos dados estão a **±3 desvios padrão** da média
+  </div>
 
-**Significado:** Em uma distribuição normal, a grande maioria dos dados está concentrada perto da média, e valores muito distantes (acima de 3 desvios) são extremamente raros.
+</div>
 
 </details>
-</details>
-
-<details>
-<summary>📗 Exercício 4</summary>
-
-**Enunciado:** Como o boxplot ajuda a identificar a forma da distribuição?
 
 <details>
 <summary>💡 Ver resposta</summary>
 
-**Resposta:**
+1. **Título vago** — "Gráfico 1" não diz nada. Deveria ser "Distribuição das Notas" ou similar.
 
-O boxplot ajuda a identificar a forma da distribuição pela **posição da mediana** dentro da caixa:
+2. **Barras separadas** — num histograma, as barras devem estar coladas, porque representam intervalos contínuos.
 
-- **Mediana central** → distribuição **simétrica**
-- **Mediana próxima ao Q1** (parte inferior) → distribuição **assimétrica positiva** (cauda à direita)
-- **Mediana próxima ao Q3** (parte superior) → distribuição **assimétrica negativa** (cauda à esquerda)
+3. **Cores sem significado** — vermelho, verde, azul, amarelo, magenta e ciano não têm relação com os dados.
 
-Além disso, o comprimento dos "bigodes" (whiskers) indica a presença de outliers.
+4. **Falta de rótulos nos eixos** — não sabemos o que o eixo X e o eixo Y representam.
+
+5. **Falta de fonte** — não sabemos de onde vêm os dados.
 
 </details>
 </details>
 
 <details>
-<summary>📗 Exercício 5</summary>
+<summary>📗 Exercício 3 — Escolher o gráfico certo (Médio)</summary>
 
-**Enunciado:** Um histograma mostra uma forma de sino. O que isso indica sobre os dados? Que medidas de centro e dispersão são mais adequadas?
+**Enunciado:** Tens os seguintes dados: notas de 30 alunos de uma turma. Que gráfico de distribuição usarias para mostrar:
+
+a) A forma da distribuição das notas
+
+b) Se há alunos com notas extremamente baixas ou altas
+
+c) Comparar a distribuição das notas com a de outra turma
 
 <details>
 <summary>💡 Ver resposta</summary>
 
-**Resposta:**
+a) **Histograma** — mostra a forma da distribuição
 
-Um histograma com forma de sino indica que os dados seguem aproximadamente uma **distribuição normal (simétrica)**.
+b) **Boxplot** — mostra outliers claramente
 
-**Medidas de centro:** **Média** (pois Média = Mediana = Moda em dados simétricos)
-
-**Medidas de dispersão:** **Desvio Padrão** (pois descreve bem a variabilidade em distribuições simétricas)
+c) **Boxplot** — excelente para comparar grupos
 
 </details>
 </details>
 
-> *Distribuição é a forma, centro e espalhamento dos dados — o mapa que mostra onde estão os valores, como se comportam e o que é normal ou estranho.*
+<details>
+<summary>📗 Exercício 4 — Interpretar um gráfico (Médio)</summary>
+
+**Enunciado:** Observa o boxplot abaixo e responde:
+
+<details>
+<summary>📊 Boxplot — Salários</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); max-width: 650px; margin: 1rem auto; font-family: 'Segoe UI', system-ui, sans-serif;">
+
+  <div style="color: #fbbf24; font-weight: 700; font-size: 0.9rem; text-align: center; margin-bottom: 1.5rem;">Boxplot dos Salários (milhares €)</div>
+
+  <div style="display: flex; justify-content: center; align-items: flex-end; height: 200px; padding: 0 1rem;">
+
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.3rem;">
+      <div style="position: relative; width: 80px; height: 180px;">
+
+        <div style="position: absolute; left: 50%; top: 5%; width: 2px; height: 25%; background: #60a5fa; transform: translateX(-50%);"></div>
+
+        <div style="position: absolute; left: 25%; top: 5%; width: 50%; height: 2px; background: #60a5fa;"></div>
+
+        <div style="position: absolute; left: 25%; top: 35%; width: 50%; height: 40%; background: #1e3a5f; border: 2px solid #60a5fa; border-radius: 4px;"></div>
+
+        <div style="position: absolute; left: 25%; top: 55%; width: 50%; height: 2px; background: #60a5fa;"></div>
+
+        <div style="position: absolute; left: 50%; top: 75%; width: 2px; height: 20%; background: #60a5fa; transform: translateX(-50%);"></div>
+
+        <div style="position: absolute; left: 25%; top: 95%; width: 50%; height: 2px; background: #60a5fa;"></div>
+
+        <div style="position: absolute; left: 50%; top: 0%; width: 8px; height: 8px; background: #f87171; border-radius: 50%; transform: translateX(-50%);"></div>
+
+      </div>
+      <span style="color: #93c5fd; font-size: 0.7rem;">Salários</span>
+    </div>
+
+  </div>
+
+</div>
+
+</details>
+
+a) Qual é a mediana dos salários?
+
+b) Qual é o intervalo interquartil (IQR)?
+
+c) Há outliers?
+
+d) O que significa a caixa larga?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+a) **Aproximadamente 20 mil €** — a linha dentro da caixa
+
+b) **Aproximadamente 15 mil €** — Q3 (30) − Q1 (15) = 15
+
+c) **Sim** — há um ponto acima do bigode superior
+
+d) **Grande dispersão** — os 50% centrais dos dados estão espalhados por uma grande amplitude
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Construir um gráfico (Difícil)</summary>
+
+**Enunciado:** Tens os seguintes dados sobre as notas de 20 alunos:
+
+| 8 | 10 | 11 | 12 | 12 | 13 | 13 | 14 | 14 | 14 |
+|---|---|---|---|---|---|---|---|---|---|
+| 15 | 15 | 15 | 16 | 16 | 17 | 17 | 18 | 19 | 20 |
+
+a) Calcula o mínimo, Q1, mediana, Q3 e máximo.
+
+b) Calcula o IQR e verifica se há outliers.
+
+c) Desenha o histograma e o boxplot mentalmente (ou num papel).
+
+d) Interpreta os gráficos.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+a) Medidas:
+- Mínimo: 8
+- Q1: 12
+- Mediana: 14,5
+- Q3: 16,5
+- Máximo: 20
+
+b) IQR = 16,5 − 12 = 4,5
+- Limite inferior: 12 − 1,5×4,5 = 5,25
+- Limite superior: 16,5 + 1,5×4,5 = 23,25
+- **Não há outliers** — todos os valores estão entre 5,25 e 23,25
+
+c) O histograma deve ter classes de 2 em 2 (8-10, 10-12, 12-14, 14-16, 16-18, 18-20) com barras coladas. O boxplot deve ter a caixa de Q1 (12) a Q3 (16,5), com a mediana em 14,5, e os bigodes até ao mínimo (8) e máximo (20).
+
+d) A distribuição é aproximadamente simétrica, com a maioria das notas entre 12 e 16. A mediana é 14,5. Não há outliers. A turma é relativamente consistente.
+
+</details>
+</details>
+
+
+> **Em resumo:** os gráficos de distribuição mostram como os valores de uma variável se espalham, respondendo à pergunta *"como se distribuem os dados?"*. O **histograma** usa barras coladas para mostrar a forma da distribuição — onde se concentram os valores, se é simétrica ou assimétrica, se é unimodal ou bimodal. O **boxplot** resume cinco medidas (mínimo, Q1, mediana, Q3, máximo) num único desenho e é excelente para detetar outliers e comparar grupos. Em conjunto, o histograma e o boxplot dão uma visão completa da distribuição: o histograma mostra a forma, o boxplot mostra os números-chave. Um gráfico de distribuição bem feito transforma uma lista de números numa compreensão profunda da variabilidade.

@@ -1,5 +1,650 @@
+# <center>Gráficos de Comparação</center>
+
+## Introdução
+
+&emsp;&emsp;&emsp;Suponhamos que és o diretor de uma escola com 4 turmas do 9º ano. No final do ano, recebes uma tabela com a média de cada turma: Turma A — 14,2; Turma B — 12,8; Turma C — 15,1; Turma D — 13,5. Agora pergunta-te: **qual é a melhor turma? Qual precisa de mais apoio?** A resposta está lá, mas exige que compares quatro números mentalmente.<br><br>
+
+&emsp;&emsp;&emsp;Agora imagina que transformas esses quatro números em quatro barras. Num instante, vês que a Turma C é a melhor e a Turma B precisa de atenção. **A mesma informação, mas compreendida em segundos.** É isto que os **gráficos de comparação** fazem: colocam valores lado a lado para que as diferenças sal tem à vista. E é por isso que esta aula existe — depois de aprenderes o que é um gráfico e quais os seus elementos, precisas de saber qual usar quando a pergunta é *"qual é maior?"*.
+
+> 💡 **Regra de Ouro:** Um gráfico de comparação não mostra evolução nem proporção. Mostra diferenças. Serve para responder à pergunta *"qual é maior?"* — e nada mais.
+
+
+## O que é um Gráfico de Comparação?
+
+> Um **gráfico de comparação** é uma representação visual que coloca **categorias distintas** lado a lado, usando elementos geométricos com **comprimento proporcional** aos valores, para facilitar a comparação direta entre elas.
+
+&emsp;&emsp;&emsp;Os gráficos de comparação são os mais antigos e os mais usados de todos. Aparecem em jornais, relatórios, apresentações e livros escolares. A sua lógica é simples: se queres comparar valores, coloca-os lado a lado com o mesmo ponto de partida. O cérebro humano é excelente a comparar comprimentos — muito melhor do que a comparar números abstratos.<br><br>
+
+&emsp;&emsp;&emsp;Existem três tipos principais de gráficos de comparação: **barras** (horizontais), **colunas** (verticais) e **pictogramas** (com ícones). Cada um tem o seu contexto ideal.
+
+<details>
+<summary>📊 Mapa dos Gráficos de Comparação</summary>
+
 ```mermaid
-graph LR
-    A[Quadrado] --> B(Círculo)
-    A --> C[Retângulo]
+flowchart TD
+    A["📊 GRÁFICOS DE COMPARAÇÃO"] --> B["Barras (horizontal)"]
+    A --> C["Colunas (vertical)"]
+    A --> D["Pictogramas"]
+
+    B --> B1["Muitas categorias<br/>Nomes longos"]
+    C --> C1["Poucas categorias<br/>Nomes curtos"]
+    D --> D1["Público infantil<br/>Comunicação visual"]
+
+    style A fill:#333,color:#fff,stroke:#333,stroke-width:2px
+    style B fill:#cfe2ff,stroke:#0d6efd,stroke-width:2px
+    style C fill:#d4edda,stroke:#28a745,stroke-width:2px
+    style D fill:#fff3cd,stroke:#ffc107,stroke-width:2px
 ```
+</details>
+
+
+## Gráfico de Barras
+
+### O que é?
+
+> Um **gráfico de barras** é um gráfico de comparação em que as categorias são dispostas **horizontalmente** e o comprimento de cada barra representa o valor da categoria.
+
+&emsp;&emsp;&emsp;No gráfico de barras, as categorias ficam no eixo Y (vertical) e os valores no eixo X (horizontal). Cada barra começa sempre no zero e estende-se até ao valor correspondente. O comprimento da barra é proporcional ao valor — se uma barra é o dobro do comprimento de outra, o valor é o dobro.
+
+### Quando usar?
+
+- Quando tens **muitas categorias** (mais de 6)
+- Quando os **nomes das categorias são longos**
+- Quando queres ordenar as barras do maior para o menor
+- Quando o espaço horizontal é limitado
+
+### Exemplo visual
+
+<details>
+<summary>📊 Gráfico de Barras — População por Distrito</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); max-width: 750px; margin: 1rem auto; font-family: 'Segoe UI', system-ui, sans-serif;">
+
+  <div style="color: #fbbf24; font-weight: 700; font-size: 0.9rem; text-align: center; margin-bottom: 1.5rem;">População por Distrito (milhares)</div>
+
+  <div style="display: flex; flex-direction: column; gap: 0.8rem;">
+
+    <div style="display: flex; align-items: center; gap: 0.5rem;">
+      <span style="color: #93c5fd; font-size: 0.7rem; width: 60px; text-align: right;">Lisboa</span>
+      <div style="flex: 1; background: #1a1a2e; border-radius: 6px; height: 24px; overflow: hidden;">
+        <div style="width: 100%; height: 100%; background: #0d6efd; border-radius: 6px;"></div>
+      </div>
+      <span style="color: #60a5fa; font-size: 0.65rem; font-weight: 600; width: 40px;">280</span>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 0.5rem;">
+      <span style="color: #93c5fd; font-size: 0.7rem; width: 60px; text-align: right;">Porto</span>
+      <div style="flex: 1; background: #1a1a2e; border-radius: 6px; height: 24px; overflow: hidden;">
+        <div style="width: 78%; height: 100%; background: #0d6efd; border-radius: 6px;"></div>
+      </div>
+      <span style="color: #60a5fa; font-size: 0.65rem; font-weight: 600; width: 40px;">220</span>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 0.5rem;">
+      <span style="color: #93c5fd; font-size: 0.7rem; width: 60px; text-align: right;">Braga</span>
+      <div style="flex: 1; background: #1a1a2e; border-radius: 6px; height: 24px; overflow: hidden;">
+        <div style="width: 54%; height: 100%; background: #0d6efd; border-radius: 6px;"></div>
+      </div>
+      <span style="color: #60a5fa; font-size: 0.65rem; font-weight: 600; width: 40px;">150</span>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 0.5rem;">
+      <span style="color: #93c5fd; font-size: 0.7rem; width: 60px; text-align: right;">Coimbra</span>
+      <div style="flex: 1; background: #1a1a2e; border-radius: 6px; height: 24px; overflow: hidden;">
+        <div style="width: 36%; height: 100%; background: #0d6efd; border-radius: 6px;"></div>
+      </div>
+      <span style="color: #60a5fa; font-size: 0.65rem; font-weight: 600; width: 40px;">100</span>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 0.5rem;">
+      <span style="color: #93c5fd; font-size: 0.7rem; width: 60px; text-align: right;">Faro</span>
+      <div style="flex: 1; background: #1a1a2e; border-radius: 6px; height: 24px; overflow: hidden;">
+        <div style="width: 25%; height: 100%; background: #0d6efd; border-radius: 6px;"></div>
+      </div>
+      <span style="color: #60a5fa; font-size: 0.65rem; font-weight: 600; width: 40px;">70</span>
+    </div>
+
+  </div>
+
+  <div style="color: #6b7280; font-size: 0.55rem; text-align: center; margin-top: 1rem;">
+    População (milhares)
+  </div>
+
+</div>
+
+</details>
+
+**Interpretação:** Lisboa é o distrito com mais população (280 mil), seguido do Porto (220 mil), Braga (150 mil), Coimbra (100 mil) e Faro (70 mil). As barras estão ordenadas da maior para a menor, o que facilita a leitura.
+
+
+## Gráfico de Colunas
+
+### O que é?
+
+> Um **gráfico de colunas** é um gráfico de comparação em que as categorias são dispostas **verticalmente** e a altura de cada coluna representa o valor da categoria.
+
+&emsp;&emsp;&emsp;No gráfico de colunas, as categorias ficam no eixo X (horizontal) e os valores no eixo Y (vertical). É o gráfico de comparação mais comum e o mais intuitivo para a maioria das pessoas. Cada coluna começa sempre no zero e cresce para cima.
+
+### Quando usar?
+
+- Quando tens **poucas categorias** (até 6)
+- Quando os **nomes das categorias são curtos**
+- Quando queres comparar valores em **apresentações**
+- Quando o espaço vertical é limitado
+
+### Exemplo visual
+
+<details>
+<summary>📊 Gráfico de Colunas — Vendas por Trimestre</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); max-width: 700px; margin: 1rem auto; font-family: 'Segoe UI', system-ui, sans-serif;">
+
+  <div style="color: #fbbf24; font-weight: 700; font-size: 0.9rem; text-align: center; margin-bottom: 1.5rem;">Vendas por Trimestre (milhares €)</div>
+
+  <div style="display: flex; justify-content: space-around; align-items: flex-end; height: 200px; padding: 0 1rem; border-bottom: 2px solid #4b5563; border-left: 2px solid #4b5563;">
+
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.3rem;">
+      <div style="width: 45px; height: 100px; background: #28a745; border-radius: 4px 4px 0 0; position: relative;">
+        <span style="position: absolute; top: -20px; left: 50%; transform: translateX(-50%); color: #6ee7b7; font-size: 0.6rem; font-weight: 600;">120</span>
+      </div>
+      <span style="color: #6ee7b7; font-size: 0.7rem; font-weight: 600;">Q1</span>
+    </div>
+
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.3rem;">
+      <div style="width: 45px; height: 130px; background: #28a745; border-radius: 4px 4px 0 0; position: relative;">
+        <span style="position: absolute; top: -20px; left: 50%; transform: translateX(-50%); color: #6ee7b7; font-size: 0.6rem; font-weight: 600;">150</span>
+      </div>
+      <span style="color: #6ee7b7; font-size: 0.7rem; font-weight: 600;">Q2</span>
+    </div>
+
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.3rem;">
+      <div style="width: 45px; height: 120px; background: #28a745; border-radius: 4px 4px 0 0; position: relative;">
+        <span style="position: absolute; top: -20px; left: 50%; transform: translateX(-50%); color: #6ee7b7; font-size: 0.6rem; font-weight: 600;">140</span>
+      </div>
+      <span style="color: #6ee7b7; font-size: 0.7rem; font-weight: 600;">Q3</span>
+    </div>
+
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.3rem;">
+      <div style="width: 45px; height: 160px; background: #28a745; border-radius: 4px 4px 0 0; position: relative;">
+        <span style="position: absolute; top: -20px; left: 50%; transform: translateX(-50%); color: #6ee7b7; font-size: 0.6rem; font-weight: 600;">180</span>
+      </div>
+      <span style="color: #6ee7b7; font-size: 0.7rem; font-weight: 600;">Q4</span>
+    </div>
+
+  </div>
+
+</div>
+
+</details>
+
+**Interpretação:** O Q4 foi o trimestre com mais vendas (180 mil €), seguido do Q2 (150 mil €), Q3 (140 mil €) e Q1 (120 mil €). Uma comparação clara entre os quatro trimestres.
+
+
+## Pictograma
+
+### O que é?
+
+> Um **pictograma** é um gráfico de comparação que usa **ícones ou imagens** repetidas para representar quantidades. Cada ícone representa um número fixo de unidades.
+
+&emsp;&emsp;&emsp;O pictograma é a forma mais antiga e mais visual de comparar dados. Em vez de barras, usa símbolos — pessoas, carros, maçãs, estrelas. É especialmente útil para comunicação com públicos não técnicos, crianças, ou em contextos publicitários.
+
+### Quando usar?
+
+- Quando o **público é infantil** ou não técnico
+- Quando queres **comunicar visualmente** uma mensagem
+- Quando os dados são **simples e poucos**
+- Quando a **estética** é importante
+
+### Exemplo visual
+
+<details>
+<summary>📊 Pictograma — Livros Lidos por Turma</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); max-width: 700px; margin: 1rem auto; font-family: 'Segoe UI', system-ui, sans-serif;">
+
+  <div style="color: #fbbf24; font-weight: 700; font-size: 0.9rem; text-align: center; margin-bottom: 0.5rem;">Livros Lidos por Turma</div>
+  <div style="color: #6b7280; font-size: 0.6rem; text-align: center; margin-bottom: 1.5rem;">Cada 📚 = 5 livros</div>
+
+  <div style="display: flex; flex-direction: column; gap: 1rem;">
+
+    <div style="display: flex; align-items: center; gap: 0.8rem;">
+      <span style="color: #93c5fd; font-size: 0.75rem; font-weight: 600; width: 70px; text-align: right;">Turma A</span>
+      <span style="font-size: 1.2rem;">📚📚📚📚📚📚📚📚</span>
+      <span style="color: #6ee7b7; font-size: 0.65rem;">40 livros</span>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 0.8rem;">
+      <span style="color: #93c5fd; font-size: 0.75rem; font-weight: 600; width: 70px; text-align: right;">Turma B</span>
+      <span style="font-size: 1.2rem;">📚📚📚📚📚📚</span>
+      <span style="color: #6ee7b7; font-size: 0.65rem;">30 livros</span>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 0.8rem;">
+      <span style="color: #93c5fd; font-size: 0.75rem; font-weight: 600; width: 70px; text-align: right;">Turma C</span>
+      <span style="font-size: 1.2rem;">📚📚📚📚📚📚📚📚📚</span>
+      <span style="color: #6ee7b7; font-size: 0.65rem;">45 livros</span>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 0.8rem;">
+      <span style="color: #93c5fd; font-size: 0.75rem; font-weight: 600; width: 70px; text-align: right;">Turma D</span>
+      <span style="font-size: 1.2rem;">📚📚📚📚📚</span>
+      <span style="color: #6ee7b7; font-size: 0.65rem;">25 livros</span>
+    </div>
+
+  </div>
+
+</div>
+
+</details>
+
+**Interpretação:** A Turma C leu mais livros (45), seguida da Turma A (40), Turma B (30) e Turma D (25). Cada ícone de livro representa 5 livros lidos. A mensagem é imediata e visual.
+
+
+## Barras vs. Colunas 
+
+&emsp;&emsp;&emsp;A escolha entre barras e colunas não é arbitrária. Depende do contexto e das categorias.
+
+| Critério | Barras (horizontal) | Colunas (vertical) |
+|----------|---------------------|---------------------|
+| **Número de categorias** | Muitas (6+) | Poucas (até 6) |
+| **Nomes das categorias** | Longos | Curtos |
+| **Ordenação** | Fácil (maior → menor) | Possível, mas menos comum |
+| **Contexto** | Relatórios, análises | Apresentações, slides |
+| **Leitura** | Esquerda → direita | Baixo → cima |
+| **Espaço** | Ocupa mais altura | Ocupa mais largura |
+
+**Regra prática:** Se os nomes das categorias são longos ou há muitas categorias → **barras**. Se são poucas categorias com nomes curtos → **colunas**.
+
+
+## Gráfico de Barras Agrupadas
+
+### O que é?
+
+> Um **gráfico de barras agrupadas** (ou colunas agrupadas) mostra **duas ou mais séries de dados** lado a lado dentro de cada categoria, permitindo comparar não só entre categorias, mas também entre séries.
+
+&emsp;&emsp;&emsp;Imagina que queres comparar as vendas de duas lojas em quatro regiões diferentes. Com barras simples, terias de fazer dois gráficos separados. Com barras agrupadas, colocas as duas barras lado a lado em cada região. Isto permite ver não só qual região vende mais, mas também qual loja se sai melhor em cada região.
+
+### Exemplo visual
+
+<details>
+<summary>📊 Barras Agrupadas — Vendas por Região e Loja</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); max-width: 750px; margin: 1rem auto; font-family: 'Segoe UI', system-ui, sans-serif;">
+
+  <div style="color: #fbbf24; font-weight: 700; font-size: 0.9rem; text-align: center; margin-bottom: 1.5rem;">Vendas por Região e Loja (milhares €)</div>
+
+  <div style="display: flex; justify-content: space-around; align-items: flex-end; height: 200px; padding: 0 1rem; border-bottom: 2px solid #4b5563; border-left: 2px solid #4b5563;">
+
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.3rem;">
+      <div style="display: flex; align-items: flex-end; gap: 0.3rem; height: 160px;">
+        <div style="width: 30px; height: 100px; background: #0d6efd; border-radius: 4px 4px 0 0; position: relative;">
+          <span style="position: absolute; top: -20px; left: 50%; transform: translateX(-50%); color: #60a5fa; font-size: 0.6rem; font-weight: 600;">120</span>
+        </div>
+        <div style="width: 30px; height: 80px; background: #dc3545; border-radius: 4px 4px 0 0; position: relative;">
+          <span style="position: absolute; top: -20px; left: 50%; transform: translateX(-50%); color: #f87171; font-size: 0.6rem; font-weight: 600;">80</span>
+        </div>
+      </div>
+      <span style="color: #93c5fd; font-size: 0.7rem; font-weight: 600;">Norte</span>
+    </div>
+
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.3rem;">
+      <div style="display: flex; align-items: flex-end; gap: 0.3rem; height: 160px;">
+        <div style="width: 30px; height: 120px; background: #0d6efd; border-radius: 4px 4px 0 0; position: relative;">
+          <span style="position: absolute; top: -20px; left: 50%; transform: translateX(-50%); color: #60a5fa; font-size: 0.6rem; font-weight: 600;">150</span>
+        </div>
+        <div style="width: 30px; height: 90px; background: #dc3545; border-radius: 4px 4px 0 0; position: relative;">
+          <span style="position: absolute; top: -20px; left: 50%; transform: translateX(-50%); color: #f87171; font-size: 0.6rem; font-weight: 600;">110</span>
+        </div>
+      </div>
+      <span style="color: #93c5fd; font-size: 0.7rem; font-weight: 600;">Sul</span>
+    </div>
+
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.3rem;">
+      <div style="display: flex; align-items: flex-end; gap: 0.3rem; height: 160px;">
+        <div style="width: 30px; height: 140px; background: #0d6efd; border-radius: 4px 4px 0 0; position: relative;">
+          <span style="position: absolute; top: -20px; left: 50%; transform: translateX(-50%); color: #60a5fa; font-size: 0.6rem; font-weight: 600;">180</span>
+        </div>
+        <div style="width: 30px; height: 110px; background: #dc3545; border-radius: 4px 4px 0 0; position: relative;">
+          <span style="position: absolute; top: -20px; left: 50%; transform: translateX(-50%); color: #f87171; font-size: 0.6rem; font-weight: 600;">140</span>
+        </div>
+      </div>
+      <span style="color: #93c5fd; font-size: 0.7rem; font-weight: 600;">Centro</span>
+    </div>
+
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.3rem;">
+      <div style="display: flex; align-items: flex-end; gap: 0.3rem; height: 160px;">
+        <div style="width: 30px; height: 80px; background: #0d6efd; border-radius: 4px 4px 0 0; position: relative;">
+          <span style="position: absolute; top: -20px; left: 50%; transform: translateX(-50%); color: #60a5fa; font-size: 0.6rem; font-weight: 600;">100</span>
+        </div>
+        <div style="width: 30px; height: 70px; background: #dc3545; border-radius: 4px 4px 0 0; position: relative;">
+          <span style="position: absolute; top: -20px; left: 50%; transform: translateX(-50%); color: #f87171; font-size: 0.6rem; font-weight: 600;">90</span>
+        </div>
+      </div>
+      <span style="color: #93c5fd; font-size: 0.7rem; font-weight: 600;">Ilhas</span>
+    </div>
+
+  </div>
+
+  <div style="display: flex; justify-content: center; gap: 2rem; margin-top: 1rem;">
+    <div style="display: flex; align-items: center; gap: 0.4rem;">
+      <div style="width: 14px; height: 14px; background: #0d6efd; border-radius: 3px;"></div>
+      <span style="color: #93c5fd; font-size: 0.7rem;">Loja A</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 0.4rem;">
+      <div style="width: 14px; height: 14px; background: #dc3545; border-radius: 3px;"></div>
+      <span style="color: #f87171; font-size: 0.7rem;">Loja B</span>
+    </div>
+  </div>
+
+</div>
+
+</details>
+
+**Interpretação:** Em todas as regiões, a Loja A vende mais que a Loja B. O Centro é a região com mais vendas totais, seguido do Sul, Norte e Ilhas. As barras agrupadas permitem comparar duas dimensões ao mesmo tempo.
+
+
+### Exemplo Prático
+
+&emsp;&emsp;&emsp;Vamos construir um gráfico de comparação passo a passo.
+
+**Dados:** Notas médias de 5 turmas.
+
+| Turma | Nota Média |
+|-------|-----------|
+| A | 14,2 |
+| B | 12,8 |
+| C | 15,1 |
+| D | 13,5 |
+| E | 11,9 |
+
+**Passo 1 — Escolher o tipo de gráfico**
+
+Temos 5 categorias com nomes curtos. **Colunas** é a escolha ideal.
+
+**Passo 2 — Definir os eixos**
+
+- Eixo X: Turmas (A, B, C, D, E)
+- Eixo Y: Nota Média (0 a 20)
+
+**Passo 3 — Desenhar as colunas**
+
+<details>
+<summary>📊 Colunas — Nota Média por Turma</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); max-width: 700px; margin: 1rem auto; font-family: 'Segoe UI', system-ui, sans-serif;">
+
+  <div style="color: #fbbf24; font-weight: 700; font-size: 0.9rem; text-align: center; margin-bottom: 1.5rem;">Nota Média por Turma</div>
+
+  <div style="display: flex; justify-content: space-around; align-items: flex-end; height: 200px; padding: 0 1rem; border-bottom: 2px solid #4b5563; border-left: 2px solid #4b5563;">
+
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.3rem;">
+      <div style="width: 45px; height: 120px; background: #6f42c1; border-radius: 4px 4px 0 0; position: relative;">
+        <span style="position: absolute; top: -20px; left: 50%; transform: translateX(-50%); color: #c4b5fd; font-size: 0.6rem; font-weight: 600;">14,2</span>
+      </div>
+      <span style="color: #c4b5fd; font-size: 0.7rem; font-weight: 600;">A</span>
+    </div>
+
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.3rem;">
+      <div style="width: 45px; height: 100px; background: #6f42c1; border-radius: 4px 4px 0 0; position: relative;">
+        <span style="position: absolute; top: -20px; left: 50%; transform: translateX(-50%); color: #c4b5fd; font-size: 0.6rem; font-weight: 600;">12,8</span>
+      </div>
+      <span style="color: #c4b5fd; font-size: 0.7rem; font-weight: 600;">B</span>
+    </div>
+
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.3rem;">
+      <div style="width: 45px; height: 135px; background: #6f42c1; border-radius: 4px 4px 0 0; position: relative;">
+        <span style="position: absolute; top: -20px; left: 50%; transform: translateX(-50%); color: #c4b5fd; font-size: 0.6rem; font-weight: 600;">15,1</span>
+      </div>
+      <span style="color: #c4b5fd; font-size: 0.7rem; font-weight: 600;">C</span>
+    </div>
+
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.3rem;">
+      <div style="width: 45px; height: 110px; background: #6f42c1; border-radius: 4px 4px 0 0; position: relative;">
+        <span style="position: absolute; top: -20px; left: 50%; transform: translateX(-50%); color: #c4b5fd; font-size: 0.6rem; font-weight: 600;">13,5</span>
+      </div>
+      <span style="color: #c4b5fd; font-size: 0.7rem; font-weight: 600;">D</span>
+    </div>
+
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.3rem;">
+      <div style="width: 45px; height: 90px; background: #6f42c1; border-radius: 4px 4px 0 0; position: relative;">
+        <span style="position: absolute; top: -20px; left: 50%; transform: translateX(-50%); color: #c4b5fd; font-size: 0.6rem; font-weight: 600;">11,9</span>
+      </div>
+      <span style="color: #c4b5fd; font-size: 0.7rem; font-weight: 600;">E</span>
+    </div>
+
+  </div>
+
+  <div style="color: #6b7280; font-size: 0.55rem; text-align: center; margin-top: 1rem;">
+    Nota Média
+  </div>
+
+</div>
+
+</details>
+
+**Passo 4 — Interpretar**
+
+A Turma C tem a melhor média (15,1), seguida da Turma A (14,2), Turma D (13,5), Turma B (12,8) e Turma E (11,9). A Turma E precisa de mais apoio.
+
+
+## Exercícios
+
+<details>
+<summary>📗 Exercício 1 — Identificar o tipo de gráfico de comparação (Fácil)</summary>
+
+**Enunciado:** Para cada situação, indica se usarias barras, colunas ou pictogramas:
+
+a) Comparar a população de 10 países
+
+b) Comparar as vendas de 4 produtos num slide de apresentação
+
+c) Mostrar a quantidade de fruta comida por crianças numa escola primária
+
+d) Comparar o PIB de 8 regiões com nomes longos
+
+e) Comparar a altura de 3 edifícios famosos
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+a) **Barras** — muitas categorias (10) e nomes potencialmente longos
+
+b) **Colunas** — poucas categorias (4), nomes curtos, contexto de apresentação
+
+c) **Pictogramas** — público infantil, comunicação visual
+
+d) **Barras** — muitas categorias (8) e nomes longos
+
+e) **Colunas** — poucas categorias (3), nomes curtos
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Detetar erros (Médio)</summary>
+
+**Enunciado:** Observa o gráfico abaixo e identifica três erros de visualização.
+
+<details>
+<summary>📊 Gráfico com erros</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); max-width: 600px; margin: 1rem auto; font-family: 'Segoe UI', system-ui, sans-serif;">
+
+  <div style="color: #fbbf24; font-weight: 700; font-size: 0.9rem; text-align: center; margin-bottom: 1.5rem;">Vendas</div>
+
+  <div style="display: flex; justify-content: space-around; align-items: flex-end; height: 180px; padding: 0 1rem; border-bottom: 2px solid #4b5563; border-left: 2px solid #4b5563;">
+
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.3rem;">
+      <div style="width: 40px; height: 90px; background: #ff0000; border-radius: 4px 4px 0 0;"></div>
+      <span style="color: #f87171; font-size: 0.7rem; font-weight: 600;">A</span>
+    </div>
+
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.3rem;">
+      <div style="width: 40px; height: 95px; background: #00ff00; border-radius: 4px 4px 0 0;"></div>
+      <span style="color: #6ee7b7; font-size: 0.7rem; font-weight: 600;">B</span>
+    </div>
+
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.3rem;">
+      <div style="width: 40px; height: 100px; background: #0000ff; border-radius: 4px 4px 0 0;"></div>
+      <span style="color: #60a5fa; font-size: 0.7rem; font-weight: 600;">C</span>
+    </div>
+
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.3rem;">
+      <div style="width: 40px; height: 105px; background: #ffff00; border-radius: 4px 4px 0 0;"></div>
+      <span style="color: #fcd34d; font-size: 0.7rem; font-weight: 600;">D</span>
+    </div>
+
+  </div>
+
+</div>
+
+</details>
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+1. **Título vago** — "Vendas" não diz o que está a ser comparado. Deveria ser "Vendas por Produto" ou similar.
+
+2. **Eixo Y truncado** — começa em 50, não em 0. Isto exagera as diferenças entre as barras.
+
+3. **Cores sem significado** — vermelho, verde, azul e amarelo não têm relação com os dados. Deveriam ser todas da mesma cor ou ter um propósito claro.
+
+4. **Falta de rótulos nos eixos** — não sabemos o que o eixo Y representa.
+
+5. **Falta de fonte** — não sabemos de onde vêm os dados.
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Escolher o gráfico certo (Médio)</summary>
+
+**Enunciado:** Tens os seguintes dados: número de alunos em 6 cursos diferentes. Que gráfico de comparação usarias para mostrar:
+
+a) Os dados num relatório anual
+
+b) Os dados numa apresentação para pais
+
+c) Os dados num cartaz para crianças
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+a) **Barras** — relatório anual, nomes de cursos podem ser longos, mais formal
+
+b) **Colunas** — apresentação para pais, 6 categorias, nomes curtos, visual
+
+c) **Pictogramas** — cartaz para crianças, comunicação visual, apelativo
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Interpretar um gráfico (Médio)</summary>
+
+**Enunciado:** Observa o gráfico abaixo e responde:
+
+<details>
+<summary>📊 Gráfico — Temperatura Média por Cidade</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); max-width: 700px; margin: 1rem auto; font-family: 'Segoe UI', system-ui, sans-serif;">
+
+  <div style="color: #fbbf24; font-weight: 700; font-size: 0.9rem; text-align: center; margin-bottom: 1.5rem;">Temperatura Média por Cidade (°C)</div>
+
+  <div style="display: flex; justify-content: space-around; align-items: flex-end; height: 200px; padding: 0 1rem; border-bottom: 2px solid #4b5563; border-left: 2px solid #4b5563;">
+
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.3rem;">
+      <div style="width: 45px; height: 120px; background: #dc3545; border-radius: 4px 4px 0 0; position: relative;">
+        <span style="position: absolute; top: -20px; left: 50%; transform: translateX(-50%); color: #f87171; font-size: 0.6rem; font-weight: 600;">28</span>
+      </div>
+      <span style="color: #f87171; font-size: 0.7rem; font-weight: 600;">Lisboa</span>
+    </div>
+
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.3rem;">
+      <div style="width: 45px; height: 100px; background: #dc3545; border-radius: 4px 4px 0 0; position: relative;">
+        <span style="position: absolute; top: -20px; left: 50%; transform: translateX(-50%); color: #f87171; font-size: 0.6rem; font-weight: 600;">22</span>
+      </div>
+      <span style="color: #f87171; font-size: 0.7rem; font-weight: 600;">Porto</span>
+    </div>
+
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.3rem;">
+      <div style="width: 45px; height: 130px; background: #dc3545; border-radius: 4px 4px 0 0; position: relative;">
+        <span style="position: absolute; top: -20px; left: 50%; transform: translateX(-50%); color: #f87171; font-size: 0.6rem; font-weight: 600;">30</span>
+      </div>
+      <span style="color: #f87171; font-size: 0.7rem; font-weight: 600;">Faro</span>
+    </div>
+
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.3rem;">
+      <div style="width: 45px; height: 80px; background: #dc3545; border-radius: 4px 4px 0 0; position: relative;">
+        <span style="position: absolute; top: -20px; left: 50%; transform: translateX(-50%); color: #f87171; font-size: 0.6rem; font-weight: 600;">18</span>
+      </div>
+      <span style="color: #f87171; font-size: 0.7rem; font-weight: 600;">Braga</span>
+    </div>
+
+  </div>
+
+</div>
+
+</details>
+
+a) Qual é a cidade mais quente?
+
+b) Qual é a cidade mais fria?
+
+c) Qual é a diferença de temperatura entre Faro e Braga?
+
+d) Que tipo de gráfico é este?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+a) **Faro** — 30°C
+
+b) **Braga** — 18°C
+
+c) **12°C** — Faro (30) − Braga (18) = 12
+
+d) **Gráfico de colunas** — categorias no eixo X, valores no eixo Y
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Construir um gráfico (Difícil)</summary>
+
+**Enunciado:** Tens os seguintes dados sobre o número de livros lidos por 4 turmas:
+
+| Turma | Livros Lidos |
+|-------|-------------|
+| A | 40 |
+| B | 30 |
+| C | 45 |
+| D | 25 |
+
+a) Que tipo de gráfico de comparação usarias?
+
+b) Desenha o gráfico mentalmente (ou num papel) com todos os elementos da anatomia.
+
+c) Interpreta o gráfico.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+a) **Colunas** — 4 categorias, nomes curtos (A, B, C, D)
+
+b) O gráfico deve ter:
+- Título: "Livros Lidos por Turma"
+- Eixo X: Turmas (A, B, C, D)
+- Eixo Y: Número de Livros (0 a 50)
+- Colunas de altura proporcional: A=40, B=30, C=45, D=25
+- Cores consistentes
+- Rótulos com os valores
+- Fonte dos dados
+
+c) A Turma C leu mais livros (45), seguida da Turma A (40), Turma B (30) e Turma D (25). A Turma D precisa de incentivo à leitura.
+
+</details>
+</details>
+
+
+> **Em resumo:** os gráficos de comparação colocam categorias lado a lado para responder à pergunta *"qual é maior?"*. As **barras** são horizontais e ideais para muitas categorias com nomes longos; as **colunas** são verticais e ideais para poucas categorias com nomes curtos; os **pictogramas** usam ícones e são ideais para públicos infantis. Em todos, o comprimento ou altura é proporcional ao valor, e o eixo começa sempre em zero. Um gráfico de comparação bem feito transforma uma tabela de números numa resposta visual imediata.

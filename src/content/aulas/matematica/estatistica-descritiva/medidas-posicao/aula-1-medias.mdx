@@ -1,8 +1,8 @@
-# As Médias na Estatística
+# <center>AS MÉDIAS NA ESTATÍSTICA</center>
 
-## 1. INTRODUÇÃO
+## Introdução
 
-&emsp;&emsp;&emsp;A média é a medida de tendência central mais amplamente utilizada em Estatística. Representa o ponto de equilíbrio de um conjunto de dados — o valor em torno do qual a soma dos desvios se anula. Existem três tipos principais de média, cada um adequado a diferentes contextos de aplicação:
+&emsp;&emsp;&emsp;A média é a medida de tendência central mais amplamente utilizada em Estatística. Representa ***o ponto de equilíbrio*** de um conjunto de dados — o valor em torno do qual a soma dos desvios se anula. Existem três tipos principais de média, cada um adequado a diferentes contextos de aplicação:
 
 <center><details>
 <summary>📊 TIPO DE MÉDIA</summary>
@@ -29,7 +29,7 @@
 
 > **💡 Dica de Ouro:** A escolha da média certa depende do **tipo de dado** e do **contexto** da análise. A média errada pode levar a conclusões equivocadas!
 
-## 2. MÉDIA ARITMÉTICA
+## 1. Média Aritmética
 
 &emsp;&emsp;&emsp;A média aritmética é uma das medidas de tendência central mais utilizadas em Estatística. Consiste no valor obtido pela soma de todos os valores observados, dividida pelo número total de observações. Em termos simples, representa o "valor equilibrado" ou "valor típico" de um conjunto de dados, funcionando como um ponto de referência em torno do qual os restantes valores se distribuem.<br><br>
 
@@ -57,7 +57,7 @@
 </div>
 </details></center>
 
-### 2.1 Média Aritmética Simples
+### 1.1 Média Aritmética Simples
 
 &emsp;&emsp;&emsp;A média aritmética simples é a medida de tendência central mais elementar da Estatística. Define-se como o quociente entre a soma de todos os valores observados e o número total de elementos que constituem o conjunto de dados. Em termos simples, obtém-se somando todos os valores e dividindo o resultado pelo número de parcelas somadas.<br><br>
 
@@ -70,35 +70,6 @@ $$
 - **x̄** = média
 - **Σx** = somatório de todos os valores 
 - **n** = número total de elementos<br><br>
-
-&emsp;&emsp;&emsp;Quando os dados se repetem muitas vezes, não vale a pena somá-los um a um. Organiza-se uma **tabela de frequências** — cada valor aparece uma vez, acompanhado do número de vezes que se repete (a sua frequência). A média calcula-se somando os produtos de cada valor pela sua frequência e dividindo pelo total de dados.<br><br>
-
-**📐 Fórmula da Média Aritmética Simples para Dados Agrupados por Lista**
-
-$$
-\color{blue} \bar{x} = \frac{\sum_{i=1}^{k} x_i \cdot f_i}{\sum_{i=1}^{k} f_i}
-$$
-
-Onde:
-- **xᵢ** = cada valor distinto
-- **fᵢ** = frequência desse valor
-- **k** = número de valores distintos
-- **n = Σfᵢ** = total de dados<br><br>
-
-&emsp;&emsp;&emsp;Quando os dados estão agrupados em **classes (intervalos)**, não conhecemos os valores exatos dentro de cada classe. Assumimos então que os dados estão **uniformemente distribuídos** e representamos cada classe pelo seu **ponto médio**.<br><br>
-
-**📐 Fórmula Média Aritmética Simples para Dados Agrupados por Intervalo de Classe**
-
-$$
-\color{blue} \bar{x} = \frac{\sum_{i=1}^{k} x_i \cdot f_i}{\sum_{i=1}^{k} f_i}
-$$
-
-Onde:
-- **xᵢ** = **ponto médio** da classe: \( x_i = \frac{L_{inf} + L_{sup}}{2} \)
-- **fᵢ** = frequência da classe
-- **k** = número de classes
-
-
 
 <details>
 <summary>📌 Exemplo da Média Aritmética Simples para Dados Não Agrupados</summary></summary>
@@ -114,6 +85,113 @@ Dados: As idades de 8 pessoas são: 23, 19, 31, 27, 22, 35, 29, 24. Qual é a id
 ✅ A idade média é **26,25 anos**.
 </details>
 
+<details>
+<summary>📊 Exemplo da Média Aritmética Simples no Excel</summary>
+
+**Dados:** As idades de 8 pessoas são: 23, 19, 31, 27, 22, 35, 29, 24.
+
+| - | A |
+|---|---|
+| **1** | Idades |
+| **2** | 23 |
+| **3** | 19 |
+| **4** | 31 |
+| **5** | 27 |
+| **6** | 22 |
+| **7** | 35 |
+| **8** | 29 |
+| **9** | 24 |
+
+> 💡 **Não é preciso ordenar nem calcular manualmente** — o Excel faz isso automaticamente.
+
+**Opção 1 — Função direta**
+
+| Inglês | Português |
+|--------|-----------|
+| `=AVERAGE(A2:A9)` | `=MÉDIA(A2:A9)` |
+
+Resultado: **26,25**<br><br>
+
+**Opção 2 — Cálculo manual (passo a passo)**
+
+| Passo | Inglês | Português | Resultado |
+|-------|--------|-----------|-----------|
+| 1. Soma | `=SUM(A2:A9)` | `=SOMA(A2:A9)` | 210 |
+| 2. Contagem | `=COUNT(A2:A9)` | `=CONT.VALORES(A2:A9)` | 8 |
+| 3. Divisão | `=SUM(A2:A9)/COUNT(A2:A9)` | `=SOMA(A2:A9)/CONT.VALORES(A2:A9)` | 26,25 |
+
+✅ A idade média é **26,25 anos**.
+
+</details>
+
+<details>
+<summary>🐍 Exemplo da Média Aritmética Simples no Python</summary>
+
+**Dados:** As idades de 8 pessoas são: 23, 19, 31, 27, 22, 35, 29, 24.\
+
+- Opção 1 — Função direta (estatística)
+```python
+
+from statistics import mean
+
+idades = [23, 19, 31, 27, 22, 35, 29, 24]
+media = mean(idades)
+print(media)
+```
+
+- Opção 2 — Função direta (NumPy)
+
+```python
+import numpy as np
+
+idades = [23, 19, 31, 27, 22, 35, 29, 24]
+media = np.mean(idades)
+print(media)
+```
+
+- Opção 3 — Cálculo manual (passo a passo)
+
+```python
+
+- _Passo 1: Soma_
+soma = sum(idades)
+
+- _Passo 2: Contagem_
+n = len(idades)
+
+- _Passo 3: Divisão_
+media = soma / n
+
+print(f"Média: {media}")
+```
+</details>
+
+<details>
+<summary>📊 Exemplo da Média Aritmética Simples no R</summary>
+
+**Dados:** As idades de 8 pessoas são: 23, 19, 31, 27, 22, 35, 29, 24.
+
+- Opção 1 — Função direta (base R)
+```r
+idades <- c(23, 19, 31, 27, 22, 35, 29, 24)
+media <- mean(idades)
+print(media)
+```
+</details>
+
+> Quando os dados se repetem muitas vezes, não vale a pena somá-los um a um. Organiza-se uma **tabela de frequências** — cada valor aparece uma vez, acompanhado do número de vezes que se repete (a sua frequência). A média calcula-se somando os produtos de cada valor pela sua frequência e dividindo pelo total de dados.<br><br>
+
+**📐 Fórmula da Média Aritmética Simples para Dados Agrupados por Lista**
+
+$$
+\color{blue} \bar{x} = \frac{\sum_{i=1}^{k} x_i \cdot f_i}{\sum_{i=1}^{k} f_i}
+$$
+
+Onde:
+- **xᵢ** = cada valor distinto
+- **fᵢ** = frequência desse valor
+- **k** = número de valores distintos
+- **n = Σfᵢ** = total de dados
 
 <details>
 <summary>📌 Exemplo Média Aritmética Simples para Dados Agrupados por Lista</summary></summary>
@@ -141,6 +219,95 @@ $$
 
 > **🔍 Verificação:** Se somarmos os dados soltos: 4+5+5+6+6+6+7+7+8 = 54. Dividido por 9 = 6. **Dá o mesmo!**
 </details>
+
+<details>
+<summary>📊 Exemplo Média Aritmética Simples para Dados Agrupados por Lista no Excel</summary>
+
+**Problema:** As notas de 9 alunos foram: 4, 5, 5, 6, 6, 6, 7, 7, 8. Qual é a nota média?
+
+| - | A | B | C |
+|---|---|---|---|
+| **1** | Valor (xᵢ) | Frequência (fᵢ) | xᵢ · fᵢ |
+| **2** | 4 | 1 | `=A2*B2` |
+| **3** | 5 | 2 | `=A3*B3` |
+| **4** | 6 | 3 | `=A4*B4` |
+| **5** | 7 | 2 | `=A5*B5` |
+| **6** | 8 | 1 | `=A6*B6` |
+| **7** | **Total** | `=SOMA(B2:B6)` | `=SOMA(C2:C6)` |
+
+Resultado:
+
+| - | A | B | C |
+|---|---|---|---|
+| **1** | Valor (xᵢ) | Frequência (fᵢ) | xᵢ · fᵢ |
+| **2** | 4 | 1 | 4 |
+| **3** | 5 | 2 | 10 |
+| **4** | 6 | 3 | 18 |
+| **5** | 7 | 2 | 14 |
+| **6** | 8 | 1 | 8 |
+| **7** | **Total** | **9** | **54** |
+
+**Passo 2 — Aplicar a fórmula:**
+
+$$
+\color{red} \bar{x} = \frac{C7}{B7} = \frac{54}{9} = \mathbf{6}
+$$
+
+Resultado: **6**
+
+✅ A nota média é **6**.
+
+</details>
+
+<details>
+<summary>🐍 Exemplo Média Aritmética Simples para Dados Agrupados por Lista no Python</summary>
+
+**Problema:** As notas de 9 alunos foram: 4, 5, 5, 6, 6, 6, 7, 7, 8. Qual é a nota média?
+
+- Opção 1 — Função direta (estatística)
+```python
+from statistics import mean
+
+notas = [4, 5, 5, 6, 6, 6, 7, 7, 8]
+media = mean(notas)
+print(media)
+```
+
+- Opção 2 — Função direta (NumPy)
+```python
+import numpy as np
+
+notas = [4, 5, 5, 6, 6, 6, 7, 7, 8]
+media = np.mean(notas)
+print(media)
+```
+</details>
+
+<details>
+<summary>📊 Exemplo Média Aritmética Simples para Dados Agrupados por Lista no R</summary>
+
+**Problema:** As notas de 9 alunos foram: 4, 5, 5, 6, 6, 6, 7, 7, 8. Qual é a nota média?
+
+- Opção 1 — Função direta (base R)
+```r
+notas <- c(4, 5, 5, 6, 6, 6, 7, 7, 8)
+media <- mean(notas)
+print(media)
+```
+</details>
+
+> Quando os dados estão agrupados em **classes (intervalos)**, não conhecemos os valores exatos dentro de cada classe. Assumimos então que os dados estão **uniformemente distribuídos** e representamos cada classe pelo seu **ponto médio**.<br><br>
+
+**📐 Fórmula Média Aritmética Simples para Dados Agrupados por Intervalo de Classe**
+
+$$
+\color{blue} \bar{x} = \frac{\sum_{i=1}^{k} x_i \cdot f_i}{\sum_{i=1}^{k} f_i}
+$$
+
+Onde:
+- **xᵢ** = **ponto médio** da classe: $ x_i = \frac{L_{inf} + L_{sup}}{2} $
+- **fᵢ** = frequência da classe
+- **k** = número de classes
 
 <details>
 <summary>📌 Exemplo Média Aritmética Simples para Dados Agrupados por Intervalo de Classe</summary></summary>
@@ -174,6 +341,111 @@ $$
 ✅ A nota média é **10,8**.
 
 > **⚠️ Atenção:** Este valor é uma **aproximação**. Se usarmos os dados originais não agrupados, a média real é 9,95. A diferença existe porque perdemos informação ao agrupar.
+</details>
+
+<details>
+<summary>📊 Exemplo Média Aritmética Simples para Dados Agrupados por Intervalo de Classe no Excel</summary>
+
+**Problema:** As notas de 20 alunos foram agrupadas nas seguintes classes:
+
+| Classe | Intervalo | fᵢ |
+|---------|---------|-----|
+| 1 | [4, 8[ | 7 |
+| 2 | [8, 12[ | 5 |
+| 3 | [12, 16[ | 5 |
+| 4 | [16, 20] | 3 |
+| **Total** | - | **20** |
+
+**Passo 1 — Calcular o ponto médio de cada classe:**
+
+Digite os limites inferiores na coluna A, os limites superiores na coluna B e as frequências na coluna C:
+
+| | A | B | C | D | E |
+|---|---|---|---|---|---|
+| **1** | Limite Inferior | Limite Superior | fᵢ | xᵢ (ponto médio) | xᵢ · fᵢ |
+| **2** | 4 | 8 | 7 | `=(A2+B2)/2` | `=D2*C2` |
+| **3** | 8 | 12 | 5 | `=(A3+B3)/2` | `=D3*C3` |
+| **4** | 12 | 16 | 5 | `=(A4+B4)/2` | `=D4*C4` |
+| **5** | 16 | 20 | 3 | `=(A5+B5)/2` | `=D5*C5` |
+| **6** | **Total** | - | `=SOMA(C2:C5)` | - | `=SOMA(E2:E5)` |
+
+Resultado:
+
+| | A | B | C | D | E |
+|---|---|---|---|---|---|
+| **1** | Limite Inferior | Limite Superior | fᵢ | xᵢ (ponto médio) | xᵢ · fᵢ |
+| **2** | 4 | 8 | 7 | 6 | 42 |
+| **3** | 8 | 12 | 5 | 10 | 50 |
+| **4** | 12 | 16 | 5 | 14 | 70 |
+| **5** | 16 | 20 | 3 | 18 | 54 |
+| **6** | **Total** | - | **20** | - | **216** |
+
+**Passo 2 — Aplicar a fórmula:**
+$$
+\bar{x} = \frac{E6}{C6} = \frac{216}{20} = \mathbf{6}
+$$
+
+Resultado: **10,8**
+
+✅ A nota média é **10,8**.
+
+> **⚠️ Atenção:** Este valor é uma **aproximação**. Se usarmos os dados originais não agrupados, a média real é 9,95. A diferença existe porque perdemos informação ao agrupar.
+
+</details>
+
+
+<details>
+<summary>🐍 Exemplo Média Aritmética Simples para Dados Agrupados por Intervalo de Classe no Python</summary>
+
+**Problema:** As notas de 20 alunos foram agrupadas nas seguintes classes:
+
+| Classe | Intervalo | fᵢ |
+|---------|---------|-----|
+| 1 | [4, 8[ | 7 |
+| 2 | [8, 12[ | 5 |
+| 3 | [12, 16[ | 5 |
+| 4 | [16, 20] | 3 |
+| **Total** | - | **20** |
+
+- Opção 1 — Com NumPy
+```python
+import numpy as np
+
+limites_inferiores = np.array([4, 8, 12, 16])
+limites_superiores = np.array([8, 12, 16, 20])
+frequencias = np.array([7, 5, 5, 3])
+
+pontos_medios = (limites_inferiores + limites_superiores) / 2
+media = np.sum(pontos_medios * frequencias) / np.sum(frequencias)
+
+print(f"Pontos médios: {pontos_medios}")
+print(f"Média: {media}")
+```
+
+- Opção 2 — Com pandas
+```python
+import pandas as pd
+
+dados = {
+    "Limite Inferior": [4, 8, 12, 16],
+    "Limite Superior": [8, 12, 16, 20],
+    "fᵢ": [7, 5, 5, 3]
+}
+
+df = pd.DataFrame(dados)
+
+- _Ponto médio_
+df["xᵢ"] = (df["Limite Inferior"] + df["Limite Superior"]) / 2
+
+- _xᵢ · fᵢ_
+df["xᵢ · fᵢ"] = df["xᵢ"] * df["fᵢ"]
+
+- _Média_
+media = df["xᵢ · fᵢ"].sum() / df["fᵢ"].sum()
+
+print(df)
+print(f"Média: {media}")
+```
 </details>
 
 ### 2.2 Média Aritmética Ponderada

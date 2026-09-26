@@ -1,6 +1,6 @@
-# Moda
+# <center>Moda</center>
 
-## 1. INTRODUÇÃO
+## Introdução
 
 &emsp;&emsp;&emsp;Conforme abordado nas aulas anteriores, a média aritmética funciona como o ponto de equilíbrio de um conjunto de dados, mas é extremamente sensível a valores extremos (outliers). A mediana vem resolver esse problema, resistindo aos extremos e representando o valor central. No entanto, ambas — média e mediana — têm uma limitação comum: **só se aplicam a dados numéricos**.<br>
 
@@ -25,6 +25,10 @@
     .t .seta{position:absolute;top:-20px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-top:8px solid #8a8a9a}
     .t .item{position:relative;padding-top:20px}
     .t .item::before{content:'';position:absolute;top:0;left:50%;width:1.5px;height:20px;background:#8a8a9a}
+    .t .moda{border-color:#4a9eff}
+    .t .moda div{border-bottom-color:#4a9eff;color:#4a9eff}
+    .t .moda>div:first-child{background:#1a3a5e;color:#4a9eff}
+    .t .moda::before{background:#4a9eff}
     </style>
     <div class="t">
     <b>MEDIDAS DE TENDÊNCIA CENTRAL</b>
@@ -42,7 +46,7 @@
         <div>Robusta a outliers</div>
         <div>Dados numéricos</div>
         </div>
-        <div class="col item">
+        <div class="col item moda">
         <div>MODA</div>
         <div>Valor mais frequente</div>
         <div>Robusta a outliers</div>
@@ -52,13 +56,11 @@
     </div>
 </details></center>
 
-## 2. MODA
-
 &emsp;&emsp;&emsp;A **moda** é a medida de tendência central que identifica o **valor que aparece com maior frequência** em um conjunto de dados. É a única medida de tendência central que pode ser usada para **dados categóricos** (nominais e ordinais).
 
 > "A moda é o valor que ocorre com maior frequência em um conjunto de dados. Em estatística, é a única medida que pode ser utilizada com dados de nível nominal." — Larson & Farber (2010, p. 56)
 
-### 2.1 Tipos de Moda
+### 1. Tipos de Moda
 
 &emsp;&emsp;&emsp;Sabemos que nem todos os conjuntos têm uma única moda — alguns não têm nenhuma, outros têm duas ou até várias. Consoante o número de valores que se repetem com a frequência máxima, a moda classifica-se em quatro tipos:<br>
 
@@ -101,7 +103,7 @@
 </div>
 </details></center>
 
-### 2.2 Moda para Dados Brutos (Não Agrupados)
+### 2. Moda para Dados Brutos (Não Agrupados)
 
 &emsp;&emsp;&emsp;É o caso mais simples: tens a lista completa de valores. Basta contar quantas vezes cada valor aparece e identificar o(s) mais frequente(s).
 
@@ -161,6 +163,123 @@ flowchart TD
 ✅ As modas são **4 e 6** (Bimodal).
 </details>
 
+<details>
+<summary>📊 Exemplo da Moda para Dados Não Agrupados no Excel</summary>
+
+**Problema:** Notas de 7 alunos: `7, 8, 8, 9, 9, 9, 10`
+
+**Passo 1 — Inserir os dados na planilha:**
+
+| - | A |
+|---|---|
+| **1** | Notas |
+| **2** | 7 |
+| **3** | 8 |
+| **4** | 8 |
+| **5** | 9 |
+| **6** | 9 |
+| **7** | 9 |
+| **8** | 10 |
+
+**Passo 2 — Calcular a moda:**
+
+Em qualquer célula vazia, digite:
+
+```
+=MODO(A2:A8)
+```
+
+✅ A moda é **9** (Unimodal).
+
+> **⚠️ Atenção:** A função `MODO` no Excel retorna **apenas o menor valor** entre os que têm maior frequência. Para ver **todas as modas** (4 e 6), é preciso usar a função `MODO.MULT` (ou `MODE.MULT` em inglês), que retorna uma matriz.
+
+**Passo 3 — Calcular todas as modas com MODO.MULT:**
+
+Selecione duas células vazias (ex.: C1:C2), digite:
+
+```
+=MODO.MULT(A2:A10)
+```
+
+E pressione **Ctrl + Shift + Enter** (para fórmulas matriciais em versões antigas do Excel).
+
+Resultado: **4** e **6**
+
+✅ As modas são **4 e 6** (Bimodal).
+
+**📌 Resumo das Fórmulas no Excel**
+
+| Função | Inglês | Português | Resultado |
+|--------|--------|-----------|-----------|
+| Moda única | `=MODE(A2:A8)` | `=MODO(A2:A8)` | 9 |
+| Todas as modas | `=MODE.MULT(A2:A10)` | `=MODO.MULT(A2:A10)` | 4 e 6 |
+
+> **💡 Dica:** Use `MODO` quando quiser apenas uma resposta rápida. Use `MODO.MULT` quando precisar verificar se o conjunto é bimodal ou multimodal.
+
+</details>
+
+<details>
+<summary>🐍 Exemplo da Moda para Dados Não Agrupados no Python</summary>
+
+**Problema:** Notas de 7 alunos: `7, 8, 8, 9, 9, 9, 10`
+
+- Opção 1 — Função direta (estatística)
+```python
+from statistics import mode
+
+notas = [7, 8, 8, 9, 9, 9, 10]
+moda = mode(notas)
+print(moda)
+```
+
+- Opção 2 — Função direta (NumPy)
+```python
+import numpy as np
+from scipy import stats
+
+notas = [7, 8, 8, 9, 9, 9, 10]
+moda = stats.mode(notas)
+print(moda)
+```
+
+- Opção 3 — Função direta (pandas)
+```python
+import pandas as pd
+
+notas = [7, 8, 8, 9, 9, 9, 10]
+moda = pd.Series(notas).mode()
+print(moda)
+```
+</details>
+
+<details>
+<summary>📊 Exemplo da Moda para Dados Não Agrupados no R</summary>
+
+**Problema:** Notas de 7 alunos: `7, 8, 8, 9, 9, 9, 10`
+
+- Opção 1 — Função direta (base R)
+
+```r
+notas <- c(7, 8, 8, 9, 9, 9, 10)
+moda <- names(sort(table(notas), decreasing = TRUE))[1]
+print(moda)
+```
+
+- Opção 2 — Função direta (dplyr)
+
+```r
+library(dplyr)
+
+notas <- c(7, 8, 8, 9, 9, 9, 10)
+moda <- data.frame(notas) %>%
+  count(notas) %>%
+  filter(n == max(n)) %>%
+  pull(notas)
+print(moda)
+```
+
+</details>
+
 ### 2.3 Moda para Dados Agrupados por Lista
 
 &emsp;&emsp;&emsp;Quando os dados estão numa **tabela de frequências**, a moda é simplesmente o **valor com maior fi**. Não há cálculo adicional — é uma leitura direta da tabela.
@@ -214,14 +333,75 @@ flowchart TD
 ✅ As modas são **20 e 30** (Bimodal).
 </details>
 
-### 2.4 Moda para Dados Agrupados por Intervalo de Classe
+<details>
+<summary>🐍 Exemplo da Moda para Dados Agrupados por Lista no Python</summary>
+
+**Problema:** As notas de 10 alunos foram resumidas na tabela. Qual é a moda?
+
+| Valor (xi) | fi |
+|---------|---------|
+| 5 | 2 |
+| 6 | **4** |
+| 7 | 3 |
+| 8 | 1 |
+| **Total** | **10** |
+
+- Opção 1 — Função direta (estatística)
+```python
+from statistics import mode
+
+valores = [5, 6, 7, 8]
+frequencias = [2, 4, 3, 1]
+
+dados = []
+for valor, freq in zip(valores, frequencias):
+    dados.extend([valor] * freq)
+
+moda = mode(dados)
+print(moda)
+```
+
+- Opção 2 — Função direta (NumPy)
+```python
+import numpy as np
+from scipy import stats
+
+valores = [5, 6, 7, 8]
+frequencias = [2, 4, 3, 1]
+
+dados = []
+for valor, freq in zip(valores, frequencias):
+    dados.extend([valor] * freq)
+
+moda = stats.mode(dados)
+print(moda)
+```
+
+- Opção 3 — Função direta (pandas)
+```python
+import pandas as pd
+
+valores = [5, 6, 7, 8]
+frequencias = [2, 4, 3, 1]
+
+dados = []
+for valor, freq in zip(valores, frequencias):
+    dados.extend([valor] * freq)
+
+moda = pd.Series(dados).mode()
+print(moda)
+```
+
+</details>
+
+### 4. Moda para Dados Agrupados por Intervalo de Classe
 
 &emsp;&emsp;&emsp;Para dados agrupados em classes, a moda pode ser calculada de duas formas:
 
 1. **Classe Modal** (sem interpolação) — apenas identificas a classe com maior frequência
 2. **Moda Interpolada** (fórmula de Czuber) — calculas um valor único dentro da classe modal
 
-#### 2.4.1 Classe Modal (sem interpolação)
+**4.1 Classe Modal (sem interpolação)**
 
 &emsp;&emsp;&emsp;A **classe modal** é simplesmente a classe com a **maior frequência**. É útil quando queres saber "onde está a maioria dos dados", sem precisar de um valor exato.
 
@@ -242,7 +422,7 @@ flowchart TD
 **Interpretação:** A maioria dos alunos (65 em 120) tem idade entre **18 e 22 anos**.
 </details>
 
-#### 2.4.2 Moda Interpolada — Fórmula de Czuber
+**4.2 Moda Interpolada — Fórmula de Czuber**
 
 &emsp;&emsp;&emsp;Quando queres um **valor único** dentro da classe modal, usas a **fórmula de Czuber**. Esta fórmula interpola dentro da classe, tendo em conta as frequências das classes vizinhas.
 
@@ -299,7 +479,7 @@ $$
 </details>
 
 
-### 2.5 Vantagens e Desvantagens da Moda
+### 5. Vantagens e Desvantagens da Moda
 
 &emsp;&emsp;&emsp;A moda é a única medida de tendência central aplicável a **dados categóricos**, mas apresenta vantagens e limitações que devem ser reconhecidas.<br><br>
 
@@ -318,7 +498,7 @@ $$
 - **Menos útil em análises avançadas.** A moda não é tratável algebricamente e é pouco usada em modelos estatísticos complexos (regressão, ANOVA, etc.).<br><br>
 
 
-### 2.6 Quando Usar — Média × Mediana × Moda
+### 6. Quando Usar — Média × Mediana × Moda
 
 &emsp;&emsp;&emsp;A escolha entre média, mediana e moda depende da **natureza dos dados** e do **objetivo da análise**. Não há uma medida universalmente superior — cada uma tem o seu contexto de aplicação.<br><br>
 
@@ -351,38 +531,7 @@ flowchart TD
 ```
 </details></center>
 
-<details>
-<summary> Exemplo no R</summary>
-```R
-Dados de exemplo
-notas <- c(4, 5, 5, 6, 6, 6, 7, 7, 8)
-
-- _Moda para Dados Brutos_
-moda <- function(x) {
-  valores_unicos <- unique(x)
-  valores_unicos[which.max(tabulate(match(x, valores_unicos)))]
-}
-moda(notas)
-```
-</details>
-
-<details>
-<summary>🐍 Exemplo no Python</summary>
-
-```python
-import pandas as pd
-import numpy as np
-
-- _Dados de exemplo_
-notas = pd.Series([4, 5, 5, 6, 6, 6, 7, 7, 8])
-
-- _Moda para Dados Brutos_
-moda = notas.mode()
-print(moda)
-```
-</details>
-
-## 3. EXERCÍCIOS
+## EXERCÍCIOS
 
 <details>
 <summary>📗 Exercício 1 — Moda (Unimodal)</summary>
@@ -521,17 +670,10 @@ Maior frequência: 25 → classe **[10, 20[**
 </details>
 </details>
 
-## 4. RESUMO GERAL DAS FÓRMULAS DA MODA
 
-| Tipo de Dados | Método | Fórmula / Procedimento |
-|---------|---------|---------|
-| **Dados Brutos** | Contagem | Valor com maior frequência |
-| **Agrupados por Lista** | Leitura da tabela | Valor com maior fi |
-| **Agrupados por Intervalo (classe modal)** | Identificação | Classe com maior fi |
-| **Agrupados por Intervalo (interpolada)** | Fórmula de Czuber | `Mo = Li + (Δ1 / (Δ1 + Δ2)) × hi` |
 
-> Em **dados brutos**, a moda é o valor que mais se repete.
-> Em **dados agrupados por lista**, é o valor com maior frequência na tabela.
-> Em **dados agrupados por intervalo**, podes identificar apenas a classe modal ou calcular um valor interpolado com a fórmula de Czuber.
+> Em **dados brutos**, a moda é o valor que mais se repete.<br>
+ Em **dados agrupados por lista**, é o valor com maior frequência na tabela.<br>
+ Em **dados agrupados por intervalo**, podes identificar apenas a classe modal ou calcular um valor interpolado com a fórmula de Czuber.
 
 > A moda revela o que mais se repete — é a única medida que fala a linguagem das categorias e a voz da maioria.

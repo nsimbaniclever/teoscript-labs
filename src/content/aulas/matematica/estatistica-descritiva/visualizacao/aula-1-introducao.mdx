@@ -1,434 +1,290 @@
-# Gráficos em Estatística
+# <center>Introdução Aos Gráficos</center>
 
-## 1. INTRODUÇÃO
+## Introdução
 
-&emsp;&emsp;&emsp;Um **gráfico estatístico** é uma representação visual de dados numéricos ou categóricos, organizados de forma a facilitar a compreensão de padrões, tendências, comparações e distribuições.<br>
+&emsp;&emsp;&emsp;Imagina que és o professor de uma turma de 30 alunos. No final do ano, tens uma tabela com as notas de todos eles. São 30 linhas e 5 colunas — 150 números. Agora pergunta-te: **consegues ver rapidamente quem melhorou? Quem piorou? Qual foi a turma mais consistente?** A resposta é não. Os números estão lá, mas a informação está escondida.<br><br>
 
-&emsp;&emsp;&emsp;Em outras palavras: é um **desenho que transforma números em formas** (barras, pontos, linhas, fatias) para que nosso cérebro possa enxergar o que os números estão dizendo.
+&emsp;&emsp;&emsp;Agora imagina que transformas essa tabela num gráfico de linhas. Cada aluno é uma linha. Num instante, vês quem subiu, quem desceu, quem se manteve estável. **A mesma informação, mas compreendida em segundos.** É isto que a **visualização de dados** faz: transforma números em compreensão. E é por isso que esta aula existe — antes de aprenderes a calcular médias, desvios-padrão ou correlações, precisas de saber **olhar** para os dados. Porque um gráfico bem feito responde a perguntas que uma tabela nem sequer consegue formular.
 
-### Por que usar gráficos em vez de tabelas?
+> 💡 **Regra de Ouro:** Um gráfico não é decoração. É uma ferramenta de pensamento. Serve para ver o que os números escondem.
 
-- Tabela --> Mostra os números exatos, enquanto o gráficos mostra padrões visuais
-- Tabela --> É precisa e detalhada, enquanto o gráficos é rápida e intuitiva
-- Tabela --> Exige leitura linha por linha, enquanto o gráficos é compreendido em segundos
-- Tabela --> Boa para consulta, enquanto o gráficos é boa para apresentação e comunicação
 
-> **Regra de ouro:** Tabela é para *consultar*. Gráfico é para *comunicar*.
+## O que é um Gráficos?
 
-### Para que serve um gráfico?
+> Um **gráfico** é uma representação visual de dados que usa elementos geométricos (pontos, linhas, barras, áreas, cores) para mostrar relações, padrões, tendências e comparações entre variáveis.
 
-Um gráfico serve para responder a **perguntas visuais**, como:
+&emsp;&emsp;&emsp;Um gráfico é, na sua essência, uma **tradução**. Traduz números para uma linguagem que o cérebro humano processa naturalmente: a linguagem visual. O cérebro humano é uma máquina visual. Cerca de **30% do córtex cerebral** está dedicado ao processamento visual. Reconhecemos uma face em 100 milissegundos. Detetamos um padrão numa imagem quase instantaneamente. Mas ler uma tabela de 50 números? Isso exige esforço consciente, atenção sustentada, memória de trabalho. Os gráficos existem para **explorar essa capacidade natural**. Em vez de forçar o cérebro a ler números, damos-lhe formas. E as formas são processadas sem esforço.<br><br>
 
-- "Qual é o maior?" → Comparação
-- "Quanto cada parte representa do todo?" → Proporção
-- "Onde a maioria dos valores está concentrada?" → Distribuição
-- "Uma coisa influencia a outra?" → Relação
-- "Isso está aumentando ou diminuindo com o tempo?" → Tendência
-
-## 2. ANATOMIA DE UM GRÁFICO
-
-&emsp;&emsp;&emsp;Todo gráfico estatístico bem construído possui elementos obrigatórios. Vamos conhecer cada parte do corpo de um gráfico:
+&emsp;&emsp;&emsp;Os dados são números brutos, sem contexto, como 30, 45, 12, 67, 23. Quando ganham contexto, transformam-se em informação, como "A média das notas é 45,2". A partir da informação extraem-se conhecimento — padrões e relações, como "A turma A é mais consistente que a B". E quando esse conhecimento orienta decisões e ações, chegamos à sabedoria, como "Vamos reforçar a turma B com apoio extra".
 
 <details>
-<summary>📊 Ver a anatomia de um gráfico</summary>
-<style>
-.r{font:14px system-ui;text-align:center}
-.r b{display:inline-block;padding:4px 10px;background:#333;color:#fff;border-radius:6px}
-.r i{display:block;width:2px;height:18px;background:#333;margin:0 auto}
-.r em{display:flex;gap:8px;justify-content:center;position:relative;padding-top:18px}
-.r em::before{content:'';position:absolute;top:0;left:25%;right:25%;height:2px;background:#333}
-.r em span{flex:1;padding:8px;border:2px solid #333;border-radius:8px;max-width:140px}
-.r em span::before{content:'';position:absolute;top:-18px;left:50%;width:2px;height:18px;background:#333}
-.r em span{position:relative}
-</style>
-<div class="r">
-  <b>TÍTULO PRINCIPAL</b>
-  <i></i>
-  <em>
-    <span>Eixo Y<br>(vertical)</span>
-    <span>Eixo X<br>(horizontal)</span>
-    <span>Legenda</span>
-    <span>Fonte</span>
-  </em>
+<summary>📊 A Pirâmide: Dados → Informação → Conhecimento → Sabedoria </summary>
+ 
+```mermaid
+flowchart TD
+    A["📊 DADOS<br/>Números brutos<br/>30, 45, 12, 67..."] --> B["📈 INFORMAÇÃO<br/>Dados com contexto<br/>Média = 45,2"]
+    B --> C["🧠 CONHECIMENTO<br/>Padrões e relações<br/>A turma A é mais consistente"]
+    C --> D["💡 SABEDORIA<br/>Decisões e ação<br/>Vamos reforçar a turma B"]
+
+    style A fill:#e3f2fd,stroke:#0d6efd,stroke-width:2px
+    style B fill:#e8f5e9,stroke:#28a745,stroke-width:2px
+    style C fill:#fff3cd,stroke:#ffc107,stroke-width:2px
+    style D fill:#f3e5f5,stroke:#6f42c1,stroke-width:2px
+```
+</details>
+
+
+
+&emsp;&emsp;&emsp;Os gráficos vivem entre a **informação** e o **conhecimento**. Transformam dados em informação visual e revelam padrões que se tornam conhecimento. Sem gráficos, ficamos presos nos dados. Com gráficos, damos o primeiro passo para a sabedoria.
+
+### Anatomia de um Gráficos
+
+&emsp;&emsp;&emsp;A anatomia de um gráfico organiza-se em torno de sete elementos essenciais:
+
+- **Eixo X** — variável independente, disposta na horizontal; representa aquilo que controlamos ou que serve de base à observação.
+- **Eixo Y** — variável dependente, disposta na vertical; representa aquilo que medimos ou que responde à variável do eixo X.
+- **Título** — indica, de forma clara e direta, o que o gráfico mostra, permitindo ao leitor saber imediatamente o que está a ver.
+- **Legenda** — explica o significado das cores, formas e símbolos utilizados; é essencial quando o gráfico representa mais do que uma série de dados.
+- **Escalas** — definem os intervalos dos eixos, determinando a amplitude e o espaçamento dos valores apresentados.
+- **Rótulos** — identificam os nomes das categorias ou das variáveis em cada eixo, garantindo que o leitor sabe o que está a ser representado.
+- **Fonte** — indica a origem dos dados, conferindo credibilidade e permitindo ao leitor verificar ou aprofundar a informação.
+
+&emsp;&emsp;&emsp;Em conjunto, estes sete elementos transformam um conjunto de pontos ou barras numa representação visual completa, clara e honesta.
+
+<details>
+<summary>Anatomia de um Gráficos</summary> 
+
+Um gráfico bem construído tem **sete elementos essenciais**. Sem eles, o gráfico é incompleto ou enganador.
+
+```mermaid
+flowchart LR
+    A["📊 GRÁFICO"] --> B["Eixo X"]
+    A --> C["Eixo Y"]
+    A --> D["Título"]
+    A --> E["Legenda"]
+    A --> F["Escalas"]
+    A --> G["Rótulos"]
+    A --> H["Fonte"]
+
+    style A fill:#333,color:#fff,stroke:#333,stroke-width:2px
+    style B fill:#cfe2ff,stroke:#0d6efd,stroke-width:2px
+    style C fill:#cfe2ff,stroke:#0d6efd,stroke-width:2px
+```
+</details>
+
+
+### Os Tipos De Gráficos
+
+&emsp;&emsp;&emsp;Nem todos os gráficos servem para tudo. Cada tipo de gráfico responde a uma **pergunta diferente**. Ao longo deste módulo, vais estudar cinco tipos — cada um com a sua função: 
+
+1. Gráficos de Comparação
+1. Gráficos de Proporção
+1. Gráficos de Distribuição
+1. Gráficos de Tendencia
+1. Gráficos de Associação
+
+
+<details>
+<summary>📊 Tipos De Gráficos</summary>
+```mermaid
+flowchart TD
+    A["📊 TIPOS DE GRÁFICOS"] --> B["COMPARAÇÃO"]
+    A --> C["PROPORÇÃO"]
+    A --> D["TENDÊNCIA"]
+    A --> E["DISTRIBUIÇÃO"]
+    A --> F["ASSOCIAÇÃO"]
+
+    B --> B1["Barras, Colunas, Pictogramas"]
+    C --> C1["Setores, Pizza, Área 100%"]
+    D --> D1["Linhas, Dispersão"]
+    E --> E1["Histograma, Boxplot"]
+    F --> F1["Scatterplot, Hexbin"]
+
+    style A fill:#333,color:#fff,stroke:#333,stroke-width:2px
+    style B fill:#cfe2ff,stroke:#0d6efd,stroke-width:2px
+    style C fill:#d4edda,stroke:#28a745,stroke-width:2px
+    style D fill:#fff3cd,stroke:#ffc107,stroke-width:2px
+    style E fill:#f8d7da,stroke:#dc3545,stroke-width:2px
+    style F fill:#e2d9f3,stroke:#6f42c1,stroke-width:2px
+```
+</details>
+
+
+### Como escolher um Gráficos certo? 
+
+&emsp;&emsp;&emsp;A escolha do gráfico não é arbitrária. Depende da **pergunta** que queres responder e do **tipo de variáveis** que tens.
+<details>
+<summary>📊 Escolha do Gráficos</summary>
+```mermaid
+flowchart TD
+    A["Que pergunta queres responder?"] --> B{"Que tipo de dados tens?"}
+    B --> C["1 variável categórica"]
+    B --> D["1 variável quantitativa"]
+    B --> E["2 variáveis quantitativas"]
+    B --> F["Tempo"]
+
+    C --> C1["Comparação<br/>Barras"]
+    C --> C2["Proporção<br/>Pizza"]
+
+    D --> D1["Distribuição<br/>Histograma"]
+
+    E --> E1["Associação<br/>Scatterplot"]
+
+    F --> F1["Tendência<br/>Linhas"]
+
+    style A fill:#333,color:#fff,stroke:#333,stroke-width:2px
+    style C1 fill:#cfe2ff,stroke:#0d6efd
+    style C2 fill:#d4edda,stroke:#28a745
+    style D1 fill:#f8d7da,stroke:#dc3545
+    style E1 fill:#e2d9f3,stroke:#6f42c1
+    style F1 fill:#fff3cd,stroke:#ffc107
+```
+</details>
+
+## EXERCÍCIOS
+
+<details>
+<summary>📗 Exercício 1 — Identificar o tipo de gráfico (Fácil)</summary>
+
+**Enunciado:** Para cada situação, indica que tipo de gráfico usarias (comparação, proporção, tendência, distribuição ou associação):
+
+a) Mostrar a evolução da temperatura ao longo de uma semana
+
+b) Comparar as notas de 4 turmas
+
+c) Mostrar a percentagem de cada rede social usada por adolescentes
+
+d) Ver se há relação entre horas de sono e concentração
+
+e) Mostrar como se distribuem as alturas de 100 pessoas
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+a) **Tendência** — Linhas (evolução temporal)
+
+b) **Comparação** — Barras (comparar grupos)
+
+c) **Proporção** — Pizza ou Setores (partes de um todo)
+
+d) **Associação** — Scatterplot (relação entre duas variáveis)
+
+e) **Distribuição** — Histograma (forma da distribuição)
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Detetar erros (Médio)</summary>
+
+**Enunciado:** Observa o gráfico abaixo e identifica três erros de visualização.
+
+<details>
+<summary>📊 Gráfico com erros</summary>
+
+<div style="display:flex;justify-content:center;margin:1.5rem 0">
+<svg width="350" height="200" style="background:#f8f9fa;border-radius:8px">
+  <text x="175" y="20" text-anchor="middle" font-size="12" font-weight="700" fill="#333">Gráfico 1</text>
+  <line x1="40" y1="170" x2="330" y2="170" stroke="#333" stroke-width="2"/>
+  <line x1="40" y1="50" x2="40" y2="170" stroke="#333" stroke-width="2"/>
+  <rect x="60" y="80" width="50" height="90" fill="#ff0000" opacity="0.8"/>
+  <rect x="130" y="75" width="50" height="95" fill="#00ff00" opacity="0.8"/>
+  <rect x="200" y="70" width="50" height="100" fill="#0000ff" opacity="0.8"/>
+  <rect x="270" y="65" width="50" height="105" fill="#ffff00" opacity="0.8"/>
+  <text x="85" y="185" text-anchor="middle" font-size="11" fill="#666">A</text>
+  <text x="155" y="185" text-anchor="middle" font-size="11" fill="#666">B</text>
+  <text x="225" y="185" text-anchor="middle" font-size="11" fill="#666">C</text>
+  <text x="295" y="185" text-anchor="middle" font-size="11" fill="#666">D</text>
+</svg>
 </div>
+
 </details>
 
+<details>
+<summary>💡 Ver resposta</summary>
 
-### O princípio fundamental dos gráficos
+1. **Título vago** — "Gráfico 1" não diz nada. Deveria ser "Vendas por Região" ou similar.
+2. **Eixo Y truncado** — começa em 50, não em 0. Isto exagera as diferenças.
+3. **Cores sem significado** — vermelho, verde, azul e amarelo não têm relação com os dados. Deveriam ser todas da mesma cor ou ter um propósito.
+4. **Falta de rótulos nos eixos** — não sabemos o que o eixo Y representa.
+5. **Falta de fonte** — não sabemos de onde vêm os dados.
 
-**"Um gráfico deve contar uma história sozinho,"** isso significa que o leitor, ao olhar para o gráfico, deve entender:
-
-1. **O que** está sendo mostrado (título)
-2. **Quem** ou **o quê** está sendo comparado (eixos)
-3. **Qual** é a mensagem principal (padrão visual)
-
-**O gráfico NÃO pode depender de texto explicativo externo.**
-
-**Exemplo de gráfico RUIM:**
-- Título: "Dados 2025"
-- Eixo X: "Categorias"
-- Eixo Y: números sem unidade
-- Sem legenda
-
-**Exemplo de gráfico BOM:**
-- Título: "Número de Alunos Aprovados por Disciplina em 2025"
-- Eixo X: "Matemática, Português, História, Geografia"
-- Eixo Y: "Número de Alunos (0 a 50)"
-- Legenda: "Aprovados"
-
-### Os 3 pilares de um bom gráfico:
-
-| **Pilar** | **O que significa** |
-|---------|---------|
-| **Clareza** | O leitor entende em poucos segundos |
-| **Precisão** | Os dados não são distorcidos (escala correta, proporções verdadeiras) |
-| **Estética** | É agradável de olhar, sem poluição visual |
-
-### Gráfico x Tabela: Quando usar cada um?
-
-| **Situação** | **Use tabela** | **Use gráfico** |
-|---------|---------|---------|
-| Dados exatos são importantes | ✅ | ❌ |
-| Poucos números (até 10) | ✅ | ⚠️ (pode) |
-| Muitos números (centenas) | ❌ | ✅ |
-| Comparar categorias | ⚠️ (pode) | ✅ |
-| Mostrar tendência no tempo | ❌ | ✅ |
-| Apresentar para público não-técnico | ❌ | ✅ |
-| Relatório técnico detalhado | ✅ | ⚠️ (complemento) |
-
-## 3. A CLASSIFICAÇÃO DOS GRÁFICOS EM 4 GRUPOS
-
-&emsp;&emsp;&emsp;Imagine que você tem uma caixa de ferramentas com 50 ferramentas diferentes. Se você não souber para que serve cada uma, vai pegar um martelo para apertar um parafuso.<br>
-
-&emsp;&emsp;&emsp;O mesmo acontece com gráficos. Existem dezenas de tipos, mas eles podem ser organizados em **4 grandes grupos funcionais**, de acordo com a **pergunta que eles respondem**.
-
-### A pergunta é quem manda!
-
-&emsp;&emsp;&emsp;Antes de escolher qualquer gráfico, você deve se perguntar:
-
-> **"O que eu quero saber com meus dados?"**
-
-A resposta a essa pergunta vai te levar diretamente a um dos 4 grupos.
+</details>
+</details>
 
 <details>
-<summary>📊 Ver a classificação dos gráficos</summary>
-<style>
-.r{font:14px system-ui;text-align:center}
-.r b{display:inline-block;padding:4px 10px;background:#333;color:#fff;border-radius:6px}
-.r i{display:block;width:2px;height:18px;background:#333;margin:0 auto}
-.r em{display:flex;gap:8px;justify-content:center;position:relative;padding-top:18px}
-.r em::before{content:'';position:absolute;top:0;left:12.5%;right:12.5%;height:2px;background:#333}
-.r em span{flex:1;padding:8px;border:2px solid #333;border-radius:8px;max-width:120px}
-.r em span::before{content:'';position:absolute;top:-18px;left:50%;width:2px;height:18px;background:#333}
-.r em span{position:relative}
-</style>
-<div class="r">
-  <b>TIPOS DE GRÁFICOS</b>
-  <i></i>
-  <em>
-    <span>COMPARAÇÃO<br>(Grupo 1)</span>
-    <span>PROPORÇÃO<br>(Grupo 2)</span>
-    <span>DISTRIBUIÇÃO<br>(Grupo 3)</span>
-    <span>RELAÇÃO<br>(Grupo 4)</span>
-  </em>
+<summary>📗 Exercício 3 — Escolher o gráfico certo (Médio)</summary>
+
+**Enunciado:** Tens os seguintes dados: população de 5 países ao longo de 10 anos. Que gráfico usarias para mostrar:
+
+a) Qual país tem mais população em 2024?
+
+b) Como evoluiu a população de cada país?
+
+c) Que percentagem da população mundial cada país representa?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+a) **Barras** — comparação entre países num ano específico
+
+b) **Linhas** — evolução temporal de cada país
+
+c) **Pizza** — proporção de cada país no total mundial
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Interpretar um gráfico (Médio)</summary>
+
+**Enunciado:** Observa o scatterplot abaixo e responde:
+
+<details>
+<summary>📊 Scatterplot — Horas de Estudo vs. Nota</summary>
+
+<div style="display:flex;justify-content:center;margin:1.5rem 0">
+<svg width="350" height="200" style="background:#f8f9fa;border-radius:8px">
+  <text x="175" y="20" text-anchor="middle" font-size="12" font-weight="700" fill="#333">Horas de Estudo vs. Nota</text>
+  <line x1="40" y1="170" x2="330" y2="170" stroke="#333" stroke-width="2"/>
+  <line x1="40" y1="30" x2="40" y2="170" stroke="#333" stroke-width="2"/>
+  <circle cx="70" cy="150" r="5" fill="#0d6efd" opacity="0.7"/>
+  <circle cx="100" cy="140" r="5" fill="#0d6efd" opacity="0.7"/>
+  <circle cx="130" cy="120" r="5" fill="#0d6efd" opacity="0.7"/>
+  <circle cx="160" cy="110" r="5" fill="#0d6efd" opacity="0.7"/>
+  <circle cx="190" cy="90" r="5" fill="#0d6efd" opacity="0.7"/>
+  <circle cx="220" cy="80" r="5" fill="#0d6efd" opacity="0.7"/>
+  <circle cx="250" cy="60" r="5" fill="#0d6efd" opacity="0.7"/>
+  <circle cx="280" cy="50" r="5" fill="#0d6efd" opacity="0.7"/>
+  <circle cx="310" cy="40" r="5" fill="#0d6efd" opacity="0.7"/>
+  <text x="185" y="190" text-anchor="middle" font-size="11" fill="#666">Horas de Estudo →</text>
+  <text x="20" y="100" text-anchor="middle" font-size="11" fill="#666" transform="rotate(-90,20,100)">Nota →</text>
+</svg>
 </div>
+
 </details>
 
-### Grupo 1 — Comparação de Magnitudes
+a) Qual é a direção da relação?
 
-| **Pergunta que responde** | **Tipo de variável** | **Gráficos** |
-|---------|---------|---------|
-| "Qual é maior? Qual é menor? Quanto tem em cada categoria?" | **Qualitativa** (categorias) + **Quantitativa** (frequência) | Barras, Colunas, Pictogramas |
+b) Qual é a força da relação?
 
-<center><details>
-<summary>**📌 Exemplo prático**</summary>
+c) Há outliers?
 
-- Dados: Vendas de 4 produtos (A, B, C, D).
-- Pergunta: "Qual produto vendeu mais?"
-- Gráfico: Barras — cada produto é uma barra, a altura mostra o valor.
-</details></center>
-
-### Grupo 2 — Proporção e Composição
-
-| **Pergunta que responde** | **Tipo de variável** | **Gráficos** |
-|---------|---------|---------|
-| "Quanto cada parte representa do todo (100%)?" | **Qualitativa** (categorias) + **Porcentagem** | Setores (Pizza), Área 100% empilhada |
-
-<center><details>
-<summary>**📌 Exemplo prático**</summary>
-
-- Dados: Participação de mercado de 4 empresas.
-- Pergunta: "Qual a fatia de cada empresa no mercado total?"
-- Gráfico: Pizza — cada fatia é uma porcentagem do círculo.
-</details></center>
-
-### Grupo 3 — Distribuição de Frequências
-
-| **Pergunta que responde** | **Tipo de variável** | **Gráficos** |
-|---------|---------|---------|
-| "Como os números estão espalhados? Onde está a maioria?" | **Quantitativa contínua** (uma variável) | Histograma, Boxplot, Polígono de Frequência |
-
-<center><details>
-<summary>**📌 Exemplo prático**</summary>
-
-- Dados: Idades de 100 funcionários de uma empresa.
-- Pergunta: "Qual a faixa etária mais comum? Os dados são simétricos?"
-- Gráfico: Histograma — barras encostadas mostrando a concentração por idade.
-</details></center>
-
-### Grupo 4 — Relação e Dependência
-
-| **Pergunta que responde** | **Tipo de variável** | **Gráficos** |
-|---------|---------|---------|
-| "Uma coisa influencia a outra?" ou "Como isso muda no tempo?" | **Duas variáveis quantitativas** ou **tempo + variável** | Dispersão (Scatter), Linhas |
-
-<center><details>
-<summary>**📌 Exemplo prático**</summary>
-
-- Dados: Horas de estudo e nota na prova de 30 alunos.
-- Pergunta: "Quem estuda mais tira notas melhores?"
-- Gráfico: Dispersão — cada aluno é um ponto; os pontos mostram a relação.
-</details></center>
-
-## 4. CRITÉRIO DE ESCOLHA — COMO SELECIONAR O GRÁFICO CERTO
-
-### Árvore de Decisão (passo a passo):
-
-<details>
-<summary>📊 Ver a árvore de decisão</summary>
-<style>
-.r{font:14px system-ui;text-align:center}
-.r b{display:inline-block;padding:4px 10px;background:#333;color:#fff;border-radius:6px}
-.r i{display:block;width:2px;height:18px;background:#333;margin:0 auto}
-.r em{display:flex;gap:8px;justify-content:center;position:relative;padding-top:18px}
-.r em::before{content:'';position:absolute;top:0;left:25%;right:25%;height:2px;background:#333}
-.r em span{flex:1;padding:8px;border:2px solid #333;border-radius:8px;max-width:140px}
-.r em span::before{content:'';position:absolute;top:-18px;left:50%;width:2px;height:18px;background:#333}
-.r em span{position:relative}
-</style>
-<div class="r">
-  <b>Quais são meus dados?</b>
-  <i></i>
-  <em>
-    <span>Uma variável<br>qualitativa</span>
-    <span>Uma variável<br>quantitativa</span>
-    <span>Duas variáveis<br>numéricas</span>
-    <span>Tempo +<br>número</span>
-  </em>
-</div>
-</details>
-
-### Simplificando com uma tabela:
-
-| **Pergunta** | **Resposta** | **Grupo** |
-|---------|---------|---------|
-| "Minha variável principal é um nome (categoria)?" | Sim → Quero comparar ou ver proporção | Grupo 1 ou 2 |
-| "Minha variável é um número contínuo (idade, peso) e só tenho ela?" | Sim → Quero ver como ela se distribui | Grupo 3 |
-| "Quero ver a relação entre duas variáveis numéricas?" | Sim → Quero saber se uma influencia a outra | Grupo 4 (Dispersão) |
-| "Meu eixo X é tempo (dias, meses, anos)?" | Sim → Quero ver evolução | Grupo 4 (Linhas) |
-
-### Diferença crucial que todo iniciante precisa gravar:
-
-| Conceito | Explicação| Grupo |
-|---------|---------|---------|
-| **Comparar** | Quem é maior? (ex: vendas por produto) | Grupo 1 |
-| **Compor** | Quanto cada parte vale do todo? (ex: fatia de mercado) | Grupo 2 |
-| **Distribuir** | Como os valores se espalham? (ex: idades dos alunos) | Grupo 3 |
-| **Relacionar** | Uma coisa muda com a outra? (ex: estudo x nota) | Grupo 4 |
-
-## 5. EXEMPLOS PRÁTICOS DE ESCOLHA (PASSO A PASSO)
-
-### Caso 1: Notas de 50 alunos
-
-<center><details>
-<summary>**📌 Exemplo Prático**</summary>
-
-**Dados:** Notas de 50 alunos em uma prova de Matemática (0 a 10).  
-**Pergunta:** "Qual a nota mais comum? A maioria tirou acima ou abaixo de 5?"
-
-| Passo | Raciocínio |
-|---------|---------|
-| 1. Quantas variáveis? | Uma: "nota" |
-| 2. Tipo da variável? | Quantitativa contínua (0 a 10) |
-| 3. O que quero saber? | Como as notas estão distribuídas |
-| **Conclusão** | **GRUPO 3 – Histograma** |
-</details></center>
-
-### Caso 2: Acidentes por mês
-
-<center><details>
-<summary>**📌 Exemplo Prático**</summary>
-
-**Dados:** Número de acidentes por mês em uma cidade no ano de 2025.  
-**Pergunta:** "Os acidentes estão aumentando ou diminuindo?"
-
-| Passo | Raciocínio |
-|---------|---------|
-| 1. Quantas variáveis? | Duas: "mês" e "número de acidentes" |
-| 2. Tipo? | Eixo X = tempo (meses), Eixo Y = número |
-| 3. O que quero saber? | Evolução/tendência ao longo do tempo |
-| **Conclusão** | **GRUPO 4 – Gráfico de Linhas** |
-</details></center>
-
-### Caso 3: Escolha de curso
-
-<center><details>
-<summary>**📌 Exemplo Prático**</summary>
-
-**Dados:** Percentual de alunos que escolheram cada curso em uma faculdade (Administração, Direito, Medicina, Engenharia).  
-**Pergunta:** "Qual curso tem a maior fatia dos alunos?"
-
-| Passo | Raciocínio |
-|---------|---------|
-| 1. Quantas variáveis? | Uma: "curso" (categoria) e a frequência (número de alunos) |
-| 2. Tipo da variável? | Qualitativa (nomes) + porcentagem |
-| 3. O que quero saber? | A participação de cada curso no total |
-| **Conclusão** | **GRUPO 2 – Gráfico de Setores (Pizza)** |
-</details></center>
-
-## 6. TABELA RESUMO DOS 4 GRUPOS
-
-| **Grupo** | **Nome** | **Pergunta** | **Variável** | **Gráficos** |
-|---------|---------|---------|---------|---------|
-| **1** | Comparação | Qual é maior? | Qualitativa + Frequência | Barras, Colunas |
-| **2** | Proporção | Quanto vale cada parte do todo? | Qualitativa + Porcentagem | Pizza, Área 100% |
-| **3** | Distribuição | Como os números se espalham? | Quantitativa contínua (uma) | Histograma, Boxplot |
-| **4** | Relação | Uma coisa influencia a outra? | Duas quantitativas ou Tempo + Número | Dispersão, Linhas |
-
-> **Frase de fixação:** *"Não decore gráficos. Decore a pergunta. A pergunta é quem escolhe o gráfico."*
-
-## 7. EXERCÍCIOS
-
-<details>
-<summary>📗 Exercício 1</summary>
-
-**Enunciado:** Classifique as situações abaixo no grupo correto (1, 2, 3 ou 4):
-
-a) Comparar a população de 5 cidades diferentes.
-
-b) Mostrar como a temperatura variou durante a semana.
-
-c) Verificar se alunos com mais faltas têm notas mais baixas.
-
-d) Mostrar como 100 reais foram gastos em compras (alimentação, transporte, lazer).
-
-e) Verificar se a maioria dos funcionários tem entre 30 e 40 anos.
+d) Que coeficiente usarias para quantificar esta relação?
 
 <details>
 <summary>💡 Ver resposta</summary>
 
-**Resposta:**
+a) **Positiva** — os pontos sobem da esquerda para a direita
 
-a) **Grupo 1** (Barras — comparação de magnitudes)
+b) **Forte** — os pontos estão apertados em torno de uma linha imaginária
 
-b) **Grupo 4** (Linhas — tempo + número)
+c) **Não** — não há pontos isolados
 
-c) **Grupo 4** (Dispersão — relação entre duas variáveis)
-
-d) **Grupo 2** (Pizza — proporção do todo)
-
-e) **Grupo 3** (Histograma — distribuição de frequências)
+d) **Pearson** — relação linear, sem outliers
 
 </details>
 </details>
 
-<details>
-<summary>📗 Exercício 2</summary>
 
-**Enunciado:** Você tem os seguintes dados: a temperatura média de cada mês do ano em sua cidade. Você precisa apresentar isso em uma reunião com colegas que não são da área de exatas.
-
-a) Você usaria tabela ou gráfico?
-
-b) Qual elemento do gráfico seria o eixo X?
-
-c) Qual elemento seria o eixo Y?
-
-d) O que você colocaria no título?
-
-<details>
-<summary>💡 Ver resposta</summary>
-
-**Resposta:**
-
-a) **Gráfico** (é mais visual e rápido para o público não-técnico)
-
-b) **Os meses** (janeiro a dezembro)
-
-c) **A temperatura** (em °C)
-
-d) **"Temperatura Média Mensal – Cidade X – 2025"**
-
-</details>
-</details>
-
-<details>
-<summary>📗 Exercício 3</summary>
-
-**Enunciado:** Identifique qual grupo de gráficos é mais adequado para cada pergunta:
-
-a) "Qual produto vendeu mais?"
-
-b) "Qual a fatia de mercado de cada empresa?"
-
-c) "Qual a faixa etária mais comum entre os funcionários?"
-
-d) "Quem estuda mais tira notas melhores?"
-
-<details>
-<summary>💡 Ver resposta</summary>
-
-**Resposta:**
-
-a) **Grupo 1** — Comparação de magnitudes (Barras)
-
-b) **Grupo 2** — Proporção e composição (Pizza)
-
-c) **Grupo 3** — Distribuição de frequências (Histograma)
-
-d) **Grupo 4** — Relação e dependência (Dispersão)
-
-</details>
-</details>
-
-<details>
-<summary>📗 Exercício 4</summary>
-
-**Enunciado:** Quais são os 3 pilares de um bom gráfico? Explique cada um.
-
-<details>
-<summary>💡 Ver resposta</summary>
-
-**Resposta:**
-
-1. **Clareza** — O leitor entende em poucos segundos o que o gráfico está mostrando.
-
-2. **Precisão** — Os dados não são distorcidos (escala correta, proporções verdadeiras).
-
-3. **Estética** — É agradável de olhar, sem poluição visual ou elementos desnecessários.
-
-</details>
-</details>
-
-<details>
-<summary>📗 Exercício 5</summary>
-
-**Enunciado:** Por que a pergunta "O que eu quero saber com meus dados?" é o primeiro passo antes de escolher um gráfico?
-
-<details>
-<summary>💡 Ver resposta</summary>
-
-**Resposta:**
-
-Porque a pergunta define **qual grupo de gráficos** é o mais adequado. Cada grupo responde a um tipo diferente de pergunta:
-
-- Comparação → Grupo 1 (Barras)
-- Proporção → Grupo 2 (Pizza)
-- Distribuição → Grupo 3 (Histograma)
-- Relação → Grupo 4 (Dispersão/Linhas)
-
-Escolher o gráfico antes de definir a pergunta é como escolher a ferramenta antes de saber o que você vai construir — você pode acabar usando a ferramenta errada.
-
-</details>
-</details>
-
-> Não decore gráficos. Decore a pergunta. A pergunta é quem escolhe o gráfico. Um gráfico bem escolhido não apenas mostra dados — ele conta uma história que os números sozinhos não conseguem dizer.
+> **Em resumo:** um gráfico não é decoração. É uma ferramenta de pensamento. Serve para ver o que os números escondem. E um gráfico bem feito vale mais que mil números.

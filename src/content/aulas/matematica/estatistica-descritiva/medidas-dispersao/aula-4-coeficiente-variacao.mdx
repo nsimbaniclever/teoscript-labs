@@ -55,14 +55,12 @@ Precisamos, portanto, de uma medida que:
 
 > **💡 Dica de Ouro:** O desvio-padrão diz-te **quanto** os dados variam. O coeficiente de variação diz-te **quanto variam em relação à média**. É a diferença entre "500 kz" e "25% da média".
 
-## O que é o Coeficiente de Variação?
-
 &emsp;&emsp;&emsp;O **coeficiente de variação** é uma medida **relativa** de dispersão que expressa o desvio-padrão como **percentagem da média**.
 
 **📐 Fórmula**
 
 $$
-\color{blue} CV = \frac{s}{\bar{x}} \times 100\%
+\color{blue} C_V = \frac{s}{\bar{x}} \times 100\%
 $$
 
 Onde:
@@ -74,8 +72,6 @@ Onde:
 > O CV indica o **tamanho do desvio-padrão em relação à média**
 - Quanto **menor** o CV, mais **homogéneos** são os dados.
 - Quanto **maior** o CV, mais **heterogéneos** são os dados.
-
-> **💡 Por que "relativa"?** Porque o CV é **adimensional** (não tem unidade). Ele expressa a dispersão como **percentagem**, permitindo comparações justas entre conjuntos diferentes.
 
 ** Diferença entre Desvio-Padrão e Coeficiente de Variação:**
 
@@ -302,25 +298,16 @@ $$
 > - Na **física**, CV < 5% é o esperado para medições precisas.
 > - Em **finanças**, CV entre 20% e 30% é comum para ações.
 
+&emsp;&emsp;&emsp;O Coeficiente de Variação apresenta vantagens e desvantagens que importa conhecer. Do lado das vantagens, destaca-se o facto de **permitir comparação entre conjuntos com médias diferentes** — algo que o desvio-padrão sozinho não consegue, porque está na unidade original dos dados. Permite também **comparar conjuntos com unidades diferentes**, como comparar a variabilidade de alturas (em metros) com a variabilidade de pesos (em quilogramas). É uma **medida adimensional** — não tem unidade — e por isso é expressa em percentagem. É **intuitivo e fácil de interpretar**, o que o torna particularmente útil na comunicação de resultados. É **muito usado em controle de qualidade e finanças**, onde a comparação de variabilidades é uma necessidade constante. E **padroniza a dispersão**, permitindo uma comparação justa entre conjuntos que, de outra forma, não seriam comparáveis.
 
-
-## Vantagens e Desvantagens do CV
-
-| Vantagens | Desvantagens |
-|---------|----------|
-| ✅ **Permite comparação** entre conjuntos com médias diferentes | ❌ **Não pode ser usado** quando a média é próxima de zero (CV muito alto) |
-| ✅ **Permite comparação** entre conjuntos com unidades diferentes | ❌ Perde o sentido se a média for **negativa** |
-| ✅ **Medida adimensional** (sem unidade) — expressa em % | ❌ Sensível a valores **extremos** (assim como DP e média) |
-| ✅ **Intuitivo** — fácil de interpretar | ❌ O ponto de corte (15%, 30%) é **arbitrário** e depende da área |
-| ✅ Muito usado em **controle de qualidade** e **finanças** | ❌ Não faz sentido para dados **categóricos** |
-| ✅ **Padroniza** a dispersão para comparação justa | ❌ Depende da média (se a média não for representativa, o CV também não) |
+&emsp;&emsp;&emsp;Do lado das desvantagens, **não pode ser usado quando a média é próxima de zero** — o resultado pode ser extremamente alto e sem sentido prático. **Perde o sentido se a média for negativa**, porque o CV assume que a média é positiva. É **sensível a valores extremos**, assim como o desvio-padrão e a média. O **ponto de corte** (15%, 30%) é **arbitrário** e depende da área de aplicação — não há um valor universal que diga o que é "baixo" ou "alto". **Não faz sentido para dados categóricos**, pois exige operações aritméticas que não se aplicam a categorias. E **depende da média** — se a média não for representativa do conjunto, o CV também não será.
 
 > **⚠️ Atenção!** O CV **não deve ser usado** quando a média é **próxima de zero**, pois o resultado pode ser extremamente alto e sem sentido prático.
-- **Exemplo:** Média = 1, DP = 1 → CV = 100% (mesmo com dados pouco dispersos).
+
+Aqui está o texto formatado, com a tabela mantida conforme você enviou:
+
 
 ## Interpretação do CV
-
-> **💡 O CV é a medida de dispersão mais comparável**
 
 &emsp;&emsp;&emsp;O CV permite comparações que o desvio-padrão absoluto não permite. É a ferramenta ideal para **comparar a variabilidade relativa** entre conjuntos diferentes.
 
@@ -333,34 +320,13 @@ $$
 | **Altura** | 170 cm | 10 cm | 5,9% | O DP é 5,9% da média — muito homogéneo |
 | **Peso** | 70 kg | 10 kg | 14,3% | O DP é 14,3% da média — homogéneo |
 
-**📌 Comparação entre conjuntos:**
+&emsp;&emsp;&emsp;Repara como o CV permite comparações que seriam impossíveis com o desvio-padrão sozinho. Comparar um DP de **500 kz** com um DP de **10 cm** não faz sentido — são unidades diferentes. Mas comparar um CV de **25%** com um CV de **5,9%** faz todo o sentido: em ambos os casos, estamos a medir a **dispersão relativa à média**. É precisamente esta padronização que torna o CV tão útil.
 
-| - | **Empresa A** | **Empresa B** |
-|---------|---------|---------|
-| **Média** | 2.000 kz | 10.000 kz |
-| **Desvio-Padrão** | 500 kz | 1.000 kz |
-| **CV** | **25%** | **10%** |
-| **Característica** | Salários mais heterogéneos | Salários mais homogéneos |
-| **Interpretação** | Maior dispersão relativa | Menor dispersão relativa |
+&emsp;&emsp;&emsp;Além disso, o CV permite comparar conjuntos com **médias muito diferentes** dentro da mesma unidade. A Empresa A paga em média **2.000 kz** e a Empresa B paga em média **10.000 kz**. Comparar os desvios-padrão absolutos (500 kz vs. 1.000 kz) poderia levar à conclusão errada de que a Empresa B tem maior dispersão. Mas o CV revela o contrário: a Empresa A tem **25%** de dispersão, enquanto a Empresa B tem apenas **10%**. Ou seja, **relativamente à média**, os salários da Empresa B são mais homogéneos.
 
-**Conclusão:** Mesmo com desvio-padrão absoluto maior, a Empresa B tem salários **relativamente mais homogéneos** (CV menor).
+> **📌 Conclusão:** O CV é a medida de dispersão **mais comparável** que existe. Enquanto o desvio-padrão nos diz **quanto** os dados variam, o CV diz-nos **quanto variam em relação à média**. É esta relatividade que o torna essencial em contextos onde a comparação entre conjuntos diferentes é necessária — salários, alturas, pesos, retornos financeiros, controlo de qualidade. Sem o CV, muitas comparações seriam impossíveis ou enganadoras.
 
-## Comparação com outras medidas
-
-| Medida | Conjunto A (`2,5,7,9,12`) | Conjunto B (`6,7,7,7,8`) |
-|---------|---------|---------|
-| **Amplitude Total** | 10 | 2 |
-| **IQR** | 7 | 1 |
-| **Desvio Médio** | 2,8 | 0,4 |
-| **Variância** | 14,5 | 0,5 |
-| **Desvio Padrão** | 3,81 | 0,71 |
-| **CV** | **54,4%** | **10,1%** |
-
-> **🔍 Interpretação:** O Conjunto A tem CV = 54,4% (dispersão **muito alta**), enquanto o Conjunto B tem CV = 10,1% (dispersão **baixa**). A diferença relativa é **muito clara** com o CV — mais clara do que com o desvio-padrão absoluto (3,81 vs. 0,71), porque o CV tem em conta as médias.
-
-
-
-## 9. EXERCÍCIOS
+## EXERCÍCIOS
 
 <details>
 <summary>📗 Exercício 1 — CV (Dados Brutos)</summary>

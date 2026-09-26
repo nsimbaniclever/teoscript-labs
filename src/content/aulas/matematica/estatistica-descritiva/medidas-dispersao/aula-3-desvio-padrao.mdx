@@ -2,7 +2,7 @@
 
 ## Introdução
 
-&emsp;&emsp;&emsp;Na aula anterior, estudámos a variância — uma medida que quantifica a dispersão dos dados em relação à média. No entanto, a variância apresenta uma limitação prática significativa: as suas unidades estão ao quadrado. Se os dados forem medidos em anos, a variância será expressa em anos²; se forem em kwanza, em kwanza². Esta característica torna a variância difícil de interpretar diretamente e pouco comunicável fora do contexto matemático. O desvio padrão resolve este problema de forma elegante: ***é simplesmente a raiz quadrada da variância***, o que o devolve à mesma unidade dos dados originais. Se os dados são em anos², o desvio padrão é em anos; se são em kg², é em kg. Esta propriedade confere-lhe interpretabilidade imediata — podemos afirmar, por exemplo, que "em média, cada idade se afasta da média em 4,92 anos", uma frase que qualquer pessoa compreende.<br><br>
+&emsp;&emsp;&emsp;Se já conhecemos a variância — uma medida que quantifica a dispersão dos dados em relação à média. No entanto, a variância apresenta uma limitação prática significativa: as suas unidades estão ao quadrado. Se os dados forem medidos em anos, a variância será expressa em anos²; se forem em kwanza, em kwanza². Esta característica torna a variância difícil de interpretar diretamente e pouco comunicável fora do contexto matemático. O desvio padrão resolve este problema de forma elegante: ***é simplesmente a raiz quadrada da variância***, o que o devolve à mesma unidade dos dados originais. Se os dados são em anos², o desvio padrão é em anos; se são em kg², é em kg. Esta propriedade confere-lhe interpretabilidade imediata — podemos afirmar, por exemplo, que "em média, cada idade se afasta da média em 4,92 anos", uma frase que qualquer pessoa compreende.<br><br>
 
 &emsp;&emsp;&emsp;Além da interpretabilidade, o desvio padrão partilha com a variância duas propriedades fundamentais: utiliza todos os dados no seu cálculo (ao contrário da amplitude total ou do IQR, que dependem apenas de valores extremos ou posições específicas) e penaliza desvios de maior magnitude (uma vez que deriva da soma dos quadrados dos desvios). Estas características tornam-no uma medida robusta e informativa da variabilidade global de um conjunto de dados.<br><br>
 
@@ -49,34 +49,26 @@ Considera o seguinte problema prático, **Dois conjuntos de dados com a mesma m�
 
 > **💡 Dica de Ouro:** O desvio-padrão é a **medida de dispersão mais usada no mundo**. Está em todo o lado — na medicina, na economia, no desporto, no machine learning. É a unidade original da variância.
 
-## O QUE É O DESVIO PADRÃO?
+&emsp;&emsp;&emsp;O **desvio-padrão** é a **raiz quadrada da variância**. Mede, em média, o quanto cada valor se afasta da média, **na mesma unidade dos dados originais**.
 
-&emsp;&emsp;&emsp;O **desvio-padrão** é a **raiz quadrada da variância**. Mede, em média, o quanto cada valor se afasta da média, **na mesma unidade dos dados originais**.<br><br>
-
-** Definição intuitiva:**
+**Definição intuitiva:**
 
 - ***Desvio-padrão pequeno*** → Dados estão ***próximos*** da média (**homogéneos**).
 - ***Desvio-padrão grande*** → Dados estão ***espalhados*** em relação à média (**heterogéneos**).
 
 **📌 Porque é que o desvio-padrão é preferível à variância?**
 
-| Aspeto | Variância | Desvio-Padrão |
-|---------|---------|---------|
-| **Unidade** | Ao quadrado (anos²) | Original (anos) |
-| **Interpretação** | Difícil | Intuitiva |
-| **Comunicação** | Pouco prática | Universal |
-| **Base matemática** | ✅ Igual | ✅ Igual |
+&emsp;&emsp;&emsp;A variância tem a unidade **ao quadrado** (por exemplo, anos²), o que a torna difícil de interpretar. O desvio-padrão devolve-nos à **unidade original** (anos), o que o torna **intuitivo** e **universal** na comunicação. A base matemática é exatamente a mesma — o desvio-padrão é simplesmente a raiz quadrada da variância.
 
 **📌 Diferença entre População e Amostra:**
 
-| - | **População** | **Amostra** |
-|---------|---------|---------|
-| **Símbolo** | σ (sigma) | s |
-| **Fórmula** | <code>σ = √(Σ(xi − μ)² / N)</code> | <code>s = √(Σ(xi − x̄)² / (n−1))</code> |
-| **Denominador** | N | n−1 |
-| **Tipo** | Dados completos | Estimativa |
+&emsp;&emsp;&emsp;Na **população**, o desvio-padrão representa-se por **σ** (sigma) e calcula-se dividindo por **N** — o número total de elementos. Na **amostra**, representa-se por **s** e calcula-se dividindo por **n − 1** — uma correção que torna a estimativa não enviesada. A população usa **dados completos**; a amostra usa uma **estimativa** desses dados.
 
-
+$$
+\sigma = \sqrt{\frac{\sum (x_i - \mu)^2}{N}}
+\qquad 
+s = \sqrt{\frac{\sum (x_i - \bar{x})^2}{n - 1}}
+$$
 ### Desvio Padrão para Dados Brutos (Não Agrupados)
 
 **📐 Método do Desvio Padrão dos Dados Não Agrupados**
@@ -87,39 +79,6 @@ Considera o seguinte problema prático, **Dois conjuntos de dados com a mesma m�
 - **4** --> Somar todos os quadrados: Σ(xi − x̄)²
 - **5** --> Dividir por n−1 (amostra) ou N (população) → **variância**
 - **6** --> Extrair a raiz quadrada → **desvio-padrão**
-
-<details>
-<summary>📌 Exemplo do Desvio Padrão dos Dados Não Agrupados **(Amostral)**</summary>
-
-**Problema:** Calcular o desvio-padrão amostral das notas: `2, 5, 7, 9, 12`
-
-**Passo 1 — Média:**
-x̄ = (2 + 5 + 7 + 9 + 12) / 5 = 35/5 = 7
-
-**Passo 2 — Tabela de cálculo:**
-
-| xi | xi − x̄ | (xi − x̄)² |
-|---------|---------|---------|
-| 2 | −5 | 25 |
-| 5 | −2 | 4 |
-| 7 | 0 | 0 |
-| 9 | 2 | 4 |
-| 12 | 5 | 25 |
-| **Total** | **0** | **58** |
-
-**Passo 3 — Variância (amostral):**
-s² = 58 / (5 − 1) = 58/4 = 14,5
-
-**Passo 4 — Desvio-padrão:**
-
-$$
-s = \sqrt{14{,}5} \approx \mathbf{3{,}81}
-$$
-
-✅ O desvio-padrão amostral é **3,81**.
-
-> **🔍 Interpretação:** Em média, cada nota se afasta da média (7) em **3,81 pontos**. Isto significa que, tipicamente, os alunos tiveram notas que diferem da média em cerca de 3,81 pontos — para cima ou para baixo. Quanto maior o desvio-padrão, mais **espalhados** estão os dados.
-</details>
 
 <details>
 <summary>📌 Exemplo do Desvio Padrão dos Dados Não Agrupados **Populacional**</summary>
@@ -199,6 +158,39 @@ print(desvio_pop)
 desvio_pop_np = np.std(notas, ddof=0)
 print(desvio_pop_np)
 ```
+</details>
+
+<details>
+<summary>📌 Exemplo do Desvio Padrão dos Dados Não Agrupados **(Amostral)**</summary>
+
+**Problema:** Calcular o desvio-padrão amostral das notas: `2, 5, 7, 9, 12`
+
+**Passo 1 — Média:**
+x̄ = (2 + 5 + 7 + 9 + 12) / 5 = 35/5 = 7
+
+**Passo 2 — Tabela de cálculo:**
+
+| xi | xi − x̄ | (xi − x̄)² |
+|---------|---------|---------|
+| 2 | −5 | 25 |
+| 5 | −2 | 4 |
+| 7 | 0 | 0 |
+| 9 | 2 | 4 |
+| 12 | 5 | 25 |
+| **Total** | **0** | **58** |
+
+**Passo 3 — Variância (amostral):**
+s² = 58 / (5 − 1) = 58/4 = 14,5
+
+**Passo 4 — Desvio-padrão:**
+
+$$
+s = \sqrt{14{,}5} \approx \mathbf{3{,}81}
+$$
+
+✅ O desvio-padrão amostral é **3,81**.
+
+> **🔍 Interpretação:** Em média, cada nota se afasta da média (7) em **3,81 pontos**. Isto significa que, tipicamente, os alunos tiveram notas que diferem da média em cerca de 3,81 pontos — para cima ou para baixo. Quanto maior o desvio-padrão, mais **espalhados** estão os dados.
 </details>
 
 <details>
@@ -392,7 +384,7 @@ $$
 > **⚠️ Atenção:** Comparando com os dados não agrupados (desvio-padrão ≈ 4,39), há uma diferença — é o **erro de agrupamento**. Quanto mais finas forem as classes, menor o erro.
 </details>
 
-## A REGRA EMPÍRICA (68-95-99,7)
+## A Regra Empírica (68-95-99,7)
 
 &emsp;&emsp;&emsp;Para distribuições com formato de **sino** (normais ou aproximadamente normais), o desvio-padrão permite uma interpretação poderosa através da **Regra Empírica**:
 
@@ -416,70 +408,101 @@ $$
 > **⚠️ Atenção:** A Regra Empírica só se aplica a distribuições **aproximadamente normais**. Para distribuições assimétricas ou com outliers, a regra pode não se verificar.
 </details></center>
 
-## 5. VANTAGENS E DESVANTAGENS DO DESVIO PADRÃO
+&emsp;&emsp;&emsp;O desvio-padrão apresenta vantagens e desvantagens que importa conhecer. Do lado das vantagens, destaca-se o facto de estar na **unidade original dos dados**, o que o torna fácil de interpretar — ao contrário da variância, que fica ao quadrado. **Usa todos os dados** do conjunto, não apenas dois valores como a Amplitude Total. É **base para muitas técnicas estatísticas**, desde a inferência até à regressão e ao machine learning. **Permite comparação** entre conjuntos de dados, desde que estejam na mesma unidade. É **fundamental para a Regra Empírica**, que permite estimar a proporção de dados dentro de certo número de desvios-padrão da média. E, por estar na **mesma unidade dos dados**, é **comunicável** — pode ser apresentado e compreendido por públicos não especializados.
 
-| Vantagens | Desvantagens |
-|---------|----------|
-| ✅ **Unidade original** dos dados (fácil interpretar) | ❌ **Sensível a outliers** (assim como a variância) |
-| ✅ **Usa todos os dados** (não apenas dois) | ❌ Cálculo mais trabalhoso que a amplitude |
-| ✅ **Base para muitas técnicas estatísticas** | ❌ Interpretação menos intuitiva para não estatísticos |
-| ✅ **Permite comparação** entre conjuntos | ❌ Depende da média (se a média não for representativa, o DP também não será) |
-| ✅ **Fundamental para a Regra Empírica** | ❌ Não pode ser usado para dados categóricos |
-| ✅ **Mesma unidade dos dados** — comunicável | ❌ Sensível à escala dos dados |
+&emsp;&emsp;&emsp;Do lado das desvantagens, é **sensível a outliers** — assim como a variância, porque o quadrado amplifica o efeito de valores extremos. O seu **cálculo é mais trabalhoso** que o da amplitude, exigindo o cálculo prévio da média e dos desvios. A **interpretação é menos intuitiva** para não estatísticos, que muitas vezes confundem desvio-padrão com erro ou com amplitude. **Depende da média** — se a média não for representativa do conjunto, o desvio-padrão também não será. **Não pode ser usado para dados categóricos**, pois exige operações aritméticas que não fazem sentido em categorias. E é **sensível à escala dos dados** — se a unidade de medida mudar, o desvio-padrão muda na mesma proporção, o que pode dificultar comparações entre conjuntos com escalas diferentes.
 
-## 6. INTERPRETAÇÃO DO DESVIO PADRÃO
+> **📌 Síntese:** O desvio-padrão é a medida de dispersão mais utilizada na prática estatística — equilibra bem a capacidade de usar todos os dados, a interpretabilidade e a base matemática sólida. Mas não é perfeito: continua sensível a outliers e depende da média. É precisamente para resolver esses casos que existem alternativas robustas, como o **IQR** ou o **MAD** (desvio absoluto mediano).
 
-> **💡 O desvio-padrão é a medida de dispersão mais interpretável**
+## Interpretação do Desvio de Padrão
 
-&emsp;&emsp;&emsp;Ao contrário da variância, o desvio-padrão está na **mesma unidade dos dados**, o que o torna **diretamente interpretável**.
+**EXEMPLO — TEMPO DE ESPERA NUM BANCO** Suponhamos que medimos o tempo de espera de **6 clientes** numa fila de banco:
+`8, 10, 12, 14, 16, 18`<br><br>
 
-**📌 Exemplos de interpretação:**
+**PASSO 1 — CALCULAR O DESVIO-PADRÃO**
 
-| Contexto | Média | Desvio-Padrão | Interpretação |
-|---------|---------|---------|---------|
-| **Notas** | 7 | 1,22 | Em média, cada nota se afasta da média em 1,22 pontos |
-| **Idades** | 26,25 anos | 4,92 anos | Em média, cada idade se afasta da média em 4,92 anos |
-| **Salários** | 2000 kz | 300 kz | Em média, cada salário se afasta da média em 300 kz |
-| **Pesos** | 70 kg | 5 kg | Em média, cada peso se afasta da média em 5 kg |
+- Primeiro, calculamos a média:
 
-**📌 Comparação entre conjuntos:**
+$$\bar{x} = \frac{8 + 10 + 12 + 14 + 16 + 18}{6} = \frac{78}{6} = 13$$
 
-| - | **Turma A** | **Turma B** |
-|---------|---------|---------|
-| **Média** | 7,0 | 7,0 |
-| **Desvio Padrão** | 0,8 | 2,5 |
-| **Característica** | Dados homogéneos | Dados heterogéneos |
-| **Interpretação** | Alunos com desempenho parecido | Alunos com desempenhos muito diferentes |
+- Agora, calculamos os desvios em relação à média e os seus quadrados:
 
-**Conclusão:** Mesmo com a **mesma média**, a Turma A é **mais consistente** que a Turma B (menor desvio-padrão).
+| $x_i$ | $x_i - \bar{x}$ | $(x_i - \bar{x})^2$ |
+|-------|-----------------|---------------------|
+| 8 | −5 | 25 |
+| 10 | −3 | 9 |
+| 12 | −1 | 1 |
+| 14 | +1 | 1 |
+| 16 | +3 | 9 |
+| 18 | +5 | 25 |
+| **Total** | - | **70** |
 
-## 7. COMPARAÇÃO COM AS MEDIDAS DAS AULAS ANTERIORES
+- Aplicando a fórmula do desvio-padrão:
 
-| Medida | Conjunto A (`2,5,7,9,12`) | Conjunto B (`6,7,7,7,8`) |
-|---------|---------|---------|
-| **Amplitude Total** | 10 | 2 |
-| **IQR** | 7 | 1 |
-| **Desvio Médio** | 2,8 | 0,4 |
-| **Variância** | 14,5 | 0,5 |
-| **Desvio Padrão** | **3,81** | **0,71** |
+$$
+s = \sqrt{\frac{\sum (x_i - \bar{x})^2}{n - 1}} = \sqrt{\frac{70}{5}} = \sqrt{14} \approx 3{,}74
+$$
 
-> **🔍 Interpretação:** O Conjunto A tem um desvio-padrão de 3,81 (muito disperso), enquanto o Conjunto B tem 0,71 (muito concentrado). A diferença é **muito clara** com o desvio-padrão — ao contrário da amplitude total (10 vs. 2) que é menos informativa sobre a distribuição interna.
+✅ O desvio-padrão é aproximadamente **3,74 minutos**.
 
-## 8. QUANDO USAR O DESVIO PADRÃO
+> **🔍 Nota:** O valor exato depende da precisão do cálculo. Neste exemplo, com os dados fornecidos, o desvio-padrão é aproximadamente **3,74 minutos**.
 
-| Critério | Desvio-Padrão |
-|---------|----------|
-| **Interpretação direta** | ✅ Único |
-| **Comunicação de resultados** | ✅ Único |
-| **Base para Regra Empírica** | ✅ Único |
-| **Base para inferência estatística** | ✅ (via variância) |
-| **Comparar variabilidade absoluta** | ✅ |
-| **Dados com outliers** | ❌ Sensível |
-| **Comparar conjuntos com médias diferentes** | ❌ Usar CV (próxima aula) |
-| **Dados categóricos** | ❌ Não se aplica |
+***O QUE SIGNIFICA ESTE 3,74?***
 
+&emsp;&emsp;&emsp;Significa que, **em média**, cada cliente esperou cerca de **3,74 minutos** a mais ou a menos do que o tempo médio de espera. Não quer dizer que *todos* esperaram exatamente 3,74 minutos de diferença — quer dizer que a **distância típica** entre um tempo de espera e a média é de aproximadamente 3,74 minutos. Neste contexto, um desvio-padrão de **3,74 minutos** indica que o serviço é **relativamente consistente**: os tempos de espera não variam muito entre clientes. Se o desvio-padrão fosse, por exemplo, **10 minutos**, isso significaria que alguns clientes esperam 2 minutos e outros esperam 20 — uma experiência muito **inconsistente** e provavelmente **insatisfatória** para quem espera.
 
-## 9. EXERCÍCIOS
+&emsp;&emsp;&emsp;Imagine que você é o gerente do banco. Um desvio-padrão de **3,74 minutos** diz-lhe que o tempo de espera é **previsível** — os clientes não enfrentam surpresas extremas. Isso é **bom** para a reputação do banco, porque a consistência gera confiança. Se, por outro lado, o desvio-padrão fosse **muito grande**, isso significaria que o banco tem dias bons e dias maus — e os clientes nunca saberiam o que esperar. Nesse caso, seria **mau** para a imagem do banco e provavelmente levaria à perda de clientes.
+
+&emsp;&emsp;&emsp;Agora suponhamos que o banco implementa um novo sistema de atendimento e o desvio-padrão **aumenta** para **8 minutos**. Isso significa que o serviço ficou mais **inconsistente** — alguns clientes são atendidos rapidamente, outros esperam muito. Mesmo que a média se mantenha, a **experiência do cliente** piorou, porque a **previsibilidade** desapareceu. Neste caso, o aumento do desvio-padrão é um **sinal de alerta**: algo está a funcionar mal no processo de atendimento.
+
+&emsp;&emsp;&emsp;Por outro lado, se o banco consegue **reduzir** o desvio-padrão para **1,5 minutos**, isso significa que o serviço ficou mais **uniforme** — todos os clientes esperam aproximadamente o mesmo tempo. Isso é **bom** para a satisfação do cliente, porque ninguém enfrenta esperas longas inesperadas. O desvio-padrão mais baixo indica que o processo está **sob controlo**.
+
+| Desvio-padrão | O que significa no contexto do banco |
+|---------------|--------------------------------------|
+| **3,74 min** | Serviço consistente — experiência previsível |
+| **8 min** | Serviço inconsistente — alguns esperam muito, outros pouco |
+| **1,5 min** | Serviço muito uniforme — todos esperam aproximadamente o mesmo |
+
+> **📌 Conclusão:** Neste exemplo, o desvio-padrão de **3,74 minutos** diz-nos que o tempo de espera no banco é **relativamente consistente**. Se o objetivo é oferecer uma experiência previsível e satisfatória, um desvio-padrão **baixo** é **bom**. Se o desvio-padrão **sobe**, é **mau sinal** — indica que o serviço perdeu consistência. O desvio-padrão, sozinho, não diz se o serviço é bom ou mau — mas, **contextualizado com o objetivo do banco**, torna-se uma ferramenta poderosa para avaliar a qualidade do atendimento.|
+
+<center><details>
+<summary>Critérios de aplicação do desvio-padrão</summary>
+```mermaid
+  flowchart TD
+    T["📊 QUANDO USAR O DESVIO-PADRÃO"] --> A{Desvio-Padrão}
+    
+    A --> B["✅ Sim"]
+    A --> C["❌ Não"]
+    
+    B --> B1["Interpretação direta"]
+    B --> B2["Comunicação de resultados"]
+    B --> B3["Base para Regra Empírica"]
+    B --> B4["Base para inferência estatística (via variância)"]
+    B --> B5["Comparar variabilidade absoluta"]
+    
+    C --> C1["Dados com outliers"]
+    C --> C2["Comparar conjuntos com médias diferentes"]
+    C --> C3["Dados categóricos"]
+    
+    C2 -.->|Usar| D["📐 Coeficiente de Variação (CV)"]
+    
+    style T fill:#1a3a5e,stroke:#4a9eff,color:#4a9eff
+    style A fill:#2a2a3e,stroke:#8a8a9a,color:#e0e0e0
+    style B fill:#1a3a1a,stroke:#4caf50,color:#4caf50
+    style C fill:#3a1a1a,stroke:#e74c3c,color:#e74c3c
+    style B1 fill:#0d1b0d,stroke:#4caf50,color:#4caf50
+    style B2 fill:#0d1b0d,stroke:#4caf50,color:#4caf50
+    style B3 fill:#0d1b0d,stroke:#4caf50,color:#4caf50
+    style B4 fill:#0d1b0d,stroke:#4caf50,color:#4caf50
+    style B5 fill:#0d1b0d,stroke:#4caf50,color:#4caf50
+    style C1 fill:#1b0d0d,stroke:#e74c3c,color:#e74c3c
+    style C2 fill:#1b0d0d,stroke:#e74c3c,color:#e74c3c
+    style C3 fill:#1b0d0d,stroke:#e74c3c,color:#e74c3c
+    style D fill:#2a1a3e,stroke:#9b59b6,color:#9b59b6
+  ```
+</details></center>
+
+## EXERCÍCIOS
 
 <details>
 <summary>📗 Exercício 1 — Desvio Padrão (Dados Brutos)</summary>
@@ -500,7 +523,7 @@ Média = 70/5 = 14
 | 14 | 0 | 0 |
 | 16 | 2 | 4 |
 | 18 | 4 | 16 |
-| **Total** | | **40** |
+| **Total** | - | **40** |
 
 **Variância:** s² = 40/4 = 10
 

@@ -1,44 +1,22 @@
-# <center>INTRODUÇÃO À CORRELAÇÃO</center>
+# <center>Introdução à Correlação</center>
 
-&emsp;&emsp;&emsp;Imagina que és o professor de uma turma de 10 alunos. Recolheste as horas de estudo de cada um e a nota final:
+Imagina que és o professor de uma turma de 10 alunos. Recolheste as horas de estudo de cada um e a nota final:
+- Aluno `1 2 3 4 5 6 7 8 9 10`
+- Horas de estudo (X) `1 2 3 4 5 6 7 8 9 10`
+- Nota (Y) `4 5 7 8 10 11 13 14 16 17`
 
-| Aluno | Horas de estudo (X) | Nota (Y) |
-|---------|---------|---------|
-| 1 | 1 | 4 |
-| 2 | 2 | 5 |
-| 3 | 3 | 7 |
-| 4 | 4 | 8 |
-| 5 | 5 | 10 |
-| 6 | 6 | 11 |
-| 7 | 7 | 13 |
-| 8 | 8 | 14 |
-| 9 | 9 | 16 |
-| 10 | 10 | 17 |
-
-&emsp;&emsp;&emsp;Antes de fazeres qualquer coisa, a primeira pergunta que te vem à cabeça é: ***"Será que quem estuda mais tira melhores notas?"*** Repara no que essa pergunta é a mais profunda de todas que fizemos até agora. Até aqui, estudamos medidas que olham para **uma variável de cada vez** — a média das notas, o desvio-padrão das horas, a mediana, a moda. Cada uma dessas medidas descreve **uma coisa isolada**. Mas a pergunta *"quem estuda mais tira melhores notas?"* envolve **duas variáveis ao mesmo tempo**. E nenhuma medida que já estudamos até agora te consegue responder a isso. vejamos que:<br><br>
+&emsp;&emsp;&emsp;Antes de fazer qualquer coisa, a primeira pergunta que vem à cabeça é: ***"Será que quem estuda mais tira melhores notas?"*** Repare no que essa pergunta é a mais profunda de todas que fizemos até agora. Até aqui, estudamos medidas que olham para **uma variável de cada vez** — a média das notas, o desvio-padrão das horas, a mediana, a moda. Cada uma dessas medidas descreve **uma coisa isolada**. Mas a pergunta *"quem estuda mais tira melhores notas?"* envolve **duas variáveis ao mesmo tempo**. E nenhuma medida que já estudamos até agora te consegue responder a isso. Vejamos:
 
 - A média das horas diz-te o aluno "típico" em horas — não te diz se estudar mais ajuda.
 - O desvio-padrão das notas diz-te se as notas estão espalhadas — não te diz porquê.
 - A moda das horas diz-te o valor mais comum — não te diz se isso se reflete nas notas.
 
-**&emsp;&emsp;&emsp;Falta uma ferramenta que olhe para as duas variáveis em conjunto, e diga algu,a coisa.** Essa ferramente que precisamos chama-se ***correlação***.
+**&emsp;&emsp;&emsp;Falta uma ferramenta que olhe para as duas variáveis em conjunto e diga alguma coisa.** Essa ferramenta que precisamos chama-se ***correlação***.
+
+> A **correlação** é uma medida estatística que quantifica a **força** e a **direção** da **relação linear** entre duas variáveis. O resultado desta medição é um número chamado **coeficiente de correlação**, que se representa habitualmente por **r** e varia entre ***−1 e +1***
 
 
-> A **correlação** é uma medida estatística que quantifica a **força** e a **direção** da **relação linear** entre duas variáveis.
-
-Vamos decompor esta definição, palavra a palavra, porque cada uma importa:
-
-- **"Força"** — a correlação diz-te **quão intensa** é a relação. É forte, moderada ou fraca? Se souberes as horas de estudo, consegues prever bem a nota? Ou a relação é tão ténue que mal se nota?
-
-- **"Direção"** — diz-te **para que lado** vão as variáveis. Quando uma sobe, a outra sobe também (positiva) ou desce (negativa)?
-
-- **"Relação linear"** — diz-te que a correlação **só capta padrões em linha reta**. Se a relação for curva, a correlação pode dar-te um valor enganador. Isto é uma limitação importante — vamos voltar a ela.
-
-- **"Entre duas variáveis"** — a correlação **precisa sempre de dois pares**. Não existe correlação de uma variável sozinha.
-
-&emsp;&emsp;&emsp;O resultado desta medição é um número chamado **coeficiente de correlação**, que se representa habitualmente por **r** e varia entre ***−1 e +1***.
-
-## IMPORTÂNCIA DA CORRELAÇÃO
+## Importância Da Correlação
 
 A correlação é importante por três razões fundamentais.
 
@@ -54,7 +32,7 @@ A correlação é importante por três razões fundamentais.
 
 Quando vês duas coisas a subir juntas, o teu cérebro grita *"uma causa a outra!"*. A correlação ensina-te a travar esse instinto. É uma ferramenta de **pensamento crítico** antes de ser uma ferramenta de cálculo.
 
-## CLASSIFICAÇÃO DA CORRELAÇÃO
+## Classificação Da Correlação
 
 A correlação classifica-se por **5 critérios**. Cada critério responde a uma pergunta diferente. Vais estudar cada um deles em detalhe nas próximas aulas.
 
@@ -107,25 +85,6 @@ Esta é a classificação mais prática — é ela que te diz **qual fórmula ab
 - **Parcial** → 2 variáveis + 1 controlada
 - **Canónica** → 2 conjuntos de variáveis
 
-## APLICAÇÃO DE CORRELAÇÃO
-
-&emsp;&emsp;&emsp;Ao estudarmos qualquer tema na estátistica, é sempre importante procurar saber onde posso aplicar isto, em que momento devemos usar (correlação) na minha análise? <br><br>
-
-Usa correlação quando:
-
-- Queres saber se **duas variáveis estão relacionadas**
-- Queres **medir a força** dessa relação
-- Queres **comparar** várias relações entre si
-- Estás a fazer **análise exploratória** antes de modelar
-- Queres **selecionar variáveis** para uma regressão ou modelo
-
-Não uses correlação quando:
-
-- **Só tens uma variável** — precisas sempre de dois pares
-- **Queres provar causalidade** — a correlação não faz isso
-- **A relação é claramente não-linear** — Pearson dá valores enganadores
-- **Tens variáveis nominais** — usa V de Cramér ou tabelas de contingência
-- **Há outliers extremos** — Pearson distorce-se; usa Spearman
 
 ## EXERCÍCIOS
 

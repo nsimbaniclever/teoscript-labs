@@ -1,19 +1,14 @@
-# <center> COEFICIENTE DE SPEARMAN (ρ)</center>
+# <center> Coeficiente De Spearman (ρ)</center>
 
-## INTRODUÇÃO
+## Introdução
 
-&emsp;&emsp;&emsp;Na Aula 3 estudámos o coeficiente de Pearson — a medida padrão da correlação linear. Vimos que é poderoso, mas tem **duas limitações sérias**:
-
-- É **sensível a outliers** — um único ponto extremo pode distorcer tudo
-- Só mede relações **lineares** — se a relação for curva, o r engana-nos
-
-&emsp;&emsp;&emsp;Mas há situações em que estas limitações se tornam um problema real. Por exemplo:
+&emsp;&emsp;&emsp;O coeficiente de Pearson — a medida padrão da correlação linear. Vimos que é poderoso, mas tem **duas limitações sérias**, ele é **sensível a outliers**e só mede relações **lineares**. Mas há situações em que estas limitações se tornam um problema real. Por exemplo:
 
 - Temos dados **ordinais** (rankings de sabor, classificações de satisfação)
 - Temos **outliers** que não podemos remover
 - A relação é **monótona mas não linear** (curva, mas sempre a subir ou sempre a descer)
 
-&emsp;&emsp;&emsp;É precisamente aqui que entra o **coeficiente de Spearman** — a alternativa **não-paramétrica** ao Pearson.
+&emsp;&emsp;&emsp;Nessas circustancia que precisamente entra o **coeficiente de Spearman** — a alternativa **não-paramétrica** ao Pearson.
 
 **Exemplo:** Imaginemos que dois juízes classificam 5 concorrentes num concurso de culinária. Não temos notas exatas — só a **ordem** de preferência:
 
@@ -24,9 +19,7 @@
 | Y | 3º | 4º |
 | Z | 4º | 3º |
 
-&emsp;&emsp;&emsp;Como medimos a concordância entre os dois juízes? Não podemos calcular a média das posições nem o desvio-padrão das classificações — são **ordens**, não valores. É aqui que o Spearman entra.
-
-> 💡 **Regra de Ouro:** Spearman usa **rankings**, não valores. Isto torna-o robusto a outliers e aplicável a dados ordinais. Mas perde informação — dois valores muito diferentes podem ter o mesmo rank.
+&emsp;&emsp;&emsp;Como medimos a concordância entre os dois juízes? Não podemos calcular a média das posições nem o desvio-padrão das classificações — são **ordens**, não valores. É aqui que o Spearman entra. ***💡 **Regra de Ouro:** Spearman usa **rankings**, não valores. Isto torna-o robusto a outliers e aplicável a dados ordinais. Mas perde informação — dois valores muito diferentes podem ter o mesmo rank.***
 
 > O **coeficiente de correlação de Spearman** (ρ, rô) é uma medida **não-paramétrica** que quantifica a **força** e a **direção** da **relação monótona** entre duas variáveis, usando os **rankings (postos)** em vez dos valores originais.
 
@@ -38,29 +31,7 @@
 
 &emsp;&emsp;&emsp;Quanto mais próximo de ±1, mais forte a concordância entre os rankings. O **sinal** indica a direção. A grande diferença em relação ao Pearson é que o Spearman **não assume linearidade** — só assume que a relação é **monótona** (sempre a subir ou sempre a descer).
 
-## PORQUE O SPEARMAN É IMPORTANTE?
-
-O coeficiente de Spearman é importante por várias razões que vale a pena compreender.
-
-### 1. Funciona com dados ordinais
-
-&emsp;&emsp;&emsp;Muitas variáveis na vida real são **ordinais** — não têm valores exatos, só uma ordem. Exemplos: nível de satisfação (muito insatisfeito, insatisfeito, neutro, satisfeito, muito satisfeito), classificação de restaurantes (1 a 5 estrelas), rankings de qualquer tipo. O Pearson não funciona com estes dados. O Spearman sim.
-
-### 2. É robusto a outliers
-
-&emsp;&emsp;&emsp;Como o Spearman usa **rankings** em vez de valores, um outlier extremo passa a ser apenas "o maior" ou "o menor" — não distorce o cálculo. Isto torna-o ideal quando há valores extremos que não podemos remover.
-
-### 3. Deteta relações monótonas não-lineares
-
-&emsp;&emsp;&emsp;Se a relação for uma curva sempre a subir (por exemplo, salário vs. anos de experiência), o Pearson dá um valor inferior ao real. O Spearman capta a relação corretamente porque só se interessa pela **ordem**.
-
-### 4. Não exige normalidade
-
-&emsp;&emsp;&emsp;O Spearman é **não-paramétrico** — não assume que os dados seguem uma distribuição normal. Isto torna-o aplicável em muito mais situações do que o Pearson.
-
-## FÓRMULA DE SPEARMAN
-
-### Fórmula principal
+### Fórmula De Spearman
 
 $$\rho = 1 - \frac{6 \sum d_i^2}{n(n^2 - 1)}$$
 
@@ -69,7 +40,6 @@ Onde:
 - **n** = número de pares
 - **Σdi²** = soma dos quadrados das diferenças
 
-### O que a fórmula faz
 
 A fórmula compara **duas coisas**:
 
@@ -88,13 +58,11 @@ Se as diferenças forem pequenas (rankings concordam), **ρ é alto**. Se forem 
 - Postos: 1, 2, 3, 4, 5
 - Atribuição: 10→1, 15→2, 20→3, 25→4, 30→5
 
-&emsp;&emsp;&emsp;Se houver **empates**, atribui-se a **média dos postos**. Por exemplo, dois valores iguais na 2ª e 3ª posição recebem ambos o posto 2,5.
+&emsp;&emsp;&emsp;Se houver **empates**, atribui-se a **média dos postos**. Por exemplo, dois valores iguais na 2ª e 3ª posição recebem ambos o posto 2,5.<br><br>
 
-## CÁLCULO PASSO A PASSO
+Vamos calcular o _ρ_ para o exemplo dos dois juízes.
 
-Vamos calcular o ρ para o exemplo dos dois juízes.
-
-### Passo 1 — Dados originais
+**Passo 1 — Dados originais**
 
 | Concorrente | Juiz A | Juiz B |
 |-------------|--------|--------|
@@ -103,7 +71,7 @@ Vamos calcular o ρ para o exemplo dos dois juízes.
 | Y | 3 | 4 |
 | Z | 4 | 3 |
 
-### Passo 2 — Calcular as diferenças entre postos
+**Passo 2 — Calcular as diferenças entre postos**
 
 | Concorrente | Posto A | Posto B | d = A − B | d² |
 |-------------|---------|---------|-----------|-----|
@@ -111,9 +79,9 @@ Vamos calcular o ρ para o exemplo dos dois juízes.
 | X | 2 | 1 | +1 | 1 |
 | Y | 3 | 4 | −1 | 1 |
 | Z | 4 | 3 | +1 | 1 |
-| | | | | **Σd² = 4** |
+|- | - | - | - | **Σd² = 4** |
 
-### Passo 3 — Aplicar a fórmula
+**Passo 3 — Aplicar a fórmula**
 
 $$\rho = 1 - \frac{6 \times 4}{4(4^2 - 1)} = 1 - \frac{24}{4 \times 15} = 1 - \frac{24}{60} = 1 - 0{,}4 = +0{,}6$$
 
@@ -123,15 +91,15 @@ $$\rho = 1 - \frac{6 \times 4}{4(4^2 - 1)} = 1 - \frac{24}{4 \times 15} = 1 - \f
 
 Os dois juízes concordam **parcialmente**. Há uma tendência para classificarem os concorrentes de forma semelhante, mas com algumas divergências.
 
-## INTERPRETAÇÃO DO ρ
+### Interpretação Do **ρ**
 
-### 1. Direção
+**Direção**
 
 - **ρ > 0** → positiva (rankings sobem juntos)
 - **ρ < 0** → negativa (rankings em sentidos opostos)
 - **ρ ≈ 0** → nula (sem relação monótona)
 
-### 2. Força
+**Força**
 
 | ρ | Força |
 |-----|-------|
@@ -143,7 +111,8 @@ Os dois juízes concordam **parcialmente**. Há uma tendência para classificare
 
 &emsp;&emsp;&emsp;A escala é idêntica à do Pearson — o que muda é o **significado**: no Spearman, mede a concordância dos rankings; no Pearson, mede a relação linear dos valores.
 
-### 3. Exemplos visuais
+<details>
+<summary>📌 Exemplos visuais </summary>
 
 <style>
 .scatter-grid{font:14px system-ui;background:#f8f9fa;padding:2vw;border-radius:8px;display:grid;grid-template-columns:repeat(3,1fr);gap:2vw;max-width:100%}
@@ -226,38 +195,11 @@ Os dois juízes concordam **parcialmente**. Há uma tendência para classificare
     </div>
   </div>
 </div>
+</details>
 
 &emsp;&emsp;&emsp;Cada gráfico mostra uma situação diferente. No Spearman, o que importa não é a forma exata da nuvem de pontos, mas sim se os **rankings** sobem ou descem juntos. Repara no gráfico da **curva monótona** — o Pearson daria um valor baixo, mas o Spearman capta a relação corretamente.
 
-## PROPRIEDADES DO ρ
-
-O ρ tem várias propriedades matemáticas que vale a pena conhecer, porque nos ajudam a interpretá-lo corretamente.
-
-### 1. Intervalo
-
-&emsp;&emsp;&emsp;O ρ está **sempre** entre −1 e +1. Tal como o Pearson, nunca sai deste intervalo.
-
-### 2. Adimensional
-
-&emsp;&emsp;&emsp;O ρ **não tem unidade**. É apenas um número puro. Isto permite-nos comparar correlações entre variáveis completamente diferentes.
-
-### 3. Simétrico
-
-&emsp;&emsp;&emsp;ρ(X, Y) = ρ(Y, X). A correlação entre X e Y é igual à correlação entre Y e X.
-
-### 4. Robusto a outliers
-
-&emsp;&emsp;&emsp;Como usa **rankings**, um outlier extremo passa a ser apenas "o maior" ou "o menor" — não distorce o cálculo. Esta é a sua maior vantagem sobre o Pearson.
-
-### 5. Deteta relações monótonas
-
-&emsp;&emsp;&emsp;O Spearman capta qualquer relação **monótona** — linear ou não. Só não capta relações **não-monótonas** (ex: curva em U).
-
-### 6. Não exige normalidade
-
-&emsp;&emsp;&emsp;O Spearman é **não-paramétrico** — não assume distribuição normal. Isto torna-o aplicável em muito mais situações do que o Pearson.
-
-## PEARSON VS SPEARMAN — COMPARAÇÃO
+### Pearson VS Spearman
 
 Vale a pena comparar os dois coeficientes lado a lado para percebermos quando usar cada um.
 
@@ -271,8 +213,8 @@ Vale a pena comparar os dois coeficientes lado a lado para percebermos quando us
 | **Informação** | Usa toda | Perde alguma |
 | **Interpretação** | Relação linear | Concordância de rankings |
 
-**Regra prática:** Se o scatterplot mostra uma linha reta e não há outliers → **Pearson**. Se mostra uma curva ou há outliers → **Spearman**. Em dúvida, calculamos os dois e comparamos.
-
+> Se o scatterplot mostra uma linha reta e não há outliers → **Pearson**. <br>
+> Se mostra uma curva ou há outliers → **Spearman**.<br><br>
 
 Usamos Spearman quando:
 
@@ -304,7 +246,9 @@ Não usamos Spearman quando:
 | D | 4 | 5 |
 | E | 5 | 4 |
 
-### Passo 1 — Calcular as diferenças
+**n = 5**
+
+**Passo 1 — Calcular as diferenças**
 
 | Pizza | Posto X | Posto Y | d = X − Y | d² |
 |-------|---------|---------|-----------|-----|
@@ -313,13 +257,13 @@ Não usamos Spearman quando:
 | C | 3 | 2 | +1 | 1 |
 | D | 4 | 5 | −1 | 1 |
 | E | 5 | 4 | +1 | 1 |
-| | | | | **Σd² = 8** |
+| - | - | - | - | **Σd² = 8** |
 
-### Passo 2 — Aplicar a fórmula
+**Passo 2 — Aplicar a fórmula**
 
 $$\rho = 1 - \frac{6 \times 8}{5(5^2 - 1)} = 1 - \frac{48}{5 \times 24} = 1 - \frac{48}{120} = 1 - 0{,}4 = +0{,}6$$
 
-### ✅ Conclusão
+** ✅ Conclusão**
 
 **ρ = +0,6** → correlação **positiva**, **moderada**.
 
@@ -348,11 +292,6 @@ df = pd.DataFrame({'X': X, 'Y': Y})
 rho_pandas = df['X'].corr(df['Y'], method='spearman')
 print(f"Spearman (Pandas): {rho_pandas:.4f}")
 
-- _3. COMPARAÇÃO COM PEARSON_
-from scipy.stats import pearsonr
-r_pearson, _ = pearsonr(X, Y)
-print(f"\nPearson: {r_pearson:.4f}")
-print(f"Spearman: {rho:.4f}")
 ```
 
 </details>
@@ -372,11 +311,6 @@ cat("Spearman:", rho, "\n")
 - _2. TESTE DE SIGNIFICÂNCIA (inclui p-value)_
 teste <- cor.test(X, Y, method = "spearman")
 print(teste)
-
-- _3. COMPARAÇÃO COM PEARSON_
-r_pearson <- cor(X, Y, method = "pearson")
-cat("\nPearson:", r_pearson, "\n")
-cat("Spearman:", rho, "\n")
 ```
 
 </details>

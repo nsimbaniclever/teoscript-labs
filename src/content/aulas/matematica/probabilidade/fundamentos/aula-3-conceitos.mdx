@@ -1,0 +1,321 @@
+# <center>Conceitos Fundamentais da Probabilidade</center>
+
+## Introdução
+
+&emsp;&emsp;&emsp;Na aula anterior, aprendemos **o que é a Probabilidade** e **porque existe**. Vimos que ela é a ciência que quantifica a incerteza — mede a chance de algo acontecer.<br><br>
+
+&emsp;&emsp;&emsp;Mas para **calcular** probabilidades, precisamos primeiro de saber **descrever** aquilo que estamos a medir. É como aprender a contar antes de fazer contas. Nesta aula, vamos aprender a **linguagem básica** da Probabilidade:
+
+1. **Experimento aleatório** — o processo que produz resultados incertos
+2. **Espaço amostral (Ω)** — o conjunto de todos os resultados possíveis
+3. **Evento** — aquilo cuja probabilidade queremos medir
+4. **Tipos de eventos** — classificação dos eventos
+
+> 💡 **Regra de Ouro:** Sem saber o que é um experimento aleatório, um espaço amostral e um evento, não consegues calcular nenhuma probabilidade. Estes conceitos são os **blocos de construção** de tudo o que vem a seguir.
+
+
+## Experimento Aleatório
+
+### Definição
+
+> **Um experimento aleatório** é um processo que, quando repetido nas mesmas condições, pode dar resultados diferentes. O resultado exato **não pode ser previsto** antes do experimento.
+
+### Características
+
+Um experimento aleatório tem três características fundamentais:
+
+1. **Todos os resultados possíveis são conhecidos** — sabemos o que pode acontecer.
+2. **O resultado exato não pode ser previsto** — não sabemos o que vai acontecer.
+3. **Pode ser repetido indefinidamente** nas mesmas condições.
+
+### Exemplos
+
+- **Lançar uma moeda** → Cara, Coroa
+- **Lançar um dado** → 1, 2, 3, 4, 5, 6
+- **Tirar uma carta de um baralho** → 52 cartas
+- **Escolher uma bola de uma urna** → Depende das bolas
+- **Medir a altura de uma pessoa** → Qualquer valor positivo
+- **Escolher um número ao acaso entre 1 e 10** → 1, 2, ..., 10
+
+### Experimento Aleatório vs. Experimento Determinístico
+
+&emsp;&emsp;&emsp;Nem todos os experimentos são aleatórios. Um **experimento determinístico** é aquele em que o resultado pode ser previsto com certeza.
+
+- **Aleatório:** Lançar uma moeda → Resultado **incerto**
+- **Determinístico:** Aquecer água a 100°C → Resultado **certo**
+- **Aleatório:** Lançar um dado → Resultado **incerto**
+- **Determinístico:** Somar 2 + 2 → Resultado **certo**
+
+&emsp;&emsp;&emsp;A Probabilidade ocupa-se apenas de **experimentos aleatórios**.
+
+> 💡 **Analogia:** Imagina que lanças uma moeda. Antes de a lançares, não sabes o resultado — pode ser cara ou coroa. Isto é um experimento aleatório. Agora imagina que aqueces água a 100°C. Sabes que vai ferver — isto é um experimento determinístico.
+
+
+## Espaço Amostral (Ω)
+
+### Definição
+
+> **O espaço amostral** é o conjunto de **todos os resultados possíveis** de um experimento aleatório. Representa-se pela letra grega **Ω** (ómega).
+
+### Notação
+
+- **Ω** = espaço amostral
+- **ω** = um resultado individual (elemento de Ω)
+
+### Exemplos
+
+- **Lançar uma moeda** → Ω = {Cara, Coroa}
+- **Lançar um dado** → Ω = {1, 2, 3, 4, 5, 6}
+- **Tirar uma carta** → Ω = {52 cartas}
+- **Escolher uma bola de urna com 3 vermelhas e 2 azuis** → Ω = {Vermelha, Azul}
+- **Escolher uma letra da palavra "PYTHON"** → Ω = {P, Y, T, H, O, N}
+- **Medir a altura de uma pessoa** → Ω = [0, +∞[
+
+### Tipos de Espaço Amostral
+
+- **Finito** — Número finito de resultados. Exemplo: Lançar um dado → Ω = {1, 2, 3, 4, 5, 6}
+- **Infinito numerável** — Número infinito, mas contável. Exemplo: Número de lançamentos até sair cara → Ω = {1, 2, 3, ...}
+- **Infinito não numerável** — Número infinito, não contável. Exemplo: Altura de uma pessoa → Ω = [0, +∞[
+
+### Como Construir o Espaço Amostral
+
+**Passo 1 — Identificar o experimento aleatório.**
+
+**Passo 2 — Listar todos os resultados possíveis.**
+
+**Passo 3 — Verificar se a lista está completa.**
+
+**Exemplo:** Lançar duas moedas.
+
+- Experimento: lançar duas moedas.
+- Resultados possíveis: CC, CK, KC, KK.
+- Ω = {CC, CK, KC, KK}
+
+**Atenção:** CC significa "cara na primeira moeda e cara na segunda". CK significa "cara na primeira e coroa na segunda". São resultados diferentes!
+
+
+## Evento
+
+### Definição
+
+> **Um evento** é um **subconjunto do espaço amostral**. É aquilo cuja probabilidade queremos medir.
+
+### Notação
+
+- **A, B, C, ...** = eventos
+- **A ⊆ Ω** = A é um subconjunto de Ω
+
+### Exemplos
+
+**Experimento:** Lançar um dado. Ω = {1, 2, 3, 4, 5, 6}
+
+- **A = "Sair número par"** → A = {2, 4, 6}
+- **B = "Sair número maior que 4"** → B = {5, 6}
+- **C = "Sair número 3"** → C = {3}
+- **D = "Sair número 7"** → D = ∅
+- **E = "Sair número entre 1 e 6"** → E = {1, 2, 3, 4, 5, 6} = Ω
+
+### Evento vs. Resultado
+
+&emsp;&emsp;&emsp;É importante distinguir:
+
+- **Resultado (ω):** um elemento individual do espaço amostral. Exemplo: sair 3.
+- **Evento (A):** um subconjunto do espaço amostral. Exemplo: sair número par = {2, 4, 6}.
+
+&emsp;&emsp;&emsp;Um evento pode conter **um ou mais resultados**. Quando contém apenas um, chama-se **evento elementar**.
+
+
+## Tipos de Eventos
+
+### Classificação dos Eventos
+
+- **Certo** — O evento que **sempre** ocorre. Exemplo: Sair número entre 1 e 6
+- **Impossível** — O evento que **nunca** ocorre. Exemplo: Sair número 7
+- **Elementar** — Um evento com **um único** resultado. Exemplo: Sair número 3
+- **Composto** — Um evento com **dois ou mais** resultados. Exemplo: Sair número par = {2, 4, 6}
+
+### Evento Certo
+
+> **O evento certo** é o evento que **sempre ocorre**. Corresponde ao próprio espaço amostral (A = Ω).
+
+**Exemplo:** No lançamento de um dado, o evento "sair um número entre 1 e 6" é certo.
+
+$$P(\Omega) = 1$$
+
+### Evento Impossível
+
+> **O evento impossível** é o evento que **nunca ocorre**. Corresponde ao conjunto vazio (A = ∅).
+
+**Exemplo:** No lançamento de um dado, o evento "sair o número 7" é impossível.
+
+$$P(\emptyset) = 0$$
+
+### Evento Elementar
+
+> **O evento elementar** é um evento com **um único resultado**.
+
+**Exemplo:** No lançamento de um dado, o evento "sair o número 3" é elementar.
+
+### Evento Composto
+
+> **O evento composto** é um evento com **dois ou mais resultados**.
+
+**Exemplo:** No lançamento de um dado, o evento "sair número par" é composto: {2, 4, 6}.
+
+### Eventos Complementares
+
+> **Dois eventos são complementares** quando a união deles é o espaço amostral e a interseção é vazia.
+
+**Exemplo:** No lançamento de um dado:
+
+- A = "sair par" = {2, 4, 6}
+- Aᶜ = "sair ímpar" = {1, 3, 5}
+- A ∪ Aᶜ = Ω
+- A ∩ Aᶜ = ∅
+
+**Propriedade:**
+
+$$P(A) + P(Aᶜ) = 1$$
+
+### Eventos Mutualmente Exclusivos
+
+> **Dois eventos são mutuamente exclusivos** quando **não podem ocorrer ao mesmo tempo**. A interseção é vazia.
+
+**Exemplo:** No lançamento de um dado:
+
+- A = "sair par" = {2, 4, 6}
+- B = "sair ímpar" = {1, 3, 5}
+- A ∩ B = ∅
+
+**Atenção:** Mutualmente exclusivos ≠ complementares. Dois eventos mutuamente exclusivos podem não cobrir todo o espaço amostral.
+
+
+## Exercícios
+
+<details>
+<summary>📗 Exercício 1 — Identificar o espaço amostral</summary>
+
+**Enunciado:** Para cada experimento, identifica o espaço amostral:
+
+a) Lançar duas moedas
+
+b) Lançar um dado e uma moeda
+
+c) Escolher uma letra da palavra "PYTHON"
+
+d) Medir a altura de uma pessoa
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+a) Ω = {CC, CK, KC, KK} (C = cara, K = coroa)
+
+b) Ω = {(1,C), (1,K), (2,C), (2,K), ..., (6,C), (6,K)} — 12 resultados
+
+c) Ω = {P, Y, T, H, O, N}
+
+d) Ω = [0, +∞[ (qualquer altura positiva)
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 2 — Classificar eventos</summary>
+
+**Enunciado:** No lançamento de um dado, classifica cada evento como certo, impossível, elementar ou composto:
+
+a) Sair um número maior que 0
+
+b) Sair o número 8
+
+c) Sair o número 5
+
+d) Sair um número ímpar
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+a) **Certo** — todos os números do dado são maiores que 0
+
+b) **Impossível** — o dado só tem números de 1 a 6
+
+c) **Elementar** — um único resultado
+
+d) **Composto** — {1, 3, 5}
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 3 — Identificar eventos complementares</summary>
+
+**Enunciado:** No lançamento de um dado, considera os eventos:
+
+- A = "sair número par"
+- B = "sair número ímpar"
+
+a) A e B são complementares? Justifica.
+
+b) A e B são mutuamente exclusivos? Justifica.
+
+c) Qual é a relação entre P(A) e P(B)?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+a) **Sim, são complementares.** A = {2, 4, 6}, B = {1, 3, 5}. A ∪ B = {1, 2, 3, 4, 5, 6} = Ω e A ∩ B = ∅.
+
+b) **Sim, são mutuamente exclusivos.** Não podem ocorrer ao mesmo tempo (um número não pode ser par e ímpar simultaneamente).
+
+c) P(A) + P(B) = 1. Como P(A) = 3/6 = 0,5 e P(B) = 3/6 = 0,5, então 0,5 + 0,5 = 1. ✅
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 4 — Construir o espaço amostral</summary>
+
+**Enunciado:** Lança-se uma moeda e um dado ao mesmo tempo. Constrói o espaço amostral e identifica o evento "sair cara e número par".
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+**Espaço amostral:**
+
+Ω = {(C,1), (C,2), (C,3), (C,4), (C,5), (C,6), (K,1), (K,2), (K,3), (K,4), (K,5), (K,6)}
+
+**Evento "sair cara e número par":**
+
+A = {(C,2), (C,4), (C,6)}
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Aplicação real</summary>
+
+**Enunciado:** Numa urna há 5 bolas vermelhas, 3 azuis e 2 verdes. Tira-se uma bola ao acaso.
+
+a) Qual é o espaço amostral?
+
+b) Qual é o evento "tirar uma bola que não seja verde"?
+
+c) Qual é o evento "tirar uma bola vermelha ou azul"?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+a) Ω = {Vermelha, Azul, Verde}
+
+b) A = {Vermelha, Azul}
+
+c) B = {Vermelha, Azul}
+
+**Nota:** Os eventos b) e c) são iguais — "não verde" é o mesmo que "vermelha ou azul".
+
+</details>
+</details>
+
+
+
+> **Em resumo:** nesta aula, aprendeste os blocos de construção da Probabilidade. Um **experimento aleatório** é um processo com resultados incertos. O **espaço amostral (Ω)** é o conjunto de todos os resultados possíveis. Um **evento** é um subconjunto do espaço amostral. Os eventos classificam-se em **certos**, **impossíveis**, **elementares** e **compostos**, e podem ser **complementares** ou **mutualmente exclusivos**. Na próxima aula, vamos aprender as **Definições de Probabilidade** — clássica, frequentista e axiomática — e a **classificação da Probabilidade**. **Estes conceitos são a base de tudo o que vem a seguir.**

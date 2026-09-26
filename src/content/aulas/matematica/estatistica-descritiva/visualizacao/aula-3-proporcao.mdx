@@ -1,464 +1,622 @@
-# Gráfico de Proporção
+# <center>Gráficos de Proporção</center>
 
-## 1. 🎯 Identidade do Grupo
+## Introdução
 
-### 1.1 Por que se chama Gráfico de Proporção?
+&emsp;&emsp;&emsp;Um certo gestor de uma empresa e queres saber como se distribui o orçamento anual: 40% para salários, 25% para infraestrutura, 20% para marketing, 10% para investigação e 5% para reservas. Agora pergunta-te: **consegues ver rapidamente que parte do total vai para cada área?** Com números, tens de fazer contas mentais. Com um gráfico de proporção, vês imediatamente que os salários dominam e que as reservas são uma fatia mínima.<br><br>
 
-Porque o **único objetivo** dele é responder à pergunta:
+&emsp;&emsp;&emsp;Agora imagina que queres mostrar a quota de mercado de 4 empresas concorrentes. A Empresa A tem 45%, a B tem 30%, a C tem 15% e a D tem 10%. Num gráfico de setores, as fatias mostram a relação de cada empresa com o todo. **A mesma informação, mas compreendida em segundos.** É isto que os **gráficos de proporção** fazem: mostram como um total se divide em partes. E é por isso que esta aula existe — depois de aprenderes a comparar valores, precisas de saber mostrar **que parte do todo** cada valor representa.
 
-> **"Quanto cada parte representa do todo (100%)?"**
+> 💡 **Regra de Ouro:** Um gráfico de proporção não compara valores entre si. Mostra a relação de cada parte com o todo. Serve para responder à pergunta *"que fração do total é isto?"* — e as partes têm de somar 100%.
 
-Ele existe para mostrar **fatias de um bolo** — ou seja, como um total é dividido entre suas partes.
+## O que é um Gráfico de Proporção?
 
-### 1.2 Para que serve?
- 
-+ **Mostrar participação de mercado** *Qual empresa tem a maior fatia?*
-+ **Mostrar composição de um orçamento** *Quanto vai para saúde, educação, transporte?*
-+ **Mostrar distribuição de respostas** *Quantos disseram Sim, Não, Talvez?*
-+ **Mostrar composição populacional** *Qual a porcentagem de cada faixa etária?*
+> Um **gráfico de proporção** é uma representação visual que mostra como um **todo** se divide em **partes**, usando áreas ou ângulos proporcionais à fração que cada parte representa do total.
 
-### 1.3 O gráfico principal: Pizza (Setores)
+&emsp;&emsp;&emsp;Os gráficos de proporção são diferentes dos gráficos de comparação. Num gráfico de comparação, cada barra é independente — não têm de somar nada. Num gráfico de proporção, as partes **têm de somar 100%**. Isto muda tudo: já não estás a comparar valores isolados, estás a mostrar a **composição de um todo**.<br><br>
 
-**O que é:** Um círculo dividido em fatias (setores). Cada fatia representa uma categoria. O tamanho da fatia é **proporcional à porcentagem** que ela representa.
-
-**Nome oficial:** Gráfico de Setores (ou Pie Chart, em inglês).
-
-### 1.4 Quando usar?
-
-
-+ **Você tem uma *variável qualitativa* (nominal ou ordinal)**  *Categorias: produtos, partidos, faixas etárias*
-+ **A **soma das partes faz sentido como um todo (100%)*** *Orçamento: 100% é o total de gastos*
-+ **A pergunta é *"quanto cada parte vale do total?"*** *"Qual a fatia de mercado de cada empresa?"*
-+ **Você tem *POUCAS categorias* (máximo 5 a 6)** *4 produtos, 5 respostas de pesquisa*
-
-### 1.5 Quando NÃO usar?
-
-| **Situação** | **Motivo** | **Alternativa** |
-| ---- | ---- | ---- |
-| Mais de **6 categorias** | Fica poluído e as fatias ficam muito finas | **Barras** (Grupo 1) ou **tabela** |
-| Os valores são **muito parecidos** | Difícil ver diferença entre as fatias | **Barras** (Grupo 1) |
-| Você quer **comparar magnitudes** ("qual é maior?") | Pizza não mostra comparação clara | **Barras** (Grupo 1) |
-| Você quer mostrar **evolução no tempo** | Pizza não mostra tendência | **Linhas** (Grupo 4) |
-| As partes **não somam um todo** | Ex: idades de 5 pessoas soltas | **Barras** (Grupo 1) |
-
-### 🧠 Decisão Rápida (Fluxo)
-
-```text
-Quero mostrar FATIAS de um TODO?
-        │
-    ┌───┴───┐
-    ▼       ▼
-   SIM     NÃO
-    │       │
-    │       └──► Quero comparar magnitudes? → Grupo 1 (Barras)
-    │       └──► Quero evolução no tempo? → Grupo 4 (Linhas)
-    │
-    ▼
-Tenho POUCAS categorias (≤ 6)?
-        │
-    ┌───┴───┐
-    ▼       ▼
-   SIM     NÃO
-    │       │
-    │       └──► Use BARRAS (Grupo 1) ou tabela
-    │
-    ▼
-┌──────────────────────────────┐
-│ GRUPO 2 – GRÁFICO DE PROPORÇÃO │
-│       (PIZZA / SETORES)        │
-└──────────────────────────────┘
-```
-
-## 2. 📐 A Matemática da Pizza: Ângulos
-
-Cada fatia da pizza é um **ângulo** dentro do círculo.
-
-**Regra:** O círculo tem **360 graus** (360°). A soma de todas as fatias = 360°.
-
-**Fórmula:**
-```text
-Ângulo da fatia = (Valor da categoria / Total) × 360°
-```
-
-**Ou, em porcentagem:**
-```text
-Ângulo da fatia = Porcentagem × 3,6°
-```
-(Porque 1% = 3,6°)
-
-### Exemplo de Cálculo
-
-**Dados:** Vendas de 4 produtos
-
-| Produto | Vendas | Porcentagem | Ângulo (graus) |
-| ---- | ---- | ---- | ---- |
-| A | 50 | 25% | 25 × 3,6 = 90° |
-| B | 80 | 40% | 40 × 3,6 = 144° |
-| C | 35 | 17,5% | 17,5 × 3,6 = 63° |
-| D | 35 | 17,5% | 17,5 × 3,6 = 63° |
-| **Total** | **200** | **100%** | **360°** |
-
-### Regra de Ouro da Pizza
-
-> **SEMPRE comece a primeira fatia a partir das 12 horas (meio-dia) e vá no sentido horário.**
-> 
-> **Ordene as fatias da maior para a menor** (começando pela maior).
-
-## 3. 🎨 Exemplos Visuais
-
-### Exemplo 1 — Pizza Simples (4 fatias)
-
-**Dados:** Vendas de 4 produtos (A=50, B=80, C=35, D=35)
-
-**Pergunta:** "Qual produto tem a maior participação?"
-
-```text
-        (12h)
-          ↓
-    ┌─────────┐
-   ╱    B     ╲
-  │   144°     │
-  │            │
-  │   ┌─────── │ ← A (90°)
-  │   │        │
-   ╲  │        ╱
-    └─│────────┘
-      │  C(63°)
-      └── D(63°)
-```
-
-**Interpretação:**
-- **B** tem a maior fatia (40%) → campeão.
-- **A** é o segundo (25%).
-- **C** e **D** têm fatias iguais (17,5% cada).
-
-### Exemplo 2 — Pizza com Ordenação
-
-**Dados:** Participação de mercado de 5 empresas
-
-| Empresa | Participação |
-| ---- | ---- |
-| Alpha | 45% |
-| Beta | 25% |
-| Gamma | 15% |
-| Delta | 10% |
-| Epsilon | 5% |
-
-**Pizza ordenada (maior para menor, a partir das 12h):**
-
-```text
-        (12h)
-          ↓
-    ┌─────────┐
-   ╱  Alpha   ╲
-  │   45%      │
-  │            │
-  │   ──────── │ ← Beta (25%)
-  │   │        │
-   ╲  │        ╱
-    └─│────────┘
-      │ Gamma (15%)
-      ├── Delta (10%)
-      └── Epsilon (5%)
-```
-
-**Interpretação:** Alpha é líder isolada (45%). Epsilon é a menor (5%).
-
-### Exemplo 3 — Quando NÃO usar Pizza (muitas categorias)
-
-**Dados:** Preferência de cor de 100 pessoas (10 cores diferentes)
-
-| Cor | Votos |
-| ---- | ---- |
-| Azul | 22 |
-| Vermelho | 18 |
-| Verde | 15 |
-| Preto | 12 |
-| Amarelo | 10 |
-| Branco | 8 |
-| Rosa | 6 |
-| Laranja | 4 |
-| Roxo | 3 |
-| Cinza | 2 |
-
-**Problema:** 10 fatias → fica poluído e ilegível.
-
-**Solução:** Use **Barras** (Grupo 1) ou agrupe categorias pequenas em "Outros".
-
-### Exemplo 4 — Quando NÃO usar Pizza (valores parecidos)
-
-**Dados:** Vendas de 4 produtos
-
-| Produto | Vendas |
-| ---- | ---- |
-| A | 105 |
-| B | 100 |
-| C | 98 |
-| D | 97 |
-
-**Problema:** As fatias são quase do mesmo tamanho → difícil ver diferença.
-
-**Solução:** Use **Barras** (Grupo 1) — a diferença fica mais clara.
-
-## 4. 📊 Representação: Pizza
-
-O Grupo 2 tem **UMA representação principal**:
-
-```text
-GRUPO 2 – GRÁFICO DE PROPORÇÃO
-            │
-            ▼
-┌──────────────────────────────┐
-│        PIZZA / SETORES         │
-│   (círculo dividido em fatias) │
-└──────────────────────────────┘
-```
-
-### 4.1 Variação: Pizza 3D (CUIDADO!)
-
-**O que é:** Pizza com efeito tridimensional (profundidade).
-
-**Problema:** Distorce a percepção das fatias — as fatias da frente parecem maiores.
-
-**Regra:** **NUNCA use pizza 3D** em análises sérias. Use sempre 2D (plana).
-
-### 4.2 Variação: Pizza Explodida (Exploded Pie)
-
-**O que é:** Uma ou mais fatias são "puxadas" para fora do círculo.
-
-**Quando usar:** Quando você quer **destacar** uma fatia específica (ex: "a participação da nossa empresa").
-
-**Cuidado:** Use com moderação. Muitas fatias explodidas perdem o efeito.
-
-## 5. 🔍 Interpretação da Pizza
-
-| **Elemento** | **O que revela** |
-| ---- | ---- |
-| Tamanho da fatia | Participação percentual — quanto maior, maior a proporção |
-| Ordem das fatias (maior para menor) | Ranking de contribuição |
-| Fatia destacada (explodida) | Ênfase em uma categoria específica |
-| Cores diferentes | Identificação das categorias (use cores contrastantes) |
-
-## 6. 👑 Regras de Ouro da Pizza
-
-| **Regra** | **Por quê?** |
-| ---- | ---- |
-| **Máximo de 6 fatias** | Mais que isso fica poluído |
-| **Ordene da maior para a menor** | Facilita a comparação |
-| **Comece a maior às 12h** | Facilita a leitura |
-| **Use cores contrastantes** | Diferencia as fatias |
-| **Mostre os valores (%)** | Facilita a leitura exata |
-| **NUNCA use 3D** | Distorce a percepção |
-| **Use apenas quando os dados SOMAM 100%** | A pizza exige um todo |
+&emsp;&emsp;&emsp;Existem três tipos principais de gráficos de proporção: **gráfico de setores** (ou pizza), **gráfico de anel** (donut) e **gráfico de área 100%** (barras empilhadas). Cada um tem o seu contexto ideal.
 
 <details>
-<summary>**💻 Código Python — Pizza**</summary>
+<summary>📊 Mapa dos Gráficos de Proporção</summary>
 
-```python
-import matplotlib.pyplot as plt
+```mermaid
+flowchart TD
+    A["📊 GRÁFICOS DE PROPORÇÃO"] --> B["Setores / Pizza"]
+    A --> C["Anel / Donut"]
+    A --> D["Área 100%"]
 
-# Dados
-produtos = ['Produto A', 'Produto B', 'Produto C', 'Produto D']
-vendas = [50, 80, 35, 35]
+    B --> B1["Poucas categorias<br/>Semelhança com o todo"]
+    C --> C1["Poucas categorias<br/>Espaço para total no centro"]
+    D --> D1["Muitas categorias<br/>Comparação entre grupos"]
 
-# Calcular porcentagens
-total = sum(vendas)
-porcentagens = [v/total * 100 for v in vendas]
-
-# Criar gráfico de pizza
-plt.figure(figsize=(8, 8))
-plt.pie(vendas, 
-        labels=produtos, 
-        autopct='%1.1f%%',  # Mostra as porcentagens
-        startangle=90,      # Começa às 12h
-        counterclock=False, # Vai no sentido horário
-        colors=['skyblue', 'orange', 'lightgreen', 'salmon'],
-        explode=(0, 0.1, 0, 0),  # Destaca o Produto B
-        shadow=False)
-
-plt.title('Participação de Vendas por Produto', fontsize=14, fontweight='bold')
-plt.tight_layout()
-plt.show()
-```
-
-
-### Parâmetros importantes:
-
-| **Parâmetro** | **O que faz** |
-| ---- | ---- |
-| `labels` | Nomes das categorias |
-| `autopct` | Mostra as porcentagens (formato) |
-| `startangle` | Onde começa a primeira fatia (90 = 12h) |
-| `counterclock` | Sentido horário (False) ou anti-horário (True) |
-| `explode` | Distância que cada fatia sai do centro |
-| `colors` | Cores de cada fatia |
-| `shadow` | Sombra (NUNCA use em análises sérias) |
-</details>
-<details>
-<summary>**💻 Código R — Pizza**</summary>
-
-```r
-library(ggplot2)
-library(dplyr)
-
-# Dados
-dados <- data.frame(
-  Produto = c('Produto A', 'Produto B', 'Produto C', 'Produto D'),
-  Vendas = c(50, 80, 35, 35)
-)
-
-# Calcular porcentagem
-dados <- dados %>%
-  mutate(porcentagem = Vendas / sum(Vendas) * 100,
-         label = paste0(Produto, "\n", round(porcentagem, 1), "%"))
-
-# Criar gráfico de pizza
-ggplot(dados, aes(x = "", y = Vendas, fill = Produto)) +
-  geom_bar(stat = "identity", width = 1, color = "white") +
-  coord_polar(theta = "y") +  # Transforma em pizza
-  geom_text(aes(label = label), 
-            position = position_stack(vjust = 0.5),
-            size = 4) +
-  scale_fill_manual(values = c("skyblue", "orange", "lightgreen", "salmon")) +
-  theme_void() +  # Remove eixos e fundo
-  labs(title = "Participação de Vendas por Produto") +
-  theme(plot.title = element_text(hjust = 0.5, face = "bold"))
+    style A fill:#333,color:#fff,stroke:#333,stroke-width:2px
+    style B fill:#cfe2ff,stroke:#0d6efd,stroke-width:2px
+    style C fill:#d4edda,stroke:#28a745,stroke-width:2px
+    style D fill:#fff3cd,stroke:#ffc107,stroke-width:2px
 ```
 </details>
 
-### Explicação:
 
-| **Comando** | **O que faz** |
-| ---- | ---- |
-| `geom_bar(stat = "identity")` | Cria barras com altura = valor |
-| `width = 1` | Barras ocupam todo o espaço |
-| `coord_polar(theta = "y")` | Transforma barras em pizza |
-| `position_stack(vjust = 0.5)` | Posiciona os rótulos no centro das fatias |
-| `theme_void()` | Remove eixos, grades e fundo |
+## Gráfico de Setores (Pizza)
 
-## 📝 Frase de Fixação
+### O que é?
 
-> *"Uso pizza para mostrar partes do todo, mas só se tiver poucas fatias (máximo 6). Começo a maior às 12h e mostro as porcentagens."*
+> Um **gráfico de setores** é um círculo dividido em fatias, em que cada fatia representa uma categoria e o **ângulo** de cada fatia é proporcional à fração que essa categoria representa do total.
 
-## 📝 Exercícios
+&emsp;&emsp;&emsp;O gráfico de setores é o gráfico de proporção mais conhecido e o mais usado. A lógica é simples: o círculo representa o todo (100%), e cada fatia representa uma parte. Se uma categoria representa 25% do total, a sua fatia ocupa um quarto do círculo (90 graus).<br><br>
+
+&emsp;&emsp;&emsp;O gráfico de setores é excelente para mostrar **poucas categorias** com diferenças claras. Mas é terrível para muitas categorias ou diferenças pequenas — o olho humano não consegue comparar ângulos com precisão.
+
+### Quando usar?
+
+- Quando tens **poucas categorias** (idealmente até 5)
+- Quando as diferenças entre as fatias são **claras**
+- Quando queres mostrar a **relação com o todo**
+- Quando o público é **não técnico**
+
+### Exemplo visual
 
 <details>
-<summary>📗 Exercício 1</summary>
+<summary>📊 Gráfico de Setores — Distribuição do Orçamento Anual</summary>
 
-**Enunciado:** Para cada situação abaixo, indique se deve usar Pizza (SIM) ou NÃO:
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); max-width: 750px; margin: 1rem auto; font-family: 'Segoe UI', system-ui, sans-serif;">
 
-a) Participação de 4 empresas no mercado
+  <div style="color: #fbbf24; font-weight: 700; font-size: 0.9rem; text-align: center; margin-bottom: 1.5rem;">Distribuição do Orçamento Anual</div>
 
-b) Preferência de 20 cores por 100 pessoas
+  <div style="display: flex; align-items: center; gap: 2rem; flex-wrap: wrap; justify-content: center;">
 
-c) Vendas de 3 produtos muito parecidas (34%, 33%, 33%)
+    <div style="width: 200px; height: 200px; border-radius: 50%; background: conic-gradient(#0d6efd 0% 40%, #28a745 40% 65%, #ffc107 65% 85%, #dc3545 85% 95%, #6f42c1 95% 100%); position: relative;">
 
-d) Gastos do governo divididos em 5 áreas (Saúde, Educação, etc.)
+      <div style="position: absolute; top: 50%; left: 50%; width: 70px; height: 70px; background: #0a0f1e; border-radius: 50%; transform: translate(-50%, -50%);"></div>
 
-e) Evolução da temperatura ao longo de 12 meses
+    </div>
 
-f) Número de alunos por curso (5 cursos)
+    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+
+      <div style="display: flex; align-items: center; gap: 0.4rem;">
+        <div style="width: 14px; height: 14px; background: #0d6efd; border-radius: 3px;"></div>
+        <span style="color: #93c5fd; font-size: 0.7rem;">Salários — 40%</span>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 0.4rem;">
+        <div style="width: 14px; height: 14px; background: #28a745; border-radius: 3px;"></div>
+        <span style="color: #6ee7b7; font-size: 0.7rem;">Infraestrutura — 25%</span>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 0.4rem;">
+        <div style="width: 14px; height: 14px; background: #ffc107; border-radius: 3px;"></div>
+        <span style="color: #fcd34d; font-size: 0.7rem;">Marketing — 20%</span>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 0.4rem;">
+        <div style="width: 14px; height: 14px; background: #dc3545; border-radius: 3px;"></div>
+        <span style="color: #f87171; font-size: 0.7rem;">Investigação — 10%</span>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 0.4rem;">
+        <div style="width: 14px; height: 14px; background: #6f42c1; border-radius: 3px;"></div>
+        <span style="color: #c4b5fd; font-size: 0.7rem;">Reservas — 5%</span>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+</details>
+
+**Interpretação:** Os salários consomem 40% do orçamento — a maior fatia. A infraestrutura representa 25%, o marketing 20%, a investigação 10% e as reservas apenas 5%. As cinco fatias somam 100%.
+
+
+## Gráfico de Anel (Donut)
+
+### O que é?
+
+> Um **gráfico de anel** é uma variante do gráfico de setores em que o centro do círculo é removido, criando um anel. As fatias funcionam da mesma forma, mas o espaço central pode ser usado para mostrar o total ou uma informação adicional.
+
+&emsp;&emsp;&emsp;O gráfico de anel resolve um problema do gráfico de setores: o centro vazio. Em vez de um círculo maciço, tens um anel com um espaço no meio que podes usar para mostrar o valor total, uma percentagem-chave, ou simplesmente para tornar o gráfico mais leve visualmente.
+
+### Quando usar?
+
+- Quando queres mostrar o **total no centro**
+- Quando queres um visual **mais moderno**
+- Quando tens **poucas categorias**
+- Quando queres **destacar uma categoria** específica
+
+### Exemplo visual
+
+<details>
+<summary>📊 Gráfico de Anel — Quota de Mercado por Empresa</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); max-width: 750px; margin: 1rem auto; font-family: 'Segoe UI', system-ui, sans-serif;">
+
+  <div style="color: #fbbf24; font-weight: 700; font-size: 0.9rem; text-align: center; margin-bottom: 1.5rem;">Quota de Mercado por Empresa</div>
+
+  <div style="display: flex; align-items: center; gap: 2rem; flex-wrap: wrap; justify-content: center;">
+
+    <div style="width: 200px; height: 200px; border-radius: 50%; background: conic-gradient(#0d6efd 0% 45%, #28a745 45% 75%, #ffc107 75% 90%, #dc3545 90% 100%); position: relative; display: flex; align-items: center; justify-content: center;">
+
+      <div style="width: 90px; height: 90px; background: #0a0f1e; border-radius: 50%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+        <span style="color: #fbbf24; font-size: 1rem; font-weight: 700;">100%</span>
+        <span style="color: #6b7280; font-size: 0.55rem;">Mercado</span>
+      </div>
+
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+
+      <div style="display: flex; align-items: center; gap: 0.4rem;">
+        <div style="width: 14px; height: 14px; background: #0d6efd; border-radius: 3px;"></div>
+        <span style="color: #93c5fd; font-size: 0.7rem;">Empresa A — 45%</span>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 0.4rem;">
+        <div style="width: 14px; height: 14px; background: #28a745; border-radius: 3px;"></div>
+        <span style="color: #6ee7b7; font-size: 0.7rem;">Empresa B — 30%</span>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 0.4rem;">
+        <div style="width: 14px; height: 14px; background: #ffc107; border-radius: 3px;"></div>
+        <span style="color: #fcd34d; font-size: 0.7rem;">Empresa C — 15%</span>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 0.4rem;">
+        <div style="width: 14px; height: 14px; background: #dc3545; border-radius: 3px;"></div>
+        <span style="color: #f87171; font-size: 0.7rem;">Empresa D — 10%</span>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+</details>
+
+**Interpretação:** A Empresa A domina o mercado com 45%, seguida da B (30%), C (15%) e D (10%). O centro do anel mostra que o total é 100% do mercado. O visual é mais leve que o gráfico de setores tradicional.
+
+
+## Gráfico de Área 100% (Barras Empilhadas)
+
+### O que é?
+
+> Um **gráfico de área 100%** é um gráfico de barras empilhadas em que cada barra representa 100% de um grupo, e as secções dentro de cada barra representam a proporção de cada categoria dentro desse grupo.
+
+&emsp;&emsp;&emsp;O gráfico de área 100% é a solução quando tens **muitas categorias** ou quando queres **comparar proporções entre grupos**. Em vez de um círculo, tens barras verticais empilhadas. Cada barra tem a mesma altura (100%), mas as secções internas variam.<br><br>
+
+&emsp;&emsp;&emsp;Imagina que queres comparar a distribuição de gastos de três famílias diferentes. Com um gráfico de setores, precisarias de três círculos. Com um gráfico de área 100%, tens três barras lado a lado, cada uma dividida nas mesmas categorias.
+
+### Quando usar?
+
+- Quando tens **muitas categorias** (mais de 5)
+- Quando queres **comparar proporções entre grupos**
+- Quando queres mostrar **evolução temporal** de proporções
+- Quando o espaço horizontal é limitado
+
+### Exemplo visual
+
+<details>
+<summary>📊 Gráfico de Área 100% — Distribuição de Gastos por Família</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); max-width: 750px; margin: 1rem auto; font-family: 'Segoe UI', system-ui, sans-serif;">
+
+  <div style="color: #fbbf24; font-weight: 700; font-size: 0.9rem; text-align: center; margin-bottom: 1.5rem;">Distribuição de Gastos por Família</div>
+
+  <div style="display: flex; justify-content: center; gap: 1.5rem; align-items: flex-end; height: 220px;">
+
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+
+      <div style="width: 60px; height: 180px; display: flex; flex-direction: column; border-radius: 4px; overflow: hidden;">
+
+        <div style="height: 20%; background: #0d6efd;"></div>
+        <div style="height: 20%; background: #28a745;"></div>
+        <div style="height: 30%; background: #ffc107;"></div>
+        <div style="height: 30%; background: #dc3545;"></div>
+
+      </div>
+
+      <span style="color: #93c5fd; font-size: 0.7rem;">Família A</span>
+
+    </div>
+
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+
+      <div style="width: 60px; height: 180px; display: flex; flex-direction: column; border-radius: 4px; overflow: hidden;">
+
+        <div style="height: 30%; background: #0d6efd;"></div>
+        <div style="height: 20%; background: #28a745;"></div>
+        <div style="height: 20%; background: #ffc107;"></div>
+        <div style="height: 30%; background: #dc3545;"></div>
+
+      </div>
+
+      <span style="color: #93c5fd; font-size: 0.7rem;">Família B</span>
+
+    </div>
+
+    <div style="display: flex; flex-direction: column; align-items: center; gap: 0.5rem;">
+
+      <div style="width: 60px; height: 180px; display: flex; flex-direction: column; border-radius: 4px; overflow: hidden;">
+
+        <div style="height: 20%; background: #0d6efd;"></div>
+        <div style="height: 30%; background: #28a745;"></div>
+        <div style="height: 20%; background: #ffc107;"></div>
+        <div style="height: 30%; background: #dc3545;"></div>
+
+      </div>
+
+      <span style="color: #93c5fd; font-size: 0.7rem;">Família C</span>
+
+    </div>
+
+  </div>
+
+  <div style="display: flex; justify-content: center; gap: 1.5rem; margin-top: 1.5rem; flex-wrap: wrap;">
+
+    <div style="display: flex; align-items: center; gap: 0.4rem;">
+      <div style="width: 12px; height: 12px; background: #0d6efd; border-radius: 3px;"></div>
+      <span style="color: #93c5fd; font-size: 0.65rem;">Casa</span>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 0.4rem;">
+      <div style="width: 12px; height: 12px; background: #28a745; border-radius: 3px;"></div>
+      <span style="color: #6ee7b7; font-size: 0.65rem;">Alimentação</span>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 0.4rem;">
+      <div style="width: 12px; height: 12px; background: #ffc107; border-radius: 3px;"></div>
+      <span style="color: #fcd34d; font-size: 0.65rem;">Transporte</span>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 0.4rem;">
+      <div style="width: 12px; height: 12px; background: #dc3545; border-radius: 3px;"></div>
+      <span style="color: #f87171; font-size: 0.65rem;">Outros</span>
+    </div>
+
+  </div>
+
+</div>
+
+</details>
+
+**Interpretação:** As três famílias distribuem os gastos de forma diferente. A Família A gasta mais em "Outros" e "Transporte"; a Família B gasta mais em "Casa"; a Família C gasta mais em "Alimentação". Cada barra soma 100%, permitindo comparar as proporções entre famílias.
+
+
+### Setores vs. Anel vs. Área
+
+| Critério | Setores (Pizza) | Anel (Donut) | Área 100% |
+|----------|-----------------|--------------|-----------|
+| **Nº de categorias** | Poucas (até 5) | Poucas (até 5) | Muitas (5+) |
+| **Comparação entre grupos** | Difícil | Difícil | Excelente |
+| **Mostra o total** | Sim (círculo) | Sim (centro) | Sim (barra) |
+| **Precisão** | Baixa | Baixa | Média |
+| **Estética** | Clássica | Moderna | Funcional |
+| **Uso comum** | Relatórios, jornais | Apresentações | Análise de dados |
+
+**Regra prática:** Se tens poucas categorias e queres mostrar a relação com o todo → **setores** ou **anel**. Se tens muitas categorias ou queres comparar grupos → **área 100%**.
+
+
+
+### Exemplo Prático
+
+&emsp;&emsp;&emsp;Vamos construir um gráfico de proporção passo a passo.
+
+**Dados:** Distribuição das despesas mensais de uma família.
+
+| Categoria | Valor (€) | Percentagem |
+|-----------|-----------|-------------|
+| Casa | 800 | 40% |
+| Alimentação | 500 | 25% |
+| Transporte | 300 | 15% |
+| Educação | 200 | 10% |
+| Lazer | 200 | 10% |
+| **Total** | **2000** | **100%** |
+
+**Passo 1 — Escolher o tipo de gráfico**
+
+Temos 5 categorias com diferenças claras. **Setores** é a escolha ideal.
+
+**Passo 2 — Calcular os ângulos**
+
+- Casa: 40% × 360° = 144°
+- Alimentação: 25% × 360° = 90°
+- Transporte: 15% × 360° = 54°
+- Educação: 10% × 360° = 36°
+- Lazer: 10% × 360° = 36°
+
+**Passo 3 — Desenhar o gráfico**
+
+<details>
+<summary>📊 Setores — Despesas Mensais de uma Família</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); max-width: 750px; margin: 1rem auto; font-family: 'Segoe UI', system-ui, sans-serif;">
+
+  <div style="color: #fbbf24; font-weight: 700; font-size: 0.9rem; text-align: center; margin-bottom: 1.5rem;">Despesas Mensais de uma Família</div>
+
+  <div style="display: flex; align-items: center; gap: 2rem; flex-wrap: wrap; justify-content: center;">
+
+    <div style="width: 200px; height: 200px; border-radius: 50%; background: conic-gradient(#0d6efd 0% 40%, #28a745 40% 65%, #ffc107 65% 80%, #dc3545 80% 90%, #6f42c1 90% 100%); position: relative;">
+
+      <div style="position: absolute; top: 50%; left: 50%; width: 70px; height: 70px; background: #0a0f1e; border-radius: 50%; transform: translate(-50%, -50%);"></div>
+
+    </div>
+
+    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+
+      <div style="display: flex; align-items: center; gap: 0.4rem;">
+        <div style="width: 14px; height: 14px; background: #0d6efd; border-radius: 3px;"></div>
+        <span style="color: #93c5fd; font-size: 0.7rem;">Casa — 40% (800€)</span>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 0.4rem;">
+        <div style="width: 14px; height: 14px; background: #28a745; border-radius: 3px;"></div>
+        <span style="color: #6ee7b7; font-size: 0.7rem;">Alimentação — 25% (500€)</span>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 0.4rem;">
+        <div style="width: 14px; height: 14px; background: #ffc107; border-radius: 3px;"></div>
+        <span style="color: #fcd34d; font-size: 0.7rem;">Transporte — 15% (300€)</span>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 0.4rem;">
+        <div style="width: 14px; height: 14px; background: #dc3545; border-radius: 3px;"></div>
+        <span style="color: #f87171; font-size: 0.7rem;">Educação — 10% (200€)</span>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 0.4rem;">
+        <div style="width: 14px; height: 14px; background: #6f42c1; border-radius: 3px;"></div>
+        <span style="color: #c4b5fd; font-size: 0.7rem;">Lazer — 10% (200€)</span>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+</details>
+
+**Passo 4 — Interpretar**
+
+A casa consome 40% do orçamento familiar — a maior fatia. A alimentação representa 25%, o transporte 15%, e a educação e o lazer representam 10% cada. As cinco categorias somam 100% das despesas mensais.
+
+
+## Exercícios
+
+<details>
+<summary>📗 Exercício 1 — Identificar o tipo de gráfico de proporção (Fácil)</summary>
+
+**Enunciado:** Para cada situação, indica se usarias setores, anel ou área 100%:
+
+a) Mostrar a quota de mercado de 4 empresas
+
+b) Comparar a distribuição de gastos de 5 países diferentes
+
+c) Mostrar a distribuição de idades numa turma (crianças, jovens, adultos, idosos)
+
+d) Comparar a composição étnica de 3 cidades
+
+e) Mostrar as preferências partidárias num país com 6 partidos
 
 <details>
 <summary>💡 Ver resposta</summary>
 
-**Resposta:**
+a) **Setores ou anel** — 4 categorias, relação com o todo, diferenças claras
 
-a) **SIM** — Poucas categorias, mostra fatias do todo
+b) **Área 100%** — comparar proporções entre 5 grupos diferentes
 
-b) **NÃO** — Muitas categorias → poluído
+c) **Setores** — 4 categorias, relação com o todo
 
-c) **NÃO** — Difícil ver diferença → use barras
+d) **Área 100%** — comparar proporções entre 3 grupos diferentes
 
-d) **SIM** — Mostra composição do orçamento
-
-e) **NÃO** — Dado temporal → use linhas
-
-f) **SIM (ou barras)** — Pizza funciona, mas barras também
+e) **Área 100%** — 6 categorias, muitas para setores
 
 </details>
 </details>
 
 <details>
-<summary>📗 Exercício 2</summary>
+<summary>📗 Exercício 2 — Detetar erros (Médio)</summary>
 
-**Enunciado:** Calcule os ângulos de cada fatia para os dados abaixo:
-
-| Produto | Vendas |
-| ---- | ---- |
-| A | 60 |
-| B | 90 |
-| C | 30 |
-| D | 20 |
+**Enunciado:** Observa o gráfico abaixo e identifica três erros de visualização.
 
 <details>
-<summary>💡 Ver resposta</summary>
+<summary>📊 Gráfico com erros</summary>
 
-**Resposta:**
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); max-width: 600px; margin: 1rem auto; font-family: 'Segoe UI', system-ui, sans-serif;">
 
-Total = 60 + 90 + 30 + 20 = 200
+  <div style="color: #fbbf24; font-weight: 700; font-size: 0.9rem; text-align: center; margin-bottom: 1.5rem;">Gráfico 1</div>
 
-| Produto | % | Ângulo |
-| ---- | ---- | ---- |
-| A | 30% | 30 × 3,6 = 108° |
-| B | 45% | 45 × 3,6 = 162° |
-| C | 15% | 15 × 3,6 = 54° |
-| D | 10% | 10 × 3,6 = 36° |
-| **Total** | **100%** | **360°** |
+  <div style="display: flex; align-items: center; justify-content: center; gap: 2rem;">
+
+    <div style="width: 160px; height: 160px; border-radius: 50%; background: conic-gradient(#ff0000 0% 30%, #00ff00 30% 55%, #0000ff 55% 75%, #ffff00 75% 90%, #ff00ff 90% 100%);"></div>
+
+    <div style="display: flex; flex-direction: column; gap: 0.4rem;">
+
+      <div style="display: flex; align-items: center; gap: 0.4rem;">
+        <div style="width: 12px; height: 12px; background: #ff0000; border-radius: 3px;"></div>
+        <span style="color: #f87171; font-size: 0.65rem;">A</span>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 0.4rem;">
+        <div style="width: 12px; height: 12px; background: #00ff00; border-radius: 3px;"></div>
+        <span style="color: #6ee7b7; font-size: 0.65rem;">B</span>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 0.4rem;">
+        <div style="width: 12px; height: 12px; background: #0000ff; border-radius: 3px;"></div>
+        <span style="color: #60a5fa; font-size: 0.65rem;">C</span>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 0.4rem;">
+        <div style="width: 12px; height: 12px; background: #ffff00; border-radius: 3px;"></div>
+        <span style="color: #fcd34d; font-size: 0.65rem;">D</span>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 0.4rem;">
+        <div style="width: 12px; height: 12px; background: #ff00ff; border-radius: 3px;"></div>
+        <span style="color: #e879f9; font-size: 0.65rem;">E</span>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
 
 </details>
-</details>
-
-<details>
-<summary>📗 Exercício 3</summary>
-
-**Enunciado:** Qual a regra de ouro da pizza em relação à ordem das fatias e por que ela é importante?
-
-<details>
-<summary>💡 Ver resposta</summary>
-
-**Resposta:**
-
-A regra de ouro é: **Ordene as fatias da maior para a menor** e **comece a maior às 12h**.
-
-Ela é importante porque:
-1. Facilita a comparação visual entre as fatias.
-2. O olho humano naturalmente começa a leitura no topo (12h) e segue no sentido horário.
-3. Colocar a maior fatia primeiro ajuda o leitor a identificar rapidamente a categoria dominante.
-
-</details>
-</details>
-
-<details>
-<summary>📗 Exercício 4</summary>
-
-**Enunciado:** Por que a pizza 3D deve ser evitada em análises sérias?
 
 <details>
 <summary>💡 Ver resposta</summary>
 
-**Resposta:**
+1. **Título vago** — "Gráfico 1" não diz nada. Deveria ser "Distribuição de Vendas por Produto" ou similar.
 
-A pizza 3D **distorce a percepção** das fatias. As fatias que estão na frente (mais próximas do observador) parecem maiores do que realmente são, enquanto as fatias atrás parecem menores. Isso pode levar a interpretações incorretas dos dados.
+2. **Muitas categorias** — 5 fatias sem valores nem percentagens. Idealmente, um gráfico de setores deve ter no máximo 5 categorias com diferenças claras.
+
+3. **Cores sem significado** — vermelho, verde, azul, amarelo e magenta não têm relação com os dados.
+
+4. **Falta de legenda com valores** — não sabemos o que cada letra representa nem as percentagens.
+
+5. **Falta de fonte** — não sabemos de onde vêm os dados.
 
 </details>
 </details>
 
 <details>
-<summary>📗 Exercício 5</summary>
+<summary>📗 Exercício 3 — Escolher o gráfico certo (Médio)</summary>
 
-**Enunciado:** Em que situação a Pizza Explodida (Exploded Pie) é útil? Dê um exemplo.
+**Enunciado:** Tens os seguintes dados: distribuição de 1000 respostas a um inquérito sobre o meio de transporte usado. Carro — 45%, Transporte público — 30%, Bicicleta — 15%, A pé — 8%, Outros — 2%. Que gráfico de proporção usarias para mostrar:
+
+a) Os dados num relatório anual
+
+b) Os dados numa apresentação para a câmara municipal
+
+c) Comparar estes dados com os de outra cidade
 
 <details>
 <summary>💡 Ver resposta</summary>
 
-**Resposta:**
+a) **Setores** — relatório anual, 5 categorias, relação com o todo
 
-A Pizza Explodida é útil quando você quer **destacar** uma fatia específica do gráfico. Ela chama a atenção do leitor para aquela categoria em particular.
+b) **Anel** — apresentação, visual moderno, espaço para o total no centro
 
-**Exemplo:** Em um gráfico de participação de mercado, você pode "explodir" a fatia da sua empresa para destacar que ela tem 45% do mercado, enquanto as outras empresas têm fatias menores.
+c) **Área 100%** — comparar proporções entre duas cidades
 
 </details>
 </details>
 
-> *Uso pizza para mostrar partes do todo, mas só se tiver poucas fatias (máximo 6). Começo a maior às 12h e mostro as porcentagens.*
+<details>
+<summary>📗 Exercício 4 — Interpretar um gráfico (Médio)</summary>
+
+**Enunciado:** Observa o gráfico abaixo e responde:
+
+<details>
+<summary>📊 Gráfico — Distribuição de Alunos por Curso</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); max-width: 650px; margin: 1rem auto; font-family: 'Segoe UI', system-ui, sans-serif;">
+
+  <div style="color: #fbbf24; font-weight: 700; font-size: 0.9rem; text-align: center; margin-bottom: 1.5rem;">Distribuição de Alunos por Curso</div>
+
+  <div style="display: flex; align-items: center; justify-content: center; gap: 2rem; flex-wrap: wrap;">
+
+    <div style="width: 160px; height: 160px; border-radius: 50%; background: conic-gradient(#0d6efd 0% 35%, #28a745 35% 60%, #ffc107 60% 82%, #dc3545 82% 100%);"></div>
+
+    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+
+      <div style="display: flex; align-items: center; gap: 0.4rem;">
+        <div style="width: 12px; height: 12px; background: #0d6efd; border-radius: 3px;"></div>
+        <span style="color: #93c5fd; font-size: 0.65rem;">Ciências — 35%</span>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 0.4rem;">
+        <div style="width: 12px; height: 12px; background: #28a745; border-radius: 3px;"></div>
+        <span style="color: #6ee7b7; font-size: 0.65rem;">Letras — 25%</span>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 0.4rem;">
+        <div style="width: 12px; height: 12px; background: #ffc107; border-radius: 3px;"></div>
+        <span style="color: #fcd34d; font-size: 0.65rem;">Artes — 22%</span>
+      </div>
+
+      <div style="display: flex; align-items: center; gap: 0.4rem;">
+        <div style="width: 12px; height: 12px; background: #dc3545; border-radius: 3px;"></div>
+        <span style="color: #f87171; font-size: 0.65rem;">Desporto — 18%</span>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+</details>
+
+a) Qual é o curso com mais alunos?
+
+b) Qual é o curso com menos alunos?
+
+c) Qual é a diferença entre Ciências e Desporto?
+
+d) Que tipo de gráfico é este?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+a) **Ciências** — 35%
+
+b) **Desporto** — 18%
+
+c) **17%** — Ciências (35%) − Desporto (18%) = 17%
+
+d) **Gráfico de setores (pizza)** — círculo dividido em fatias proporcionais
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Construir um gráfico (Difícil)</summary>
+
+**Enunciado:** Tens os seguintes dados sobre as despesas mensais de uma família:
+
+| Categoria | Valor (€) | Percentagem |
+|-----------|-----------|-------------|
+| Casa | 800 | 40% |
+| Alimentação | 500 | 25% |
+| Transporte | 300 | 15% |
+| Educação | 200 | 10% |
+| Lazer | 200 | 10% |
+| **Total** | **2000** | **100%** |
+
+a) Que tipo de gráfico de proporção usarias?
+
+b) Calcula os ângulos de cada fatia.
+
+c) Desenha o gráfico mentalmente (ou num papel) com todos os elementos da anatomia.
+
+d) Interpreta o gráfico.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+a) **Setores** — 5 categorias, diferenças claras, relação com o todo
+
+b) Ângulos:
+- Casa: 40% × 360° = 144°
+- Alimentação: 25% × 360° = 90°
+- Transporte: 15% × 360° = 54°
+- Educação: 10% × 360° = 36°
+- Lazer: 10% × 360° = 36°
+
+c) O gráfico deve ter:
+- Título: "Despesas Mensais de uma Família"
+- Círculo dividido em 5 fatias com os ângulos calculados
+- Legenda com as categorias, percentagens e valores
+- Fonte dos dados
+
+d) A casa consome 40% do orçamento — a maior fatia. A alimentação representa 25%, o transporte 15%, e a educação e o lazer representam 10% cada. As cinco categorias somam 100% das despesas mensais.
+
+</details>
+</details>
+
+
+> **Em resumo:** os gráficos de proporção mostram como um todo se divide em partes, respondendo à pergunta *"que fração do total é isto?"*. Os **setores** usam um círculo dividido em fatias e são ideais para poucas categorias com diferenças claras; os **anéis** são uma variante moderna que deixa espaço para o total no centro; os **gráficos de área 100%** usam barras empilhadas e são ideais para muitas categorias ou para comparar proporções entre grupos. Em todos, as partes têm de somar 100%, e o tamanho de cada parte é proporcional à sua fração do todo. Um gráfico de proporção bem feito transforma uma lista de percentagens numa história visual sobre a composição de um todo.

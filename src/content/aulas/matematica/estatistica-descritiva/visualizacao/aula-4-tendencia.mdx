@@ -1,681 +1,551 @@
-# Gráfico de Relação
+# <center>Gráficos de Tendência</center>
 
-## 1. 🎯 Identidade do Grupo
+## Introdução
 
-Porque o **único objetivo** dele é responder à pergunta:
+&emsp;&emsp;&emsp;Imagina que és o diretor financeiro de uma empresa e tens os dados de vendas dos últimos 12 meses. Janeiro: 120 mil €; Fevereiro: 135 mil €; Março: 128 mil €; Abril: 150 mil €; e por aí adiante. Agora pergunta-te: **as vendas estão a crescer ou a diminuir? Há alguma sazonalidade? Qual foi o melhor mês?** Com uma tabela de 12 números, tens de fazer contas mentais. Com um gráfico de linhas, vês a resposta imediatamente: a linha sobe, desce, ou oscila.<br><br>
 
-> **"Uma coisa influencia a outra? Como elas se relacionam?"**
+&emsp;&emsp;&emsp;Agora imagina que queres comparar a evolução das vendas de três produtos diferentes ao longo do mesmo ano. Com uma tabela, seria um caos. Com três linhas no mesmo gráfico, vês qual cresce mais rápido, qual estagnou, qual caiu. **A mesma informação, mas compreendida em segundos.** É isto que os **gráficos de tendência** fazem: mostram como uma ou mais variáveis evoluem ao longo do tempo. E é por isso que esta aula existe — depois de aprenderes a comparar valores e a mostrar proporções, precisas de saber mostrar **evolução**.
 
-Ele existe para mostrar **conexões** entre duas variáveis — seja ao longo do tempo ou entre duas medidas diferentes.
-
-### 1.2 Para que serve?
+> 💡 **Regra de Ouro:** Um gráfico de tendência não compara categorias nem mostra proporções. Mostra evolução. Serve para responder à pergunta *"como mudou ao longo do tempo?"* — e o eixo X é sempre o tempo.
 
 
-+ **Ver se horas de estudo influenciam a nota** *Quem estuda mais tira notas melhores?*
-+ **Ver a evolução das vendas ao longo do tempo** *As vendas estão subindo ou caindo?*
-+ **Ver a relação entre temperatura e consumo de sorvete** *Quando faz mais calor, vende mais sorvete?*
-+ **Ver tendência de crescimento populacional** *A população está aumentando ao longo dos anos?*
+## O que é um Gráfico de Tendência?
 
-### 1.3 Quando usar?
+> Um **gráfico de tendência** é uma representação visual que mostra a **evolução de uma ou mais variáveis ao longo do tempo**, ligando pontos de dados consecutivos por linhas ou preenchendo áreas sob essas linhas.
 
-| **Condição** | **Exemplo** |
-| --- | --- |
-| Você tem **DUAS variáveis quantitativas** | Horas de estudo e nota; temperatura e vendas |
-| Você quer ver **se uma influencia a outra** | "Será que X causa Y?" |
-| Você tem **TEMPO** no eixo X | Meses, anos, dias → evolução temporal |
-| A pergunta é **"como uma coisa muda com a outra?"** | "O que acontece com Y quando X aumenta?" |
+&emsp;&emsp;&emsp;Os gráficos de tendência são diferentes dos gráficos de comparação e de proporção. Num gráfico de comparação, as categorias são independentes. Num gráfico de proporção, as partes somam 100%. Num gráfico de tendência, o eixo X é **sempre o tempo** — meses, anos, dias, horas. E o que interessa não é o valor isolado de cada ponto, mas a **direção** e a **forma** da evolução.<br><br>
 
-### 1.4 Quando NÃO usar?
-
-| **Situação** | **Motivo** | **Alternativa** |
-| --- | --- | --- |
-| Você tem **apenas UMA variável** | Não há relação para mostrar | **Histograma** (Grupo 3) ou **Barras** (Grupo 1) |
-| Você tem **variáveis qualitativas** | Não são números para relação | **Barras Agrupadas** (Grupo 1) |
-| Quer mostrar **proporção** | O foco é outro | **Pizza** (Grupo 2) |
-| Quer comparar **categorias** | O foco é outro | **Barras** (Grupo 1) |
-
-### 🧠 Decisão Rápida (Fluxo)
-
-```text
-Tenho DUAS variáveis numéricas?
-        │
-    ┌───┴───┐
-    ▼       ▼
-   SIM     NÃO
-    │       │
-    │       └──► Grupo 1 (Barras), 2 (Pizza) ou 3 (Histograma)
-    │
-    ▼
-O eixo X é TEMPO (dias, meses, anos)?
-        │
-    ┌───┴───┐
-    ▼       ▼
-   SIM     NÃO
-    │       │
-    │       └──► Quero ver RELAÇÃO entre duas variáveis? → DISPERSÃO
-    │
-    ▼
-┌──────────────────────────────┐
-│   GRÁFICO DE RELAÇÃO          │
-│   (Grupo 4)                   │
-└──────────────────────────────┘
-        │
-    ┌───┴───┐
-    ▼       ▼
-LINHAS   DISPERSÃO
-(tempo)  (relação
-         entre duas
-         variáveis)
-```
-
-## 2. 📊 Representações do Gráfico de Relação
-
-O Grupo 4 tem **DUAS representações principais**:
-
-```text
-GRÁFICO DE RELAÇÃO
-        │
-    ┌───┴───┐
-    ▼       ▼
-LINHAS   DISPERSÃO
-(tempo)  (relação
-         entre duas
-         variáveis)
-```
-
-## 3. 📈 Representação 1: Gráfico de Linhas
-
-### 3.1 O que é o Gráfico de Linhas?
-
-É um gráfico que mostra a **evolução** de uma variável ao longo do **tempo**.
-
-**Características:**
-- Eixo X = **TEMPO** (dias, meses, anos, horas)
-- Eixo Y = valor da variável (número)
-- Pontos marcados e **unidos por linhas**
-- Mostra **tendência**: está subindo, descendo ou estável?
-
-### 3.2 Quando usar Gráfico de Linhas?
-
-+ **Tempo no eixo X** *Dias da semana, meses do ano, anos*
-+ **Quer ver **tendência*** *"As vendas estão aumentando?"*
-+ **Quer ver **sazonalidade*** *"Vende mais no verão?"*
-+ **Quer comparar **duas séries temporais*** *Vendas de 2024 vs 2025*
-
-### 3.3 Quando NÃO usar Gráfico de Linhas?
-
-| **Situação** | **Motivo** | **Alternativa** |
-| --- | --- | --- |
-| Não há tempo no eixo X | Linha sem tempo não faz sentido | **Dispersão** (Grupo 4) |
-| Os dados são **categorias** | Linha exige ordem contínua | **Barras** (Grupo 1) |
-| Você quer **comparar magnitudes** | O foco é outro | **Barras** (Grupo 1) |
-
-### 3.4 Interpretação do Gráfico de Linhas
-
-| **Elemento** | **O que revela** |
-| --- | --- |
-| **Inclinação da linha** | Se sobe → tendência crescente; se desce → tendência decrescente |
-| **Reta horizontal** | Tendência estável (sem crescimento) |
-| **Picos e vales** | Sazonalidade (ex: pico no verão, vale no inverno) |
-| **Linhas múltiplas** | Comparação entre duas séries (ex: 2024 x 2025) |
-
-```text
-Tendência 1: CRESCENTE
-Valor
-  │
-  │        ╱
-  │      ╱
-  │    ╱
-  │  ╱
-  └──────────────────
-       Tempo
-
-Tendência 2: DECRESCENTE
-Valor
-  │
-  │  ╲
-  │    ╲
-  │      ╲
-  │        ╲
-  └──────────────────
-       Tempo
-
-Tendência 3: ESTÁVEL
-Valor
-  │
-  │  ────────────
-  │
-  │
-  │
-  └──────────────────
-       Tempo
-```
-
-### 3.5 Exemplo Visual – Gráfico de Linhas
-
-**Dados:** Vendas mensais de uma loja em 2025
-
-| Mês | Vendas |
-| --- | ---- |
-| Jan | 100 |
-| Fev | 120 |
-| Mar | 90 |
-| Abr | 150 |
-| Mai | 180 |
-| Jun | 160 |
-
-**Gráfico de Linhas:**
-
-```text
-Vendas
-  │
-200 ┼
-  │                     ●
-180 ┼                ●──┘
-  │                │
-160 ┼          ●───┘
-  │          │
-140 ┼        │
-  │        │
-120 ┼  ●───┘
-  │  │
-100 ┼──┘
-  │
- 80 ┼
-  │
-  0 ┼────●────●────●────●────●────●────
-      Jan  Fev  Mar  Abr  Mai  Jun
-```
-
-**Interpretação:**
-- As vendas **caíram** em março (pico negativo).
-- As vendas **subiram** de abril a maio (pico positivo).
-- Tendência geral: **crescente** (de 100 para 180).
-
-### 3.6 Exemplo com Duas Linhas (Comparação)
-
-**Dados:** Vendas de 2024 vs 2025
-
-| Mês | 2024 | 2025 |
-| --- | ---- | ---- |
-| Jan | 90 | 100 |
-| Fev | 95 | 120 |
-| Mar | 80 | 90 |
-| Abr | 110 | 150 |
-| Mai | 130 | 180 |
-| Jun | 120 | 160 |
-
-**Interpretação:**
-- **2025** está **acima** de 2024 em todos os meses → crescimento.
-- Ambas as séries têm o mesmo padrão: **pico em maio** e **vale em março**.
+&emsp;&emsp;&emsp;Existem dois tipos principais de gráficos de tendência: **gráfico de linhas** e **gráfico de áreas**. Cada um tem o seu contexto ideal.
 
 <details>
-<summary>**🐍 Código Python — Gráfico de Linhas**</summary>
+<summary>📊 Mapa dos Gráficos de Tendência</summary>
 
-```python
-import matplotlib.pyplot as plt
+```mermaid
+flowchart TD
+    A["📈 GRÁFICOS DE TENDÊNCIA"] --> B["Linhas"]
+    A --> C["Áreas"]
 
-# Dados
-meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun']
-vendas = [100, 120, 90, 150, 180, 160]
+    B --> B1["Uma ou mais séries<br/>Evolução exata"]
+    C --> C1["Uma ou mais séries<br/>Volume acumulado"]
 
-# Gráfico de linhas
-plt.figure(figsize=(10, 6))
-plt.plot(meses, vendas, marker='o', linestyle='-', color='blue', linewidth=2, markersize=8)
-
-plt.title('Vendas Mensais – 2025', fontsize=14, fontweight='bold')
-plt.xlabel('Mês')
-plt.ylabel('Vendas (unidades)')
-plt.grid(True, linestyle='--', alpha=0.7)
-
-# Valores sobre os pontos
-for i, v in enumerate(vendas):
-    plt.text(i, v + 5, str(v), ha='center', fontweight='bold')
-
-plt.tight_layout()
-plt.show()
-```
-
-### Parâmetros importantes:
-
-| **Parâmetro** | **O que faz** |
-| --- | --- |
-| `marker` | Formato do ponto (o = círculo, ^ = triângulo, s = quadrado) |
-| `linestyle` | Estilo da linha (- = sólida, -- = tracejada, : = pontilhada) |
-| `linewidth` | Espessura da linha |
-| `markersize` | Tamanho dos pontos |
-</details>
-
-<details>
-<summary>**🐍 Código Python — Gráfico de Linhas com Duas Séries**</summary>
-
-```python
-import matplotlib.pyplot as plt
-
-# Dados
-meses = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun']
-vendas_2024 = [90, 95, 80, 110, 130, 120]
-vendas_2025 = [100, 120, 90, 150, 180, 160]
-
-# Gráfico
-plt.figure(figsize=(10, 6))
-plt.plot(meses, vendas_2024, marker='s', linestyle='--', color='orange', linewidth=2, markersize=8, label='2024')
-plt.plot(meses, vendas_2025, marker='o', linestyle='-', color='blue', linewidth=2, markersize=8, label='2025')
-
-plt.title('Vendas Mensais – 2024 vs 2025', fontsize=14, fontweight='bold')
-plt.xlabel('Mês')
-plt.ylabel('Vendas (unidades)')
-plt.legend()
-plt.grid(True, linestyle='--', alpha=0.7)
-plt.tight_layout()
-plt.show()
+    style A fill:#333,color:#fff,stroke:#333,stroke-width:2px
+    style B fill:#cfe2ff,stroke:#0d6efd,stroke-width:2px
+    style C fill:#d4edda,stroke:#28a745,stroke-width:2px
 ```
 </details>
 
+### Gráfico de Linhas
+
+### O que é?
+
+> Um **gráfico de linhas** é um gráfico de tendência em que cada ponto representa um valor num instante de tempo, e os pontos são ligados por segmentos de reta, formando uma linha que mostra a evolução da variável.
+
+&emsp;&emsp;&emsp;O gráfico de linhas é o gráfico de tendência mais comum e o mais intuitivo. A lógica é simples: o eixo X é o tempo; o eixo Y é a variável. Cada ponto é um valor num momento específico. A linha que os une mostra a evolução.
+
+### Quando usar?
+
+- Quando queres mostrar a **evolução de uma variável** ao longo do tempo
+- Quando queres **comparar várias séries** no mesmo gráfico
+- Quando o tempo é **contínuo** (meses, anos, dias)
+- Quando queres **detetar tendências** (crescimento, declínio, estagnação)
+
+### Exemplo visual
+
 <details>
-<summary>**📊 Código R — Gráfico de Linhas**</summary>
+<summary>📊 Gráfico de Linhas — Vendas Mensais em 2024</summary>
 
-```r
-library(ggplot2)
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); max-width: 750px; margin: 1rem auto; font-family: 'Segoe UI', system-ui, sans-serif;">
 
-# Dados
-dados <- data.frame(
-  Mes = c('Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'),
-  Vendas = c(100, 120, 90, 150, 180, 160)
-)
+  <div style="color: #fbbf24; font-weight: 700; font-size: 0.9rem; text-align: center; margin-bottom: 1.5rem;">Vendas Mensais em 2024 (milhares €)</div>
 
-# Gráfico de linhas
-ggplot(dados, aes(x = Mes, y = Vendas, group = 1)) +
-  geom_line(color = "blue", size = 1.2) +
-  geom_point(color = "blue", size = 3) +
-  geom_text(aes(label = Vendas), vjust = -0.5, fontface = "bold") +
-  labs(title = "Vendas Mensais – 2025",
-       x = "Mês",
-       y = "Vendas (unidades)") +
-  theme_minimal() +
-  theme(plot.title = element_text(hjust = 0.5, face = "bold"))
-```
+  <div style="position: relative; height: 200px; padding: 0 1rem; border-bottom: 2px solid #4b5563; border-left: 2px solid #4b5563;">
 
-### Parâmetros importantes:
+    <div style="position: absolute; left: 0; right: 0; top: 25%; border-top: 1px dashed rgba(255,255,255,0.05);"></div>
+    <div style="position: absolute; left: 0; right: 0; top: 50%; border-top: 1px dashed rgba(255,255,255,0.05);"></div>
+    <div style="position: absolute; left: 0; right: 0; top: 75%; border-top: 1px dashed rgba(255,255,255,0.05);"></div>
 
-| **Parâmetro** | **O que faz** |
-| --- | --- |
-| `geom_line()` | Desenha a linha |
-| `geom_point()` | Desenha os pontos |
-| `group = 1` | Agrupa os dados em uma única linha (essencial!) |
+    <div style="position: absolute; left: 5%; top: 80%; width: 8px; height: 8px; background: #60a5fa; border-radius: 50%; transform: translate(-50%, -50%);"></div>
+    <div style="position: absolute; left: 14%; top: 70%; width: 8px; height: 8px; background: #60a5fa; border-radius: 50%; transform: translate(-50%, -50%);"></div>
+    <div style="position: absolute; left: 23%; top: 65%; width: 8px; height: 8px; background: #60a5fa; border-radius: 50%; transform: translate(-50%, -50%);"></div>
+    <div style="position: absolute; left: 32%; top: 50%; width: 8px; height: 8px; background: #60a5fa; border-radius: 50%; transform: translate(-50%, -50%);"></div>
+    <div style="position: absolute; left: 41%; top: 35%; width: 8px; height: 8px; background: #60a5fa; border-radius: 50%; transform: translate(-50%, -50%);"></div>
+    <div style="position: absolute; left: 50%; top: 25%; width: 8px; height: 8px; background: #60a5fa; border-radius: 50%; transform: translate(-50%, -50%);"></div>
+    <div style="position: absolute; left: 59%; top: 18%; width: 8px; height: 8px; background: #60a5fa; border-radius: 50%; transform: translate(-50%, -50%);"></div>
+    <div style="position: absolute; left: 68%; top: 12%; width: 8px; height: 8px; background: #60a5fa; border-radius: 50%; transform: translate(-50%, -50%);"></div>
+    <div style="position: absolute; left: 77%; top: 8%; width: 8px; height: 8px; background: #60a5fa; border-radius: 50%; transform: translate(-50%, -50%);"></div>
+    <div style="position: absolute; left: 86%; top: 3%; width: 8px; height: 8px; background: #60a5fa; border-radius: 50%; transform: translate(-50%, -50%);"></div>
+
+    <svg style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" viewBox="0 0 100 100" preserveAspectRatio="none">
+      <polyline points="5,80 14,70 23,65 32,50 41,35 50,25 59,18 68,12 77,8 86,3" fill="none" stroke="#60a5fa" stroke-width="0.5" vector-effect="non-scaling-stroke"/>
+    </svg>
+
+  </div>
+
+  <div style="display: flex; justify-content: space-between; padding: 0.3rem 1rem 0; color: #6b7280; font-size: 0.55rem;">
+    <span>Jan</span><span>Fev</span><span>Mar</span><span>Abr</span><span>Mai</span><span>Jun</span><span>Jul</span><span>Ago</span><span>Set</span><span>Out</span>
+  </div>
+
+</div>
+
 </details>
 
+**Interpretação:** As vendas crescem de forma consistente ao longo do ano. Começam em cerca de 40 mil € em janeiro e terminam em cerca de 150 mil € em outubro. A tendência é claramente positiva.
+
+
+### Gráfico de Áreas
+
+### O que é?
+
+> Um **gráfico de áreas** é uma variante do gráfico de linhas em que a área sob a linha é preenchida com cor, dando ênfase ao **volume acumulado** ao longo do tempo.
+
+&emsp;&emsp;&emsp;O gráfico de áreas é como um gráfico de linhas com preenchimento. A linha continua a mostrar a evolução, mas a área colorida dá uma sensação de volume. É especialmente útil quando queres mostrar a **magnitude** da variável, não apenas a sua direção.
+
+### Quando usar?
+
+- Quando queres enfatizar o **volume** ao longo do tempo
+- Quando tens **uma única série** (ou séries empilhadas)
+- Quando queres um visual **mais apelativo**
+- Quando o espaço é limitado
+
+### Exemplo visual
+
 <details>
-<summary>📊 Código R — Gráfico de Linhas com Duas Séries</summary>
+<summary>📊 Gráfico de Áreas — Vendas Mensais em 2024</summary>
 
-```r
-library(ggplot2)
-library(tidyr)
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); max-width: 750px; margin: 1rem auto; font-family: 'Segoe UI', system-ui, sans-serif;">
 
-# Dados
-dados <- data.frame(
-  Mes = c('Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'),
-  Vendas_2024 = c(90, 95, 80, 110, 130, 120),
-  Vendas_2025 = c(100, 120, 90, 150, 180, 160)
-)
+  <div style="color: #fbbf24; font-weight: 700; font-size: 0.9rem; text-align: center; margin-bottom: 1.5rem;">Vendas Mensais em 2024 (milhares €)</div>
 
-# Formato longo
-dados_long <- pivot_longer(dados, cols = c('Vendas_2024', 'Vendas_2025'),
-                           names_to = "Ano", values_to = "Vendas")
+  <div style="position: relative; height: 200px; padding: 0 1rem; border-bottom: 2px solid #4b5563; border-left: 2px solid #4b5563;">
 
-# Gráfico
-ggplot(dados_long, aes(x = Mes, y = Vendas, color = Ano, group = Ano)) +
-  geom_line(size = 1.2) +
-  geom_point(size = 3) +
-  scale_color_manual(values = c("Vendas_2024" = "orange", "Vendas_2025" = "blue")) +
-  labs(title = "Vendas Mensais – 2024 vs 2025",
-       x = "Mês",
-       y = "Vendas (unidades)") +
-  theme_minimal() +
-  theme(plot.title = element_text(hjust = 0.5, face = "bold"))
-```
+    <div style="position: absolute; left: 0; right: 0; top: 25%; border-top: 1px dashed rgba(255,255,255,0.05);"></div>
+    <div style="position: absolute; left: 0; right: 0; top: 50%; border-top: 1px dashed rgba(255,255,255,0.05);"></div>
+    <div style="position: absolute; left: 0; right: 0; top: 75%; border-top: 1px dashed rgba(255,255,255,0.05);"></div>
+
+    <div style="position: absolute; bottom: 0; left: 5%; width: 81%; height: 97%; background: linear-gradient(to top, rgba(96,165,250,0.15), rgba(96,165,250,0.3)); clip-path: polygon(0% 100%, 0% 80%, 11% 70%, 22% 65%, 33% 50%, 44% 35%, 55% 25%, 66% 18%, 77% 12%, 88% 8%, 100% 3%, 100% 100%);"></div>
+
+    <div style="position: absolute; left: 5%; top: 80%; width: 8px; height: 8px; background: #60a5fa; border-radius: 50%; transform: translate(-50%, -50%);"></div>
+    <div style="position: absolute; left: 14%; top: 70%; width: 8px; height: 8px; background: #60a5fa; border-radius: 50%; transform: translate(-50%, -50%);"></div>
+    <div style="position: absolute; left: 23%; top: 65%; width: 8px; height: 8px; background: #60a5fa; border-radius: 50%; transform: translate(-50%, -50%);"></div>
+    <div style="position: absolute; left: 32%; top: 50%; width: 8px; height: 8px; background: #60a5fa; border-radius: 50%; transform: translate(-50%, -50%);"></div>
+    <div style="position: absolute; left: 41%; top: 35%; width: 8px; height: 8px; background: #60a5fa; border-radius: 50%; transform: translate(-50%, -50%);"></div>
+    <div style="position: absolute; left: 50%; top: 25%; width: 8px; height: 8px; background: #60a5fa; border-radius: 50%; transform: translate(-50%, -50%);"></div>
+    <div style="position: absolute; left: 59%; top: 18%; width: 8px; height: 8px; background: #60a5fa; border-radius: 50%; transform: translate(-50%, -50%);"></div>
+    <div style="position: absolute; left: 68%; top: 12%; width: 8px; height: 8px; background: #60a5fa; border-radius: 50%; transform: translate(-50%, -50%);"></div>
+    <div style="position: absolute; left: 77%; top: 8%; width: 8px; height: 8px; background: #60a5fa; border-radius: 50%; transform: translate(-50%, -50%);"></div>
+    <div style="position: absolute; left: 86%; top: 3%; width: 8px; height: 8px; background: #60a5fa; border-radius: 50%; transform: translate(-50%, -50%);"></div>
+
+  </div>
+
+  <div style="display: flex; justify-content: space-between; padding: 0.3rem 1rem 0; color: #6b7280; font-size: 0.55rem;">
+    <span>Jan</span><span>Fev</span><span>Mar</span><span>Abr</span><span>Mai</span><span>Jun</span><span>Jul</span><span>Ago</span><span>Set</span><span>Out</span>
+  </div>
+
+</div>
+
 </details>
 
-## 4. 📊 Representação 2: Gráfico de Dispersão (Scatter Plot)
+**Interpretação:** A área colorida dá uma sensação de volume acumulado. As vendas crescem de forma consistente, e a área sob a linha representa o total acumulado ao longo do tempo. É a mesma informação do gráfico de linhas, mas com mais ênfase na magnitude.
 
-### 4.1 O que é o Gráfico de Dispersão?
 
-É um gráfico que mostra a **relação** entre **DUAS variáveis numéricas**.
+### Gráfico de Linhas Múltiplas
 
-**Características:**
-- Eixo X = variável independente (ex: horas de estudo)
-- Eixo Y = variável dependente (ex: nota)
-- Cada observação = **um ponto** no plano cartesiano
-- **NÃO** se unem os pontos com linhas!
+> Um **gráfico de linhas múltiplas** mostra **duas ou mais séries** no mesmo gráfico, permitindo comparar a evolução de várias variáveis ao longo do mesmo período de tempo.
 
-### 4.2 Quando usar Gráfico de Dispersão?
+&emsp;&emsp;&emsp;O gráfico de linhas múltiplas é uma das ferramentas mais poderosas da estatística descritiva. Permite ver, num único olhar, como diferentes grupos evoluem em paralelo. Cada linha tem uma cor diferente, e a legenda identifica cada série.
 
-| **Situação** | **Exemplo** |
-| --- | --- |
-| Quer ver se **X influencia Y** | Horas de estudo → nota |
-| Quer ver a **direção** da relação | Positiva (sobe junto) ou negativa (um sobe, outro desce) |
-| Quer ver a **força** da relação | Pontos compactos (forte) ou espalhados (fraca) |
-| Quer ver a **forma** da relação | Linear ou não-linear |
+### Quando usar?
 
-### 4.3 Quando NÃO usar Gráfico de Dispersão?
+- Quando queres **comparar a evolução** de várias variáveis
+- Quando tens **poucas séries** (idealmente até 5)
+- Quando as séries têm a **mesma unidade** de medida
+- Quando queres **detetar divergências** ou convergências
 
-| **Situação** | **Motivo** | **Alternativa** |
-| --- | --- | --- |
-| Tempo no eixo X | Dispersão não mostra evolução temporal | **Linhas** (Grupo 4) |
-| Muitos pontos (> 1000) | Fica poluído (overplotting) | **Gráfico de densidade** ou **boxplot** |
-| Variáveis são **qualitativas** | Dispersão exige números | **Barras Agrupadas** (Grupo 1) |
-
-### 4.4 Interpretação do Gráfico de Dispersão
-
-O gráfico de dispersão revela **3 características** da relação:
-
-```text
-1. DIREÇÃO
-   Positiva: X sobe, Y sobe        Negativa: X sobe, Y desce
-        Y                               Y
-        │       ●    ●                   │   ●
-        │     ●   ●                      │ ●  ●
-        │   ●      ●                     │●
-        └────────── X                    └────────── X
-
-2. FORÇA
-   Forte (pontos compactos)      Fraca (pontos espalhados)
-        Y                               Y
-        │  ●●●●                          │  ● ●
-        │ ●●●●●                          │ ●   ●
-        │●●●●●                           │●    ●
-        └────────── X                    └────────── X
-
-3. FORMA
-   Linear: linha reta            Não-linear: curva
-        Y                               Y
-        │   ●                            │    ●
-        │  ● ●                           │   ●
-        │ ●   ●                          │  ●
-        │●     ●                         │ ●
-        └────────── X                    └────────── X
-```
-
-### 4.5 Exemplo Visual – Gráfico de Dispersão
-
-**Dados:** Horas de estudo e nota de 10 alunos
-
-| Horas | Nota |
-| ---- | ---- |
-| 1 | 4 |
-| 2 | 5 |
-| 3 | 6 |
-| 4 | 6 |
-| 5 | 7 |
-| 6 | 8 |
-| 7 | 8 |
-| 8 | 9 |
-| 9 | 9 |
-| 10 | 10 |
-
-**Dispersão:**
-
-```text
-Nota
-  │
-10 ┼                              ●
-  │
- 9 ┼                         ●    ●
-  │
- 8 ┼                    ●    ●
-  │
- 7 ┼               ●
-  │
- 6 ┼          ●    ●
-  │
- 5 ┼     ●
-  │
- 4 ┼  ●
-  │
- 0 ┼────●────●────●────●────●────●────●────●────●────●────
-      1    2    3    4    5    6    7    8    9    10
-                          Horas de estudo
-```
-
-**Interpretação:**
-- **Direção:** **Positiva** — quem estuda mais, tira nota mais alta.
-- **Força:** **Forte** — os pontos estão compactos (pouca dispersão).
-- **Forma:** **Linear** — os pontos seguem uma linha reta.
-
-### 4.6 Correlação de Pearson (r)
-
-Além da visualização, a estatística **correlação de Pearson (r)** quantifica a força da relação:
-
-| **Valor de r** | **Interpretação** |
-| --- | --- |
-| r = +1 | Correlação positiva perfeita |
-| r = +0,8 | Correlação positiva forte |
-| r = +0,5 | Correlação positiva moderada |
-| r = 0 | Nenhuma correlação |
-| r = -0,5 | Correlação negativa moderada |
-| r = -0,8 | Correlação negativa forte |
-| r = -1 | Correlação negativa perfeita |
+### Exemplo visual
 
 <details>
-<summary>🐍 Código Python — Gráfico de Dispersão</summary>
+<summary>📊 Gráfico de Linhas Múltiplas — Vendas por Produto</summary>
 
-```python
-import matplotlib.pyplot as plt
-import numpy as np
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); max-width: 750px; margin: 1rem auto; font-family: 'Segoe UI', system-ui, sans-serif;">
 
-# Dados
-horas = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-notas = [4, 5, 6, 6, 7, 8, 8, 9, 9, 10]
+  <div style="color: #fbbf24; font-weight: 700; font-size: 0.9rem; text-align: center; margin-bottom: 1.5rem;">Vendas por Produto em 2024 (milhares €)</div>
 
-# Gráfico de dispersão
-plt.figure(figsize=(8, 6))
-plt.scatter(horas, notas, color='blue', s=100, alpha=0.7, edgecolor='black')
+  <div style="position: relative; height: 200px; padding: 0 1rem; border-bottom: 2px solid #4b5563; border-left: 2px solid #4b5563;">
 
-plt.title('Relação: Horas de Estudo vs Nota', fontsize=14, fontweight='bold')
-plt.xlabel('Horas de Estudo')
-plt.ylabel('Nota')
-plt.grid(True, linestyle='--', alpha=0.7)
+    <svg style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" viewBox="0 0 100 100" preserveAspectRatio="none">
+      <polyline points="5,80 14,70 23,65 32,50 41,35 50,25 59,18 68,12 77,8 86,3" fill="none" stroke="#60a5fa" stroke-width="0.5" vector-effect="non-scaling-stroke"/>
+      <polyline points="5,85 14,80 23,75 32,68 41,60 50,52 59,45 68,38 77,30 86,22" fill="none" stroke="#6ee7b7" stroke-width="0.5" vector-effect="non-scaling-stroke"/>
+      <polyline points="5,90 14,87 23,84 32,80 41,76 50,72 59,68 68,64 77,60 86,56" fill="none" stroke="#fcd34d" stroke-width="0.5" vector-effect="non-scaling-stroke"/>
+    </svg>
 
-# Adicionar linha de tendência (opcional)
-z = np.polyfit(horas, notas, 1)
-p = np.poly1d(z)
-plt.plot(horas, p(horas), color='red', linestyle='--', linewidth=2, label='Tendência')
+  </div>
 
-plt.legend()
-plt.tight_layout()
-plt.show()
-```
+  <div style="display: flex; justify-content: space-between; padding: 0.3rem 1rem 0; color: #6b7280; font-size: 0.55rem;">
+    <span>Jan</span><span>Fev</span><span>Mar</span><span>Abr</span><span>Mai</span><span>Jun</span><span>Jul</span><span>Ago</span><span>Set</span><span>Out</span>
+  </div>
 
-### Parâmetros importantes:
+  <div style="display: flex; justify-content: center; gap: 1.5rem; margin-top: 1rem;">
+    <div style="display: flex; align-items: center; gap: 0.4rem;">
+      <div style="width: 14px; height: 14px; background: #60a5fa; border-radius: 3px;"></div>
+      <span style="color: #93c5fd; font-size: 0.65rem;">Produto A</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 0.4rem;">
+      <div style="width: 14px; height: 14px; background: #6ee7b7; border-radius: 3px;"></div>
+      <span style="color: #6ee7b7; font-size: 0.65rem;">Produto B</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 0.4rem;">
+      <div style="width: 14px; height: 14px; background: #fcd34d; border-radius: 3px;"></div>
+      <span style="color: #fcd34d; font-size: 0.65rem;">Produto C</span>
+    </div>
+  </div>
 
-| **Parâmetro** | **O que faz** |
-| --- | --- |
-| `s` | Tamanho dos pontos |
-| `alpha` | Transparência (0 a 1) |
-| `edgecolor` | Cor do contorno dos pontos |
+</div>
+
 </details>
 
+**Interpretação:** O Produto A cresce mais rapidamente e termina com o valor mais alto. O Produto B cresce de forma mais moderada. O Produto C cresce lentamente e mantém-se o mais baixo dos três. As três linhas permitem comparar as trajetórias num único olhar.
+
+
+### Gráfico de Áreas Empilhadas
+
+
+> Um **gráfico de áreas empilhadas** mostra várias séries empilhadas umas sobre as outras, de modo que a altura total representa a soma de todas as séries num dado momento.
+
+&emsp;&emsp;&emsp;O gráfico de áreas empilhadas é útil quando queres mostrar não só a evolução de cada série, mas também a **evolução do total** e a **composição do total** ao longo do tempo. Cada área representa uma categoria, e a altura total representa a soma de todas.
+
+### Quando usar?
+
+- Quando queres mostrar **evolução do total** e **composição**
+- Quando tens **poucas categorias** (até 5)
+- Quando as categorias têm a **mesma unidade**
+- Quando queres **detetar mudanças na composição** ao longo do tempo
+
+### Exemplo visual
+
 <details>
-<summary>📊 Código R — Gráfico de Dispersão</summary>
+<summary>📊 Gráfico de Áreas Empilhadas — Vendas por Região</summary>
 
-```r
-library(ggplot2)
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); max-width: 750px; margin: 1rem auto; font-family: 'Segoe UI', system-ui, sans-serif;">
 
-# Dados
-dados <- data.frame(
-  Horas = c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10),
-  Nota = c(4, 5, 6, 6, 7, 8, 8, 9, 9, 10)
-)
+  <div style="color: #fbbf24; font-weight: 700; font-size: 0.9rem; text-align: center; margin-bottom: 1.5rem;">Vendas por Região em 2024 (milhares €)</div>
 
-# Gráfico de dispersão
-ggplot(dados, aes(x = Horas, y = Nota)) +
-  geom_point(color = "blue", size = 4, alpha = 0.7) +
-  geom_smooth(method = "lm", se = FALSE, color = "red", linetype = "dashed") +  # Linha de tendência
-  labs(title = "Relação: Horas de Estudo vs Nota",
-       x = "Horas de Estudo",
-       y = "Nota") +
-  theme_minimal() +
-  theme(plot.title = element_text(hjust = 0.5, face = "bold"))
-```
+  <div style="position: relative; height: 200px; padding: 0 1rem; border-bottom: 2px solid #4b5563; border-left: 2px solid #4b5563;">
 
-### Parâmetros importantes:
+    <div style="position: absolute; bottom: 0; left: 5%; width: 81%; height: 100%; background: #fcd34d; opacity: 0.6; clip-path: polygon(0% 100%, 0% 40%, 11% 38%, 22% 36%, 33% 33%, 44% 30%, 55% 27%, 66% 24%, 77% 21%, 88% 18%, 100% 15%, 100% 100%);"></div>
+    <div style="position: absolute; bottom: 0; left: 5%; width: 81%; height: 100%; background: #6ee7b7; opacity: 0.6; clip-path: polygon(0% 100%, 0% 20%, 11% 18%, 22% 16%, 33% 13%, 44% 10%, 55% 8%, 66% 6%, 77% 4%, 88% 2%, 100% 0%, 100% 100%);"></div>
+    <div style="position: absolute; bottom: 0; left: 5%; width: 81%; height: 100%; background: #60a5fa; opacity: 0.6; clip-path: polygon(0% 100%, 0% 0%, 11% 0%, 22% 0%, 33% 0%, 44% 0%, 55% 0%, 66% 0%, 77% 0%, 88% 0%, 100% 0%, 100% 100%);"></div>
 
-| **Parâmetro** | **O que faz** |
-| --- | --- |
-| `geom_smooth(method = "lm")` | Adiciona linha de tendência linear |
-| `se = FALSE` | Remove a faixa de confiança |
-| `size` | Tamanho dos pontos |
+  </div>
+
+  <div style="display: flex; justify-content: space-between; padding: 0.3rem 1rem 0; color: #6b7280; font-size: 0.55rem;">
+    <span>Jan</span><span>Fev</span><span>Mar</span><span>Abr</span><span>Mai</span><span>Jun</span><span>Jul</span><span>Ago</span><span>Set</span><span>Out</span>
+  </div>
+
+  <div style="display: flex; justify-content: center; gap: 1.5rem; margin-top: 1rem;">
+    <div style="display: flex; align-items: center; gap: 0.4rem;">
+      <div style="width: 14px; height: 14px; background: #60a5fa; border-radius: 3px;"></div>
+      <span style="color: #93c5fd; font-size: 0.65rem;">Norte</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 0.4rem;">
+      <div style="width: 14px; height: 14px; background: #6ee7b7; border-radius: 3px;"></div>
+      <span style="color: #6ee7b7; font-size: 0.65rem;">Sul</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 0.4rem;">
+      <div style="width: 14px; height: 14px; background: #fcd34d; border-radius: 3px;"></div>
+      <span style="color: #fcd34d; font-size: 0.65rem;">Centro</span>
+    </div>
+  </div>
+
+</div>
+
 </details>
 
-## 5. 📋 Resumo Comparativo: Linhas x Dispersão
+**Interpretação:** A altura total das áreas empilhadas representa as vendas totais. As três regiões contribuem para o total, e a composição mantém-se relativamente estável ao longo do ano. A região Norte é a que mais contribui, seguida do Sul e do Centro.
 
-| **Característica** | **Gráfico de Linhas** | **Gráfico de Dispersão** |
-| --- | --- | --- |
-| **Eixo X** | **TEMPO** (dias, meses, anos) | Qualquer variável numérica (ex: horas de estudo) |
-| **Objetivo** | Mostrar **evolução/tendência** | Mostrar **relação entre duas variáveis** |
-| **Conexão** | Pontos **unidos** por linhas | Pontos **NÃO** unidos |
-| **Pergunta** | "Está subindo ou descendo?" | "Uma influencia a outra?" |
-| **Exemplo** | Vendas por mês | Horas de estudo vs nota |
 
-### Quando escolher cada um?
+### Linhas vs. Áreas 
 
-| **Situação** | **Escolha** |
-| --- | --- |
-| Tempo no eixo X | **Linhas** |
-| Relação entre duas variáveis sem tempo | **Dispersão** |
-| Comparar duas séries temporais | **Linhas** (múltiplas linhas) |
-| Ver força e direção da relação | **Dispersão** |
-| Mostrar tendência de longo prazo | **Linhas** |
+| Critério | Linhas | Áreas |
+|----------|--------|-------|
+| **Foco** | Evolução exata | Volume acumulado |
+| **Séries** | Muitas (até 5) | Poucas (até 3) |
+| **Comparação entre séries** | Excelente | Difícil (sobreposição) |
+| **Estética** | Simples e clara | Mais apelativa |
+| **Precisão** | Alta | Média |
+| **Uso comum** | Análise, relatórios | Apresentações, dashboards |
 
-## 📝 Frase de Fixação
+**Regra prática:** Se queres comparar várias séries com precisão → **linhas**. Se queres enfatizar o volume de uma ou duas séries → **áreas**.
 
-> *"Linhas para tempo, dispersão para relação entre duas medidas."*
 
-## 📝 Exercícios
+## Exemplo Prático — Do Dado ao Gráfico
+
+&emsp;&emsp;&emsp;Vamos construir um gráfico de tendência passo a passo.
+
+**Dados:** Temperatura média mensal em Lisboa ao longo de 2024.
+
+| Mês | Temperatura (°C) |
+|-----|-----------------|
+| Jan | 12 |
+| Fev | 13 |
+| Mar | 15 |
+| Abr | 17 |
+| Mai | 20 |
+| Jun | 24 |
+| Jul | 27 |
+| Ago | 28 |
+| Set | 25 |
+| Out | 21 |
+| Nov | 16 |
+| Dez | 13 |
+
+**Passo 1 — Escolher o tipo de gráfico**
+
+Temos uma série única ao longo do tempo. **Linhas** é a escolha ideal.
+
+**Passo 2 — Definir os eixos**
+
+- Eixo X: Meses (Jan a Dez)
+- Eixo Y: Temperatura (0 a 30°C)
+
+**Passo 3 — Desenhar o gráfico**
 
 <details>
-<summary>📗 Exercício 1</summary>
+<summary>📊 Linhas — Temperatura Média Mensal em Lisboa</summary>
 
-**Enunciado:** Para cada situação abaixo, identifique se deve usar Linhas ou Dispersão:
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); max-width: 750px; margin: 1rem auto; font-family: 'Segoe UI', system-ui, sans-serif;">
 
-a) Vendas mensais de uma loja em 2025
+  <div style="color: #fbbf24; font-weight: 700; font-size: 0.9rem; text-align: center; margin-bottom: 1.5rem;">Temperatura Média Mensal em Lisboa (2024)</div>
 
-b) Relação entre temperatura e consumo de energia
+  <div style="position: relative; height: 200px; padding: 0 1rem; border-bottom: 2px solid #4b5563; border-left: 2px solid #4b5563;">
 
-c) Comparar o preço de um produto nos anos 2020-2025
+    <div style="position: absolute; left: 0; right: 0; top: 25%; border-top: 1px dashed rgba(255,255,255,0.05);"></div>
+    <div style="position: absolute; left: 0; right: 0; top: 50%; border-top: 1px dashed rgba(255,255,255,0.05);"></div>
+    <div style="position: absolute; left: 0; right: 0; top: 75%; border-top: 1px dashed rgba(255,255,255,0.05);"></div>
 
-d) Relação entre horas de sono e produtividade no trabalho
+    <svg style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" viewBox="0 0 100 100" preserveAspectRatio="none">
+      <polyline points="5,60 12,57 19,50 26,43 33,33 40,20 47,10 54,7 61,17 68,27 75,43 82,57" fill="none" stroke="#f87171" stroke-width="0.5" vector-effect="non-scaling-stroke"/>
+    </svg>
 
-e) Evolução da população brasileira de 2000 a 2030
+  </div>
 
-f) Relação entre investimento em marketing e vendas
+  <div style="display: flex; justify-content: space-between; padding: 0.3rem 1rem 0; color: #6b7280; font-size: 0.55rem;">
+    <span>Jan</span><span>Fev</span><span>Mar</span><span>Abr</span><span>Mai</span><span>Jun</span><span>Jul</span><span>Ago</span><span>Set</span><span>Out</span><span>Nov</span><span>Dez</span>
+  </div>
+
+</div>
+
+</details>
+
+**Passo 4 — Interpretar**
+
+A temperatura em Lisboa segue um padrão sazonal claro: começa baixa em janeiro (12°C), sobe gradualmente até agosto (28°C), e desce novamente até dezembro (13°C). O pico é em agosto e o vale é em janeiro. Há uma clara sazonalidade.
+
+
+## Exercícios
+
+<details>
+<summary>📗 Exercício 1 — Identificar o tipo de gráfico de tendência (Fácil)</summary>
+
+**Enunciado:** Para cada situação, indica se usarias linhas, áreas ou áreas empilhadas:
+
+a) Mostrar a evolução da população de um país ao longo de 50 anos
+
+b) Mostrar a evolução das vendas de 3 produtos ao longo de 12 meses
+
+c) Mostrar a evolução da composição do PIB por setor ao longo de 10 anos
+
+d) Mostrar a evolução da temperatura média global ao longo de 100 anos
+
+e) Mostrar a evolução do número de habitantes por região ao longo de 20 anos
 
 <details>
 <summary>💡 Ver resposta</summary>
 
-**Resposta:**
+a) **Linhas** — série única, evolução de longo prazo
 
-a) **Linhas** (tempo no eixo X)
+b) **Linhas múltiplas** — comparação de 3 séries ao longo do tempo
 
-b) **Dispersão** (relação entre duas variáveis)
+c) **Áreas empilhadas** — evolução da composição do total
 
-c) **Linhas** (evolução temporal)
+d) **Linhas** — série única, evolução de longo prazo
 
-d) **Dispersão** (relação entre duas variáveis)
-
-e) **Linhas** (tempo no eixo X)
-
-f) **Dispersão** (relação entre duas variáveis)
+e) **Áreas empilhadas** — evolução da composição por região
 
 </details>
 </details>
 
 <details>
-<summary>📗 Exercício 2</summary>
+<summary>📗 Exercício 2 — Detetar erros (Médio)</summary>
 
-**Enunciado:** O que cada elemento do gráfico de linhas revela sobre os dados?
-
-a) Inclinação da linha
-
-b) Reta horizontal
-
-c) Picos e vales
-
-d) Linhas múltiplas
+**Enunciado:** Observa o gráfico abaixo e identifica três erros de visualização.
 
 <details>
-<summary>💡 Ver resposta</summary>
+<summary>📊 Gráfico com erros</summary>
 
-**Resposta:**
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); max-width: 650px; margin: 1rem auto; font-family: 'Segoe UI', system-ui, sans-serif;">
 
-a) **Inclinação da linha** → Tendência: se sobe → crescente; se desce → decrescente
+  <div style="color: #fbbf24; font-weight: 700; font-size: 0.9rem; text-align: center; margin-bottom: 1.5rem;">Gráfico 1</div>
 
-b) **Reta horizontal** → Tendência estável (sem crescimento)
+  <div style="position: relative; height: 180px; padding: 0 1rem; border-bottom: 2px solid #4b5563; border-left: 2px solid #4b5563;">
 
-c) **Picos e vales** → Sazonalidade (ex: pico no verão, vale no inverno)
+    <svg style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" viewBox="0 0 100 100" preserveAspectRatio="none">
+      <polyline points="5,20 20,30 35,25 50,40 65,35 80,50" fill="none" stroke="#ff0000" stroke-width="0.6" vector-effect="non-scaling-stroke"/>
+      <polyline points="5,30 20,25 35,35 50,30 65,45 80,40" fill="none" stroke="#00ff00" stroke-width="0.6" vector-effect="non-scaling-stroke"/>
+      <polyline points="5,40 20,45 35,40 50,50 65,55 80,60" fill="none" stroke="#0000ff" stroke-width="0.6" vector-effect="non-scaling-stroke"/>
+    </svg>
 
-d) **Linhas múltiplas** → Comparação entre duas séries (ex: 2024 x 2025)
+  </div>
+
+</div>
 
 </details>
-</details>
-
-<details>
-<summary>📗 Exercício 3</summary>
-
-**Enunciado:** O gráfico de dispersão revela 3 características da relação entre duas variáveis. Quais são elas e o que cada uma significa?
 
 <details>
 <summary>💡 Ver resposta</summary>
 
-**Resposta:**
+1. **Título vago** — "Gráfico 1" não diz nada. Deveria ser "Vendas por Produto" ou similar.
 
-1. **DIREÇÃO:** Positiva (X sobe, Y sobe) ou Negativa (X sobe, Y desce)
+2. **Eixo Y truncado** — começa em 50, não em 0. Isto exagera as variações.
 
-2. **FORÇA:** Forte (pontos compactos) ou Fraca (pontos espalhados)
+3. **Cores sem significado** — vermelho, verde e azul não têm relação com os dados.
 
-3. **FORMA:** Linear (linha reta) ou Não-linear (curva)
+4. **Falta de legenda** — não sabemos o que cada linha representa.
 
-</details>
-</details>
+5. **Falta de rótulos nos eixos** — não sabemos o que o eixo Y representa.
 
-<details>
-<summary>📗 Exercício 4</summary>
-
-**Enunciado:** Qual a diferença fundamental entre o Gráfico de Linhas e o Gráfico de Dispersão?
-
-<details>
-<summary>💡 Ver resposta</summary>
-
-**Resposta:**
-
-A diferença fundamental é o **eixo X**:
-
-- **Gráfico de Linhas:** O eixo X é **TEMPO** (dias, meses, anos). Os pontos são **unidos** por linhas para mostrar evolução/tendência.
-
-- **Gráfico de Dispersão:** O eixo X é qualquer **variável numérica** (ex: horas de estudo). Os pontos **NÃO são unidos** para mostrar a relação entre duas variáveis.
+6. **Falta de fonte** — não sabemos de onde vêm os dados.
 
 </details>
 </details>
 
 <details>
-<summary>📗 Exercício 5</summary>
+<summary>📗 Exercício 3 — Escolher o gráfico certo (Médio)</summary>
 
-**Enunciado:** O que significa uma correlação de Pearson r = +0,9 entre horas de estudo e nota?
+**Enunciado:** Tens os seguintes dados: população de 5 países ao longo de 10 anos. Que gráfico de tendência usarias para mostrar:
+
+a) A evolução da população de cada país individualmente
+
+b) A evolução da população total dos 5 países
+
+c) A evolução da composição da população total por país
 
 <details>
 <summary>💡 Ver resposta</summary>
 
-**Resposta:**
+a) **Linhas múltiplas** — 5 linhas, uma por país
 
-Uma correlação de r = +0,9 significa uma **correlação positiva forte**. Isso indica que:
+b) **Linhas** — uma linha com a soma dos 5 países
 
-1. **Direção:** Positiva — quem estuda mais, tira notas mais altas.
-2. **Força:** Forte — os pontos estão muito compactos (pouca dispersão).
-3. **Forma:** Linear — os pontos seguem uma linha reta.
-
-Quanto mais próximo de +1, mais forte é a relação positiva.
+c) **Áreas empilhadas** — 5 áreas empilhadas, uma por país
 
 </details>
 </details>
 
-> *Linhas para tempo, dispersão para relação entre duas medidas.*
+<details>
+<summary>📗 Exercício 4 — Interpretar um gráfico (Médio)</summary>
+
+**Enunciado:** Observa o gráfico abaixo e responde:
+
+<details>
+<summary>📊 Gráfico — Evolução das Vendas</summary>
+
+<div style="background: #0a0f1e; padding: 1.5rem; border-radius: 16px; border: 1px solid rgba(255,255,255,0.08); max-width: 700px; margin: 1rem auto; font-family: 'Segoe UI', system-ui, sans-serif;">
+
+  <div style="color: #fbbf24; font-weight: 700; font-size: 0.9rem; text-align: center; margin-bottom: 1.5rem;">Evolução das Vendas (milhares €)</div>
+
+  <div style="position: relative; height: 180px; padding: 0 1rem; border-bottom: 2px solid #4b5563; border-left: 2px solid #4b5563;">
+
+    <svg style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;" viewBox="0 0 100 100" preserveAspectRatio="none">
+      <polyline points="5,75 18,65 31,70 44,50 57,40 70,30 83,15" fill="none" stroke="#60a5fa" stroke-width="0.6" vector-effect="non-scaling-stroke"/>
+      <polyline points="5,80 18,77 31,72 44,67 57,62 70,58 83,50" fill="none" stroke="#6ee7b7" stroke-width="0.6" vector-effect="non-scaling-stroke"/>
+    </svg>
+
+  </div>
+
+  <div style="display: flex; justify-content: space-between; padding: 0.3rem 1rem 0; color: #6b7280; font-size: 0.55rem;">
+    <span>2019</span><span>2020</span><span>2021</span><span>2022</span><span>2023</span><span>2024</span><span>2025</span>
+  </div>
+
+  <div style="display: flex; justify-content: center; gap: 1.5rem; margin-top: 1rem;">
+    <div style="display: flex; align-items: center; gap: 0.4rem;">
+      <div style="width: 14px; height: 14px; background: #60a5fa; border-radius: 3px;"></div>
+      <span style="color: #93c5fd; font-size: 0.65rem;">Empresa A</span>
+    </div>
+    <div style="display: flex; align-items: center; gap: 0.4rem;">
+      <div style="width: 14px; height: 14px; background: #6ee7b7; border-radius: 3px;"></div>
+      <span style="color: #6ee7b7; font-size: 0.65rem;">Empresa B</span>
+    </div>
+  </div>
+
+</div>
+
+</details>
+
+a) Qual é a empresa com maior crescimento?
+
+b) Qual é a empresa com maior valor em 2025?
+
+c) Em que ano a Empresa A ultrapassou a Empresa B?
+
+d) Que tipo de gráfico é este?
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+a) **Empresa A** — a linha sobe de forma mais acentuada
+
+b) **Empresa A** — termina com o valor mais alto
+
+c) **2022** — a partir de 2022, a linha da Empresa A fica acima da Empresa B
+
+d) **Gráfico de linhas múltiplas** — duas séries ao longo do tempo
+
+</details>
+</details>
+
+<details>
+<summary>📗 Exercício 5 — Construir um gráfico (Difícil)</summary>
+
+**Enunciado:** Tens os seguintes dados sobre a temperatura média mensal em Lisboa:
+
+| Mês | Temperatura (°C) |
+|-----|-----------------|
+| Jan | 12 |
+| Fev | 13 |
+| Mar | 15 |
+| Abr | 17 |
+| Mai | 20 |
+| Jun | 24 |
+| Jul | 27 |
+| Ago | 28 |
+| Set | 25 |
+| Out | 21 |
+| Nov | 16 |
+| Dez | 13 |
+
+a) Que tipo de gráfico de tendência usarias?
+
+b) Desenha o gráfico mentalmente (ou num papel) com todos os elementos da anatomia.
+
+c) Interpreta o gráfico.
+
+<details>
+<summary>💡 Ver resposta</summary>
+
+a) **Linhas** — série única ao longo do tempo
+
+b) O gráfico deve ter:
+- Título: "Temperatura Média Mensal em Lisboa (2024)"
+- Eixo X: Meses (Jan a Dez)
+- Eixo Y: Temperatura (0 a 30°C)
+- Linha a ligar os 12 pontos
+- Rótulos com os valores
+- Fonte dos dados
+
+c) A temperatura segue um padrão sazonal claro: começa baixa em janeiro (12°C), sobe gradualmente até agosto (28°C), e desce novamente até dezembro (13°C). O pico é em agosto e o vale é em janeiro.
+
+</details>
+</details>
+
+
+> **Em resumo:** os gráficos de tendência mostram como uma ou mais variáveis evoluem ao longo do tempo, respondendo à pergunta *"como mudou?"*. Os **gráficos de linhas** ligam pontos consecutivos e são ideais para mostrar evolução exata e comparar séries; os **gráficos de áreas** preenchem a área sob a linha e são ideais para enfatizar volume; os **gráficos de áreas empilhadas** mostram a evolução do total e da sua composição. Em todos, o eixo X é sempre o tempo, e a direção e a forma da linha contam a história. Um gráfico de tendência bem feito transforma uma tabela de números numa narrativa visual sobre a mudança.

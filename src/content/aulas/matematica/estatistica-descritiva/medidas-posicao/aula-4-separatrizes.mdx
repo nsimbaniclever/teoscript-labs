@@ -1,8 +1,8 @@
-# Separatrizes
+# <center>Separatrizes</center>
 
 ## Introdução
 
-&emsp;&emsp;&emsp;Nas aulas anteriores estudámos as três medidas de tendência central: a **média** (ponto de equilíbrio), a **mediana** (valor central) e a **moda** (valor mais frequente). Cada uma dá-nos **um único valor** que resume o conjunto de dados. Mas um único valor é insuficiente para descrever a **forma** de uma distribuição.<br>
+&emsp;&emsp;&emsp;As três medidas de tendência central — média (ponto de equilíbrio), mediana (valor central) e moda (valor mais frequente) — dão-nos cada uma um único valor que resume o conjunto de dados. Mas um único valor é insuficiente para descrever a forma de uma distribuição.<br>
 
 &emsp;&emsp;&emsp;Imagina dois conjuntos de dados com a **mesma média, mesma mediana e mesma moda**:
 
@@ -19,7 +19,7 @@ As três medidas de tendência central **não distinguem** estes conjuntos. Mas 
 
 &emsp;&emsp;&emsp;É precisamente aqui que entram as **separatrizes** — medidas que dividem os dados em **partes iguais** e revelam a **forma da distribuição**: onde estão os 25% mais baixos, os 10% mais altos, os 1% extremos, etc.
 
-## Conceito Básico
+## Tipos de Separatrizes
 
 &emsp;&emsp;&emsp;As **separatrizes** são valores que dividem um conjunto de dados ordenado em **partes iguais** (ou em proporções definidas). A mediana é a separatriz mais simples (divide em 2 partes). As restantes são generalizações:
 
@@ -31,7 +31,7 @@ As três medidas de tendência central **não distinguem** estes conjuntos. Mas 
 | **Percentis** | 100 partes | 99 | P1, P2, ..., P99 |
 
 <center><details>
-<summary>📊 Ver os tipos de separatrizes</summary>
+<summary>📊 Tipos de separatrizes</summary>
 <style>
 .r{font:14px system-ui;text-align:center}
 .r b{display:inline-block;padding:4px 10px;background:#333;color:#fff;border-radius:6px}
@@ -57,21 +57,19 @@ As três medidas de tendência central **não distinguem** estes conjuntos. Mas 
 #### Relação Fundamental
 
 $$
-Q_1 = P_{25} = D_{2{,}5}, \quad Q_2 = P_{50} = D_5 = \text{Mediana}, \quad Q_3 = P_{75} = D_{7{,}5}
+Q_1 = P_{25} = D_{2{,}5}, 
+\quad Q_2 = P_{50} = D_5 = \text{Mediana}, 
+\quad Q_3 = P_{75} = D_{7{,}5}
 $$
 
-
-<hr>
-
-
-## 1. Quartis
+### 1. Quartis
 &emsp;&emsp;&emsp;Os **quartis** dividem os dados em **4 partes iguais**, cada uma com 25% dos dados. São os mais utilizados depois da mediana. Os quartis (Q₁, Q₂, Q₃) dividem os dados em 4 partes iguais (cada uma com 25%).<br>
 
 - **Q₁** --> Primeiro Quartil --> 25% dos dados estão abaixo deste valor 
 - **Q₂** --> Segundo Quartil --> 50% dos dados estão abaixo (= Mediana) 
 - **Q₃** --> Terceiro Quartil --> 75% dos dados estão abaixo <br><br>
 
-### Quartis para Dados Não Agrupados
+#### Quartis para Dados Não Agrupados
 &emsp;&emsp;&emsp;Quando os dados são brutos, sem organização, usamos o Rol e calculamos os quartis<br>
 
 **📐 Fórmula para Dados Não Agrupados**
@@ -95,52 +93,234 @@ $$
 <details>
 <summary>📌 Exemplo para Dados Não Agrupados</summary>
 
-**Problema:** Calcular os quartis das notas de 20 alunos:
+**Problema:** Considere o conjunto bruto, **das notas de 20 alunos**:
 
-```text
+13, 5, 20, 8, 2, 17, 11, 6, 14, 9, 4, 18, 7, 25, 10, 3, 16, 5, 12, 19
+
+Temos **20 valores** (n = 20).
+
+
+_🔹 Passo 1: Ordenar os dados_
+
+**Por quê?** Porque os quartis dependem da **posição** dos valores. Sem ordenar, não sabemos quem está no começo, no meio ou no fim.
+
+Ordenando do menor para o maior:
+
 Posição:  1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20
-Valor:    4   5   5   6   6   7   7   8   8   9  10  11  12  13  14  15  16  17  18  20
-```
+Valor:    2   3   4   5   5   6   7   8   9  10  11  12  13  14  16  17  18  19  20  25
 
-**Q1 — Posição:** <code>(1/4) × 21 = 5,25</code>
+***⚠️ Repare que o **15** não aparece; no lugar dele temos **16** na posição 15. Isso é normal, os dados são assim.***<br><br>
 
-Está entre a posição 5 (valor 6) e a posição 6 (valor 7).
 
-$$
-Q_1 = 6 + 0{,}25 \times (7 - 6) = 6 + 0{,}25 = \mathbf{6{,}25}
-$$
+ _🔹 Passo 2: Calcular Q2 (mediana)_
 
-**Q2 — Posição:** <code>(2/4) × 21 = 10,5</code>
+Como n = 20 é **par**, a mediana é a **média dos dois valores centrais**.
 
-Está entre a posição 10 (valor 9) e a posição 11 (valor 10).
+Posições centrais:
 
-$$
-Q_2 = \frac{9 + 10}{2} = \mathbf{9{,}5}
+Posições centrais:
+
+$$ 
+\frac{n}{2} = 10 \quad \text{e} \quad \frac{n}{2} + 1 = 11 
 $$
 
-**Q3 — Posição:** <code>(3/4) × 21 = 15,75</code>
+Valores:
 
-Está entre a posição 15 (valor 14) e a posição 16 (valor 15).
+- 10ª posição → **10**
+- 11ª posição → **11**
 
+Posições centrais:
+
+$$ 
+Q_1 = \frac{10 + 11}{2} = 10,5 
 $$
-Q_3 = 14 + 0{,}75 \times (15 - 14) = 14 + 0{,}75 = \mathbf{14{,}75}
+
+**Por quê?** Com 20 valores, não existe um único valor central; os dois do meio representam juntos o centro.<br><br>
+
+
+
+_🔹 Passo 3: Calcular Q1 (primeiro quartil)_
+
+Q1 é a mediana da **primeira metade** dos dados.
+
+**Primeira metade (posições 1 a 10):**
+
+2, 3, 4, 5, 5, 6, 7, 8, 9, 10
+
+Temos 10 valores (par), então pegamos os dois centrais: posições 5ª e 6ª dessa metade.
+
+Posição na metade:  1   2   3   4   5   6   7   8   9  10
+Valor:              2   3   4   5   5   6   7   8   9  10
+
+$$ 
+Q_2 = \frac{5 + 6}{2} = 5,5 
 $$
 
-✅ Os quartis são **Q1 = 6,25; Q2 = 9,5; Q3 = 14,75**.
+**Por quê?** Q1 deve deixar 25% dos dados abaixo dele. A mediana da primeira metade garante isso.<br><br>
 
-**📌 Visualização:**
+🔹 Passo 4: Calcular Q3 (terceiro quartil)
 
-```text
-          Q1=6,25        Q2=9,5         Q3=14,75
-             ↓              ↓               ↓
-[ 4  5  5  6  6 ] [ 7  7  8  8  9 ] [ 10 11 12 13 14 ] [ 15 16 17 18 20 ]
-└── 5 alunos ──┘  └── 5 alunos ──┘  └─── 5 alunos ───┘  └── 5 alunos ──┘
-```
+Q3 é a mediana da **segunda metade** dos dados.
 
-> **🔍 Nota:** Os cortes decimais (6,25 / 9,5 / 14,75) foram **calculados precisamente** para que cada grupo tenha 5 alunos. Os cortes caem **entre** valores, não em cima deles.
+**Segunda metade (posições 11 a 20):**
+
+11, 12, 13, 14, 16, 17, 18, 19, 20, 25
+
+Temos 10 valores (par), então pegamos os dois centrais: posições 5ª e 6ª dessa metade.
+
+Posição na metade:  1   2   3   4   5   6   7   8   9  10
+Valor:             11  12  13  14  16  17  18  19  20  25
+
+$$ 
+Q_3 = \frac{16 + 17}{2} = 16,5 
+$$
+
+**Por quê?** Q3 deve deixar 75% dos dados abaixo dele. A mediana da segunda metade garante isso.<br><br>
+
+
+**✅ Resultado final**
+
+- Q1 --> 5,5
+- Q2 (mediana) --> 10,5
+- Q3 --> 16,5
+
+
+**📌 Resumo do raciocínio**
+
+1. **Ordenar** os dados → passo obrigatório quando estão desordenados.
+2. Achar **Q2** = mediana geral (média dos dois centrais, pois n é par).
+3. Dividir em **duas metades** de 10 valores cada.
+4. Achar **Q1** = mediana da primeira metade.
+5. Achar **Q3** = mediana da segunda metade.
+
 </details>
 
-### Quartis para Dados Agrupados por Lista
+<details>
+<summary>📊 Exemplo dos Quartis para Dados Não Agrupados no Excel</summary>
+
+**Problema:** Calcular os quartis das notas de 10 alunos:
+
+| - | A |
+|---|---|
+| **1** | Notas |
+| **2** | 4 |
+| **3** | 5 |
+| **4** | 5 |
+| **5** | 6 |
+| **6** | 6 |
+| **7** | 7 |
+| **8** | 7 |
+| **9** | 8 |
+| **10** | 8 |
+
+**Passo 1 — Calcular cada quartil:**
+
+| Quartil | Fórmula (Português) | Resultado |
+|---------|---------------------|-----------|
+| Q1 | `=QUARTIL.INC(A2:A10;1)` | 5,25 |
+| Q2 | `=QUARTIL.INC(A2:A10;2)` | 6,5 |
+| Q3 | `=QUARTIL.INC(A2:A10;3)` | 7,75 |
+
+✅ Os quartis são **Q1 = 5,25; Q2 = 6,5; Q3 = 7,75**.
+
+> **⚠️ Atenção:** A função `QUARTIL.INC` usa o método inclusivo, que corresponde ao cálculo manual com interpolação. A função `QUARTIL.EXC` usa o método exclusivo e pode dar resultados diferentes.
+
+**📌 Resumo das Fórmulas no Excel**
+
+| Função | Inglês | Português | Resultado |
+|--------|--------|-----------|-----------|
+| Q1 | `=QUARTILE.INC(A2:A10,1)` | `=QUARTIL.INC(A2:A10;1)` | 5,25 |
+| Q2 | `=QUARTILE.INC(A2:A10,2)` | `=QUARTIL.INC(A2:A10;2)` | 6,5 |
+| Q3 | `=QUARTILE.INC(A2:A10,3)` | `=QUARTIL.INC(A2:A10;3)` | 7,75 |
+
+> **💡 Dica:** Use `QUARTIL.INC` quando quiser o método inclusivo (padrão). Use `PERCENTIL.INC(A2:A10;0,25)` para o mesmo resultado que `QUARTIL.INC(A2:A10;1)`.
+
+</details>
+
+
+<details>
+<summary>🐍 Exemplo dos Quartis para Dados Não Agrupados no Python</summary>
+
+**Problema:** Calcular os quartis das notas de 10 alunos:
+
+- Opção 1 — Função direta (NumPy)
+```python
+import numpy as np
+
+notas = [4, 5, 5, 6, 6, 7, 7, 8, 8]
+q1 = np.percentile(notas, 25)
+q2 = np.percentile(notas, 50)
+q3 = np.percentile(notas, 75)
+
+print(f"Q1: {q1}")
+print(f"Q2: {q2}")
+print(f"Q3: {q3}")
+```
+
+- Opção 2 — Função direta (pandas)
+```python
+import pandas as pd
+
+notas = [4, 5, 5, 6, 6, 7, 7, 8, 8]
+q1 = pd.Series(notas).quantile(0.25)
+q2 = pd.Series(notas).quantile(0.50)
+q3 = pd.Series(notas).quantile(0.75)
+
+print(f"Q1: {q1}")
+print(f"Q2: {q2}")
+print(f"Q3: {q3}")
+```
+
+- Opção 3 — Função direta (estatística)
+```python
+from statistics import quantiles
+
+notas = [4, 5, 5, 6, 6, 7, 7, 8, 8]
+q1, q2, q3 = quantiles(notas, n=4)
+
+print(f"Q1: {q1}")
+print(f"Q2: {q2}")
+print(f"Q3: {q3}")
+```
+</details>
+
+
+<details>
+<summary>📊 Exemplo dos Quartis para Dados Não Agrupados no R</summary>
+
+**Problema:** Calcular os quartis das notas de 10 alunos:
+
+- Opção 1 — Função direta (base R)
+
+```r
+notas <- c(4, 5, 5, 6, 6, 7, 7, 8, 8)
+q1 <- quantile(notas, 0.25)
+q2 <- quantile(notas, 0.50)
+q3 <- quantile(notas, 0.75)
+
+print(q1)
+print(q2)
+print(q3)
+```
+
+- Opção 2 — Função direta (dplyr)
+
+```r
+library(dplyr)
+
+notas <- c(4, 5, 5, 6, 6, 7, 7, 8, 8)
+quartis <- data.frame(notas) %>%
+  summarise(
+    Q1 = quantile(notas, 0.25),
+    Q2 = quantile(notas, 0.50),
+    Q3 = quantile(notas, 0.75)
+  )
+print(quartis)
+```
+
+</details>
+
+#### Quartis para Dados Agrupados por Lista
 
 &emsp;&emsp;&emsp;Quando os dados estão numa **tabela de frequências**, usamos a **frequência acumulada** para localizar a posição do quartil.
 
@@ -308,27 +488,109 @@ Onde k = 1, 2, ..., 9.
 <details>
 <summary>📌 Exemplo do Decis para Dados Não Agrupados</summary>
 
-**Problema:** Calcular os decis das notas de 20 alunos (mesmos dados):
+**Problema** Consideremos o seguinte conjunto de dados, já ordenado:
 
-```text
-4, 5, 5, 6, 6, 7, 7, 8, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 20
 ```
+Posição:  1   2   3   4   5   6   7   8   9  10  11  12  13  14  15  16  17  18  19  20
+Valor:    4   5   5   6   6   7   7   8   8   9  10  11  12  13  14  15  16  17  18  20
+```
+Temos **n = 20** observações.
 
-**Cálculo de alguns decis:**
+**D1 — Posição:**
 
-| Decil | Posição k/10 × 21 | Cálculo | Valor |
-|---------|---------|---------|---------|
-| D1 | 2,1 | entre pos 2 (5) e pos 3 (5) | **5** |
-| D2 | 4,2 | entre pos 4 (6) e pos 5 (6) | **6** |
-| D3 | 6,3 | entre pos 6 (7) e pos 7 (7) | **7** |
-| D4 | 8,4 | entre pos 8 (8) e pos 9 (8) | **8** |
-| D5 | 10,5 | entre pos 10 (9) e pos 11 (10) | **9,5** |
-| D6 | 12,6 | entre pos 12 (11) e pos 13 (12) | **11,6** |
-| D7 | 14,7 | entre pos 14 (13) e pos 15 (14) | **13,7** |
-| D8 | 16,8 | entre pos 16 (15) e pos 17 (16) | **15,8** |
-| D9 | 18,9 | entre pos 18 (17) e pos 19 (18) | **17,9** |
+$$ P_1 = \frac{1 \cdot 21}{10} = 2{,}1 $$
 
-✅ D5 = 9,5 = Mediana = Q2. **Confere!**
+&emsp;&emsp;&emsp;Está entre a posição 2 (valor 5) e a posição 3 (valor 5).
+
+$$ D_1 = 5 + 0{,}1 \times (5 - 5) = 5 + 0 = \mathbf{5} $$<br><br>
+
+**D2 — Posição:**
+
+$$ P_2 = \frac{2 \cdot 21}{10} = 4{,}2 $$
+
+&emsp;&emsp;&emsp;Está entre a posição 4 (valor 6) e a posição 5 (valor 6).
+
+$$ D_2 = 6 + 0{,}2 \times (6 - 6) = 6 + 0 = \mathbf{6} $$<br><br>
+
+**D3 — Posição:**
+
+$$ P_3 = \frac{3 \cdot 21}{10} = 6{,}3 $$
+
+&emsp;&emsp;&emsp;Está entre a posição 6 (valor 7) e a posição 7 (valor 7).
+
+$$ D_3 = 7 + 0{,}3 \times (7 - 7) = 7 + 0 = \mathbf{7} $$<br><br>
+
+**D4 — Posição:**
+
+$$ P_4 = \frac{4 \cdot 21}{10} = 8{,}4 $$
+
+&emsp;&emsp;&emsp;Está entre a posição 8 (valor 8) e a posição 9 (valor 8).
+
+$$ D_4 = 8 + 0{,}4 \times (8 - 8) = 8 + 0 = \mathbf{8} $$<br><br>
+
+** D5 — Posição:**
+
+$$ P_5 = \frac{5 \cdot 21}{10} = 10{,}5 $$
+
+&emsp;&emsp;&emsp;Está entre a posição 10 (valor 9) e a posição 11 (valor 10).
+
+$$ D_5 = \frac{9 + 10}{2} = \mathbf{9{,}5} $$
+
+> *(D5 é igual à mediana Q2)*<br><br>
+
+**D6 — Posição:**
+
+$$ P_6 = \frac{6 \cdot 21}{10} = 12{,}6 $$
+
+&emsp;&emsp;&emsp;Está entre a posição 12 (valor 11) e a posição 13 (valor 12).
+
+$$ D_6 = 11 + 0{,}6 \times (12 - 11) = 11 + 0{,}6 = \mathbf{11{,}6} $$<br><br>
+
+**D7 — Posição:**
+
+$$ P_7 = \frac{7 \cdot 21}{10} = 14{,}7 $$
+
+&emsp;&emsp;&emsp;Está entre a posição 14 (valor 13) e a posição 15 (valor 14).
+
+$$ D_7 = 13 + 0{,}7 \times (14 - 13) = 13 + 0{,}7 = \mathbf{13{,}7} $$<br><br>
+
+**D8 — Posição:**
+
+$$ P_8 = \frac{8 \cdot 21}{10} = 16{,}8 $$
+
+&emsp;&emsp;&emsp;Está entre a posição 16 (valor 15) e a posição 17 (valor 16).
+
+$$ D_8 = 15 + 0{,}8 \times (16 - 15) = 15 + 0{,}8 = \mathbf{15{,}8} $$<br><br>
+
+
+**D9 — Posição:**
+
+$$ P_9 = \frac{9 \cdot 21}{10} = 18{,}9 $$
+
+&emsp;&emsp;&emsp;Está entre a posição 18 (valor 17) e a posição 19 (valor 18).
+
+$$ D_9 = 17 + 0{,}9 \times (18 - 17) = 17 + 0{,}9 = \mathbf{17{,}9} $$
+
+
+RESULTADO FINAL (DECIS)
+
+| Decil | Posição | Valor |
+|-------|---------|-------|
+| D1 | 2,1 | 5 |
+| D2 | 4,2 | 6 |
+| D3 | 6,3 | 7 |
+| D4 | 8,4 | 8 |
+| D5 | 10,5 | 9,5 |
+| D6 | 12,6 | 11,6 |
+| D7 | 14,7 | 13,7 |
+| D8 | 16,8 | 15,8 |
+| D9 | 18,9 | 17,9 |
+
+
+
+> **🔍 Nota:** A fórmula P = k(n+1)/10 é a mais usada para decis. Como n = 20, n+1 = 21, então cada decil cai em posições como 2,1 / 4,2 / 6,3 / ... / 18,9. Quando a posição não é inteira, faz-se **interpolação linear** entre os dois valores vizinhos.
+
+
 </details>
 
 ### Decis para Dados Agrupados por Lista
@@ -554,7 +816,7 @@ Como SB > 0, a distribuição é **assimétrica à direita**.
 **📐 Fórmula da Regra de Tukey**
 
 $$
-\color{blue} \Large x < Q_1 - 1{,}5 \times \text{IQR} \quad \text{ou} \quad x > Q_3 + 1{,}5 \times \text{IQR}
+\color{blue} x < Q_1 - 1{,}5 \times \text{IQR} \quad \text{ou} \quad x > Q_3 + 1{,}5 \times \text{IQR}
 $$
 
 <centro><details>
@@ -605,7 +867,7 @@ Como 100 > 20,5, **100 é outlier**.
 **📐Fórmula da Assimetria de Bowley**
 
 $$
-\color{blue} \Large S_B = \frac{(Q_3 - Q_2) - (Q_2 - Q_1)}{Q_3 - Q_1}
+\color{blue} S_B = \frac{(Q_3 - Q_2) - (Q_2 - Q_1)}{Q_3 - Q_1}
 $$
 
 **Onde:**
@@ -623,8 +885,6 @@ $$
 | **S_B > 0** | Assimetria **à direita** (positiva) |
 | **S_B < 0** | Assimetria **à esquerda** (negativa) |
 
-## 4. EXEMPLO
-
 <details>
 <summary>📌 Exemplo da Assimetria de Bowley</summary>
 
@@ -640,7 +900,7 @@ Como S_B > 0, a distribuição é **assimétrica à direita**.
 
 </details>
 
-### 2.5 Vantagens e Desvantagens das Separatrizes
+### 5. Vantagens e Desvantagens das Separatrizes
 
 &emsp;&emsp;&emsp;As separatrizes (quartis, decis e percentis) são ferramentas poderosas para descrever a forma de uma distribuição, mas apresentam vantagens e limitações que devem ser reconhecidas.
 
@@ -661,7 +921,7 @@ Como S_B > 0, a distribuição é **assimétrica à direita**.
 - **Perdem informação ao agrupar.** Quando os dados estão agrupados em classes, as separatrizes são calculadas por interpolação, o que introduz erro de agrupamento.
 
 
-### 2.6 Quando Usar — Média × Mediana × Moda × Separatrizes
+### 6. Quando Usar — Média × Mediana × Moda × Separatrizes
 
 &emsp;&emsp;&emsp;A escolha entre média, mediana, moda e separatrizes depende da **natureza dos dados** e do **objetivo da análise**. Cada medida tem o seu contexto de aplicação.
 
@@ -785,7 +1045,7 @@ print(P90)
 </details>
 
 
-## 3. EXERCÍCIOS
+## EXERCÍCIOS
 
 <details>
 <summary>📗 Exercício 1 — Quartis (Dados Brutos)</summary>

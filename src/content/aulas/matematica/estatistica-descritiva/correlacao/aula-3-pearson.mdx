@@ -1,64 +1,46 @@
-# COEFICIENTE DE PEARSON (r)
+# Coeficiente De Pearson (r)
 
-## INTRODUÇÃO
+## Introdução
 
 &emsp;&emsp;&emsp;Bem como sabemos que correlação mede a força e a direção da relação entre duas variáveis. Vimos também que o scatterplot mostra visualmente o padrão antes de qualquer cálculo. Agora chegou o momento de **quantificar** tudo isso. Como transformar o que vemos no gráfico num número que possamos comparar, interpretar e comunicar?
 
-&emsp;&emsp;&emsp;A resposta é o **coeficiente de correlação de Pearson** — o mais usado e o mais importante de todos os coeficientes de correlação.
+&emsp;&emsp;&emsp;A resposta é o **coeficiente de correlação de Pearson** — o mais usado e o mais importante de todos os coeficientes de correlação. Voltemos ao professor com as horas de estudo e as notas.
 
-**Exemplo:** Voltemos ao professor com as horas de estudo e as notas.
-
-| Aluno | Horas de estudo (X) | Nota (Y) |
-|---------|---------|---------|
-| 1 | 1 | 4 |
-| 2 | 2 | 5 |
-| 3 | 3 | 7 |
-| 4 | 4 | 8 |
-| 5 | 5 | 10 |
-| 6 | 6 | 11 |
-| 7 | 7 | 13 |
-| 8 | 8 | 14 |
-| 9 | 9 | 16 |
-| 10 | 10 | 17 |
-
-&emsp;&emsp;&emsp;O scatterplot mostra uma reta ascendente clara. Mas quão forte é essa relação? O **r de Pearson** dá-nos a resposta exata.
+- Aluno `1 2 3 4 5 6 7 8 9 10`
+- Horas de estudo (X) `1 2 3 4 5 6 7 8 9 10`
+- Nota (Y) `4 5 7 8 10 11 13 14 16 17`
 
 > 💡 **Regra de Ouro:** Pearson só mede relações **lineares**. Se o scatterplot mostrar uma curva, o Pearson pode enganar-nos. Nesse caso, devemos usar Spearman. Esta é uma das limitações mais importantes que precisamos de ter sempre presente.
 
 
->> O **coeficiente de correlação de Pearson** (r) é uma medida que quantifica a **força** e a **direção** da **relação linear** entre **duas variáveis quantitativas**.
-
-O r varia sempre entre **−1 e +1**:
+&emsp;&emsp;&emsp;O **coeficiente de correlação de Pearson** (r) é uma medida que quantifica a **força** e a **direção** da **relação linear** entre **duas variáveis quantitativas**. O r varia sempre entre **−1 e +1**:
 
 - **r = +1** → relação linear positiva perfeita (todos os pontos numa reta ascendente)
 - **r = 0** → ausência de relação linear
 - **r = −1** → relação linear negativa perfeita (todos os pontos numa reta descendente)
 
+<details>
+<summary> A Escala Da Correlação: −1, 0 e +1</summary>
+```mermaid
+    flowchart LR
+    A["🔴 r = −1"] --> B["⚪ r = 0"] --> C["🟢 r = +1"]
+
+    A --- A1["X sobe<br/>Y desce"]
+    B --- B1["X sobe<br/>Y indiferente"]
+    C --- C1["X sobe<br/>Y sobe"]
+
+    style A fill:#3a1a1a,stroke:#e74c3c,color:#e74c3c
+    style B fill:#2a2a3e,stroke:#8a8a9a,color:#e0e0e0
+    style C fill:#1a3a1a,stroke:#4caf50,color:#4caf50
+    style A1 fill:#1b0d0d,stroke:#e74c3c,color:#e74c3c
+    style B1 fill:#1a1a2e,stroke:#8a8a9a,color:#e0e0e0
+    style C1 fill:#0d1b0d,stroke:#4caf50,color:#4caf50
+```
+</details>
+
 &emsp;&emsp;&emsp;Quanto mais próximo de ±1, mais forte a relação linear. O **sinal** indica a direção. Esta escala é fundamental porque nos dá uma medida **universal** — podemos comparar correlações entre estudos completamente diferentes.
 
-## PORQUE O PEARSON É IMPORTANTE?
-
-O coeficiente de Pearson é importante por várias razões que vale a pena compreender.
-
-### 1. É o coeficiente padrão
-
-&emsp;&emsp;&emsp;Quando alguém diz "a correlação entre X e Y é 0,75", está quase sempre a falar de **Pearson**. É a linguagem universal da correlação. Isto acontece porque o Pearson foi o primeiro coeficiente formalizado e continua a ser o mais usado em todas as áreas científicas.
-
-### 2. Usa todos os dados
-
-&emsp;&emsp;&emsp;Ao contrário do Spearman (que usa rankings), o Pearson usa os **valores reais** de cada observação. Não perde informação. Isto significa que o Pearson é mais **sensível** a pequenas variações nos dados — o que é uma vantagem quando os dados são de boa qualidade, mas uma desvantagem quando há outliers.
-
-### 3. É a base da regressão linear
-
-&emsp;&emsp;&emsp;O r de Pearson está diretamente ligado à regressão. O **r²** (coeficiente de determinação) diz-nos que percentagem da variação de Y é explicada por X. Esta ligação é fundamental para qualquer análise preditiva.
-
-### 4. Tem interpretação geométrica
-
-&emsp;&emsp;&emsp;O r é o **cosseno do ângulo** entre duas variáveis no espaço. Isto dá-lhe propriedades matemáticas úteis em análises avançadas, como a análise fatorial ou a análise de componentes principais.
-
-## FÓRMULA DE PEARSON 
-
-### Fórmula principal
+**Fórmula principal do Coeficiente De Pearson (r)**
 
 $$r = \frac{\sum (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum (x_i - \bar{x})^2} \cdot \sqrt{\sum (y_i - \bar{y})^2}}$$
 
@@ -67,33 +49,35 @@ Onde:
 - **x̄, ȳ** = médias de cada variável
 - **Σ** = soma de todos os pares
 
-### Fórmula alternativa
+**Fórmula alternativa do Coeficiente De Pearson (r)**
 
 $$r = \frac{n \sum x_i y_i - \sum x_i \sum y_i}{\sqrt{\left[ n \sum x_i^2 - (\sum x_i)^2 \right] \cdot \left[ n \sum y_i^2 - (\sum y_i)^2 \right]}}$$
 
 Onde **n** = número de pares.
-
-> Esta segunda fórmula é mais prática para calcular à mão, porque evita calcular os desvios individualmente. No entanto, a primeira fórmula é mais **intuitiva** — mostra-nos exatamente o que o r está a medir.
-
 
 A fórmula compara **duas coisas**:
 
 - **Covariação** (numerador): quanto X e Y variam **juntos**
 - **Variabilidade individual** (denominador): quanto X e Y variam **sozinhos**
 
-Se a covariação for grande em relação à variabilidade individual, **r é alto**. Se for pequena, **r é baixo**. Esta lógica é a chave para entender porque o r funciona.
+&emsp;&emsp;&emsp;Se a covariação for grande em relação à variabilidade individual, **r é alto**. Se for pequena, **r é baixo**. Esta lógica é a chave para entender porque o r funciona. Esta segunda fórmula é mais prática para calcular à mão, porque evita calcular os desvios individualmente. No entanto, a primeira fórmula é mais **intuitiva** — mostra-nos exatamente o que o r está a medir.
 
-## CÁLCULO PASSO A PASSO
+
+### Cálculo Passo à Passo
 
 Vamos calcular o r para o exemplo das horas de estudo.
+- Aluno `1 2 3 4 5 6 7 8 9 10`
+- Horas de estudo (X) `1 2 3 4 5 6 7 8 9 10`
+- Nota (Y) `4 5 7 8 10 11 13 14 16 17`
 
-### Passo 1 — Calcular as médias
+
+**Passo 1 — Calcular as médias**
 
 $$\bar{x} = \frac{1+2+3+4+5+6+7+8+9+10}{10} = \frac{55}{10} = 5{,}5$$
 
 $$\bar{y} = \frac{4+5+7+8+10+11+13+14+16+17}{10} = \frac{105}{10} = 10{,}5$$
 
-### Passo 2 — Calcular os desvios
+**Passo 2 — Calcular os desvios**
 
 | Aluno | x | y | (x − x̄) | (y − ȳ) |
 |---------|---|----|---------|---------|
@@ -108,7 +92,7 @@ $$\bar{y} = \frac{4+5+7+8+10+11+13+14+16+17}{10} = \frac{105}{10} = 10{,}5$$
 | 9 | 9 | 16 | +3,5 | +5,5 |
 | 10 | 10 | 17 | +4,5 | +6,5 |
 
-### Passo 3 — Calcular produtos e quadrados
+**Passo 3 — Calcular produtos e quadrados**
 
 | (x−x̄)(y−ȳ) | (x−x̄)² | (y−ȳ)² |
 |-------------|--------|--------|
@@ -124,7 +108,7 @@ $$\bar{y} = \frac{4+5+7+8+10+11+13+14+16+17}{10} = \frac{105}{10} = 10{,}5$$
 | +29,25 | 20,25 | 42,25 |
 | **Σ = 122,5** | **Σ = 82,5** | **Σ = 182,5** |
 
-### Passo 4 — Aplicar a fórmula
+**Passo 4 — Aplicar a fórmula**
 
 $$r = \frac{122{,}5}{\sqrt{82{,}5 \times 182{,}5}} = \frac{122{,}5}{\sqrt{15\,056{,}25}} = \frac{122{,}5}{122{,}7} \approx +0{,}998$$
 
@@ -132,17 +116,20 @@ $$r = \frac{122{,}5}{\sqrt{82{,}5 \times 182{,}5}} = \frac{122{,}5}{\sqrt{15\,05
 
 **r ≈ +0,998** → correlação **positiva**, **muito forte**.
 
-Quem estuda mais tende a tirar melhores notas, e a relação é quase perfeita. O valor tão próximo de +1 indica que os pontos estão quase perfeitamente alinhados numa reta ascendente.
+1. Quanto à DIREÇÃO --> ***correlação positiva*** (r > 0)
+2. Quanto à FORÇA --> ***correlação muito forte (|r| > 0,8)***
 
-## INTERPRETAÇÃO DO r
+> Quem estuda mais tende a tirar melhores notas, e a relação é quase perfeita. O valor tão próximo de +1 indica que os pontos estão quase perfeitamente alinhados numa reta ascendente.
 
-### 1. Direção
+### Interpretação Do r
+
+**Direção**
 
 - **r > 0** → positiva (X↑ → Y↑)
 - **r < 0** → negativa (X↑ → Y↓)
 - **r ≈ 0** → nula (sem relação linear)
 
-### 2. Força
+**Força**
 
 | r | Força |
 |-----|-------|
@@ -152,125 +139,10 @@ Quem estuda mais tende a tirar melhores notas, e a relação é quase perfeita. 
 | 0,60 — 0,79 | Forte |
 | 0,80 — 1,00 | Muito forte |
 
-Esta escala é uma **convenção** — diferentes autores usam ligeiras variações. O importante é perceber que a força aumenta à medida que |r| se aproxima de 1.
+&emsp;&emsp;&emsp;Esta escala é uma **convenção** — diferentes autores usam ligeiras variações. O importante é perceber que a força aumenta à medida que |r| se aproxima de 1.
 
-### 3. Exemplos visuais
 
-<style>
-.scatter-grid{font:14px system-ui;background:#f8f9fa;padding:2vw;border-radius:8px;display:grid;grid-template-columns:repeat(3,1fr);gap:2vw;max-width:100%}
-.scatter-grid .g{text-align:center}
-.scatter-grid .g div{margin-bottom:1vh;color:#333;font-weight:500;white-space:nowrap;font-size:clamp(11px,1.4vw,14px)}
-.scatter-grid .p{width:100%;aspect-ratio:1.3;position:relative;margin:0 auto}
-.scatter-grid .p span{position:absolute;width:7px;height:7px;background:#333;border-radius:50%;transform:translate(-50%,-50%)}
-@media(max-width:700px){.scatter-grid{grid-template-columns:1fr 1fr;gap:3vh}}
-@media(max-width:450px){.scatter-grid{grid-template-columns:1fr}}
-</style>
-<div class="scatter-grid">
-  <div class="g">
-    <div>r = +0,9 (forte positiva)</div>
-    <div class="p">
-      <span style="left:15%;top:20%"></span>
-      <span style="left:30%;top:35%"></span>
-      <span style="left:45%;top:48%"></span>
-      <span style="left:60%;top:62%"></span>
-      <span style="left:75%;top:75%"></span>
-      <span style="left:88%;top:88%"></span>
-    </div>
-  </div>
-  <div class="g">
-    <div>r = +0,5 (moderada)</div>
-    <div class="p">
-      <span style="left:20%;top:15%"></span>
-      <span style="left:35%;top:35%"></span>
-      <span style="left:50%;top:25%"></span>
-      <span style="left:40%;top:55%"></span>
-      <span style="left:65%;top:50%"></span>
-      <span style="left:75%;top:70%"></span>
-      <span style="left:55%;top:80%"></span>
-      <span style="left:85%;top:85%"></span>
-    </div>
-  </div>
-  <div class="g">
-    <div>r = 0 (nula)</div>
-    <div class="p">
-      <span style="left:50%;top:15%"></span>
-      <span style="left:30%;top:30%"></span>
-      <span style="left:70%;top:30%"></span>
-      <span style="left:15%;top:45%"></span>
-      <span style="left:85%;top:45%"></span>
-      <span style="left:25%;top:60%"></span>
-      <span style="left:75%;top:60%"></span>
-      <span style="left:45%;top:75%"></span>
-      <span style="left:55%;top:75%"></span>
-    </div>
-  </div>
-  <div class="g">
-    <div>r = −0,9 (forte negativa)</div>
-    <div class="p">
-      <span style="left:12%;top:20%"></span>
-      <span style="left:25%;top:32%"></span>
-      <span style="left:38%;top:45%"></span>
-      <span style="left:52%;top:58%"></span>
-      <span style="left:68%;top:72%"></span>
-      <span style="left:85%;top:88%"></span>
-    </div>
-  </div>
-  <div class="g">
-    <div>r = −0,5 (moderada negativa)</div>
-    <div class="p">
-      <span style="left:20%;top:15%"></span>
-      <span style="left:40%;top:20%"></span>
-      <span style="left:30%;top:40%"></span>
-      <span style="left:55%;top:45%"></span>
-      <span style="left:45%;top:60%"></span>
-      <span style="left:70%;top:65%"></span>
-      <span style="left:60%;top:80%"></span>
-      <span style="left:80%;top:85%"></span>
-    </div>
-  </div>
-  <div class="g">
-    <div>r = +1 (perfeita)</div>
-    <div class="p">
-      <span style="left:10%;top:15%"></span>
-      <span style="left:28%;top:32%"></span>
-      <span style="left:46%;top:50%"></span>
-      <span style="left:64%;top:68%"></span>
-      <span style="left:82%;top:85%"></span>
-    </div>
-  </div>
-</div>
-
-Cada gráfico mostra uma situação diferente. Quanto mais os pontos se aproximam de uma linha reta, mais próximo de ±1 é o r. Quando os pontos estão dispersos sem padrão, o r aproxima-se de zero.
-
-## PROPRIEDADES DO r
-
-O r tem várias propriedades matemáticas que vale a pena conhecer, porque nos ajudam a interpretá-lo corretamente.
-
-### 1. Intervalo
-
-&emsp;&emsp;&emsp;O r está **sempre** entre −1 e +1. Nunca sai deste intervalo. Esta é uma garantia matemática que nos permite comparar correlações entre estudos diferentes.
-
-### 2. Adimensional
-
-&emsp;&emsp;&emsp;O r **não tem unidade**. Não é "0,8 kg" nem "0,8 cm". É apenas um número puro. Isto significa que podemos comparar correlações entre variáveis completamente diferentes.
-
-### 3. Simétrico
-
-&emsp;&emsp;&emsp;r(X, Y) = r(Y, X). A correlação entre X e Y é igual à correlação entre Y e X. Isto significa que não importa qual variável é a independente — o r é o mesmo.
-
-### 4. Sensível a outliers
-
-&emsp;&emsp;&emsp;Um único ponto extremo pode alterar drasticamente o r. **Vemos sempre o scatterplot antes de confiar no r.** Um outlier pode fazer com que um r = 0,9 passe para r = 0,3 — ou vice-versa.
-
-### 5. Só mede relações lineares
-
-Se a relação for curva, o r pode ser ≈ 0 mesmo havendo uma relação forte. Isto é uma limitação fundamental que precisamos de ter sempre em mente.
-
-### 6. Não é afetado por transformações lineares
-
-Se multiplicarmos X por 2 e somarmos 10, o r não muda. O r é **invariante** a mudanças de escala e origem. Isto significa que podemos medir X em metros ou centímetros — o r é o mesmo.
-
-## r² — COEFICIENTE DE DETERMINAÇÃO
+### Coeficiente De Determinação — r² 
 
 O **r²** é o quadrado do r. Diz-nos **que percentagem da variação de Y é explicada por X**.
 
@@ -287,8 +159,7 @@ $$r^2 = r \times r$$
 - r = 0,9 parece forte, e r² = 0,81 significa 81% explicado
 - O r² é mais **honesto** sobre o poder explicativo
 
-O r² é especialmente útil em contextos de **regressão** e **machine learning**, onde queremos saber quanto do comportamento de Y é capturado pelo modelo.
-
+O r² é especialmente útil em contextos de **regressão** e **machine learning**, onde queremos saber quanto do comportamento de Y é capturado pelo modelo.<br><br>
 
 Usamos Pearson quando:
 
@@ -296,7 +167,7 @@ Usamos Pearson quando:
 - A relação é **linear** (confirmamos no scatterplot)
 - **Não há outliers** fortes
 - As variáveis seguem aproximadamente uma **distribuição normal**
-- Queremos uma medida **padrão** e **comparável** entre estudos
+- Queremos uma medida **padrão** e **comparável** entre estudos<br><br>
 
 
 Não usamos Pearson quando:
@@ -310,7 +181,7 @@ Não usamos Pearson quando:
 
 
 <details>
-<summary>📌 Exemplo Prático</summary>
+<summary>📌 Exemplo Completo — Cálculo do Coeficiente de Correlação de Pearson</summary>
 
 **Problema:** Calcular o r entre o preço de um produto (X) e a quantidade vendida (Y).
 
@@ -348,57 +219,240 @@ $$r = \frac{-260}{\sqrt{40 \times 1700}} = \frac{-260}{\sqrt{68\,000}} = \frac{-
 **r ≈ −0,997** → correlação **negativa**, **muito forte**.
 
 Quando o preço sobe, a quantidade vendida desce quase perfeitamente. Esta é uma relação típica da lei da procura em economia.
+> O sinal é a bússola: diz-nos para onde vamos. Positivo, quando as duas variáveis sobem de mãos dadas; negativo, quando uma sobe enquanto a outra desce. O número é a força do vento: perto de 1 ou −1, sopra forte e seguro; perto de 0, é apenas uma brisa — ou nem isso.
 
 </details>
 
+
 <details>
-<summary>📌 Exemplo Prático usando Python</summary>
+<summary>📌 Exemplo Completo — Cálculo do Coeficiente de Correlação de Pearson (r = 0)</summary>
+
+**Problema:** Calcular o coeficiente de correlação entre o número do sapato (X) e o QI (Y) de 8 pessoas.
+
+| Pessoa | X (sapato) | Y (QI) |
+|--------|------------|--------|
+| 1 | 38 | 100 |
+| 2 | 39 | 115 |
+| 3 | 40 | 95 |
+| 4 | 41 | 120 |
+| 5 | 42 | 105 |
+| 6 | 43 | 98 |
+| 7 | 44 | 110 |
+| 8 | 45 | 102 |
+
+
+**Passo 1 — Calcular as médias de X e Y**
+
+$$
+\bar{x} = \frac{38+39+40+41+42+43+44+45}{8} = \frac{332}{8} = 41{,}5
+$$
+
+$$
+\bar{y} = \frac{100+115+95+120+105+98+110+102}{8} = \frac{845}{8} = 105{,}625
+$$
+
+
+**Passo 2 — Calcular os desvios de cada valor em relação à média**
+
+| Pessoa | X | Y | X − x̄ | Y − ȳ |
+|--------|---|-----|--------|--------|
+| 1 | 38 | 100 | 38 − 41,5 = **−3,5** | 100 − 105,625 = **−5,625** |
+| 2 | 39 | 115 | 39 − 41,5 = **−2,5** | 115 − 105,625 = **9,375** |
+| 3 | 40 | 95 | 40 − 41,5 = **−1,5** | 95 − 105,625 = **−10,625** |
+| 4 | 41 | 120 | 41 − 41,5 = **−0,5** | 120 − 105,625 = **14,375** |
+| 5 | 42 | 105 | 42 − 41,5 = **0,5** | 105 − 105,625 = **−0,625** |
+| 6 | 43 | 98 | 43 − 41,5 = **1,5** | 98 − 105,625 = **−7,625** |
+| 7 | 44 | 110 | 44 − 41,5 = **2,5** | 110 − 105,625 = **4,375** |
+| 8 | 45 | 102 | 45 − 41,5 = **3,5** | 102 − 105,625 = **−3,625** |
+
+**Passo 3 — Multiplicar os desvios (X − x̄) × (Y − ȳ)**
+
+| Pessoa | (X − x̄) | (Y − ȳ) | Produto |
+|--------|----------|----------|---------|
+| 1 | −3,5 | −5,625 | **19,6875** |
+| 2 | −2,5 | 9,375 | **−23,4375** |
+| 3 | −1,5 | −10,625 | **15,9375** |
+| 4 | −0,5 | 14,375 | **−7,1875** |
+| 5 | 0,5 | −0,625 | **−0,3125** |
+| 6 | 1,5 | −7,625 | **−11,4375** |
+| 7 | 2,5 | 4,375 | **10,9375** |
+| 8 | 3,5 | −3,625 | **−12,6875** |
+| **Total** | | | **−8,5** |
+
+> **🔍 O que este total significa:** Os produtos são uma mistura de positivos e negativos, e quase se anulam. A soma é **−8,5**, muito próxima de zero. É o primeiro sinal de que a correlação é **nula**.
+
+
+**Passo 4 — Calcular os quadrados dos desvios de X e de Y**
+
+| Pessoa | (X − x̄)² | (Y − ȳ)² |
+|--------|----------|----------|
+| 1 | (−3,5)² = **12,25** | (−5,625)² = **31,64** |
+| 2 | (−2,5)² = **6,25** | (9,375)² = **87,89** |
+| 3 | (−1,5)² = **2,25** | (−10,625)² = **112,89** |
+| 4 | (−0,5)² = **0,25** | (14,375)² = **206,64** |
+| 5 | (0,5)² = **0,25** | (−0,625)² = **0,39** |
+| 6 | (1,5)² = **2,25** | (−7,625)² = **58,14** |
+| 7 | (2,5)² = **6,25** | (4,375)² = **19,14** |
+| 8 | (3,5)² = **12,25** | (−3,625)² = **13,14** |
+| **Total** | **42** | **529,87** |
+
+**Passo 5 — Aplicar a fórmula de Pearson**
+
+$$
+r = \frac{\sum (x_i - \bar{x})(y_i - \bar{y})}{\sqrt{\sum (x_i - \bar{x})^2 \cdot \sum (y_i - \bar{y})^2}}
+$$
+
+$$
+r = \frac{-8{,}5}{\sqrt{42 \times 529{,}87}} = \frac{-8{,}5}{\sqrt{22254{,}54}} = \frac{-8{,}5}{149{,}18} \approx \mathbf{-0{,}057}
+$$
+
+
+**Passo 6 — Interpretar o resultado**
+
+$$ r \approx -0{,}057 $$
+
+✅ O coeficiente de correlação é **−0,057** — praticamente **zero**. Correlação **nula**.
+
+> **🔍 Interpretação:** O valor de r está **muito próximo de 0**, o que significa que **não existe relação linear** entre o número do sapato e o QI. Saber o número do sapato de alguém **não ajuda** a prever o seu QI — e vice-versa. As duas variáveis são **independentes**.
+
+</details>
+
+
+<details>
+<summary>🐍 Exemplo do Coeficiente de Correlação de Pearson no Python</summary>
+
+**Dados:** Horas de estudo (X) e nota final (Y) de 8 alunos.
+
+**X:** `1, 2, 3, 4, 5, 6, 7, 8`
+**Y:** `4, 5, 7, 8, 10, 11, 13, 14`
+
+- _Opção 1 — Função direta (scipy)_
+
 ```python
-import numpy as np
 from scipy.stats import pearsonr
 
-- _Dados de exemplo: Horas de estudo (X) e Notas (Y)_
-X = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
-Y = [4, 5, 7, 8, 10, 11, 13, 14, 16, 17]
+x = [1, 2, 3, 4, 5, 6, 7, 8]
+y = [4, 5, 7, 8, 10, 11, 13, 14]
 
-- _1. CÁLCULO COM NUMPY_
-r_numpy = np.corrcoef(X, Y)[0, 1]
-print(f"Pearson (NumPy): {r_numpy:.4f}")
-
-- _2. CÁLCULO COM SCIPY (inclui p-value)_
-r_scipy, p_value = pearsonr(X, Y)
-print(f"Pearson (SciPy): {r_scipy:.4f}")
-print(f"p-value: {p_value:.4e}")
-
-- _3. COEFICIENTE DE DETERMINAÇÃO (r²)_
-r2 = r_scipy ** 2
-print(f"r²: {r2:.4f}")
+r, p = pearsonr(x, y)
+print(f"r = {r}")
+print(f"p-value = {p}")
 ```
+
+- _Opção 2 — Função direta (pandas)_
+
+```python
+import pandas as pd
+
+x = [1, 2, 3, 4, 5, 6, 7, 8]
+y = [4, 5, 7, 8, 10, 11, 13, 14]
+
+df = pd.DataFrame({"X": x, "Y": y})
+r = df["X"].corr(df["Y"])
+print(f"r = {r}")
+```
+
+- _Opção 3 — Função direta (numpy)_
+
+```python
+import numpy as np
+
+x = [1, 2, 3, 4, 5, 6, 7, 8]
+y = [4, 5, 7, 8, 10, 11, 13, 14]
+
+r = np.corrcoef(x, y)[0, 1]
+print(f"r = {r}")
+```
+
 </details>
 
 <details>
-<summary>**📌 Exemplo Prático**</summary>
+<summary>📊 Exemplo do Coeficiente de Correlação de Pearson no R</summary>
+
+**Dados:** Horas de estudo (X) e nota final (Y) de 8 alunos.
+
+**X:** `1, 2, 3, 4, 5, 6, 7, 8`
+**Y:** `4, 5, 7, 8, 10, 11, 13, 14`
+
+- _Opção 1 — Função direta (base R)_
+
 ```r
-- _Dados de exemplo: Horas de estudo (X) e Notas (Y)_
-X <- c(1, 2, 3, 4, 5, 6, 7, 8, 9, 10)
-Y <- c(4, 5, 7, 8, 10, 11, 13, 14, 16, 17)
+x <- c(1, 2, 3, 4, 5, 6, 7, 8)
+y <- c(4, 5, 7, 8, 10, 11, 13, 14)
 
-- _1. CÁLCULO BÁSICO DO r_
-r <- cor(X, Y, method = "pearson")
-cat("Pearson:", r, "\n")
-
-- _2. TESTE DE SIGNIFICÂNCIA (inclui p-value)_
-teste <- cor.test(X, Y, method = "pearson")
-print(teste)
-
-- _3. COEFICIENTE DE DETERMINAÇÃO (r²)_
-r2 <- r^2
-cat("r²:", r2, "\n")
-
+r <- cor(x, y)
+print(paste("r =", r))
 ```
+
+- _Opção 2 — Com teste de significância (base R)_
+
+```r
+x <- c(1, 2, 3, 4, 5, 6, 7, 8)
+y <- c(4, 5, 7, 8, 10, 11, 13, 14)
+
+teste <- cor.test(x, y)
+print(teste)
+```
+
+- _Opção 3 — Função direta (dplyr)_
+
+```r
+library(dplyr)
+
+df <- data.frame(
+  X = c(1, 2, 3, 4, 5, 6, 7, 8),
+  Y = c(4, 5, 7, 8, 10, 11, 13, 14)
+)
+
+r <- df %>%
+  summarise(correlacao = cor(X, Y))
+print(r)
+```
+
 </details>
 
-## 13. EXERCÍCIOS
+<details>
+<summary>📊 Exemplo do Coeficiente de Correlação de Pearson no Excel</summary>
+
+**Dados:** Horas de estudo (X) e nota final (Y) de 8 alunos.
+
+**Passo 1 — Inserir os dados na planilha:**
+
+| - | A | B |
+|---|---|---|
+| **1** | X (horas) | Y (nota) |
+| **2** | 1 | 4 |
+| **3** | 2 | 5 |
+| **4** | 3 | 7 |
+| **5** | 4 | 8 |
+| **6** | 5 | 10 |
+| **7** | 6 | 11 |
+| **8** | 7 | 13 |
+| **9** | 8 | 14 |
+
+**Passo 2 — Calcular a correlação:**
+
+Em qualquer célula vazia, digite:
+
+```
+=CORREL(A2:A9;B2:B9)
+```
+
+Resultado: **0,997**
+
+✅ A correlação é **0,997** — positiva muito forte.
+
+**📌 Resumo das Fórmulas no Excel**
+
+| Função | Inglês | Português | Resultado |
+|--------|--------|-----------|-----------|
+| Correlação | `=CORREL(A2:A9,B2:B9)` | `=CORREL(A2:A9;B2:B9)` | 0,997 |
+
+> **💡 Dica:** A função `CORREL` calcula apenas a correlação de **Pearson**. Para a correlação de **Spearman**, é preciso calcular os ranks primeiro e depois aplicar `CORREL` aos ranks.
+
+</details>
+
+## EXERCÍCIOS
 
 <details>
 <summary>📗 Exercício 1 — Calcular o r de Pearson</summary>

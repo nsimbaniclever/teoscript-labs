@@ -1,6 +1,6 @@
-# Mediana
+# <center>Mediana</center>
 
-## 1. INTRODUÇÃO
+## Introdução
 
 &emsp;&emsp;&emsp;Conforme abordado na aula anterior, a média aritmética funciona como o ponto de equilíbrio de um conjunto de dados — o valor em torno do qual as observações tendem a distribuir-se. No entanto, essa aparente simplicidade esconde uma fragilidade importante: a média é extremamente sensível a valores extremos (outliers), ou seja, basta um único valor muito discrepante para distorcer completamente o resultado.<br><br>
 
@@ -31,6 +31,10 @@ $$
     .t .seta{position:absolute;top:-20px;left:50%;transform:translateX(-50%);width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-top:8px solid #8a8a9a}
     .t .item{position:relative;padding-top:20px}
     .t .item::before{content:'';position:absolute;top:0;left:50%;width:1.5px;height:20px;background:#8a8a9a}
+    .t .mediana{border-color:#4a9eff}
+    .t .mediana div{border-bottom-color:#4a9eff;color:#4a9eff}
+    .t .mediana>div:first-child{background:#1a3a5e;color:#4a9eff}
+    .t .mediana::before{background:#4a9eff}
     </style>
     <div class="t">
     <b>MEDIDAS DE TENDÊNCIA CENTRAL</b>
@@ -42,7 +46,7 @@ $$
         <div>Sensível a outliers</div>
         <div>Dados numéricos</div>
         </div>
-        <div class="col item">
+        <div class="col item mediana">
         <div>MEDIANA</div>
         <div>Valor central que divide os dados ao meio</div>
         <div>Robusta a outliers</div>
@@ -58,14 +62,11 @@ $$
     </div>
 </details></center>
 
-
-## 2. MEDIANA — O Valor Central
-
 &emsp;&emsp;&emsp;A **mediana** é o **valor central** de um conjunto de dados ordenados, dividindo o conjunto em **duas partes iguais**: 50% dos dados estão abaixo e 50% estão acima.
 
 > "A mediana é uma medida de posição que não é afetada por valores extremos, sendo recomendada para distribuições assimétricas." — Larson & Farber (2010, p. 56)
 
-### 2.1 Mediana para Dados Brutos (Não Agrupados)
+### 1. Mediana para Dados Brutos (Não Agrupados)
 
 &emsp;&emsp;&emsp;É o caso mais simples: tens a lista completa de valores. Basta ordená-los e encontrar o valor central.
 
@@ -114,7 +115,7 @@ flowchart TD
 ✅ A mediana é **25,5 anos**.
 </details>
 
-### 2.2 Mediana para Dados Agrupados por Lista
+### 2. Mediana para Dados Agrupados por Lista
 
 &emsp;&emsp;&emsp;Quando os dados estão numa **tabela de frequências** (valores repetidos), não tens a lista completa — tens apenas cada valor e quantas vezes aparece. Para calcular a mediana, usas a **frequência acumulada** para descobrir onde está a posição central.
 
@@ -219,7 +220,7 @@ $$
 ✅ A mediana é **6**.
 </details>
 
-### 2.3 Mediana para Dados Agrupados por Intervalo de Classe
+### 3. Mediana para Dados Agrupados por Intervalo de Classe
 
 &emsp;&emsp;&emsp;Quando os dados estão em **classes**, a mediana é calculada por **interpolação** dentro da classe mediana — a classe onde a frequência acumulada atinge n/2.
 
@@ -272,7 +273,7 @@ $$
 > **⚠️ Atenção:** Comparando com os dados não agrupados (mediana = 9,5), há uma diferença de 0,9 — é o **erro de agrupamento**. Quanto mais finas forem as classes, menor o erro.
 </details></center>
 
-### 2.4 Comparação com a Média
+### 4. Comparação com a Média
 
 | Explicação | Média | Mediana |
 |---------|---------|---------|
@@ -281,7 +282,7 @@ $$
 | **Usa todos os dados?** | ✅ Sim | ❌ Não (apenas posição) |
 | **Ideal para dados assimétricos?** | ❌ Não | ✅ Sim |
 
-#### 2.5 Vantagens e Desvantagens da Mediana
+#### 5. Vantagens e Desvantagens da Mediana
 
 &emsp;&emsp;&emsp;A mediana apresenta um conjunto de vantagens que a tornam particularmente útil em determinados contextos, mas também algumas limitações que é preciso reconhecer.<br><br>
 
@@ -300,8 +301,6 @@ $$
 - **Menos utilizada em modelos preditivos.** Em Machine Learning e estatística inferencial, a média (e o desvio-padrão) são preferidas por serem mais tratáveis matematicamente.<br><br>
 
 
-#### 2.6 Quando Usar — Média × Mediana
-
 &emsp;&emsp;&emsp;A escolha entre média e mediana depende da natureza dos dados e do objetivo da análise. Não há uma resposta única — há contextos em que cada uma é mais adequada.
 
 **Critérios de escolha:**
@@ -314,9 +313,8 @@ $$
 
 **Regra prática:**
 
-> Se a média e a mediana forem **próximas**, a distribuição é aproximadamente simétrica e a média pode ser usada.
->
-> Se a média e a mediana forem **muito diferentes**, a distribuição é assimétrica e a mediana é preferível.
+> Se a média e a mediana forem **próximas**, a distribuição é aproximadamente simétrica e a média pode ser usada.<br>
+ Se a média e a mediana forem **muito diferentes**, a distribuição é assimétrica e a mediana é preferível.
 
 
 <details>
@@ -337,34 +335,127 @@ flowchart TD
 </details>
 
 <details>
-<summary> Exemplo no R</summary>
-```R
-Dados de exemplo
-notas <- c(4, 5, 5, 6, 6, 6, 7, 7, 8)
+<summary>🐍 Exemplo Mediana para Dados Não Agrupados, Agrupados por Lista e por Intervalo no Python</summary>
 
-- _Mediana_
-mediana <- median(notas)
-mediana
-```
-</details>
+**Dados:** As notas de 9 alunos foram: 4, 5, 5, 6, 6, 6, 7, 7, 8.
 
-<details>
-<summary>🐍 Exemplo no Python</summary>
-
+- Opção 1 — Dados não agrupados
 ```python
-import pandas as pd
-import numpy as np
+from statistics import median
 
-- _Dados de exemplo_
-notas = pd.Series([4, 5, 5, 6, 6, 6, 7, 7, 8])
-
-- _Mediana_
-mediana = notas.median()
+notas = [4, 5, 5, 6, 6, 6, 7, 7, 8]
+mediana = median(notas)
 print(mediana)
 ```
+
+- Opção 2 — Dados agrupados por lista (tabela de frequências)
+```python
+from statistics import median
+
+- _Passo 1: Construir a tabela de frequências manualmente_
+valores = [4, 5, 6, 7, 8]
+frequencias = [1, 2, 3, 2, 1]
+
+- _Passo 2: Expandir a lista a partir das frequências_
+notas = []
+for valor, freq in zip(valores, frequencias):
+    notas.extend([valor] * freq)
+
+- _Passo 3: Calcular a mediana_
+mediana = median(notas)
+print(f"Lista expandida: {notas}")
+print(f"Mediana: {mediana}")
+```
+
+- Opção 4 — Dados agrupados por intervalo de classe (com NumPy)
+```python
+import numpy as np
+
+limites_inferiores = np.array([4, 8, 12, 16])
+limites_superiores = np.array([8, 12, 16, 20])
+frequencias = np.array([7, 5, 5, 3])
+
+n = np.sum(frequencias)
+freq_acumulada = np.cumsum(frequencias)
+posicao_mediana = n / 2
+
+classe_mediana = np.searchsorted(freq_acumulada, posicao_mediana)
+
+L_inf = limites_inferiores[classe_mediana]
+F_ant = freq_acumulada[classe_mediana - 1] if classe_mediana > 0 else 0
+f_med = frequencias[classe_mediana]
+h = limites_superiores[classe_mediana] - limites_inferiores[classe_mediana]
+
+mediana = L_inf + ((posicao_mediana - F_ant) / f_med) * h
+
+print(f"Frequências acumuladas: {freq_acumulada}")
+print(f"Classe mediana: {classe_mediana + 1}")
+print(f"Mediana: {mediana}")
+```
 </details>
 
-## 3. EXERCÍCIOS
+
+<details>
+<summary>📊 Exemplo Mediana para Dados Não Agrupados, Agrupados por Lista e por Intervalo no R</summary>
+
+**Dados:** As notas de 9 alunos foram: 4, 5, 5, 6, 6, 6, 7, 7, 8.
+
+- Opção 1 — Dados não agrupados
+```r
+notas <- c(4, 5, 5, 6, 6, 6, 7, 7, 8)
+mediana <- median(notas)
+print(mediana)
+```
+
+- Opção 2 — Dados agrupados por lista (tabela de frequências)
+```r
+- _Passo 1: Construir a tabela de frequências_
+valores <- c(4, 5, 6, 7, 8)
+frequencias <- c(1, 2, 3, 2, 1)
+
+- _Passo 2: Expandir a lista a partir das frequências_
+notas <- rep(valores, frequencias)
+
+- _Passo 3: Calcular a mediana_
+mediana <- median(notas)
+
+print(paste("Lista expandida:", paste(notas, collapse = ", ")))
+print(paste("Mediana:", mediana))
+```
+
+- Opção 3 — Dados agrupados por intervalo de classe
+```r
+- _Passo 1: Definir os limites e as frequências_
+limites_inferiores <- c(4, 8, 12, 16)
+limites_superiores <- c(8, 12, 16, 20)
+frequencias <- c(7, 5, 5, 3)
+
+- _Passo 2: Calcular o total de observações_
+n <- sum(frequencias)
+
+- _Passo 3: Calcular as frequências acumuladas_
+freq_acumulada <- cumsum(frequencias)
+
+- _Passo 4: Encontrar a classe mediana (onde n/2 é atingido)_
+posicao_mediana <- n / 2
+classe_mediana <- which(freq_acumulada >= posicao_mediana)[1]
+
+- _Passo 5: Aplicar a fórmula da mediana para dados agrupados_
+L_inf <- limites_inferiores[classe_mediana]
+F_ant <- ifelse(classe_mediana > 1, freq_acumulada[classe_mediana - 1], 0)
+f_med <- frequencias[classe_mediana]
+h <- limites_superiores[classe_mediana] - limites_inferiores[classe_mediana]
+
+mediana <- L_inf + ((posicao_mediana - F_ant) / f_med) * h
+
+print(paste("Frequências acumuladas:", paste(freq_acumulada, collapse = ", ")))
+print(paste("Classe mediana:", classe_mediana))
+print(paste("Mediana:", mediana))
+```
+
+</details>
+
+## EXERCÍCIOS
 
 <details>
 <summary>📗 Exercício 1 — Mediana (n ímpar)</summary>

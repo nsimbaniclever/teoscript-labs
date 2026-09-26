@@ -1,0 +1,560 @@
+# TODOS OS TEMAS DE ESTATÍSTICA INFERENCIAL
+
+Aqui está a lista **completa e exaustiva** da Estatística Inferencial, do nível básico ao avançado. Organizei por blocos para não esquecer nada — e no final faço a **ponte** com a Probabilidade que listamos antes.
+
+---
+
+## 🔹 BLOCO 1 — FUNDAMENTOS DA INFERÊNCIA
+
+1. **Introdução à Estatística Inferencial**
+   - Definição e objetivo
+   - População vs Amostra
+   - Parâmetro vs Estatística (estimador)
+   - Inferência vs Estatística Descritiva
+   - Papel da probabilidade na inferência
+
+2. **Amostragem**
+   - Amostragem aleatória simples (AAS)
+   - Amostragem estratificada
+   - Amostragem por conglomerados
+   - Amostragem sistemática
+   - Amostragem por conveniência (não-probabilística)
+   - Erro amostral vs erro não-amostral
+   - Tamanho da amostra
+
+3. **Distribuições Amostrais**
+   - Distribuição amostral da média
+   - Distribuição amostral da proporção
+   - Distribuição amostral da variância
+   - Distribuição amostral da diferença de médias
+   - Erro padrão (standard error)
+   - Teorema Central do Limite aplicado
+
+4. **Teoria da Estimação**
+   - Estimador vs estimativa
+   - Propriedades dos estimadores:
+     - Não-viesamento (unbiasedness)
+     - Consistência
+     - Eficiência
+     - Suficiência
+     - Robustez
+   - Erro quadrático médio (MSE)
+   - Viés vs variância (trade-off)
+
+---
+
+## 🔹 BLOCO 2 — ESTIMAÇÃO PONTUAL
+
+5. **Métodos de Estimação Pontual**
+   - Método dos Momentos
+   - Método da Máxima Verossimilhança (MLE)
+   - Método dos Mínimos Quadrados (OLS)
+   - Método Bayesiano (estimador de Bayes)
+
+6. **Estimadores para Média e Proporção**
+   - Média amostral como estimador de μ
+   - Proporção amostral como estimador de p
+   - Variância amostral como estimador de σ²
+   - Estimadores para diferença de médias e proporções
+
+7. **Propriedades Assintóticas dos Estimadores**
+   - Consistência
+   - Normalidade assintótica
+   - Eficiência assintótica
+   - Informação de Fisher
+   - Desigualdade de Cramér-Rao
+
+---
+
+## 🔹 BLOCO 3 — ESTIMAÇÃO INTERVALAR
+
+8. **Intervalos de Confiança (IC) — Conceitos**
+   - Definição e interpretação
+   - Nível de confiança (1 − α)
+   - Margem de erro
+   - Fatores que afetam a largura do IC
+
+9. **IC para Média**
+   - IC para μ com σ conhecido (Z)
+   - IC para μ com σ desconhecido (t de Student)
+   - IC para μ com amostras grandes
+   - IC para μ em populações finitas
+
+10. **IC para Proporção**
+    - IC para p (amostras grandes)
+    - IC para p (amostras pequenas — Wilson, Clopper-Pearson)
+    - Correção de continuidade
+
+11. **IC para Variância e Desvio Padrão**
+    - IC para σ² usando Chi-quadrado
+    - IC para σ
+
+12. **IC para Diferença de Médias**
+    - Amostras independentes (variâncias conhecidas)
+    - Amostras independentes (variâncias desconhecidas — pooled e não-pooled)
+    - Amostras pareadas
+
+13. **IC para Diferença de Proporções**
+    - Amostras grandes
+    - Amostras pequenas
+
+14. **IC para Razão de Variâncias**
+    - Distribuição F de Fisher-Snedecor
+
+15. **IC Bootstrap**
+    - Bootstrap percentil
+    - Bootstrap BCa
+    - Bootstrap para estatísticas complexas
+
+16. **IC Bayesianos**
+    - Intervalo de credibilidade
+    - Prior e posterior
+    - HPD (Highest Posterior Density)
+
+---
+
+## 🔹 BLOCO 4 — TESTES DE HIPÓTESE
+
+17. **Fundamentos dos Testes de Hipótese**
+    - Hipótese nula (H₀) vs alternativa (H₁)
+    - Erro Tipo I (α) e Erro Tipo II (β)
+    - Poder do teste (1 − β)
+    - Nível de significância
+    - Região crítica e região de aceitação
+    - Valor-p (p-value)
+    - Teste unilateral vs bilateral
+    - Relação entre IC e teste de hipótese
+
+18. **Testes para Média**
+    - Teste Z para μ (σ conhecido)
+    - Teste t para μ (σ desconhecido)
+    - Teste t para amostras pareadas
+    - Teste para amostras grandes
+
+19. **Testes para Proporção**
+    - Teste Z para uma proporção
+    - Teste Z para diferença de proporções
+    - Teste exato de Fisher
+    - Teste binomial exato
+
+20. **Testes para Variância**
+    - Teste Chi-quadrado para σ²
+    - Teste F para razão de variâncias
+
+21. **Testes para Diferença de Médias**
+    - Amostras independentes (variâncias iguais)
+    - Amostras independentes (variâncias desiguais — Welch)
+    - Amostras pareadas
+    - Teste t de Student
+    - Teste de Welch
+
+22. **Testes Não-Paramétricos**
+    - Teste de Wilcoxon (sinais e postos)
+    - Teste de Mann-Whitney (U)
+    - Teste de Kruskal-Wallis
+    - Teste de Friedman
+    - Teste de Kolmogorov-Smirnov
+    - Teste de Shapiro-Wilk (normalidade)
+    - Teste de Anderson-Darling
+    - Teste de Lilliefors
+    - Teste de Runs (aleatoriedade)
+    - Teste de McNemar
+    - Teste de Cochran
+    - Correlação de Spearman
+    - Correlação de Kendall (tau)
+
+23. **Testes de Aderência (Goodness-of-Fit)**
+    - Teste Chi-quadrado de aderência
+    - Teste G (log-likelihood ratio)
+    - Teste de Kolmogorov-Smirnov para aderência
+
+24. **Testes de Independência e Associação**
+    - Teste Chi-quadrado de independência
+    - Teste exato de Fisher (tabelas 2×2)
+    - Teste de Mantel-Haenszel
+    - Medidas de associação: V de Cramér, Phi, contingência
+    - Teste de McNemar (amostras pareadas)
+
+25. **Testes de Homogeneidade**
+    - Teste Chi-quadrado de homogeneidade
+    - Teste de Levene (homocedasticidade)
+    - Teste de Bartlett
+    - Teste de Fligner-Killeen
+
+26. **Testes de Aleatoriedade e Ajuste**
+    - Teste de Runs
+    - Teste de sequências
+    - Teste de autocorrelação (Durbin-Watson)
+
+---
+
+## 🔹 BLOCO 5 — ANÁLISE DE VARIÂNCIA (ANOVA)
+
+27. **ANOVA de Um Fator**
+    - Modelo e pressupostos
+    - Decomposição da variância (SQT = SQE + SQR)
+    - Tabela ANOVA
+    - Teste F
+    - Comparações múltiplas (Tukey, Bonferroni, Scheffé, Dunnett)
+
+28. **ANOVA de Dois Fatores**
+    - Sem repetição
+    - Com repetição
+    - Efeitos principais e interação
+    - Tabela ANOVA de dois fatores
+
+29. **ANOVA de Medidas Repetidas**
+    - Modelo
+    - Pressupostos (esfericidade)
+    - Correções (Greenhouse-Geisser, Huynh-Feldt)
+
+30. **ANOVA Multivariada (MANOVA)**
+    - Modelo
+    - Estatísticas de teste (Wilks, Pillai, Hotelling, Roy)
+
+31. **ANOVA Não-Paramétrica**
+    - Kruskal-Wallis (um fator)
+    - Friedman (medidas repetidas)
+    - Teste de Jonckheere-Terpstra
+
+32. **ANCOVA (Análise de Covariância)**
+    - Modelo
+    - Ajuste para covariáveis
+
+---
+
+## 🔹 BLOCO 6 — REGRESSÃO
+
+33. **Regressão Linear Simples**
+    - Modelo: Y = β₀ + β₁X + ε
+    - Pressupostos (linearidade, homocedasticidade, normalidade, independência)
+    - Estimação por OLS
+    - Coeficiente de determinação (R²)
+    - Teste de significância dos coeficientes (t)
+    - Teste F global
+    - IC para coeficientes
+    - Previsão e intervalos de previsão
+    - Análise de resíduos
+
+34. **Regressão Linear Múltipla**
+    - Modelo: Y = β₀ + β₁X₁ + ... + βₖXₖ + ε
+    - Estimação matricial
+    - Multicolinearidade (VIF)
+    - R² ajustado
+    - Seleção de variáveis (forward, backward, stepwise)
+    - Critérios: AIC, BIC, Cp de Mallows
+    - Diagnóstico de resíduos
+    - Outliers e pontos de alavanca (leverage)
+    - Distância de Cook
+    - Durbin-Watson
+
+35. **Regressão com Variáveis Dummy**
+    - Variáveis categóricas
+    - Codificação dummy
+    - Interações
+
+36. **Regressão Polinomial**
+    - Modelo
+    - Ajuste e seleção de grau
+
+37. **Regressão Não-Linear**
+    - Modelos não-lineares intrínsecos e extrínsecos
+    - Linearização
+    - Estimação por mínimos quadrados não-lineares
+
+38. **Regressão Logística**
+    - Modelo logit
+    - Estimação por MLE
+    - Odds ratio
+    - Curva ROC e AUC
+    - Teste de Hosmer-Lemeshow
+    - Regressão logística múltipla
+    - Regressão logística multinomial
+    - Regressão logística ordinal
+
+39. **Regressão de Poisson**
+    - Modelo log-linear
+    - Overdispersion
+    - Regressão binomial negativa
+
+40. **Regressão Robusta**
+    - Mínimos quadrados ponderados
+    - Regressão de Huber
+    - Regressão quantílica
+
+41. **Regressão Ridge e LASSO**
+    - Regularização L2 (Ridge)
+    - Regularização L1 (LASSO)
+    - Elastic Net
+    - Validação cruzada
+
+42. **Regressão Não-Paramétrica**
+    - Regressão de kernel
+    - Splines
+    - GAM (Modelos Aditivos Generalizados)
+
+43. **Regressão Bayesiana**
+    - Prior e posterior
+    - Inferência bayesiana em regressão
+
+44. **Modelos Lineares Generalizados (GLM)**
+    - Estrutura: componente aleatório, componente sistemático, função de ligação
+    - Família exponencial
+    - GLM para Binomial, Poisson, Gamma, Normal
+    - Deviance e análise de desvio
+
+---
+
+## 🔹 BLOCO 7 — MÉTODOS MULTIVARIADOS
+
+45. **Análise de Componentes Principais (PCA)**
+    - Autovalores e autovetores
+    - Variância explicada
+    - Scree plot
+    - Interpretação dos componentes
+
+46. **Análise Fatorial**
+    - Modelo fatorial
+    - Extração de fatores (PCA, máxima verossimilhança)
+    - Rotação (Varimax, Oblimin)
+    - Comunalidades e cargas fatoriais
+
+47. **Análise de Agrupamentos (Cluster)**
+    - Hierárquico (dendrograma, ligação)
+    - K-means
+    - DBSCAN
+    - Métricas de distância
+    - Validação de clusters
+
+48. **Análise Discriminante**
+    - LDA (Linear Discriminant Analysis)
+    - QDA (Quadratic Discriminant Analysis)
+    - Regras de classificação
+
+49. **Análise de Correspondência**
+    - Simples e múltipla
+
+50. **Escalonamento Multidimensional (MDS)**
+    - Métrico e não-métrico
+
+51. **Análise de Correlação Canônica**
+    - Definição e aplicações
+
+52. **Modelos de Equações Estruturais (SEM)**
+    - Path analysis
+    - Análise fatorial confirmatória
+    - SEM com variáveis latentes
+
+---
+
+## 🔹 BLOCO 8 — SÉRIES TEMPORAIS
+
+53. **Introdução às Séries Temporais**
+    - Componentes: tendência, sazonalidade, ciclo, ruído
+    - Decomposição aditiva e multiplicativa
+
+54. **Modelos de Suavização**
+    - Médias móveis
+    - Suavização exponencial simples
+    - Holt (tendência)
+    - Holt-Winters (tendência + sazonalidade)
+
+55. **Modelos ARIMA**
+    - AR (Autorregressivo)
+    - MA (Médias Móveis)
+    - ARMA
+    - ARIMA (diferenciação)
+    - SARIMA (sazonalidade)
+    - Identificação (ACF, PACF)
+    - Estimação e diagnóstico (Ljung-Box)
+
+56. **Modelos ARCH e GARCH**
+    - Volatilidade condicional
+    - ARCH, GARCH, EGARCH
+
+57. **Modelos de Espaço de Estados**
+    - Filtro de Kalman
+    - Suavização
+
+58. **Modelos VAR (Vetor Autorregressivo)**
+    - VAR, VECM (cointegração)
+    - Causalidade de Granger
+
+59. **Testes de Raiz Unitária**
+    - Dickey-Fuller aumentado
+    - Phillips-Perron
+    - KPSS
+
+60. **Cointegração**
+    - Engle-Granger
+    - Johansen
+
+---
+
+## 🔹 BLOCO 9 — INFERÊNCIA BAYESIANA
+
+61. **Fundamentos da Inferência Bayesiana**
+    - Teorema de Bayes na inferência
+    - Prior, likelihood, posterior
+    - Prior informativo vs não-informativo
+    - Prior conjugado
+
+62. **Distribuições Conjugadas**
+    - Beta-Binomial
+    - Normal-Normal
+    - Gamma-Poisson
+    - Dirichlet-Multinomial
+
+63. **Métodos Computacionais Bayesianos**
+    - MCMC (Metropolis-Hastings, Gibbs)
+    - Amostragem por importância
+    - Variational Inference
+    - Stan, JAGS, BUGS
+
+64. **Inferência Bayesiana em Modelos**
+    - Regressão bayesiana
+    - Modelos hierárquicos
+    - Modelos de mistura
+    - Modelos não-paramétricos bayesianos
+
+65. **Comparação de Modelos Bayesianos**
+    - Fator de Bayes
+    - DIC, WAIC, LOO-CV
+
+---
+
+## 🔹 BLOCO 10 — TÓPICOS AVANÇADOS
+
+66. **Métodos de Reamostragem**
+    - Bootstrap (percentil, BCa, paramétrico)
+    - Jackknife
+    - Permutação
+
+67. **Inferência Não-Paramétrica Avançada**
+    - Estimação de densidade por kernel
+    - Regressão não-paramétrica
+    - Testes de ranqueamento
+
+68. **Modelos de Sobrevivência**
+    - Função de sobrevivência e hazard
+    - Kaplan-Meier
+    - Modelo de Cox (riscos proporcionais)
+    - Modelos paramétricos (Weibull, exponencial)
+
+69. **Dados Longitudinais**
+    - Modelos de efeitos mistos
+    - GEE (Equações de Estimação Generalizadas)
+    - Modelos hierárquicos
+
+70. **Dados Categóricos**
+    - Tabelas de contingência
+    - Modelos log-lineares
+    - Regressão logística (já citada)
+    - Modelos para dados ordinais
+
+71. **Inferência com Dados Faltantes**
+    - Mecanismos (MCAR, MAR, MNAR)
+    - Imputação simples
+    - Imputação múltipla
+    - EM algorithm
+
+72. **Meta-Análise**
+    - Modelos de efeitos fixos e aleatórios
+    - Heterogeneidade (I²)
+    - Forest plot
+    - Viés de publicação (funnel plot)
+
+73. **Testes de Equivalência e Não-Inferioridade**
+    - TOST (Two One-Sided Tests)
+    - Margem de equivalência
+
+74. **Inferência em Amostras Complexas**
+    - Pesos amostrais
+    - Efeito de delineamento
+    - Bootstrapping em amostras complexas
+
+75. **Inferência Causal**
+    - Potencial de resultados (Rubin)
+    - DAGs (Directed Acyclic Graphs)
+    - Propensity score
+    - Variáveis instrumentais
+    - Diferenças em diferenças
+    - Regressão descontínua
+
+76. **Machine Learning e Inferência**
+    - Validação cruzada
+    - Bootstrap em ML
+    - Inferência em modelos de ML
+    - SHAP, importância de variáveis
+
+---
+
+## 📊 RESUMO QUANTITATIVO
+
+| Bloco | Tema | Nº de Temas |
+|-------|------|-------------|
+| 1 | Fundamentos da Inferência | 4 |
+| 2 | Estimação Pontual | 3 |
+| 3 | Estimação Intervalar | 9 |
+| 4 | Testes de Hipótese | 10 |
+| 5 | ANOVA | 6 |
+| 6 | Regressão | 12 |
+| 7 | Métodos Multivariados | 8 |
+| 8 | Séries Temporais | 8 |
+| 9 | Inferência Bayesiana | 5 |
+| 10 | Tópicos Avançados | 11 |
+| **TOTAL** | | **76 temas** |
+
+---
+
+## 🔗 PONTE: PROBABILIDADE → INFERÊNCIA
+
+Aqui está o **mapeamento direto** entre os temas de Probabilidade e os de Inferência. Se algum tema de Probabilidade não tem contrapartida na Inferência, é porque é pré-requisito puro.
+
+| Probabilidade (tema) | Inferência (onde usa) |
+|----------------------|----------------------|
+| Variáveis Aleatórias | Distribuições amostrais |
+| Esperança e Variância | Propriedades dos estimadores (viés, MSE) |
+| Distribuições Discretas (Binomial, Poisson) | Testes para proporção, regressão de Poisson |
+| Distribuição Normal | IC para média, testes Z e t, TCL |
+| Distribuição t de Student | IC e testes para média com σ desconhecido |
+| Distribuição Chi-quadrado | IC e testes para variância, testes de aderência e independência |
+| Distribuição F | ANOVA, comparação de variâncias |
+| Distribuições Conjuntas | Distribuições amostrais conjuntas, regressão |
+| Teorema Central do Limite | Base para IC e testes com amostras grandes |
+| Lei dos Grandes Números | Consistência de estimadores |
+| Convergência em distribuição | Normalidade assintótica, testes assintóticos |
+| Cadeias de Markov | MCMC, inferência bayesiana |
+| Monte Carlo | Bootstrap, simulação de distribuições amostrais |
+| Teoria da Informação | MLE, AIC, BIC, divergência KL |
+
+---
+
+## ⚠️ OBSERVAÇÕES CRÍTICAS
+
+1. **A Inferência é MUITO maior que a Probabilidade** em número de tópicos. Isso é normal — a Probabilidade é a base; a Inferência é a aplicação.
+
+2. **Se você já tem Probabilidade e Descritiva bem cobertas**, a Inferência precisa de **pelo menos 60–70 tópicos** para ser "nível elevado". Menos que isso é curso introdutório.
+
+3. **Tópicos que quase sempre faltam em cursos brasileiros:**
+   - Inferência Causal (tema 75) — cada vez mais essencial
+   - Métodos de Reamostragem (tema 66) — Bootstrap e Jackknife
+   - Dados Faltantes (tema 71)
+   - Meta-Análise (tema 72)
+   - Inferência em Amostras Complexas (tema 74)
+   - Modelos de Sobrevivência (tema 68)
+
+4. **Se o público é Ciência de Dados**, os blocos 6 (Regressão), 7 (Multivariados), 8 (Séries Temporais) e 9 (Bayesiana) são **obrigatórios**.
+
+5. **Se o público é Engenharia/Confiabilidade**, os blocos 5 (ANOVA), 6 (Regressão) e 10 (Sobrevivência) são essenciais.
+
+6. **Faltou mencionar explicitamente:**
+   - **Inferência para processos estocásticos** (além de séries temporais)
+   - **Inferência espacial** (geoestatística, kriging)
+   - **Inferência funcional** (dados funcionais)
+   - **Inferência de alto-dimensional** (p > n, seleção de variáveis)
+   - **Inferência distribuída** (federação de dados)
+
+---
+
+Se quiser, posso agora **cruzar** os três (Descritiva + Probabilidade + Inferência) e dizer **exatamente o que está faltando no seu curso** para cobrir a estatística completa de nível elevado.

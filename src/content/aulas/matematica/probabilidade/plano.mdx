@@ -1,0 +1,441 @@
+# TODOS OS TEMAS DE PROBABILIDADE
+
+Aqui está a lista **completa e exaustiva** de todos os temas que compõem a Probabilidade, do nível básico ao avançado. Organizei por blocos temáticos para não esquecer nada.
+
+---
+
+## 🔹 BLOCO 1 — FUNDAMENTOS DA PROBABILIDADE
+
+1. **Introdução à Probabilidade**
+   - Origem histórica (jogos de azar, Pascal, Fermat)
+   - Definição clássica, frequentista e axiomática
+   - Experimento aleatório, espaço amostral (Ω) e evento
+   - Tipos de eventos: certo, impossível, elementar, composto
+
+2. **Teoria de Conjuntos aplicada à Probabilidade**
+   - União, interseção, complementar
+   - Diferença e diferença simétrica
+   - Diagramas de Venn
+   - Leis de De Morgan
+
+3. **Axiomas de Kolmogorov**
+   - Axioma 1: não negatividade
+   - Axioma 2: normalização (P(Ω) = 1)
+   - Axioma 3: aditividade para eventos mutuamente exclusivos
+   - Propriedades derivadas: P(∅) = 0, P(Aᶜ) = 1 − P(A), P(A ∪ B) = P(A) + P(B) − P(A ∩ B)
+
+4. **Probabilidade Condicional**
+   - Definição: P(A|B) = P(A ∩ B) / P(B)
+   - Interpretação e intuição
+   - Independência de eventos
+   - Teorema da multiplicação
+
+5. **Teorema da Probabilidade Total**
+   - Partição do espaço amostral
+   - Fórmula da probabilidade total
+
+6. **Teorema de Bayes**
+   - Fórmula de Bayes
+   - Probabilidade a priori e a posteriori
+   - Aplicações: diagnóstico médico, spam, testes
+
+7. **Independência de Eventos**
+   - Independência dois a dois
+   - Independência mútua
+   - Eventos independentes vs mutuamente exclusivos
+
+8. **Contagem e Análise Combinatória**
+   - Princípio fundamental da contagem
+   - Permutações (simples e com repetição)
+   - Arranjos (simples e com repetição)
+   - Combinações (simples e com repetição)
+   - Binômio de Newton
+   - Triângulo de Pascal
+   - Aplicações em probabilidade
+
+---
+
+## 🔹 BLOCO 2 — VARIÁVEIS ALEATÓRIAS
+
+9. **Variável Aleatória (VA)**
+   - Definição
+   - Variável aleatória discreta
+   - Variável aleatória contínua
+   - Variável aleatória mista
+
+10. **Função de Probabilidade (fp) — caso discreto**
+    - Definição
+    - Propriedades: p(x) ≥ 0, Σ p(x) = 1
+
+11. **Função Densidade de Probabilidade (fdp) — caso contínuo**
+    - Definição
+    - Propriedades: f(x) ≥ 0, ∫ f(x) dx = 1
+    - Interpretação como área
+
+12. **Função de Distribuição Acumulada (FDA)**
+    - Definição: F(x) = P(X ≤ x)
+    - Propriedades
+    - Relação com fp e fdp
+
+13. **Transformação de Variáveis Aleatórias**
+    - Método da FDA
+    - Método do Jacobiano
+    - Transformações lineares
+
+---
+
+## 🔹 BLOCO 3 — ESPERANÇA E MOMENTOS
+
+14. **Esperança Matemática (Valor Esperado)**
+    - Definição para VA discreta e contínua
+    - Propriedades da esperança
+    - Esperança de funções de VA
+
+15. **Variância e Desvio Padrão**
+    - Definição
+    - Fórmula alternativa: Var(X) = E(X²) − [E(X)]²
+    - Propriedades
+
+16. **Momentos**
+    - Momentos ordinários (em torno da origem)
+    - Momentos centrais (em torno da média)
+    - Relação entre momentos
+
+17. **Função Geradora de Momentos (FGM)**
+    - Definição
+    - Propriedades
+    - Unicidade
+    - Cálculo de momentos
+
+18. **Função Característica**
+    - Definição (números complexos)
+    - Vantagens sobre a FGM
+    - Teorema da inversão
+
+19. **Covariância e Correlação**
+    - Covariância: definição e propriedades
+    - Coeficiente de correlação linear
+    - Matriz de covariância
+
+20. **Desigualdades Probabilísticas**
+    - Desigualdade de Markov
+    - Desigualdade de Chebyshev
+    - Desigualdade de Jensen
+    - Desigualdade de Cauchy-Schwarz
+
+---
+
+## 🔹 BLOCO 4 — DISTRIBUIÇÕES DISCRETAS
+
+21. **Distribuição de Bernoulli**
+    - Definição, parâmetro p
+    - Média e variância
+
+22. **Distribuição Binomial**
+    - Definição, parâmetros n e p
+    - Fórmula, média, variância
+    - Aplicações
+
+23. **Distribuição de Poisson**
+    - Definição, parâmetro λ
+    - Relação com Binomial (limite)
+    - Processo de Poisson
+
+24. **Distribuição Geométrica**
+    - Definição, parâmetro p
+    - Propriedade da falta de memória
+
+25. **Distribuição Binomial Negativa (Pascal)**
+    - Definição, parâmetros r e p
+    - Relação com Geométrica
+
+26. **Distribuição Hipergeométrica**
+    - Definição, parâmetros N, K, n
+    - Relação com Binomial (amostragem sem reposição)
+
+27. **Distribuição Multinomial**
+    - Generalização da Binomial
+    - Parâmetros e fórmula
+
+28. **Distribuição Uniforme Discreta**
+    - Definição
+    - Média e variância
+
+29. **Distribuição de Bernoulli Generalizada / Categórica**
+    - Definição
+
+---
+
+## 🔹 BLOCO 5 — DISTRIBUIÇÕES CONTÍNUAS
+
+30. **Distribuição Uniforme Contínua**
+    - Definição, parâmetros a e b
+    - FDA, média, variância
+
+31. **Distribuição Exponencial**
+    - Definição, parâmetro λ
+    - Relação com Poisson
+    - Falta de memória
+    - Média e variância
+
+32. **Distribuição Normal (Gaussiana)**
+    - Definição, parâmetros μ e σ²
+    - Normal padrão (Z)
+    - Tabela da normal padrão
+    - Padronização
+    - Simetria e propriedades
+
+33. **Distribuição Normal Bivariada**
+    - Definição
+    - Coeficiente de correlação
+    - Distribuições marginais e condicionais
+
+34. **Distribuição Log-Normal**
+    - Definição
+    - Relação com Normal
+    - Média e variância
+
+35. **Distribuição Gama**
+    - Definição, parâmetros α e β
+    - Função Gama
+    - Relação com Exponencial e Chi-quadrado
+
+36. **Distribuição Beta**
+    - Definição, parâmetros α e β
+    - Relação com Uniforme
+    - Aplicações (Bayesiana)
+
+37. **Distribuição Chi-quadrado (χ²)**
+    - Definição, graus de liberdade
+    - Relação com Gama e Normal
+    - Soma de quadrados de normais padrão
+
+38. **Distribuição t de Student**
+    - Definição, graus de liberdade
+    - Relação com Normal e Chi-quadrado
+    - Uso em amostras pequenas
+
+39. **Distribuição F de Fisher-Snedecor**
+    - Definição, graus de liberdade
+    - Relação com Chi-quadrado
+    - Uso em ANOVA
+
+40. **Distribuição de Weibull**
+    - Definição, parâmetros
+    - Aplicações em confiabilidade
+
+41. **Distribuição de Cauchy**
+    - Definição
+    - Caso patológico (média não existe)
+
+42. **Distribuição de Pareto**
+    - Definição
+    - Aplicações em economia e redes
+
+43. **Distribuição de Dirichlet**
+    - Generalização da Beta
+    - Aplicações bayesianas
+
+44. **Distribuição de Wishart**
+    - Generalização da Chi-quadrado
+    - Aplicações em estatística multivariada
+
+---
+
+## 🔹 BLOCO 6 — DISTRIBUIÇÕES CONJUNTAS E MULTIVARIADAS
+
+45. **Distribuições Conjuntas**
+    - Caso discreto: função de probabilidade conjunta
+    - Caso contínuo: função densidade conjunta
+
+46. **Distribuições Marginais**
+    - Definição e cálculo
+    - Caso discreto e contínuo
+
+47. **Distribuições Condicionais**
+    - Definição
+    - Esperança e variância condicional
+
+48. **Independência de Variáveis Aleatórias**
+    - Definição
+    - Fatoração da conjunta
+    - Consequências
+
+49. **Distribuições Multivariadas**
+    - Vetor aleatório
+    - Distribuição normal multivariada
+    - Matriz de covariância
+
+50. **Transformações de Vetores Aleatórios**
+    - Jacobiano multivariado
+    - Casos especiais
+
+---
+
+## 🔹 BLOCO 7 — CONVERGÊNCIA E TEOREMAS LIMITE
+
+51. **Modos de Convergência**
+    - Convergência em probabilidade
+    - Convergência quase certa
+    - Convergência em distribuição
+    - Convergência em média (L^p)
+    - Relações entre os modos
+
+52. **Lei dos Grandes Números (LGN)**
+    - Lei Fraca (Khintchine)
+    - Lei Forte (Kolmogorov)
+    - Aplicações
+
+53. **Teorema Central do Limite (TCL)**
+    - TCL clássico (Lindeberg-Lévy)
+    - TCL de Lyapunov
+    - TCL de Lindeberg-Feller
+    - Correção de continuidade
+    - Aplicações
+
+54. **Teorema de Slutsky**
+    - Definição e aplicações
+
+55. **Método Delta**
+    - Definição
+    - Aplicações em aproximações
+
+56. **Função Geradora de Cumulantes**
+    - Definição
+    - Relação com momentos
+
+---
+
+## 🔹 BLOCO 8 — CADEIAS DE MARKOV E PROCESSOS ESTOCÁSTICOS
+
+57. **Introdução aos Processos Estocásticos**
+    - Definição
+    - Classificação (tempo discreto/contínuo, estado discreto/contínuo)
+
+58. **Cadeias de Markov (tempo discreto)**
+    - Definição
+    - Propriedade de Markov
+    - Matriz de transição
+    - Distribuição inicial
+
+59. **Classificação de Estados**
+    - Recorrente, transiente
+    - Periódico, aperiódico
+    - Irredutível
+
+60. **Distribuição Estacionária**
+    - Definição
+    - Cálculo
+    - Teorema ergódico
+
+61. **Cadeias de Markov (tempo contínuo)**
+    - Processo de Poisson
+    - Processo de nascimento e morte
+    - Equações de Chapman-Kolmogorov
+
+62. **Martingales**
+    - Definição
+    - Propriedades
+    - Desigualdade de martingale
+
+63. **Movimento Browniano**
+    - Definição
+    - Propriedades
+    - Aplicações em finanças
+
+---
+
+## 🔹 BLOCO 9 — SIMULAÇÃO E MÉTODOS COMPUTACIONAIS
+
+64. **Simulação de Variáveis Aleatórias**
+    - Método da transformação inversa
+    - Método da rejeição
+    - Método da composição
+
+65. **Método de Monte Carlo**
+    - Definição
+    - Estimação de integrais
+    - Aplicações
+
+66. **Cadeias de Markov Monte Carlo (MCMC)**
+    - Algoritmo de Metropolis-Hastings
+    - Amostrador de Gibbs
+    - Aplicações bayesianas
+
+---
+
+## 🔹 BLOCO 10 — TÓPICOS AVANÇADOS
+
+67. **Probabilidade Geométrica**
+    - Definição
+    - Problema do agulha de Buffon
+
+68. **Probabilidade Condicional Avançada**
+    - Independência condicional
+    - Grafos probabilísticos (redes bayesianas)
+
+69. **Teoria da Informação**
+    - Entropia
+    - Informação mútua
+    - Divergência de Kullback-Leibler
+
+70. **Grandes Desvios**
+    - Princípio de grandes desvios
+    - Taxa de decaimento
+
+71. **Processos de Lévy**
+    - Definição
+    - Subordinadores
+    - Aplicações
+
+72. **Teoria Ergódica**
+    - Definição
+    - Teorema ergódico de Birkhoff
+    - Aplicações
+
+73. **Probabilidade Não-Paramétrica**
+    - Estimação de densidade
+    - Kernel density estimation
+
+74. **Estatística Bayesiana (fundamentos probabilísticos)**
+    - Prior, likelihood, posterior
+    - Conjugadas
+    - Inferência bayesiana
+
+---
+
+## 📊 RESUMO QUANTITATIVO
+
+| Bloco | Tema | Nº de Temas |
+|-------|------|-------------|
+| 1 | Fundamentos | 8 |
+| 2 | Variáveis Aleatórias | 5 |
+| 3 | Esperança e Momentos | 7 |
+| 4 | Distribuições Discretas | 9 |
+| 5 | Distribuições Contínuas | 15 |
+| 6 | Distribuições Conjuntas | 6 |
+| 7 | Convergência e Teoremas Limite | 6 |
+| 8 | Cadeias de Markov e Processos | 7 |
+| 9 | Simulação e Computação | 3 |
+| 10 | Tópicos Avançados | 8 |
+| **TOTAL** | | **74 temas** |
+
+---
+
+## ⚠️ OBSERVAÇÕES CRÍTICAS
+
+1. **Se você está montando um curso de Estatística Descritiva + Probabilidade + Inferência**, a Probabilidade é a **ponte** entre as duas. Sem ela, a Inferência não faz sentido.
+
+2. **Os temas 51–56 (Convergência e Teoremas Limite)** são **obrigatórios** para entender Inferência (intervalos de confiança, testes de hipótese, TCL).
+
+3. **Os temas 57–63 (Markov e Processos)** podem ser opcionais dependendo do público-alvo. Se for para Ciência de Dados/Engenharia, são essenciais.
+
+4. **Os temas 64–66 (Simulação)** são cada vez mais importantes — Monte Carlo e MCMC são usados em machine learning e estatística bayesiana.
+
+5. **Os temas 67–74 (Avançados)** são para um curso de Probabilidade II ou pós-graduação.
+
+6. **Faltou mencionar explicitamente:** **Probabilidade em Espaços de Hilbert (L²)**, **Teoria da Medida aplicada à Probabilidade**, **Processos Gaussianos**, **Pontos de Poisson**, **Teoria de Filas (queues)** — mas esses são tópicos muito especializados.
+
+---
+
+Se quiser, posso agora **comparar** com os temas que você já tem na Inferência e dizer **o que está faltando na ponte Probabilidade → Inferência**.

@@ -541,7 +541,7 @@ export default function MatematicaPage() {
                                                   >
                                                     <Link
                                                       href={`/aula/${aula.slug}`}
-                                                      className="inline-flex items-center gap-1 text-[10px] font-medium px-2 py-0.5 rounded-full text-white transition-all duration-300 opacity-100 md:opacity-0 md:group-hover:opacity-100 hover:-translate-y-0.5 whitespace-nowrap"
+                                                      className="inline-flex items-center gap-1 text-[10px] font-medium px-2 py-0.5 rounded-full text-white transition-all duration-300 opacity-0 group-hover:opacity-100 hover:-translate-y-0.5 whitespace-nowrap"
                                                       style={{ background: cor }}
                                                     >
                                                       Ir <ExternalLink size={10} />
